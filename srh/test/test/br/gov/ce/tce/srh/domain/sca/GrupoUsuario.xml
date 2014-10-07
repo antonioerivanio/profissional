@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+	<GRUPOUSUARIO ID="1" GRUPO="1" USUARIO="1" />
+	<GRUPOUSUARIO ID="2" GRUPO="1" USUARIO="2" />
+</dataset>

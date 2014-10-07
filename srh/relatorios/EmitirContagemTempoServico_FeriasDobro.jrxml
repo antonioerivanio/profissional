@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirDossiseServidor_abotacaoServidor" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IDPESSOAL" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BACK" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\ivia_workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\ivia_workspace\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO_TCE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\ivia_workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select fe.anoreferencia, (fe.qtdedias + fe.qtdedias) as qtdedias, fe.obs, f.id
+from tb_ferias fe, tb_funcional f
+where fe.idfuncional = f.id  and fe.tipoferias = 5 and f.idPessoal = $P{IDPESSOAL}
+order by f.id]]>
+	</queryString>
+	<field name="ANOREFERENCIA" class="java.math.BigDecimal"/>
+	<field name="QTDEDIAS" class="java.math.BigDecimal"/>
+	<field name="OBS" class="java.lang.String"/>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35">
+			<staticText>
+				<reportElement x="3" y="11" width="390" height="20" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Férias em Dobro]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="5" width="801" height="1"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<rectangle>
+				<reportElement x="2" y="-1" width="800" height="18" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANO REFERÊNCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="0" width="113" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDE. DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="113" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVAÇÃO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="801" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="3" y="1" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="1" width="113" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="220" y="1" width="582" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

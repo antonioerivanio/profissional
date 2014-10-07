@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
+
+	<ui:define name="content">
+
+		<style>
+		    .formularios fieldset,
+		    .box-border {
+		        border: 1px solid #c6c6c6;
+		        padding: 15px 15px 0px 15px;
+		        padding-right: 0;
+		        overflow: auto;
+		        margin-bottom: 10px;
+		        min-height: 100px;
+		    }
+		</style>
+
+		<script type="text/javascript" charset="ISO-8859-1">
+		function openwindow()
+		{	
+			nome = document.getElementById('form:nomeCompletoPessoa').value;
+			if (nome.length > 2) {
+				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+			} else {
+				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			}
+		}
+
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Lançamento de Periodos de Férias</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+
+			<fieldset>
+
+				<legend>Dados Pessoais</legend>
+
+				<br/>
+
+            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+				<h:inputHidden id="alterar" disabled="true" value="#{feriasFormBean.alterar}" />
+
+				<div class="input-box box-10">
+					<label for="">Matricula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula" 
+									 name="matricula"
+									 maxlength="6"
+									 styleClass="maskMatricula"
+									 disabled="#{feriasFormBean.alterar}"
+									 value="#{feriasFormBean.matricula}">
+							<a4j:support event="onchange"
+										 focus="tipoFerias"
+										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 ajaxSingle="true" />
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-75">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa" 
+									 name="nomeCompletoPessoa"
+									 disabled="#{feriasFormBean.alterar}"
+									 value="#{feriasFormBean.nome}" />
+					</div>
+				</div>
+
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()"
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+	
+				<div class="input-box box-100">
+					<label for="">Mãe</label>
+					<div class="conteiner">
+						<h:inputText id="mae"
+									 name="mae"
+									 disabled="true"
+									 value="#{feriasFormBean.entidade.funcional.pessoal.nomeMae}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 disabled="true"
+									 value="#{feriasFormBean.entidade.funcional.pessoal.cpf}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">RG</label>
+					<div class="conteiner">
+						<h:inputText id="rg" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{feriasFormBean.entidade.funcional.pessoal.rg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">Emissor</label>
+					<div class="conteiner">
+						<h:inputText id="rgEmissor" 
+									 maxlength="10"
+									 disabled="true"
+									 value="#{feriasFormBean.entidade.funcional.pessoal.emissorRg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">UF</label>
+					<div class="conteiner">
+						<h:inputText id="rgUf" 
+									 maxlength="2"
+									 disabled="true"
+									 value="#{feriasFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
+					</div>
+				</div>
+
+			</fieldset>
+
+
+
+			<!-- Lançamento de Férias -->
+
+			<fieldset>
+
+				<legend>Lançamento de Férias</legend>
+
+				<br/>
+
+				<div class="select-box box-50">
+					<label for="">Tipo de Férias *</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="tipoFerias"
+										 converter="entityConverter"
+										 valueChangeListener="#{feriasFormBean.atualizaCampos}" 
+										 onchange="submit();"
+										 value="#{feriasFormBean.entidade.tipoFerias}" >
+							<f:selectItem id="selecioneTipoFerias" itemLabel="Selecione..." itemValue="" />
+					  		<f:selectItems 	id="comboTipoFerias" 
+					  						value="#{feriasFormBean.comboTipoFerias}"
+					  						var="tipoFerias"
+					  						itemValue="#{tipoFerias}"
+					  						itemLabel="#{tipoFerias.descricao}"/>
+						</h:selectOneMenu>    
+					</div>
+				</div>
+
+				<div class="input-box box-10">
+					<label for="">Ano Referência*</label>
+					<div class="conteiner">
+						<h:inputText id="anoReferencia" 
+									 name="anoReferencia"
+									 value="#{feriasFormBean.entidade.anoReferencia}" 
+									 maxlength="4"
+									 onkeyup="SoNumeros(this)" >
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-10">
+					<label for="">Período *</label>
+					<div class="conteiner">
+						<h:inputText id="periodo"
+									 value="#{feriasFormBean.entidade.periodo}"
+									 maxlength="1"
+									 onkeyup="SoNumeros(this)" />   
+					</div>
+				</div>
+
+				<br/><br/><br/><br/><br/>
+				
+				<div class="input-box box-15">
+					<label for="">Data Inicial</label>
+					<div class="conteiner">
+						<h:inputText id="inicio" 
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{feriasFormBean.inicial}"
+									 maxlength="10"
+									 disabled="#{feriasFormBean.bloquearDatas}" >
+							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Data Final</label>
+					<div class="conteiner">
+						<h:inputText id="fim" 
+									 styleClass="maskData"
+									 converter="dateConverter"
+									 value="#{feriasFormBean.fim}"
+									 maxlength="10"
+									 disabled="#{feriasFormBean.bloquearDatas}" >
+							<a4j:support event="onchange" focus="tipoPublicacao" reRender="qtdeDias, messages" ajaxSingle="true"/>
+						</h:inputText>			  
+					</div>
+				</div>
+
+				<div class="input-box box-5">
+					<label for="">Dias</label>
+					<div class="conteiner">
+						<h:inputText id="qtdeDias" disabled="#{not feriasFormBean.bloquearDatas and feriasEdicao}" value="#{feriasFormBean.entidade.qtdeDias}" />  
+					</div>
+				</div>
+
+				<div class="select-box box-15">
+					<label for="">Tipo Publicação</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="tipoPublicacao"
+										 converter="entityConverter" 
+										 value="#{feriasFormBean.entidade.tipoPublicacao}"> 
+							<f:selectItem id="selecioneTipoPublicacao" itemLabel="Selecione..." itemValue="" />
+					  		<f:selectItems 	id="comboTipoPublicacao" 
+					  						value="#{feriasFormBean.comboTipoPublicacao}"
+					  						var="tipoPublicacao"
+					  						itemValue="#{tipoPublicacao}"
+					  						itemLabel="#{tipoPublicacao.descricao}"/>
+						</h:selectOneMenu>    
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Publicação</label>
+					<div class="conteiner">
+						<h:inputText id="dataPublicacao" 
+									 name="dataPublicacao"
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{feriasFormBean.entidade.dataPublicacao}"
+									 maxlength="10" />
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Data do Ato</label>
+					<div class="conteiner">
+						<h:inputText id="dataDoAto" 
+									 name="dataDoAto"
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{feriasFormBean.entidade.dataDoAto}" 
+									 maxlength="10" />
+					</div>
+				</div>
+
+			</fieldset> 
+
+			<div class="textarea-box box-100">
+				<label for="">Observação</label>
+				<div class="conteiner">
+					<h:inputTextarea id="observacao" 
+									 value="#{feriasFormBean.entidade.observacao}"
+									 onkeyup="this.value = this.value.substring(0, 999);" >
+									 <f:validateLength maximum="500" />
+					 </h:inputTextarea>
+				</div>
+			</div>
+			
+			<h:commandButton action="#{feriasFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarFerias()"  />
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/feriasList.faces" immediate="true">
+				<f:setPropertyActionListener target="#{feriasListBean.passouConsultar}" value="true"/>
+			</h:commandButton>			
+			<a href="/srh/paginas/funcional/feriasForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+
+		</h:form>
+		
+		<script>
+		if (document.getElementById('form:alterar') != null) {
+			if (document.getElementById('form:alterar').value == 'true') {
+				document.getElementById('form:Pesquisar').style.visibility='hidden';
+			}	
+		}
+		</script>
+
+	</ui:define>
+</ui:composition>
+		
+	

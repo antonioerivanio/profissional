@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Categoria</h2>
+
+		</div>
+		<h:form id="form" binding="#{categoriaFuncionalListBean.form}" styleClass="formularios box-border">
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+			
+			<div class="input-box box-38">
+				<h:outputLabel value="Descrição Categoria"/>
+				<div class="conteiner">
+					<h:inputText id="descricao" value="#{categoriaFuncionalListBean.categoriaFuncional.descricao}"/>
+				</div>
+			</div>
+			<h:commandButton id="consultar" value="Consultar" action="#{categoriaFuncionalListBean.consultar}" reRender="scroller,lista" styleClass="bt-padrao fl mg-top-18 mg-left-10"  />
+			<h:commandButton id="relatorio" value="Relatorio" action="#{categoriaFuncionalListBean.relatorio}" styleClass="bt-padrao fl mg-top-18 mg-left-10"  />
+			
+			<div class="tabela-dados">
+				<rich:dataTable id="lista" value="#{categoriaFuncionalListBean.dataModel}" var="item" rows="10" binding="#{categoriaFuncionalListBean.dataTable}">
+					<rich:column id="colDescricaoCategoria">
+						<f:facet name="header">CATEGORIA</f:facet>
+						<h:outputText id="descricao" value="#{item.descricao}"/>
+					</rich:column>
+					<rich:column id="statusCategoria">
+						<f:facet name="header">ATIVA</f:facet>
+							<h:outputText id="status" value="#{categoriaFuncionalListBean.mostarAtiva(item.ativa)}"/>
+					</rich:column>
+					<rich:column id="colEditar">
+						<f:facet name="header">EDITAR</f:facet>
+						<h:commandLink id="editar" value="Editar" action="#{cadastroCategoriaFuncionalFormBean.prepareAlterar}" styleClass="ico-editar" >
+							<f:setPropertyActionListener target="#{cadastroCategoriaFuncionalFormBean.entidade}" value="#{item}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column id="colExcluir">
+						<f:facet name="header">EXCLUIR</f:facet>
+						<h:commandLink id="excluir" value="Excluir" action="#{categoriaFuncionalListBean.excluir}" styleClass="ico-delete"
+						onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}">
+							<f:setPropertyActionListener target="#{categoriaFuncionalListBean.categoriaFuncional}" value="#{item}" />
+						</h:commandLink>
+					</rich:column>
+				</rich:dataTable>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{categoriaFuncionalListBean.pagedList.size() > 0}"/>
+			</div>
+			
+			<h:commandButton id="incluir" value="Incluir" action="#{cadastroCategoriaFuncionalFormBean.prepareIncluir()}" styleClass="bt-padrao fr mg-right-15" />
+			
+			<h:commandButton id="limpaTela" value="Limpar" action="#{categoriaFuncionalListBean.limpaTela}" styleClass="bt-padrao fr mg-right-15" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

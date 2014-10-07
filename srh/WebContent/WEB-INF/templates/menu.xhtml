@@ -1,0 +1,757 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+	  xmlns:a4j="http://richfaces.org/a4j"
+	  xmlns:sec="http://www.springframework.org/security/facelets/tags" >
+
+<f:view>
+	<h:form>
+
+	<h2 class="dn">Menu Principal</h2>
+
+	<ul>
+		<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS')}">
+
+		<!-- MENU TABELAS -->
+		<li>
+		<a href="#" title="">Tabelas</a>
+		<ul class="sub-menu">
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARGO,ROLE_ESPECIALIDADE_CARGO,ROLE_CLASSE_REFERENCIA_CARGO')}">
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Ocupação
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARGO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/cargoList.faces">
+								Cargo
+								</a>
+							</li>
+						</ui:fragment>
+
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESPECIALIDADE_CARGO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/especialidadeCargoList.faces">
+								Especialidade do Cargo
+								</a>
+							</li>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESPECIALIDADE_CARGO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/orientacaoCargoList.faces">
+								Orientação do Cargo
+								</a>
+							</li>
+						</ui:fragment>
+
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CLASSE_REFERENCIA_CARGO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/classeReferenciaList.faces">
+								Classe e Referência do Cargo
+								</a>
+							</li>
+						</ui:fragment>
+
+		            </ul>
+		        </li>
+
+			</ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_SETOR,ROLE_REPRESENTACAO_VALOR,ROLE_CARGO_REPRESENTACAO')}">
+
+				<li class="third-menu">
+					<a href="#" title="" >
+			        Representação
+					</a>
+					<ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_SETOR')}">
+							<li>
+								<a href="/srh/paginas/cadastros/representacaoSetorList.faces">
+								Cargo por Setor
+								</a>
+							</li>
+						</ui:fragment>
+
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_VALOR')}">
+							<li>
+								<a href="/srh/paginas/cadastros/representacaoValorList.faces">
+								Cargo por Valor
+								</a>
+							</li>
+						</ui:fragment>
+
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARGO_REPRESENTACAO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/cargoComissionadoList.faces">
+								Cargo Comissionado
+								</a>
+							</li>
+						</ui:fragment>
+
+					</ul>
+				</li>
+			
+			</ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_FUNCIONAL,ROLE_AREA_COMPETENCIA_SETOR,ROLE_COMPETENCIA_SETOR')}">
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Competência
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_FUNCIONAL')}">
+							<li>
+								<a href="/srh/paginas/tabelas/competenciasGeraisList.faces">
+								Competências Gerais
+								</a>
+							</li>
+						</ui:fragment>
+						
+						<ui:fragment>
+							<li>
+								<a href="/srh/paginas/tabelas/categoriaFuncionalList.faces">
+								Categoria Funcional
+								</a>
+							</li>
+						</ui:fragment>
+	<!-- 
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_AREA_COMPETENCIA_SETOR')}">
+							<li>
+								<a href="/srh/paginas/tabelas/areaSetorList.faces">
+								Área de Competência do Setor
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR')}">
+							<li>
+								<a href="/srh/paginas/tabelas/areaSetorCompetenciaList.faces">
+								Competência do Setor
+								</a>
+							</li>
+						</ui:fragment>
+						 -->
+	
+		            </ul>
+		        </li>
+	        
+	        </ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_DEPENDENTES,ROLE_MOTIVO_DEPENDENCIA')}">
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Dependentes
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_DEPENDENTES')}">
+							<li>
+								<a href="/srh/paginas/tabelas/tipoDependenciaList.faces">
+								Tipo
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_MOTIVO_DEPENDENCIA')}">
+							<li>
+								<a href="/srh/paginas/tabelas/motivoDependenciaList.faces">
+								Motivo de Dependência
+								</a>
+							</li>
+						</ui:fragment>
+	
+		            </ul>
+		        </li>
+
+	        </ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESCOLARIDADE')}">
+				<li>
+					<a href="/srh/paginas/tabelas/escolaridadeList.faces">
+					Escolaridade
+					</a>
+				</li>
+			</ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_INSTITUICAO')}">
+				<li>
+					<a href="/srh/paginas/tabelas/instituicaoList.faces">
+					Instituições de Treinamento
+					</a>
+				</li>
+			</ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_ACADEMICA_AREA,ROLE_FORMACAO_ACADEMICA_CURSOS')}">
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Formação Acadêmica
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_ACADEMICA_AREA')}">
+							<li>
+								<a href="/srh/paginas/tabelas/areaAcademicaList.faces">
+								Área
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_ACADEMICA_CURSOS')}">
+							<li>
+								<a href="/srh/paginas/tabelas/cursoAcademicaList.faces">
+								Cursos
+								</a>
+							</li>
+						</ui:fragment>
+	
+		            </ul>
+		        </li>
+
+			</ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_PROFISSIONAL_AREA,ROLE_FORMACAO_PROFISSIONAL_CURSOS')}">
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Formação Profissional
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_PROFISSIONAL_AREA')}">
+							<li>
+								<a href="/srh/paginas/tabelas/areaProfissionalList.faces">
+								Área
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_PROFISSIONAL_CURSOS')}">
+							<li>
+								<a href="/srh/paginas/tabelas/cursoProfissionalList.faces">
+								Cursos
+								</a>
+							</li>
+						</ui:fragment>
+	
+		            </ul>
+		        </li>
+
+	        </ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_BENEFICIO,ROLE_TIPO_LICENCA,ROLE_TIPO_MOVIMENTO')}">
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Funcional
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_BENEFICIO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/tipoBeneficioList.faces">
+								Tipo de Benefício
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_LICENCA')}">
+							<li>
+								<a href="/srh/paginas/tabelas/tipoLicencaList.faces">
+								Tipo de Licença
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_MOVIMENTO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/tipoMovimentoList.faces">
+								Tipo de Movimento
+								</a>
+							</li>
+						</ui:fragment>
+	
+		            </ul>
+		        </li>
+
+	        </ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_FOLHA,ROLE_RUBRICA')}">
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Folha
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_FOLHA')}">
+							<li>
+								<a href="/srh/paginas/tabelas/tipoFolhaList.faces">
+								Tipo de Folha
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RUBRICA')}">
+							<li>
+								<a href="/srh/paginas/tabelas/rubricaList.faces">
+								Rubrica
+								</a>
+							</li>
+						</ui:fragment>
+	
+		            </ul>
+		        </li>
+
+			</ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESTADO_CIVIL,ROLE_BIOTIPO_HUMANO')}" >
+
+				<li class="third-menu">
+		            <a href="#" title="" >
+		                Pessoal
+		            </a>
+		            <ul class="sub-sub-menu">
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESTADO_CIVIL')}">
+							<li>
+								<a href="/srh/paginas/tabelas/estadoCivilList.faces">
+								Estado Civil
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_BIOTIPO_HUMANO')}">
+							<li>
+								<a href="/srh/paginas/tabelas/tipoBiotipoList.faces">
+								Biotipo Humano
+								</a>
+							</li>
+						</ui:fragment>
+	
+		            </ul>
+		        </li>
+
+	        </ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_DOCUMENTO')}">
+				<li>
+					<a href="/srh/paginas/tabelas/tipoDocumentoList.faces">
+					Tipo Documento
+					</a>
+				</li>
+			</ui:fragment>
+
+		</ul>
+		</li>
+
+		</ui:fragment>
+
+
+
+
+
+		<!-- MENU CADASTROS -->
+		<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CADASTROS')}">
+
+		<li>
+		<a href="#" title="">Cadastros</a>
+		<ul class="sub-menu">
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA,ROLE_PESSOA_CURSO_PROFISSIONAL,ROLE_PESSOA_CURSO_GRADUACAO')}" >
+
+				<li class="third-menu">
+					<a href="#" title="" >
+			        Pessoal
+					</a>
+					<ul class="sub-sub-menu">
+
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA')}">
+							<li>
+								<a href="/srh/paginas/cadastros/pessoaList.faces">
+								Dados Cadastrais
+								</a>
+							</li>
+						</ui:fragment>
+
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_PROFISSIONAL')}">
+							<li>
+								<a href="/srh/paginas/cadastros/pessoaCursoProfissionalList.faces">
+								Cursos Profissionais
+								</a>
+							</li>
+						</ui:fragment>
+	
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_GRADUACAO')}">
+							<li>
+								<a href="/srh/paginas/cadastros/pessoaCursoGraduacaoList.faces">
+								Curso de Graduação
+								</a>
+							</li>
+						</ui:fragment>
+	
+					</ul>
+				</li>
+
+			</ui:fragment>
+
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SERVIDOR')}">
+				<li>
+					<a href="/srh/paginas/cadastros/atestoPessoaList.faces">
+					Competência Atestada do Servidor
+					</a>
+				</li>
+			</ui:fragment>
+			
+			<ui:fragment>
+				<li>
+					<a href="/srh/paginas/cadastros/competenciaOrganizacionalList.faces">
+					Competência Organizacional
+					</a>
+				</li>
+			</ui:fragment>
+
+			<ui:fragment>
+				<li>
+					<a href="/srh/paginas/cadastros/competenciaSetorialList.faces">
+					Competência Setorial
+					</a>
+				</li>
+			</ui:fragment>
+			
+			<ui:fragment>
+				<li>
+					<a href="/srh/paginas/cadastros/competenciaSetorFuncionalList.faces">
+					Competência Funcional
+					</a>
+				</li>
+			</ui:fragment>
+			
+			<ui:fragment>
+				<li>
+					<a href="/srh/paginas/cadastros/categoriaFuncionalSetorList.faces">
+					Categoria por Setor
+					</a>
+				</li>
+			</ui:fragment>
+			
+			<ui:fragment>
+				<li>
+					<a href="/srh/paginas/cadastros/categoriaSetorPessoalList.faces">
+					Categoria por Setor e Servidor
+					</a>
+				</li>
+			</ui:fragment>
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR')}">
+				<li>
+					<a href="/srh/paginas/cadastros/pessoaAnotacaoList.faces">
+					Anotações do Servidor
+					</a>
+				</li>
+			</ui:fragment>
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PUBLICACAO')}">
+				<li>
+					<a href="/srh/paginas/cadastros/publicacaoList.faces">
+					Publicação
+					</a>
+				</li>
+			</ui:fragment>			
+		</ul>
+        </li>
+
+		</ui:fragment>
+
+
+
+
+
+		<!-- MENU FUNCIONAL -->
+		<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNCIONAL')}">
+
+		<li>
+		<a href="#" title="">Funcional</a>
+		<ul class="sub-menu">
+
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO,ROLE_PROGRESSAO,ROLE_RECLASSIFICACAO,ROLE_REPRESENTACAO_FUNCIONAL,ROLE_EXONERACAO')}">
+	
+					<li class="third-menu">
+						<a href="#" title="" >
+				        Movimentação
+						</a>
+						<ul class="sub-sub-menu">
+
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO')}">
+								<li>
+									<a href="/srh/paginas/funcional/nomeacaoServidorList.faces">
+									Nomeação
+									</a>
+								</li>
+							</ui:fragment>
+			
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PROGRESSAO')}">
+								<li>
+									<a href="/srh/paginas/funcional/progressaoFuncionalList.faces">
+									Progressão
+									</a>
+								</li>
+							</ui:fragment>
+			
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RECLASSIFICACAO')}">
+								<li>
+									<a href="/srh/paginas/funcional/reclassificacaoOcupacionalList.faces">
+									Reclassificação
+									</a>
+								</li>
+							</ui:fragment>
+			
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL')}">
+								<li>
+									<a href="/srh/paginas/funcional/representacaoFuncionalList.faces">
+									Representação
+									</a>
+								</li>
+							</ui:fragment>
+			
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_EXONERACAO')}">
+								<li>
+									<a href="/srh/paginas/funcional/exoneracaoList.faces">
+									Exoneração
+									</a>
+								</li>
+							</ui:fragment>
+	
+						</ul>
+					</li>
+
+				</ui:fragment>
+
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNCIONAL_AREA_SETOR')}">
+					<li>
+						<a href="/srh/paginas/funcional/funcionalAreaSetorForm.faces">
+						Área do Setor do Servidor
+						</a>
+					</li>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LOTACAO')}">
+					<li>
+						<a href="/srh/paginas/funcional/funcionalSetorList.faces">
+						Lotação
+						</a>
+					</li>
+				</ui:fragment>
+
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ESPECIAL,ROLE_LICENCA')}">
+	
+					<li class="third-menu">
+						<a href="#" title="" >
+				        Licença
+						</a>
+						<ul class="sub-sub-menu">
+
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ESPECIAL')}">
+								<li>
+									<a href="/srh/paginas/funcional/licencaEspecialList.faces">
+									Reconhecer Direito a Licença Especial
+									</a>
+								</li>
+							</ui:fragment>
+	
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA')}">
+								<li>
+									<a href="/srh/paginas/funcional/licencaList.faces">
+									Lançar Periodo de Licença
+									</a>
+								</li>
+							</ui:fragment>
+							
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ESPECIAL,ROLE_LICENCA')}">
+								<li>
+									<a href="/srh/paginas/funcional/licencaFinalizarList.faces">
+									Finalizar Licença
+									</a>
+								</li>
+							</ui:fragment>
+	
+						</ul>
+					</li>
+
+				</ui:fragment>
+
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FERIAS')}">
+				<li>
+					<a href="/srh/paginas/funcional/feriasList.faces">
+					Férias
+					</a>
+				</li>
+				</ui:fragment>
+
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_AVERBACAO,ROLE_ACRESCIMO,ROLE_DEDUCAO')}">
+	
+					<li class="third-menu">
+						<a href="#" title="" >
+				        Tempo de Serviço
+						</a>
+						<ul class="sub-sub-menu">
+
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_AVERBACAO')}">
+								<li>
+									<a href="/srh/paginas/funcional/averbacaoList.faces">
+									Averbação
+									</a>
+								</li>
+							</ui:fragment>
+	
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ACRESCIMO')}">
+								<li>
+									<a href="/srh/paginas/funcional/acrescimoList.faces">
+									Acrescimo
+									</a>
+								</li>
+							</ui:fragment>
+	
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_DEDUCAO')}">
+								<li>
+									<a href="/srh/paginas/funcional/deducaoList.faces">
+									Dedução
+									</a>
+								</li>
+							</ui:fragment>
+	
+						</ul>
+					</li>
+
+				</ui:fragment>
+
+		</ul>
+		</li>
+
+		</ui:fragment>
+
+
+
+		<!-- MENU RELATORIO -->
+		<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RELATORIO')}">
+
+		<li>
+		<a href="#" title="">Relatório</a>
+		<ul class="sub-menu">
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_AUDITORIA')}">
+					<li>
+						<a href="/srh/paginas/relatorios/auditoriaList.faces">
+						Consultar Auditoria
+						</a>
+					</li>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FICHA_FUNCIONAL')}">
+					<li>
+						<a href="/srh/paginas/relatorios/fichaFuncionalList.faces">
+						Emitir Ficha Funcional
+						</a>
+					</li>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_DOSSIE_SERVIDOR')}">
+					<li>
+						<a href="/srh/paginas/relatorios/emitirDossieServidorList.faces">
+						Emitir Histórico do Servidor
+						</a>
+					</li>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TEMPO_REPRESENTACAO')}">
+					<li>
+						<a href="/srh/paginas/relatorios/tempoRepresentacaoFuncionalList.faces">
+						Tempo de Representação
+						</a>
+					</li>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNC_COMPETENCIA_SETOR')}">
+					<li>
+						<a href="/srh/paginas/relatorios/funcionarioCompetenciaSetorList.faces">
+						Servidor por Competência e Setor
+						</a>
+					</li>
+				</ui:fragment>
+				
+					<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNC_COMPETENCIA_SETOR')}">
+					<li>
+						<a href="/srh/paginas/relatorios/emitirContagemTempoServicoList.faces">
+						Emitir Contagem de Tempo de Serviço
+						</a>
+					</li>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RELATORIO')}">
+					<li>
+						<a href="/srh/paginas/relatorios/relatorioFeriasList.faces">
+						Ferias por Setor
+						</a>
+					</li>
+				</ui:fragment>
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_SERVIDOR_SETOR')}">
+				<li>
+					<a href="/srh/paginas/relatorios/servidorList.faces">
+					Servidor por Setor
+					</a>
+				</li>
+				</ui:fragment>
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_SERVIDOR_SETOR')}">
+				<li>
+					<a href="/srh/paginas/relatorios/cursoServidorList.faces">
+					 Curso por Servidor
+					</a>
+				</li>
+				</ui:fragment>
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_SERVIDOR_SETOR')}">
+				<li>
+					<a href="/srh/paginas/relatorios/cursoPeriodoList.faces">
+					Curso por Período
+					</a>
+				</li>
+				</ui:fragment>
+		</ul>
+		</li>
+
+		</ui:fragment>
+
+
+	</ul>
+
+	</h:form>
+</f:view>
+</html>
+

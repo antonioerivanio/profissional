@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"  >
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-16" />
+        <title>SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceara</title>
+        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/geral.css" />
+        <script type="text/javascript" src="/srh/js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="/srh/js/tce-js-effects.js"></script>
+        <script type="text/javascript" src="/srh/js/jquery.tablesorter.min.js"></script>
+        <script type="text/javascript" src="/srh/js/jquery.tablesorter.pager.js"></script>
+        <script type="text/javascript" src="/srh/js/jquery.maskedinput-1.3.js"></script>
+        <script type="text/javascript" src="/srh/js/util.js"></script>
+
+        <script type="application/x-javascript">
+
+            $(document).ready(function() {
+                $("#myTable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});                
+            });
+
+        </script>        
+        
+    </head>
+    <body>
+
+	<f:view>
+
+        <div class="geral">
+
+            <div class="conteiner-geral">
+
+                <div class="topo">
+
+                    <h1>
+                        <a href="#" title="">
+                            SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceara
+                        </a>
+                    </h1>
+
+                    <h2 class="logo-tce">
+                        Tribunal de Contas do Estado  do CearÃ¡
+                    </h2>
+
+                    <div class="login-box">
+
+                    	<h:form>
+                        <h2 class="dn">Login</h2>
+
+                        <p>Olá, <span class="user"><h:outputText value="#{LoginBean.usuarioLogado}" /></span></p>
+
+                        <h:outputLink title="Sair" 
+                        	value="#{facesContext.externalContext.requestContextPath}/logout.jsp">
+							<h:outputText value="Sair"/>
+						</h:outputLink>
+						</h:form>
+                    </div>
+
+                </div>
+
+                <div class="menu-principal">
+
+                	<ui:include src="menu.xhtml"/>
+
+                </div>
+
+                <div class="corpo">
+
+                    <div class="corpo-conteiner" >
+
+                        <div class="titulo-pagina center">
+
+                            <h2>Você não tem Permissão de Acesso!</h2>
+
+                        </div>
+
+                        <div class="box-border">
+
+                            <div class="welcome-col">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="rodape">
+                    <div class="rodape-box">
+                        <p>@Copyright - Secretaria de Tecnologia da Informação</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+	</f:view>
+
+    </body>
+</html>

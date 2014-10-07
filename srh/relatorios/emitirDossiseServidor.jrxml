@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirDossiseServidor" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.9090909090909095"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="BACK" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO_TCE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\workspace_ivia\\srh\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="HISTORICOLOTACAO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="HISTORICOFERIAS" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IDFUNCIONAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IDPESSOAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PROGRACAOFUNCIONAL" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="HISTORICOLICENCA" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CPF" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ANOTACAOSERVIDOR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select f.ID, f.NOMECOMPLETO, p.NOMEMAE, p.RG, p.EMISSORRG, u.NOME, o.NOMENCLATURA, f.DATAEXERCICIO, s.NMSETOR
+from TB_FUNCIONAL f
+inner join TB_PESSOAL p on f.idpessoal = p.id
+left join TB_UF u on p.uf = u.uf
+inner join TB_OCUPACAO o on f.idocupacao = o.id
+inner join SAPJAVA.setor s on f.idsetor = s.idsetor
+where f.ID = $P!{IDFUNCIONAL}
+order by f.ID]]>
+	</queryString>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="NOMECOMPLETO" class="java.lang.String"/>
+	<field name="NOMEMAE" class="java.lang.String"/>
+	<field name="RG" class="java.lang.String"/>
+	<field name="EMISSORRG" class="java.lang.String"/>
+	<field name="NOME" class="java.lang.String"/>
+	<field name="NOMENCLATURA" class="java.lang.String"/>
+	<field name="DATAEXERCICIO" class="java.sql.Timestamp"/>
+	<field name="NMSETOR" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="235">
+			<rectangle>
+				<reportElement x="1" y="0" width="800" height="79" forecolor="#CCCCCC"/>
+			</rectangle>
+			<image>
+				<reportElement x="633" y="-11" width="168" height="54"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="5" y="25" width="161" height="36"/>
+				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="165" y="42" width="390" height="20" forecolor="#0F2E52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Histórico do Servidor]]></text>
+			</staticText>
+			<image>
+				<reportElement x="1" y="14" width="553" height="65"/>
+				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="2" y="84" width="390" height="20" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dados Pessoais]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="142" width="28" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CPF:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="124" width="284" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMEMAE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="666" y="142" width="124" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="142" width="170" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{EMISSORRG}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="642" y="142" width="24" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UF:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="106" width="284" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="124" width="48" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MÃE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="142" width="58" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMISSOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="142" width="23" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RG:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="233" y="142" width="159" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{RG}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="106" width="48" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="171" width="390" height="20" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Situação Atual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="194" width="48" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="212" width="48" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SETOR:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="194" width="313" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="212" width="313" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NMSETOR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="427" y="194" width="73" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA INICIO:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="500" y="194" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DATAEXERCICIO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="165" width="800" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="50" y="142" width="160" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{CPF}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="5">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="0" width="200" height="0">
+					<printWhenExpression><![CDATA[!$P{HISTORICOLOTACAO}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="IDPESSOAL">
+					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BACK"/>
+				<subreportParameter name="LOGO"/>
+				<subreportParameter name="LOGO_TCE"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{HISTORICOLOTACAO}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="5">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0">
+					<printWhenExpression><![CDATA[!$P{HISTORICOLICENCA}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="IDPESSOAL">
+					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BACK"/>
+				<subreportParameter name="LOGO"/>
+				<subreportParameter name="LOGO_TCE"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{HISTORICOLICENCA}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="6">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="3" width="200" height="0" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[!$P{HISTORICOFERIAS}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="IDPESSOAL">
+					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BACK"/>
+				<subreportParameter name="LOGO"/>
+				<subreportParameter name="LOGO_TCE"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{HISTORICOFERIAS}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="3">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[!$P{PROGRACAOFUNCIONAL}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="BACK"/>
+				<subreportParameter name="LOGO"/>
+				<subreportParameter name="LOGO_TCE"/>
+				<subreportParameter name="IDPESSOAL">
+					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{PROGRACAOFUNCIONAL}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="5">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0">
+					<printWhenExpression><![CDATA[!$P{ANOTACAOSERVIDOR}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="BACK"/>
+				<subreportParameter name="LOGO"/>
+				<subreportParameter name="LOGO_TCE"/>
+				<subreportParameter name="IDPESSOAL">
+					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{ANOTACAOSERVIDOR}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="20">
+			<line>
+				<reportElement x="1" y="2" width="800" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="107" y="3" width="613" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="720" y="3" width="57" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="776" y="3" width="25" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

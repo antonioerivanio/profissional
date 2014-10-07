@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirFichaFuncional" pageWidth="900" pageHeight="595" orientation="Landscape" columnWidth="860" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BACK" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO_TCE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMAGEM_PESSOA" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\TEMP\\teste.jpg"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select m.abreviatura as provimento, o.nomenclatura as cargo,
+       s.simbolo || ' - ' || c.referencia as padrao,
+       decode(o.flcargoisolado, 1, f.doenomeacao, r.doeato) as publicacao, decode(o.flcargoisolado, 1, f.descricaonomeacao, r.descricao) as fundamento,
+       decode(o.flcargoisolado, 1, f.dataexercicio, r.inicio) as exercicio,
+       f.matricula, p.nomecompleto,
+       u.nome as uf, p.naturalidade, p.datanascimento,
+       ec.descricao as estadocivil, p.sexo,
+       p.nomepai, p.nomemae,
+       p.rg, p.documentomilitar, p.tituloeleitoral,
+       p.zonaeleitoral, p.secaoeleitoral, decode(p.cpf, NULL,NULL,Translate(To_Char(p.cpf/100,'000,000,000.00'),',.' ,'.-')) as cpf, p.pasep
+  from tb_funcional f
+inner join tb_pessoal p on p.id = f.idpessoal
+inner join tb_uf u on u.UF = p.UF
+inner join tb_estadocivil ec on ec.id = p.idestadocivil
+inner join tb_ocupacao o on o.id = f.idocupacao
+left join tb_referenciafuncional r on r.idfuncional = f.id
+left join tb_tipomovimento m on m.id = decode(o.flcargoisolado, 1, f.idtipomovimentoentrada, r.idtipomovimento)
+left join tb_classereferencia c on c.id = r.idclassereferencia
+left join tb_simbolo s on s.id = c.idsimbolo
+$P!{FILTRO}
+order by f.dataexercicio desc;]]>
+	</queryString>
+	<field name="PROVIMENTO" class="java.lang.String"/>
+	<field name="CARGO" class="java.lang.String"/>
+	<field name="PADRAO" class="java.lang.String"/>
+	<field name="PUBLICACAO" class="java.sql.Timestamp"/>
+	<field name="FUNDAMENTO" class="java.lang.String"/>
+	<field name="EXERCICIO" class="java.sql.Timestamp"/>
+	<field name="MATRICULA" class="java.lang.String"/>
+	<field name="NOMECOMPLETO" class="java.lang.String"/>
+	<field name="UF" class="java.lang.String"/>
+	<field name="NATURALIDADE" class="java.lang.String"/>
+	<field name="DATANASCIMENTO" class="java.sql.Timestamp"/>
+	<field name="ESTADOCIVIL" class="java.lang.String"/>
+	<field name="SEXO" class="java.lang.String"/>
+	<field name="NOMEPAI" class="java.lang.String"/>
+	<field name="NOMEMAE" class="java.lang.String"/>
+	<field name="RG" class="java.lang.String"/>
+	<field name="DOCUMENTOMILITAR" class="java.lang.String"/>
+	<field name="TITULOELEITORAL" class="java.lang.String"/>
+	<field name="ZONAELEITORAL" class="java.lang.String"/>
+	<field name="SECAOELEITORAL" class="java.lang.String"/>
+	<field name="CPF" class="java.lang.String"/>
+	<field name="PASEP" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="190">
+			<rectangle>
+				<reportElement x="1" y="82" width="859" height="107" forecolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="82" width="83" height="107" forecolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="397" y="82" width="191" height="107" forecolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="397" y="84" width="191" height="19" forecolor="#CCCCCC"/>
+			</rectangle>
+			<image>
+				<reportElement x="7" y="94" width="70" height="88"/>
+				<imageExpression><![CDATA[$P{IMAGEM_PESSOA}]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="84" y="83" width="180" height="60" forecolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="264" y="83" width="133" height="60" forecolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="92" y="82" width="38" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="101" width="65" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Naturalidade:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="0" width="859" height="79" forecolor="#CCCCCC"/>
+			</rectangle>
+			<image>
+				<reportElement x="1" y="14" width="572" height="65"/>
+				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="247" y="42" width="390" height="20" forecolor="#0F2E52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ficha Funcional]]></text>
+			</staticText>
+			<image>
+				<reportElement x="692" y="-11" width="168" height="54"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="92" y="119" width="100" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data de nascimento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="107" y="0" width="466" height="18" forecolor="#FFFFFF"/>
+				<textElement>
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NMSETOR]]></text>
+			</staticText>
+			<image>
+				<reportElement x="5" y="25" width="161" height="36"/>
+				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="92" y="146" width="24" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pai:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="164" width="27" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mãe:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="83" width="30" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sexo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="85" width="165" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOCUMENTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="103" width="21" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RG:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="121" width="35" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Militar:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="156" width="25" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CPF:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="588" y="82" width="271" height="107" forecolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="596" y="89" width="72" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MATRÍCULA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="596" y="107" width="39" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="172" width="40" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PASEP:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="670" y="89" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{MATRICULA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="637" y="107" width="220" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="131" y="82" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{UF}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="157" y="101" width="106" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NATURALIDADE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="192" y="119" width="64" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DATANASCIMENTO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="298" y="83" width="91" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SEXO}.equals( "M" )?"MASCULINO":"FEMININO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="146" width="277" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMEPAI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="164" width="277" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMEMAE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="402" y="139" width="43" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Eleitoral:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="424" y="103" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{RG}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="437" y="121" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DOCUMENTOMILITAR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="446" y="139" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TITULOELEITORAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="429" y="156" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CPF}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="443" y="172" width="100" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PASEP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="54" splitType="Stretch">
+			<rectangle>
+				<reportElement x="2" y="17" width="858" height="35" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="351" y="15" width="75" height="36" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PUBLICAÇÃO OFICIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="15" width="350" height="36" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FUNDAMENTO LEGAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="15" width="88" height="36" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PADRÃO, GRAT. OU SALARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="15" width="134" height="37" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARREIRA, CARGO OU FUNÇÃO GRATIFICADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="15" width="100" height="36" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROVIMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="779" y="15" width="80" height="36" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXERCICIO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="0" width="859" height="17" forecolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="7" y="-2" width="850" height="20" forecolor="#0F2E52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO CRONOLÓGICO DOS ATOS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="859" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="3" y="1" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PROVIMENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="115" y="1" width="134" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="255" y="1" width="88" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PADRAO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="351" y="1" width="75" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PUBLICACAO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="432" y="1" width="347" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FUNDAMENTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="779" y="1" width="81" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{EXERCICIO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<line>
+				<reportElement x="1" y="2" width="859" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="107" y="3" width="672" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
+			</staticText>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="835" y="3" width="25" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="779" y="3" width="57" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
