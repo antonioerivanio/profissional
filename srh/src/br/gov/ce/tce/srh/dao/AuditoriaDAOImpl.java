@@ -56,12 +56,15 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	}
 
 	private AuditQuery createAuditQuery(Revisao revisao) {
+		
 		if (revisao.getPeriodoInicial() != null
 				&& revisao.getPeriodoFinal() != null
 				&& revisao.getPeriodoInicial().after(revisao.getPeriodoFinal())) {
 			throw new SRHRuntimeException("A data inicial deve ser anterior à data final.");
 		}
+		
 		AuditQuery auditQuery = getAuditReader().createQuery().forRevisionsOfEntity(revisao.getEntidade(), false, true);
+		
 		if (revisao.getTipoRevisao() != null) {
 			auditQuery.add(AuditEntity.revisionType().eq(getRevisionType(revisao.getTipoRevisao())));
 		}
@@ -70,6 +73,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			auditQuery.add(AuditEntity.revisionProperty("dataAuditoria").ge(
 					revisao.getPeriodoInicial()));
 		}
+		
 		if (revisao.getPeriodoFinal() != null) {
 			// Define a data final como sendo a hora, minuto e segundo zero do dia seguinte:
 			Calendar periodoFinal = Calendar.getInstance();
@@ -77,6 +81,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			periodoFinal.add(Calendar.DATE, +1);
 			auditQuery.add(AuditEntity.revisionProperty("dataAuditoria").lt(periodoFinal.getTime()));
 		}
+		
 		if (revisao.getUsuario() != null) {
 			auditQuery.add(AuditEntity.revisionProperty("usuario").eq(revisao.getUsuario()));
 		}
@@ -96,6 +101,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				// Nunca sera lancada
 			}
 		}
+		
 		return auditQuery;
 	}
 	

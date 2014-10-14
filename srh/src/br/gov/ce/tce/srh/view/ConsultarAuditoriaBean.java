@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.faces.component.UIData;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
@@ -47,23 +46,23 @@ public class ConsultarAuditoriaBean implements Serializable{
 	@Autowired(required=true)
 	private UsuarioService usuarioService;
 
-	private UIData tblRestricoes;
+//	private UIData tblRestricoes;
+//	private Object pesquisaRevisao;
 	
 	private List<Restricao> restricoes = null;
 	private Restricao restricao;
+	private String entidade;
+	private String atributo;	
 	private String valorRestricao;
 	
 	private Revisao revisaoConsulta;
 	
-	private Set<Class<?>> entidades;
-	private List<Usuario> usuarios;
-	private Object pesquisaRevisao;
-	private List<TipoRevisao> tiposRevisao;
-	
 	private Long tipoRevisao;
 	private Long usuario;
-	private String entidade;
-	private String atributo;
+	
+	private Set<Class<?>> entidades;
+	private List<Usuario> usuarios;
+	private List<TipoRevisao> tiposRevisao;	
 	
 	// controle de acesso do formulario
 	private HtmlForm form;
@@ -103,23 +102,12 @@ public class ConsultarAuditoriaBean implements Serializable{
 		}
 		return null;
 	}
-	
-	public String limparRestricoes(){
-		entidade = null;
-		entidades = null;
-		atributo = null;
-		setRestricao(null);
-		valorRestricao = null;
-		restricoes = null;
-		revisaoConsulta.getRestricoes().clear();
-		return null;
-	}
-	
+		
 	public void adicionarRestricao() {
 		
 		try {
 
-			auditoriaService.validarAdicionarRestricao(restricao, entidade, valorRestricao);
+			auditoriaService.validarAdicionarRestricao(restricao, entidade, valorRestricao);			
 			
 			//Obtem o converter apropriado para converter a String do valor em objeto:
 			Converter atributoConverter = getFacesContext().getApplication().createConverter(restricao.getTipo());
@@ -161,19 +149,20 @@ public class ConsultarAuditoriaBean implements Serializable{
 	}
 	
 	public void excluirRestricao() {
+		
 		List<Restricao> restricoesAux = null;
+		
 		if(atributo != null && (!atributo.equals(""))){
+			
 			for (Restricao rest : restricoes) {
 				if(rest.getAtributo().equals(atributo)){
+					
 					restricoesAux = new ArrayList<Revisao.Restricao>();
 					restricoesAux.addAll(revisaoConsulta.getRestricoes());
 					restricoesAux.remove(rest);
 					
-					entidade = null;
-					entidades = null;
-					atributo = null;
-					setRestricao(null);
-					valorRestricao = null;
+					if(restricoesAux.size() == 0)
+						limparRestricoes();					
 				}
 			}
 		}
@@ -201,8 +190,10 @@ public class ConsultarAuditoriaBean implements Serializable{
 	}
 	
 	public void entidadeSelecionada() {
-		revisaoConsulta.setEntidade(null);
-		restricao = null;
+		
+		limparRestricoes();
+		limparListas();
+				
 		if(this.entidade != null && (!this.entidade.equals(""))){
 			for (Class<?> entidade : entidades) {
 				if(entidade.getSimpleName().equalsIgnoreCase(this.entidade)){
@@ -225,13 +216,10 @@ public class ConsultarAuditoriaBean implements Serializable{
 		} 
 	}
 	
-	public Object getPesquisaRevisao() {
-		return pesquisaRevisao;
-	}
-	
-	public void setPesquisaRevisao(Object pesquisaRevisao) {
-		this.pesquisaRevisao = pesquisaRevisao;
-	}
+	public List<Restricao> getRestricoes() {
+		restricoes = revisaoConsulta.getRestricoes();
+		return restricoes;
+	}	
 	
 	public Set<Class<?>> getEntidades() throws ClassNotFoundException {
 		if(entidades == null){
@@ -239,11 +227,22 @@ public class ConsultarAuditoriaBean implements Serializable{
 		}
 		return entidades;
 	}
+	public void setEntidades(Set<Class<?>> entidades) {this.entidades = entidades;}
 
-	public void setEntidades(Set<Class<?>> entidades) {
-		this.entidades = entidades;
+	public List<Usuario> getUsuarios(){
+		if (usuarios == null) {
+			usuarios = usuarioService.findAll();
+		}
+		return usuarios;
 	}
-
+	
+	public List<TipoRevisao> getTiposRevisao(){
+		if (tiposRevisao == null) {
+			tiposRevisao = new ArrayList<TipoRevisao>(Arrays.asList(TipoRevisao.values()));
+		}
+		return tiposRevisao;
+	}
+	
 	public List<Restricao> getRestricoesEntidade() {
 		Set<Field> atributosSimplesEntidade = null;
 		List<Restricao> restricoesEntidade = null;
@@ -256,46 +255,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 			Collections.sort(restricoesEntidade);
 		}
 		return restricoesEntidade;
-	}
-	
-	public List<TipoRevisao> getTiposRevisao(){
-		if (tiposRevisao == null) {
-			tiposRevisao = new ArrayList<TipoRevisao>(Arrays.asList(TipoRevisao.values()));
-		}
-		return tiposRevisao;
-	}
-	
-	public List<Usuario> getUsuarios(){
-		if (usuarios == null) {
-			usuarios = usuarioService.findAll();
-		}
-		return usuarios;
-	}
-	
-	public Revisao getRevisaoConsulta() {
-		return revisaoConsulta;
-	}
-
-	public void setRevisaoConsulta(Revisao revisaoConsulta) {
-		this.revisaoConsulta = revisaoConsulta;
-	}
-	
-	
-//	@SuppressWarnings("rawtypes")
-//	public boolean isPesquisaComResultados() {
-//		Object pesquisaRevisao = getPesquisaRevisao();
-//		if (pesquisaRevisao == null) {
-//			return false;
-//		} else if (pesquisaRevisao instanceof DataModel && ((DataModel) pesquisaRevisao).getRowCount() == 0) {
-//			return false;
-//		} else if (pesquisaRevisao instanceof List<?> && ((List<?>) pesquisaRevisao).isEmpty()) {
-//			return false;
-//		}
-//		return true;
-//	}
-
-	public void setRestricao(Restricao restricao) {this.restricao = restricao;}
-	public Restricao getRestricao() {return restricao;}
+	}	
 	
 	public String getTipoDadoAtributoSelecionado() {
 		if (restricao != null) {
@@ -304,16 +264,14 @@ public class ConsultarAuditoriaBean implements Serializable{
 		return null;
 	}
 	
-	public void setTblRestricoes(UIData tblRestricoes) {this.tblRestricoes = tblRestricoes;}
-	public UIData getTblRestricoes() {return tblRestricoes;}
-	
-	public List<Restricao> getRestricoes() {
-		restricoes = revisaoConsulta.getRestricoes();
-		return restricoes;
-	}	
+	public void setRestricao(Restricao restricao) {this.restricao = restricao;}
+	public Restricao getRestricao() {return restricao;}
 	
 	public void setValorRestricao(String valorRestricao) {this.valorRestricao = valorRestricao;}
 	public String getValorRestricao() {	return valorRestricao; }
+	
+	public Revisao getRevisaoConsulta() {return revisaoConsulta;}
+	public void setRevisaoConsulta(Revisao revisaoConsulta) {this.revisaoConsulta = revisaoConsulta;}	
 
 	public void setTipoRevisao(Long tipoRevisao) {this.tipoRevisao = tipoRevisao;}
 	public Long getTipoRevisao() {return tipoRevisao;}
@@ -333,6 +291,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 	
 	public HttpServletRequest getRequestSession() {return (HttpServletRequest) getFacesContext().getExternalContext().getRequest();}
 	
+	
 	/**
 	 * Obtém o usuário logado na sessão
 	 * @return
@@ -344,20 +303,43 @@ public class ConsultarAuditoriaBean implements Serializable{
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
 		if (!passouConsultar){
-			atributo = null;
-			entidade = null;
-			restricao = null;
-			tipoRevisao = 0L;
-			usuario = 0L;
-			limparListas();
-			flagRegistroInicial = 0;
+			limpar();
 		}
 		passouConsultar = false;
 		return form;
 	}
 	
+	public String limpar(){
+		
+		this.limparRestricoes();
+		
+		revisaoConsulta = new Revisao();
+		tipoRevisao = null;
+		usuario = null;
+		entidades = null;
+		usuarios = null;
+		tiposRevisao = null;		
+		
+		entidade = null;
+		
+		this.limparListas();
+		
+		return null;
+	}
+	
+	public void limparRestricoes(){
+		restricoes = null;
+		restricao = null;				
+		atributo = null;
+		valorRestricao = null;		
+		revisaoConsulta.getRestricoes().clear();
+		revisaoConsulta.setEntidade(null);	
+	}
+	
 	//PAGINAÇÃO
-	private void limparListas() {
+	public void limparListas() {
+		count = 0;
+		flagRegistroInicial = 0;
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Revisao>(); 
@@ -383,5 +365,18 @@ public class ConsultarAuditoriaBean implements Serializable{
 	public void setPagedList(List<Revisao> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
 
+	
+//	@SuppressWarnings("rawtypes")
+//	public boolean isPesquisaComResultados() {
+//		Object pesquisaRevisao = getPesquisaRevisao();
+//		if (pesquisaRevisao == null) {
+//			return false;
+//		} else if (pesquisaRevisao instanceof DataModel && ((DataModel) pesquisaRevisao).getRowCount() == 0) {
+//			return false;
+//		} else if (pesquisaRevisao instanceof List<?> && ((List<?>) pesquisaRevisao).isEmpty()) {
+//			return false;
+//		}
+//		return true;
+//	}
 
 }
