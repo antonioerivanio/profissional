@@ -44,8 +44,8 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 
 
 	/**
-	 * Método responsável em pegar a última mátricula cadastrada e verificar qual é a próxima matrícula válida 
-	 * utilizando-se para isso o validador da matrícula
+	 * Mï¿½todo responsï¿½vel em pegar a ï¿½ltima mï¿½tricula cadastrada e verificar qual ï¿½ a prï¿½xima matrï¿½cula vï¿½lida 
+	 * utilizando-se para isso o validador da matrï¿½cula
 	 * 
 	 * @return
 	 * 
@@ -64,10 +64,10 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 				
 				mat = mat + 1;
 				
-				//adicionando quantidades de zeros restante para compôr a matrícula no padrão NNNN-D onde n é um número e D é o número dígito verificador
+				//adicionando quantidades de zeros restante para compï¿½r a matrï¿½cula no padrï¿½o NNNN-D onde n ï¿½ um nï¿½mero e D ï¿½ o nï¿½mero dï¿½gito verificador
 				matricula = String.format("%5s", mat).replace(' ', '0');
 				
-				//adicionando separador do dígito verificador
+				//adicionando separador do dï¿½gito verificador
 				matricula = matricula.substring(0,4)+"-"+matricula.substring(4,5);
 				
 				if( SRHUtils.validarMatricula(matricula)) {
@@ -252,7 +252,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	
 	
 	
-	// Consultas replicadas sem o critério de datasaida nula para que se possa ver o histórico dos servidores que já saíram.  
+	// Consultas replicadas sem o critï¿½rio de datasaida nula para que se possa ver o histï¿½rico dos servidores que jï¿½ saï¿½ram.  
 	// By Zacarias - 06/08/2014
 	
 	
@@ -260,7 +260,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	public Funcional getCpfAndNomeByMatricula(String matricula) {
 		try {
-			Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE upper( r.matricula ) = :matricula  ");
+			Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE upper( r.matricula ) = :matricula AND r.atipoFp = true order by r.id desc");
 			query.setParameter("matricula", matricula);
 			List<Funcional> lista = query.getResultList(); 
 			if (lista.size() > 0)
@@ -298,7 +298,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<String> findAllByNome(String nome) {
-		Query query = entityManager.createQuery("SELECT distinct( r.matricula ), r.id, p.id, p.nomeCompleto, p.nomeMae, p.cpf, p.rg, p.emissorRg, p.ufEmissorRg.id, r.setor.id, r.setor.nome FROM Funcional r join r.pessoal p WHERE upper( r.nomePesquisa ) like :nome  AND r.atipoFp = true");
+		Query query = entityManager.createQuery("SELECT distinct( r.matricula ), r.id, p.id, p.nomeCompleto, p.nomeMae, p.cpf, p.rg, p.emissorRg, p.ufEmissorRg.id, r.setor.id, r.setor.nome FROM Funcional r join r.pessoal p WHERE upper( r.nomePesquisa ) like :nome  AND r.atipoFp = true order by r.id desc");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		return query.getResultList();
 	}
