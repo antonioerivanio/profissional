@@ -102,6 +102,8 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			}
 		}
 		
+		auditQuery.addOrder(AuditEntity.revisionProperty("dataAuditoria").desc());
+				
 		return auditQuery;
 	}
 	
@@ -233,27 +235,42 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Revisao> search(Revisao revisao, int first, int rows) {
+		
 		AuditQuery auditQuery = createAuditQuery(revisao);
 		auditQuery.setFirstResult(first);
 		auditQuery.setMaxResults(rows);
 
 		List<Object[]> resultList = auditQuery.getResultList();
+		
 		List<Revisao> listaRevisao = new ArrayList<Revisao>();
+		
 		for (Object[] triple : resultList) {
 			Object entidade = triple[0];
 			Revisao revisaoEntidade = ((Revisao) triple[1]).clone();
-			RevisionType tipoRevisao = (RevisionType) triple[2];
-
+			RevisionType tipoRevisao = (RevisionType) triple[2];			
+			
 			revisaoEntidade.setTipoRevisao(getTipoRevisao(tipoRevisao));
+			
 			// Copia os atributos da entidade encontrada:
 			Set<Field> fields = getAtributosSimplesEntidade(entidade.getClass());
 			for (Field field : fields) {
 				field.setAccessible(true);
-				try {
-					revisaoEntidade.getRestricoes().add(new Restricao(field.getName(), field.getType(),	field.get(entidade)));
-				} catch (Exception e) {
-					// Excecao nunca sera lancada
+				
+				if(field.getName().equalsIgnoreCase("id")){
+					try {
+						revisaoEntidade.setIdRegistro((Long)field.get(entidade));						
+					} catch (Exception e) {
+				
+					}
+					break;
 				}
+				
+//				try {
+//					revisaoEntidade.getRestricoes().add(new Restricao(field.getName(), field.getType(),	field.get(entidade)));
+//				} catch (Exception e) {
+//					// Excecao nunca sera lancada
+//				}
+			
 			}
 
 			listaRevisao.add(revisaoEntidade);

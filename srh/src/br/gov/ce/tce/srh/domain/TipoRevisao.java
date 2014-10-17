@@ -1,7 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
 public enum TipoRevisao {
-	INCLUSAO(1L,"Inclusão"), ALTERACAO(2L,"Alteração"), EXCLUSAO(3L,"Exclusão");
+	INCLUSAO(0L,"Inclusão"), ALTERACAO(1L,"Alteração"), EXCLUSAO(2L,"Exclusão");
 	
 	private TipoRevisao(Long id, String descricao) {
 		this.setId(id);

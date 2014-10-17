@@ -35,49 +35,41 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
-@Component(value="consultarAuditoriaBean")
+@Component("consultarAuditoriaBean")
 @Scope("session")
 public class ConsultarAuditoriaBean implements Serializable{
 	
 	static Logger logger = Logger.getLogger(ConsultarAuditoriaBean.class);
 	
-	@Autowired(required=true)
+	@Autowired
 	private AuditoriaService auditoriaService;
-	@Autowired(required=true)
-	private UsuarioService usuarioService;
-
-//	private UIData tblRestricoes;
-//	private Object pesquisaRevisao;
 	
-	private List<Restricao> restricoes = null;
-	private Restricao restricao;
-	private String entidade;
+	@Autowired
+	private UsuarioService usuarioService;
+	
+	// controle de acesso do formulario
+	private HtmlForm form;
+
+	private List<Restricao> restricoes;
+	private Restricao restricao;	
 	private String atributo;	
 	private String valorRestricao;
 	
-	private Revisao revisaoConsulta;
-	
+	private Revisao revisaoConsulta = new Revisao();	
 	private Long tipoRevisao;
 	private Long usuario;
-	
+	private String entidade;	
 	private Set<Class<?>> entidades;
 	private List<Usuario> usuarios;
 	private List<TipoRevisao> tiposRevisao;	
 	
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-	
 	//paginação
-	private int count;
+	private int count = 0;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Revisao> pagedList = new ArrayList<Revisao>();
 	private int flagRegistroInicial = 0;
 	
-	public ConsultarAuditoriaBean() {
-		revisaoConsulta = new Revisao();
-	}
 	
 	public String consultar() {
 		try {
@@ -90,8 +82,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 			}
 			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
-			
+						
 		} catch (SRHRuntimeException e) {
 			limparListas();
 			FacesUtil.addErroMessage(e.getMessage());
@@ -170,7 +161,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 	}
 	
 	public void tipoEventoSelecionado(){
-		if(tipoRevisao != 0){
+		if(tipoRevisao > -1){
 			revisaoConsulta.setTipoRevisao(TipoRevisao.getById(tipoRevisao));
 		} else {
 			revisaoConsulta.setTipoRevisao(null);
@@ -193,7 +184,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 		
 		limparRestricoes();
 		limparListas();
-				
+										
 		if(this.entidade != null && (!this.entidade.equals(""))){
 			for (Class<?> entidade : entidades) {
 				if(entidade.getSimpleName().equalsIgnoreCase(this.entidade)){
@@ -262,7 +253,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 			return restricao.getAtributo();
 		}
 		return null;
-	}
+	}	
 	
 	public void setRestricao(Restricao restricao) {this.restricao = restricao;}
 	public Restricao getRestricao() {return restricao;}
@@ -302,27 +293,25 @@ public class ConsultarAuditoriaBean implements Serializable{
 	
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar){
-			limpar();
-		}
-		passouConsultar = false;
+
+		limpar();
+
 		return form;
 	}
 	
 	public String limpar(){
 		
-		this.limparRestricoes();
+		limparRestricoes();
 		
 		revisaoConsulta = new Revisao();
 		tipoRevisao = null;
 		usuario = null;
+		entidade = null;
 		entidades = null;
 		usuarios = null;
-		tiposRevisao = null;		
+		tiposRevisao = null;
 		
-		entidade = null;
-		
-		this.limparListas();
+		limparListas();
 		
 		return null;
 	}
@@ -336,22 +325,26 @@ public class ConsultarAuditoriaBean implements Serializable{
 		revisaoConsulta.setEntidade(null);	
 	}
 	
-	//PAGINAÇÃO
+	//PAGINAÇÃO	
 	public void limparListas() {
 		count = 0;
-		flagRegistroInicial = 0;
-		dataTable = new HtmlDataTable();
+		dataTable = new HtmlDataTable();		
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<Revisao>(); 
+		pagedList = new ArrayList<Revisao>();
+		flagRegistroInicial = 0;
 	}
 
 	public HtmlDataTable getDataTable() {return dataTable;}
 	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-
+	
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
+		
+		if( flagRegistroInicial != getDataTable().getFirst()) {
+			
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(auditoriaService.search(revisaoConsulta, getDataTable().getFirst(), getDataTable().getRows()));
+			
+			setPagedList(auditoriaService.search(revisaoConsulta, getDataTable().getFirst(), 10));
+			
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -364,19 +357,5 @@ public class ConsultarAuditoriaBean implements Serializable{
 	public List<Revisao> getPagedList() {return pagedList;}
 	public void setPagedList(List<Revisao> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
-
-	
-//	@SuppressWarnings("rawtypes")
-//	public boolean isPesquisaComResultados() {
-//		Object pesquisaRevisao = getPesquisaRevisao();
-//		if (pesquisaRevisao == null) {
-//			return false;
-//		} else if (pesquisaRevisao instanceof DataModel && ((DataModel) pesquisaRevisao).getRowCount() == 0) {
-//			return false;
-//		} else if (pesquisaRevisao instanceof List<?> && ((List<?>) pesquisaRevisao).isEmpty()) {
-//			return false;
-//		}
-//		return true;
-//	}
 
 }

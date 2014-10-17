@@ -49,7 +49,7 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="iptTipoEvento" 
 										 value="#{consultarAuditoriaBean.tipoRevisao}">
-						  	<f:selectItem id="selecioneIptTipoEvento" itemLabel="Todos..."/>
+						  	<f:selectItem id="selecioneIptTipoEvento" itemValue="-1" itemLabel="Todos..."/>
 						  	<f:selectItems 	id="comboIptTipoEvento" 
 						  					value="#{consultarAuditoriaBean.tiposRevisao}"
 						  					var="tipoRevisao"
@@ -172,7 +172,7 @@
 	                    </h:column>
 	                 	<h:column id="col4">
 	                        <f:facet name="header">
-	                            Ação
+	                            Excluir
 	                        </f:facet>
 	                        <h:commandLink id="excluir"
 	                        			   value="Excluir"
@@ -206,39 +206,61 @@
 				<div class="tabela-dados">
 					
 					<h:panelGroup id="revisaoGroup">
-						<rich:dataTable id="tblRevisao" value="#{consultarAuditoriaBean.dataModel}" var="revisao" rows="10" 
-						 				binding="#{consultarAuditoriaBean.dataTable}">
-		                    <h:column id="col1">
+						<rich:dataTable id="tblRevisao" 
+										value="#{consultarAuditoriaBean.dataModel}"										
+										var="revisao" 
+										rows="10"
+										binding="#{consultarAuditoriaBean.dataTable}">
+		                    <h:column id="col1" >
 		                        <f:facet name="header">
-		                            Data Auditoria
+		                            Revisão
 		                        </f:facet>
-		                         <center>
-		                        	<h:outputText id="item1" value="#{revisao.dataAuditoria}">
-		                        		<f:convertDateTime id="dataAuditoria" pattern="dd/MM/yyyy HH:mm:ss" />
-		                        	</h:outputText>
+		                        <center>
+		                        	<h:outputText id="item1" value="#{revisao.id}" />		                       
 	                        	</center>
 		                    </h:column>
 		                    <h:column id="col2">
 		                        <f:facet name="header">
+		                            Registro
+		                        </f:facet>
+		                        <center>
+		                        	<h:outputText id="item2" value="#{revisao.idRegistro}" />		                       
+	                        	</center>
+		                    </h:column>
+		                    <h:column id="col3">
+		                        <f:facet name="header">
+		                            Data
+		                        </f:facet>
+		                         <center>
+		                        	<h:outputText id="item3" value="#{revisao.dataAuditoria}">
+		                        		<f:convertDateTime id="dataAuditoria" pattern="dd/MM/yyyy HH:mm:ss" />
+		                        	</h:outputText>
+	                        	</center>
+		                    </h:column>
+		                    <h:column id="col4">
+		                        <f:facet name="header">
 		                            Usuário
 		                        </f:facet>
 		                        <center>
-			                        <h:outputText id="item2" value="#{revisao.usuario.nome}"/>
+			                        <h:outputText id="item4" value="#{revisao.usuario.nome}"/>
 		                        </center>
 		                    </h:column>
-		                    <h:column id="col3">
+		                    <h:column id="col5">
 		                        <f:facet name="header">
 		                            Evento
 		                        </f:facet>
 		                        <center>
-		                        	<h:outputText id="item3" value="#{revisao.tipoRevisao.descricao}"/>
+		                        	<h:outputText id="item5" value="#{revisao.tipoRevisao.descricao}"/>
 		                        </center>
 		                    </h:column>
 		                   
 		    			</rich:dataTable>
 						
-						<rich:datascroller id="scroller" for="tblRevisao" stepControls="hide" 
-									align="center" rendered="#{consultarAuditoriaBean.pagedList.size() > 0}"/>
+						<rich:datascroller	id="scroller" 
+											for="tblRevisao"
+											stepControls="hide" 
+											align="center"
+											rendered="#{consultarAuditoriaBean.dataModel.rowCount > 0}"/>
 				
 					</h:panelGroup>
 				</div>

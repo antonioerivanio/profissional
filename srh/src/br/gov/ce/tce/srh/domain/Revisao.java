@@ -64,6 +64,9 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 	@Transient
 	private Date periodoFinal;
 	
+	@Transient
+	private Long idRegistro;
+	
 	@Override
 	public Long getId() {
 		return id;
@@ -131,8 +134,16 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 
 	public Date getPeriodoFinal() {
 		return periodoFinal;
-	}
+	}	
 	
+	public Long getIdRegistro() {
+		return idRegistro;
+	}
+
+	public void setIdRegistro(Long idRegistro) {
+		this.idRegistro = idRegistro;
+	}
+
 	@Override
 	public Revisao clone() {
 		Revisao revisao = new Revisao();
