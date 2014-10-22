@@ -90,9 +90,7 @@
 					<label for="iptEntidade">Tabela *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="iptEntidade"  
-										 value="#{consultarAuditoriaBean.entidade}"
-										 required="true"
-										 requiredMessage="A tabela é obrigatória." >
+										 value="#{consultarAuditoriaBean.entidade}" >
 						  	<f:selectItem id="selecioneIptEntidade" itemLabel="Selecione..." itemValue=""/>
 						  	<f:selectItems 	id="comboIptEntidade" 
 						  					value="#{consultarAuditoriaBean.entidades}"
@@ -134,7 +132,7 @@
 					<label for="iptValor">Valor da Coluna</label>
 					<div class="conteiner">
 						<h:inputText id="iptValor" 
-									 maxlength="20"
+									 maxlength="20"									 
 									 value="#{consultarAuditoriaBean.valorRestricao}"/>
 					</div>
 				</div>
@@ -185,19 +183,14 @@
 	    			</rich:dataTable>
 				</div>
 				<div>
-					<!-- <a4j:commandButton id="btConsultar" action="#{consultarAuditoriaBean.consultar}" value="Consultar" styleClass="bt-padrao fr" reRender="tblRevisao"/>
-					<a4j:commandButton id="btLimpar" reRender="tblRestricoes,iptEntidade,iptAtributo,iptValor" action="#{consultarAuditoriaBean.limparRestricoes}" value="Limpar" styleClass="bt-padrao fr"/> -->
-					
 					<h:commandButton id="btLimpar"									 
 									 value="Limpar" 
 									 action="#{consultarAuditoriaBean.limpar}" 
-									 styleClass="bt-padrao fr mg-right-15"
-									 reRender="tblRestricoes,iptEntidade,iptAtributo,iptValor"/>
+									 styleClass="bt-padrao fr mg-right-15" />
 					<h:commandButton id="btConsultar" 
 									 value="Consultar" 
 									 action="#{consultarAuditoriaBean.consultar}" 
-									 styleClass="bt-padrao fr mg-right-15" 
-									 reRender="tblRevisao"/>
+									 styleClass="bt-padrao fr mg-right-15" />
 				</div>
 			</fieldset>
 			 
@@ -233,7 +226,7 @@
 		                        </f:facet>
 		                         <center>
 		                        	<h:outputText id="item3" value="#{revisao.dataAuditoria}">
-		                        		<f:convertDateTime id="dataAuditoria" pattern="dd/MM/yyyy HH:mm:ss" />
+		                        		<f:convertDateTime id="dataAuditoria" pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-03:00"/>
 		                        	</h:outputText>
 	                        	</center>
 		                    </h:column>
@@ -260,7 +253,7 @@
 											for="tblRevisao"
 											stepControls="hide" 
 											align="center"
-											rendered="#{consultarAuditoriaBean.dataModel.rowCount > 0}"/>
+											rendered="#{consultarAuditoriaBean.dataModel.rowCount > 10}"/>
 				
 					</h:panelGroup>
 				</div>

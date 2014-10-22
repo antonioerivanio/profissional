@@ -94,8 +94,10 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 					auditQuery.add(AuditEntity.property(restricao.getAtributo()).like(restricao.getValor()));
 				} else if (chavePrimaria != null && chavePrimaria.getName().equals(restricao.getAtributo())) {
 					auditQuery.add(AuditEntity.id().eq(restricao.getValor()));
-				} else {
-					auditQuery.add(AuditEntity.property(restricao.getAtributo()).eq(restricao.getValor()));
+				} else if(!isSimpleClass(restricao.getTipo())){
+					auditQuery.add(AuditEntity.relatedId(restricao.getAtributo()).eq(restricao.getValor()));	
+				} else {	
+					auditQuery.add(AuditEntity.property(restricao.getAtributo()).eq(restricao.getValor()));					
 				}
 			} catch (Exception e) {
 				// Nunca sera lancada
@@ -164,7 +166,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			}
 		});
 		for (ClassMetadata classMetadata : classesMetadata.values()) {
-			Class<?> entidade = classMetadata.getMappedClass(EntityMode.POJO);
+			Class<?> entidade = classMetadata.getMappedClass(EntityMode.POJO);			
 			if (entidade.isAnnotationPresent(Audited.class)) {
 				entidadesAuditadas.add(entidade);
 			}
@@ -172,9 +174,11 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		return entidadesAuditadas;
 	}
 	
+	
 	protected Session getSession() {
 		return ((Session)entityManager.getDelegate());
 	}
+	
 	
 	/**
 	 * Obtem os atributos nao-transientes da entidade que sejam tipos simples como
@@ -193,7 +197,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			Field[] fields = entidade.getDeclaredFields();
 			for (Field field : fields) {
 				//Adiciona somente atributos cujos tipos sejam dos pacotes java.lang e java.util:
-				if (isSimpleField(field)) {
+//				if (isSimpleField(field)) {
 					List<Annotation> annotations = Arrays.asList(field.getAnnotations());
 					boolean atributoValido = true;
 					//Adiciona somente se o atributo nao for anotado com @Transient ou com @NotAudited:
@@ -206,12 +210,14 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 					if (atributoValido) {
 						atributos.add(field);
 					}
-				}
+//				}
 			}
 		}
 		return atributos;
 	}
 	
+	
+	@SuppressWarnings("unused")
 	private boolean isSimpleField(Field field) {
 		if (Modifier.isFinal(field.getModifiers()) || 
 			Modifier.isStatic(field.getModifiers()) || 
@@ -221,6 +227,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		Class<?> type = field.getType();
 		return type.getPackage() == null || type.getPackage().equals(Package.getPackage("java.lang")) ||
 			Date.class.isAssignableFrom(type) || Calendar.class.isAssignableFrom(type);
+	}
+	
+	
+	private boolean isSimpleClass(Class<?> tipo) {
+		return tipo.getPackage() == null || tipo.getPackage().equals(Package.getPackage("java.lang")) ||
+			Date.class.isAssignableFrom(tipo) || Calendar.class.isAssignableFrom(tipo);
 	}
 
 
@@ -259,18 +271,9 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				if(field.getName().equalsIgnoreCase("id")){
 					try {
 						revisaoEntidade.setIdRegistro((Long)field.get(entidade));						
-					} catch (Exception e) {
-				
-					}
+					} catch (Exception e) {}
 					break;
 				}
-				
-//				try {
-//					revisaoEntidade.getRestricoes().add(new Restricao(field.getName(), field.getType(),	field.get(entidade)));
-//				} catch (Exception e) {
-//					// Excecao nunca sera lancada
-//				}
-			
 			}
 
 			listaRevisao.add(revisaoEntidade);

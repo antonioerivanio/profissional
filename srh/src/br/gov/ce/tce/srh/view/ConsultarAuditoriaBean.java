@@ -74,6 +74,11 @@ public class ConsultarAuditoriaBean implements Serializable{
 	public String consultar() {
 		try {
 			
+			if (entidade == null || entidade.equals("")){
+				FacesUtil.addErroMessage("A tabela é obrigatória.");
+				return null;
+			}
+			
 			count = auditoriaService.count(revisaoConsulta);
 
 			if(count == 0){
@@ -93,7 +98,8 @@ public class ConsultarAuditoriaBean implements Serializable{
 		}
 		return null;
 	}
-		
+	
+	
 	public void adicionarRestricao() {
 		
 		try {
@@ -104,9 +110,8 @@ public class ConsultarAuditoriaBean implements Serializable{
 			Converter atributoConverter = getFacesContext().getApplication().createConverter(restricao.getTipo());
 			Object valorRestricaoObj;
 			
-			//Verifica se é necessário, no caso de o atributo não ser do tipo String: 
-			if (atributoConverter == null) {
-				valorRestricaoObj = valorRestricao;
+			if (atributoConverter == null) {				
+				valorRestricaoObj = Long.parseLong(valorRestricao);				
 			} else {
 				//Cria um componente temporário para converter o valor em objeto:
 				UIInput uixInput = new UIInput();
@@ -139,26 +144,29 @@ public class ConsultarAuditoriaBean implements Serializable{
 		}
 	}
 	
+	
 	public void excluirRestricao() {
 		
-		List<Restricao> restricoesAux = null;
+		List<Restricao> restricoesAux = new ArrayList<Revisao.Restricao>();
+		restricoesAux.addAll(revisaoConsulta.getRestricoes());
 		
-		if(atributo != null && (!atributo.equals(""))){
-			
+		if(atributo != null && (!atributo.equals(""))){			
 			for (Restricao rest : restricoes) {
-				if(rest.getAtributo().equals(atributo)){
-					
-					restricoesAux = new ArrayList<Revisao.Restricao>();
-					restricoesAux.addAll(revisaoConsulta.getRestricoes());
-					restricoesAux.remove(rest);
-					
-					if(restricoesAux.size() == 0)
-						limparRestricoes();					
-				}
+				if(rest.getAtributo().equals(atributo))					
+					restricoesAux.remove(rest);				
 			}
 		}
-		revisaoConsulta.setRestricoes(restricoesAux);
+		
+		if(restricoesAux.size() == 0){
+			restricoes = null;
+			restricao = null;				
+			atributo = null;
+			valorRestricao = null;		
+			revisaoConsulta.getRestricoes().clear();			
+		}else
+			revisaoConsulta.setRestricoes(restricoesAux);
 	}
+	
 	
 	public void tipoEventoSelecionado(){
 		if(tipoRevisao > -1){
@@ -167,6 +175,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 			revisaoConsulta.setTipoRevisao(null);
 		}
 	}
+	
 	
 	public void usuarioSelecionado(){
 		if(this.usuario != 0){
@@ -179,6 +188,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 			revisaoConsulta.setUsuario(null);
 		}
 	}
+	
 	
 	public void entidadeSelecionada() {
 		
@@ -195,6 +205,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 		} 
 	}
 	
+	
 	public void atributoSelecionado(){
 		setRestricao(null);
 		if(atributo != null && (!atributo.equals(""))){
@@ -207,10 +218,12 @@ public class ConsultarAuditoriaBean implements Serializable{
 		} 
 	}
 	
+	
 	public List<Restricao> getRestricoes() {
 		restricoes = revisaoConsulta.getRestricoes();
 		return restricoes;
 	}	
+	
 	
 	public Set<Class<?>> getEntidades() throws ClassNotFoundException {
 		if(entidades == null){
@@ -220,6 +233,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 	}
 	public void setEntidades(Set<Class<?>> entidades) {this.entidades = entidades;}
 
+	
 	public List<Usuario> getUsuarios(){
 		if (usuarios == null) {
 			usuarios = usuarioService.findAll();
@@ -227,12 +241,14 @@ public class ConsultarAuditoriaBean implements Serializable{
 		return usuarios;
 	}
 	
+	
 	public List<TipoRevisao> getTiposRevisao(){
 		if (tiposRevisao == null) {
 			tiposRevisao = new ArrayList<TipoRevisao>(Arrays.asList(TipoRevisao.values()));
 		}
 		return tiposRevisao;
 	}
+	
 	
 	public List<Restricao> getRestricoesEntidade() {
 		Set<Field> atributosSimplesEntidade = null;
@@ -248,12 +264,14 @@ public class ConsultarAuditoriaBean implements Serializable{
 		return restricoesEntidade;
 	}	
 	
+	
 	public String getTipoDadoAtributoSelecionado() {
 		if (restricao != null) {
 			return restricao.getAtributo();
 		}
 		return null;
 	}	
+	
 	
 	public void setRestricao(Restricao restricao) {this.restricao = restricao;}
 	public Restricao getRestricao() {return restricao;}
@@ -291,6 +309,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 		return SRHUtils.getUsuarioLogado();
 	}
 	
+	
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
 
@@ -298,6 +317,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 
 		return form;
 	}
+	
 	
 	public String limpar(){
 		
@@ -316,6 +336,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 		return null;
 	}
 	
+	
 	public void limparRestricoes(){
 		restricoes = null;
 		restricao = null;				
@@ -325,17 +346,20 @@ public class ConsultarAuditoriaBean implements Serializable{
 		revisaoConsulta.setEntidade(null);	
 	}
 	
+	
 	//PAGINAÇÃO	
 	public void limparListas() {
 		count = 0;
 		dataTable = new HtmlDataTable();		
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Revisao>();
-		flagRegistroInicial = 0;
+		flagRegistroInicial = 0;		
 	}
 
+	
 	public HtmlDataTable getDataTable() {return dataTable;}
 	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	
 	
 	public PagedListDataModel getDataModel() {
 		
@@ -354,6 +378,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 		return dataModel;
 	}
 
+	
 	public List<Revisao> getPagedList() {return pagedList;}
 	public void setPagedList(List<Revisao> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
