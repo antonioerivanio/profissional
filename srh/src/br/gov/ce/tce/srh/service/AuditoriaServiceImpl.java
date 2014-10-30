@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.ce.tce.srh.dao.AuditoriaDAO;
 import br.gov.ce.tce.srh.domain.Revisao;
-import br.gov.ce.tce.srh.domain.Revisao.Restricao;
+import br.gov.ce.tce.srh.domain.Revisao.Variavel;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 /**
@@ -34,7 +34,7 @@ public class AuditoriaServiceImpl implements AuditoriaService {
 	}
 	
 	@Override
-	public void validarAdicionarRestricao(Restricao restricao, String entidade, String valorRestricao) throws SRHRuntimeException {
+	public void validarAdicionarRestricao(Variavel restricao, String entidade, String valorRestricao) throws SRHRuntimeException {
 		
 
 		if(entidade == null || entidade.equals("")){

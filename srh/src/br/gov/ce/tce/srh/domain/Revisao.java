@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +30,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Entity
 @Table(name = "TB_REVISAO", schema="SRH")
 @RevisionEntity(RevisaoListener.class)
-public class Revisao extends BasicEntity<Long> implements Serializable{
+public class Revisao extends BasicEntity<Long> implements Serializable, Comparable<Revisao>{
 
 	@Id
 	@SequenceGenerator(name = "revisao_id", sequenceName = "SRH.revisao_seq", allocationSize = 1)
@@ -51,13 +50,17 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 	private Usuario usuario;
 	
 	@Transient
-	private Class<?> entidade;
-	
 	private TipoRevisao tipoRevisao;
 	
 	@Transient
-	private List<Restricao> restricoes;
+	private Class<?> entidade;	
 	
+	@Transient
+	private Variavel restricao;
+	
+	@Transient
+	private Variavel coluna;
+
 	@Transient
 	private Date periodoInicial;
 	
@@ -67,83 +70,55 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 	@Transient
 	private Long idRegistro;
 	
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getDataAuditoria() {
-		return dataAuditoria;
-	}
-
-	public void setDataAuditoria(Date dataAuditoria) {
-		this.dataAuditoria = dataAuditoria;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	public void setEntidade(Class<?> entidade) {
-		this.entidade = entidade;
-	}
-
-	public Class<?> getEntidade() {
-		return entidade;
-	}
-
-	public void setTipoRevisao(TipoRevisao tipoRevisao) {
-		this.tipoRevisao = tipoRevisao;
-	}
-
-	public TipoRevisao getTipoRevisao() {
-		return tipoRevisao;
-	}
-
-	public void setRestricoes(List<Restricao> restricoes) {
-		this.restricoes = restricoes;
-	}
-
-	public List<Restricao> getRestricoes() {
-		if (restricoes == null) {
-			restricoes = new ArrayList<Restricao>();
-		}
-		return restricoes;
-	}
-
-	public void setPeriodoInicial(Date periodoInicial) {
-		this.periodoInicial = periodoInicial;
-	}
-
-	public Date getPeriodoInicial() {
-		return periodoInicial;
-	}
-
-	public void setPeriodoFinal(Date periodoFinal) {
-		this.periodoFinal = periodoFinal;
-	}
-
-	public Date getPeriodoFinal() {
-		return periodoFinal;
-	}	
+	@Transient
+	private Pessoal pessoal;
 	
-	public Long getIdRegistro() {
-		return idRegistro;
-	}
+	@Transient
+	private List<Funcional> funcionais;	
+	
+//	@Transient
+//	private List<Restricao> restricoes;
 
-	public void setIdRegistro(Long idRegistro) {
-		this.idRegistro = idRegistro;
-	}
+		
+	@Override
+	public Long getId() {return id;}
+	@Override
+	public void setId(Long id) {this.id = id;}
 
+	public Date getDataAuditoria() {return dataAuditoria;}
+	public void setDataAuditoria(Date dataAuditoria) {this.dataAuditoria = dataAuditoria;}
+
+	public Usuario getUsuario() {return usuario;}
+	public void setUsuario(Usuario usuario) {this.usuario = usuario;}
+
+	public void setEntidade(Class<?> entidade) {this.entidade = entidade;}
+	public Class<?> getEntidade() {return entidade;}
+
+	public void setTipoRevisao(TipoRevisao tipoRevisao) {this.tipoRevisao = tipoRevisao;}
+	public TipoRevisao getTipoRevisao() {return tipoRevisao;}
+
+	public Variavel getRestricao() {return restricao;}
+	public void setRestricao(Variavel restricao) {this.restricao = restricao;}	
+	
+	public Variavel getColuna() {return coluna;}
+	public void setColuna(Variavel coluna) {this.coluna = coluna;}
+
+	public Date getPeriodoInicial() {return periodoInicial;}
+	public void setPeriodoInicial(Date periodoInicial) {this.periodoInicial = periodoInicial;}
+
+	public Date getPeriodoFinal() {return periodoFinal;}
+	public void setPeriodoFinal(Date periodoFinal) {this.periodoFinal = periodoFinal;}
+	
+	public Long getIdRegistro() {return idRegistro;}
+	public void setIdRegistro(Long idRegistro) {this.idRegistro = idRegistro;}
+	
+	public Pessoal getPessoal() {return pessoal;}
+	public void setPessoal(Pessoal pessoal) {this.pessoal = pessoal;}
+	
+	public List<Funcional> getFuncionais() {return funcionais;}
+	public void setFuncionais(List<Funcional> funcionais) {this.funcionais = funcionais;}
+
+	
 	@Override
 	public Revisao clone() {
 		Revisao revisao = new Revisao();
@@ -153,44 +128,47 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 		return revisao;
 	}
 	
-	public static class Restricao implements Serializable, Comparable<Restricao> {
+	@Override
+	public int compareTo(Revisao r) {
+		return -this.getDataAuditoria().compareTo(r.getDataAuditoria());
+	}
+	
+//	public void setRestricoes(List<Restricao> restricoes) {
+//		this.restricoes = restricoes;
+//	}
+
+//	public List<Restricao> getRestricoes() {
+//		if (restricoes == null) {
+//			restricoes = new ArrayList<Restricao>();
+//		}
+//		return restricoes;
+//	}
+	
+	
+	
+	public static class Variavel implements Serializable, Comparable<Variavel> {
 		
 		private static final long serialVersionUID = 1955725361200101617L;
 		
-		private String atributo;
+		private String nome;
 		private Class<?> tipo;
 		private Object valor;
 		
-		public Restricao(String atributo, Class<?> tipo, Object valor) {
+		public Variavel(String nome, Class<?> tipo, Object valor) {
 			super();
-			this.atributo = atributo;
+			this.nome = nome;
 			this.tipo = tipo;
 			this.valor = valor;
 		}
 
-		public void setAtributo(String atributo) {
-			this.atributo = atributo;
-		}
+		public String getNome() {return nome;}
+		public void setNome(String nome) {this.nome = nome;}
 
-		public String getAtributo() {
-			return atributo;
-		}
+		public Class<?> getTipo() {return tipo;}
+		public void setTipo(Class<?> tipo) {this.tipo = tipo;}
 
-		public void setValor(Object valor) {
-			this.valor = valor;
-		}
-
-		public Object getValor() {
-			return valor;
-		}
-
-		public void setTipo(Class<?> tipo) {
-			this.tipo = tipo;
-		}
-
-		public Class<?> getTipo() {
-			return tipo;
-		}
+		public Object getValor() {return valor;}
+		public void setValor(Object valor) {this.valor = valor;}
 		
 		public Object getValorAsString() {
 			if (valor instanceof Date) {
@@ -203,7 +181,7 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((atributo == null) ? 0 : atributo.hashCode());
+			result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 			result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 			result = prime * result + ((valor == null) ? 0 : valor.hashCode());
 			return result;
@@ -217,11 +195,11 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Restricao other = (Restricao) obj;
-			if (atributo == null) {
-				if (other.atributo != null)
+			Variavel other = (Variavel) obj;
+			if (nome == null) {
+				if (other.nome != null)
 					return false;
-			} else if (!atributo.equals(other.atributo))
+			} else if (!nome.equals(other.nome))
 				return false;
 			if (tipo == null) {
 				if (other.tipo != null)
@@ -237,8 +215,8 @@ public class Revisao extends BasicEntity<Long> implements Serializable{
 		}
 
 		@Override
-		public int compareTo(Restricao o) {
-			return this.getAtributo().compareTo(o.getAtributo());
+		public int compareTo(Variavel o) {
+			return this.getNome().compareTo(o.getNome());
 		}
 	}
 }

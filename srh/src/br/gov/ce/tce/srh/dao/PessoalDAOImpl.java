@@ -216,4 +216,10 @@ public class PessoalDAOImpl implements PessoalDAO {
 		return search(null, usuarioLogado.getCpf(), first, rows);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pessoal> findAllComFuncional() {		
+		return entityManager.createQuery("SELECT DISTINCT p FROM Funcional f INNER JOIN f.pessoal p ORDER BY p.nome").getResultList();		
+	}	
+
 }

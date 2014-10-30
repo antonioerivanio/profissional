@@ -2,19 +2,17 @@ package br.gov.ce.tce.srh.dao;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 
@@ -33,8 +31,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Revisao;
-import br.gov.ce.tce.srh.domain.Revisao.Restricao;
+import br.gov.ce.tce.srh.domain.Revisao.Variavel;
 import br.gov.ce.tce.srh.domain.TipoRevisao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
@@ -85,27 +84,35 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		if (revisao.getUsuario() != null) {
 			auditQuery.add(AuditEntity.revisionProperty("usuario").eq(revisao.getUsuario()));
 		}
-
-		Field chavePrimaria = getChavePrimaria(revisao.getEntidade());
-		// Adiciona as restricoes definidas pelo usuario:
-		for (Restricao restricao : revisao.getRestricoes()) {
-			try {
-				if (revisao.getEntidade().getDeclaredField(restricao.getAtributo()).getType().equals(String.class)) {
-					auditQuery.add(AuditEntity.property(restricao.getAtributo()).like(restricao.getValor()));
-				} else if (chavePrimaria != null && chavePrimaria.getName().equals(restricao.getAtributo())) {
-					auditQuery.add(AuditEntity.id().eq(restricao.getValor()));
-				} else if(!isSimpleClass(restricao.getTipo())){
-					auditQuery.add(AuditEntity.relatedId(restricao.getAtributo()).eq(restricao.getValor()));	
-				} else {	
-					auditQuery.add(AuditEntity.property(restricao.getAtributo()).eq(restricao.getValor()));					
-				}
-			} catch (Exception e) {
-				// Nunca sera lancada
-			}
-		}
 		
-		auditQuery.addOrder(AuditEntity.revisionProperty("dataAuditoria").desc());
-				
+		if (revisao.getRestricao() != null){
+			
+			if(revisao.getRestricao().getTipo().equals(Long.class)){
+				auditQuery.add(AuditEntity.id().eq(revisao.getRestricao().getValor()));	
+			} else {	
+				auditQuery.add(AuditEntity.relatedId(revisao.getRestricao().getNome()).eq(revisao.getRestricao().getValor()));
+			}
+			
+		}
+
+//		Field chavePrimaria = getChavePrimaria(revisao.getEntidade());
+//		// Adiciona as restricoes definidas pelo usuario:
+//		for (Restricao restricao : revisao.getRestricoes()) {
+//			try {
+//				if (revisao.getEntidade().getDeclaredField(restricao.getAtributo()).getType().equals(String.class)) {
+//					auditQuery.add(AuditEntity.property(restricao.getAtributo()).like(restricao.getValor()));
+//				} else if (chavePrimaria != null && chavePrimaria.getName().equals(restricao.getAtributo())) {
+//					auditQuery.add(AuditEntity.id().eq(restricao.getValor()));
+//				} else if(!isSimpleClass(restricao.getTipo())){
+//					auditQuery.add(AuditEntity.relatedId(restricao.getAtributo()).eq(restricao.getValor()));	
+//				} else {	
+//					auditQuery.add(AuditEntity.property(restricao.getAtributo()).eq(restricao.getValor()));					
+//				}
+//			} catch (Exception e) {
+//				// Nunca sera lancada
+//			}
+//		}
+		
 		return auditQuery;
 	}
 	
@@ -115,21 +122,21 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	}
 	
 	
-	private Field getChavePrimaria(Class<?> entidade) {
-		if (entidade != null) {
-			Field[] fields = entidade.getDeclaredFields();
-			for (Field field : fields) {
-				List<Annotation> annotations = Arrays.asList(field.getAnnotations());
-				// Adiciona somente se o atributo nao for anotado com @Id - chave primária:
-				for (Annotation annotation : annotations) {
-					if (annotation instanceof Id) {
-						return field;
-					}
-				}
-			}
-		}
-		return null;
-	}
+//	private Field getChavePrimaria(Class<?> entidade) {
+//		if (entidade != null) {
+//			Field[] fields = entidade.getDeclaredFields();
+//			for (Field field : fields) {
+//				List<Annotation> annotations = Arrays.asList(field.getAnnotations());
+//				// Adiciona somente se o atributo nao for anotado com @Id - chave primária:
+//				for (Annotation annotation : annotations) {
+//					if (annotation instanceof Id) {
+//						return field;
+//					}
+//				}
+//			}
+//		}
+//		return null;
+//	}
 	
 	
 	private RevisionType getRevisionType(TipoRevisao tipoRevisao) {
@@ -217,42 +224,127 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	}
 	
 	
-	@SuppressWarnings("unused")
-	private boolean isSimpleField(Field field) {
-		if (Modifier.isFinal(field.getModifiers()) || 
-			Modifier.isStatic(field.getModifiers()) || 
-			Modifier.isTransient(field.getModifiers())) {
-			return false;
-		}
-		Class<?> type = field.getType();
-		return type.getPackage() == null || type.getPackage().equals(Package.getPackage("java.lang")) ||
-			Date.class.isAssignableFrom(type) || Calendar.class.isAssignableFrom(type);
-	}
+//	private boolean isSimpleField(Field field) {
+//		if (Modifier.isFinal(field.getModifiers()) || 
+//			Modifier.isStatic(field.getModifiers()) || 
+//			Modifier.isTransient(field.getModifiers())) {
+//			return false;
+//		}
+//		Class<?> type = field.getType();
+//		return type.getPackage() == null || type.getPackage().equals(Package.getPackage("java.lang")) ||
+//			Date.class.isAssignableFrom(type) || Calendar.class.isAssignableFrom(type);
+//	}
 	
 	
-	private boolean isSimpleClass(Class<?> tipo) {
-		return tipo.getPackage() == null || tipo.getPackage().equals(Package.getPackage("java.lang")) ||
-			Date.class.isAssignableFrom(tipo) || Calendar.class.isAssignableFrom(tipo);
-	}
+//	private boolean isSimpleClass(Class<?> tipo) {
+//		return tipo.getPackage() == null || tipo.getPackage().equals(Package.getPackage("java.lang")) ||
+//			Date.class.isAssignableFrom(tipo) || Calendar.class.isAssignableFrom(tipo);
+//	}
 
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public int count(Revisao revisao) {
-		return ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
+		
+		int count = 0;				
+		
+		if(revisao.getPessoal() != null){
+			
+			String entidadeNome = revisao.getEntidade().getSimpleName();
+		
+			if(entidadeNome.equalsIgnoreCase("Pessoal")){
+				
+				revisao.setRestricao(new Variavel("id", Long.class, revisao.getPessoal().getId()));			
+				count = ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
+				
+			} else if(entidadeNome.equalsIgnoreCase("Licenca")){
+				
+				revisao.setRestricao(new Variavel("pessoal", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));			
+				count = ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
+				
+			} else if(entidadeNome.equalsIgnoreCase("Funcional")){
+				
+				List<Funcional> funcionais = revisao.getFuncionais();
+				
+				for (Funcional funcional : funcionais) {
+					revisao.setRestricao(new Variavel("id", Long.class, funcional.getId()));			
+					count += ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
+				}
+				
+			} else {
+				
+				List<Funcional> funcionais = revisao.getFuncionais();
+				
+				for (Funcional funcional : funcionais) {
+					revisao.setRestricao(new Variavel("funcional", funcional.getClass() , funcional.getId()));			
+					count += ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
+				}				
+			}		
+		
+		} else {
+			revisao.setRestricao(null);
+			count = ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
+		}
+			
+		return count;
 	}
 
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Revisao> search(Revisao revisao, int first, int rows) {
+	public List<Revisao> search(Revisao revisao, int first, int rows) {		
 		
-		AuditQuery auditQuery = createAuditQuery(revisao);
-		auditQuery.setFirstResult(first);
-		auditQuery.setMaxResults(rows);
-
-		List<Object[]> resultList = auditQuery.getResultList();
+		List<Object[]> resultList = new ArrayList<Object[]>();		
+		
+		if(revisao.getPessoal() != null){
+		
+			String entidadeNome = revisao.getEntidade().getSimpleName();		
+			
+			if(entidadeNome.equalsIgnoreCase("Pessoal")){
+				
+				revisao.setRestricao(new Variavel("id", Long.class, revisao.getPessoal().getId()));				
+				AuditQuery auditQuery = createAuditQuery(revisao);
+				auditQuery.setFirstResult(first);
+				auditQuery.setMaxResults(rows);	
+				resultList = auditQuery.getResultList();
+				
+				
+			} else if(entidadeNome.equalsIgnoreCase("Licenca")){
+				
+				revisao.setRestricao(new Variavel("pessoal", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));				
+				AuditQuery auditQuery = createAuditQuery(revisao);
+				auditQuery.setFirstResult(first);
+				auditQuery.setMaxResults(rows);	
+				resultList = auditQuery.getResultList();				
+				
+			} else if(entidadeNome.equalsIgnoreCase("Funcional")){
+				
+				List<Funcional> funcionais = revisao.getFuncionais();
+				
+				for (Funcional funcional : funcionais) {					
+					revisao.setRestricao(new Variavel("id", Long.class, funcional.getId()));					
+					AuditQuery auditQuery = createAuditQuery(revisao);		
+					resultList.addAll(auditQuery.getResultList());
+				}				
+				
+			} else {
+				
+				List<Funcional> funcionais = revisao.getFuncionais();
+				
+				for (Funcional funcional : funcionais) {
+					revisao.setRestricao(new Variavel("funcional", funcional.getClass() , funcional.getId()));					
+					AuditQuery auditQuery = createAuditQuery(revisao);		
+					resultList.addAll(auditQuery.getResultList());
+				}				
+			}		
+		} else {
+			revisao.setRestricao(null);
+			AuditQuery auditQuery = createAuditQuery(revisao);
+			auditQuery.setFirstResult(first);
+			auditQuery.setMaxResults(rows);
+			resultList = auditQuery.getResultList();
+		}
 		
 		List<Revisao> listaRevisao = new ArrayList<Revisao>();
 		
@@ -278,7 +370,10 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 
 			listaRevisao.add(revisaoEntidade);
 		}
+		
+		Collections.sort(listaRevisao);
+		
 		return listaRevisao;
-	}
+	}	
 
 }
