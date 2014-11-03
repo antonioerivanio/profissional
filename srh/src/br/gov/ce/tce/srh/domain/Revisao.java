@@ -75,9 +75,6 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 	
 	@Transient
 	private List<Funcional> funcionais;	
-	
-//	@Transient
-//	private List<Restricao> restricoes;
 
 		
 	@Override
@@ -128,22 +125,12 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 		return revisao;
 	}
 	
+	
 	@Override
 	public int compareTo(Revisao r) {
 		return -this.getDataAuditoria().compareTo(r.getDataAuditoria());
 	}
-	
-//	public void setRestricoes(List<Restricao> restricoes) {
-//		this.restricoes = restricoes;
-//	}
 
-//	public List<Restricao> getRestricoes() {
-//		if (restricoes == null) {
-//			restricoes = new ArrayList<Restricao>();
-//		}
-//		return restricoes;
-//	}
-	
 	
 	
 	public static class Variavel implements Serializable, Comparable<Variavel> {

@@ -2,11 +2,13 @@ package br.gov.ce.tce.srh.dao;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,28 +34,23 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.Revisao;
 import br.gov.ce.tce.srh.domain.Revisao.Variavel;
 import br.gov.ce.tce.srh.domain.TipoRevisao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
-/**
- *
- * @author robson.castro
- * 
- */
+
 @Repository
 public class AuditoriaDAOImpl implements AuditoriaDAO {
 
 	static Logger logger = Logger.getLogger(AuditoriaDAOImpl.class);
 
 	@PersistenceContext
-	private EntityManager entityManager;
-	
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
+	private EntityManager entityManager;	
+	public void setEntityManager(EntityManager entityManager) {this.entityManager = entityManager;}
 
+	
 	private AuditQuery createAuditQuery(Revisao revisao) {
 		
 		if (revisao.getPeriodoInicial() != null
@@ -94,49 +91,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			}
 			
 		}
-
-//		Field chavePrimaria = getChavePrimaria(revisao.getEntidade());
-//		// Adiciona as restricoes definidas pelo usuario:
-//		for (Restricao restricao : revisao.getRestricoes()) {
-//			try {
-//				if (revisao.getEntidade().getDeclaredField(restricao.getAtributo()).getType().equals(String.class)) {
-//					auditQuery.add(AuditEntity.property(restricao.getAtributo()).like(restricao.getValor()));
-//				} else if (chavePrimaria != null && chavePrimaria.getName().equals(restricao.getAtributo())) {
-//					auditQuery.add(AuditEntity.id().eq(restricao.getValor()));
-//				} else if(!isSimpleClass(restricao.getTipo())){
-//					auditQuery.add(AuditEntity.relatedId(restricao.getAtributo()).eq(restricao.getValor()));	
-//				} else {	
-//					auditQuery.add(AuditEntity.property(restricao.getAtributo()).eq(restricao.getValor()));					
-//				}
-//			} catch (Exception e) {
-//				// Nunca sera lancada
-//			}
-//		}
 		
 		return auditQuery;
 	}
 	
 	
-	protected AuditReader getAuditReader() {
-		return AuditReaderFactory.get(entityManager);
-	}
-	
-	
-//	private Field getChavePrimaria(Class<?> entidade) {
-//		if (entidade != null) {
-//			Field[] fields = entidade.getDeclaredFields();
-//			for (Field field : fields) {
-//				List<Annotation> annotations = Arrays.asList(field.getAnnotations());
-//				// Adiciona somente se o atributo nao for anotado com @Id - chave primária:
-//				for (Annotation annotation : annotations) {
-//					if (annotation instanceof Id) {
-//						return field;
-//					}
-//				}
-//			}
-//		}
-//		return null;
-//	}
+	protected AuditReader getAuditReader() {return AuditReaderFactory.get(entityManager);}
 	
 	
 	private RevisionType getRevisionType(TipoRevisao tipoRevisao) {
@@ -182,18 +142,11 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	}
 	
 	
-	protected Session getSession() {
-		return ((Session)entityManager.getDelegate());
-	}
+	protected Session getSession() {return ((Session)entityManager.getDelegate());}
 	
 	
-	/**
-	 * Obtem os atributos nao-transientes da entidade que sejam tipos simples como
-	 * Boolean, numeros, String, Date, Calendar, etc...
-	 * @return
-	 */
 	@Override
-	public Set<Field> getAtributosSimplesEntidade(Class<?> entidade) {
+	public Set<Field> getAtributosEntidade(Class<?> entidade) {
 		Set<Field> atributos = new TreeSet<Field>(new Comparator<Field>() {
 			@Override
 			public int compare(Field o1, Field o2) {
@@ -203,43 +156,32 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		if (entidade != null) {
 			Field[] fields = entidade.getDeclaredFields();
 			for (Field field : fields) {
-				//Adiciona somente atributos cujos tipos sejam dos pacotes java.lang e java.util:
-//				if (isSimpleField(field)) {
-					List<Annotation> annotations = Arrays.asList(field.getAnnotations());
-					boolean atributoValido = true;
-					//Adiciona somente se o atributo nao for anotado com @Transient ou com @NotAudited:
-					for (Annotation annotation : annotations) {
-						if (annotation instanceof Transient || annotation instanceof NotAudited) {
-							atributoValido = false;
-							break;
-						}
+				List<Annotation> annotations = Arrays.asList(field.getAnnotations());
+				boolean atributoValido = true;
+//				Adiciona somente se o atributo nao for anotado com @Transient ou com @NotAudited
+//				ou não for da classe Funcional nem Pessoal:
+				for (Annotation annotation : annotations) {
+					if ( annotation instanceof Transient 
+							|| annotation instanceof NotAudited
+							|| field.getType() == Funcional.class
+							|| field.getType() == Pessoal.class ) {
+						atributoValido = false;
+						break;
 					}
-					if (atributoValido) {
-						atributos.add(field);
-					}
-//				}
+				}
+				if (atributoValido) {
+					atributos.add(field);
+				}
 			}
 		}
 		return atributos;
 	}
 	
-	
-//	private boolean isSimpleField(Field field) {
-//		if (Modifier.isFinal(field.getModifiers()) || 
-//			Modifier.isStatic(field.getModifiers()) || 
-//			Modifier.isTransient(field.getModifiers())) {
-//			return false;
-//		}
-//		Class<?> type = field.getType();
-//		return type.getPackage() == null || type.getPackage().equals(Package.getPackage("java.lang")) ||
-//			Date.class.isAssignableFrom(type) || Calendar.class.isAssignableFrom(type);
-//	}
-	
-	
-//	private boolean isSimpleClass(Class<?> tipo) {
-//		return tipo.getPackage() == null || tipo.getPackage().equals(Package.getPackage("java.lang")) ||
-//			Date.class.isAssignableFrom(tipo) || Calendar.class.isAssignableFrom(tipo);
-//	}
+
+	private boolean isSimpleClass(Class<?> tipo) {
+		return tipo.getPackage() == null || tipo.getPackage().equals(Package.getPackage("java.lang")) ||
+			Date.class.isAssignableFrom(tipo) || Calendar.class.isAssignableFrom(tipo);
+	}
 
 
 	@Override
@@ -293,7 +235,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Revisao> search(Revisao revisao, int first, int rows) {		
+	public List<Revisao> search(Revisao revisao, int first, int rows, String nomeColuna) {		
 		
 		List<Object[]> resultList = new ArrayList<Object[]>();		
 		
@@ -356,15 +298,48 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			revisaoEntidade.setTipoRevisao(getTipoRevisao(tipoRevisao));
 			
 			// Copia os atributos da entidade encontrada:
-			Set<Field> fields = getAtributosSimplesEntidade(entidade.getClass());
+			Set<Field> fields = getAtributosEntidade(entidade.getClass());
 			for (Field field : fields) {
+				
 				field.setAccessible(true);
 				
 				if(field.getName().equalsIgnoreCase("id")){
 					try {
 						revisaoEntidade.setIdRegistro((Long)field.get(entidade));						
 					} catch (Exception e) {}
-					break;
+				}
+				
+				if(field.getName().equalsIgnoreCase(nomeColuna)){
+					
+					String nomeDoMetodo;												
+					Method method;
+					Object valor = null;					
+					
+					try {
+					
+						nomeDoMetodo = "get" + nomeColuna.substring(0, 1).toUpperCase() + nomeColuna.substring(1);
+						method = entidade.getClass().getMethod(nomeDoMetodo);
+						valor = method.invoke(entidade);					
+					
+					} catch (NoSuchMethodException e) {
+						
+						try {
+							
+							nomeDoMetodo = "is" + nomeColuna.substring(0, 1).toUpperCase() + nomeColuna.substring(1);
+							method = entidade.getClass().getMethod(nomeDoMetodo);
+							valor = method.invoke(entidade);
+						
+						} catch (Exception ex) {ex.printStackTrace();}	
+					
+					} catch (Exception e) {e.printStackTrace();}					
+					
+					if( valor != null && !isSimpleClass(valor.getClass()) ){
+						try {							
+							valor = valor.getClass().getMethod("getId").invoke(valor);						
+						} catch (Exception e) {e.printStackTrace();}
+					}
+					
+					revisaoEntidade.setColuna(new Variavel(null, null, valor));
 				}
 			}
 

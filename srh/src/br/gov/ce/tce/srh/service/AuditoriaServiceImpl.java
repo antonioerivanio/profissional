@@ -29,8 +29,8 @@ public class AuditoriaServiceImpl implements AuditoriaService {
 	}
 
 	@Override
-	public Set<Field> getAtributosSimplesEntidade(Class<?> value) {
-		return dao.getAtributosSimplesEntidade(value);
+	public Set<Field> getAtributosEntidade(Class<?> value) {
+		return dao.getAtributosEntidade(value);
 	}
 	
 	@Override
@@ -57,8 +57,8 @@ public class AuditoriaServiceImpl implements AuditoriaService {
 	}
 	
 	@Override
-	public List<Revisao> search(Revisao revisao, int first, int rows) {
-		return dao.search(revisao, first, rows);
+	public List<Revisao> search(Revisao revisao, int first, int rows, String nomeColuna) {
+		return dao.search(revisao, first, rows, nomeColuna);
 	}
 
 	public void setDAO(AuditoriaDAO dao) { this.dao = dao; }
