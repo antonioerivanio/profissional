@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import br.gov.ce.tce.srh.domain.Revisao;
-import br.gov.ce.tce.srh.domain.Revisao.Variavel;
+import br.gov.ce.tce.srh.domain.Revisao.Restricao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 public interface AuditoriaService {
@@ -17,6 +17,6 @@ public interface AuditoriaService {
 
 	public Set<Field> getAtributosEntidade(Class<?> value);
 
-	public void validarAdicionarRestricao(Variavel atributoSelecionado, String entidade, String valorRestricao) throws SRHRuntimeException;
+	public void validarAdicionarRestricao(Restricao atributoSelecionado, String entidade, String valorRestricao) throws SRHRuntimeException;
 
 }

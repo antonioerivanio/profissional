@@ -56,10 +56,10 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 	private Class<?> entidade;	
 	
 	@Transient
-	private Variavel restricao;
+	private Restricao restricao;
 	
 	@Transient
-	private Variavel coluna;
+	private Object valorColuna;
 
 	@Transient
 	private Date periodoInicial;
@@ -94,11 +94,11 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 	public void setTipoRevisao(TipoRevisao tipoRevisao) {this.tipoRevisao = tipoRevisao;}
 	public TipoRevisao getTipoRevisao() {return tipoRevisao;}
 
-	public Variavel getRestricao() {return restricao;}
-	public void setRestricao(Variavel restricao) {this.restricao = restricao;}	
+	public Restricao getRestricao() {return restricao;}
+	public void setRestricao(Restricao restricao) {this.restricao = restricao;}	
 	
-	public Variavel getColuna() {return coluna;}
-	public void setColuna(Variavel coluna) {this.coluna = coluna;}
+	public Object getValorColuna() {return valorColuna;}
+	public void setValorColuna(Object valorColuna) {this.valorColuna = valorColuna;}
 
 	public Date getPeriodoInicial() {return periodoInicial;}
 	public void setPeriodoInicial(Date periodoInicial) {this.periodoInicial = periodoInicial;}
@@ -133,7 +133,7 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 
 	
 	
-	public static class Variavel implements Serializable, Comparable<Variavel> {
+	public static class Restricao implements Serializable, Comparable<Restricao> {
 		
 		private static final long serialVersionUID = 1955725361200101617L;
 		
@@ -141,7 +141,7 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 		private Class<?> tipo;
 		private Object valor;
 		
-		public Variavel(String nome, Class<?> tipo, Object valor) {
+		public Restricao(String nome, Class<?> tipo, Object valor) {
 			super();
 			this.nome = nome;
 			this.tipo = tipo;
@@ -182,7 +182,7 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Variavel other = (Variavel) obj;
+			Restricao other = (Restricao) obj;
 			if (nome == null) {
 				if (other.nome != null)
 					return false;
@@ -202,7 +202,7 @@ public class Revisao extends BasicEntity<Long> implements Serializable, Comparab
 		}
 
 		@Override
-		public int compareTo(Variavel o) {
+		public int compareTo(Restricao o) {
 			return this.getNome().compareTo(o.getNome());
 		}
 	}

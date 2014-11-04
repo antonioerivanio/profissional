@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.Revisao;
-import br.gov.ce.tce.srh.domain.Revisao.Variavel;
 import br.gov.ce.tce.srh.domain.TipoRevisao;
 import br.gov.ce.tce.srh.domain.sca.Usuario;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -201,18 +200,18 @@ public class ConsultarAuditoriaBean implements Serializable{
 	}	
 	
 	
-	public List<Variavel> getAtributosEntidade() {
+	public List<String> getAtributosEntidade() {
 		
 		Set<Field> fieldsEntidade = null;
 		
-		List<Variavel> atributosEntidade = null;
+		List<String> atributosEntidade = null;
 		
 		if(this.revisaoConsulta.getEntidade() != null){			
 			fieldsEntidade = this.auditoriaService.getAtributosEntidade((Class<?>)this.revisaoConsulta.getEntidade());			
-			atributosEntidade = new ArrayList<Variavel>(fieldsEntidade.size());
+			atributosEntidade = new ArrayList<String>(fieldsEntidade.size());
 			
 			for (Field field : fieldsEntidade)
-				atributosEntidade.add(new Variavel(field.getName(), field.getType(), null));			
+				atributosEntidade.add(field.getName());			
 			
 			Collections.sort(atributosEntidade);			
 		}

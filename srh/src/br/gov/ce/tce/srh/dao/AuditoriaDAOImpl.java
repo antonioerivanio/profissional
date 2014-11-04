@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.Revisao;
-import br.gov.ce.tce.srh.domain.Revisao.Variavel;
+import br.gov.ce.tce.srh.domain.Revisao.Restricao;
 import br.gov.ce.tce.srh.domain.TipoRevisao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
@@ -49,7 +49,11 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 	@PersistenceContext
 	private EntityManager entityManager;	
 	public void setEntityManager(EntityManager entityManager) {this.entityManager = entityManager;}
-
+	
+	protected AuditReader getAuditReader() {return AuditReaderFactory.get(entityManager);}
+	
+	protected Session getSession() {return ((Session)entityManager.getDelegate());}
+	
 	
 	private AuditQuery createAuditQuery(Revisao revisao) {
 		
@@ -66,8 +70,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		}
 
 		if (revisao.getPeriodoInicial() != null) {
-			auditQuery.add(AuditEntity.revisionProperty("dataAuditoria").ge(
-					revisao.getPeriodoInicial()));
+			auditQuery.add(AuditEntity.revisionProperty("dataAuditoria").ge(revisao.getPeriodoInicial()));
 		}
 		
 		if (revisao.getPeriodoFinal() != null) {
@@ -88,15 +91,13 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				auditQuery.add(AuditEntity.id().eq(revisao.getRestricao().getValor()));	
 			} else {	
 				auditQuery.add(AuditEntity.relatedId(revisao.getRestricao().getNome()).eq(revisao.getRestricao().getValor()));
-			}
-			
+			}			
 		}
+		
+		auditQuery.addOrder(AuditEntity.revisionProperty("dataAuditoria").desc());
 		
 		return auditQuery;
 	}
-	
-	
-	protected AuditReader getAuditReader() {return AuditReaderFactory.get(entityManager);}
 	
 	
 	private RevisionType getRevisionType(TipoRevisao tipoRevisao) {
@@ -139,10 +140,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			}
 		}
 		return entidadesAuditadas;
-	}
-	
-	
-	protected Session getSession() {return ((Session)entityManager.getDelegate());}
+	}	
 	
 	
 	@Override
@@ -165,6 +163,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 							|| annotation instanceof NotAudited
 							|| field.getType() == Funcional.class
 							|| field.getType() == Pessoal.class ) {
+						
 						atributoValido = false;
 						break;
 					}
@@ -196,12 +195,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		
 			if(entidadeNome.equalsIgnoreCase("Pessoal")){
 				
-				revisao.setRestricao(new Variavel("id", Long.class, revisao.getPessoal().getId()));			
+				revisao.setRestricao(new Restricao("id", Long.class, revisao.getPessoal().getId()));			
 				count = ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
 				
 			} else if(entidadeNome.equalsIgnoreCase("Licenca")){
 				
-				revisao.setRestricao(new Variavel("pessoal", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));			
+				revisao.setRestricao(new Restricao("pessoal", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));			
 				count = ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
 				
 			} else if(entidadeNome.equalsIgnoreCase("Funcional")){
@@ -209,7 +208,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				List<Funcional> funcionais = revisao.getFuncionais();
 				
 				for (Funcional funcional : funcionais) {
-					revisao.setRestricao(new Variavel("id", Long.class, funcional.getId()));			
+					revisao.setRestricao(new Restricao("id", Long.class, funcional.getId()));			
 					count += ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
 				}
 				
@@ -218,7 +217,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				List<Funcional> funcionais = revisao.getFuncionais();
 				
 				for (Funcional funcional : funcionais) {
-					revisao.setRestricao(new Variavel("funcional", funcional.getClass() , funcional.getId()));			
+					revisao.setRestricao(new Restricao("funcional", funcional.getClass(), funcional.getId()));			
 					count += ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
 				}				
 			}		
@@ -245,7 +244,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			
 			if(entidadeNome.equalsIgnoreCase("Pessoal")){
 				
-				revisao.setRestricao(new Variavel("id", Long.class, revisao.getPessoal().getId()));				
+				revisao.setRestricao(new Restricao("id", Long.class, revisao.getPessoal().getId()));				
 				AuditQuery auditQuery = createAuditQuery(revisao);
 				auditQuery.setFirstResult(first);
 				auditQuery.setMaxResults(rows);	
@@ -254,7 +253,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				
 			} else if(entidadeNome.equalsIgnoreCase("Licenca")){
 				
-				revisao.setRestricao(new Variavel("pessoal", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));				
+				revisao.setRestricao(new Restricao("pessoal", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));				
 				AuditQuery auditQuery = createAuditQuery(revisao);
 				auditQuery.setFirstResult(first);
 				auditQuery.setMaxResults(rows);	
@@ -265,7 +264,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				List<Funcional> funcionais = revisao.getFuncionais();
 				
 				for (Funcional funcional : funcionais) {					
-					revisao.setRestricao(new Variavel("id", Long.class, funcional.getId()));					
+					revisao.setRestricao(new Restricao("id", Long.class, funcional.getId()));					
 					AuditQuery auditQuery = createAuditQuery(revisao);		
 					resultList.addAll(auditQuery.getResultList());
 				}				
@@ -275,7 +274,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 				List<Funcional> funcionais = revisao.getFuncionais();
 				
 				for (Funcional funcional : funcionais) {
-					revisao.setRestricao(new Variavel("funcional", funcional.getClass() , funcional.getId()));					
+					revisao.setRestricao(new Restricao("funcional", funcional.getClass() , funcional.getId()));					
 					AuditQuery auditQuery = createAuditQuery(revisao);		
 					resultList.addAll(auditQuery.getResultList());
 				}				
@@ -295,10 +294,10 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			Revisao revisaoEntidade = ((Revisao) triple[1]).clone();
 			RevisionType tipoRevisao = (RevisionType) triple[2];			
 			
-			revisaoEntidade.setTipoRevisao(getTipoRevisao(tipoRevisao));
+			revisaoEntidade.setTipoRevisao(this.getTipoRevisao(tipoRevisao));
 			
 			// Copia os atributos da entidade encontrada:
-			Set<Field> fields = getAtributosEntidade(entidade.getClass());
+			Set<Field> fields = this.getAtributosEntidade(entidade.getClass());
 			for (Field field : fields) {
 				
 				field.setAccessible(true);
@@ -339,14 +338,14 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 						} catch (Exception e) {e.printStackTrace();}
 					}
 					
-					revisaoEntidade.setColuna(new Variavel(null, null, valor));
+					revisaoEntidade.setValorColuna(valor);
 				}
 			}
 
 			listaRevisao.add(revisaoEntidade);
 		}
 		
-		Collections.sort(listaRevisao);
+		Collections.sort(listaRevisao);		
 		
 		return listaRevisao;
 	}	
