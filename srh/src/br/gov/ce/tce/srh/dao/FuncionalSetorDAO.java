@@ -17,5 +17,7 @@ public interface FuncionalSetorDAO {
 	public List<FuncionalSetor> findByPessoal(Long idPessoa);
 	
 	public FuncionalSetor getAtivoByFuncional(Long idFuncional);
+	
+	public List<FuncionalSetor> findByFuncional(Long idFuncional);
 
 }

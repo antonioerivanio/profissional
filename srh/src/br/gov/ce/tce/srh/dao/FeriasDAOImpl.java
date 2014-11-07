@@ -51,9 +51,13 @@ public class FeriasDAOImpl implements FeriasDAO {
 
 	@Override
 	public void excluir(Ferias entidade) {
-		Query query = entityManager.createQuery("DELETE FROM Ferias f WHERE f.id = :id ");
-		query.setParameter("id", entidade.getId());
-		query.executeUpdate();
+//		Query query = entityManager.createQuery("DELETE FROM Ferias f WHERE f.id = :id ");
+//		query.setParameter("id", entidade.getId());
+//		query.executeUpdate();
+		
+		entidade = entityManager.merge(entidade);
+		entityManager.remove(entidade);
+		
 	}
 
 

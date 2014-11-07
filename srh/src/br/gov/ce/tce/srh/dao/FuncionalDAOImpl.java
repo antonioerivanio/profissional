@@ -97,9 +97,12 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 
 	@Override
 	public void excluir(Funcional entidade) {
-		Query query = entityManager.createQuery("DELETE FROM Funcional l WHERE l.id=:id");
-		query.setParameter("id", entidade.getId());
-		query.executeUpdate();
+//		Query query = entityManager.createQuery("DELETE FROM Funcional l WHERE l.id=:id");
+//		query.setParameter("id", entidade.getId());
+//		query.executeUpdate();
+		
+		entidade = entityManager.merge(entidade);
+		entityManager.remove(entidade);
 	}
 
 

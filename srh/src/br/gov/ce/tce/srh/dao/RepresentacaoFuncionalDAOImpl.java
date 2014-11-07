@@ -56,9 +56,12 @@ public class RepresentacaoFuncionalDAOImpl implements RepresentacaoFuncionalDAO 
 
 	@Override
 	public void excluir(RepresentacaoFuncional entidade) {
-		Query query = entityManager.createQuery("DELETE FROM RepresentacaoFuncional r WHERE r.id=:id");
-		query.setParameter("id", entidade.getId());
-		query.executeUpdate();
+//		Query query = entityManager.createQuery("DELETE FROM RepresentacaoFuncional r WHERE r.id=:id");
+//		query.setParameter("id", entidade.getId());
+//		query.executeUpdate();
+		
+		entidade = entityManager.merge(entidade);
+		entityManager.remove(entidade);
 	}
 
 

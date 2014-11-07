@@ -82,7 +82,10 @@ public class PessoalDAOImpl implements PessoalDAO {
 
 	@Override
 	public void excluir(Pessoal entidade) {
-		entityManager.createQuery("DELETE FROM Pessoal p WHERE p.id=:id").setParameter("id", entidade.getId()).executeUpdate();			
+//		entityManager.createQuery("DELETE FROM Pessoal p WHERE p.id=:id").setParameter("id", entidade.getId()).executeUpdate();	
+		
+		entidade = entityManager.merge(entidade);
+		entityManager.remove(entidade);
 	}
 
 

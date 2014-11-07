@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -26,7 +27,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
  * @author  : robson.castro@ivia.com.br
  *
  */
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
 @Table(name="TB_REFERENCIAFUNCIONAL", schema="SRH")
@@ -36,7 +37,6 @@ public class ReferenciaFuncional extends BasicEntity<Long> implements Serializab
 	@Column(name="ID", nullable = false)
 	private Long id;
 	
-	@NotAudited
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "IDFUNCIONAL", nullable = false)	
 	private Funcional funcional;
