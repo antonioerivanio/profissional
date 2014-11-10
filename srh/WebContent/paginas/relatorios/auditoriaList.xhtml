@@ -20,244 +20,198 @@
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
-			<fieldset>
+			<div class="input-box box-14">
+				<label for="iptPeriodoInicial">Data Inicio</label>
+				<div class="conteiner">
+					<h:inputText id="iptPeriodoInicial" 
+								 styleClass="maskData" 
+								 converter="dateConverter"
+								 value="#{consultarAuditoriaBean.revisaoConsulta.periodoInicial}"/>
+				</div>
+			</div>
 			
-				<legend> Filtro de Consulta</legend>
-				
-				<div class="input-box box-14">
-					<label for="iptPeriodoInicial">Data Inicio</label>
-					<div class="conteiner">
-						<h:inputText id="iptPeriodoInicial" 
-									 styleClass="maskData" 
-									 converter="dateConverter"
-									 value="#{consultarAuditoriaBean.revisaoConsulta.periodoInicial}"/>
-					</div>
+			<div class="input-box box-14">
+				<label for="iptPeriodoFinal">Data Fim</label>
+				<div class="conteiner">
+					<h:inputText id="iptPeriodoFinal" 
+								 styleClass="maskData" 
+								 converter="dateConverter"
+								 value="#{consultarAuditoriaBean.revisaoConsulta.periodoFinal}"/>
 				</div>
-				
-				<div class="input-box box-14">
-					<label for="iptPeriodoFinal">Data Fim</label>
-					<div class="conteiner">
-						<h:inputText id="iptPeriodoFinal" 
-									 styleClass="maskData" 
-									 converter="dateConverter"
-									 value="#{consultarAuditoriaBean.revisaoConsulta.periodoFinal}"/>
-					</div>
+			</div>
+			 
+			<div class="select-box box-25">
+				<label for="iptTipoEvento">Tipo de Evento</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="iptTipoEvento" 
+									 value="#{consultarAuditoriaBean.tipoRevisao}">
+					  	<f:selectItem id="selecioneIptTipoEvento" itemValue="-1" itemLabel="Todos..."/>
+					  	<f:selectItems 	id="comboIptTipoEvento" 
+					  					value="#{consultarAuditoriaBean.tiposRevisao}"
+					  					var="tipoRevisao"
+					  					itemValue="#{tipoRevisao.id}"
+					  					itemLabel="#{tipoRevisao.descricao}"/>
+					  	<a4j:support id="selecionaTipoEvento"
+				  				 event="onchange" 
+				  				 ajaxSingle="true"	
+				  				 focus="iptUsuario"
+				  				 action="#{consultarAuditoriaBean.tipoEventoSelecionado}"/>
+					</h:selectOneMenu>
 				</div>
-				 
-				<div class="select-box box-25">
-					<label for="iptTipoEvento">Tipo de Evento</label>
-					<div class="conteiner">
-						<h:selectOneMenu id="iptTipoEvento" 
-										 value="#{consultarAuditoriaBean.tipoRevisao}">
-						  	<f:selectItem id="selecioneIptTipoEvento" itemValue="-1" itemLabel="Todos..."/>
-						  	<f:selectItems 	id="comboIptTipoEvento" 
-						  					value="#{consultarAuditoriaBean.tiposRevisao}"
-						  					var="tipoRevisao"
-						  					itemValue="#{tipoRevisao.id}"
-						  					itemLabel="#{tipoRevisao.descricao}"/>
-						  	<a4j:support id="selecionaTipoEvento"
+			</div>
+			 
+			<div class="select-box box-25">
+				<label for="iptUsuario">Usuário</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="iptUsuario" 
+									 value="#{consultarAuditoriaBean.usuario}">
+					  	<f:selectItem id="selecioneIptUsuario" itemValue="0" itemLabel="Todos..." />
+					  	<f:selectItems 	id="comboIptUsuario" 
+					  					value="#{consultarAuditoriaBean.usuarios}"
+					  					var="usuario"
+					  					itemValue="#{usuario.id}"
+					  					itemLabel="#{usuario.nome}"/>
+					  	<a4j:support id="selecionaUsuario"
 					  				 event="onchange" 
 					  				 ajaxSingle="true"	
-					  				 focus="iptUsuario"
-					  				 action="#{consultarAuditoriaBean.tipoEventoSelecionado}"
-					  				 reRender="iptUsuario"/>
-						</h:selectOneMenu>
-					</div>
+					  				 focus="iptPessoal"
+					  				 action="#{consultarAuditoriaBean.usuarioSelecionado}"/>
+					</h:selectOneMenu>
 				</div>
-				 
-				<div class="select-box box-25">
-					<label for="iptUsuario">Usuário</label>
-					<div class="conteiner">
-						<h:selectOneMenu id="iptUsuario" 
-										 value="#{consultarAuditoriaBean.usuario}">
-						  	<f:selectItem id="selecioneIptUsuario" itemLabel="Todos..."/>
-						  	<f:selectItems 	id="comboIptUsuario" 
-						  					value="#{consultarAuditoriaBean.usuarios}"
-						  					var="usuario"
-						  					itemValue="#{usuario.id}"
-						  					itemLabel="#{usuario.nome}"/>
-						  	<a4j:support id="selecionaUsuario"
-						  				 event="onchange" 
-						  				 ajaxSingle="true"	
-						  				 focus="iptEntidade"
-						  				 action="#{consultarAuditoriaBean.usuarioSelecionado}"
-						  				 reRender="iptEntidade"/>
-						</h:selectOneMenu>
-					</div>
-				</div>
-				
-				<div class="select-box box-25">
-					<label for="iptEntidade">Tabela *</label>
-					<div class="conteiner">
-						<h:selectOneMenu id="iptEntidade"  
-										 value="#{consultarAuditoriaBean.entidade}" >
-						  	<f:selectItem id="selecioneIptEntidade" itemLabel="Selecione..." itemValue=""/>
-						  	<f:selectItems 	id="comboIptEntidade" 
-						  					value="#{consultarAuditoriaBean.entidades}"
-						  					var="entidade"
-						  					itemValue="#{entidade.simpleName}"
-						  					itemLabel="#{entidade.simpleName}"/>
-						  	<a4j:support id="carregaIptEntidade"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 focus="iptAtributo"
-					  				 action="#{consultarAuditoriaBean.entidadeSelecionada}"
-					  				 reRender="iptAtributo,iptValor,tblRestricoes,revisaoGroup"/>
-						</h:selectOneMenu>
-					</div>
-				</div>
-				 
-				<div class="select-box box-25">
-					<label for="iptAtributo">Coluna</label>
-					<div class="conteiner">
-						<h:selectOneMenu id="iptAtributo"  
-										 value="#{consultarAuditoriaBean.atributo}">
-						  	<f:selectItem id="selecioneIptAtributo" itemLabel="Selecione..."/>
-						  	<f:selectItems 	id="comboIptAtributo" 
-						  					value="#{consultarAuditoriaBean.restricoesEntidade}"
-						  					var="restricao"
-						  					itemValue="#{restricao.atributo}"
-						  					itemLabel="#{restricao.atributo}"/>
-						  	<a4j:support id="carregaIptAtributo"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 focus="iptValor"
-					  				 action="#{consultarAuditoriaBean.atributoSelecionado}"
-					  				 reRender="iptValor"/>
-						</h:selectOneMenu>
-					</div>
-				</div>
-				 
-				<div class="input-box box-25">
-					<label for="iptValor">Valor da Coluna</label>
-					<div class="conteiner">
-						<h:inputText id="iptValor" 
-									 maxlength="20"									 
-									 value="#{consultarAuditoriaBean.valorRestricao}"/>
-					</div>
-				</div>
+			</div>
 			
-				<h:commandButton id="cmdAdicionar"
-								 actionListener="#{consultarAuditoriaBean.adicionarRestricao}"
-								 value="Adicionar" styleClass="bt-padrao fl mg-top-18"/>
-				 				 
-				<div class="tabela-dados">
-					<rich:dataTable id="tblRestricoes" value="#{consultarAuditoriaBean.restricoes}" var="restricao" rows="10">
-	
-	                    <h:column id="col1">
+			<div class="select-box box-25">
+				<label for="iptPessoal">Pessoal</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="iptPessoal" 
+									 value="#{consultarAuditoriaBean.pessoal}">
+					  	<f:selectItem id="selecioneIptPessoal" itemValue="0" itemLabel="Todos..."/>
+					  	<f:selectItems 	id="comboIptPessoal" 
+					  					value="#{consultarAuditoriaBean.pessoais}"
+					  					var="pessoal"
+					  					itemValue="#{pessoal.id}"
+					  					itemLabel="#{pessoal.nome}"/>
+					  	<a4j:support id="selecionaPessoal"
+					  				 event="onchange" 
+					  				 ajaxSingle="true"	
+					  				 focus="iptEntidade"
+					  				 action="#{consultarAuditoriaBean.pessoalSelecionado}"/>
+					</h:selectOneMenu>
+				</div>
+			</div>			
+			
+			<div class="select-box box-25">
+				<label for="iptEntidade">Tabela *</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="iptEntidade"  
+									 value="#{consultarAuditoriaBean.entidade}" >
+					  	<f:selectItem id="selecioneIptEntidade" itemLabel="Selecione..." itemValue=""/>
+					  	<f:selectItems 	id="comboIptEntidade" 
+					  					value="#{consultarAuditoriaBean.entidades}"
+					  					var="entidade"
+					  					itemValue="#{entidade.simpleName}"
+					  					itemLabel="#{entidade.simpleName}"/>
+					  	<a4j:support id="carregaIptEntidade"
+				  				 event="onchange" 
+				  				 ajaxSingle="true"	
+				  				 focus="iptAtributo"
+				  				 action="#{consultarAuditoriaBean.entidadeSelecionada}"
+				  				 reRender="iptAtributo"/>
+					</h:selectOneMenu>
+				</div>
+			</div>
+			 
+			<div class="select-box box-25">
+				<label for="iptAtributo">Coluna</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="iptAtributo"  
+									 value="#{consultarAuditoriaBean.atributo}">
+					  	<f:selectItem id="selecioneIptAtributo" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboIptAtributo" 
+					  					value="#{consultarAuditoriaBean.atributosEntidade}"
+					  					var="atributo"
+					  					itemValue="#{atributo}"
+					  					itemLabel="#{atributo}"/>					  	
+					</h:selectOneMenu>
+				</div>
+			</div>
+						
+			<h:commandButton id="btConsultar" 
+							 value="Consultar" 
+							 action="#{consultarAuditoriaBean.consultar}" 
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" />
+			
+			
+			<div class="tabela-dados">				
+				<h:panelGroup id="revisaoGroup">
+					<rich:dataTable id="tblRevisao" 
+									value="#{consultarAuditoriaBean.dataModel}"										
+									var="revisao" 
+									rows="10"
+									binding="#{consultarAuditoriaBean.dataTable}">
+	                    
+	                     <h:column id="col1">
 	                        <f:facet name="header">
-	                            Atributo
+	                            Usuário
 	                        </f:facet>
 	                        <center>
-	                        	<h:outputText id="item1" value="#{restricao.atributo}"/>
+		                        <h:outputText id="item1" value="#{revisao.usuario.nome}"/>
 	                        </center>
 	                    </h:column>
+	                    
 	                    <h:column id="col2">
 	                        <f:facet name="header">
-	                            Valor
+	                            Evento
 	                        </f:facet>
 	                        <center>
-		                        <h:outputText id="item2" value="#{restricao.valor}"/>
+	                        	<h:outputText id="item2" value="#{revisao.tipoRevisao.descricao}"/>
 	                        </center>
-	                    </h:column>
+	                    </h:column>	                    
+	                    
 	                    <h:column id="col3">
 	                        <f:facet name="header">
-	                            Tipo
+	                            Data Evento
+	                        </f:facet>
+	                         <center>
+	                        	<h:outputText id="item3" value="#{revisao.dataAuditoria}">
+	                        		<f:convertDateTime id="dataAuditoria" pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-03:00"/>
+	                        	</h:outputText>
+                        	</center>
+	                    </h:column>
+	                    
+	                    <h:column id="col4">
+	                        <f:facet name="header">
+	                            ID Registro
 	                        </f:facet>
 	                        <center>
-	                        	<h:outputText id="item3" value="#{restricao.tipo}"/>
-	                        </center>
+	                        	<h:outputText id="item4" value="#{revisao.idRegistro}" />		                       
+                        	</center>
 	                    </h:column>
-	                 	<h:column id="col4">
+	                    
+	                     <h:column id="col5">
 	                        <f:facet name="header">
-	                            Excluir
+	                            Valor Coluna
 	                        </f:facet>
-	                        <h:commandLink id="excluir"
-	                        			   value="Excluir"
-	                        			   action="#{consultarAuditoriaBean.excluirRestricao}"
-	                        			   styleClass="ico-delete"
-	                        			   onclick="var x= confirm('Deseja realmente excluir esta restrição?');if(!x){return false;}" >
-	                        	<f:setPropertyActionListener target="#{consultarAuditoriaBean.atributo}" value="#{restricao.atributo}" />
-	                        </h:commandLink>
+	                        <center>
+	                        	<h:outputText id="item5" value="#{revisao.valorColuna}" />		                       
+                        	</center>
 	                    </h:column>
+	                    	                   
 	    			</rich:dataTable>
-				</div>
-				<div>
-					<h:commandButton id="btLimpar"									 
-									 value="Limpar" 
-									 action="#{consultarAuditoriaBean.limpar}" 
-									 styleClass="bt-padrao fr mg-right-15" />
-					<h:commandButton id="btConsultar" 
-									 value="Consultar" 
-									 action="#{consultarAuditoriaBean.consultar}" 
-									 styleClass="bt-padrao fr mg-right-15" />
-				</div>
-			</fieldset>
-			 
-			<fieldset>
-				<legend> Resultado da Consulta </legend>
-				<div class="tabela-dados">
 					
-					<h:panelGroup id="revisaoGroup">
-						<rich:dataTable id="tblRevisao" 
-										value="#{consultarAuditoriaBean.dataModel}"										
-										var="revisao" 
-										rows="10"
-										binding="#{consultarAuditoriaBean.dataTable}">
-		                    <h:column id="col1" >
-		                        <f:facet name="header">
-		                            Revisão
-		                        </f:facet>
-		                        <center>
-		                        	<h:outputText id="item1" value="#{revisao.id}" />		                       
-	                        	</center>
-		                    </h:column>
-		                    <h:column id="col2">
-		                        <f:facet name="header">
-		                            Registro
-		                        </f:facet>
-		                        <center>
-		                        	<h:outputText id="item2" value="#{revisao.idRegistro}" />		                       
-	                        	</center>
-		                    </h:column>
-		                    <h:column id="col3">
-		                        <f:facet name="header">
-		                            Data
-		                        </f:facet>
-		                         <center>
-		                        	<h:outputText id="item3" value="#{revisao.dataAuditoria}">
-		                        		<f:convertDateTime id="dataAuditoria" pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-03:00"/>
-		                        	</h:outputText>
-	                        	</center>
-		                    </h:column>
-		                    <h:column id="col4">
-		                        <f:facet name="header">
-		                            Usuário
-		                        </f:facet>
-		                        <center>
-			                        <h:outputText id="item4" value="#{revisao.usuario.nome}"/>
-		                        </center>
-		                    </h:column>
-		                    <h:column id="col5">
-		                        <f:facet name="header">
-		                            Evento
-		                        </f:facet>
-		                        <center>
-		                        	<h:outputText id="item5" value="#{revisao.tipoRevisao.descricao}"/>
-		                        </center>
-		                    </h:column>
-		                   
-		    			</rich:dataTable>
-						
-						<rich:datascroller	id="scroller" 
-											for="tblRevisao"
-											stepControls="hide" 
-											align="center"
-											rendered="#{consultarAuditoriaBean.dataModel.rowCount > 10}"/>
-				
-					</h:panelGroup>
-				</div>
-			</fieldset>
+					<rich:datascroller	id="scroller" 
+										for="tblRevisao"
+										stepControls="hide" 
+										align="center"
+										rendered="#{consultarAuditoriaBean.dataModel.rowCount > 10}"/>			
+				</h:panelGroup>
+			</div>
+			
+			
+			<h:commandButton id="btLimpar"									 
+							 value="Limpar" 
+							 action="#{consultarAuditoriaBean.limpar}" 
+							 styleClass="bt-padrao fr mg-right-15" />			
 			
 		</h:form>
 
