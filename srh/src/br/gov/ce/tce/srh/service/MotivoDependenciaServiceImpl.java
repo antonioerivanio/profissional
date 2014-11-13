@@ -58,6 +58,11 @@ public class MotivoDependenciaServiceImpl implements MotivoDependenciaService {
 	}
 
 
+	@Override
+	public List<MotivoDependencia> findByTipo(Long tipo) {
+		return dao.findByTipo(tipo);
+	}
+	
 
 	/**
 	 * Regra de Negocio: 
@@ -77,5 +82,6 @@ public class MotivoDependenciaServiceImpl implements MotivoDependenciaService {
 
 
 	public void setDAO(MotivoDependenciaDAO motivoDependenciaDAO) {this.dao = motivoDependenciaDAO;}
+	
 
 }

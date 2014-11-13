@@ -13,4 +13,5 @@ public interface MotivoDependenciaService {
 	public void salvar(MotivoDependencia entidade) throws SRHRuntimeException;
 	public void excluir(MotivoDependencia entidade);
 
+	public List<MotivoDependencia> findByTipo(Long Tipo);
 }

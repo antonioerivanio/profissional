@@ -20,5 +20,7 @@ public interface PessoalService {
 	public Pessoal getByCpf(String cpf);
 
 	public List<Pessoal> findByNome(String nome);
+	
+	public List<Pessoal> findByCategoria(Long idCategoria);
 
 }

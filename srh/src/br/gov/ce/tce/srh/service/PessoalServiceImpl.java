@@ -210,4 +210,10 @@ public class PessoalServiceImpl implements PessoalService {
 
 	public void setDAO(PessoalDAO pessoalDAO) {this.dao = pessoalDAO;}
 
+
+	@Override
+	public List<Pessoal> findByCategoria(Long idCategoria) {
+		return dao.findByCategoria(idCategoria);
+	}
+
 }

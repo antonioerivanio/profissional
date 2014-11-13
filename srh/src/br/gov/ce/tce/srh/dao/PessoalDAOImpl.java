@@ -216,4 +216,13 @@ public class PessoalDAOImpl implements PessoalDAO {
 		return search(null, usuarioLogado.getCpf(), first, rows);
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pessoal> findByCategoria(Long idCategoria) {
+		Query query = entityManager.createQuery("SELECT e FROM Pessoal e WHERE e.categoria.id = :idCategoria");
+		query.setParameter("idCategoria", idCategoria);
+		return query.getResultList();
+	}
+
 }
