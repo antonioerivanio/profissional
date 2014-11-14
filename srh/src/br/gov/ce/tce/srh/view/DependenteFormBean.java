@@ -111,7 +111,7 @@ public class DependenteFormBean implements Serializable{
         try {
 
         	if ( comboDependente == null ) {
-        		comboDependente = pessoalService.findByCategoria(1L); // DEPENDENTES -> IDCATEGORIA = 4 
+        		comboDependente = pessoalService.findByCategoria(4L); // DEPENDENTES -> IDCATEGORIA = 4 
         	}
 
         } catch (Exception e) {

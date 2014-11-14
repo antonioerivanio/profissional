@@ -2,7 +2,9 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.html.HtmlForm;
 
@@ -14,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Dependente;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -83,10 +86,38 @@ public class DependenteListBean implements Serializable {
 		return "listar";
 	}
 	
+	
+	public String relatorio() {
+
+		try {
+
+			if ( entidade.getResponsavel() == null)
+				throw new SRHRuntimeException("Selecione um servidor.");
+
+			Map<String, Object> parametros = new HashMap<String, Object>();
+
+			String filtro = " WHERE dependente.IDPESSOALRESP = " + entidade.getResponsavel().getId();
+			parametros.put("FILTRO", filtro.toString());
+						
+			relatorioUtil.relatorio("dependente.jasper", parametros, "dependentes.pdf");
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
+	
+		
 	public String limpaTela() {
 		setEntidade(new Dependente());
 		return "listar";
 	}
+	
 	
 	public String excluir() {
 
@@ -129,6 +160,7 @@ public class DependenteListBean implements Serializable {
 			}
 		}
 	}
+	
 
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}

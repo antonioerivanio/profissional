@@ -148,7 +148,28 @@ public class PessoalDAOImpl implements PessoalDAO {
 		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
 		return query.getResultList();
 	}
-
+	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Pessoal> findServidorByNome(String nome) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT e FROM Pessoal e ");
+		sql.append("    left join fetch   e.escolaridade ");
+		sql.append("    left join fetch   e.estadoCivil");
+		sql.append("    left join fetch   e.raca");
+		sql.append("    left join fetch   e.ufEndereco");
+		sql.append("    left join fetch   e.uf");
+		sql.append("    left join fetch   e.ufEmissorRg");
+		sql.append("    left join fetch   e.categoria");
+		sql.append("    WHERE             e.nomePesquisa LIKE :nome");
+		sql.append("    AND               e.categoria.id = 1");
+		sql.append("    ORDER BY          e.nomePesquisa");
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
+		return query.getResultList();
+	}
+			
 
 	@Override
 	public int count(String nome, String cpf) {

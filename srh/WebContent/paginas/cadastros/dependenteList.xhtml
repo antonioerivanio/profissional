@@ -15,7 +15,7 @@
 			{
 				nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
-					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
 					alert('Digite pelo menos 3 caracteres para a pesquisa');
 				}
@@ -66,11 +66,11 @@
 							 action="#{dependenteListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 							 reRender="scroller,lista"/>
-			<!-- <h:commandButton id="Relatório"
+			<h:commandButton id="Relatório"
 							 value="Relatório"
 							 action="#{dependenteListBean.relatorio}" 
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 style="margin-left: 10px" /> -->
+							 style="margin-left: 10px" />
 
 			<div class="tabela-dados">
 
@@ -78,7 +78,7 @@
 
                     <h:column id="col1" headerClass="cel-25">
                         <f:facet name="header">
-                            Nome
+                            Dependente
                         </f:facet>
                         <center>
                         	<h:outputText id="item1" value="#{item.dependente.nomeCompleto}" styleClass="cel-25" />
@@ -86,7 +86,7 @@
                     </h:column>
 					<h:column id="col2" headerClass="cel-25">
                         <f:facet name="header">
-                            Tipo
+                            Tipo Dependência
                         </f:facet>
                         <center>
                         	<h:outputText id="item2" value="#{item.tipoDependencia.descricao}" styleClass="cel-25" />
@@ -137,7 +137,7 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{dependenteListBean.pagedList.size() > 0}"/>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{consultarAuditoriaBean.dataModel.rowCount > 10}"/>
 				
 			</div>
 

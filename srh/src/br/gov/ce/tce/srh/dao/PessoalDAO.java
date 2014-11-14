@@ -22,5 +22,7 @@ public interface PessoalDAO {
 	public List<Pessoal> findByNome(String nome);
 	
 	public List<Pessoal> findByCategoria(Long idCategoria);
+	
+	public List<Pessoal> findServidorByNome(String nome);
 
 }

@@ -99,6 +99,11 @@ public class PessoalServiceImpl implements PessoalService {
 		return dao.findByNome(nome);
 	}
 
+	
+	@Override
+	public List<Pessoal> findServidorByNome(String nome) {
+		return dao.findServidorByNome(nome);
+	}
 
 
 	/**

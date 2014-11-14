@@ -15,7 +15,7 @@
 			{
 				nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
-					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
 					alert('Digite pelo menos 3 caracteres para a pesquisa');
 				}
@@ -120,7 +120,7 @@
 			<h:panelGroup rendered="#{dependenteFormBean.alterar}">
 				
 				<div class="select-box box-50">
-					<label for="">Motivo Fim *</label>
+					<label for="">Motivo Fim</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="motivoFim"
 										 converter="entityConverter" 
@@ -137,7 +137,7 @@
 	
 	
 				<div class="input-box box-14" style="margin-right: 130px;">
-					<label for="">Data Fim *</label>
+					<label for="">Data Fim</label>
 					<div class="conteiner">
 						<h:inputText id="dataFim" 
 									 styleClass="maskData" 
@@ -200,6 +200,21 @@
 			</div>
 			
 			
+			<h:panelGroup rendered="#{dependenteFormBean.alterar}">
+				<div class="radios-group box-15" >
+					<label>Universitário?</label>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectBooleanCheckbox
+								id="universitario"
+								value="#{dependenteFormBean.entidade.flUniversitario}">
+							</h:selectBooleanCheckbox>
+						</div>
+					</div>
+				</div>
+			</h:panelGroup>
+			
+			
 			<div class="textarea-box box-100">
 				<label for="">Observação</label>
 				<div class="conteiner">
@@ -212,7 +227,7 @@
 			
 			
 			
-			<h:commandButton action="#{dependenteFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
+			<h:commandButton action="#{dependenteFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" style="margin-right: 15px;" />
 			<a href="/srh/paginas/cadastros/dependenteList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
 			<a href="/srh/paginas/cadastros/dependenteForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 

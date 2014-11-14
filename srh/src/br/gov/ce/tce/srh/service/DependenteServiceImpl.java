@@ -68,7 +68,7 @@ public class DependenteServiceImpl implements DependenteService{
 				throw new SRHRuntimeException("O Resposável já possui este Dependente.");
 		}
 		
-		if(entidade.getTipoDependencia() == null || entidade.getTipoDependencia().getId() == 0L)
+		if(entidade.getTipoDependencia() == null)
 			throw new SRHRuntimeException("O Tipo Dependência é obrigatório.");
 			
 		if(entidade.getMotivoInicio() == null || entidade.getMotivoInicio().getId() == 0L)
