@@ -61,7 +61,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="dependente"
 									 converter="entityConverter" 
-									 value="#{dependenteFormBean.entidade.dependente}">
+									 value="#{dependenteFormBean.entidade.dependente}"
+									 disabled="#{dependenteFormBean.alterar}" >
 					  	<f:selectItem id="selecioneDependente" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboDependente"
 					  					value="#{dependenteFormBean.comboDependente}"
@@ -85,6 +86,11 @@
 					  					var="tipoDependencia"
 					  					itemValue="#{tipoDependencia}"
 					  					itemLabel="#{tipoDependencia.descricao}"/>
+					  	<a4j:support event="onchange" 
+					  	             action="#{dependenteFormBean.tipoDependenciaSelecionado}"
+					  	             reRender="tipoDuracao" 
+					  	             ajaxSingle="true" 
+					  	             rendered="#{!dependenteFormBean.alterar}" />
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -102,6 +108,11 @@
 					  					var="motivo"
 					  					itemValue="#{motivo}"
 					  					itemLabel="#{motivo.descricao}"/>
+					  	<a4j:support event="onchange" 
+					  	             action="#{dependenteFormBean.motivoInicioSelecionado}"
+					  	             reRender="tipoDuracao" 
+					  	             ajaxSingle="true" 
+					  	             rendered="#{!dependenteFormBean.alterar}" />
 					</h:selectOneMenu>
 				</div>
 			</div>

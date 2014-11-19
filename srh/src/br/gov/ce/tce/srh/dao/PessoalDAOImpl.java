@@ -241,7 +241,7 @@ public class PessoalDAOImpl implements PessoalDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Pessoal> findByCategoria(Long idCategoria) {
-		Query query = entityManager.createQuery("SELECT e FROM Pessoal e WHERE e.categoria.id = :idCategoria");
+		Query query = entityManager.createQuery("SELECT e FROM Pessoal e WHERE e.categoria.id = :idCategoria ORDER BY e.nomeCompleto");
 		query.setParameter("idCategoria", idCategoria);
 		return query.getResultList();
 	}

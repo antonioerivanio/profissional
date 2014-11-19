@@ -21,7 +21,14 @@ public class DependenteServiceImpl implements DependenteService{
 	@Transactional	
 	public void salvar(Dependente entidade, boolean alterar) throws SRHRuntimeException {
 		
-		validarDados(entidade, alterar);		
+		validarDados(entidade, alterar);
+		
+		if (alterar && entidade.getDataFim() != null){
+			entidade.setDepIr(false);
+			entidade.setDepPrev(false);
+			entidade.setDepSf(false);
+			entidade.setFlUniversitario(false);
+		}
 		
 		dependenteDAO.salvar(entidade);
 	}
@@ -79,6 +86,13 @@ public class DependenteServiceImpl implements DependenteService{
 		
 		if(entidade.getTipoDuracao() == 0L)
 			throw new SRHRuntimeException("A Duração é obrigatória.");		
+					
+		if(entidade.getMotivoFim() != null && entidade.getDataFim() == null)
+			throw new SRHRuntimeException("Informe a Data Fim.");
+		
+		if(entidade.getMotivoFim() == null && entidade.getDataFim() != null)
+			throw new SRHRuntimeException("Informe o Motivo Fim.");
+		
 		
 	}
 

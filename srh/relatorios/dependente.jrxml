@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pessoalCursoGraduacao" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
@@ -19,11 +19,17 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT pessoalResp.nomecompleto as RESPONSAVEL,
+		<![CDATA[SELECT
+       pessoalResp.id as IDRESPONSAVEL,
+       pessoalResp.nomecompleto as RESPONSAVEL,
        pessoaldep.nomecompleto as DEPENDENTE,
        tipoDependencia.descricao AS TIPODEPENDENCIA,
        dependente.datainicio AS DATAINICIO,
-       dependente.datafim AS DATAFIM
+       dependente.datafim AS DATAFIM,
+       dependente.depprev AS DEPPREV,
+       dependente.depir AS DEPIR,
+       dependente.depsf AS DEPSF,
+       dependente.fluniversitario AS FLUNIVERSITARIO
 
 FROM TB_DEPENDENTE dependente
      INNER JOIN TB_PESSOAL pessoalResp
@@ -32,13 +38,173 @@ FROM TB_DEPENDENTE dependente
         ON dependente.idpessoaldep = pessoalDep.id
      INNER JOIN TB_TIPODEPENDENCIA tipoDependencia
         ON dependente.idtipodependencia = tipoDependencia.id
-$P!{FILTRO}]]>
+
+$P!{FILTRO}
+
+GROUP BY
+       pessoalResp.id,
+       pessoalResp.nomecompleto,
+       pessoaldep.nomecompleto,
+       tipoDependencia.descricao,
+       dependente.datainicio,
+       dependente.datafim,
+       dependente.depprev,
+       dependente.depir,
+       dependente.depsf,
+       dependente.fluniversitario
+
+
+ORDER BY pessoalResp.nomecompleto, pessoaldep.nomecompleto]]>
 	</queryString>
+	<field name="IDRESPONSAVEL" class="java.math.BigDecimal"/>
 	<field name="RESPONSAVEL" class="java.lang.String"/>
 	<field name="DEPENDENTE" class="java.lang.String"/>
 	<field name="TIPODEPENDENCIA" class="java.lang.String"/>
 	<field name="DATAINICIO" class="java.sql.Timestamp"/>
 	<field name="DATAFIM" class="java.sql.Timestamp"/>
+	<field name="DEPPREV" class="java.lang.Integer"/>
+	<field name="DEPIR" class="java.lang.Integer"/>
+	<field name="DEPSF" class="java.lang.Integer"/>
+	<field name="FLUNIVERSITARIO" class="java.lang.Integer"/>
+	<variable name="TOTAL_DEPIR" class="java.lang.Integer" resetType="Group" resetGroup="RESPONSAVEL_GROUP" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEPIR}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_DEPPREV" class="java.lang.Integer" resetType="Group" resetGroup="RESPONSAVEL_GROUP" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEPPREV}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_DEPSF" class="java.lang.Integer" resetType="Group" resetGroup="RESPONSAVEL_GROUP" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEPSF}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_FLUNIVERSITARIO" class="java.lang.Integer" resetType="Group" resetGroup="RESPONSAVEL_GROUP" calculation="Sum">
+		<variableExpression><![CDATA[$F{FLUNIVERSITARIO}]]></variableExpression>
+	</variable>
+	<group name="RESPONSAVEL_GROUP">
+		<groupExpression><![CDATA[$F{IDRESPONSAVEL}]]></groupExpression>
+		<groupHeader>
+			<band height="51">
+				<rectangle>
+					<reportElement x="1" y="5" width="800" height="20" forecolor="#CCCCCC"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="1" y="30" width="800" height="18" backcolor="#195297"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="3" y="6" width="65" height="18"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[SERVIDOR:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="70" y="6" width="495" height="18"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{RESPONSAVEL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="30" width="230" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DEPENDENTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="236" y="30" width="180" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TIPO DEPENDÊNCIA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="420" y="30" width="80" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DATA INÍCIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="502" y="30" width="80" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DATA FIM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="585" y="30" width="65" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DEP PREV]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="653" y="30" width="50" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DEP IR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="706" y="30" width="50" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[DEP SF]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="759" y="30" width="40" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[UNIV]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="39">
+				<textField>
+					<reportElement x="66" y="3" width="100" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{RESPONSAVEL_GROUP_COUNT}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="585" y="3" width="65" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{TOTAL_DEPPREV}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="653" y="3" width="50" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{TOTAL_DEPIR}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="706" y="3" width="50" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{TOTAL_DEPSF}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="759" y="3" width="40" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{TOTAL_FLUNIVERSITARIO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="3" width="44" height="18"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[TOTAL:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -56,7 +222,7 @@ $P!{FILTRO}]]>
 				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="209" y="42" width="390" height="20" forecolor="#0F2E52"/>
+				<reportElement x="5" y="42" width="797" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -68,86 +234,52 @@ $P!{FILTRO}]]>
 			</image>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="27">
-			<rectangle>
-				<reportElement x="1" y="3" width="800" height="20" forecolor="#CCCCCC"/>
-			</rectangle>
-			<staticText>
-				<reportElement x="3" y="4" width="65" height="18"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[SERVIDOR:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="70" y="4" width="495" height="18"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{RESPONSAVEL}]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="18" splitType="Stretch">
-			<rectangle>
-				<reportElement x="1" y="0" width="800" height="18" backcolor="#195297"/>
-			</rectangle>
-			<staticText>
-				<reportElement x="532" y="0" width="130" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DATA INÍCIO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="3" y="0" width="306" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DEPENDENTE]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="664" y="0" width="130" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DATA FIM]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="311" y="0" width="219" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TIPO DEPENDÊNCIA]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="801" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
-					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="2" width="800" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+					<printWhenExpression><![CDATA[new Boolean(($V{RESPONSAVEL_GROUP_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
-			<textField>
-				<reportElement x="3" y="2" width="306" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="2" y="1" width="230" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DEPENDENTE}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="311" y="2" width="219" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="236" y="1" width="180" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPODEPENDENCIA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="532" y="2" width="130" height="16"/>
+				<reportElement x="420" y="1" width="80" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DATAINICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="664" y="2" width="130" height="16"/>
+				<reportElement x="502" y="1" width="80" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{DATAFIM}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="585" y="1" width="65" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DEPPREV}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="653" y="1" width="50" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DEPIR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="706" y="1" width="50" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DEPSF}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="759" y="1" width="40" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FLUNIVERSITARIO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

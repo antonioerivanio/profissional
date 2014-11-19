@@ -174,6 +174,32 @@ public class DependenteFormBean implements Serializable{
 	}
 	
 	
+	public void tipoDependenciaSelecionado() {
+		if (entidade.getTipoDependencia() != null){
+			if (entidade.getTipoDependencia().getId() == 1)
+				entidade.setTipoDuracao(1L);
+			else
+				entidade.setTipoDuracao(0L);		
+		}else{
+			entidade.setTipoDuracao(0L);
+		}
+	}
+	
+	
+	public void motivoInicioSelecionado() {		
+		if (entidade.getMotivoInicio() != null){
+			Long idMotivo = entidade.getMotivoInicio().getId();
+			
+			if(idMotivo == 6 || idMotivo == 7 || idMotivo == 8)
+				entidade.setTipoDuracao(1L);
+			else
+				entidade.setTipoDuracao(0L);
+		}else{
+			entidade.setTipoDuracao(0L);
+		}		
+	}
+	
+	
 	private void limpar() {
 
 		idResponsavel = 0L;

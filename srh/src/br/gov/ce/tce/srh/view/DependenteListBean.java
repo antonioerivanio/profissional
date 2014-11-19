@@ -62,12 +62,11 @@ public class DependenteListBean implements Serializable {
 	public String consultar() {
 
 		try {
+
+			if (getEntidade() == null || getEntidade().getResponsavel() == null)
+				throw new SRHRuntimeException("Selecione um servidor. Digite o nome e efetue a pesquisa.");
 			
-//			validando campos da entidade
-			if ( getEntidade().getResponsavel() != null)
-				count = dependenteService.count(entidade.getResponsavel().getId());
-			else
-				count = dependenteService.count(null);
+			count = dependenteService.count(entidade.getResponsavel().getId());			
 			
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -76,7 +75,12 @@ public class DependenteListBean implements Serializable {
 			
 			flagRegistroInicial = -1;
 			passouConsultar = true;
-
+		
+		} catch (SRHRuntimeException e) {
+			limparListas();
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
@@ -91,12 +95,15 @@ public class DependenteListBean implements Serializable {
 
 		try {
 
-			if ( entidade.getResponsavel() == null)
-				throw new SRHRuntimeException("Selecione um servidor.");
-
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
-			String filtro = " WHERE dependente.IDPESSOALRESP = " + entidade.getResponsavel().getId();
+			String filtro;
+			
+			if (getEntidade() == null || getEntidade().getResponsavel() == null)
+				filtro = "";
+			else
+				filtro = " WHERE dependente.IDPESSOALRESP = " + entidade.getResponsavel().getId();			
+			
 			parametros.put("FILTRO", filtro.toString());
 						
 			relatorioUtil.relatorio("dependente.jasper", parametros, "dependentes.pdf");
@@ -114,7 +121,12 @@ public class DependenteListBean implements Serializable {
 	
 		
 	public String limpaTela() {
+		
 		setEntidade(new Dependente());
+		
+		cpf = new String();
+		nome = new String();
+		
 		return "listar";
 	}
 	
@@ -124,7 +136,9 @@ public class DependenteListBean implements Serializable {
 		try {
 
 			dependenteService.excluir(entidade);
-
+			limpaTela();
+			limparListas();
+			
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
 
@@ -135,20 +149,20 @@ public class DependenteListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return consultar();
+		
+		return null;
 	}
 	
-	
+		
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
 		if ( !this.cpf.equals(cpf) ) {
 			this.cpf = cpf;
 
 			try {
-				getEntidade().setResponsavel(pessoalService.getByCpf( this.cpf ));
+				getEntidade().setResponsavel(pessoalService.getByCpf(this.cpf));
 				
-				if ( getEntidade().getResponsavel() != null) {
+				if (getEntidade().getResponsavel() != null) {
 					this.nome = getEntidade().getResponsavel().getNomeCompleto();					
 				} else {
 					FacesUtil.addInfoMessage("CPF não encontrado.");
@@ -172,7 +186,7 @@ public class DependenteListBean implements Serializable {
 	public HtmlForm getForm() {
 		if (!passouConsultar) {
 			
-			setEntidade( new Dependente() );
+			setEntidade(new Dependente());
 			
 			cpf = new String();
 			nome = new String();
@@ -200,11 +214,8 @@ public class DependenteListBean implements Serializable {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
 			
-			if(entidade.getResponsavel() != null)
-				setPagedList(dependenteService.search(entidade.getResponsavel().getId(), getDataTable().getFirst(), getDataTable().getRows()));
-			else
-				setPagedList(dependenteService.search(null, getDataTable().getFirst(), getDataTable().getRows()));
-			
+			setPagedList(dependenteService.search(entidade.getResponsavel().getId(), getDataTable().getFirst(), getDataTable().getRows()));
+						
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

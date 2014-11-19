@@ -411,6 +411,14 @@
 								</a>
 							</li>
 						</ui:fragment>
+						
+						<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE')}">
+							<li>
+								<a href="/srh/paginas/cadastros/dependenteList.faces">
+									Dependentes
+								</a>
+							</li>
+						</ui:fragment>
 	
 					</ul>
 				</li>
@@ -480,21 +488,11 @@
 					Publicação
 					</a>
 				</li>
-			</ui:fragment>
-			
-			<ui:fragment>
-				<li>
-					<a href="/srh/paginas/cadastros/dependenteList.faces">
-					Dependentes
-					</a>
-				</li>
-			</ui:fragment>			
+			</ui:fragment>						
 		</ul>
         </li>
 
 		</ui:fragment>
-
-
 
 
 
