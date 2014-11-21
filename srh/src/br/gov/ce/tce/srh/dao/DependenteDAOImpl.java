@@ -75,10 +75,10 @@ public class DependenteDAOImpl implements DependenteDAO{
 		Query query;
 		
 		if(idPessoal != null && idPessoal != 0){
-			query = entityManager.createQuery("SELECT d FROM Dependente d WHERE d.responsavel.id = :idPessoal");
+			query = entityManager.createQuery("SELECT d FROM Dependente d WHERE d.responsavel.id = :idPessoal ORDER BY d.dependente.nomeCompleto");
 			query.setParameter("idPessoal", idPessoal);
 		}else{
-			query = entityManager.createQuery("SELECT d FROM Dependente d");
+			query = entityManager.createQuery("SELECT d FROM Dependente d ORDER BY d.dependente.nomeCompleto");
 		}
 		
 		query.setFirstResult(first);
