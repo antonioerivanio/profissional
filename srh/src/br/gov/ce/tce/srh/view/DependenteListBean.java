@@ -120,13 +120,8 @@ public class DependenteListBean implements Serializable {
 	}
 	
 		
-	public String limpaTela() {
-		
+	public String limpaTela() {		
 		setEntidade(new Dependente());
-		
-		cpf = new String();
-		nome = new String();
-		
 		return "listar";
 	}
 	
@@ -135,9 +130,7 @@ public class DependenteListBean implements Serializable {
 
 		try {
 
-			dependenteService.excluir(entidade);
-			limpaTela();
-			limparListas();
+			dependenteService.excluir(entidade);			
 			
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -150,7 +143,7 @@ public class DependenteListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
-		return null;
+		return consultar();
 	}
 	
 		
