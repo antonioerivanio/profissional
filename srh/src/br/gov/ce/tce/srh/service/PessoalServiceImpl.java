@@ -99,6 +99,11 @@ public class PessoalServiceImpl implements PessoalService {
 		return dao.findByNome(nome);
 	}
 
+	
+	@Override
+	public List<Pessoal> findServidorByNome(String nome) {
+		return dao.findServidorByNome(nome);
+	}
 
 
 	/**
@@ -214,6 +219,11 @@ public class PessoalServiceImpl implements PessoalService {
 	@Override
 	public List<Pessoal> findAllComFuncional() {
 		return dao.findAllComFuncional();
+	}
+	
+	@Override
+	public List<Pessoal> findByCategoria(Long idCategoria) {
+		return dao.findByCategoria(idCategoria);
 	}
 
 }

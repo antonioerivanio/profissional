@@ -83,4 +83,12 @@ public class TipoDependenciaDAOImpl implements TipoDependenciaDAO {
 		}
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TipoDependencia> findAll() {
+		Query query = entityManager.createQuery("SELECT t FROM TipoDependencia t ORDER BY t.descricao");		
+		return query.getResultList();
+	}
+
 }

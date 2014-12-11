@@ -12,5 +12,7 @@ public interface TipoDependenciaService {
 
 	public void salvar(TipoDependencia entidade) throws SRHRuntimeException;
 	public void excluir(TipoDependencia entidade);
+	
+	public List<TipoDependencia> findAll();
 
 }

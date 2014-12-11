@@ -193,7 +193,12 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			
 			String entidadeNome = revisao.getEntidade().getSimpleName();
 		
-			if(entidadeNome.equalsIgnoreCase("Pessoal")){
+			if(entidadeNome.equalsIgnoreCase("Dependente")){
+				
+				revisao.setRestricao(new Restricao("responsavel", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));			
+				count = ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
+			
+			} else if(entidadeNome.equalsIgnoreCase("Pessoal")){
 				
 				revisao.setRestricao(new Restricao("id", Long.class, revisao.getPessoal().getId()));			
 				count = ((Number) createAuditQuery(revisao).addProjection(AuditEntity.revisionProperty("id").count()).getSingleResult()).intValue();
@@ -241,8 +246,17 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		if(revisao.getPessoal() != null){
 		
 			String entidadeNome = revisao.getEntidade().getSimpleName();		
-			
-			if(entidadeNome.equalsIgnoreCase("Pessoal")){
+				
+			if(entidadeNome.equalsIgnoreCase("Dependente")){
+				
+				revisao.setRestricao(new Restricao("responsavel", revisao.getPessoal().getClass(), revisao.getPessoal().getId()));				
+				AuditQuery auditQuery = createAuditQuery(revisao);
+				auditQuery.setFirstResult(first);
+				auditQuery.setMaxResults(rows);	
+				resultList = auditQuery.getResultList();
+				
+				
+			} else if(entidadeNome.equalsIgnoreCase("Pessoal")){
 				
 				revisao.setRestricao(new Restricao("id", Long.class, revisao.getPessoal().getId()));				
 				AuditQuery auditQuery = createAuditQuery(revisao);

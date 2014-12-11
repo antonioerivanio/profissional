@@ -56,6 +56,12 @@ public class TipoDependenciaServiceImpl implements TipoDependenciaService {
 	public List<TipoDependencia> search(String descricao, int first, int rows) {
 		return dao.search(descricao, first, rows);
 	}
+	
+	
+	@Override
+	public List<TipoDependencia> findAll() {
+		return dao.findAll();
+	}
 
 
 
@@ -77,5 +83,6 @@ public class TipoDependenciaServiceImpl implements TipoDependenciaService {
 
 
 	public void setDAO(TipoDependenciaDAO tipoDependenciaDAO) {this.dao = tipoDependenciaDAO;}
+	
 
 }

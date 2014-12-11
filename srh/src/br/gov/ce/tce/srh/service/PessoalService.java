@@ -20,7 +20,11 @@ public interface PessoalService {
 	public Pessoal getByCpf(String cpf);
 
 	public List<Pessoal> findByNome(String nome);
-	
+
 	public List<Pessoal> findAllComFuncional();
+
+	public List<Pessoal> findByCategoria(Long idCategoria);
+	
+	public List<Pessoal> findServidorByNome(String nome);
 
 }

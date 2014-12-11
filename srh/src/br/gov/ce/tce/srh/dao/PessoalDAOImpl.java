@@ -151,7 +151,28 @@ public class PessoalDAOImpl implements PessoalDAO {
 		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
 		return query.getResultList();
 	}
-
+	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Pessoal> findServidorByNome(String nome) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT e FROM Pessoal e ");
+		sql.append("    left join fetch   e.escolaridade ");
+		sql.append("    left join fetch   e.estadoCivil");
+		sql.append("    left join fetch   e.raca");
+		sql.append("    left join fetch   e.ufEndereco");
+		sql.append("    left join fetch   e.uf");
+		sql.append("    left join fetch   e.ufEmissorRg");
+		sql.append("    left join fetch   e.categoria");
+		sql.append("    WHERE             e.nomePesquisa LIKE :nome");
+		sql.append("    AND               e.categoria.id = 1");
+		sql.append("    ORDER BY          e.nomePesquisa");
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
+		return query.getResultList();
+	}
+			
 
 	@Override
 	public int count(String nome, String cpf) {
@@ -219,10 +240,21 @@ public class PessoalDAOImpl implements PessoalDAO {
 		return search(null, usuarioLogado.getCpf(), first, rows);
 	}
 
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Pessoal> findAllComFuncional() {		
 		return entityManager.createQuery("SELECT DISTINCT p FROM Funcional f INNER JOIN f.pessoal p ORDER BY p.nome").getResultList();		
 	}	
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pessoal> findByCategoria(Long idCategoria) {
+		Query query = entityManager.createQuery("SELECT e FROM Pessoal e WHERE e.categoria.id = :idCategoria ORDER BY e.nomeCompleto");
+		query.setParameter("idCategoria", idCategoria);
+		return query.getResultList();
+	}
+
 
 }

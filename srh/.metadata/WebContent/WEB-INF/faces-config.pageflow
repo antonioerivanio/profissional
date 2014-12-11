@@ -117,6 +117,8 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/orientacaoCargoList.xhtml" x="122" y="23410" id="pf14080241943230" referenceLink="//@navigationRule.25/@fromViewId|" outlinks="pf14080241943231 pf14080241943232" inlinks="pf14080241943231" path="/paginas/tabelas/orientacaoCargoList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/orientacaoCargoForm.xhtml" x="338" y="23410" id="pf14080241943233" referenceLink="//@navigationRule.25/@navigationCase.1/@toViewId|" inlinks="pf14080241943232" path="/paginas/tabelas/orientacaoCargoForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/licencaFinalizarList.xhtml" x="122" y="23794" id="pf14080241943234" referenceLink="//@navigationRule.34/@navigationCase.0/@toViewId|" outlinks="pf14080241943235" inlinks="pf14080241943235" path="/paginas/funcional/licencaFinalizarList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/dList.xhtml" id="pf14158000432360" referenceLink="//@navigationRule.64/@fromViewId|" outlinks="pf14158000432361 pf14158000432362" inlinks="pf14158000432361" path="/paginas/cadastros/dependenteList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/dependentesForm.xhtml" id="pf14158000432363" referenceLink="//@navigationRule.64/@navigationCase.1/@toViewId|" inlinks="pf14158000432362" path="/paginas/cadastros/dependenteForm.xhtml"/>
   <links id="pf13831638497452" target="pf13831638497453" source="pf13831638497450" outcome="incluirAlterar"/>
   <links id="pf13831638497456" target="pf13831638497467" source="pf13831638497454" outcome="incluirAlterar"/>
   <links id="pf138316384974610" target="pf138316384974611" source="pf13831638497468" outcome="incluirAlterar"/>
@@ -490,4 +492,6 @@
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
+  <links id="pf14158000432361" target="pf14158000432360" source="pf14158000432360" outcome="listar"/>
+  <links id="pf14158000432362" target="pf14158000432363" source="pf14158000432360" outcome="incluirAlterar"/>
 </pageflow:Pageflow>
