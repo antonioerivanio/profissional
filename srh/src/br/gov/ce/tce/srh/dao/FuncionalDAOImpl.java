@@ -64,9 +64,11 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 				
 				mat = mat + 1;
 				
+
 				//adicionando quantidades de zeros restante para comparar a matrícula no padrão NNNN-D onde N é um número e D é o dígito verificador
 				matricula = String.format("%5s", mat).replace(' ', '0');
 				
+
 				//adicionando separador do dígito verificador
 				matricula = matricula.substring(0,4)+"-"+matricula.substring(4,5);
 				
@@ -253,17 +255,15 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 		return query.getResultList();
 	}
 	
-	
-	
-	// Consultas replicadas sem o critério de datasaida nula para que se possa ver o histórico dos servidores que já saíram.  
+
+	// Consultas replicadas sem o critério de datasaida nula para que se possa ver o histórico dos servidores que já saíram. 
 	// By Zacarias - 06/08/2014
-	
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public Funcional getCpfAndNomeByMatricula(String matricula) {
 		try {
-			Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE upper( r.matricula ) = :matricula  ");
+			Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE upper( r.matricula ) = :matricula AND r.atipoFp = true order by r.id desc");
 			query.setParameter("matricula", matricula);
 			List<Funcional> lista = query.getResultList(); 
 			if (lista.size() > 0)
@@ -301,7 +301,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<String> findAllByNome(String nome) {
-		Query query = entityManager.createQuery("SELECT distinct( r.matricula ), r.id, p.id, p.nomeCompleto, p.nomeMae, p.cpf, p.rg, p.emissorRg, p.ufEmissorRg.id, r.setor.id, r.setor.nome FROM Funcional r join r.pessoal p WHERE upper( r.nomePesquisa ) like :nome  AND r.atipoFp = true");
+		Query query = entityManager.createQuery("SELECT distinct( r.matricula ), r.id, p.id, p.nomeCompleto, p.nomeMae, p.cpf, p.rg, p.emissorRg, p.ufEmissorRg.id, r.setor.id, r.setor.nome FROM Funcional r join r.pessoal p WHERE upper( r.nomePesquisa ) like :nome  AND r.atipoFp = true order by r.id desc");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		return query.getResultList();
 	}
