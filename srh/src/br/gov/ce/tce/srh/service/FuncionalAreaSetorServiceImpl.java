@@ -73,8 +73,8 @@ public class FuncionalAreaSetorServiceImpl implements FuncionalAreaSetorService 
 	/**
 	 * Validar:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setado a area.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setado a area.
 	 * 
 	 * @param entidade
 	 * 
@@ -84,11 +84,11 @@ public class FuncionalAreaSetorServiceImpl implements FuncionalAreaSetorService 
 	private void validarDados(FuncionalAreaSetor entidade) {
 
 		if (entidade.getPk().getFuncional() == null || entidade.getPk().getFuncional().equals(0l)) {
-			throw new SRHRuntimeException("Funcionario È obrigatÛrio.");
+			throw new SRHRuntimeException("Funcionario √© obrigat√≥rio.");
 		}
 
 		if (entidade.getPk().getAreaSetor() == null || entidade.getPk().getAreaSetor().equals(0l)) {
-			throw new SRHRuntimeException("¡rea È obrigatÛria.");
+			throw new SRHRuntimeException("√Årea √© obrigat√≥ria.");
 		}
 
 	}

@@ -123,7 +123,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			this.listaPessoaCurso = pessoalCursoProfissionalService.findByCurso( curso.getId() );
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -144,14 +144,14 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			this.curso = new CursoProfissional();
 			limpar();
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -172,7 +172,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 				this.comboArea = areaProfissionalService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo area. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo area. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -202,7 +202,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo curso. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo curso. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -229,7 +229,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
     		this.listaPessoaCurso = new ArrayList<PessoalCursoProfissional>();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo instituição. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo instituiÃ§Ã£o. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -249,7 +249,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
         		this.comboCompetencia = competenciaService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo competência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo competÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -268,20 +268,20 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 
 			// validando se o curso foi selecionado
 			if ( getCursoAux() == null || getCursoAux().getId().equals(0l)) {
-				FacesUtil.addErroMessage("O curso é obrigatório.");
+				FacesUtil.addErroMessage("O curso Ã© obrigatÃ³rio.");
 				return null;
 			}
 
 			// validando o campo obrigatorio competencia
 			if ( this.competenciaCurso.getCompetencia() == null ) {
-				FacesUtil.addErroMessage("A competência é obrigatória.");
+				FacesUtil.addErroMessage("A competÃªncia Ã© obrigatÃ³ria.");
 				return null;
 			}
 
 			// verificando se a competencia ja foi cadatrada
 			for (CompetenciaCurso item : listaCompetencias) {
 				if ( item.getCompetencia().getId().equals(this.competenciaCurso.getCompetencia().getId()) ) {
-					FacesUtil.addErroMessage("A competência ja esta na lista.");
+					FacesUtil.addErroMessage("A competÃªncia jÃ¡ estÃ¡ na lista.");
 					return null;
 				}
 			}
@@ -298,7 +298,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			getCompetenciaCurso().setCompetencia(new Competencia());
 
 		} catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao adicionar a competência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao adicionar a competÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -321,7 +321,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			getCompetenciaCurso().setCompetencia(new Competencia());
 
 		} catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao remover a competência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao remover a competÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -340,20 +340,20 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 
 			// validando se o curso foi selecionado
 			if ( getCurso() == null ) {
-				FacesUtil.addErroMessage("O curso é obrigatório.");
+				FacesUtil.addErroMessage("O curso Ã© obrigatÃ³rio.");
 				return null;
 			}
 
 			// validando o campo obrigatorio competencia
 			if ( getEntidade().getPessoal() == null ) {
-				FacesUtil.addErroMessage("O Funcionário é obrigatório.");
+				FacesUtil.addErroMessage("O FuncionÃ¡rio Ã© obrigatÃ³rio.");
 				return null;
 			}
 
 			// verificando se o servidor ja foi cadatrado
 			for (PessoalCursoProfissional item : listaPessoaCurso) {
 				if (item.getPessoal().getId().equals( this.getEntidade().getPessoal().getId() )) {
-					FacesUtil.addErroMessage("O Funcionário ja esta na lista.");
+					FacesUtil.addErroMessage("O FuncionÃ¡rio jÃ¡ estÃ¡ na lista.");
 					return null;
 				}
 			}
@@ -378,7 +378,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			this.matricula = new String();
 
 		} catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao adicionar o servidor. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao adicionar o servidor. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -399,7 +399,7 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			setEntidade( new PessoalCursoProfissional() );
 
 		} catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao remover o servidor. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao remover o servidor. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -481,11 +481,11 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 					this.nome = getEntidadeFuncional().getNomeCompleto();
 					this.cpf = getEntidadeFuncional().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+					FacesUtil.addInfoMessage("MatrÃ­cula nÃ£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 		}
@@ -503,11 +503,11 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 				if (getEntidade().getPessoal() != null) {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF nÃ£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-	        	FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
+	        	FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÃ§Ã£o cancelada.");
 	        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 

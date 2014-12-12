@@ -47,7 +47,7 @@ public class RepresentacaoValorDAOImpl implements RepresentacaoValorDAO {
 		// verificando se existe representacao ja cadastrada
 		RepresentacaoValor entidadeJaExiste = getByCargo( entidade.getRepresentacaoCargo().getId() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId())) {
-			throw new SRHRuntimeException("Cargo de RepresentaÁ„o do Valor j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Cargo de Representa√ß√£o do Valor j√° cadastrado. Opera√ß√£o cancelada.");
 		}
 
 		return entityManager.merge(entidade);

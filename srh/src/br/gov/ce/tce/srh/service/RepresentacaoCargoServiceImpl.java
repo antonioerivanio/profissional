@@ -76,7 +76,7 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 
 		RepresentacaoCargo entidadeJaExiste = dao.getByNomenclaturaSimbolo( entidade.getNomenclatura(), entidade.getSimbolo() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Nomenclatura e Simbolo j· cadastrada. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Nomenclatura e Simbolo j√° cadastrada. Opera√ß√£o cancelada.");
 		
 	}
 

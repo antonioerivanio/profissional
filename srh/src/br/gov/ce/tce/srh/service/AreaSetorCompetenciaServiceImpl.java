@@ -109,16 +109,16 @@ public class AreaSetorCompetenciaServiceImpl implements AreaSetorCompetenciaServ
 	private void validarCampos(AreaSetorCompetencia entidade) throws SRHRuntimeException {
 
 		if ( entidade.getAreaSetor() == null )
-			throw new SRHRuntimeException("A área é obrigatório.");
+			throw new SRHRuntimeException("A Ã¡rea Ã© obrigatÃ³ria.");
 
 		if ( entidade.getCompetencia() == null )
-			throw new SRHRuntimeException("A competência é obrigatório.");
+			throw new SRHRuntimeException("A competÃªncia Ã© obrigatÃ³rio.");
 
 		if ( entidade.getDataInicio() == null )
-			throw new SRHRuntimeException("A data de inicio é obrigatória.");
+			throw new SRHRuntimeException("A data de inicio Ã© obrigatÃ³ria.");
 		
 		if ( entidade.getMotivoInicio() == null || entidade.getMotivoInicio().equalsIgnoreCase("") )
-			throw new SRHRuntimeException("O motivo entrada é obrigatória.");
+			throw new SRHRuntimeException("O motivo entrada Ã© obrigatÃ³rio.");
 
 	}
 
@@ -129,8 +129,8 @@ public class AreaSetorCompetenciaServiceImpl implements AreaSetorCompetenciaServ
 	 * Verifica na base se nao existe entidade cadastrada com o mesmo SETOR, AREA E COMPETENCIA.
 	 * 
 	 * Validar datas:
-	 * · Nao pode existir entidade repetida com data fim nulas.
-	 * · Nao pode existir entidade entre o intervalo de data inicio e fim. 
+	 *  Nao pode existir entidade repetida com data fim nulas.
+	 *  Nao pode existir entidade entre o intervalo de data inicio e fim. 
 	 *  
 	 * @param entidade
 	 * 
@@ -147,18 +147,18 @@ public class AreaSetorCompetenciaServiceImpl implements AreaSetorCompetenciaServ
 
 				// se a data fim nao esta preenchida
 				if (entidadeJaExiste.getDataFim() == null)
-					throw new SRHRuntimeException("Competência do Setor já cadastrado. Operação cancelada.");
+					throw new SRHRuntimeException("CompetÃªncia do Setor jÃ¡ cadastrada. OperaÃ§Ã£o cancelada.");
 
 				// se a data inicio esta em algum intervalo cadastrado
 				if (entidade.getDataInicio().after(entidadeJaExiste.getDataInicio()) 
 						&& entidade.getDataInicio().before(entidadeJaExiste.getDataFim())) {
-					throw new SRHRuntimeException("Competência do Setor já cadastrado para o intervalo de datas. Operação cancelada.");
+					throw new SRHRuntimeException("CompetÃªncia do Setor jÃ¡ cadastrada para o intervalo de datas. OperaÃ§Ã£o cancelada.");
 				}
 
 				// se a data fim esta em algum intervalo cadastrado
 				if (entidade.getDataFim().after(entidadeJaExiste.getDataInicio()) 
 						&& entidade.getDataInicio().before(entidadeJaExiste.getDataFim())) {
-					throw new SRHRuntimeException("Competência do Setor já cadastrado para o intervalo de datas. Operação cancelada.");
+					throw new SRHRuntimeException("CompetÃªncia do Setor jÃ¡ cadastrada para o intervalo de datas. OperaÃ§Ã£o cancelada.");
 				}
 
 			}

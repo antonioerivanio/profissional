@@ -17,7 +17,7 @@ import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC042_Manter LotaÁ„o do Servidor
+* Use case : SRH_UC042_Manter Lota√ß√£o do Servidor
 * 
 * @since   : Dez 19, 2011, 17:59:02 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -77,7 +77,7 @@ public class FuncionalSetorFormBean implements Serializable {
 			this.matricula = entidade.getFuncional().getMatricula();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -97,14 +97,14 @@ public class FuncionalSetorFormBean implements Serializable {
 			funcionalSetorService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -125,7 +125,7 @@ public class FuncionalSetorFormBean implements Serializable {
 				this.comboSetor = setorService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo setor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -167,11 +167,11 @@ public class FuncionalSetorFormBean implements Serializable {
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 

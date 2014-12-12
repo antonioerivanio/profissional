@@ -25,7 +25,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
- * Use case : SRH_UC037_Manter FÈrias
+ * Use case : SRH_UC037_Manter F√©rias
  * 
  * @since   : Jan 10, 2012, 5:33:11 PM
  * @author  : joel.barbosa@ivia.com.br
@@ -114,7 +114,7 @@ public class FeriasFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -137,14 +137,14 @@ public class FeriasFormBean implements Serializable {
 			feriasService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 			
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -165,7 +165,7 @@ public class FeriasFormBean implements Serializable {
 				this.comboTipoFerias = tipoFeriasService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de ferias. OperaÁ„o cancelada.");
+			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de ferias. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -204,7 +204,7 @@ public class FeriasFormBean implements Serializable {
 				this.comboTipoPublicacao = tipoPublicacaoService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicaÁ„o. OperaÁ„o cancelada.");
+			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publica√ß√£o. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -251,11 +251,11 @@ public class FeriasFormBean implements Serializable {
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matr√≠cula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -279,7 +279,7 @@ public class FeriasFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data inicial. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo data inicial. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -299,7 +299,7 @@ public class FeriasFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data final. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo data final. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

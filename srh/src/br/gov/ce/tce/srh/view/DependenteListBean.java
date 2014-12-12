@@ -51,7 +51,7 @@ public class DependenteListBean implements Serializable {
 	// entidades das telas
 	private Dependente entidade = new Dependente();
 	
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -83,7 +83,7 @@ public class DependenteListBean implements Serializable {
 		
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -112,7 +112,7 @@ public class DependenteListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -132,14 +132,14 @@ public class DependenteListBean implements Serializable {
 
 			dependenteService.excluir(entidade);			
 			
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -158,11 +158,11 @@ public class DependenteListBean implements Serializable {
 				if (getEntidade().getResponsavel() != null) {
 					this.nome = getEntidade().getResponsavel().getNomeCompleto();					
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 		}
@@ -192,7 +192,7 @@ public class DependenteListBean implements Serializable {
 	}
 	
 	
-//	PAGINA«√O
+//	PAGINA√á√ÉO
 	
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
@@ -221,7 +221,7 @@ public class DependenteListBean implements Serializable {
 	public List<Dependente> getPagedList() {return pagedList;}
 	public void setPagedList(List<Dependente> pagedList) {this.pagedList = pagedList;}
 
-//	FIM PAGINA«√O
+//	FIM PAGINA√á√ÉO
 	
 	
 	

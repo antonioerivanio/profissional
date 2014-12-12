@@ -43,12 +43,12 @@ public class FuncionalServiceImpl implements FuncionalService {
 
 		// verificar se data saida eh NULA
 		if ( entidade.getSaida() != null )
-			throw new SRHRuntimeException("A nomeaÁ„o n„o pode ser excluida pois ja foi exonerada.");
+			throw new SRHRuntimeException("A nomea√ß√£o n√£o pode ser exclu√≠da pois j√° foi exonerada.");
 
 		// verificando quantidade de referencias funcionais
 		List<ReferenciaFuncional> listaReferencias = referenciaFuncionalService.findByFuncional( entidade.getId() );
 		if ( listaReferencias.size() > 1 )
-			throw new SRHRuntimeException("A nomeaÁ„o n„o pode ser excluida pois ja foi teve progress„o.");
+			throw new SRHRuntimeException("A nomea√ß√£o n√£o pode ser exclu√≠da pois j√° foi teve progress√£o.");
 
 		// excluindo a referencia funcional
 		referenciaFuncionalService.excluirAll( entidade.getId() );

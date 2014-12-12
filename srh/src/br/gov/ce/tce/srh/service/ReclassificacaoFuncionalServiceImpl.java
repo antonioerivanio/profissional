@@ -30,7 +30,7 @@ public class ReclassificacaoFuncionalServiceImpl implements ReclassificacaoFunci
 		
 		/*
 		 * Regra:
-		 * Validar dados e condições obrigatórias para reclassificação.
+		 * Validar dados e condiÃ§Ãµes obrigatÃ³rias para reclassificaÃ§Ã£o.
 		 * 
 		 */	
 		validarReclassificacao(entidade);
@@ -82,15 +82,15 @@ public class ReclassificacaoFuncionalServiceImpl implements ReclassificacaoFunci
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * · Verificando a data saida.
-	 * · Validando a ult. data saida da funcional.
-	 * · Deve ser setado o cargo/função.
-	 * · Deve ser setado a classe/referência.
-	 * · Deve ser setado o motivo entrada.
-	 * · Deve ser setado a observação entrada.
-	 * · Deve ser setado o motivo saída.
-	 * · Deve ser setado a observação saída.
-	 * · Deve ser setado o exercício.
+	 *  Verificando a data saida.
+	 *  Validando a ult. data saida da funcional.
+	 *  Deve ser setado o cargo/funÃ§Ã£o.
+	 *  Deve ser setado a classe/referÃªncia.
+	 *  Deve ser setado o motivo entrada.
+	 *  Deve ser setado a observaÃ§Ã£o entrada.
+	 *  Deve ser setado o motivo saÃ­da.
+	 *  Deve ser setado a observaÃ§Ã£o saÃ­da.
+	 *  Deve ser setado o exercÃ­cio.
 	 * 
 	 * @param entidade Funcional
 	 * 
@@ -99,39 +99,39 @@ public class ReclassificacaoFuncionalServiceImpl implements ReclassificacaoFunci
 	 */
 	private void validarReclassificacao(Funcional entidade) {
 		
-		//RN: Não é possível alterar registro com data final preenchida.
+		//RN: NÃ£o Ã© possÃ­vel alterar registro com data final preenchida.
 		if(entidade.getSaida() != null)
-			throw new SRHRuntimeException("Não é possível alterar registro com data final preenchida.");
+			throw new SRHRuntimeException("NÃ£o Ã© possÃ­vel alterar registro com data final preenchida.");
 
-		//RN: A data Exercício deverá ser maior que a última data de exercício funcional do servidor.
+		//RN: A data ExercÃ­cio deverÃ¡ ser maior que a Ãºltima data de exercÃ­cio funcional do servidor.
 		for (Funcional funcional : funcionalService.findByPessoal(entidade.getPessoal().getId(), "ASC")) {
 			if(funcional.getSaida() != null){
 				if(entidade.getExercicio().before(funcional.getSaida())) {
-					throw new SRHRuntimeException("A data Exercício deverá ser maior que a última data de exercício funcional do servidor.");
+					throw new SRHRuntimeException("A data ExercÃ­cio deverÃ¡ ser maior que a Ãºltima data de exercÃ­cio funcional do servidor.");
 				}
 			}
 		}
 
 		if ( entidade.getOcupacao() == null )
-			throw new SRHRuntimeException("O Cargo/Função é obrigatório.");
+			throw new SRHRuntimeException("O Cargo/FunÃ§Ã£o Ã© obrigatÃ³rio.");
 
 		if ( entidade.getClasseReferencia() == null )
-			throw new SRHRuntimeException("A Classe/Referência é obrigatória.");
+			throw new SRHRuntimeException("A Classe/ReferÃªncia Ã© obrigatÃ³ria.");
 
 		if ( entidade.getTipoMovimentoEntrada() == null)
-			throw new SRHRuntimeException("O Motivo Entrada é obrigatório.");
+			throw new SRHRuntimeException("O Motivo Entrada Ã© obrigatÃ³rio.");
 
 		if ( entidade.getDescricaoNomeacao() == null || entidade.getDescricaoNomeacao().equals("") )
-			throw new SRHRuntimeException("A Observação Entrada é obrigatório.");
+			throw new SRHRuntimeException("A ObservaÃ§Ã£o Entrada Ã© obrigatÃ³rio.");
 
 		if ( entidade.getTipoMovimentoSaida() == null )
-			throw new SRHRuntimeException("O Motivo Saída é obrigatório.");
+			throw new SRHRuntimeException("O Motivo SaÃ­da Ã© obrigatÃ³rio.");
 
 		if ( entidade.getDescricaoSaida() == null || entidade.getDescricaoSaida().equals("") )
-			throw new SRHRuntimeException("A Observação Saída é obrigatório.");
+			throw new SRHRuntimeException("A ObservaÃ§Ã£o SaÃ­da Ã© obrigatÃ³rio.");
 
 		if ( entidade.getExercicio() == null) 
-			throw new SRHRuntimeException("O Exercício é obrigatório.");
+			throw new SRHRuntimeException("O ExercÃ­cio Ã© obrigatÃ³rio.");
 	}
 
 }

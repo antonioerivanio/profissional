@@ -54,7 +54,7 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 
 		/*
 		 * Regra
-		 * NomeaÁ„o Anterior V·lida
+		 * Nomea√ß√£o Anterior V√°lida
 		 */
 		validarNomeacaoAnteriorAtiva(entidade);
 		
@@ -66,7 +66,7 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 		if ( entidade.getId() == null ) {
 			Funcional funcional = funcionalService.getByMatriculaAtivo( entidade.getMatricula() );
 			if ( funcional != null )
-				throw new SRHRuntimeException("Esta matrÌcula esta ativa.");	
+				throw new SRHRuntimeException("Esta matr√≠cula esta ativa.");	
 		}
 
 		// persistindo
@@ -107,12 +107,12 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 
 		// verificar se data saida eh NULA
 		if ( entidade.getSaida() != null )
-			throw new SRHRuntimeException("A nomeaÁ„o n„o pode ser alterada pois ja foi exonerada.");
+			throw new SRHRuntimeException("A nomea√ß√£o n√£o pode ser alterada pois j√° foi exonerada.");
 
 		// verificando quantidade de referencias funcionais
 		List<ReferenciaFuncional> listaReferencias = referenciaFuncionalService.findByFuncional( entidade.getId() );
 		if ( listaReferencias.size() > 1 )
-			throw new SRHRuntimeException("A nomeaÁ„o n„o pode ser alterada pois ja foi teve progress„o.");
+			throw new SRHRuntimeException("A nomea√ß√£o n√£o pode ser alterada pois j√° teve progress√£o.");
 
 		// alterando
 		funcionalService.salvar(entidade);
@@ -125,12 +125,12 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 
 		// verificar se data saida eh NULA
 		if ( entidade.getSaida() != null )
-			throw new SRHRuntimeException("A nomeaÁ„o n„o pode ser excluida pois ja foi exonerada.");
+			throw new SRHRuntimeException("A nomea√ß√£o n√£o pode ser exclu√≠da pois j√° foi exonerada.");
 
 		// verificando quantidade de referencias funcionais
 		List<ReferenciaFuncional> listaReferencias = referenciaFuncionalService.findByFuncional( entidade.getId() );
 		if ( listaReferencias.size() > 1 )
-			throw new SRHRuntimeException("A nomeaÁ„o n„o pode ser excluida pois ja foi teve progress„o.");
+			throw new SRHRuntimeException("A nomea√ß√£o n√£o pode ser exclu√≠da pois j√° foi teve progress√£o.");
 
 		// excluindo a referencia funcional
 		referenciaFuncionalService.excluirAll( entidade.getId() );
@@ -147,24 +147,24 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setada a matricula.
-	 * ∑ Deve ser setado o tipo de movimento de entrada.
-	 * ∑ Validar tipo de publicacao.
-	 * ∑ Validar data de publicacao.
-	 * ∑ Deve ser setado a data de posse.
-	 * ∑ Deve ser setado a data de exercicio.
-	 * ∑ Deve ser setado a ObservaÁ„o.
-	 * ∑ Deve ser setado o tipo de folha.
-	 * ∑ Deve ser setado o cargo/funcao.
-	 * ∑ Deve ser setado a classe/referencia.
-	 * ∑ Deve ser setado a situacao.
-	 * ∑ Deve ser setado o vinculo.
-	 * ∑ Deve ser setado o status.
-	 * ∑ Deve ser setado o setor atual.
-	 * ∑ Deve ser setado a proporcionalidade.
-	 * ∑ Deve ser setado a previdencia.
-	 * ∑ Deve ser setado o regime.
+	 * Deve ser setado a pessoa (servidor).
+	 * Deve ser setada a matricula.
+	 * Deve ser setado o tipo de movimento de entrada.
+	 * Validar tipo de publicacao.
+	 * Validar data de publicacao.
+	 * Deve ser setado a data de posse.
+	 * Deve ser setado a data de exercicio.
+	 * Deve ser setado a Observa√ß√£o.
+	 * Deve ser setado o tipo de folha.
+	 * Deve ser setado o cargo/funcao.
+	 * Deve ser setado a classe/referencia.
+	 * Deve ser setado a situacao.
+	 * Deve ser setado o vinculo.
+	 * Deve ser setado o status.
+	 * Deve ser setado o setor atual.
+	 * Deve ser setado a proporcionalidade.
+	 * Deve ser setado a previdencia.
+	 * Deve ser setado o regime.
 	 * 
 	 * @param entidade Funcional
 	 * 
@@ -175,15 +175,15 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 
 		//validando o servidor
 		if( entidade.getPessoal() == null )
-			throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite o nome e efetue a pesquisa.");
 
-		//validando campo DV da matrÌcula, caso este tenha sido informado 
+		//validando campo DV da matr√≠cula, caso este tenha sido informado 
 		if( entidade.getMatricula() != null && !entidade.getMatricula().equals("") ) {
 			if(!SRHUtils.validarMatricula(entidade.getMatricula())){
-				throw new SRHRuntimeException("MatrÌcula inv·lida.");
+				throw new SRHRuntimeException("Matr√≠cula inv√°lida.");
 			}
 		} else {
-			//Gerando uma matrÌcula
+			//Gerando uma matr√≠cula
 			entidade.setMatricula(funcionalService.getMaxMatricula());
 		}
 
@@ -191,8 +191,8 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 		
 			//validando se campo Tipo de Entrada foi informado 
 			if( entidade.getTipoMovimentoEntrada() == null )
-				throw new SRHRuntimeException("O Tipo de Entrada È obrigatÛrio.");
-			//esta trazendo id e n„o a descriÁ„o
+				throw new SRHRuntimeException("O Tipo de Entrada √© obrigat√≥rio.");
+			//esta trazendo id e n√£o a descri√ß√£o
 					
 					if (entidade.getTipoMovimentoEntrada() != null) {
 						
@@ -202,11 +202,11 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 							this.tipoEntradaDescricao = tipoMovimento.getDescricao(); 
 						 }
 						 				       
-						if (this.tipoEntradaDescricao.equalsIgnoreCase("Concurso P˙blico")) {	
+						if (this.tipoEntradaDescricao.equalsIgnoreCase("Concurso P√∫blico")) {	
 									// validando tipo de publicacao
 									if (entidade.getTipoPublicacaoNomeacao() == null ) {
 										if ( entidade.getDoeNomeacao() != null ) {
-											throw new SRHRuntimeException("Quando a Data de PublicaÁ„o for informado, È necess·rio informar o Tipo de PublicaÁ„o.");
+											throw new SRHRuntimeException("Quando a Data de Publica√ß√£o for informado, √© necess√°rio informar o Tipo de Publica√ß√£o.");
 										}
 									}
 								
@@ -214,7 +214,7 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 						// validando data de publicacao
 						if (entidade.getDoeNomeacao() == null) {
 							if (entidade.getTipoPublicacaoNomeacao() != null ) {
-								throw new SRHRuntimeException("Quando o Tipo de PublicaÁ„o for informado, È necess·rio informar a Data de PublicaÁ„o.");
+								throw new SRHRuntimeException("Quando o Tipo de Publica√ß√£o for informado, √© necess√°rio informar a Data de Publica√ß√£o.");
 							}
 						}
 						
@@ -222,69 +222,69 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 				
 						//verificando se campo posse foi informado
 						if( entidade.getPosse() == null )
-							throw new SRHRuntimeException("A Posse È obrigatÛrio.");
+							throw new SRHRuntimeException("A Posse √© obrigat√≥rio.");
 				
 						//verificando se campo exercicio foi informado
 						if( entidade.getExercicio() == null )
-							throw new SRHRuntimeException("O ExercÌcio È obrigatÛrio.");		
+							throw new SRHRuntimeException("O Exerc√≠cio √© obrigat√≥rio.");		
 		
 				}
 				
 					}
 				
 		//validando caso a data de publicacao seja preenchida, a mesma deve ser menor que a posse
-		if (this.tipoEntradaDescricao.equalsIgnoreCase("Concurso P˙blico")) {
+		if (this.tipoEntradaDescricao.equalsIgnoreCase("Concurso P√∫blico")) {
 				if ( entidade.getOcupacao().getId()!=15 && entidade.getDoeNomeacao() != null && entidade.getDoeNomeacao().after( entidade.getPosse() ) )
-					throw new SRHRuntimeException("Data PublicaÁ„o deve ser anterior a Data da Posse.");
+					throw new SRHRuntimeException("Data Publica√ß√£o deve ser anterior a Data da Posse.");
 			
 				//validando a data da posse deve ser menor que a data de exercicio
 				if ( entidade.getPosse().after( entidade.getExercicio() ) )
-					throw new SRHRuntimeException("Data da Posse deve ser anterior a Data de Exercicio.");
+					throw new SRHRuntimeException("Data da Posse deve ser anterior a Data de Exerc√≠cio.");
 		}
 		//validando se o campo observacao foi informado
 		if ( entidade.getDescricaoNomeacao() == null || entidade.getDescricaoNomeacao().equals(""))
-			throw new SRHRuntimeException("O observaÁ„o È obrigatÛrio.");
+			throw new SRHRuntimeException("A observa√ß√£o √© obrigat√≥ria.");
 
 		//validando se campo Tipo Folha foi informado 
 		if( entidade.getFolha() == null )
-			throw new SRHRuntimeException("O Tipo de Folha È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo de Folha √© obrigat√≥rio.");
 
 		//validando se campo Tipo Ocupacao foi informado 
 		if( entidade.getOcupacao() == null )
-			throw new SRHRuntimeException("O Cargo/FunÁ„o È obrigatÛrio.");
+			throw new SRHRuntimeException("O Cargo/Fun√ß√£o √© obrigat√≥rio.");
 
 		//validando se campo Classe/Referencia foi informado 
 		entidade.setOcupacao( ocupacaoService.getById(entidade.getOcupacao().getId()) );
 		if( !entidade.getOcupacao().isCargoIsolado() && entidade.getClasseReferencia() == null )
-			throw new SRHRuntimeException("A Classe/ReferÍncia È obrigatÛrio.");
+			throw new SRHRuntimeException("A Classe/Refer√™ncia √© obrigat√≥rio.");
 
 		//validando se campo Situacao foi informado 
 		if( entidade.getSituacao() == null )
-			throw new SRHRuntimeException("A SituaÁ„o È obrigatÛrio.");
+			throw new SRHRuntimeException("A Situa√ß√£o √© obrigat√≥ria.");
 
-		//validando se campo VÌnculo foi informado 
+		//validando se campo V√≠nculo foi informado 
 		if( entidade.getVinculo() == null )
-			throw new SRHRuntimeException("O VÌnculo È obrigatÛrio.");
+			throw new SRHRuntimeException("O V√≠nculo √© obrigat√≥rio.");
 
 		//validando se campo Status foi informado 
 		if( entidade.getStatus() == null )
-			throw new SRHRuntimeException("O Status È obrigatÛrio.");
+			throw new SRHRuntimeException("O Status √© obrigat√≥rio.");
 
 		//validando se campo Setor Atual foi informado 
 		if( entidade.getSetor() == null )
-			throw new SRHRuntimeException("O Setor Atual È obrigatÛrio.");
+			throw new SRHRuntimeException("O Setor Atual √© obrigat√≥rio.");
 
 		//validando se campo Proporcionalidade foi informado
 		if( entidade.getProporcionalidade() == null )
-			throw new SRHRuntimeException("A Proporcionalidade È obrigatÛrio.");
+			throw new SRHRuntimeException("A Proporcionalidade √© obrigat√≥ria.");
 
 		//validando a previdencia
 		if( entidade.getPrevidencia() == null || entidade.getPrevidencia().equals(0l) )
-			throw new SRHRuntimeException("A PrevidÍncia È obrigatÛrio.");
+			throw new SRHRuntimeException("A Previd√™ncia √© obrigat√≥ria.");
 
 		//validando o regime
 		if( entidade.getRegime() == null || entidade.getRegime().equals(0l) )
-			throw new SRHRuntimeException("O Regime È obrigatÛrio.");
+			throw new SRHRuntimeException("O Regime √© obrigat√≥rio.");
 
 	}
 
@@ -292,10 +292,10 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ A Qtde de Quintos ser· a quantidade de quintos incorporados pela Lei 11.847/1999, sÛ ser· edit·vel caso o usu·rio 
-	 *   tenha informado a Lei IncorporaÁ„o = 11.847/1999. SÛ ser· permitido os valores de 0 a 5.
+	 *  A Qtde de Quintos ser√° a quantidade de quintos incorporados pela Lei 11.847/1999, s√≥ ser√° edit√°vel caso o usu√°rio 
+	 *   tenha informado a Lei Incorpora√ß√£o = 11.847/1999. S√≥ ser√° permitido os valores de 0 a 5.
 	 *   
-	 * ∑ A Proporcionalidade sÛ ser· permitida valores >= a 50 e <= a 100.
+	 *  A Proporcionalidade s√≥ ser√° permitida valores >= a 50 e <= a 100.
 	 * 
 	 * @param entidade
 	 * 
@@ -304,18 +304,18 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 	 */
 	public void validarQtdQuintosProporcionalidade(Funcional entidade) throws SRHRuntimeException {
 
-		//verifica se o campo lei de incorparaÁ„o foi prenchido com valor 11.847/1991 e se a quantidade de
+		//verifica se o campo lei de incorpara√ß√£o foi prenchido com valor 11.847/1991 e se a quantidade de
 		//quintos foi informado entre o intervalo de 0-5
 		if (entidade.getLeiIncorporacao() != null && entidade.getLeiIncorporacao().equals("11.847/1991") ) {
 			if ( entidade.getQtdQuintos() == null || !(entidade.getQtdQuintos() >= 0 && entidade.getQtdQuintos() <= 5)) {
-				throw new SRHRuntimeException("Quantidade de Quintos sÛ aceita valores entre 0 - 5.");
+				throw new SRHRuntimeException("Quantidade de Quintos s√≥ aceita valores entre 0 - 5.");
 			}
 		}
 
 		// verifica se a proporcionalidade foi informado entre o intervalo de 50-100
 		if( entidade.getProporcionalidade() != null ) {
 			if(!(entidade.getProporcionalidade() >=50 && entidade.getProporcionalidade() <=100)){
-				throw new SRHRuntimeException("Proporcionalidade sÛ aceita valores de 50 a 100.");
+				throw new SRHRuntimeException("Proporcionalidade s√≥ aceita valores de 50 a 100.");
 			}
 		}
 
@@ -325,7 +325,7 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ Deve ser verificado ao inserir uma nomeaÁ„o, se existe um registro v·lido para este servidor, ou seja, 
+	 *  Deve ser verificado ao inserir uma nomea√ß√£o, se existe um registro v√°lido para este servidor, ou seja, 
 	 * existe um registro anterior para ele com Data Final Nula;
 	 * 
 	 * @param entidade
@@ -337,7 +337,7 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 
 		Funcional funcional = funcionalService.getByPessoaAtivo( entidade.getPessoal().getId() );
 		if ( funcional != null )
-			throw new SRHRuntimeException("N„o ser· permitido inserir nova nomeaÁ„o, pois este servidor possui outra ativa.");
+			throw new SRHRuntimeException("N√£o ser√° permitido inserir nova nomea√ß√£o, pois este servidor possui outra ativa.");
 
 	}
 

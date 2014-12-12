@@ -84,7 +84,7 @@ public class LicencaServiceImpl implements LicencaService {
 
 		/*
 		 * Regra: 
-		 * Verificar licenÁas antigas
+		 * Verificar licen√ßas antigas
 		 * 
 		 */	
 		verificarLicencasAntigas(entidade);
@@ -127,10 +127,10 @@ public class LicencaServiceImpl implements LicencaService {
 		}
 		/*
 		 * Regra:
-		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspens„o de VÌnculo ou Interesse Particular
+		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspens√£o de V√≠nculo ou Interesse Particular
 		 */
 		Funcional funcional = funcionalDAO.getByPessoaAtivo(entidade.getPessoal().getId());
-		if (entidade.getTipoLicenca().getId() == 1) // Suspens„o de VÌnculo
+		if (entidade.getTipoLicenca().getId() == 1) // Suspens√£o de V√≠nculo
 		{
 			Situacao situacao = situacaoDAO.getById(new Long(7));
 			funcional.setSituacao(situacao);
@@ -163,11 +163,11 @@ public class LicencaServiceImpl implements LicencaService {
 
 		/*
 		 * Regra:
-		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspens„o de VÌnculo ou Interesse Particular
+		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspens√£o de V√≠nculo ou Interesse Particular
 		 */
 		Funcional funcional = funcionalDAO.getByPessoaAtivo(entidade.getPessoal().getId());
 		Situacao situacao;
-		if (entidade.getTipoLicenca().getId() == 1 || entidade.getTipoLicenca().getId() == 2) // Suspens„o de VÌnculo
+		if (entidade.getTipoLicenca().getId() == 1 || entidade.getTipoLicenca().getId() == 2) // Suspens√£o de V√≠nculo
 		{
 			situacao = situacaoDAO.getById(new Long(1));
 			funcional.setSituacao(situacao);
@@ -186,7 +186,7 @@ public class LicencaServiceImpl implements LicencaService {
 		
 		/*
 		 * Regra:
-		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspens„o de VÌnculo ou Interesse Particular
+		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspens√£o de V√≠nculo ou Interesse Particular
 		 */
 		Funcional funcional = funcionalDAO.getByPessoaAtivoFp(entidade.getPessoal().getId());
 		Situacao situacao = situacaoDAO.getById(new Long(1));
@@ -272,16 +272,16 @@ public class LicencaServiceImpl implements LicencaService {
 	/**
 	 * Validar:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setado a data inicial.
-	 * ∑ Deve ser setado a data final.
-	 * ∑ Deve ser checado o periodo inical menor o periodo final.
-	 * ∑ Validar a data de publicacao.
-	 * ∑ Deve ser setado o tipo de licenca.
-	 * ∑ Validar tipo de licenca especial.
-	 * ∑ Validar tipo de publicacao.
-	 * ∑ Validar data de publicacao.
-	 * ∑ Validar numero do processo.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setado a data inicial.
+	 *  Deve ser setado a data final.
+	 *  Deve ser checado o periodo inical menor o periodo final.
+	 *  Validar a data de publicacao.
+	 *  Deve ser setado o tipo de licenca.
+	 *  Validar tipo de licenca especial.
+	 *  Validar tipo de publicacao.
+	 *  Validar data de publicacao.
+	 *  Validar numero do processo.
 	 * 
 	 * @param entidade
 	 * 
@@ -292,49 +292,49 @@ public class LicencaServiceImpl implements LicencaService {
 
 		// validando o servidor
 		if (entidade.getPessoal() == null)
-			throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite o nome e efetue a pesquisa.");
 
 		// validando o tipo de licenca
 		if (entidade.getTipoLicenca() == null)
-			throw new SRHRuntimeException("O Tipo de LicenÁa È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo de Licen√ßa √© obrigat√≥rio.");
 
 		// validando tipo de licenca especial
 		if (entidade.getTipoLicenca().isEspecial() && entidade.getLicencaEspecial() == null )
-			throw new SRHRuntimeException("Quando o Tipo de LicenÁa for 'LicenÁa Especial', È obrigatÛrio selecionar uma LicenÁa Especial.");
+			throw new SRHRuntimeException("Quando o Tipo de Licen√ßa for 'Licen√ßa Especial', √© obrigat√≥rio selecionar uma Licen√ßa Especial.");
 
 		// validando periodo inical
 		if (entidade.getInicio() == null)
-			throw new SRHRuntimeException("A Data Inicial È obrigatÛrio.");
+			throw new SRHRuntimeException("A Data Inicial √© obrigat√≥rio.");
 
 		// validando periodo final
 		if (entidade.getFim() == null)
-			throw new SRHRuntimeException("A Data Final È obrigatÛrio.");
+			throw new SRHRuntimeException("A Data Final √© obrigat√≥rio.");
 
-		// validando se o periodo inical È menor que o periodo final
+		// validando se o periodo inical √© menor que o periodo final
 		if (entidade.getInicio().after(entidade.getFim()))
-			throw new SRHRuntimeException("A Data Inicial n„o pode ser maior que a Data Final.");
+			throw new SRHRuntimeException("A Data Inicial n√£o pode ser maior que a Data Final.");
 
 		// validando caso a data de publicacao seja preenchida, a mesma deve ser menor que o periodo inicial
 		if (entidade.getDoe() != null) {
 			if (entidade.getDoe().before(SRHUtils.inicioTCE()) ) {
-				throw new SRHRuntimeException("Data PublicaÁ„o n„o deve ser anterior a " + SRHUtils.inicioTCE().toString());
+				throw new SRHRuntimeException("Data Publica√ß√£o n√£o deve ser anterior a " + SRHUtils.inicioTCE().toString());
 			}
 			if (entidade.getDoe().after(new Date())) {
-				throw new SRHRuntimeException("Data PublicaÁ„o n„o pode ser maior que a data atual");
+				throw new SRHRuntimeException("Data Publica√ß√£o n√£o pode ser maior que a data atual");
 			}
 		}
 
 		// validando tipo de publicacao
 		if (entidade.getTipoPublicacao() == null ) {
 			if ( entidade.getDoe() != null ) {
-				throw new SRHRuntimeException("Quando a Data de PublicaÁ„o for informado, È necess·rio informar o Tipo de PublicaÁ„o.");
+				throw new SRHRuntimeException("Quando a Data de Publica√ß√£o for informado, √© necess√°rio informar o Tipo de Publica√ß√£o.");
 			}
 		}
 
 		// validando data de publicacao
 		if (entidade.getDoe() == null) {
 			if (entidade.getTipoPublicacao() != null ) {
-				throw new SRHRuntimeException("Quando o Tipo de PublicaÁ„o for informado, È necess·rio informar a Data de PublicaÁ„o.");
+				throw new SRHRuntimeException("Quando o Tipo de Publica√ß√£o for informado, √© necess√°rio informar a Data de Publica√ß√£o.");
 			}
 		}
 
@@ -343,7 +343,7 @@ public class LicencaServiceImpl implements LicencaService {
 			//if (!SRHUtils.validarProcesso(entidade.getNrprocesso().substring(6,10)+entidade.getNrprocesso().substring(0,5)+entidade.getNrprocesso().substring(11,12))){
 			//if (!SRHUtils.validarProcesso(SRHUtils.removerMascara(entidade.getNrprocessoPuro()))){
 			if (!SRHUtils.validarProcesso(entidade.getNrprocessoPuro().substring(6,10) + entidade.getNrprocessoPuro().substring(0,5) + entidade.getNrprocessoPuro().substring(11,12))){
-				throw new SRHRuntimeException("O N˙mero do Processo informado È inv·lido.");
+				throw new SRHRuntimeException("O N√∫mero do Processo informado √© inv√°lido.");
 			}
 		}
 
@@ -367,7 +367,7 @@ public class LicencaServiceImpl implements LicencaService {
 
 			// verificando se eh diferente do sexo da pessoa selecionada
 			if ( !entidade.getTipoLicenca().getSexoValido().equals( entidade.getPessoal().getSexo() )) {
-				throw new SRHRuntimeException("Este Tipo de LicenÁa n„o È compativel com o sexo da pessoa selecionada.");
+				throw new SRHRuntimeException("Este Tipo de Licen√ßa n√£o √© compat√≠vel com o sexo da pessoa selecionada.");
 			}
 
 		}		
@@ -393,12 +393,12 @@ public class LicencaServiceImpl implements LicencaService {
 		if ( entidade.getTipoLicenca().isEspecial()  ) {
 			LicencaEspecial especial = licencaEspecialService.getById( entidade.getLicencaEspecial().getId() );			
 			if ( qtdDias > especial.getSaldodias() ) 
-				throw new SRHRuntimeException("Quantidade de dias maior que o m·ximo permitido para esse tipo de licenÁa");
+				throw new SRHRuntimeException("Quantidade de dias maior que o m√°ximo permitido para esse tipo de licen√ßa");
 		}
 
 		// quando nao for especial
 		if ( qtdDias > entidade.getTipoLicenca().getQtdeMaximoDias() )
-			throw new SRHRuntimeException("Quantidade de dias maior que o m·ximo permitido para esse tipo de licenÁa");
+			throw new SRHRuntimeException("Quantidade de dias maior que o m√°ximo permitido para esse tipo de licen√ßa");
 
 	}
 
@@ -406,7 +406,7 @@ public class LicencaServiceImpl implements LicencaService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * Validar se o perÌodo Inicial esta dentro dos anos iniciais e finais da licenca especial.
+	 * Validar se o per√≠odo Inicial esta dentro dos anos iniciais e finais da licenca especial.
 	 * 
 	 * @param entidade
 	 * 
@@ -425,7 +425,7 @@ public class LicencaServiceImpl implements LicencaService {
 
 			// validando periodo inicial
 			if( calendarInicio.get( GregorianCalendar.YEAR ) < especial.getAnofinal() ) {
-				throw new SRHRuntimeException("O ano da Data Inicial deve ser maior ou igual ao ano final do periodo aquisitivo da licenÁa especial selecionada.");
+				throw new SRHRuntimeException("O ano da Data Inicial deve ser maior ou igual ao ano final do per√≠odo aquisitivo da licen√ßa especial selecionada.");
 			}
 
 		}
@@ -435,8 +435,8 @@ public class LicencaServiceImpl implements LicencaService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * O PerÌodo Inicial e Final deve ser checado para saber se j· foi lanÁada alguma licenÁa 
-	 * para o servidor neste perÌodo.
+	 * O Per√≠odo Inicial e Final deve ser checado para saber se j√° foi lan√ßada alguma licen√ßa 
+	 * para o servidor neste per√≠odo.
 	 * 
 	 * @param entidade
 	 * 
@@ -455,19 +455,19 @@ public class LicencaServiceImpl implements LicencaService {
 				// validando periodo inicial
 				if( (licencaAntigas.getInicio().after(entidade.getInicio()) || licencaAntigas.getInicio().equals(entidade.getInicio())) 
 						&& ( licencaAntigas.getInicio().before(entidade.getFim()) || licencaAntigas.getInicio().equals(entidade.getFim()))){
-					throw new SRHRuntimeException("J· existe uma licenÁa com esse perÌodo");
+					throw new SRHRuntimeException("J√° existe uma licen√ßa com esse per√≠odo");
 				}
 
 				// validando periodo final
 				if( (licencaAntigas.getFim().after(entidade.getInicio()) || licencaAntigas.getFim().equals(entidade.getInicio())) 
 						&& ( licencaAntigas.getFim().before(entidade.getFim()) || licencaAntigas.getFim().equals(entidade.getFim()))){
-					throw new SRHRuntimeException("J· existe uma licenÁa com esse perÌodo");
+					throw new SRHRuntimeException("J√° existe uma licen√ßa com esse per√≠odo");
 				}
 
 				// validando periodo no meio
 				if( licencaAntigas.getInicio().before( entidade.getInicio() )
 						&& licencaAntigas.getFim().after( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("J· existe uma licenÁa com esse perÌodo");
+					throw new SRHRuntimeException("J√° existe uma licen√ßa com esse per√≠odo");
 				}
 			}
 		}

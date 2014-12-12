@@ -81,7 +81,7 @@ public class FichaFuncionalListBean implements Serializable {
 			// validando campos da entidade
 			//if ( getEntidade() == null )
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionÃ¡rio.");
 
 			lista = new ArrayList<Funcional>();
 			lista.add(entidade); 
@@ -97,7 +97,7 @@ public class FichaFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -117,7 +117,7 @@ public class FichaFuncionalListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionÃ¡rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
@@ -151,7 +151,7 @@ public class FichaFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na geraÃ§Ã£o do relatÃ³rio. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -170,7 +170,7 @@ public class FichaFuncionalListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionÃ¡rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
@@ -203,7 +203,7 @@ public class FichaFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na geraÃ§Ã£o do relatÃ³rio. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -245,11 +245,11 @@ public class FichaFuncionalListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+					FacesUtil.addInfoMessage("MatrÃ­cula nÃ£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -274,12 +274,12 @@ public class FichaFuncionalListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();	
 				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF nÃ£o encontrado ou inativo.");
 				}
 
 				
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 

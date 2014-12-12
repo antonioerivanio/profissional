@@ -46,7 +46,7 @@ public class PessoalCursoAcademicaServiceImpl implements PessoalCursoAcademicaSe
 			// verificando se o curso ja existe
 			PessoalCursoAcademica existe = dao.getByCursoPessoa(pessoalCursoAcademica.getPk().getCursoAcademico(), pessoalCursoAcademica.getPk().getPessoal());
 			if (existe != null)
-				throw new SRHRuntimeException("Este curso ja foi cadastrado para essa pessoa.");
+				throw new SRHRuntimeException("Este curso jÃ¡ foi cadastrado para essa pessoa.");
 
 		}
 
@@ -118,11 +118,11 @@ public class PessoalCursoAcademicaServiceImpl implements PessoalCursoAcademicaSe
 
 	/**
 	 * Validar:
-	 * · Deve ser setado a pessoa.
-	 * · Deve ser setado o curso.
-	 * · Deve ser setado o instituicao.
-	 * · Deve ser setado a data de conclusao do curso.
-	 * · Deve ser cadastrado ao menos uma competencia.
+	 *  Deve ser setado a pessoa.
+	 *  Deve ser setado o curso.
+	 *  Deve ser setado o instituicao.
+	 *  Deve ser setado a data de conclusao do curso.
+	 *  Deve ser cadastrado ao menos uma competencia.
 	 * 
 	 * @param inicioCompetencia 
 	 * 
@@ -133,27 +133,27 @@ public class PessoalCursoAcademicaServiceImpl implements PessoalCursoAcademicaSe
 
 		// validando a entidade
 		if (entidade == null)
-			throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O FuncionÃ¡rio Ã© obrigatÃ³rio. Digite o nome e efetue a pesquisa.");
 
 		// validando o servidor
 		if ( entidade.getPessoal() == null || entidade.getPessoal().getId().equals(0l) )
-			throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O FuncionÃ¡rio Ã© obrigatÃ³rio. Digite o nome e efetue a pesquisa.");
 
 		// validando o curso
 		if (entidade.getCursoAcademica() == null)
-			throw new SRHRuntimeException("O curso é obrigatório.");
+			throw new SRHRuntimeException("O curso Ã© obrigatÃ³rio.");
 
 		// validando a instituicao
 		if (entidade.getInstituicao() == null)
-			throw new SRHRuntimeException("A instituição é obrigatória.");
+			throw new SRHRuntimeException("A instituiÃ§Ã£o Ã© obrigatÃ³ria.");
 
 		// validando se a data de conclusao foi preenchida
 		if ( inicioCompetencia == null )
-			throw new SRHRuntimeException("A data de conclusão do curso é obrigatório.");
+			throw new SRHRuntimeException("A data de conclusÃ£o do curso Ã© obrigatÃ³ria.");
 
 //		// validando a lista de competencias
 //		if (listaCompetencias == null || listaCompetencias.size() == 0)
-//			throw new SRHRuntimeException("Nenhuma competência cadastrada, é obrigatório pelo menos uma competência.");
+//			throw new SRHRuntimeException("Nenhuma competÃªncia cadastrada, Ã© obrigatÃ³rio pelo menos uma competÃªncia.");
 
 	}
 

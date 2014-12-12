@@ -48,7 +48,7 @@ public class AcrescimoListBean implements Serializable {
 	private RelatorioUtil relatorioUtil;
 
 
-	//controle de acesso do formul·rio
+	//controle de acesso do formul√°rio
 	private HtmlForm form;
 	private boolean passouConsultar = false;
 
@@ -61,7 +61,7 @@ public class AcrescimoListBean implements Serializable {
 	private List<Acrescimo> lista;
 	private Acrescimo entidade = new Acrescimo();
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -81,7 +81,7 @@ public class AcrescimoListBean implements Serializable {
 
 			//valida consulta pessoa
 			if( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			count = averbacaoService.count(getEntidade().getPessoal().getId());
 
@@ -99,7 +99,7 @@ public class AcrescimoListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -118,17 +118,17 @@ public class AcrescimoListBean implements Serializable {
 
 			averbacaoService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro excl√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -147,7 +147,7 @@ public class AcrescimoListBean implements Serializable {
 
 			//valida consulta pessoa
 			if( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("FILTRO", this.entidade.getPessoal().getId());
@@ -160,7 +160,7 @@ public class AcrescimoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio de AverbaÁ„o. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio de Averba√ß√£o. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -189,11 +189,11 @@ public class AcrescimoListBean implements Serializable {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -213,11 +213,11 @@ public class AcrescimoListBean implements Serializable {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 					this.matricula = funcional.getMatricula();
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -248,7 +248,7 @@ public class AcrescimoListBean implements Serializable {
 	public Acrescimo getEntidade() {return entidade;}
 	public void setEntidade(Acrescimo entidade) {this.entidade = entidade;}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -273,6 +273,6 @@ public class AcrescimoListBean implements Serializable {
 
 	public List<Acrescimo> getPagedList() {return pagedList;}
 	public void setPagedList(List<Acrescimo> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

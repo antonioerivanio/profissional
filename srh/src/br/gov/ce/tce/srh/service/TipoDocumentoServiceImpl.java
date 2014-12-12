@@ -89,7 +89,7 @@ public class TipoDocumentoServiceImpl implements TipoDocumentoService {
 
 		TipoDocumento entidadeJaExiste = dao.getByDescricao( entidade.getDescricao() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de Documento j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Tipo de Documento j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

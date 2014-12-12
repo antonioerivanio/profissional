@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
- * Classe utilit·ria para acesso aos atributos do contexto externo.
+ * Classe utilit√°ria para acesso aos atributos do contexto externo.
  * 
 * @since   : Sep 23, 2011, 15:27:36 AM
 * @author  : robstownholanda@ivia.com.br
@@ -25,8 +25,8 @@ public class FacesUtil {
 		Object tmp = getApplicationAttribute(springVar);
 		if (tmp == null)
 			throw new IllegalArgumentException(
-					"N„o foi possÌvel recuperar o contexto do spring,"
-							+ " verfique se o org.springframework.web.context.ContextLoaderListener est· definido no web.xml");
+					"N√£o foi poss√≠vel recuperar o contexto do spring,"
+							+ " verfique se o org.springframework.web.context.ContextLoaderListener est√° definido no web.xml");
 		WebApplicationContext wctx = (WebApplicationContext) tmp;
 		return wctx.getBean(bean);
 	}

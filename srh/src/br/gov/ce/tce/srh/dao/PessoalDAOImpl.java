@@ -52,7 +52,7 @@ public class PessoalDAOImpl implements PessoalDAO {
 		}
 
 		if (verificarNomeExistente(entidade.getId(), entidade.getNomeCompleto()) > 0 )
-			throw new SRHRuntimeException("Nome j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Nome j√° cadastrado. Opera√ß√£o cancelada.");
 		
 		//Remover acentos e caixa baixa para nome pesquisa
 		entidade.setNome(entidade.getNome().toUpperCase());

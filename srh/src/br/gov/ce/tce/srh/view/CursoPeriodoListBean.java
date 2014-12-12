@@ -72,7 +72,7 @@ public class CursoPeriodoListBean implements Serializable {
 	private List<String> lista;
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -94,7 +94,7 @@ public class CursoPeriodoListBean implements Serializable {
 			
 			// validando campos da entidade
 			if ( inicio == null || fim == null )
-				throw new SRHRuntimeException("Informe o perÌodo ");
+				throw new SRHRuntimeException("Informe o per√≠odo ");
 
 //			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 //				count = funcionalSetorService.count(pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf()).getId());
@@ -116,7 +116,7 @@ public class CursoPeriodoListBean implements Serializable {
 //					totalCargaHoraria = totalCargaHoraria + curso.getCursoProfissional().getCargaHoraria();
 //			}
 //			
-//			labelTotalCargaHoraria = "Total Carga Hor·ria:";
+//			labelTotalCargaHoraria = "Total Carga Hor√°ria:";
 			flagRegistroInicial = -1;
 			passouConsultar = true;
 
@@ -126,7 +126,7 @@ public class CursoPeriodoListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -145,7 +145,7 @@ public class CursoPeriodoListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( inicio == null || fim == null )
-				throw new SRHRuntimeException("Selecione um perÌodo.");
+				throw new SRHRuntimeException("Selecione um per√≠odo.");
 			   
 			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");   
 			String inicioFormato = formatador.format(inicio); 
@@ -171,7 +171,7 @@ public class CursoPeriodoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio de Curso por PerÌodo. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio de Curso por Per√≠odo. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -215,11 +215,11 @@ public class CursoPeriodoListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -244,12 +244,12 @@ public class CursoPeriodoListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();	
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 				
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -305,7 +305,7 @@ public class CursoPeriodoListBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -331,6 +331,6 @@ public class CursoPeriodoListBean implements Serializable {
 
 	public List<PessoalCursoProfissional> getPagedList() {return pagedList;}
 	public void setPagedList(List<PessoalCursoProfissional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

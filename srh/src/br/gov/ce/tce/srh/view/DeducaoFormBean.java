@@ -19,7 +19,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
- * Use case : SRH_UC049_Manter Deduções do Servidor
+ * Use case : SRH_UC049_Manter DeduÃ§Ãµes do Servidor
  * 
  * @since   : Apr 17, 2012, 11:51:59 PM
  * @author  : robstownholanda@ivia.com.br
@@ -95,7 +95,7 @@ public class DeducaoFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -116,8 +116,8 @@ public class DeducaoFormBean implements Serializable {
 			this.entidade.setFim(this.fim);
 			Parametro p = parametroService.getByNome("PROCESSOFALTA");
 			if (p.getValor().equals("0") && this.nrProcesso.equals("")) {
-				FacesUtil.addErroMessage("O Número do processo é obrigatório.");
-				logger.warn("Ocorreu o seguinte erro: O Número do Processo informado é inválido.");
+				FacesUtil.addErroMessage("O NÃºmero do processo Ã© obrigatÃ³rio.");
+				logger.warn("Ocorreu o seguinte erro: O NÃºmero do Processo informado Ã© invÃ¡lido.");
 			} else {
 				if(!nrProcesso.isEmpty()){
 					this.entidade.setNrProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(nrProcesso, 0));
@@ -126,15 +126,15 @@ public class DeducaoFormBean implements Serializable {
 				if(p.getValor().equals("1") || nrProcessoValido)  {
 					deducaoService.salvar(entidade);
 					limpar();
-					FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-					logger.info("Operação realizada com sucesso.");
+					FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+					logger.info("OperaÃ§Ã£o realizada com sucesso.");
 					} 
 			}
 		}  catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} 
 		
@@ -181,11 +181,11 @@ public class DeducaoFormBean implements Serializable {
 					getEntidade().setPessoal( funcional.getPessoal() );
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+					FacesUtil.addInfoMessage("MatrÃ­cula nÃ£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -201,8 +201,8 @@ public class DeducaoFormBean implements Serializable {
 
 				if (!SRHUtils.validarProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(this.nrProcesso, 0)) ) {
 					nrProcessoValido = false;
-					FacesUtil.addErroMessage("O Número do Processo informado é inválido.");
-					logger.warn("Ocorreu o seguinte erro: O Número do Processo informado é inválido.");
+					FacesUtil.addErroMessage("O NÃºmero do Processo informado Ã© invÃ¡lido.");
+					logger.warn("Ocorreu o seguinte erro: O NÃºmero do Processo informado Ã© invÃ¡lido.");
 				    
 				} else {
 					nrProcessoValido = true;
@@ -212,7 +212,7 @@ public class DeducaoFormBean implements Serializable {
 				FacesUtil.addErroMessage(e.getMessage());
 				logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro no campo processo. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro no campo processo. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 			
@@ -237,7 +237,7 @@ public class DeducaoFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data inicial. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo data inicial. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -257,7 +257,7 @@ public class DeducaoFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data final. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo data final. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

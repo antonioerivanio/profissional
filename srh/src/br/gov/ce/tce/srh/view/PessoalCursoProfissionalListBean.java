@@ -64,7 +64,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 	// combos
 	private List<AreaProfissional> comboArea;
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -84,7 +84,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( this.area == null )
-				throw new SRHRuntimeException("Selecione uma ·rea.");
+				throw new SRHRuntimeException("Selecione uma √°rea.");
 
 			count = pessoalCursoProfissionalService.count(area.getId(), curso);
 
@@ -102,7 +102,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -121,17 +121,17 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 
 			pessoalCursoProfissionalService.excluir( cursoProfissional.getId() );
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -152,7 +152,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 				this.comboArea = areaProfissionalService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo area. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo area. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -171,7 +171,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( this.area == null )
-				throw new SRHRuntimeException("Selecione o campo ·rea.");
+				throw new SRHRuntimeException("Selecione o campo √°rea.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
@@ -189,7 +189,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -224,7 +224,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio de curso. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio de curso. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -266,7 +266,7 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -291,6 +291,6 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 
 	public List<CursoProfissional> getPagedList() {return pagedList;}
 	public void setPagedList(List<CursoProfissional> list) {this.pagedList = list;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

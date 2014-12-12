@@ -71,7 +71,7 @@ public class SimboloServiceImpl implements SimboloService {
 
 		Simbolo entidadeJaExiste = dao.getByOcupacaoSimbolo( entidade.getOcupacao().getId(), entidade.getSimbolo() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Simbolo j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Simbolo j√° cadastrado. Opera√ß√£o cancelada.");
 
 	}
 

@@ -92,7 +92,7 @@ public class TipoMovimentoServiceImpl implements TipoMovimentoService {
 
 		TipoMovimento entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de Movimento j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Tipo de Movimento j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

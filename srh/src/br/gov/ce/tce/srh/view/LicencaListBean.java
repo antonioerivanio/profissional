@@ -27,7 +27,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC036_LanÁar LicenÁa
+* Use case : SRH_UC036_Lan√ßar Licen√ßa
 * 
 * @since   : Nov 15, 2011, 10:03:00 AM
 * @author  : robstownholanda@ivia.com.br
@@ -66,7 +66,7 @@ public class LicencaListBean implements Serializable {
 	private Licenca entidade = new Licenca();
 	private TipoLicenca tipoLicenca;
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -89,7 +89,7 @@ public class LicencaListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			if ( this.tipoLicenca != null ) {
 				count = licencaService.count( getEntidade().getPessoal().getId(), this.tipoLicenca.getId() );
@@ -111,7 +111,7 @@ public class LicencaListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Erro de conex„o com a base de dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro de conex√£o com a base de dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -130,17 +130,17 @@ public class LicencaListBean implements Serializable {
 			
 			licencaService.excluir(entidade);
 			
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao excluir a LicenÁa. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao excluir a Licen√ßa. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -161,7 +161,7 @@ public class LicencaListBean implements Serializable {
 				this.comboTipoLicenca = tipoLicencaService.findAll();
 
 		} catch (Exception e) {
-	      	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de licenÁa. OperaÁ„o cancelada.");
+	      	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de licen√ßa. Opera√ß√£o cancelada.");
 	       	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -180,7 +180,7 @@ public class LicencaListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
@@ -197,7 +197,7 @@ public class LicencaListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio de LicenÁa. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio de Licen√ßa. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -227,12 +227,12 @@ public class LicencaListBean implements Serializable {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 					limparListas();
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -253,12 +253,12 @@ public class LicencaListBean implements Serializable {
 					this.nome = funcional.getNomeCompleto();
 					this.matricula = funcional.getMatricula();
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 					limparListas();
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -303,7 +303,7 @@ public class LicencaListBean implements Serializable {
 	}
 
 
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -334,5 +334,5 @@ public class LicencaListBean implements Serializable {
 
 	public List<Licenca> getPagedList() {return pagedList;}
 	public void setPagedList(List<Licenca> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 }

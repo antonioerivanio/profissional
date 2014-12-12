@@ -77,7 +77,7 @@ public class RacaServiceImpl implements RacaService {
 
 		Raca entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de Biotipo Humano j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Tipo de Biotipo Humano j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

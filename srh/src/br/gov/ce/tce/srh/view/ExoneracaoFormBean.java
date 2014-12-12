@@ -20,7 +20,7 @@ import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC034_Manter ExoneraÁ„o do Servidor
+* Use case : SRH_UC034_Manter Exonera√ß√£o do Servidor
 * 
 * @since   : Dez 19, 2011, 17:59:02 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -74,14 +74,14 @@ public class ExoneracaoFormBean implements Serializable {
 			this.funcional = null;
 			this.representacao = null;
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -102,7 +102,7 @@ public class ExoneracaoFormBean implements Serializable {
 				this.comboTipoPublicacao = tipoPublicacaoService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo tipo publicaÁ„o. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo tipo publica√ß√£o. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -123,7 +123,7 @@ public class ExoneracaoFormBean implements Serializable {
 				this.comboTipoMovimento = tipoMovimentoService.findByTipo(2l);
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo tipo de movimento saida. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo tipo de movimento sa√≠da. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

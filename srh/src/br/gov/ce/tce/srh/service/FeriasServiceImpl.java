@@ -47,7 +47,7 @@ public class FeriasServiceImpl implements FeriasService {
 		 * 
 		 */
 		if ( entidade.getTipoFerias().getId().equals(5l) && entidade.getAnoReferencia() > 1998 )
-			throw new SRHRuntimeException("A referência deve ser menor ou igual a 1998.");
+			throw new SRHRuntimeException("A referÃªncia deve ser menor ou igual a 1998.");
 
 
 		//verificaQtdeDeDias
@@ -124,9 +124,9 @@ public class FeriasServiceImpl implements FeriasService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * · Não pode ser menor que 1935.
-	 * · O campo Referência não pode ser superior a 2 anos do ano vigente. 
-	 * · O Período de ser 1 ou 2!
+	 *  NÃ£o pode ser menor que 1935.
+	 *  O campo ReferÃªncia nÃ£o pode ser superior a 2 anos do ano vigente. 
+	 *  O PerÃ­odo de ser 1 ou 2!
 	 * 
 	 * @param anoReferencia
 	 * @param periodo
@@ -136,21 +136,21 @@ public class FeriasServiceImpl implements FeriasService {
 	 */
 	private void verificaQtdeDeDias(Long anoReferencia, Long periodo) throws SRHRuntimeException {
 		
-		// valida ano Referência < 1935
+		// valida ano ReferÃªncia < 1935
 		if (anoReferencia < 1935) {
-			throw new SRHRuntimeException("O ano de Referencia não pode ser menor que 1935.");
+			throw new SRHRuntimeException("O ano de ReferÃªncia nÃ£o pode ser menor que 1935.");
 		}
 		
-		// O campo Referência não pode ser superior a 2 ano do ano vigente
+		// O campo ReferÃªncia nÃ£o pode ser superior a 2 ano do ano vigente
 		Calendar cal = GregorianCalendar.getInstance();
 	    int ano = cal.get(Calendar.YEAR);
 		if ( anoReferencia > (ano + 1) ) {
-			throw new SRHRuntimeException("O ano de Referência não pode ser superior a 1 ano do Ano vigente.");
+			throw new SRHRuntimeException("O ano de ReferÃªncia nÃ£o pode ser superior a 1 ano do Ano vigente.");
 		}
 		
-		// valida Período
+		// valida PerÃ­odo
 		if (periodo < 1 || periodo > 2 ) {
-			throw new SRHRuntimeException("O Período só pode ser equivalente a 1 ou 2.");
+			throw new SRHRuntimeException("O PerÃ­odo sÃ³ pode ser equivalente a 1 ou 2.");
 		}
 
 	}
@@ -159,9 +159,9 @@ public class FeriasServiceImpl implements FeriasService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * · O Período de Férias deverá ser no máximo de 30 dias!
-	 * · Após digitar o Período Inicial ou Final, o sistema deverá recalcular a qtde de dias.
-	 *   O campo Dias será a diferença entre a data Fim e a data Inicio.
+	 *  O PerÃ­odo de FÃ©rias deverÃ¡ ser no mÃ¡ximo de 30 dias!
+	 *  ApÃ³s digitar o PerÃ­odo Inicial ou Final, o sistema deverÃ¡ recalcular a qtde de dias.
+	 *   O campo Dias serÃ¡ a diferenÃ§a entre a data Fim e a data Inicio.
 	 *   
 	 * @param entidade
 	 * 
@@ -176,7 +176,7 @@ public class FeriasServiceImpl implements FeriasService {
 			entidade.setQtdeDias((long) SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()));
 
 		if (entidade.getQtdeDias() > 30) {
-	    	throw new SRHRuntimeException("A quantidade de Dias não pode ser superior a 30 dias.");
+	    	throw new SRHRuntimeException("A quantidade de Dias nÃ£o pode ser superior a 30 dias.");
 	    }
 
 	}
@@ -185,15 +185,15 @@ public class FeriasServiceImpl implements FeriasService {
 	/**
 	 * Validar:
 	 * 
-	 * · Deve ser setado a pessoa (servidor).
-	 * · Deve ser setado o tipo de ferias.
-	 * · Deve ser setado o ano de referencia.
-	 * · Deve ser setado o periodo.
-	 * · Deve ser setada a data inicial.
-	 * · Deve ser setada a data final.
-	 * · Deve ser checado se a data inical menor data final.
-	 * · Validar a data de publicacao.
-	 * · Validar a data do ato.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setado o tipo de ferias.
+	 *  Deve ser setado o ano de referencia.
+	 *  Deve ser setado o periodo.
+	 *  Deve ser setada a data inicial.
+	 *  Deve ser setada a data final.
+	 *  Deve ser checado se a data inical menor data final.
+	 *  Validar a data de publicacao.
+	 *  Validar a data do ato.
 	 * 
 	 * @param entidade
 	 * 
@@ -204,32 +204,32 @@ public class FeriasServiceImpl implements FeriasService {
 		
 		// validando o servidor
 		if (entidade.getFuncional() == null)
-			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
+			 throw new SRHRuntimeException("O FuncionÃ¡rio Ã© obrigatÃ³rio. Digite o nome e efetue a pesquisa.");
 
 		// validando tipo ferias
 		if (entidade.getTipoFerias() == null)
-			throw new SRHRuntimeException("O tipo férias é obrigatório.");
+			throw new SRHRuntimeException("O tipo fÃ©rias Ã© obrigatÃ³rio.");
 
 		// validando referencia
 		if (entidade.getAnoReferencia() == null)
-			throw new SRHRuntimeException("A referência é obrigatória.");
+			throw new SRHRuntimeException("A referÃªncia Ã© obrigatÃ³ria.");
 
 		// validando periodo
 		if (entidade.getPeriodo() == null)
-			throw new SRHRuntimeException("O período é obrigatório.");
+			throw new SRHRuntimeException("O perÃ­odo Ã© obrigatÃ³rio.");
 
 		// validando data inicial e final caso nao for ferias ressalvadas ou em dobro
 		if ( !entidade.getTipoFerias().getId().equals(4l) && !entidade.getTipoFerias().getId().equals(5l) ) {
 
 			// validar data inicio
 			if ( entidade.getInicio() == null )
-				throw new SRHRuntimeException("A Data Inicial é obrigatório.");
+				throw new SRHRuntimeException("A Data Inicial Ã© obrigatÃ³ria.");
 
 			// validando data final
 			if ( entidade.getFim() == null )
-				throw new SRHRuntimeException("A Data Final é obrigatório.");
+				throw new SRHRuntimeException("A Data Final Ã© obrigatÃ³ria.");
 
-			// validando se o período inicial é menor que o final
+			// validando se o perÃ­odo inicial Ã© menor que o final
 			if ( entidade.getInicio().after(entidade.getFim() ) )
 				throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");
 
@@ -254,7 +254,7 @@ public class FeriasServiceImpl implements FeriasService {
 			calendarPublicacao.setTime( entidade.getDataPublicacao() );
 
 			if ( calendarPublicacao.get( GregorianCalendar.YEAR ) < entidade.getAnoReferencia() - 1 ) {
-				throw new SRHRuntimeException("O ano da Data Publicação deve ser maior ou igual a " + (entidade.getAnoReferencia() - 1) +".");
+				throw new SRHRuntimeException("O ano da Data PublicaÃ§Ã£o deve ser maior ou igual a " + (entidade.getAnoReferencia() - 1) +".");
 			}
 
 		}
@@ -277,7 +277,7 @@ public class FeriasServiceImpl implements FeriasService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * · Deve ser setado o IDFUNCIONAL conforme a data inicio das ferias.
+	 *  Deve ser setado o IDFUNCIONAL conforme a data inicio das ferias.
 	 * 
 	 * @param entidade
 	 * 
@@ -305,7 +305,7 @@ public class FeriasServiceImpl implements FeriasService {
 
 			// caso nenhuma funcional foi encontrada
 			if ( selecionada == null )
-				throw new SRHRuntimeException("A data das ferias não condiz com nenhum período de nomeação do Funcionário. Digite outra data.");
+				throw new SRHRuntimeException("A data das fÃ©rias nÃ£o condiz com nenhum perÃ­odo de nomeaÃ§Ã£o do FuncionÃ¡rio. Digite outra data.");
 
 		}
 
@@ -329,7 +329,7 @@ public class FeriasServiceImpl implements FeriasService {
 
 			// verificando o cargo 8, 9, 10 (Conselheiro, Auditor, Procurador)
 			if ( entidade.getFuncional().getOcupacao().getId() < 8 || entidade.getFuncional().getOcupacao().getId() > 10 ) {
-				throw new SRHRuntimeException("Somente os cargos Conselheiro, Auditor, Procurador podem ter Período 2.");		
+				throw new SRHRuntimeException("Somente os cargos Conselheiro, Auditor, Procurador podem ter PerÃ­odo 2.");		
 			}	
 		}
 	}
@@ -338,8 +338,8 @@ public class FeriasServiceImpl implements FeriasService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * O Período Inicial e Final devem ser checados para saber se já foi lançada nenhuma 
-	 * ferias para o servidor neste mesmo período.
+	 * O PerÃ­odo Inicial e Final devem ser checados para saber se jÃ¡ foi lanÃ§ada nenhuma 
+	 * ferias para o servidor neste mesmo perÃ­odo.
 	 * 
 	 * @param entidade
 	 *
@@ -366,25 +366,25 @@ public class FeriasServiceImpl implements FeriasService {
 					continue;
 				}
 
-				// verificar o tempo apenas se as ferias são do mesmo tipo
+				// verificar o tempo apenas se as ferias sÃ£o do mesmo tipo
 				if ( feriasExistentes.getTipoFerias().equals(entidade.getTipoFerias())) {
 				
 					// validando periodo de ferias inicial 
 					if( feriasExistentes.getInicio().after( entidade.getInicio() )
 							&& feriasExistentes.getInicio().before( entidade.getFim() ) ) {
-						throw new SRHRuntimeException("Já existe Férias cadastrada nesse período de tempo.");
+						throw new SRHRuntimeException("JÃ¡ existe FÃ©rias cadastrada nesse perÃ­odo de tempo.");
 					}
 	
 					// validando periodo de ferias final
 					if( feriasExistentes.getFim().after( entidade.getInicio() )
 							&& feriasExistentes.getFim().before( entidade.getFim() ) ) {
-						throw new SRHRuntimeException("Já existe Férias cadastrada nesse período de tempo.");
+						throw new SRHRuntimeException("JÃ¡ existe FÃ©rias cadastrada nesse perÃ­odo de tempo.");
 					}
 	
 					// validando periodo de ferias no meio
 					if( feriasExistentes.getInicio().before( entidade.getInicio() )
 							&& feriasExistentes.getFim().after( entidade.getFim() ) ) {
-						throw new SRHRuntimeException("Já existe Férias cadastrada nesse período de tempo.");
+						throw new SRHRuntimeException("JÃ¡ existe FÃ©rias cadastrada nesse perÃ­odo de tempo.");
 					}
 				}
 
@@ -396,8 +396,8 @@ public class FeriasServiceImpl implements FeriasService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * O Período e o Ano Referencia devem ser checados para saber quantos dias ja foram utilizados, nao podendo ser lançada 
-	 * ferias para o servidor neste mesmo período e ano de referencia com o somatorio > 30 dias.
+	 * O PerÃ­odo e o Ano Referencia devem ser checados para saber quantos dias ja foram utilizados, nao podendo ser lanÃ§ada 
+	 * ferias para o servidor neste mesmo perÃ­odo e ano de referencia com o somatorio > 30 dias.
 	 * 
 	 * @param entidade
 	 *
@@ -427,7 +427,7 @@ public class FeriasServiceImpl implements FeriasService {
 			somaDias += SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim());
 
 			if ( somaDias > 30)
-				throw new SRHRuntimeException("A quantidade total de dias de ferias não pode ser maior que 30 dias para o mesmo Período, Ano Referencia e Tipo de ferias.");
+				throw new SRHRuntimeException("A quantidade total de dias de fÃ©rias nÃ£o pode ser maior que 30 dias para o mesmo PerÃ­odo, Ano ReferÃªncia e Tipo de fÃ©rias.");
 
 		}
 	}

@@ -33,7 +33,7 @@ import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC038_Consultar Servidor por Competência e Setor
+* Use case : SRH_UC038_Consultar Servidor por CompetÃªncia e Setor
 * 
 * @since   : Dez 19, 2011, 17:09:00 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -108,7 +108,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 			if (setor == null)
 				throw new SRHRuntimeException("Selecione um setor.");
 			if (areaSetor == null)
-				throw new SRHRuntimeException("Selecione uma área.");
+				throw new SRHRuntimeException("Selecione uma Ã¡rea.");
 
 			// realizando consulta
 			this.lista = areaSetorCompetenciaService.findByArea(areaSetor.getId());
@@ -127,7 +127,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		return "listar";
@@ -274,7 +274,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
         		this.comboSetor = setorService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -301,7 +301,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo área. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo Ã¡rea. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

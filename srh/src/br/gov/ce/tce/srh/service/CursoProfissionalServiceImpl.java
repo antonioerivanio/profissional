@@ -101,7 +101,7 @@ public class CursoProfissionalServiceImpl implements CursoProfissionalService {
 
 		CursoProfissional entidadeJaExiste = dao.getByCursoAreaInstituicao( entidade.getDescricao(), entidade.getArea().getId(), entidade.getInstituicao().getId() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Curso de FormaÁ„o Profissional j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Curso de Forma√ß√£o Profissional j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

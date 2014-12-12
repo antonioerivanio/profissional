@@ -32,7 +32,7 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	@Transactional
 	public void exonerar(Funcional entidade) throws SRHRuntimeException {
 
-		//AlteraÁ„o 25/02/2014 - verificando se o tipo de saÌda È 'Aposentadoria' e alterando funcional
+		//Altera√ß√£o 25/02/2014 - verificando se o tipo de sa√≠da √© 'Aposentadoria' e alterando funcional
 		if (entidade.getTipoMovimentoSaida().getId() == 26L) {
 
 			entidade.setStatus(5L);
@@ -43,7 +43,7 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 				entidade.getFolha().setId(6L);
 			
 		} else {
-			//Id=8 È referente a situaÁ„o exonerado
+			//Id=8 √© referente a situa√ß√£o exonerado
 			entidade.getSituacao().setId(8L);
 			entidade.setAtipoFp(false);
 		}
@@ -54,13 +54,13 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 		 * 
 		 */	
 		validarExoneracao(entidade);
-        //AlteraÁ„o 06/06/2013 - verificando se o servidor È de cargo apenas comicionado ( verificar se a ocupaÁ„o È um cargo isolado)
+        //Altera√ß√£o 06/06/2013 - verificando se o servidor √© de cargo apenas comicionado ( verificar se a ocupa√ß√£o √© um cargo isolado)
 		Ocupacao ocupacao =  entidade.getOcupacao();
 		if(!ocupacao.isCargoIsolado()){
 			// finalizando a referencia funcional
 			ReferenciaFuncional referencia = referenciaFuncionalService.getAtivoByFuncional( entidade.getId() );
 			if ( referencia == null )
-				throw new SRHRuntimeException("Ocorreu algum erro ao salvar, a referencia do cargo n„o foi encontrada. OperaÁ„o cancelada.");
+				throw new SRHRuntimeException("Ocorreu algum erro ao salvar, a referencia do cargo n√£o foi encontrada. Opera√ß√£o cancelada.");
 			referencia.setFim( entidade.getSaida() );
 			referencia.setDoeAto( entidade.getDoeSaida() );
 			
@@ -69,7 +69,7 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 			
 		}
 		
-		//AlteraÁ„o 19/09/2013 - Gravando a data fim no Tb_FuncionalSetor - Evitar problema de "Existe lotaÁ„o ativa para esse Servidor"
+		//Altera√ß√£o 19/09/2013 - Gravando a data fim no Tb_FuncionalSetor - Evitar problema de "Existe lota√ß√£o ativa para esse Servidor"
 			FuncionalSetor funcionalSetor = funcionalSetorService.getAtivoByFuncional(entidade.getId());
 			if(funcionalSetor!= null){
 				funcionalSetor.setDataFim(entidade.getSaida());
@@ -83,11 +83,11 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ Deve ser setado o tipo de publicacao saida.
-	 * ∑ Deve ser setado a data de publicacao.
-	 * ∑ Deve ser setado o tipo de saida.
-	 * ∑ Deve ser setado a data da saida.
-	 * ∑ Deve ser preenchido o campo observacao da saida.
+	 *  Deve ser setado o tipo de publicacao saida.
+	 *  Deve ser setado a data de publicacao.
+	 *  Deve ser setado o tipo de saida.
+	 *  Deve ser setado a data da saida.
+	 *  Deve ser preenchido o campo observacao da saida.
 	 * 
 	 * @param entidade Funcional
 	 * 
@@ -96,29 +96,29 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	 */
 	private void validarExoneracao(Funcional entidade) {
 		
-		//AlteraÁ„o 01/10/2013 - Tipo PublicaÁ„o e E Data publicaÁ„o n„o ser· campos obrigatÛrios para estagi·rios.
+		//Altera√ß√£o 01/10/2013 - Tipo Publica√ß√£o e E Data publica√ß√£o n√£o ser√° campos obrigat√≥rios para estagi√°rios.
 		if(entidade.getOcupacao().getId() != 14 && entidade.getOcupacao().getId() != 15)
 		{
 			// validando o tipo de publicacao
 			if (entidade.getTipoPublicacaoSaida() == null)
-				throw new SRHRuntimeException("O Tipo de PublicaÁ„o È obrigatÛrio.");
+				throw new SRHRuntimeException("O Tipo de Publica√ß√£o √© obrigat√≥rio.");
 	
 			// validando a data da publicacao
 	 		if (entidade.getDoeSaida() == null)
-				throw new SRHRuntimeException("A PublicaÁ„o È obrigatÛria.");
+				throw new SRHRuntimeException("A Publica√ß√£o √© obrigat√≥ria.");
 		}
 		
  		// validando o tipo de saida
 		if (entidade.getTipoMovimentoSaida() == null)
-			throw new SRHRuntimeException("O Tipo de Saida È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo de Saida √© obrigat√≥rio.");
 
 		// validando a data final
 		if (entidade.getSaida() == null)
-			throw new SRHRuntimeException("A Data Final È obrigatÛria.");
+			throw new SRHRuntimeException("A Data Final √© obrigat√≥ria.");
 
 		// validando a observacao da saida
 		if (entidade.getDescricaoSaida() == null || entidade.getDescricaoSaida().equals(""))
-			throw new SRHRuntimeException("A ObservaÁ„o da SaÌda È obrigatÛria.");
+			throw new SRHRuntimeException("A Observa√ß√£o da Sa√≠da √© obrigat√≥ria.");
 
 	}
 

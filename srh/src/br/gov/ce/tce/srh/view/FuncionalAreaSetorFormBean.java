@@ -24,7 +24,7 @@ import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
- * Use case : SRH_UC025_Manter ¡rea do Setor do Servidor
+ * Use case : SRH_UC025_Manter √Årea do Setor do Servidor
  * 
  * @since  : Dez 3, 2011, 11:14:10 AM
  * @author : wesllhey.holanda@ivia.com.br
@@ -79,7 +79,7 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getFuncional() == null ){
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 			}
 			this.setFuncional( funcionalService.getById( getFuncional().getId() ) );
 
@@ -90,7 +90,7 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -119,14 +119,14 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 		try {
 
 			if( getFuncional() == null )
-			    throw new SRHRuntimeException("Funcionario È obrigatÛrio.");
+			    throw new SRHRuntimeException("Funcionario √© obrigat√≥rio.");
 
 			if ( getAreaSetor() == null || getAreaSetor().getId().equals(0l) )
-				throw new SRHRuntimeException("¡rea È obrigatÛrio.");
+				throw new SRHRuntimeException("√Årea √© obrigat√≥ria.");
 
 			for ( FuncionalAreaSetor entidades : lista ) {
 				if ( entidades.getAreaSetor().getId().equals( getAreaSetor().getId() ) ) {
-					throw new SRHRuntimeException("J· existe esta ·rea na lista.");
+					throw new SRHRuntimeException("J√° existe esta √°rea na lista.");
 				}
 			}
 
@@ -148,7 +148,7 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a ·rea do servidor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a √°rea do servidor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -169,7 +169,7 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			lista = funcionalAreaSetorService.findByFuncional( getFuncional().getId() );
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao remover a ·rea do servidor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao remover a √°rea do servidor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -205,7 +205,7 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo ·rea. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo √°rea. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -251,11 +251,11 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 				if ( getFuncional() != null) {
 					this.nome = getFuncional().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 

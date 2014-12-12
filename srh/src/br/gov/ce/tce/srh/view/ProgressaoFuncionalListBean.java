@@ -23,7 +23,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC031_Manter Progress„o Funcional do Servidor
+* Use case : SRH_UC031_Manter Progress√£o Funcional do Servidor
 * 
 * @since   : Jan 17, 2012, 18:22:00
 * @author  : robson.castro@ivia.com.br
@@ -58,7 +58,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 	private List<ReferenciaFuncional> lista;
 	private ReferenciaFuncional entidade;
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -77,7 +77,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			
 			// validando campos da entidade
 			if ( getEntidade().getFuncional() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			count = referenciaFuncionalService.count(getEntidade().getFuncional().getMatricula());
 	
@@ -95,7 +95,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -128,7 +128,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -155,11 +155,11 @@ public class ProgressaoFuncionalListBean implements Serializable {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.cpf = getEntidade().getFuncional().getPessoal().getCpf();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 		}
@@ -177,11 +177,11 @@ public class ProgressaoFuncionalListBean implements Serializable {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.matricula = getEntidade().getFuncional().getMatricula();
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 		}
@@ -210,7 +210,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -235,7 +235,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 
 	public List<ReferenciaFuncional> getPagedList() {return pagedList;}
 	public void setPagedList(List<ReferenciaFuncional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 
 	public boolean isPassouConsultar() {

@@ -60,7 +60,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 		if (revisao.getPeriodoInicial() != null
 				&& revisao.getPeriodoFinal() != null
 				&& revisao.getPeriodoInicial().after(revisao.getPeriodoFinal())) {
-			throw new SRHRuntimeException("A data inicial deve ser anterior ‡ data final.");
+			throw new SRHRuntimeException("A data inicial deve ser anterior √† data final.");
 		}
 		
 		AuditQuery auditQuery = getAuditReader().createQuery().forRevisionsOfEntity(revisao.getEntidade(), false, true);
@@ -156,8 +156,8 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			for (Field field : fields) {
 				List<Annotation> annotations = Arrays.asList(field.getAnnotations());
 				boolean atributoValido = true;
-//				Adiciona somente se o atributo nao for anotado com @Transient ou com @NotAudited
-//				ou n„o for da classe Funcional nem Pessoal:
+//				Adiciona somente se o atributo n√£o for anotado com @Transient ou com @NotAudited
+//				ou n√£o for da classe Funcional nem Pessoal:
 				for (Annotation annotation : annotations) {
 					if ( annotation instanceof Transient 
 							|| annotation instanceof NotAudited

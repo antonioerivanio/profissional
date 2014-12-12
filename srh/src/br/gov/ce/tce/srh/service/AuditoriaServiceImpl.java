@@ -46,7 +46,7 @@ public class AuditoriaServiceImpl implements AuditoriaService {
 		}
 		
 		if (valorRestricao == null || valorRestricao.equals("")) {
-			throw new SRHRuntimeException("Valor da coluna n„o informado.");
+			throw new SRHRuntimeException("Valor da coluna n√£o informado.");
 		}
 		
 	}

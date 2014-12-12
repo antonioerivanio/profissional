@@ -44,8 +44,8 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 
 
 	/**
-	 * Método responsável em pegar a última mátricula cadastrada e verificar qual é a próxima matrícula válida 
-	 * utilizando-se para isso o validador da matrícula
+	 * MÃ©todo responsÃ¡vel em pegar a Ãºltima matrÃ­cula cadastrada e verificar qual Ã© a prÃ³xima matrÃ­cula vÃ¡lida 
+	 * utilizando-se para isso o validador da matrÃ­cula
 	 * 
 	 * @return
 	 * 
@@ -64,10 +64,10 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 				
 				mat = mat + 1;
 				
-				//adicionando quantidades de zeros restante para compôr a matrícula no padrão NNNN-D onde n é um número e D é o número dígito verificador
+				//adicionando quantidades de zeros restante para comparar a matrÃ­cula no padrÃ£o NNNN-D onde N Ã© um nÃºmero e D Ã© o dÃ­gito verificador
 				matricula = String.format("%5s", mat).replace(' ', '0');
 				
-				//adicionando separador do dígito verificador
+				//adicionando separador do dÃ­gito verificador
 				matricula = matricula.substring(0,4)+"-"+matricula.substring(4,5);
 				
 				if( SRHUtils.validarMatricula(matricula)) {
@@ -255,7 +255,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	
 	
 	
-	// Consultas replicadas sem o critério de datasaida nula para que se possa ver o histórico dos servidores que já saíram.  
+	// Consultas replicadas sem o critÃ©rio de datasaida nula para que se possa ver o histÃ³rico dos servidores que jÃ¡ saÃ­ram.  
 	// By Zacarias - 06/08/2014
 	
 	

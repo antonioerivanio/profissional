@@ -54,7 +54,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	private RelatorioUtil relatorioUtil;
 
 
-	//controle de acesso do formul·rio
+	//controle de acesso do formul√°rio
 	private HtmlForm form;
 
 	//parametos de tela de consulta
@@ -71,7 +71,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	private List<TipoFerias> comboTipoFerias;
 	
 	
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -104,7 +104,7 @@ public class RelatorioFeriasListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -163,7 +163,7 @@ public class RelatorioFeriasListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio das Ferias por Setor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio das Ferias por Setor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -187,7 +187,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	public List<RelatorioFerias> getLista() {return lista;}
 	public void setLista(List<RelatorioFerias> lista) {this.lista = lista;}
 
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -223,7 +223,7 @@ public class RelatorioFeriasListBean implements Serializable {
         		this.comboSetor = setorService.findTodosAtivos();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -232,7 +232,7 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	public List<RelatorioFerias> getPagedList() {return pagedList;}
 	public void setPagedList(List<RelatorioFerias> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 
 	public Setor getSetor() {
@@ -278,7 +278,7 @@ public class RelatorioFeriasListBean implements Serializable {
 			try{
 				this.comboTipoFerias = tipoFeriasService.findAll();
 			} catch (Exception e) {
-	        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo Ferias. OperaÁ„o cancelada.");
+	        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo Ferias. Opera√ß√£o cancelada.");
 	        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 		}

@@ -78,14 +78,14 @@ public class CompetenciaOrganizacionalFormBean implements Serializable {
 			competenciaOrganizacionalService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 			
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -114,7 +114,7 @@ public class CompetenciaOrganizacionalFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addInfoMessage("Erro ao carregar a combo competencia. Operação cancelada.");
+			FacesUtil.addInfoMessage("Erro ao carregar a combo competencia. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		

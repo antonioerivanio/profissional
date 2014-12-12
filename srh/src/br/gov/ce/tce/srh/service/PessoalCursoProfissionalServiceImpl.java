@@ -52,12 +52,12 @@ public class PessoalCursoProfissionalServiceImpl implements PessoalCursoProfissi
 			// verificando se o curso ja existe
 			PessoalCursoProfissional existe = dao.getByCurso(listaPessoaCurso.get(0).getCursoProfissional().getId());
 			if (existe != null)
-				throw new SRHRuntimeException("Este curso ja foi cadastrado.");
+				throw new SRHRuntimeException("Este curso jÃ¡ foi cadastrado.");
 
 		}
 		
 		//Zacarias Gomes - 19/05/2014
-		//alteração para permitir cadatrar curso de conselheiro/auditor/procurador que não possui competência.
+		//alteraÃ§Ã£o para permitir cadatrar curso de conselheiro/auditor/procurador que nÃ£o possui competÃªncia.
 		// excluindo as competencias do curso
 		if(!listaCompetencias.isEmpty()){
 			competenciaCursoService.excluir(listaCompetencias.get(0).getCursoProfissional().getId());		
@@ -125,8 +125,8 @@ public class PessoalCursoProfissionalServiceImpl implements PessoalCursoProfissi
 
 	/**
 	 * Validar:
-	 * · Deve ser cadastrado ao menos uma competencia.
-	 * · Deve ser cadastrado ao menos um servidor
+	 *  Deve ser cadastrado ao menos uma competencia.
+	 *  Deve ser cadastrado ao menos um servidor
 	 *  
 	 */
 	private void validarDados(List<PessoalCursoProfissional> listaPessoaCurso,
@@ -136,9 +136,9 @@ public class PessoalCursoProfissionalServiceImpl implements PessoalCursoProfissi
 		boolean isCompetenciaObrigatoria = true;
 		
 		if (listaPessoaCurso == null || listaPessoaCurso.size() == 0)
-			throw new SRHRuntimeException("Nenhum servidor cadastrado, é obrigatório pelo menos um servidor.");
+			throw new SRHRuntimeException("Nenhum servidor cadastrado, Ã© obrigatÃ³rio pelo menos um servidor.");
 		//Zacarias Gomes - 19/05/2014
-		//alteração para permitir cadatrar curso de conselheiro/auditor/procurador que não possui competência.
+		//alteraÃ§Ã£o para permitir cadatrar curso de conselheiro/auditor/procurador que nÃ£o possui competÃªncia.
 		if (listaCompetencias == null || listaCompetencias.size() == 0){
 			for (PessoalCursoProfissional pessoal : listaPessoaCurso) {
 				Funcional funcional = funcionalService.getByPessoaAtivo(pessoal.getPessoal().getId());
@@ -150,7 +150,7 @@ public class PessoalCursoProfissionalServiceImpl implements PessoalCursoProfissi
 		
 		}
 		if (isCompetenciaObrigatoria && (listaCompetencias == null || listaCompetencias.size() == 0))
-			throw new SRHRuntimeException("Nenhuma competência cadastrada, é obrigatório pelo menos uma competência.");
+			throw new SRHRuntimeException("Nenhuma competÃªncia cadastrada, Ã© obrigatÃ³rio pelo menos uma competÃªncia.");
 
 		
 

@@ -15,7 +15,7 @@ import br.gov.ce.tce.srh.service.LicencaEspecialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC035_Manter PerÌodo de LicenÁa Especial
+* Use case : SRH_UC035_Manter Per√≠odo de Licen√ßa Especial
 * 
 * @since   : Out 27, 2011, 10:59:22 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -79,7 +79,7 @@ public class LicencaEspecialFormBean implements Serializable {
 				this.matricula = funcional.getMatricula();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -102,14 +102,14 @@ public class LicencaEspecialFormBean implements Serializable {
 			licencaEspecialService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -148,11 +148,11 @@ public class LicencaEspecialFormBean implements Serializable {
 					getEntidade().setPessoal( funcional.getPessoal() );
 					this.nome = getEntidade().getPessoal().getNomeCompleto();	
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -177,7 +177,7 @@ public class LicencaEspecialFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo ano inicial. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo ano inicial. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -197,7 +197,7 @@ public class LicencaEspecialFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo ano final. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo ano final. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

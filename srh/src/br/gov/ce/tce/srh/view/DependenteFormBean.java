@@ -74,7 +74,7 @@ public class DependenteFormBean implements Serializable{
 			nomeResponsavel = entidade.getResponsavel().getNomeCompleto();				
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -91,14 +91,14 @@ public class DependenteFormBean implements Serializable{
 			this.alterar = false;
 			limpar();
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -115,7 +115,7 @@ public class DependenteFormBean implements Serializable{
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar os dependentes. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar os dependentes. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -132,7 +132,7 @@ public class DependenteFormBean implements Serializable{
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar os tipos de dependência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar os tipos de dependÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -149,7 +149,7 @@ public class DependenteFormBean implements Serializable{
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar os motivos de dependência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar os motivos de dependÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -166,7 +166,7 @@ public class DependenteFormBean implements Serializable{
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar os motivos de dependência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar os motivos de dependÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -228,7 +228,7 @@ public class DependenteFormBean implements Serializable{
 				entidade.setResponsavel( pessoalService.getById( this.idResponsavel ));
 
 			} catch (Exception e) {
-				FacesUtil.addInfoMessage("Erro ao carregar o responsável. Operação cancelada.");
+				FacesUtil.addInfoMessage("Erro ao carregar o responsÃ¡vel. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: "+ e.getMessage());
 			}			
 		}	
@@ -247,7 +247,7 @@ public class DependenteFormBean implements Serializable{
 				entidade.setDependente( pessoalService.getById( this.idDependente ));
 
 			} catch (Exception e) {
-				FacesUtil.addInfoMessage("Erro ao carregar o dependente. Operação cancelada.");
+				FacesUtil.addInfoMessage("Erro ao carregar o dependente. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: "+ e.getMessage());
 			}			
 		}		

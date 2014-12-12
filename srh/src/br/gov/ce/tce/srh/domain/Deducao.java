@@ -97,7 +97,7 @@ public class Deducao extends BasicEntity<Long> implements Serializable {
 	
 	public String getDescricaoCompleta() {
 		if (descricaoCompleta == null) {
-			descricaoCompleta = "Ano:" + anoReferencia + " / Mês:" + mesReferencia;
+			descricaoCompleta = "Ano:" + anoReferencia + " / MÃªs:" + mesReferencia;
 		}
 		return descricaoCompleta;
 	}

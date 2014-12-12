@@ -77,7 +77,7 @@ public class EstadoCivilServiceImpl implements EstadoCivilService {
 
 		EstadoCivil entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Estado Civil j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Estado Civil j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

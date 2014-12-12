@@ -140,15 +140,15 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 			categoriaSetorPessoalService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+					.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -241,12 +241,12 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 					getEntidade().setPessoal(this.funcional.getPessoal());
 				} else {
 					FacesUtil
-							.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+							.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
 				FacesUtil
-						.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+						.addErroMessage("Ocorreu um erro na consulta da matr√≠cula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 

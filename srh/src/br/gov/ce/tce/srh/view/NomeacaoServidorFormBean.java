@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Cbo;
 import br.gov.ce.tce.srh.domain.ClasseReferencia;
-import br.gov.ce.tce.srh.domain.Especialidade;
 import br.gov.ce.tce.srh.domain.EspecialidadeCargo;
 import br.gov.ce.tce.srh.domain.Folha;
 import br.gov.ce.tce.srh.domain.Funcional;
@@ -47,7 +46,7 @@ import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC030_Manter NomeaÁ„o do Servidor
+* Use case : SRH_UC030_Manter Nomea√ß√£o do Servidor
 * 
 * @since   : Dez 05, 2011, 10:10:00 AM
 * @author  : robson.castro@ivia.com.br
@@ -206,7 +205,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 				exibirTodosOsCampos = true;
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar os dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -235,14 +234,14 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -268,7 +267,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo entrada. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo entrada. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
         
@@ -289,7 +288,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboTipoPublicacao = tipoPublicacaoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de publicaÁ„o. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de publica√ß√£o. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -310,7 +309,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 				this.comboTipoFolha = folhaService.findByAtivo(true);
 	
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo folha. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo folha. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -319,7 +318,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 
 	/**
-	 * Combo Tipo OcupaÁ„o
+	 * Combo Tipo Ocupa√ß√£o
 	 * @return
 	 */
 	public List<TipoOcupacao> getComboTipoOcupacao() {
@@ -330,7 +329,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboTipoOcupacao = tipoOcupacaoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo ocupaÁ„o. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo ocupa√ß√£o. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -378,7 +377,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboCargoFuncao = ocupacaoService.findByTipoOcupacao( getTipoOcupacao().getId() );
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo cargo. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo cargo. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -406,7 +405,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	}
 
 	/**
-	 * Combo OrientaÁ„o Cargo
+	 * Combo Orienta√ß√£o Cargo
 	 * 
 	 * @return
 	 */
@@ -429,7 +428,7 @@ public class NomeacaoServidorFormBean implements Serializable {
     			this.comboClasseReferencia = classeReferenciaService.findByCargo(this.entidade.getOcupacao().getId());
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo classe referencia. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo classe referencia. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -450,7 +449,7 @@ public class NomeacaoServidorFormBean implements Serializable {
     			this.comboEspecialidadeCargo = especialidadeCargoService.findByOcupacao(this.entidade.getOcupacao().getId());
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo especialidade. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo especialidade. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -459,7 +458,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	
 
 	/**
-	 * Combo OrientaÁ„o Cargo
+	 * Combo Orienta√ß√£o Cargo
 	 * 
 	 * @return
 	 */
@@ -472,7 +471,7 @@ public class NomeacaoServidorFormBean implements Serializable {
     			this.comboOrientacaoCargo = orientacaoCargoService.findByEspecialidade(especialidadeCargo.getEspecialidade().getId());
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo especialidade. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo especialidade. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -481,7 +480,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	
 	
 	/**
-	 * Combo SituaÁ„o
+	 * Combo Situa√ß√£o
 	 * 
 	 * @return
 	 */
@@ -493,7 +492,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboSituacao = situacaoService.findAll();
         
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo situaÁ„o. OperaÁ„o cancelada");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo situa√ß√£o. Opera√ß√£o cancelada");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -514,7 +513,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboVinculo = vinculoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo vinculo. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo vinculo. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -535,7 +534,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboSetor = setorService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -556,7 +555,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboCBO1 = cboService.findByNivel( 1L );
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 01. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 01. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -589,7 +588,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 02. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 02. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
         return this.comboCBO2;
@@ -619,7 +618,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 03. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 03. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -648,7 +647,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 04. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 04. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -669,7 +668,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboLeiIncorporacao = LeiIncorporacao.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo lei incorporaÁ„o. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo lei incorpora√ß√£o. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -678,7 +677,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 
 	/**
-	 * Combo Org„o Origem
+	 * Combo Org√£o Origem
 	 * 
 	 * @return
 	 */
@@ -690,7 +689,7 @@ public class NomeacaoServidorFormBean implements Serializable {
         		this.comboOrgaoOrigem = entidadeService.listaOrgaoOrigemComRestricaoTipoEsfera();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo org„o origem. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo org√£o origem. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

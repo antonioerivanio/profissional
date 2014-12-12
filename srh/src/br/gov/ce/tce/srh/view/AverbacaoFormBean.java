@@ -22,7 +22,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
- * Use case : SRH_UC047_Manter Averbações do Servidor
+ * Use case : SRH_UC047_Manter AverbaÃ§Ãµes do Servidor
  * 
  * @since   : Apr 17, 2012, 15:20:22 PM
  * @author  : robstownholanda@ivia.com.br
@@ -97,7 +97,7 @@ public class AverbacaoFormBean implements Serializable {
 			this.fim = entidade.getFim();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -121,15 +121,15 @@ public class AverbacaoFormBean implements Serializable {
 			limpar();
 			periodoValido = false;
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 			
 		} catch (SRHRuntimeException e) {
 			periodoValido = true;
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -150,7 +150,7 @@ public class AverbacaoFormBean implements Serializable {
 				this.comboUf = ufService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo UF. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo UF. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -175,7 +175,7 @@ public class AverbacaoFormBean implements Serializable {
 			}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo licença especial. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo licenÃ§a especial. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -219,11 +219,11 @@ public class AverbacaoFormBean implements Serializable {
 					getEntidade().setPessoal( funcional.getPessoal() );
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+					FacesUtil.addInfoMessage("MatrÃ­cula nÃ£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -247,7 +247,7 @@ public class AverbacaoFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data inicial. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo data inicial. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -267,7 +267,7 @@ public class AverbacaoFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data final. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro no campo data final. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

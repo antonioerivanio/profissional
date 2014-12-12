@@ -100,7 +100,7 @@ public class CargoFormBean implements Serializable {
 			this.listaSimbolo = simboloService.findByOcupacao( entidade.getId() );
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar os dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -120,14 +120,14 @@ public class CargoFormBean implements Serializable {
 			ocupacaoService.salvar(entidade, listaEspecialidade, listaSimbolo);
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -146,14 +146,14 @@ public class CargoFormBean implements Serializable {
 
 			// validando o campo obrigatorio Simbologia
 			if (entidadeEspecialidade.getEspecialidade() == null || entidadeEspecialidade.getEspecialidade().getId() == 0l) {
-				FacesUtil.addErroMessage("A especialidade È obrigatÛria.");
+				FacesUtil.addErroMessage("A especialidade √© obrigat√≥ria.");
 				return null;
 			}
 
 			// verificando se a especialidade ja foi cadatrada
 			for (EspecialidadeCargo item : listaEspecialidade) {
 				if (item.getEspecialidade().getId().equals(entidadeEspecialidade.getEspecialidade().getId())) {
-					FacesUtil.addErroMessage("A especialidade ja esta a lista.");
+					FacesUtil.addErroMessage("A especialidade j√° est√° na lista.");
 					return null;
 				}
 			}
@@ -166,7 +166,7 @@ public class CargoFormBean implements Serializable {
 			this.entidadeEspecialidade = new EspecialidadeCargo();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a especialidade. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a especialidade. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -190,7 +190,7 @@ public class CargoFormBean implements Serializable {
 				this.entidadeEspecialidade = new EspecialidadeCargo();
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Existem registros filhos utilizando a especialidade excluida. Exclus„o n„o poder· ser realizada.");
+				FacesUtil.addErroMessage("Existem registros filhos utilizando a especialidade excluida. Exclus√£o n√£o poder√° ser realizada.");
 				return null;
 			}
 
@@ -211,14 +211,14 @@ public class CargoFormBean implements Serializable {
 
 			// validando o campo obrigatorio Simbologia
 			if (simbologia == null || simbologia.equalsIgnoreCase("")) {
-				FacesUtil.addErroMessage("A simbologia È obrigatÛria.");
+				FacesUtil.addErroMessage("A simbologia √© obrigat√≥ria.");
 				return null;
 			}
 
 			// verificando se a simbologia ja foi cadatrada
 			for (Simbolo item : listaSimbolo) {
 				if (item.getSimbolo().equalsIgnoreCase(simbologia)) {
-					FacesUtil.addErroMessage("A simbologia ja esta a lista.");
+					FacesUtil.addErroMessage("A simbologia j√° est√° na lista.");
 					return null;
 				}
 			}
@@ -231,7 +231,7 @@ public class CargoFormBean implements Serializable {
 			this.simbologia = new String();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a simbologia. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a simbologia. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -255,7 +255,7 @@ public class CargoFormBean implements Serializable {
 				this.simbologia = new String();
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Existem registros filhos utilizando o simbolo excluido. Exclus„o n„o poder· ser realizada.");
+				FacesUtil.addErroMessage("Existem registros filhos utilizando o simbolo excluido. Exclus√£o n√£o poder√° ser realizada.");
 				return null;
 			}
 
@@ -278,7 +278,7 @@ public class CargoFormBean implements Serializable {
 				this.comboEspecialidade = especialidadeService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo especialidade. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo especialidade. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -299,7 +299,7 @@ public class CargoFormBean implements Serializable {
 				this.comboEscolaridade = escolaridadeService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo escolaridade. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo escolaridade. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -320,7 +320,7 @@ public class CargoFormBean implements Serializable {
 				this.comboTipoOcupacao = tipoOcupacaoService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo tipo ocupaÁ„o. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo tipo ocupa√ß√£o. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

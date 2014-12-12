@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.CategoriaFuncional;
 import br.gov.ce.tce.srh.domain.CompetenciaSetorFuncional;
-import br.gov.ce.tce.srh.domain.Folha;
 import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CadastroCategoriaFuncionalService;
@@ -59,7 +57,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 	private CategoriaFuncionalSetorService categoriaFuncionalSetorService;
 
 
-	//controle de acesso do formul·rio
+	//controle de acesso do formul√°rio
 	private HtmlForm form;
 	private boolean passouConsultar = false;
 
@@ -78,7 +76,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 	private List<CategoriaFuncional> comboCategoriaFuncional;
 	
 	
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -115,7 +113,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -134,17 +132,17 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 
 			competenciaSetorFuncionalService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -181,7 +179,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio das CompetÍncias Setor Funcional. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio das Compet√™ncias Setor Funcional. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -214,7 +212,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 	public List<CompetenciaSetorFuncional> getLista() {return lista;}
 	public void setLista(List<CompetenciaSetorFuncional> lista) {this.lista = lista;}
 
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -250,7 +248,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
         		this.comboSetor = setorService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -270,7 +268,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
         		this.comboCategoriaFuncional = categoriaFuncionalService.findBySetor(getSetor());
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -292,7 +290,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 
 	public List<CompetenciaSetorFuncional> getPagedList() {return pagedList;}
 	public void setPagedList(List<CompetenciaSetorFuncional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 
 	public boolean isPassouConsultar() {

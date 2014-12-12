@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.service.SimboloService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC006_Manter Classe e Referência do Cargo
+* Use case : SRH_UC006_Manter Classe e ReferÃªncia do Cargo
 * 
 * @since   : Sep 14, 2011, 11:02:06 AM
 * @author  : robstownholanda@ivia.com.br
@@ -83,7 +83,7 @@ public class ClasseReferenciaFormBean implements Serializable {
 			this.cargo = this.getEntidade().getSimbolo().getOcupacao();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -104,14 +104,14 @@ public class ClasseReferenciaFormBean implements Serializable {
 			classeReferenciaService.salvar(entidade);
 			limpar(alterar);
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -139,7 +139,7 @@ public class ClasseReferenciaFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo cargo. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo cargo. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -165,7 +165,7 @@ public class ClasseReferenciaFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo simbolo. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo simbolo. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -186,7 +186,7 @@ public class ClasseReferenciaFormBean implements Serializable {
 				this.comboEscolaridade = escolaridadeService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar a escolaridade. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar a escolaridade. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

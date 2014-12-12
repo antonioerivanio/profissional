@@ -62,30 +62,30 @@ public class DependenteServiceImpl implements DependenteService{
 	private void validarDados(Dependente entidade, boolean alterar) throws SRHRuntimeException{
 		
 		if(entidade == null)
-			throw new SRHRuntimeException("O Servidor é obrigatório. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Servidor Ã© obrigatÃ³rio. Digite o nome e efetue a pesquisa.");
 		
 		if(entidade.getResponsavel() == null || entidade.getResponsavel().getId() == 0L)
-			throw new SRHRuntimeException("O Servidor é obrigatório. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Servidor Ã© obrigatÃ³rio. Digite o nome e efetue a pesquisa.");
 		
 		if(entidade.getDependente() == null || entidade.getDependente().getId() == 0L)
-			throw new SRHRuntimeException("O Dependente é obrigatório.");
+			throw new SRHRuntimeException("O Dependente Ã© obrigatÃ³rio.");
 		
 		if (!alterar){
 			if(dependenteDAO.findByResponsavelAndDependente(entidade.getResponsavel().getId(), entidade.getDependente().getId()) != null)
-				throw new SRHRuntimeException("O Resposável já possui este Dependente.");
+				throw new SRHRuntimeException("O ResposÃ¡vel jÃ¡ possui este Dependente.");
 		}
 		
 		if(entidade.getTipoDependencia() == null)
-			throw new SRHRuntimeException("O Tipo Dependência é obrigatório.");
+			throw new SRHRuntimeException("O Tipo DependÃªncia Ã© obrigatÃ³rio.");
 			
 		if(entidade.getMotivoInicio() == null || entidade.getMotivoInicio().getId() == 0L)
-			throw new SRHRuntimeException("O Motivo Início é obrigatório.");
+			throw new SRHRuntimeException("O Motivo InÃ­cio Ã© obrigatÃ³rio.");
 		
 		if(entidade.getDataInicio() == null)
-			throw new SRHRuntimeException("A Data Início é obrigatória.");
+			throw new SRHRuntimeException("A Data InÃ­cio Ã© obrigatÃ³ria.");
 		
 		if(entidade.getTipoDuracao() == 0L)
-			throw new SRHRuntimeException("A Duração é obrigatória.");		
+			throw new SRHRuntimeException("A DuraÃ§Ã£o Ã© obrigatÃ³ria.");		
 					
 		if(entidade.getMotivoFim() != null && entidade.getDataFim() == null)
 			throw new SRHRuntimeException("Informe a Data Fim.");

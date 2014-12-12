@@ -65,14 +65,14 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 	/**
 	 * Validar:
 	 * 
-	 * · Deve ser setado o tipo documento.
-	 * · Deve ser setado o numero.
-	 * · Deve ser setado o ano.
-	 * · Deve ser setado a data de vigencia.
-	 * · Deve ser setada o tipo de publicacao.
-	 * · Deve ser setada a data de publicacao.
-	 * · Deve ser setada a ementa.
-	 * · Deve ser setado o arquivo.
+	 *  Deve ser setado o tipo documento.
+	 *  Deve ser setado o numero.
+	 *  Deve ser setado o ano.
+	 *  Deve ser setado a data de vigencia.
+	 *  Deve ser setada o tipo de publicacao.
+	 *  Deve ser setada a data de publicacao.
+	 *  Deve ser setada a ementa.
+	 *  Deve ser setado o arquivo.
 	 * 
 	 * @param entidade
 	 * 
@@ -83,35 +83,35 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
 		// validando o tipo documento
 		if ( entidade.getTipoDocumento() == null )
-			throw new SRHRuntimeException("O tipo de documento é obrigatório.");
+			throw new SRHRuntimeException("O tipo de documento Ã© obrigatÃ³rio.");
 
 		// validando o numero
 		if (entidade.getNumero() == null || entidade.getNumero().equals(0l))
-			throw new SRHRuntimeException("O numero é obrigatório.");
+			throw new SRHRuntimeException("O nÃºmero Ã© obrigatÃ³rio.");
 
 		// validando o ano
 		if (entidade.getAno() == null || entidade.getAno().equals(0l))
-			throw new SRHRuntimeException("O ano é obrigatório.");
+			throw new SRHRuntimeException("O ano Ã© obrigatÃ³rio.");
 
 		// validando a data de vigencia
 		if (entidade.getVigencia() == null)
-			throw new SRHRuntimeException("A vigência é obrigatória.");
+			throw new SRHRuntimeException("A vigÃªncia Ã© obrigatÃ³ria.");
 
 		// validando o tipo de publicacao
 		if (entidade.getDoe() == null)
-			throw new SRHRuntimeException("O tipo de publicação é obrigatório.");
+			throw new SRHRuntimeException("O tipo de publicaÃ§Ã£o Ã© obrigatÃ³rio.");
 		
 		// validando a data de publicacao
 		if (entidade.getDoe() == null)
-			throw new SRHRuntimeException("A data publicação é obrigatória.");
+			throw new SRHRuntimeException("A data publicaÃ§Ã£o Ã© obrigatÃ³ria.");
 
 		// validando a ementa
 		if (entidade.getEmenta() == null || entidade.getEmenta().equalsIgnoreCase(""))
-			throw new SRHRuntimeException("A ementa é obrigatória.");
+			throw new SRHRuntimeException("A ementa Ã© obrigatÃ³ria.");
 
 		// validando o arquivo
 		if (entidade.getArquivo() == null || entidade.getArquivo().equals(""))
-			throw new SRHRuntimeException("O arquivo a ser publicado é obrigatório.");
+			throw new SRHRuntimeException("O arquivo a ser publicado Ã© obrigatÃ³rio.");
 
 	}
 
@@ -129,7 +129,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 		// verificando se a publicacao ja foi cadastrada
 		Publicacao entidadeJaExiste = dao.getByEmenta( entidade.getEmenta() );
 		if ( entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId() ) )
-			throw new SRHRuntimeException("Publicação já cadastrada. Operação cancelada.");
+			throw new SRHRuntimeException("PublicaÃ§Ã£o jÃ¡ cadastrada. OperaÃ§Ã£o cancelada.");
 
 	}
 

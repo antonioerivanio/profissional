@@ -77,7 +77,7 @@ public class TipoDependenciaServiceImpl implements TipoDependenciaService {
 
 		TipoDependencia entidadeJaExiste = dao.getByDescricao( entidade.getDescricao() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de Dependência já cadastrado. Operação cancelada.");
+			throw new SRHRuntimeException("Tipo de DependÃªncia jÃ¡ cadastrado. OperaÃ§Ã£o cancelada.");
 
 	}
 

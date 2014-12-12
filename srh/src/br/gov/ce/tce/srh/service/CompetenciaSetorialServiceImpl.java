@@ -67,7 +67,7 @@ public class CompetenciaSetorialServiceImpl implements CompetenciaSetorialServic
 	private void validaCampos(CompetenciaSetorial entidade) throws SRHRuntimeException{
 
 		if(entidade.getInicio() == null){
-			throw new SRHRuntimeException("A Data Inicial é obrigatória.");
+			throw new SRHRuntimeException("A Data Inicial Ã© obrigatÃ³ria.");
 		}
 
 		if(entidade.getInicio() != null && entidade.getFim() != null){
@@ -77,11 +77,11 @@ public class CompetenciaSetorialServiceImpl implements CompetenciaSetorialServic
 		}
 		
 		if(entidade.getSetor()==null||entidade.getSetor().getId()==null){
-			throw new SRHRuntimeException("O setor é obrigatório.");
+			throw new SRHRuntimeException("O setor Ã© obrigatÃ³rio.");
 		}
 		
 		if(entidade.getCompetencia()==null||entidade.getCompetencia().getId()==null){
-			throw new SRHRuntimeException("A competência é obrigatória.");
+			throw new SRHRuntimeException("A competÃªncia Ã© obrigatÃ³ria.");
 		}		
 		
 	}

@@ -67,7 +67,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 	private Set<Class<?>> entidades;
 		
 	
-//	PAGINA«√O - INICIO
+//	PAGINA√á√ÉO - INICIO
 	
 	private int count = 0;
 	private HtmlDataTable dataTable = new HtmlDataTable();
@@ -75,7 +75,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 	private List<Revisao> pagedList = new ArrayList<Revisao>();
 	private int flagRegistroInicial = 0;
 	
-//	PAGINA«√O - FIM	
+//	PAGINA√á√ÉO - FIM	
 	
 	public String consultar() {
 		try {
@@ -83,7 +83,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 			this.limparListas();
 			
 			if (this.entidade == null || this.entidade.equals("")){
-				FacesUtil.addErroMessage("A tabela È obrigatÛria.");
+				FacesUtil.addErroMessage("A tabela √© obrigat√≥ria.");
 				return null;
 			}
 			
@@ -101,14 +101,14 @@ public class ConsultarAuditoriaBean implements Serializable{
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		return null;
 	}
 	
 	
-//	A«’ES AJAX DAS COMBOS - INICIO
+//	A√á√ïES AJAX DAS COMBOS - INICIO
 	
 	public void tipoEventoSelecionado(){
 		if(this.tipoRevisao > -1){
@@ -163,7 +163,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 		} 
 	}
 	
-//	A«’ES AJAX DAS COMBOS - FIM	
+//	A√á√ïES AJAX DAS COMBOS - FIM	
 	
 	
 //	POPULA AS COMBOS - INICIO
@@ -247,7 +247,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 	
 	
 	/**
-	 * ObtÈm o usu·rio logado na sess„o
+	 * Obt√©m o usu√°rio logado na sess√£o
 	 * @return
 	 */
 	public Usuario getUsuarioLogado() {
@@ -285,7 +285,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 	}	
 
 	
-//	PAGINA«√O	
+//	PAGINA√á√ÉO	
 	
 	public void limparListas() {
 		count = 0;
@@ -321,6 +321,6 @@ public class ConsultarAuditoriaBean implements Serializable{
 	public List<Revisao> getPagedList() {return pagedList;}
 	public void setPagedList(List<Revisao> pagedList) {this.pagedList = pagedList;}
 	
-//	FIM PAGINA«√O
+//	FIM PAGINA√á√ÉO
 
 }

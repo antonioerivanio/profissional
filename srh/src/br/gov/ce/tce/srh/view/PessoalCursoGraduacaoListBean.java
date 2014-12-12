@@ -25,7 +25,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC024_Manter GraduaÁ„o da Pessoa
+* Use case : SRH_UC024_Manter Gradua√ß√£o da Pessoa
 * 
 * @since   : Nov 15, 2011, 10:03:00 AM
 * @author  : robstownholanda@ivia.com.br
@@ -62,7 +62,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 	private List<PessoalCursoAcademica> lista;
 	private PessoalCursoAcademica entidade = new PessoalCursoAcademica();
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -82,7 +82,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade().getPessoal() == null)
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 			
 			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 				count = pessoalCursoAcademicaService.count(authenticationService.getUsuarioLogado());
@@ -104,7 +104,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -123,14 +123,14 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 
 			pessoalCursoAcademicaService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -168,7 +168,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -201,11 +201,11 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 				if (getEntidade().getPessoal() != null) {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -234,7 +234,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 		return form;
 	}
 
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -265,6 +265,6 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 
 	public List<PessoalCursoAcademica> getPagedList() {return pagedList;}
 	public void setPagedList(List<PessoalCursoAcademica> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

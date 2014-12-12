@@ -26,7 +26,7 @@ public class DateConverter implements Converter {
 		try {
 			return (value==null||"".equals(value)||"  /  /    ".equals(value))?null:df.parse((String)value);
 		} catch (Exception e) {
-			throw new ConverterException("Erro na convers„o da data: " + value);
+			throw new ConverterException("Erro na convers√£o da data: " + value);
 		}
 	}
 

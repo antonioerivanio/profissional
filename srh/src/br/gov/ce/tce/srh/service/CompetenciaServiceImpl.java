@@ -28,10 +28,10 @@ public class CompetenciaServiceImpl implements CompetenciaService {
 
 		// validando dados obrigatorios
 		if( entidade.getDescricao() == null || entidade.getDescricao().equals("") )
-			throw new SRHRuntimeException("A descrição é obrigatória.");
+			throw new SRHRuntimeException("A descriÃ§Ã£o Ã© obrigatÃ³ria.");
 
 		if( entidade.getTipo() == null || entidade.getTipo() == 0l )
-			throw new SRHRuntimeException("O tipo é obrigatório.");
+			throw new SRHRuntimeException("O tipo Ã© obrigatÃ³rio.");
 
 		/*
 		 * Regra: 
@@ -95,7 +95,7 @@ public class CompetenciaServiceImpl implements CompetenciaService {
 		
 		Competencia entidadeJaExiste = dao.getByDescricao( entidade.getDescricao() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Competência já cadastrada. Operação cancelada.");
+			throw new SRHRuntimeException("CompetÃªncia jÃ¡ cadastrada. OperaÃ§Ã£o cancelada.");
 
 	}
 
