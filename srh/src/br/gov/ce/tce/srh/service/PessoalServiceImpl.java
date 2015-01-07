@@ -138,11 +138,11 @@ public class PessoalServiceImpl implements PessoalService {
 			throw new SRHRuntimeException("O sexo é obrigatório.");
 
 		//validando cpf
-		if( entidade.getCpf() == null || entidade.getCpf().equals("") )
+		if( (entidade.getCategoria() == null || entidade.getCategoria().getId() != 4) && (entidade.getCpf() == null || entidade.getCpf().equals("")) )
 			throw new SRHRuntimeException("O CPF é obrigatório.");
 
 		//validando digito verificador do cpf
-		if( !SRHUtils.validarCPF( entidade.getCpf() ) )
+		if( entidade.getCpf() != null && !entidade.getCpf().equals("") && !SRHUtils.validarCPF( entidade.getCpf() ) )
 			throw new SRHRuntimeException("CPF inválido.");
 
 		//validando agencia Bradesco
@@ -179,16 +179,13 @@ public class PessoalServiceImpl implements PessoalService {
 	 */
 	private void verificandoCPFexiste(Pessoal entidade) {
 
-		Pessoal entidadeJaExiste = dao.getByCPf( entidade.getCpf() );
-		
-		// quando for inserir
-		if ( entidade.getId() == null && entidadeJaExiste != null )
-			throw new SRHRuntimeException("CPF já cadastrado. Operação cancelada.");
-		
-		// quando for alterar
-		if ( entidade.getId() != null && !entidade.getId().equals(new Long(entidadeJaExiste.getId())))
-			throw new SRHRuntimeException("CPF já cadastrado. Operação cancelada.");		
-
+		if ( entidade.getCpf() != null && !entidade.getCpf().equals("") ) {
+			
+			Pessoal entidadeJaExiste = dao.getByCPf( entidade.getCpf() );
+			
+			if ( entidadeJaExiste != null )
+				throw new SRHRuntimeException("CPF já cadastrado. Operação cancelada.");		
+		}
 	}
 
 
@@ -205,7 +202,8 @@ public class PessoalServiceImpl implements PessoalService {
 		if ( entidade.getPasep() != null && !entidade.getPasep().equals("") ) {
 
 			Pessoal entidadeJaExiste = dao.getByPasep( entidade.getPasep() );
-			if ( entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()) )
+			
+			if ( entidadeJaExiste != null )
 				throw new SRHRuntimeException("PIS/PASEP já cadastrado. Operação cancelada.");
 
 		}
