@@ -99,19 +99,24 @@ public class PessoalServiceImpl implements PessoalService {
 		return dao.findByNome(nome);
 	}
 
+	
+	@Override
+	public List<Pessoal> findServidorByNome(String nome) {
+		return dao.findServidorByNome(nome);
+	}
 
 
 	/**
 	 * Validar:
 	 *
-	 * ∑ Deve ser setado o nome
-	 * ∑ Deve ser setado o nome completo
-	 * ∑ Deve ser setado o sexo.
-	 * ∑ Validar o CPF.
-	 * ∑ Validar a agencia.
-	 * ∑ Validar a conta corrente.
-	 * ∑ Validar o PIS/PASEP.
-	 * ∑ Validar numero do processo.
+	 *  Deve ser setado o nome
+	 *  Deve ser setado o nome completo
+	 *  Deve ser setado o sexo.
+	 *  Validar o CPF.
+	 *  Validar a agencia.
+	 *  Validar a conta corrente.
+	 *  Validar o PIS/PASEP.
+	 *  Validar numero do processo.
 	 * 
 	 * @param entidade
 	 * 
@@ -122,42 +127,42 @@ public class PessoalServiceImpl implements PessoalService {
 
 		// validando o nome
 		if ( entidade.getNome() == null || entidade.getNome().equalsIgnoreCase("") )
-			throw new SRHRuntimeException("O nome È obrigatÛrio.");
+			throw new SRHRuntimeException("O nome √© obrigat√≥rio.");
 
 		// validando o nome completo
 		if ( entidade.getNomeCompleto() == null || entidade.getNomeCompleto().equalsIgnoreCase("") )
-			throw new SRHRuntimeException("O nome completo È obrigatÛrio.");
+			throw new SRHRuntimeException("O nome completo √© obrigat√≥rio.");
 
 		// validando o sexo
 		if ( entidade.getSexo() == null || entidade.getSexo().equalsIgnoreCase("") )
-			throw new SRHRuntimeException("O sexo È obrigatÛrio.");
+			throw new SRHRuntimeException("O sexo √© obrigat√≥rio.");
 
 		//validando cpf
 		if( entidade.getCpf() == null || entidade.getCpf().equals("") )
-			throw new SRHRuntimeException("O CPF È obrigatÛrio.");
+			throw new SRHRuntimeException("O CPF √© obrigat√≥rio.");
 
 		//validando digito verificador do cpf
 		if( !SRHUtils.validarCPF( entidade.getCpf() ) )
-			throw new SRHRuntimeException("CPF inv·lido.");
+			throw new SRHRuntimeException("CPF inv√°lido.");
 
 		//validando agencia Bradesco
 		if( entidade.getAgenciaBbd() != null && !entidade.getAgenciaBbd().equals("") ) {
 			if( !SRHUtils.validarDVAgenciaBradesco( entidade.getAgenciaBbd() ) ) {
-				throw new SRHRuntimeException("AgÍncia inv·lida.");
+				throw new SRHRuntimeException("Ag√™ncia inv√°lida.");
 			}
 		}
 
 		//validando conta corrente Bradesco
 		if( entidade.getContaBbd() != null && !entidade.getContaBbd().equals("") ) {
 			if( !SRHUtils.validarDVContaCorrenteBradesco( entidade.getContaBbd() ) ) {
-				throw new SRHRuntimeException("Conta Corrente inv·lida.");
+				throw new SRHRuntimeException("Conta Corrente inv√°lida.");
 			}
 		}
 		
-		//validando PIS/PASEP (NIT: N˙mero de IdentificaÁ„o do Trabalhador)
+		//validando PIS/PASEP (NIT: N√∫mero de Identifica√ß√£o do Trabalhador)
 		if( entidade.getPasep() != null && !entidade.getPasep().equals("") ) {
 			if( !SRHUtils.validarPisPasep( entidade.getPasep() ) ) {
-				throw new SRHRuntimeException("PIS/PASEP inv·lido.");
+				throw new SRHRuntimeException("PIS/PASEP inv√°lido.");
 			}
 		}
 
@@ -178,11 +183,11 @@ public class PessoalServiceImpl implements PessoalService {
 		
 		// quando for inserir
 		if ( entidade.getId() == null && entidadeJaExiste != null )
-			throw new SRHRuntimeException("CPF j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("CPF j√° cadastrado. Opera√ß√£o cancelada.");
 		
 		// quando for alterar
 		if ( entidade.getId() != null && !entidade.getId().equals(new Long(entidadeJaExiste.getId())))
-			throw new SRHRuntimeException("CPF j· cadastrado. OperaÁ„o cancelada.");		
+			throw new SRHRuntimeException("CPF j√° cadastrado. Opera√ß√£o cancelada.");		
 
 	}
 
@@ -201,7 +206,7 @@ public class PessoalServiceImpl implements PessoalService {
 
 			Pessoal entidadeJaExiste = dao.getByPasep( entidade.getPasep() );
 			if ( entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()) )
-				throw new SRHRuntimeException("PIS/PASEP j· cadastrado. OperaÁ„o cancelada.");
+				throw new SRHRuntimeException("PIS/PASEP j√° cadastrado. Opera√ß√£o cancelada.");
 
 		}
 		
@@ -209,5 +214,16 @@ public class PessoalServiceImpl implements PessoalService {
 
 
 	public void setDAO(PessoalDAO pessoalDAO) {this.dao = pessoalDAO;}
+
+
+	@Override
+	public List<Pessoal> findAllComFuncional() {
+		return dao.findAllComFuncional();
+	}
+	
+	@Override
+	public List<Pessoal> findByCategoria(Long idCategoria) {
+		return dao.findByCategoria(idCategoria);
+	}
 
 }

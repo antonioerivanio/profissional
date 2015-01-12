@@ -78,12 +78,12 @@ public class FolhaServiceImpl implements FolhaService {
 		// verifciando codigo
 		Folha entidadeJaExiste = dao.getByCodigo(entidade.getCodigo());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("CÛdigo j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("C√≥digo j√° cadastrado. Opera√ß√£o cancelada.");
 
 		// verificando descricao
 		entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de Folha j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Tipo de Folha j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

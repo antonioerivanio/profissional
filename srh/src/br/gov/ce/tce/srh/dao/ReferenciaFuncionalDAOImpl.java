@@ -56,7 +56,13 @@ public class ReferenciaFuncionalDAOImpl implements ReferenciaFuncionalDAO {
 
 	@Override
 	public void excluirAll(Long idFuncional) throws SRHRuntimeException {
-		entityManager.createQuery("DELETE FROM ReferenciaFuncional rf WHERE rf.funcional.id = :id").setParameter("id", idFuncional).executeUpdate();		
+//		entityManager.createQuery("DELETE FROM ReferenciaFuncional rf WHERE rf.funcional.id = :id").setParameter("id", idFuncional).executeUpdate();
+		
+		List<ReferenciaFuncional> referenciaFuncionalList = this.findByFuncional(idFuncional);
+		
+		for (ReferenciaFuncional referenciaFuncional : referenciaFuncionalList) {
+			entityManager.remove(referenciaFuncional);
+		}
 	}
 
 

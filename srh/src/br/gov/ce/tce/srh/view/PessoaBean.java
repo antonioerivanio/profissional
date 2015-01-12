@@ -113,7 +113,7 @@ public class PessoaBean implements Serializable {
 	private List<PessoalCategoria> comboCategoria;
 	private List<Raca> comboRaca;
 	
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -134,7 +134,7 @@ public class PessoaBean implements Serializable {
 			this.entidade = pessoalService.getById( this.entidade.getId() );
 			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar os dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -170,7 +170,7 @@ public class PessoaBean implements Serializable {
 			
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -190,14 +190,14 @@ public class PessoaBean implements Serializable {
 			pessoalService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil. addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -216,14 +216,14 @@ public class PessoaBean implements Serializable {
 
 			pessoalService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -245,7 +245,7 @@ public class PessoaBean implements Serializable {
 				this.comboEstadoCivil = estadoCivilService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo estado civil. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo estado civil. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -266,7 +266,7 @@ public class PessoaBean implements Serializable {
 				this.comboEscolaridade = escolaridadeService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo escolaridade. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo escolaridade. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -287,7 +287,7 @@ public class PessoaBean implements Serializable {
 				this.comboUf = ufService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo UF. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo UF. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -308,7 +308,7 @@ public class PessoaBean implements Serializable {
 				this.comboCategoria = pessoalCategoriaService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo categoria. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo categoria. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -329,7 +329,7 @@ public class PessoaBean implements Serializable {
 				this.comboRaca = racaService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo biotipo. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo biotipo. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -367,7 +367,7 @@ public class PessoaBean implements Serializable {
 			relatorioUtil.relatorio("pessoal.jasper", parametros, "pessoal.pdf");
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -409,13 +409,13 @@ public class PessoaBean implements Serializable {
 			fop.close();
 
 		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o da foto do servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o da foto do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o da foto do servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o da foto do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o da foto do servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o da foto do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -453,13 +453,13 @@ public class PessoaBean implements Serializable {
 			fop.close();
 
 		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o da ficha do servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o da ficha do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o da ficha do servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o da ficha do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o da ficha do servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o da ficha do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -513,13 +513,13 @@ public class PessoaBean implements Serializable {
 	        out.close();
 
 		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o da foto do servidor.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o da foto do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o da foto do servidor.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o da foto do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o da foto do servidor.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o da foto do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -583,7 +583,7 @@ public class PessoaBean implements Serializable {
 	public RelatorioUtil getRelatorioUtil() {return relatorioUtil;}
 	public void setRelatorioUtil(RelatorioUtil relatorioUtil) {this.relatorioUtil = relatorioUtil;}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -615,6 +615,6 @@ public class PessoaBean implements Serializable {
 
 	public List<Pessoal> getPagedList() {return pagedList;}
 	public void setPagedList(List<Pessoal> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

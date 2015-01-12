@@ -38,7 +38,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC029_Manter Documento PublicaÁ„o
+* Use case : SRH_UC029_Manter Documento Publica√ß√£o
 * 
 * @since   : Out 21, 2011, 10:10:50 PM
 * @author  : robstownholanda@ivia.com.br
@@ -82,7 +82,7 @@ public class PublicacaoBean implements Serializable {
 	// arquivo
 	private UploadedFile arquivo;
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -104,7 +104,7 @@ public class PublicacaoBean implements Serializable {
 			this.comboTipoDocumento = this.getTipoDocumentoByEsfera();
 			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu ao carregar os dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu ao carregar os dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -141,7 +141,7 @@ public class PublicacaoBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -165,14 +165,14 @@ public class PublicacaoBean implements Serializable {
 			publicacaoService.salvar(entidade);
 			setEntidade( new Publicacao() );
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -191,14 +191,14 @@ public class PublicacaoBean implements Serializable {
 
 			publicacaoService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -225,7 +225,7 @@ public class PublicacaoBean implements Serializable {
         		this.comboTipoDocumento = tipoDocumentoService.findByEsfera( esfera );
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo documento. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo documento. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -246,7 +246,7 @@ public class PublicacaoBean implements Serializable {
         		this.comboTipoDocumentoConsulta = tipoDocumentoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo documento. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo documento. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -275,7 +275,7 @@ public class PublicacaoBean implements Serializable {
 				throw new SRHRuntimeException("Parametro do caminho do documento nao encontrado na tabela SAPJAVA.FWPARAMETER");
 
 	       	if ( getEntidade().getTipoPublicacao() == null )
-	       		throw new SRHRuntimeException("O tipo de publicaÁ„o È obrigatÛrio.");
+	       		throw new SRHRuntimeException("O tipo de publica√ß√£o √© obrigat√≥rio.");
 
 	        // setando o do arquivo
 			if ( getEntidade().getTipoPublicacao() == 1 )
@@ -298,10 +298,10 @@ public class PublicacaoBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o do arquivo no servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o do arquivo no servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na gravaÁ„o da foto do servidor.");
+			FacesUtil.addErroMessage("Erro na grava√ß√£o da foto do servidor.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -350,10 +350,10 @@ public class PublicacaoBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na visualizaÁ„o do arquivo.");
+			FacesUtil.addErroMessage("Erro na visualiza√ß√£o do arquivo.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na visualizaÁ„o do arquivo.");
+			FacesUtil.addErroMessage("Erro na visualiza√ß√£o do arquivo.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -380,7 +380,7 @@ public class PublicacaoBean implements Serializable {
 			relatorioUtil.relatorio("publicacao.jasper", parametros, "publicacao.pdf");
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -431,7 +431,7 @@ public class PublicacaoBean implements Serializable {
 	public UploadedFile getArquivo() {return arquivo;}
 	public void setArquivo(UploadedFile arquivo) {this.arquivo = arquivo;}
 
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -456,5 +456,5 @@ public class PublicacaoBean implements Serializable {
 
 	public List<Publicacao> getPagedList() {return pagedList;}
 	public void setPagedList(List<Publicacao> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 }

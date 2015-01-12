@@ -23,7 +23,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC012_Manter ¡rea de FormaÁ„o Profissional
+* Use case : SRH_UC012_Manter √Årea de Forma√ß√£o Profissional
 * 
 * @since   : Aug 31, 2011, 5:23:20 PM
 * @author  : robstownholanda@ivia.com.br
@@ -53,7 +53,7 @@ public class AreaProfissionaBean implements Serializable {
 	private List<AreaProfissional> lista;
 	private AreaProfissional entidade = new AreaProfissional();
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -83,7 +83,7 @@ public class AreaProfissionaBean implements Serializable {
 
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -103,14 +103,14 @@ public class AreaProfissionaBean implements Serializable {
 			areaProfissionalService.salvar(entidade);
 			setEntidade( new AreaProfissional() );
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -129,14 +129,14 @@ public class AreaProfissionaBean implements Serializable {
 
 			areaProfissionalService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -164,7 +164,7 @@ public class AreaProfissionaBean implements Serializable {
 			relatorioUtil.relatorio("areaprofissional.jasper", parametros, "areaprofissional.pdf");
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -201,7 +201,7 @@ public class AreaProfissionaBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -226,6 +226,6 @@ public class AreaProfissionaBean implements Serializable {
 
 	public List<AreaProfissional> getPagedList() {return pagedList;}
 	public void setPagedList(List<AreaProfissional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

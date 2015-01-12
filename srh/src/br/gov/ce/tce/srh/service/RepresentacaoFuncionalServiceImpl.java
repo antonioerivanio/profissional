@@ -48,28 +48,28 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		 */
 		if(entidade.getTipoNomeacao() == 1 && entidade.getFuncional().getSetor() != null && entidade.getFuncional().getSetor().getId() != null){
 				if ( !entidade.getFuncional().getSetor().getId().equals(entidade.getSetor().getId()))
-					throw new SRHRuntimeException("Inclus„o n„o permitida, quando tipo nomeaÁ„o for titular, o setor deve ser o mesmo do funcionario.");
+					throw new SRHRuntimeException("Inclus√£o n√£o permitida, quando tipo nomea√ß√£o for titular, o setor deve ser o mesmo do funcionario.");
 			}
 
 		/*
 		 * Regra
 		 * 
-		 * N„o ser„o permitidas alteraÁıes nos registros que possuem data fim preenchidas.
+		 * N√£o ser√£o permitidas altera√ß√µes nos registros que possuem data fim preenchidas.
 		 * 
 		 */
 		if ( entidade.getFim() != null )
-			throw new SRHRuntimeException("AlteraÁ„o n„o permitida para esta representaÁ„o, n„o esta ativa.");
+			throw new SRHRuntimeException("Altera√ß√£o n√£o permitida para esta representa√ß√£o, n√£o esta ativa.");
 
 
 //		// validando o inicio da representacao conforme a funcional
 //		if ( entidade.getInicio().before( entidade.getFuncional().getExercicio()) )
-//			throw new SRHRuntimeException("O Inicio da VigÍncia deve ser maior que a data de exercicio do servidor.");
+//			throw new SRHRuntimeException("O Inicio da Vig√™ncia deve ser maior que a data de exercicio do servidor.");
 
 
 		/*
 		 * Regra
 		 * 
-		 * N„o ser„o permitidas mais de uma representaÁ„o por tipo.
+		 * N√£o ser√£o permitidas mais de uma representa√ß√£o por tipo.
 		 * 
 		 */
 		validarRepresentacaoAnteriorAtiva(entidade);
@@ -109,7 +109,7 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		 */	
 		validarExoneracao(entidade);
 
-		// AlteraÁ„o 14/08/2013
+		// Altera√ß√£o 14/08/2013
 		Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
 		funcional.setIdRepresentacaoCargo(null);
 		funcionalDAO.salvar(funcional);
@@ -190,13 +190,13 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	/**
 	 * Validar:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setado o tipo de documento.
-	 * ∑ Deve ser setado o setor.
-	 * ∑ Deve ser setado a representacao do cargo.
-	 * ∑ Deve ser setado o inicio da vigencia.
-	 * ∑ Deve ser setado o tipo de publicaÁ„o.
-	 * ∑ Deve ser setado a data da publicaÁ„o.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setado o tipo de documento.
+	 *  Deve ser setado o setor.
+	 *  Deve ser setado a representacao do cargo.
+	 *  Deve ser setado o inicio da vigencia.
+	 *  Deve ser setado o tipo de publica√ß√£o.
+	 *  Deve ser setado a data da publica√ß√£o.
 	 * 
 	 * @param entidade
 	 * 
@@ -207,35 +207,35 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 		// validando o servidor
 		if (entidade.getFuncional() == null)
-			throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite o nome e efetue a pesquisa.");
 
 		// validando o tipo de documento
 		if (entidade.getTipoDocumento() == null)
-			throw new SRHRuntimeException("O Tipo de Documento È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo de Documento √© obrigat√≥rio.");
 
 		// validando o setor
 		if (entidade.getSetor() == null)
-			throw new SRHRuntimeException("O Setor È obrigatÛrio.");
+			throw new SRHRuntimeException("O Setor √© obrigat√≥rio.");
 
 		// validando a representacao cargo
 		if (entidade.getRepresentacaoCargo() == null)
-			throw new SRHRuntimeException("A RepresentaÁ„o Cargo È obrigatÛria.");
+			throw new SRHRuntimeException("A Representa√ß√£o Cargo √© obrigat√≥ria.");
 
 		// validando inicio vigencia
 		if (entidade.getInicio() == null)
-			throw new SRHRuntimeException("O Inicio da VigÍncia È obrigatÛrio.");
+			throw new SRHRuntimeException("O Inicio da Vig√™ncia √© obrigat√≥rio.");
 
 		// validando o tipo de publicacao
 		if (entidade.getTipoPublicacaoNomeacao() == null)
-			throw new SRHRuntimeException("O Tipo de PublicaÁ„o È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo de Publica√ß√£o √© obrigat√≥rio.");
 
 		// validando data publicacao
 		if (entidade.getDoeInicio() == null)
-			throw new SRHRuntimeException("A Data de PublicaÁ„o Inicio da VigÍncia È obrigatÛrio.");
+			throw new SRHRuntimeException("A Data de Publica√ß√£o Inicio da Vig√™ncia √© obrigat√≥ria.");
 
-		// validando tipo nomeaÁ„o
+		// validando tipo nomea√ß√£o
 		if (entidade.getTipoNomeacao() == null || entidade.getTipoNomeacao().equals(0l))
-			throw new SRHRuntimeException("O Tipo NomeaÁ„o È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo Nomea√ß√£o √© obrigat√≥rio.");
 
 	}
 
@@ -243,8 +243,8 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ So pode ter 1 representacao ativa por tipo. 
-	 * ∑ So nao pode ter representacao que for do tipo ocupacao Membro.
+	 *  So pode ter 1 representacao ativa por tipo. 
+	 *  So nao pode ter representacao que for do tipo ocupacao Membro.
 	 *  
 	 * @param entidade
 	 * 
@@ -254,13 +254,13 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		// validando representacao ativa por tipo
 		RepresentacaoFuncional representacao = dao.getByFuncionalTipo( entidade.getFuncional().getId(), entidade.getTipoNomeacao() );
 		if ( representacao != null )
-			throw new SRHRuntimeException("N„o ser· permitido inserir nova representaÁ„o, pois este servidor possui outra ativa com o mesmo tipo.");
+			throw new SRHRuntimeException("N√£o ser√° permitido inserir nova representa√ß√£o, pois este servidor possui outra ativa com o mesmo tipo.");
 
-		// verificando se eh membro
+		// verificando se √© membro
 		if(entidade.getFuncional().getOcupacao() != null && entidade.getFuncional().getOcupacao().getTipoOcupacao() != null
 				&& entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() != null){
 			if ( entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() == 1l ) {
-				throw new SRHRuntimeException("N„o È permitido representaÁ„o para servidores do tipo Membro.");
+				throw new SRHRuntimeException("N√£o √© permitido representa√ß√£o para servidores do tipo Membro.");
 			}
 		}
 		
@@ -270,11 +270,11 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * Se a data de inÌcio for maior ou igual a '01/01/2012', o sistema dever· validar a qtde de pessoas permitidas, 
-	 * por tipo de nomeaÁ„o e por cargo/setor, levando em consideraÁ„o sÛ os funcion·rios com sem data fim nula, ou seja, v·lidos.
+	 * Se a data de in√≠cio for maior ou igual a '01/01/2012', o sistema dever√° validar a qtde de pessoas permitidas, 
+	 * por tipo de nomea√ß√£o e por cargo/setor, levando em considera√ß√£o s√≥ os funcion√°rios com sem data fim nula, ou seja, v√°lidos.
 	 * 
-	 * N„o permitir que seja inserido novo registro na representaÁ„o funcional, caso a qtde j· inseridas por tipo de nomeaÁ„o 
-	 * e que estejam v·lidas, seja igual a qtde permitida na representaÁ„o do setor.
+	 * N√£o permitir que seja inserido novo registro na representa√ß√£o funcional, caso a qtde j√° inseridas por tipo de nomea√ß√£o 
+	 * e que estejam v√°lidas, seja igual a qtde permitida na representa√ß√£o do setor.
 	 * 
 	 * @param entidade
 	 * 
@@ -296,7 +296,7 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 					entidade.getSetor().getId() );
 
 			if ( representacoesAtivas.size() >= representacaoSetor.getQuantidade() )
-				throw new SRHRuntimeException("Quantidade de funcion·rios neste cargo/setor/tipo nomeaÁ„o excedeu o limite permitido.");
+				throw new SRHRuntimeException("Quantidade de funcion√°rios neste cargo/setor/tipo nomea√ß√£o excedeu o limite permitido.");
 
 		}
 
@@ -306,10 +306,10 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ Deve ser setado o tipo de publicacao saida.
-	 * ∑ Deve ser setado a data de publicacao.
-	 * ∑ Deve ser setado o tipo de saida.
-	 * ∑ Deve ser setado a data saida.
+	 *  Deve ser setado o tipo de publicacao saida.
+	 *  Deve ser setado a data de publicacao.
+	 *  Deve ser setado o tipo de saida.
+	 *  Deve ser setado a data saida.
 	 * 
 	 * @param entidade Funcional
 	 * 
@@ -320,19 +320,19 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 		// validando o tipo de publicacao
 		if (entidade.getTipoPublicacaoSaida() == null)
-			throw new SRHRuntimeException("O Tipo de PublicaÁ„o È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo de Publica√ß√£o √© obrigat√≥rio.");
 
 		// validando a data da publicacao
  		if (entidade.getDoeFim() == null)
-			throw new SRHRuntimeException("A PublicaÁ„o È obrigatÛria.");
+			throw new SRHRuntimeException("A Publica√ß√£o √© obrigat√≥ria.");
 
  		// validando o tipo de saida
 		if (entidade.getTipoMovimentoFim() == null)
-			throw new SRHRuntimeException("O Tipo Saida È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo Saida √© obrigat√≥rio.");
 
 		// validando a data final
 		if (entidade.getFim() == null)
-			throw new SRHRuntimeException("A Data Final È obrigatÛria.");
+			throw new SRHRuntimeException("A Data Final √© obrigat√≥ria.");
 
 	}
 

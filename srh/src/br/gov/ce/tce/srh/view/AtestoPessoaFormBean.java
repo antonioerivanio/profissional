@@ -23,7 +23,7 @@ import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC026_Manter Competência do Servidor
+* Use case : SRH_UC026_Manter CompetÃªncia do Servidor
 * 
 * @since   : Jan 12, 2012, 11:53:50 PM
 * @author  : joel.barbosa@ivia.com.br
@@ -111,14 +111,14 @@ public class AtestoPessoaFormBean implements Serializable {
 		try {
 
 			if ( this.funcional == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionÃ¡rio.");
 
 			this.funcional = funcionalService.getById( this.funcional.getId() );
 			
 			this.passouConsultar = true;
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -149,14 +149,14 @@ public class AtestoPessoaFormBean implements Serializable {
 			atestoPessoaService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 		
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -180,7 +180,7 @@ public class AtestoPessoaFormBean implements Serializable {
 			}
 
 		} catch (Exception e){
-			FacesUtil.addInfoMessage("Erro ao carregar o campo competência. Operação cancelada.");
+			FacesUtil.addInfoMessage("Erro ao carregar o campo competÃªncia. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: "+ e.getMessage());
 		} 
 		
@@ -231,11 +231,11 @@ public class AtestoPessoaFormBean implements Serializable {
 					this.nome = this.funcional.getNomeCompleto();
 					getEntidade().setPessoal( this.funcional.getPessoal() );
 				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+					FacesUtil.addInfoMessage("MatrÃ­cula nÃ£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -255,7 +255,7 @@ public class AtestoPessoaFormBean implements Serializable {
 				getEntidade().setResponsavel( representacaoFuncionalService.getByid( this.idResponsavel ) );
 
 			} catch (Exception e) {
-				FacesUtil.addInfoMessage("Erro ao carregar o responsavel. Operação cancelada.");
+				FacesUtil.addInfoMessage("Erro ao carregar o responsavel. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: "+ e.getMessage());
 			}
 			

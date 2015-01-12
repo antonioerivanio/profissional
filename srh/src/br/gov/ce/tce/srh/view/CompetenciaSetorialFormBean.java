@@ -85,15 +85,15 @@ public class CompetenciaSetorialFormBean implements Serializable {
 			setSetor(new Setor());
 			setEntidade(new CompetenciaSetorial());
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso");
-			logger.info("Operação realizada com sucesso");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso");
+			logger.info("OperaÃ§Ã£o realizada com sucesso");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+					.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -114,7 +114,7 @@ public class CompetenciaSetorialFormBean implements Serializable {
 
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
+					.addErroMessage("Erro ao carregar o campo setor. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -141,7 +141,7 @@ public class CompetenciaSetorialFormBean implements Serializable {
 
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Erro ao carregar o campo competência. Operação cancelada.");
+					.addErroMessage("Erro ao carregar o campo competÃªncia. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

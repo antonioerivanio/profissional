@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
- * Converter para criar mascara para valores do Número do Processo.
+ * Converter para criar mascara para valores do NÃºmero do Processo.
  *
  */
 public class ProcessoConverter implements Converter {

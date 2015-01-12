@@ -45,8 +45,8 @@ public class CadastroCategoriaFuncionalFormBean implements Serializable {
 			cadastroCategoriaService.salvar(entidade);
 			limpar();
 			
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 			
 		} catch (SRHRuntimeException e) {
 			
@@ -54,7 +54,7 @@ public class CadastroCategoriaFuncionalFormBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 			
 		} catch(Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -77,7 +77,7 @@ public class CadastroCategoriaFuncionalFormBean implements Serializable {
 			
 		} catch (Exception e) {
 			
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		

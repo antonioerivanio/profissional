@@ -78,10 +78,10 @@ public class AreaSetorServiceImpl implements AreaSetorService {
 	private void validarCampos(AreaSetor entidade) throws SRHRuntimeException {
 		
 		if (entidade.getSetor() == null )
-			throw new SRHRuntimeException("O setor È obrigatÛrio.");
+			throw new SRHRuntimeException("O setor √© obrigat√≥rio.");
 
 		if (entidade.getDescricao() == null || entidade.getDescricao().equals(""))
-			throw new SRHRuntimeException("A descriÁ„o È obrigatÛria.");
+			throw new SRHRuntimeException("A descri√ß√£o √© obrigat√≥ria.");
 
 	}
 
@@ -100,7 +100,7 @@ public class AreaSetorServiceImpl implements AreaSetorService {
 
 		AreaSetor entidadeJaExiste = dao.getBySetorDescricao( entidade.getSetor().getId(), entidade.getDescricao() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("¡rea do setor j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("√Årea do setor j√° cadastrada. Opera√ß√£o cancelada.");
 
 	}
 

@@ -26,7 +26,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC040_Emitir Tempo RepresentaÁ„o Funcional em Cargo Comissionado
+* Use case : SRH_UC040_Emitir Tempo Representa√ß√£o Funcional em Cargo Comissionado
 * 
 * @since   : Dez 19, 2012, 10:09:00 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -80,7 +80,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 		try {
 
 			if ( this.entidade == null ) {
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 			}
 			
 			
@@ -105,7 +105,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -137,7 +137,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 		try {
 
 			if ( this.entidade == null )
-				throw new SRHRuntimeException("Selecione um Funcion·rio.");
+				throw new SRHRuntimeException("Selecione um Funcion√°rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			String filtro = " WHERE repr.IDFUNCIONAL IN '" + getEntidade().getFuncional().getId() + "' ";
@@ -152,7 +152,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -195,11 +195,11 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 					this.cpf = getEntidade().getFuncional().getPessoal().getCpf();
 					this.cargos = ocupacaoService.findByPessoa(getEntidade().getFuncional().getPessoal().getId());
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");					
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");					
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -224,11 +224,11 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 					this.matricula = getEntidade().getFuncional().getMatricula();	
 					this.cargos = ocupacaoService.findByPessoa(getEntidade().getFuncional().getPessoal().getId());
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 

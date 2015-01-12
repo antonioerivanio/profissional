@@ -53,7 +53,7 @@ public class EstadoCivilBean implements Serializable {
 	private List<EstadoCivil> lista;
 	private EstadoCivil entidade = new EstadoCivil();
 	
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -83,7 +83,7 @@ public class EstadoCivilBean implements Serializable {
 
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -103,14 +103,14 @@ public class EstadoCivilBean implements Serializable {
 			estadoCivilService.salvar(entidade);
 			setEntidade( new EstadoCivil() );
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -129,14 +129,14 @@ public class EstadoCivilBean implements Serializable {
 
 			estadoCivilService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -164,7 +164,7 @@ public class EstadoCivilBean implements Serializable {
 			relatorioUtil.relatorio("estadocivil.jasper", parametros, "estadocivil.pdf");
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geraÁ„o do relatÛrio. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na gera√ß√£o do relat√≥rio. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -201,7 +201,7 @@ public class EstadoCivilBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -226,6 +226,6 @@ public class EstadoCivilBean implements Serializable {
 
 	public List<EstadoCivil> getPagedList() {return pagedList;}
 	public void setPagedList(List<EstadoCivil> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

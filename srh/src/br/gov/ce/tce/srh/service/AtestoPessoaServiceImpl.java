@@ -66,11 +66,11 @@ public class AtestoPessoaServiceImpl implements AtestoPessoaService {
 	/**
 	 * Validar:
 	 * 
-	 * · Deve ser setado a pessoa (servidor).
-	 * · Deve ser setada a data inicio.
-	 * · Deve ser checado se a data inical menor data final.
-	 * · Deve ser setado a competencia.
-	 * · Deve ser setado o responsavel.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setada a data inicio.
+	 *  Deve ser checado se a data inical menor data final.
+	 *  Deve ser setado a competencia.
+	 *  Deve ser setado o responsavel.
 	 * 
 	 * @param entidade
 	 * 
@@ -81,15 +81,15 @@ public class AtestoPessoaServiceImpl implements AtestoPessoaService {
 
 		//valida a pessoa
 		if ( entidade.getPessoal() == null || entidade.getPessoal().getId().equals(0l) )
-			throw new SRHRuntimeException("O servidor é obrigatório.");
+			throw new SRHRuntimeException("O servidor Ã© obrigatÃ³rio.");
 
 		//valida competencia
 		if ( entidade.getCompetencia() == null )
-			throw new SRHRuntimeException("A competência é obrigatória.");
+			throw new SRHRuntimeException("A competÃªncia Ã© obrigatÃ³ria.");
 
 		//valida data de inicio
 		if ( entidade.getDataInicio() == null )
-			throw new SRHRuntimeException("O inicio é obrigatório.");
+			throw new SRHRuntimeException("O inicio Ã© obrigatÃ³rio.");
 	
 		//valida data fim
 		if ( entidade.getDataFim() != null ) {
@@ -102,7 +102,7 @@ public class AtestoPessoaServiceImpl implements AtestoPessoaService {
 
 		//valida responsavel
 		if ( entidade.getResponsavel() == null || entidade.getResponsavel().getId().equals(0l) ) {
-			throw new SRHRuntimeException("O responsável é obrigatório.");
+			throw new SRHRuntimeException("O responsÃ¡vel Ã© obrigatÃ³rio.");
 		}
 		
 	}
@@ -111,8 +111,8 @@ public class AtestoPessoaServiceImpl implements AtestoPessoaService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * O Período Inicial e Final devem ser checados para saber se já foi lançada uma 
-	 * competencia para o servidor neste mesmo período.
+	 * O PerÃ­odo Inicial e Final devem ser checados para saber se jÃ¡ foi lanÃ§ada uma 
+	 * competencia para o servidor neste mesmo perÃ­odo.
 	 * 
 	 * @param entidade
 	 *
@@ -131,12 +131,12 @@ public class AtestoPessoaServiceImpl implements AtestoPessoaService {
 				// validando periodo de atesto 
 				if( competenciaExiste.getDataInicio().after( entidade.getDataInicio() )
 						&& competenciaExiste.getDataInicio().before( entidade.getDataFim() ) ) {
-					throw new SRHRuntimeException("Já existe uma Competência para essa Pessoa nesta mesma data.");
+					throw new SRHRuntimeException("JÃ¡ existe uma CompetÃªncia para essa Pessoa nesta mesma data.");
 				}
 
 				if( competenciaExiste.getDataFim().after( entidade.getDataInicio() )
 						&& competenciaExiste.getDataFim().before( entidade.getDataFim() ) ) {
-					throw new SRHRuntimeException("Já existe uma Competência para essa Pessoa nesta mesma data.");
+					throw new SRHRuntimeException("JÃ¡ existe uma CompetÃªncia para essa Pessoa nesta mesma data.");
 				}
 				
 			}

@@ -71,7 +71,7 @@ public class TipoBeneficioServiceImpl implements TipoBeneficioService {
 
 		TipoBeneficio entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de BenefÌcio j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Tipo de Benef√≠cio j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

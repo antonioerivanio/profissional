@@ -79,11 +79,11 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 	/**
 	 * Validar:
 	 * 
-	 * · Deve ser setado a pessoa (servidor).
-	 * · Deve ser setada a data inicial.
-	 * · Deve ser setada a data final.
-	 * · Deve ser setado a qtde dias.
-	 * · Deve ser setada a descricao.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setada a data inicial.
+	 *  Deve ser setada a data final.
+	 *  Deve ser setado a qtde dias.
+	 *  Deve ser setada a descricao.
 	 * 
 	 * @param entidade
 	 * 
@@ -94,43 +94,43 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 		
 		// validando o servidor
 		if (entidade.getPessoal() == null)
-			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
+			 throw new SRHRuntimeException("O FuncionÃ¡rio Ã© obrigatÃ³rio. Digite o nome e efetue a pesquisa.");
 
 		// validando estado
 		if (entidade.getUf() == null )
-			throw new SRHRuntimeException("O estado é obrigatório.");
+			throw new SRHRuntimeException("O estado Ã© obrigatÃ³rio.");
 
 		// validando municipio
 		if (entidade.getMunicipio() == null )
-			throw new SRHRuntimeException("O município é obrigatório.");
+			throw new SRHRuntimeException("O municÃ­pio Ã© obrigatÃ³rio.");
 
 		// validando entidade
 		if (entidade.getEntidade() == null || entidade.getEntidade().equals("") )
-			throw new SRHRuntimeException("A entidade é obrigatório.");
+			throw new SRHRuntimeException("A entidade Ã© obrigatÃ³rio.");
 
 		// validar data inicio
 		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("A Data Inicial é obrigatório.");
+			throw new SRHRuntimeException("A Data Inicial Ã© obrigatÃ³rio.");
 
 		// validando data final
 		if ( entidade.getFim() == null )
-			throw new SRHRuntimeException("A Data Final é obrigatório.");
+			throw new SRHRuntimeException("A Data Final Ã© obrigatÃ³rio.");
 
-		// validando se o período inicial é menor que o final
+		// validando se o perÃ­odo inicial Ã© menor que o final
 		if ( entidade.getInicio().after(entidade.getFim() ) )
 			throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");
 
 		// validando esfera
 		if (entidade.getEsfera() == null || entidade.getEsfera() == 0l )
-			throw new SRHRuntimeException("A esfera é obrigatória.");
+			throw new SRHRuntimeException("A esfera Ã© obrigatÃ³ria.");
 
 		// validando previdencia
 		if (entidade.getPrevidencia() == null || entidade.getPrevidencia() == 0l )
-			throw new SRHRuntimeException("A previdência é obrigatória.");
+			throw new SRHRuntimeException("A previdÃªncia Ã© obrigatÃ³ria.");
 
 		// validando descricao
 		if ( entidade.getDescricao() == null || entidade.getDescricao().equals("") ) 
-			throw new SRHRuntimeException("A descrição é obrigatório.");
+			throw new SRHRuntimeException("A descriÃ§Ã£o Ã© obrigatÃ³ria.");
 
 	}
 
@@ -138,8 +138,8 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * O Período Inicial e Final devem ser checados para saber se já foi lançada nenhuma 
-	 * averbacao para o servidor neste mesmo período.
+	 * O PerÃ­odo Inicial e Final devem ser checados para saber se jÃ¡ foi lanÃ§ada nenhuma 
+	 * averbacao para o servidor neste mesmo perÃ­odo.
 	 * 
 	 * @param entidade
 	 *
@@ -161,19 +161,19 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 			// validando periodo de averbacao inicial 
 			if( averbacaoExistente.getInicio().after( entidade.getInicio() )
 					&& averbacaoExistente.getInicio().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+				throw new SRHRuntimeException("Esta averbaÃ§Ã£o tem um perÃ­odo concomitante com outra anteriormente cadastrada. Se vocÃª tem certeza sobre o perÃ­odo, clique novamente no botÃ£o salvar.");
 			}
 
 			// validando periodo de averbacao final
 			if( averbacaoExistente.getFim().after( entidade.getInicio() )
 					&& averbacaoExistente.getFim().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+				throw new SRHRuntimeException("Esta averbaÃ§Ã£o tem um perÃ­odo concomitante com outra anteriormente cadastrada. Se vocÃª tem certeza sobre o perÃ­odo, clique novamente no botÃ£o salvar.");
 			}
 
 			// validando periodo de averbacao no meio
 			if( averbacaoExistente.getInicio().before( entidade.getInicio() )
 					&& averbacaoExistente.getFim().after( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+				throw new SRHRuntimeException("Esta averbaÃ§Ã£o tem um perÃ­odo concomitante com outra anteriormente cadastrada. Se vocÃª tem certeza sobre o perÃ­odo, clique novamente no botÃ£o salvar.");
 			}
 
 		}

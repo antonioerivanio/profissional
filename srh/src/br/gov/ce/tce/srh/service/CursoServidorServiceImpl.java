@@ -43,7 +43,7 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 			// verificando se o curso ja existe
 			PessoalCursoProfissional existe = dao.getByCurso(listaPessoaCurso.get(0).getCursoProfissional().getId());
 			if (existe != null)
-				throw new SRHRuntimeException("Este curso ja foi cadastrado.");
+				throw new SRHRuntimeException("Este curso jÃ¡ foi cadastrado.");
 
 		}
 
@@ -118,8 +118,8 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 
 	/**
 	 * Validar:
-	 * · Deve ser cadastrado ao menos uma competencia.
-	 * · Deve ser cadastrado ao menos um servidor
+	 *  Deve ser cadastrado ao menos uma competencia.
+	 *  Deve ser cadastrado ao menos um servidor
 	 *  
 	 */
 	private void validarDados(List<PessoalCursoProfissional> listaPessoaCurso,
@@ -127,10 +127,10 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 			throws SRHRuntimeException {
 
 		if (listaCompetencias == null || listaCompetencias.size() == 0)
-			throw new SRHRuntimeException("Nenhuma competência cadastrada, é obrigatório pelo menos uma competência.");
+			throw new SRHRuntimeException("Nenhuma competÃªncia cadastrada, Ã© obrigatÃ³rio pelo menos uma competÃªncia.");
 
 		if (listaPessoaCurso == null || listaPessoaCurso.size() == 0)
-			throw new SRHRuntimeException("Nenhum servidor cadastrado, é obrigatório pelo menos um servidor.");
+			throw new SRHRuntimeException("Nenhum servidor cadastrado, Ã© obrigatÃ³rio pelo menos um servidor.");
 
 	}
 

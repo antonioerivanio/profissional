@@ -93,12 +93,12 @@ public class DeducaoServiceImpl implements DeducaoService {
 	/**
 	 * Validar:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setado o ano de referencia.
-	 * ∑ Deve ser setado o mes de referencia.
-	 * ∑ Deve ser setado a qtde dias.
-	 * ∑ Deve ser setada a data inicial.
-	 * ∑ Deve ser setada a data final.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setado o ano de referencia.
+	 *  Deve ser setado o mes de referencia.
+	 *  Deve ser setado a qtde dias.
+	 *  Deve ser setada a data inicial.
+	 *  Deve ser setada a data final.
 	 * 
 	 * @param entidade
 	 * 
@@ -107,34 +107,34 @@ public class DeducaoServiceImpl implements DeducaoService {
 	 */
 	private void validaDados(Deducao entidade) throws SRHRuntimeException {
 		
-		//validando se as datas inÌcio e fim est„o preenchidas. Caso sim, n„o salvar o campo mÍs.
+		//validando se as datas in√≠cio e fim est√£o preenchidas. Caso sim, n√£o salvar o campo m√™s.
 		if(entidade.getInicio() != null && entidade.getFim() != null){
 			entidade.setMesReferencia(0L);
 		}
 		
 		// validando o servidor
 		if (entidade.getPessoal() == null)
-			 throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite o nome e efetue a pesquisa.");
+			 throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite o nome e efetue a pesquisa.");
 		
 		if(entidade.isFalta() == true){
 			
-			//CÛdigo Original
+			//C√≥digo Original
 			
 			/*// validando ano referencia
 			if (entidade.getAnoReferencia() == null || entidade.getAnoReferencia().toString().length() < 4)
-				throw new SRHRuntimeException("O ano de referÍncia È obrigatÛrio.");
+				throw new SRHRuntimeException("O ano de refer√™ncia √© obrigat√≥rio.");
 			//validando datas de inicio e fim
 			if(entidade.getInicio() == null || entidade.getFim() == null){
 				// validando mes referencia
 				if (entidade.getMesReferencia() == null || entidade.getMesReferencia() == 0)
-					throw new SRHRuntimeException("O mÍs de referÍncia È obrigatÛrio.");
+					throw new SRHRuntimeException("O m√™s de refer√™ncia √© obrigat√≥rio.");
 			}*/
 			
-			//AlteraÁ„o Permitir colocar ano, mÍs, dias ou Data inicial e data final. Zacarias 08/08/2014
+			//Altera√ß√£o Permitir colocar ano, m√™s, dias ou Data inicial e data final. Zacarias 08/08/2014
 			
 			if(!((entidade.getAnoReferencia()!=null && entidade.getMesReferencia()!=null && entidade.getQtdeDias()!=0)||(entidade.getInicio() != null &&  entidade.getFim() != null)))
 			{	
-				throw new SRHRuntimeException("VocÍ deve informar a Data Inicial e Data Final ou o Ano Referencia, o MÍs referÍncia e a quantidade de dias.");
+				throw new SRHRuntimeException("Voc√™ deve informar a Data Inicial e Data Final ou o Ano Referencia, o M√™s refer√™ncia e a quantidade de dias.");
 			}
 			
 		}
@@ -142,34 +142,34 @@ public class DeducaoServiceImpl implements DeducaoService {
 
 	/*	// validando qtde dias
 		if (entidade.getQtdeDias() == null)
-			throw new SRHRuntimeException("A quantidadde de dias È obrigatÛrio.");*/
+			throw new SRHRuntimeException("A quantidadde de dias √© obrigat√≥ria.");*/
 
 		// validando data inicial e final caso for falta
 		if ( !entidade.isFalta() ) {
 			
-			//CÛdigo Original
+			//C√≥digo Original
 			
 		/*	// validar data inicio
 			if ( entidade.getInicio() == null )
-				throw new SRHRuntimeException("A Data Inicial È obrigatÛrio.");
+				throw new SRHRuntimeException("A Data Inicial √© obrigat√≥ria.");
 
 			// validando data final
 			if ( entidade.getFim() == null )
-				throw new SRHRuntimeException("A Data Final È obrigatÛrio.");
+				throw new SRHRuntimeException("A Data Final √© obrigat√≥ria.");
 
-			// validando se o perÌodo inicial È menor que o final
+			// validando se o per√≠odo inicial √© menor que o final
 			if ( entidade.getInicio().after(entidade.getFim() ) )
 				throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");*/
 			if ((!(entidade.getInicio() != null &&  entidade.getFim() != null)) && entidade.getQtdeDias().equals(new Long(0)))
-				throw new SRHRuntimeException("VocÍ deve informar a Data Inicial e Data Final ou a quantidade de dias.");
+				throw new SRHRuntimeException("Voc√™ deve informar a Data Inicial e Data Final ou a quantidade de dias.");
 			
 			
-			// validando se o perÌodo inicial È menor que o final
+			// validando se o per√≠odo inicial √© menor que o final
 			if ((entidade.getInicio() != null &&  entidade.getFim() != null) && entidade.getInicio().after(entidade.getFim() ) )
 				throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");
 		}
 
-		// validando se o perÌodo inicial È menor que o final
+		// validando se o per√≠odo inicial √© menor que o final
 		if ( entidade.getInicio() != null && entidade.getInicio().after(new Date()))
 			throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data atual.");
 	}
@@ -178,8 +178,8 @@ public class DeducaoServiceImpl implements DeducaoService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * O PerÌodo Inicial e Final devem ser checados para saber se j· foi lanÁada nenhuma 
-	 * deduÁ„o para o servidor neste mesmo perÌodo.
+	 * O Per√≠odo Inicial e Final devem ser checados para saber se j√° foi lan√ßada nenhuma 
+	 * dedu√ß√£o para o servidor neste mesmo per√≠odo.
 	 * 
 	 * @param entidade
 	 *
@@ -207,7 +207,7 @@ public class DeducaoServiceImpl implements DeducaoService {
 			if(deducaoExistente.getInicio() != null){
 				if( deducaoExistente.getInicio().after( entidade.getInicio() )
 						&& deducaoExistente.getInicio().before( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("J· existe uma DeduÁ„o cadastrada nesse perÌodo de tempo.");
+					throw new SRHRuntimeException("J√° existe uma Dedu√ß√£o cadastrada nesse per√≠odo de tempo.");
 				}
 			}
 
@@ -215,7 +215,7 @@ public class DeducaoServiceImpl implements DeducaoService {
 			if(deducaoExistente.getFim() != null){
 				if( deducaoExistente.getFim().after( entidade.getInicio() )
 						&& deducaoExistente.getFim().before( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("J· existe uma DeduÁ„o cadastrada nesse perÌodo de tempo.");
+					throw new SRHRuntimeException("J√° existe uma Dedu√ß√£o cadastrada nesse per√≠odo de tempo.");
 				}
 			}
 
@@ -223,7 +223,7 @@ public class DeducaoServiceImpl implements DeducaoService {
 			if(deducaoExistente.getInicio() != null && deducaoExistente.getFim() != null){
 				if( deducaoExistente.getInicio().before( entidade.getInicio() )
 						&& deducaoExistente.getFim().after( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("J· existe uma DeduÁ„o cadastrada nesse perÌodo de tempo.");
+					throw new SRHRuntimeException("J√° existe uma Dedu√ß√£o cadastrada nesse per√≠odo de tempo.");
 				}
 			}
 

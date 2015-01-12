@@ -180,7 +180,7 @@ public class RepresentacaoCargoDAOTest extends DatabaseTestCase {
 		++countTests;
 
 		Assert.assertEquals( dao.count("TESTE"), 0);
-		Assert.assertEquals( dao.count("Secretário"), 1);
+		Assert.assertEquals( dao.count("SecretÃ¡rio"), 1);
 
 		closeEntityManager(countTests);
 	}
@@ -196,7 +196,7 @@ public class RepresentacaoCargoDAOTest extends DatabaseTestCase {
 		List<RepresentacaoCargo> lista = dao.search("TESTE", 0, 10);
 		Assert.assertEquals( lista.size(), 0);
 
-		lista = dao.search("Secretário", 0, 10);
+		lista = dao.search("SecretÃ¡rio", 0, 10);
 		Assert.assertEquals( lista.size(), 1);
 
 		closeEntityManager(countTests);
@@ -214,7 +214,7 @@ public class RepresentacaoCargoDAOTest extends DatabaseTestCase {
         entidade = dao.getByNomenclaturaSimbolo("diretor", "DN001");
     	Assert.assertNull(entidade);
 
-        entidade = dao.getByNomenclaturaSimbolo("Secretário", "DNS01");
+        entidade = dao.getByNomenclaturaSimbolo("SecretÃ¡rio", "DNS01");
     	Assert.assertNotNull(entidade);
 
     	closeEntityManager(countTests);
@@ -238,7 +238,7 @@ public class RepresentacaoCargoDAOTest extends DatabaseTestCase {
 		Assert.assertEquals( entidade.getOrdem(), new Long(0));
 		Assert.assertEquals( entidade.getSimbolo(), "DNS01");
 		Assert.assertFalse( entidade.isAtivo() );
-		Assert.assertEquals( entidade.getNomenclatura(), "Secretário");
+		Assert.assertEquals( entidade.getNomenclatura(), "SecretÃ¡rio");
     	
     	closeEntityManager(countTests);
     }

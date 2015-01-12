@@ -78,12 +78,12 @@ public class EscolaridadeServiceImpl implements EscolaridadeService {
 		// verificando descricao
 		Escolaridade entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Escolaridade j· cadastrada. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Escolaridade j√° cadastrada. Opera√ß√£o cancelada.");
 
 		// verificando ordem
 		entidadeJaExiste = dao.getByOrdem(entidade.getOrdem());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Ordem j· cadastrada. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Ordem j√° cadastrada. Opera√ß√£o cancelada.");
 		
 	}
 

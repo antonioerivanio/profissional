@@ -5,16 +5,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.faces.component.UIData;
-import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -24,302 +19,219 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.Revisao;
-import br.gov.ce.tce.srh.domain.Revisao.Restricao;
 import br.gov.ce.tce.srh.domain.TipoRevisao;
 import br.gov.ce.tce.srh.domain.sca.Usuario;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AuditoriaService;
+import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.service.UsuarioService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
-@Component(value="consultarAuditoriaBean")
+@Component("consultarAuditoriaBean")
 @Scope("session")
 public class ConsultarAuditoriaBean implements Serializable{
 	
 	static Logger logger = Logger.getLogger(ConsultarAuditoriaBean.class);
 	
-	@Autowired(required=true)
+	@Autowired
 	private AuditoriaService auditoriaService;
-	@Autowired(required=true)
+	
+	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private PessoalService pessoalService;
+	
+	@Autowired
+	private FuncionalService funcionalService;
+	
+	private HtmlForm form;
 
-	private UIData tblRestricoes;
-	
-	private List<Restricao> restricoes = null;
-	private Restricao restricao;
-	private String valorRestricao;
-	
-	private Revisao revisaoConsulta;
-	
-	private Set<Class<?>> entidades;
-	private List<Usuario> usuarios;
-	private Object pesquisaRevisao;
-	private List<TipoRevisao> tiposRevisao;
+	private Revisao revisaoConsulta = new Revisao();
 	
 	private Long tipoRevisao;
 	private Long usuario;
+	private Long pessoal;
 	private String entidade;
 	private String atributo;
 	
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
+	private List<TipoRevisao> tiposRevisao;
+	private List<Usuario> usuarios;
+	private List<Pessoal> pessoais;
+	private Set<Class<?>> entidades;
+		
 	
-	//paginaÁ„o
-	private int count;
+//	PAGINA√á√ÉO - INICIO
+	
+	private int count = 0;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Revisao> pagedList = new ArrayList<Revisao>();
 	private int flagRegistroInicial = 0;
 	
-	public ConsultarAuditoriaBean() {
-		revisaoConsulta = new Revisao();
-	}
+//	PAGINA√á√ÉO - FIM	
 	
 	public String consultar() {
 		try {
 			
-			count = auditoriaService.count(revisaoConsulta);
+			this.limparListas();
+			
+			if (this.entidade == null || this.entidade.equals("")){
+				FacesUtil.addErroMessage("A tabela √© obrigat√≥ria.");
+				return null;
+			}
+			
+			this.count = this.auditoriaService.count(this.revisaoConsulta);
 
-			if(count == 0){
+			if(this.count == 0){
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
 			}
 			
-			flagRegistroInicial = -1;
-			passouConsultar = true;
-			
+			this.flagRegistroInicial = -1;
+						
 		} catch (SRHRuntimeException e) {
-			limparListas();
+			this.limparListas();
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		return null;
 	}
 	
-	public String limparRestricoes(){
-		entidade = null;
-		entidades = null;
-		atributo = null;
-		setRestricao(null);
-		valorRestricao = null;
-		restricoes = null;
-		revisaoConsulta.getRestricoes().clear();
-		return null;
-	}
 	
-	public void adicionarRestricao() {
-		
-		try {
-
-			auditoriaService.validarAdicionarRestricao(restricao, entidade, valorRestricao);
-			
-			//Obtem o converter apropriado para converter a String do valor em objeto:
-			Converter atributoConverter = getFacesContext().getApplication().createConverter(restricao.getTipo());
-			Object valorRestricaoObj;
-			
-			//Verifica se È necess·rio, no caso de o atributo n„o ser do tipo String: 
-			if (atributoConverter == null) {
-				valorRestricaoObj = valorRestricao;
-			} else {
-				//Cria um componente tempor·rio para converter o valor em objeto:
-				UIInput uixInput = new UIInput();
-				uixInput.setConverter(atributoConverter);
-				//Converte a String para o objeto apropriado:
-				valorRestricaoObj = atributoConverter.getAsObject(getFacesContext(), uixInput, (String) valorRestricao);
-			}
-			
-			Restricao novaRestricao = new Restricao(restricao.getAtributo(), restricao.getTipo(), valorRestricaoObj);
-			Iterator<Restricao> itRestricoes = revisaoConsulta.getRestricoes().iterator();
-			while (itRestricoes.hasNext()) {
-				Restricao restricao = (Revisao.Restricao) itRestricoes.next();
-				if (restricao.getAtributo().equals(novaRestricao.getAtributo())) {
-					itRestricoes.remove();
-					break;
-				}
-			}
-			
-			revisaoConsulta.getRestricoes().add(novaRestricao);
-			
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
-		} catch (ConverterException e) {
-			FacesUtil.addErroMessage("Erro ao tentar converter o valor da coluna informado.");
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao adicionar restriÁ„o. OperaÁ„o cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-	}
-	
-	public void excluirRestricao() {
-		List<Restricao> restricoesAux = null;
-		if(atributo != null && (!atributo.equals(""))){
-			for (Restricao rest : restricoes) {
-				if(rest.getAtributo().equals(atributo)){
-					restricoesAux = new ArrayList<Revisao.Restricao>();
-					restricoesAux.addAll(revisaoConsulta.getRestricoes());
-					restricoesAux.remove(rest);
-					
-					entidade = null;
-					entidades = null;
-					atributo = null;
-					setRestricao(null);
-					valorRestricao = null;
-				}
-			}
-		}
-		revisaoConsulta.setRestricoes(restricoesAux);
-	}
+//	A√á√ïES AJAX DAS COMBOS - INICIO
 	
 	public void tipoEventoSelecionado(){
-		if(tipoRevisao != 0){
-			revisaoConsulta.setTipoRevisao(TipoRevisao.getById(tipoRevisao));
+		if(this.tipoRevisao > -1){
+			this.revisaoConsulta.setTipoRevisao(TipoRevisao.getById(this.tipoRevisao));
 		} else {
-			revisaoConsulta.setTipoRevisao(null);
+			this.revisaoConsulta.setTipoRevisao(null);
 		}
 	}
+	
 	
 	public void usuarioSelecionado(){
-		if(this.usuario != 0){
-			for (Usuario usuario : usuarios) {
+		if(this.usuario != 0){			
+			for (Usuario usuario : this.usuarios){
 				if(usuario.getId().equals(this.usuario)){
-					revisaoConsulta.setUsuario(usuario);
+					this.revisaoConsulta.setUsuario(usuario);
+					return;
+				}
+			}			
+		} else {
+			this.revisaoConsulta.setUsuario(null);
+		}
+	}
+	
+	
+	public void pessoalSelecionado(){
+		if(this.pessoal != 0){
+			for (Pessoal pessoal : this.pessoais){
+				if(pessoal.getId().equals(this.pessoal)){
+					this.revisaoConsulta.setPessoal(pessoal);
+					this.revisaoConsulta.setFuncionais(this.funcionalService.findByPessoal(this.getPessoal(), ""));
+					return;
 				}
 			}
 		} else {
-			revisaoConsulta.setUsuario(null);
+			this.revisaoConsulta.setPessoal(null);
+			this.revisaoConsulta.setFuncionais(null);
 		}
 	}
+	
 	
 	public void entidadeSelecionada() {
-		revisaoConsulta.setEntidade(null);
-		restricao = null;
+												
 		if(this.entidade != null && (!this.entidade.equals(""))){
-			for (Class<?> entidade : entidades) {
+			for (Class<?> entidade : this.entidades) {
 				if(entidade.getSimpleName().equalsIgnoreCase(this.entidade)){
-					revisaoConsulta.setEntidade(entidade);
+					this.revisaoConsulta.setEntidade(entidade);
 					return;
 				}
 			}
+		} else {
+			this.revisaoConsulta.setEntidade(null);
 		} 
 	}
 	
-	public void atributoSelecionado(){
-		setRestricao(null);
-		if(atributo != null && (!atributo.equals(""))){
-			for (Restricao restricao : getRestricoesEntidade()) {
-				if(restricao.getAtributo().equalsIgnoreCase(atributo)){
-					setRestricao(restricao);
-					return;
-				}
-			}
-		} 
-	}
+//	A√á√ïES AJAX DAS COMBOS - FIM	
 	
-	public Object getPesquisaRevisao() {
-		return pesquisaRevisao;
-	}
 	
-	public void setPesquisaRevisao(Object pesquisaRevisao) {
-		this.pesquisaRevisao = pesquisaRevisao;
-	}
-	
-	public Set<Class<?>> getEntidades() throws ClassNotFoundException {
-		if(entidades == null){
-			entidades = auditoriaService.getEntidadesAuditadas();
-		}
-		return entidades;
-	}
-
-	public void setEntidades(Set<Class<?>> entidades) {
-		this.entidades = entidades;
-	}
-
-	public List<Restricao> getRestricoesEntidade() {
-		Set<Field> atributosSimplesEntidade = null;
-		List<Restricao> restricoesEntidade = null;
-		if(revisaoConsulta.getEntidade() != null){
-			atributosSimplesEntidade = auditoriaService.getAtributosSimplesEntidade((Class<?>) revisaoConsulta.getEntidade());
-			restricoesEntidade = new ArrayList<Restricao>(atributosSimplesEntidade.size());
-			for (Field field : atributosSimplesEntidade) {
-				restricoesEntidade.add(new Restricao(field.getName(), field.getType(), null));
-			}
-			Collections.sort(restricoesEntidade);
-		}
-		return restricoesEntidade;
-	}
+//	POPULA AS COMBOS - INICIO
 	
 	public List<TipoRevisao> getTiposRevisao(){
-		if (tiposRevisao == null) {
-			tiposRevisao = new ArrayList<TipoRevisao>(Arrays.asList(TipoRevisao.values()));
-		}
-		return tiposRevisao;
+		if (this.tiposRevisao == null)
+			this.tiposRevisao = new ArrayList<TipoRevisao>(Arrays.asList(TipoRevisao.values()));
+		
+		return this.tiposRevisao;
 	}
+	
 	
 	public List<Usuario> getUsuarios(){
-		if (usuarios == null) {
-			usuarios = usuarioService.findAll();
-		}
-		return usuarios;
-	}
-	
-	public Revisao getRevisaoConsulta() {
-		return revisaoConsulta;
-	}
-
-	public void setRevisaoConsulta(Revisao revisaoConsulta) {
-		this.revisaoConsulta = revisaoConsulta;
+		if (this.usuarios == null)
+			this.usuarios = this.usuarioService.findAll();
+		
+		return this.usuarios;
 	}
 	
 	
-//	@SuppressWarnings("rawtypes")
-//	public boolean isPesquisaComResultados() {
-//		Object pesquisaRevisao = getPesquisaRevisao();
-//		if (pesquisaRevisao == null) {
-//			return false;
-//		} else if (pesquisaRevisao instanceof DataModel && ((DataModel) pesquisaRevisao).getRowCount() == 0) {
-//			return false;
-//		} else if (pesquisaRevisao instanceof List<?> && ((List<?>) pesquisaRevisao).isEmpty()) {
-//			return false;
-//		}
-//		return true;
-//	}
-
-	public void setRestricao(Restricao restricao) {this.restricao = restricao;}
-	public Restricao getRestricao() {return restricao;}
+	public List<Pessoal> getPessoais(){
+		if (this.pessoais == null)
+			this.pessoais = this.pessoalService.findAllComFuncional();
+		
+		return this.pessoais;
+	}	
+		
 	
-	public String getTipoDadoAtributoSelecionado() {
-		if (restricao != null) {
-			return restricao.getAtributo();
-		}
-		return null;
-	}
-	
-	public void setTblRestricoes(UIData tblRestricoes) {this.tblRestricoes = tblRestricoes;}
-	public UIData getTblRestricoes() {return tblRestricoes;}
-	
-	public List<Restricao> getRestricoes() {
-		restricoes = revisaoConsulta.getRestricoes();
-		return restricoes;
+	public Set<Class<?>> getEntidades() throws ClassNotFoundException {
+		if(this.entidades == null)
+			this.entidades = this.auditoriaService.getEntidadesAuditadas();
+		
+		return this.entidades;
 	}	
 	
-	public void setValorRestricao(String valorRestricao) {this.valorRestricao = valorRestricao;}
-	public String getValorRestricao() {	return valorRestricao; }
+	
+	public List<String> getAtributosEntidade() {
+		
+		Set<Field> fieldsEntidade = null;
+		
+		List<String> atributosEntidade = null;
+		
+		if(this.revisaoConsulta.getEntidade() != null){			
+			fieldsEntidade = this.auditoriaService.getAtributosEntidade((Class<?>)this.revisaoConsulta.getEntidade());			
+			atributosEntidade = new ArrayList<String>(fieldsEntidade.size());
+			
+			for (Field field : fieldsEntidade)
+				atributosEntidade.add(field.getName());			
+			
+			Collections.sort(atributosEntidade);			
+		}
+		return atributosEntidade;
+	}
+	
+//	POPULA AS COMBOS - FIM
+
+	
+	public Revisao getRevisaoConsulta() {return revisaoConsulta;}
+	public void setRevisaoConsulta(Revisao revisaoConsulta) {this.revisaoConsulta = revisaoConsulta;}	
 
 	public void setTipoRevisao(Long tipoRevisao) {this.tipoRevisao = tipoRevisao;}
 	public Long getTipoRevisao() {return tipoRevisao;}
 	
 	public Long getUsuario() {return usuario;}
 	public void setUsuario(Long usuario) {this.usuario = usuario;}
+	
+	public Long getPessoal() {return pessoal;}
+	public void setPessoal(Long pessoal) {this.pessoal = pessoal;}
 	
 	public String getEntidade() {return entidade;}
 	public void setEntidade(String entidade) {this.entidade = entidade;}
@@ -333,43 +245,69 @@ public class ConsultarAuditoriaBean implements Serializable{
 	
 	public HttpServletRequest getRequestSession() {return (HttpServletRequest) getFacesContext().getExternalContext().getRequest();}
 	
+	
 	/**
-	 * ObtÈm o usu·rio logado na sess„o
+	 * Obt√©m o usu√°rio logado na sess√£o
 	 * @return
 	 */
 	public Usuario getUsuarioLogado() {
 		return SRHUtils.getUsuarioLogado();
 	}
 	
+	
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar){
-			atributo = null;
-			entidade = null;
-			restricao = null;
-			tipoRevisao = 0L;
-			usuario = 0L;
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
+
+		limpar();
+
 		return form;
 	}
 	
-	//PAGINA«√O
-	private void limparListas() {
-		dataTable = new HtmlDataTable();
+	
+	public String limpar(){
+
+		revisaoConsulta = new Revisao();
+		
+		tipoRevisao = null;
+		usuario = null;
+		pessoal = null;
+		entidade = null;
+		atributo = null;		
+		
+		tiposRevisao = null;
+		usuarios = null;
+		pessoais = null;
+		entidades = null;
+		
+		limparListas();
+		
+		return null;
+	}	
+
+	
+//	PAGINA√á√ÉO	
+	
+	public void limparListas() {
+		count = 0;
+		dataTable = new HtmlDataTable();		
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<Revisao>(); 
+		pagedList = new ArrayList<Revisao>();
+		flagRegistroInicial = 0;		
 	}
 
+	
 	public HtmlDataTable getDataTable() {return dataTable;}
 	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-
+	
+	
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
+		
+		if( flagRegistroInicial != getDataTable().getFirst()) {
+			
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(auditoriaService.search(revisaoConsulta, getDataTable().getFirst(), getDataTable().getRows()));
+			
+			setPagedList(auditoriaService.search(revisaoConsulta, getDataTable().getFirst(), 10, this.atributo));
+			
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -379,9 +317,10 @@ public class ConsultarAuditoriaBean implements Serializable{
 		return dataModel;
 	}
 
+	
 	public List<Revisao> getPagedList() {return pagedList;}
 	public void setPagedList(List<Revisao> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
-
+	
+//	FIM PAGINA√á√ÉO
 
 }

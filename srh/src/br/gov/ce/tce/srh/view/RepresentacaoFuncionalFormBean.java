@@ -26,7 +26,7 @@ import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC033_Manter RepresentaÁ„o Funcional
+* Use case : SRH_UC033_Manter Representa√ß√£o Funcional
 * 
 * @since   : Dez 19, 2011, 17:59:02 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -124,14 +124,14 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 			representacaoFuncionalService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("OperaÁ„o realizada com sucesso.");
-			logger.info("OperaÁ„o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Opera√ß√£o realizada com sucesso.");
+			logger.info("Opera√ß√£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -152,7 +152,7 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 				this.comboTipoDocumento = tipoDocumentoService.findByDocfuncional(true);
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo tipo de documento. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo tipo de documento. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -173,7 +173,7 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 				this.comboSetor = setorService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo setor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -210,7 +210,7 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo representaÁ„o cargo. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo representa√ß√£o cargo. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -231,7 +231,7 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 				this.comboTipoPublicacao = tipoPublicacaoService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo tipo publicaÁ„o. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo tipo publica√ß√£o. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -278,11 +278,11 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 					this.comboRepresentacaoCargo = null;
 					this.nome = funcional.getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matr√≠cula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 

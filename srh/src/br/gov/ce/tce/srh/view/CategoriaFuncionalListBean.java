@@ -65,7 +65,7 @@ public class CategoriaFuncionalListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -83,7 +83,7 @@ public class CategoriaFuncionalListBean implements Serializable {
 		if(ativa == 1L){
 			status = "Sim";
 		} else {
-			status = "N„o";
+			status = "N√£o";
 		}
 		return status;
 	}
@@ -91,8 +91,8 @@ public class CategoriaFuncionalListBean implements Serializable {
 	public String excluir(){
 		try {
 			cadastroCategoriaFuncionalService.excluir(categoriaFuncional);
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 			
 		}  catch (SRHRuntimeException e) {
 			
@@ -100,11 +100,11 @@ public class CategoriaFuncionalListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
 			
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
 			
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
@@ -126,7 +126,7 @@ public class CategoriaFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio das Ferias. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio das Ferias. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -184,7 +184,7 @@ public class CategoriaFuncionalListBean implements Serializable {
 	public void setDataTable(HtmlDataTable dataTable) {
 		this.dataTable = dataTable;
 	}
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparLista() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();

@@ -20,7 +20,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 /**
-* Use case : SRH_UC042_Manter ReclassificaÁ„o Ocupacional do Servidor
+* Use case : SRH_UC042_Manter Reclassifica√ß√£o Ocupacional do Servidor
 * 
 * @since   : Fev 09, 2012, 10:00:00
 * @author  : robson.castro@ivia.com.br
@@ -31,7 +31,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 public class ReclassificacaoOcupacionalListBean implements Serializable {
 
 	/**
-	 * Robson, estou fazendo alteraÁıes na exibiÁ„o de relatÛrio, a quest„o È que estava com muito codigo "desnecess·rio"
+	 * Robson, estou fazendo altera√ß√µes na exibi√ß√£o de relat√≥rio, a quest√£o √© que estava com muito codigo "desnecess√°rio"
 	 * , pois havia muitas linhas de comando repetida, segue a nova estrutura que irei comentar la em baixo ok!
 	 * 
 	 * 
@@ -59,7 +59,7 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 	private List<Funcional> lista;
 	private Funcional entidade;
 	
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -72,7 +72,7 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 		try {
 			// validando campos da entidade
 			if ( getEntidade() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			count = funcionalService.count(entidade.getPessoal().getId(), "DESC");
 
@@ -89,7 +89,7 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -107,17 +107,17 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 
 			funcionalService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -137,11 +137,11 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matr√≠cula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 		}
@@ -159,11 +159,11 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -194,7 +194,7 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -219,6 +219,6 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 
 	public List<Funcional> getPagedList() {return pagedList;}
 	public void setPagedList(List<Funcional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

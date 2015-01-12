@@ -90,7 +90,7 @@ public class FuncionalConsultaBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

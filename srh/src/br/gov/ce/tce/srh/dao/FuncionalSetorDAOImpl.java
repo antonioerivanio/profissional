@@ -3,7 +3,6 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -11,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.FuncionalSetor;
-import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
 
 /**
  *
@@ -50,17 +48,26 @@ public class FuncionalSetorDAOImpl implements FuncionalSetorDAO {
 
 	@Override
 	public void excluir(FuncionalSetor entidade) {
-		Query query = entityManager.createQuery("DELETE FROM FuncionalSetor l WHERE l.id = :id");
-		query.setParameter("id", entidade.getId());
-		query.executeUpdate();
+//		Query query = entityManager.createQuery("DELETE FROM FuncionalSetor l WHERE l.id = :id");
+//		query.setParameter("id", entidade.getId());
+//		query.executeUpdate();
+		
+		entidade = entityManager.merge(entidade);
+		entityManager.remove(entidade);
 	}
 
 
 	@Override
 	public void excluirAll(Long idFuncional) {
-		Query query = entityManager.createQuery("DELETE FROM FuncionalSetor l WHERE l.funcional.id = :idFuncional");
-		query.setParameter("idFuncional", idFuncional);
-		query.executeUpdate();
+//		Query query = entityManager.createQuery("DELETE FROM FuncionalSetor l WHERE l.funcional.id = :idFuncional");
+//		query.setParameter("idFuncional", idFuncional);
+//		query.executeUpdate();
+		
+		List<FuncionalSetor> funcionalSetorList = this.findByFuncional(idFuncional);
+		
+		for (FuncionalSetor funcionalSetor : funcionalSetorList) {
+			entityManager.remove(funcionalSetor);
+		}
 	}
 
 
@@ -100,6 +107,14 @@ public class FuncionalSetorDAOImpl implements FuncionalSetorDAO {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<FuncionalSetor> findByFuncional(Long idFuncional) {
+		Query query = entityManager.createQuery("Select f from FuncionalSetor f where f.funcional.id = :funcional");
+		query.setParameter("funcional", idFuncional);
+		return query.getResultList();
 	}
 
 }

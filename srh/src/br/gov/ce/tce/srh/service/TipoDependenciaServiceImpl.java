@@ -56,6 +56,12 @@ public class TipoDependenciaServiceImpl implements TipoDependenciaService {
 	public List<TipoDependencia> search(String descricao, int first, int rows) {
 		return dao.search(descricao, first, rows);
 	}
+	
+	
+	@Override
+	public List<TipoDependencia> findAll() {
+		return dao.findAll();
+	}
 
 
 
@@ -71,11 +77,12 @@ public class TipoDependenciaServiceImpl implements TipoDependenciaService {
 
 		TipoDependencia entidadeJaExiste = dao.getByDescricao( entidade.getDescricao() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de Dependência já cadastrado. Operação cancelada.");
+			throw new SRHRuntimeException("Tipo de DependÃªncia jÃ¡ cadastrado. OperaÃ§Ã£o cancelada.");
 
 	}
 
 
 	public void setDAO(TipoDependenciaDAO tipoDependenciaDAO) {this.dao = tipoDependenciaDAO;}
+	
 
 }

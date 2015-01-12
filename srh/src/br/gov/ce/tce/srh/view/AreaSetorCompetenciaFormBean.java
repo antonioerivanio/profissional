@@ -20,7 +20,7 @@ import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC003_Manter Competências do Setor
+* Use case : SRH_UC003_Manter CompetÃªncias do Setor
 * 
 * @since   : Aug 31, 2011, 10:44:18 AM
 * @author  : robstownholanda@ivia.com.br
@@ -96,14 +96,14 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
 			setSetor( new Setor() );
 			setEntidade( new AreaSetorCompetencia() );
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso");
-			logger.info("Operação realizada com sucesso");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso");
+			logger.info("OperaÃ§Ã£o realizada com sucesso");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -124,7 +124,7 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
 				this.comboSetor = setorService.findAll();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -150,7 +150,7 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo área. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo Ã¡rea. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -171,7 +171,7 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
         		this.comboCompetencia = competenciaService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo competência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo competÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

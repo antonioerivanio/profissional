@@ -43,7 +43,7 @@ public class AuthenticationService {
 			
 			// verificando se o usuario esta ativo
 			if (!usuario.isEnabled()) {
-				return "Usu·rio nao esta ativo!";
+				return "Usu√°rio nao esta ativo!";
 			}
 
 			// Verificando se a senha esta expirada
@@ -53,7 +53,7 @@ public class AuthenticationService {
 
 			// verificando se o usuario tem alguma permissao
 			if (usuario.getAuthorities().size() == 0) {
-				return "Usu·rio n„o tem permiss„o de acesso";
+				return "Usu√°rio n√£o tem permiss√£o de acesso";
 			}
 
 			// verificando autenticacao
@@ -65,7 +65,7 @@ public class AuthenticationService {
 
 		catch (AuthenticationException e) {}
 		
-		return "Login ou senha inv·lidos";
+		return "Login ou senha inv√°lidos";
 	}
 
 

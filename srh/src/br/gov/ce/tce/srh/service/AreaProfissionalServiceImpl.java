@@ -77,7 +77,7 @@ public class AreaProfissionalServiceImpl implements AreaProfissionalService {
 
 		AreaProfissional entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("¡rea de FormaÁ„o Profissional j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("√Årea de Forma√ß√£o Profissional j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

@@ -23,9 +23,9 @@ public class SRHUtils {
 	public static final String FORMATO_DATA = "dd/MM/yyyy"; 
 	
 	/**
-	 * MÈtodo respons·vel por adicionar ou remover n˙mero de dias de uma data
-	 * Obs.: sinal negativo no par‚metro qtdDias ir· fazer com que seja removido o n˙mero de dias informado,
-	 * caso contr·rio, ser· adicionado a mesma, gerando uma nova data.
+	 * M√©todo respons√°vel por adicionar ou remover n√∫mero de dias de uma data
+	 * Obs.: sinal negativo no par√¢metro qtdDias ir√° fazer com que seja removido o n√∫mero de dias informado,
+	 * caso contr√°rio, ser√° adicionado a mesma, gerando uma nova data.
 	 * @param data informada
 	 * @param qtdDias
 	 * @return data alterada
@@ -36,7 +36,7 @@ public class SRHUtils {
 	}
 	
 	/**
-	 * MÈtodo respons·vel por retornar a data inicio do TCE 05/10/1935
+	 * M√©todo respons√°vel por retornar a data inicio do TCE 05/10/1935
 	 * @return data inicio
 	 */
 	public static Date inicioTCE() {
@@ -46,7 +46,7 @@ public class SRHUtils {
 	}
 
 	/**
-	 * MÈtodo respons·vel por retornar a data inicio do TCE 15/12/1998
+	 * M√©todo respons√°vel por retornar a data inicio do TCE 15/12/1998
 	 * @return data inicio
 	 */
 	public static Date inicioDeducao() {
@@ -55,7 +55,7 @@ public class SRHUtils {
 		return dtInicio.getTime();
 	}
 	/**
-	 * MÈtodo para comparar as das e retornar o numero de dias de diferenÁa
+	 * M√©todo para comparar as das e retornar o numero de dias de diferen√ßa
 	 * entre elas
 	 * 
 	 * @param dataLow 
@@ -106,7 +106,7 @@ public class SRHUtils {
 
 		}
 
-		// Marca que È um saldo negativo ou positivo
+		// Marca que √© um saldo negativo ou positivo
 		result_months = result_months * dif_multiplier;
 
 		// Retirna a diferenca de dias do total dos meses
@@ -117,7 +117,7 @@ public class SRHUtils {
 	}
 	
 	/**
-	 * MÈtodo para comparar as das e retornar o numero de dias de diferenÁa
+	 * M√©todo para comparar as das e retornar o numero de dias de diferen√ßa
 	 * entre elas
 	 * 
 	 * @param dataLow 
@@ -175,8 +175,8 @@ public class SRHUtils {
 	}
 	
 	 /**
-	  * Formata uma data de acordo com o par‚metro passado
-	  * Ex. par‚metro formato: dd/MM/yyyy, dd/MM/yyyy HH:mm:ss, dd/MM
+	  * Formata uma data de acordo com o par√¢metro passado
+	  * Ex. par√¢metro formato: dd/MM/yyyy, dd/MM/yyyy HH:mm:ss, dd/MM
 	  * @param formato
 	  * @param data
 	  * @return data formatada
@@ -211,10 +211,10 @@ public class SRHUtils {
 			d2 = d2 + ( 12 - nCount ) * digitoCPF;  
 		};
 		
-		//Primeiro resto da divis„o por 11.  
+		//Primeiro resto da divis√£o por 11.  
 		resto = (d1 % 11);
 		
-		//Se o resultado for 0 ou 1 o digito È 0 caso contr·rio o digito È 11 menos o resultado anterior.  
+		//Se o resultado for 0 ou 1 o digito √© 0 caso contr√°rio o digito √© 11 menos o resultado anterior.  
 		if (resto < 2)  
 			digito1 = 0;  
 		else  
@@ -222,16 +222,16 @@ public class SRHUtils {
 		
 		d2 += 2 * digito1;  
 		
-		//Segundo resto da divis„o por 11.  
+		//Segundo resto da divis√£o por 11.  
 		resto = (d2 % 11);  
 		
-		//Se o resultado for 0 ou 1 o digito È 0 caso contr·rio o digito È 11 menos o resultado anterior.  
+		//Se o resultado for 0 ou 1 o digito √© 0 caso contr√°rio o digito √© 11 menos o resultado anterior.  
 		if (resto < 2)  
 			digito2 = 0;  
 		else  
 			digito2 = 11 - resto;  
 		
-		//Digito verificador do CPF que est· sendo validado.  
+		//Digito verificador do CPF que est√° sendo validado.  
 		String nDigVerific = cpf.substring (cpf.length()-2, cpf.length());  
 		
 		//Concatenando o primeiro resto com o segundo.  
@@ -242,10 +242,10 @@ public class SRHUtils {
 	} 
 	
 	/**
-	 * MÈtodo que verifica se o DÌgito Verificador de uma AgÍncia Bradesco È v·lida, 
-	 * na qual esta deve ser informada no seguinte padr„o: NNNN-D, onde N È um valor n˙merico
-	 * e D um valor n˙merico que representa o dÌgito verificador gerado a partir dos outros 4 
-	 * n˙meros informados antes do hÌfen (-). 
+	 * M√©todo que verifica se o D√≠gito Verificador de uma Ag√™ncia Bradesco √© v√°lida, 
+	 * na qual esta deve ser informada no seguinte padr√£o: NNNN-D, onde N √© um valor numerico
+	 * e D um valor numerico que representa o d√≠gito verificador gerado a partir dos outros 4 
+	 * n√∫meros informados antes do h√≠fen (-). 
 	 * @param agencia
 	 * @return Boolean
 	 */
@@ -258,10 +258,10 @@ public class SRHUtils {
 				   Integer.parseInt(agencia.substring(2, 3)) * 3 +
 				   Integer.parseInt(agencia.substring(3, 4)) * 2 ;
 		
-		//calculando dÌgito verificador
+		//calculando d√≠gito verificador
 		int digitoVerificador = 11 - (soma % 11);
 		
-		//condiÁ„o para dÌgito verificador ser igual a zero
+		//condi√ß√£o para d√≠gito verificador ser igual a zero
 		if(digitoVerificador > 9)
 			digitoVerificador = 0;
 		
@@ -273,10 +273,10 @@ public class SRHUtils {
 	}
 	
 	/**
-	 * MÈtodo que verifica se o DÌgito Verificador de uma Conta Corrente Bradesco È v·lida, 
-	 * na qual esta deve ser informada no seguinte padr„o: NNNNNNN-D, onde N È um valor n˙merico
-	 * e D um valor n˙merico que representa o dÌgito verificador gerado a partir dos outros sete 
-	 * n˙meros informados antes do hÌfen (-). 
+	 * M√©todo que verifica se o D√≠gito Verificador de uma Conta Corrente Bradesco √© v√°lida, 
+	 * na qual esta deve ser informada no seguinte padr√£o: NNNNNNN-D, onde N √© um valor numerico
+	 * e D um valor numerico que representa o d√≠gito verificador gerado a partir dos outros sete 
+	 * n√∫meros informados antes do h√≠fen (-). 
 	 * @param conta
 	 * @return Boolean
 	 */
@@ -293,14 +293,14 @@ public class SRHUtils {
 				Integer.parseInt(conta.substring(5, 6)) * 3 +
 				Integer.parseInt(conta.substring(6, 7)) * 2 ;
 		
-		//calculando dÌgito verificador
+		//calculando d√≠gito verificador
 		digitoSecundario = 11 - (soma % 11);
 		
-		//condiÁ„o para dÌgito verificador ser igual a zero
+		//condi√ß√£o para d√≠gito verificador ser igual a zero
 		if(digitoSecundario > 9)
 			digitoSecundario = 0;
 		
-		//verifica se o dÌgito verificador p equivale a zero
+		//verifica se o d√≠gito verificador p equivale a zero
 		if(conta.substring(7, 8).equals("0")){
 			digitoSecundario = 0;
 		} else {
@@ -314,7 +314,7 @@ public class SRHUtils {
 	}
 	
 	/**
-	 * MÈtodo que valida o DÌgito Verificado de uma matrÌcula
+	 * M√©todo que valida o D√≠gito Verificado de uma matr√≠cula
 	 * @param matricula
 	 * @return
 	 */
@@ -330,7 +330,7 @@ public class SRHUtils {
 	}
 	
 	/**
-	 * MÈtodo que pega qualquer valor monet·rio e converte para BigDecimal
+	 * M√©todo que pega qualquer valor monet√°rio e converte para BigDecimal
 	 */
 	public static BigDecimal valorMonetarioStringParaBigDecimal(String valorMonetarioString) {
 		String r = "";
@@ -359,7 +359,7 @@ public class SRHUtils {
 		for (int i = 0; i < 10; i++) 
 			total = total + Integer.parseInt(pisPasep.substring(i, i+1)) * Integer.parseInt(fTap.substring(i, i+1));
 		
-		//verificando o resto da divis„o
+		//verificando o resto da divis√£o
 		resto = total % 11;
 		
 		if(resto != 0)
@@ -372,7 +372,7 @@ public class SRHUtils {
 	}
 	
 	/**
-	 * MÈtodo que verifica o DÌgito Verificador do Processo
+	 * M√©todo que verifica o D√≠gito Verificador do Processo
 	 * @param processo
 	 * @return
 	 */
@@ -389,7 +389,7 @@ public class SRHUtils {
 			soma = soma + (11 - posicao) * digitoProcesso;
 		}
 
-		// Resto da divis„o por 11.
+		// Resto da divis√£o por 11.
 		resto = (soma % 11);
 
 		// se resto = 10 entao digito = 0 (if dig 10 Then dig = 0)
@@ -398,7 +398,7 @@ public class SRHUtils {
 		else
 			digito = resto;
 
-		// Digito verificador do processo que est· sendo validado.
+		// Digito verificador do processo que est√° sendo validado.
 		String nDigVerific = processo.substring(processo.length() - 1,
 				processo.length());
 
@@ -441,7 +441,7 @@ public class SRHUtils {
 	}
 	
 	/**
-	 * ObtÈm o usu·rio logado na sess„o
+	 * Obt√©m o usu√°rio logado na sess√£o
 	 * @return
 	 */
 	public static Usuario getUsuarioLogado() {
@@ -451,7 +451,7 @@ public class SRHUtils {
 		return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 
-	//Codigo 0 - Formatar padr„o SAP, caso contr·rio, Retira do padrao SAP e joga no Padr„o exibido ao us·rio
+	//Codigo 0 - Formatar padr√£o SAP, caso contr√°rio, Retira do padrao SAP e joga no Padr√£o exibido ao usu√°rio
 	public static String formatatarDesformatarNrProcessoPadraoSAP(String nrProcesso, int codigoAcao) {
 		nrProcesso = removerMascara(nrProcesso);
 		if(codigoAcao == 0){

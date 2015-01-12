@@ -23,7 +23,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC024_Manter NomeaÁ„o do Servidor
+* Use case : SRH_UC024_Manter Nomea√ß√£o do Servidor
 * 
 * @since   : Dez 05, 2011, 10:03:00 AM
 * @author  : robson.castro@ivia.com.br
@@ -56,7 +56,7 @@ public class NomeacaoServidorListBean implements Serializable {
 	private List<Funcional> lista;
 	private Funcional entidade;
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -76,7 +76,7 @@ public class NomeacaoServidorListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			count = funcionalService.count(getEntidade().getPessoal().getId(), "DESC");
 	
@@ -95,7 +95,7 @@ public class NomeacaoServidorListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -134,17 +134,17 @@ public class NomeacaoServidorListBean implements Serializable {
 			limpar();
 			limparListas();
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -163,7 +163,7 @@ public class NomeacaoServidorListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
@@ -176,7 +176,7 @@ public class NomeacaoServidorListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio de NomeaÁ„o de Servidor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio de Nomea√ß√£o de Servidor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -200,11 +200,11 @@ public class NomeacaoServidorListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -224,11 +224,11 @@ public class NomeacaoServidorListBean implements Serializable {
 					if (getEntidade().getMatricula() != null)
 						this.matricula = getEntidade().getMatricula();	
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -262,7 +262,7 @@ public class NomeacaoServidorListBean implements Serializable {
 
 	public Boolean getExibirTodosOsCampos() {return exibirTodosOsCampos;}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -287,7 +287,7 @@ public class NomeacaoServidorListBean implements Serializable {
 
 	public List<Funcional> getPagedList() {return pagedList;}
 	public void setPagedList(List<Funcional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 
 	public boolean isPassouConsultar() {

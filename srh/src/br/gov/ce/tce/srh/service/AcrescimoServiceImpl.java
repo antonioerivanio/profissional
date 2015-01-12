@@ -77,11 +77,11 @@ public class AcrescimoServiceImpl implements AcrescimoService {
 	/**
 	 * Validar:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setada a data inicial.
-	 * ∑ Deve ser setada a data final.
-	 * ∑ Deve ser setado a qtde dias.
-	 * ∑ Deve ser setada a descricao.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setada a data inicial.
+	 *  Deve ser setada a data final.
+	 *  Deve ser setado a qtde dias.
+	 *  Deve ser setada a descricao.
 	 * 
 	 * @param entidade
 	 * 
@@ -92,27 +92,27 @@ public class AcrescimoServiceImpl implements AcrescimoService {
 		
 		// validando o servidor
 		if (entidade.getPessoal() == null)
-			 throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite o nome e efetue a pesquisa.");
+			 throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite o nome e efetue a pesquisa.");
 
 		// validar data inicio
 		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("A Data Inicial È obrigatÛrio.");
+			throw new SRHRuntimeException("A Data Inicial √© obrigat√≥rio.");
 
 		// validando data final
 		if ( entidade.getFim() == null )
-			throw new SRHRuntimeException("A Data Final È obrigatÛrio.");
+			throw new SRHRuntimeException("A Data Final √© obrigat√≥rio.");
 
-		// validando se o perÌodo inicial È menor que o final
+		// validando se o per√≠odo inicial √© menor que o final
 		if ( entidade.getInicio().after(entidade.getFim() ) )
 			throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");
 
 		// validando qtde dias
 		if (entidade.getQtdeDias() == null || entidade.getQtdeDias() == 0l )
-			throw new SRHRuntimeException("A quantidadde de dias È obrigatÛrio.");
+			throw new SRHRuntimeException("A quantidadde de dias √© obrigat√≥rio.");
 
 		// validando descricao
 		if ( entidade.getDescricao() == null || entidade.getDescricao().equals("") ) 
-			throw new SRHRuntimeException("A descriÁ„o È obrigatÛrio.");
+			throw new SRHRuntimeException("A descri√ß√£o √© obrigat√≥rio.");
 
 	}
 
@@ -120,8 +120,8 @@ public class AcrescimoServiceImpl implements AcrescimoService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * O PerÌodo Inicial e Final devem ser checados para saber se j· foi lanÁado nenhum 
-	 * acrescimo para o servidor neste mesmo perÌodo.
+	 * O Per√≠odo Inicial e Final devem ser checados para saber se j√° foi lan√ßado nenhum 
+	 * acrescimo para o servidor neste mesmo per√≠odo.
 	 * 
 	 * @param entidade
 	 *
@@ -143,19 +143,19 @@ public class AcrescimoServiceImpl implements AcrescimoService {
 			// validando periodo de acrescimo inicial 
 			if( acrescimoExistente.getInicio().after( entidade.getInicio() )
 					&& acrescimoExistente.getInicio().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("J· existe um Acrescimo cadastrado nesse perÌodo de tempo.");
+				throw new SRHRuntimeException("J√° existe um Acrescimo cadastrado nesse per√≠odo de tempo.");
 			}
 
 			// validando periodo de acrescimo final
 			if( acrescimoExistente.getFim().after( entidade.getInicio() )
 					&& acrescimoExistente.getFim().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("J· existe um Acrescimo cadastrado nesse perÌodo de tempo.");
+				throw new SRHRuntimeException("J√° existe um Acrescimo cadastrado nesse per√≠odo de tempo.");
 			}
 
 			// validando periodo de acrescimo no meio
 			if( acrescimoExistente.getInicio().before( entidade.getInicio() )
 					&& acrescimoExistente.getFim().after( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("J· existe um Acrescimo cadastrado nesse perÌodo de tempo.");
+				throw new SRHRuntimeException("J√° existe um Acrescimo cadastrado nesse per√≠odo de tempo.");
 			}
 
 		}

@@ -27,7 +27,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC042_Manter LotaÁ„o do Servidor
+* Use case : SRH_UC042_Manter Lota√ß√£o do Servidor
 * 
 * @since   : Dez 19, 2011, 17:09:00 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -68,7 +68,7 @@ public class FuncionalSetorListBean implements Serializable {
 	private List<FuncionalSetor> lista;
 	private FuncionalSetor entidade = new FuncionalSetor();
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -88,7 +88,7 @@ public class FuncionalSetorListBean implements Serializable {
 			
 			// validando campos da entidade
 			if ( getEntidade().getFuncional() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 				count = funcionalSetorService.count(pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf()).getId());
@@ -110,7 +110,7 @@ public class FuncionalSetorListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -129,17 +129,17 @@ public class FuncionalSetorListBean implements Serializable {
 
 			funcionalSetorService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -159,7 +159,7 @@ public class FuncionalSetorListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade().getFuncional() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
@@ -172,7 +172,7 @@ public class FuncionalSetorListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio de Funcional Setor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio de Funcional Setor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -212,14 +212,14 @@ public class FuncionalSetorListBean implements Serializable {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.cpf = getEntidade().getFuncional().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			}  catch (SRHRuntimeException e) {
 				FacesUtil.addErroMessage(e.getMessage());
 				logger.fatal(e.getMessage());
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -244,11 +244,11 @@ public class FuncionalSetorListBean implements Serializable {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.matricula = getEntidade().getFuncional().getMatricula();		
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -279,7 +279,7 @@ public class FuncionalSetorListBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -304,6 +304,6 @@ public class FuncionalSetorListBean implements Serializable {
 
 	public List<FuncionalSetor> getPagedList() {return pagedList;}
 	public void setPagedList(List<FuncionalSetor> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 }

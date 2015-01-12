@@ -13,5 +13,7 @@ public interface MotivoDependenciaDAO {
 	public void excluir(MotivoDependencia entidade);
 
 	public MotivoDependencia getByDescricao(String descricao);
+	
+	public List<MotivoDependencia> findByTipo(Long tipo);
 
 }

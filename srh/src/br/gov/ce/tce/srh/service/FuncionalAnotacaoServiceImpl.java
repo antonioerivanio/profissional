@@ -71,9 +71,9 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 
 	/**
 	 * Validar:
-	 * ∑ Deve ser setado a funcional (servidor).
-	 * ∑ Deve ser setado a data.
-	 * ∑ Deve ser setado a anotacao.
+	 *  Deve ser setado a funcional (servidor).
+	 *  Deve ser setado a data.
+	 *  Deve ser setado a anotacao.
 	 * 
 	 * @throws SRHRuntimeException 
 	 *  
@@ -82,15 +82,15 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 
 		// validando o servidor
 		if (entidade.getFuncional() == null)
-			throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite a matricula ou nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite a matricula ou nome e efetue a pesquisa.");
 
 		// validando a data de inicio
 		if (entidade.getData() == null)
-			throw new SRHRuntimeException("A data È obrigatÛria.");
+			throw new SRHRuntimeException("A data √© obrigat√≥ria.");
 
 		// validando a data fim
 		if (entidade.getAnotacao() == null || entidade.getAnotacao().equals("") ) {
-			throw new SRHRuntimeException("A anotaÁ„o È obrigatÛria.");
+			throw new SRHRuntimeException("A anota√ß√£o √© obrigat√≥ria.");
 		}
 
 	}
@@ -99,7 +99,7 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ Deve ser setado o IDFUNCIONAL conforme a data da anotacao.
+	 *  Deve ser setado o IDFUNCIONAL conforme a data da anotacao.
 	 * 
 	 * @param entidade
 	 * 
@@ -124,7 +124,7 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 
 		// caso nenhuma funcional foi encontrada
 		if ( selecionada == null )
-			throw new SRHRuntimeException("A data da anotaÁ„o n„o condiz com nenhum periodo de nomeaÁ„o do Funcion·rio. Digite outra data.");
+			throw new SRHRuntimeException("A data da anota√ß√£o n√£o condiz com nenhum periodo de nomea√ß√£o do Funcion√°rio. Digite outra data.");
 
 	}
 

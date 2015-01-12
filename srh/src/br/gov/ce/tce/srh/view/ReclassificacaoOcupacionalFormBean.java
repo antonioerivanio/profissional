@@ -27,7 +27,7 @@ import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC042_Manter Reclassificação Ocupacional do Servidor
+* Use case : SRH_UC042_Manter ReclassificaÃ§Ã£o Ocupacional do Servidor
 * 
 * @since   : Fev 09, 2012, 10:00:00
 * @author  : robson.castro@ivia.com.br
@@ -139,14 +139,14 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 			reclassificacaoService.reclassificar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -167,7 +167,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         		this.comboTipoOcupacao = tipoOcupacaoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo Ocupação. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo OcupaÃ§Ã£o. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -195,7 +195,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 	       	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo Cargo/Função. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo Cargo/FunÃ§Ã£o. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -204,7 +204,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 
 
 	/**
-	 * Combo Classe/Referência
+	 * Combo Classe/ReferÃªncia
 	 * 
 	 * @return
 	 */
@@ -221,7 +221,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         		this.comboClasseReferencia = classeReferenciaService.findByCargo(this.entidade.getOcupacao().getId());
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo Classe/Referência. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo Classe/ReferÃªncia. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -249,7 +249,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo Motivo Entrada. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo Motivo Entrada. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -277,7 +277,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo Motivo Saida. Operação cancelada..");
+			FacesUtil.addErroMessage("Erro ao carregar o campo Motivo Saida. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -298,7 +298,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         		this.comboCBO1 = cboService.findByNivel( 1L );
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 01. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 01. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -331,7 +331,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 02. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 02. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -362,7 +362,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 03. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 03. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -391,7 +391,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 04. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo CBO 04. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -400,7 +400,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 	
 
 	/**
-	 * Combo Tipo de Publicação 
+	 * Combo Tipo de PublicaÃ§Ã£o 
 	 * 
 	 * @return
 	 */
@@ -412,7 +412,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         		this.comboTipoPublicacao = tipoPublicacaoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de publicaÃ§Ã£o. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

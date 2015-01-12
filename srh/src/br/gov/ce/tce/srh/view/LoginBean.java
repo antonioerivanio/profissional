@@ -40,8 +40,8 @@ public class LoginBean implements Serializable {
 			mensagemLogin = authenticationService.login(login, senha);
 
 		} catch (Exception e) {
-	    	this.mensagem = "Erro de conex„o interna do sistema.";
-			FacesUtil.addErroMessage("Erro de conex„o interno do sistema. OperaÁ„o cancelada.");
+	    	this.mensagem = "Erro de conex√£o interna do sistema.";
+			FacesUtil.addErroMessage("Erro de conex√£o interno do sistema. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			return "loginInvalido";
 		}
@@ -55,10 +55,10 @@ public class LoginBean implements Serializable {
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
-		//Setando atributo logado como true para posterior identificaÁ„o
+		//Setando atributo logado como true para posterior identifica√ß√£o
 		request.getSession().setAttribute("logado", true);
 		
-		//Setando o nome do usu·rio na sess„o
+		//Setando o nome do usu√°rio na sess√£o
 		request.getSession().setAttribute("usuario", login);
 		
 		return "home";
@@ -77,7 +77,7 @@ public class LoginBean implements Serializable {
 			return authenticationService.getUsuarioLogado().getUsername();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na identificaÁ„o do usuario logado. Favor efetuar novo login.");
+			FacesUtil.addErroMessage("Erro na identifica√ß√£o do usuario logado. Favor efetuar novo login.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

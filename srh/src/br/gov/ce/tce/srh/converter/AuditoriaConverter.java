@@ -31,7 +31,7 @@ public class AuditoriaConverter implements Converter {
 				e.printStackTrace();
 			}
 		}
-		//O valor selecionado n„o corresponde ao ID de uma entidade:
+		//O valor selecionado n√£o corresponde ao ID de uma entidade:
 		return null;
 	}
 

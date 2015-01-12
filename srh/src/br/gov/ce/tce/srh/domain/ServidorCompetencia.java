@@ -11,7 +11,7 @@ import br.gov.ce.tce.srh.domain.sapjava.Setor;
 @SuppressWarnings("serial")
 public class ServidorCompetencia implements Serializable{
 	
-	private static final String CURSO_FORMACAO = "CURSO FORMA«√O";
+	private static final String CURSO_FORMACAO = "CURSO FORMA√á√ÉO";
 	private static final String CURSO_PROFISSIONAL = "CURSO PROFISSIONAL";
 	private static final String CURSO_ATESTO = "ATESTO";
 	
@@ -31,7 +31,7 @@ public class ServidorCompetencia implements Serializable{
 	private AtestoPessoa atestoPessoa;
 	
 	
-	// Valida as Competencias: Atesto | Curso FormaÁ„o ou Curso Profissional
+	// Valida as Competencias: Atesto | Curso Forma√ß√£o ou Curso Profissional
 	private  String validaCompetencia() {
 		if (competenciaGraduacao != null) {
 			return CURSO_FORMACAO;

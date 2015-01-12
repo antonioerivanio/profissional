@@ -13,5 +13,7 @@ public interface TipoDependenciaDAO {
 	public void excluir(TipoDependencia entidade);
 
 	public TipoDependencia getByDescricao(String descricao);
+	
+	public List<TipoDependencia> findAll();
 
 }

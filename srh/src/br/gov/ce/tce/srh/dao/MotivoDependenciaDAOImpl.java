@@ -83,4 +83,13 @@ public class MotivoDependenciaDAOImpl implements MotivoDependenciaDAO {
 		}
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MotivoDependencia> findByTipo(Long tipo) {
+		Query query = entityManager.createQuery("SELECT m FROM MotivoDependencia m WHERE m.tipo = :tipo ORDER BY m.descricao");
+		query.setParameter("tipo", tipo);
+		return query.getResultList();
+	}
+
 }

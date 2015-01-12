@@ -9,7 +9,7 @@ import javax.faces.convert.Converter;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
- * Converter para criar mascara para valores da Matrícula Funcional.
+ * Converter para criar mascara para valores da MatrÃ­cula Funcional.
  *
  */
 public class MatriculaConverter implements Converter {

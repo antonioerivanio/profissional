@@ -67,7 +67,7 @@ public class CursoServidorListBean implements Serializable {
 	private List<String> lista;
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
-	//paginação
+	//paginaÃ§Ã£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -91,7 +91,7 @@ public class CursoServidorListBean implements Serializable {
 			
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionÃ¡rio.");
 			
 			count = cursoServidorService.count(getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, inicio, fim);
 
@@ -107,7 +107,7 @@ public class CursoServidorListBean implements Serializable {
 					totalCargaHoraria = totalCargaHoraria + curso.getCursoProfissional().getCargaHoraria();
 			}
 			
-			labelTotalCargaHoraria = "Total Carga Horária:";
+			labelTotalCargaHoraria = "Total Carga HorÃ¡ria:";
 			flagRegistroInicial = -1;
 			passouConsultar = true;
 
@@ -117,7 +117,7 @@ public class CursoServidorListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -137,7 +137,7 @@ public class CursoServidorListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionÃ¡rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			
@@ -174,7 +174,7 @@ public class CursoServidorListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geração do Relatório de Curso Servidor. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro na geraÃ§Ã£o do RelatÃ³rio de Curso Servidor. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -218,11 +218,11 @@ public class CursoServidorListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+					FacesUtil.addInfoMessage("MatrÃ­cula nÃ£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -247,12 +247,12 @@ public class CursoServidorListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();	
 				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF nÃ£o encontrado ou inativo.");
 				}
 
 				
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÃ§Ã£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -314,7 +314,7 @@ public class CursoServidorListBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINAÇÃO
+	//PAGINAÃ‡ÃƒO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -340,6 +340,6 @@ public class CursoServidorListBean implements Serializable {
 
 	public List<PessoalCursoProfissional> getPagedList() {return pagedList;}
 	public void setPagedList(List<PessoalCursoProfissional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINAÇÃO
+	//FIM PAGINAÃ‡ÃƒO
 
 }

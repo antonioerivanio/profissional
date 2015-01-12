@@ -37,7 +37,7 @@ public class ServidorBean  implements Serializable  {
 	private static final long serialVersionUID = 2375679883082367578L;
 	static Logger logger = Logger.getLogger(ServidorBean.class);
 	/**
-	 * Atributos para paginaÁ„o
+	 * Atributos para pagina√ß√£o
 	 */
 	@Autowired
 	private ServidorService servidorService;
@@ -56,7 +56,7 @@ public class ServidorBean  implements Serializable  {
 	// combos
 	private List<Setor> comboSetor;
 	
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -90,7 +90,7 @@ public class ServidorBean  implements Serializable  {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -111,7 +111,7 @@ public class ServidorBean  implements Serializable  {
 		return form;
 	}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -157,7 +157,7 @@ public class ServidorBean  implements Serializable  {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio dos Servidores por Setor. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio dos Servidores por Setor. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -166,7 +166,7 @@ public class ServidorBean  implements Serializable  {
 
 	public List<Servidor> getPagedList() {return pagedList;}
 	public void setPagedList(List<Servidor> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 	public List<Servidor> getLista() {
 		return lista;
@@ -193,7 +193,7 @@ public class ServidorBean  implements Serializable  {
         	if ( this.comboSetor == null )
         		this.comboSetor = setorService.findAll();
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. OperaÁ„o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Opera√ß√£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
         return this.comboSetor;

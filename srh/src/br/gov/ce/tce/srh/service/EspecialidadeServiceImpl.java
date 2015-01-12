@@ -91,10 +91,10 @@ public class EspecialidadeServiceImpl implements EspecialidadeService {
 	private void validarCampos(Especialidade entidade) throws SRHRuntimeException {
 
 		if (entidade.getDescricao() == null || entidade.getDescricao().equals(""))
-			throw new SRHRuntimeException("A descriÁ„o È obrigatÛria.");
+			throw new SRHRuntimeException("A descri√ß√£o √© obrigat√≥ria.");
 
 		if (entidade.getArea() == null || entidade.getArea().equals(""))
-			throw new SRHRuntimeException("A ·rea È obrigatÛria.");
+			throw new SRHRuntimeException("A √°rea √© obrigat√≥ria.");
 
 	}
 
@@ -113,7 +113,7 @@ public class EspecialidadeServiceImpl implements EspecialidadeService {
 
 		Especialidade entidadeJaExiste = dao.getByDescricao( entidade.getDescricao() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Especialidade j· cadastrada. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Especialidade j√° cadastrada. Opera√ß√£o cancelada.");
 
 	}
 

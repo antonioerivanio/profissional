@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Licenca;
@@ -24,7 +23,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
-* Use case : SRH_UC036_LanÁar LicenÁa
+* Use case : SRH_UC036_Lan√ßar Licen√ßa
 * 
 * @since   : Nov 15, 2011, 10:03:00 AM
 * @author  : robstownholanda@ivia.com.br
@@ -61,7 +60,7 @@ public class LicencaFinalizarListBean implements Serializable {
 	private Licenca entidade = new Licenca();
 	private TipoLicenca tipoLicenca;
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -85,7 +84,7 @@ public class LicencaFinalizarListBean implements Serializable {
 
 			// validando campos da entidade
 			//if ( getEntidade().getPessoal() == null )
-				//throw new SRHRuntimeException("Selecione um funcion·rio.");
+				//throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			if ( this.tipoLicenca != null ) {
 			
@@ -110,7 +109,7 @@ public class LicencaFinalizarListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Erro de conex„o com a base de dados. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro de conex√£o com a base de dados. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -119,7 +118,7 @@ public class LicencaFinalizarListBean implements Serializable {
 	
 	
 	/**
-	 * Finalizar LicenÁa
+	 * Finalizar Licen√ßa
 	 * 
 	 * @return
 	 */
@@ -130,14 +129,14 @@ public class LicencaFinalizarListBean implements Serializable {
 			//licencaService.excluir(entidade);
 			licencaService.finalizar(entidade);
 			
-			FacesUtil.addInfoMessage("LicenÁa finalizada com sucesso.");
-			logger.info("LicenÁa finalizada com sucesso.");
+			FacesUtil.addInfoMessage("Licen√ßa finalizada com sucesso.");
+			logger.info("Licen√ßa finalizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao excluir a LicenÁa. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro ao excluir a Licen√ßa. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -164,7 +163,7 @@ public class LicencaFinalizarListBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-	      	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de licenÁa. OperaÁ„o cancelada.");
+	      	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de licen√ßa. Opera√ß√£o cancelada.");
 	       	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -220,7 +219,7 @@ public class LicencaFinalizarListBean implements Serializable {
 	}
 
 
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -252,5 +251,5 @@ public class LicencaFinalizarListBean implements Serializable {
 
 	public List<Licenca> getPagedList() {return pagedList;}
 	public void setPagedList(List<Licenca> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 }

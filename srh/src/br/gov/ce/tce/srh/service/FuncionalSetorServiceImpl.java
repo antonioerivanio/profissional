@@ -64,7 +64,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 	public void excluir(FuncionalSetor entidade) throws SRHRuntimeException {
 
 		if (entidade.getDataFim() != null) {
-			throw new SRHRuntimeException("N„o pode ser excluida, data fim preenchida. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("N√£o pode ser exclu√≠da, data fim preenchida. Opera√ß√£o cancelada.");
 		}
 		
 		dao.excluir(entidade);
@@ -101,10 +101,10 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 
 	/**
 	 * Validar:
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setado o setor.
-	 * ∑ Deve ser setado a data de inicio.
-	 * ∑ Deve ser setado a data inicio menor que a data fim.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setado o setor.
+	 *  Deve ser setado a data de inicio.
+	 *  Deve ser setado a data inicio menor que a data fim.
 	 * 
 	 * @throws SRHRuntimeException 
 	 *  
@@ -113,15 +113,15 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 
 		// validando o servidor
 		if (entidade.getFuncional() == null)
-			throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite a matricula ou nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite a matr√≠cula ou nome e efetue a pesquisa.");
 
 		// validando o setor
 		if (entidade.getSetor() == null)
-			throw new SRHRuntimeException("O setor È obrigatÛrio.");
+			throw new SRHRuntimeException("O setor √© obrigat√≥rio.");
 
 		// validando a data de inicio
 		if (entidade.getDataInicio() == null)
-			throw new SRHRuntimeException("A data de inicio È obrigatÛria.");
+			throw new SRHRuntimeException("A data de inicio √© obrigat√≥ria.");
 
 		// validando a data fim
 		if (entidade.getDataFim() != null) {
@@ -136,7 +136,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * As lotacoes antigas devem ser checadas para saber se j· foi setado data fim em todas 
+	 * As lotacoes antigas devem ser checadas para saber se j√° foi setado data fim em todas 
 	 * antes de criar uma nova lotacao para o servidor.
 	 * 
 	 * @param entidade
@@ -153,7 +153,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 			if (entidade.getId() == null || !entidade.getId().equals( lotacao.getId() )) {
 
 				if (lotacao.getDataFim() == null)
-					throw new SRHRuntimeException("Existe lotaÁ„o ativa para esse Servidor");				
+					throw new SRHRuntimeException("Existe lota√ß√£o ativa para esse Servidor.");				
 			}
 
 		}
@@ -164,7 +164,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * Validar se a nova data de inÌcio È maior que a ˙ltima data de fim.
+	 * Validar se a nova data de in√≠cio √© maior que a √∫ltima data de fim.
 	 * 
 	 * @param entidade
 	 * 
@@ -206,7 +206,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 
 		Funcional funcional = funcionalService.getByMatriculaAtivo( entidade.getFuncional().getMatricula() );
 		if ( funcional == null )
-			throw new SRHRuntimeException("Dados Funcionais do servidor n„o encontrado.");
+			throw new SRHRuntimeException("Dados Funcionais do servidor n√£o encontrado.");
 
 		// atualizando
 		funcional.setSetor( entidade.getSetor() );

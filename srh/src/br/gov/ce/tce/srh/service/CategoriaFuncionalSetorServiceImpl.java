@@ -59,11 +59,11 @@ public class CategoriaFuncionalSetorServiceImpl implements
 	private void validaCampos(CategoriaFuncionalSetor entidade) throws SRHRuntimeException{
 		
 		if(entidade.getSetor()==null||entidade.getSetor().getId()==null){
-			throw new SRHRuntimeException("O setor é obrigatório.");
+			throw new SRHRuntimeException("O setor Ã© obrigatÃ³rio.");
 		}
 		
 		if(entidade.getCategoriaFuncional() ==null||entidade.getCategoriaFuncional().getId()==null){
-			throw new SRHRuntimeException("A Categoria Funcional é obrigatória.");
+			throw new SRHRuntimeException("A Categoria Funcional Ã© obrigatÃ³ria.");
 		}		
 		
 	}

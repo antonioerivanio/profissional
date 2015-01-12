@@ -72,10 +72,10 @@ public class ClasseReferenciaServiceImpl implements ClasseReferenciaService {
 	/**
 	 * Validar:
 	 * 
-	 * · Deve ser setado o simbolo.
-	 * · Deve ser setado a escolaridade.
-	 * · Deve ser setado a referencia.
-	 * · Deve ser setado a classe.
+	 *  Deve ser setado o simbolo.
+	 *  Deve ser setado a escolaridade.
+	 *  Deve ser setado a referencia.
+	 *  Deve ser setado a classe.
 	 * 
 	 * @param entidade
 	 * 
@@ -86,19 +86,19 @@ public class ClasseReferenciaServiceImpl implements ClasseReferenciaService {
 
 		// validando simbolo
 		if ( entidade.getSimbolo() == null )
-			throw new SRHRuntimeException("O símbolo é obrigatório.");
+			throw new SRHRuntimeException("O sÃ­mbolo Ã© obrigatÃ³rio.");
 
 		// validando escolaridade
 		if ( entidade.getEscolaridade() == null )
-			throw new SRHRuntimeException("A escolaridade é obrigatório.");
+			throw new SRHRuntimeException("A escolaridade Ã© obrigatÃ³ria.");
 
 		// validando a referencia
 		if ( entidade.getReferencia() == null )
-			throw new SRHRuntimeException("A referência é obrigatória.");
+			throw new SRHRuntimeException("A referÃªncia Ã© obrigatÃ³ria.");
 
 		// validando a classe
 		if ( entidade.getClasse() == null )
-			throw new SRHRuntimeException("A classe é obrigatória.");
+			throw new SRHRuntimeException("A classe Ã© obrigatÃ³ria.");
 
 	}
 
@@ -117,7 +117,7 @@ public class ClasseReferenciaServiceImpl implements ClasseReferenciaService {
 		ClasseReferencia entidadeJaExiste = dao.getBySimboloReferencia(entidade.getSimbolo().getId(), entidade.getReferencia());
 		if (entidadeJaExiste != null && entidade.getId() != null){
 			if(entidade.getId().equals(entidadeJaExiste.getId())){
-				throw new SRHRuntimeException("Classe e Referência do Cargo já cadastrada. Operação cancelada.");
+				throw new SRHRuntimeException("Classe e ReferÃªncia do Cargo jÃ¡ cadastrada. OperaÃ§Ã£o cancelada.");
 			}
 		}
 	}

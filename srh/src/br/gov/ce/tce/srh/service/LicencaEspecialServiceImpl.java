@@ -35,11 +35,11 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 		 * Verificar se o saldo de dias nao eh negativo
 		 */
 		if (entidade.getSaldodias() != null && entidade.getSaldodias() < 0l)
-			throw new SRHRuntimeException("O saldo de dias da LicenÁa Especial n„o pode ser negativo. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("O saldo de dias da Licen√ßa Especial n√£o pode ser negativo. Opera√ß√£o cancelada.");
 
 		/*
 		 * Regra: 
-		 * Verificar licenÁas especiais antigas
+		 * Verificar licen√ßas especiais antigas
 		 * 
 		 */
 		verificarLicencasAntigas(entidade);
@@ -47,7 +47,7 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 		/*
 		 * Regra:
 		 * 
-		 * O campo Qtde de Dias dever· validar o perÌodo Inicial e Final.
+		 * O campo Qtde de Dias dever√° validar o per√≠odo Inicial e Final.
 		 * 
 		 */
 		entidade.setQtdedias( calcularQtdeDias(entidade.getAnoinicial(), entidade.getAnofinal() ));
@@ -55,8 +55,8 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 		/*
 		 * Regra:
 		 * 
-		 * O campo Saldo Dias receber· inicialmente o mesmo valor do campo Qtde Dias. 
-		 * Ele ser· alterado sempre que houver lanÁamentos no usufruto das licenÁas 
+		 * O campo Saldo Dias receber√° inicialmente o mesmo valor do campo Qtde Dias. 
+		 * Ele ser√° alterado sempre que houver lan√ßamentos no usufruto das licen√ßas 
 		 * do servidor.
 		 * 
 		 * TODO verificar se pode ser alterado a entidade quando ja estiver em uso
@@ -75,11 +75,11 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 
 		/*
 		 * Regra: 
-		 * Verificar se a licenÁa especial esta em uso, ou seja, saldo de dias menor que a qtde de dias
+		 * Verificar se a licen√ßa especial esta em uso, ou seja, saldo de dias menor que a qtde de dias
 		 * 
 		 */
 		if (entidade.getSaldodias() < entidade.getQtdedias())
-			throw new SRHRuntimeException("LicenÁa Especial n„o pode ser excluida, esta em uso. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Licen√ßa Especial n√£o pode ser excluida, esta em uso. Opera√ß√£o cancelada.");
 
 		dao.excluir(entidade);
 	}
@@ -119,10 +119,10 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 	/**
 	 * Validar:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setado o ano inicial.
-	 * ∑ Deve ser setado o ano final.
-	 * ∑ Deve ser setada a descricao.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setado o ano inicial.
+	 *  Deve ser setado o ano final.
+	 *  Deve ser setada a descricao.
 	 * 
 	 * @param entidade
 	 * 
@@ -133,19 +133,19 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 
 		//valida a pessoa
 		if ( entidade.getPessoal() == null )
-			throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite a matricula ou nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite a matricula ou nome e efetue a pesquisa.");
 
 		//validando ano inicial
 		if ( entidade.getAnoinicial() == null || entidade.getAnoinicial().equals(0l))
-			throw new SRHRuntimeException("O ano inicial È obrigatÛrio.");
+			throw new SRHRuntimeException("O ano inicial √© obrigat√≥rio.");
 
 		//validando ano final
 		if ( entidade.getAnofinal() == null || entidade.getAnofinal().equals(0l))
-			throw new SRHRuntimeException("O ano final È obrigatÛrio.");
+			throw new SRHRuntimeException("O ano final √© obrigat√≥rio.");
 
 		//validando a descricao
 		if ( entidade.getDescricao() == null || entidade.getDescricao().equals("") )
-			throw new SRHRuntimeException("A descriÁ„o È obrigatÛria.");
+			throw new SRHRuntimeException("A descri√ß√£o √© obrigat√≥ria.");
 
 	}
 
@@ -153,8 +153,8 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * O PerÌodo Inicial e Final devem ser checados para saber se j· foi lanÁada alguma 
-	 * licenÁa epsecial para o servidor neste perÌodo.
+	 * O Per√≠odo Inicial e Final devem ser checados para saber se j√° foi lan√ßada alguma 
+	 * licen√ßa especial para o servidor neste per√≠odo.
 	 * 
 	 * @param entidade
 	 *
@@ -171,28 +171,28 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 
 //				if(licencaAntigas.getAnoinicial() >= entidade.getAnoinicial()
 //						&& licencaAntigas.getAnoinicial() <= entidade.getAnofinal()) {
-//					throw new SRHRuntimeException("J· existe uma licenÁa especial com esse perÌodo");
+//					throw new SRHRuntimeException("J√° existe uma licen√ßa especial com esse per√≠odo");
 //				}
 //
 //				if(licencaAntigas.getAnofinal() >= entidade.getAnoinicial()
 //						&& licencaAntigas.getAnofinal() <= entidade.getAnofinal()) {
-//					throw new SRHRuntimeException("J· existe uma licenÁa especial com esse perÌodo");
+//					throw new SRHRuntimeException("J√° existe uma licen√ßa especial com esse per√≠odo");
 //				}
 				
-				//Alterado 08/08/2013 - Zacarias e AndrÈ
+				//Alterado 08/08/2013 - Zacarias e Andr√©
 				if(entidade.getAnoinicial()>=licencaAntigas.getAnoinicial()  
 						&& entidade.getAnoinicial() < licencaAntigas.getAnofinal() ) {
-					throw new SRHRuntimeException("J· existe uma licenÁa especial com esse perÌodo");
+					throw new SRHRuntimeException("J√° existe uma licen√ßa especial com esse per√≠odo");
 				}
 
 				if(entidade.getAnofinal() > licencaAntigas.getAnoinicial()
 						&& entidade.getAnofinal() <= licencaAntigas.getAnofinal()) {
-					throw new SRHRuntimeException("J· existe uma licenÁa especial com esse perÌodo");
+					throw new SRHRuntimeException("J√° existe uma licen√ßa especial com esse per√≠odo");
 				}
 				
 				if(entidade.getAnoinicial() <= licencaAntigas.getAnoinicial()
 						&& entidade.getAnofinal() >= licencaAntigas.getAnofinal()) {
-					throw new SRHRuntimeException("J· existe uma licenÁa especial com esse perÌodo");
+					throw new SRHRuntimeException("J√° existe uma licen√ßa especial com esse per√≠odo");
 				}
 				
 
@@ -207,13 +207,13 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 	 * Regra de Negocio: 
 	 * 
 	 * Validar ano inicial e ano final.
-	 * ∑ O ano inicial n„o pode ser inferior a 1935.
-	 * ∑ O ano final n„o pode ser superior a 1999.
+	 *  O ano inicial n√£o pode ser inferior a 1935.
+	 *  O ano final n√£o pode ser superior a 1999.
 	 * 
 	 * E calcular a quantidade de dias conforme o ano inicial e o final.
 	 * 
-	 * ∑ Se for 10 anos a qtde m·xima È de 180 dias
-	 * ∑ Se for 5 anos a qtde m·xima È de 90 dias
+	 *   Se for 10 anos a qtde m√°xima √© de 180 dias
+	 *   Se for 5 anos a qtde m√°xima √© de 90 dias
 	 *  
 	 * 
 	 * @param anoInicial
@@ -244,11 +244,11 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 	 * Regra de Negocio:
 	 * 
 	 * Quando for INSERIR:
-	 *   Caso exista uma exclus„o de lanÁamentos de licenÁa, o sistema dever· creditar a qtde correspondente
-	 *   na licenÁa especial do funcion·rio.
+	 *   Caso exista uma exclus√£o de lan√ßamentos de licen√ßa, o sistema dever√° creditar a qtde correspondente
+	 *   na licen√ßa especial do funcion√°rio.
 	 * 
 	 * Quando for REMOVER:
-	 *   As licenÁas especiais que forem lanÁadas como usufruÌdas, dever„o ter seu saldo de dias de licenÁa 
+	 *   As licen√ßas especiais que forem lan√ßadas como usufru√≠das, dever√£o ter seu saldo de dias de licen√ßa 
 	 *   especial correpondente atualizado (debitar da qtd de dias utilizados).
 	 * 
 	 * 
@@ -273,10 +273,10 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 
 		/*
 		 * Regra:
-		 * Verificar se o saldo de dias nao eh negativo
+		 * Verificar se o saldo de dias n√£o √© negativo
 		 */
 		if (licencaEspecial.getSaldodias() != null && licencaEspecial.getSaldodias() < 0l)
-			throw new SRHRuntimeException("O saldo de dias da LicenÁa Especial n„o pode ser negativo. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("O saldo de dias da Licen√ßa Especial n√£o pode ser negativo. Opera√ß√£o cancelada.");
 
 		dao.ajustarSaldo( idLicencaEspecial, licencaEspecial.getSaldodias() );
 

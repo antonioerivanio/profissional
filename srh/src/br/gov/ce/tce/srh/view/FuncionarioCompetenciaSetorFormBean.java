@@ -24,7 +24,7 @@ import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC042_Manter Emitir Dociê do Servidor 
+* Use case : SRH_UC042_Manter Emitir DociÃª do Servidor 
 * 
 * @since   : Fev 09, 2012, 11:16:00
 * @author  : wesllhey.holanda@ivia.com.br
@@ -111,7 +111,7 @@ public class FuncionarioCompetenciaSetorFormBean implements Serializable {
 			
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao visualizar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao visualizar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} 
 			

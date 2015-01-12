@@ -41,7 +41,7 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 		// persistindo
 		dao.salvar(entidade);	
 		
-		// Atualizando a classe referÍncia na tabela Funcional
+		// Atualizando a classe refer√™ncia na tabela Funcional
 		Funcional funcional = entidade.getFuncional();
 		funcional.setClasseReferencia(entidade.getClasseReferencia());
 		funcionalDAO.salvar(funcional);
@@ -58,18 +58,18 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 
 		/*
 		 * Regra: 
-		 * N„o ser· permitido alterar uma nova progress„o com data Fim preenchidos e que o Tipo Movimento != 3 
+		 * N√£o ser√° permitido alterar uma nova progress√£o com data Fim preenchidos e que o Tipo Movimento != 3 
 		 * 
 		 */
 		entidade.setTipoMovimento( tipoMovimentoService.getById( entidade.getTipoMovimento().getId() ));
 		if ( entidade.getFim() != null || entidade.getTipoMovimento().getTipo() != 3 )
-			throw new SRHRuntimeException("N„o È permitido alterar a Progress„o Funcional que contenha data Fim preenchida ou Movimento do tipo 3.");
+			throw new SRHRuntimeException("N√£o √© permitido alterar a Progress√£o Funcional que contenha data Fim preenchida ou Movimento do tipo 3.");
 
 		
 		/*
 		 * Regra: 
-		 * Quando incluir uma progress„o funcional, o registro anterior ser· automaticamente encerrado,
-		 * pois o Sistem dever· atualizar a data de fim que est· nula, para a data de inÌcio-1 que est· sendo
+		 * Quando incluir uma progress√£o funcional, o registro anterior ser√° automaticamente encerrado,
+		 * pois o Sistem dever√° atualizar a data de fim que est√° nula, para a data de in√≠cio-1 que est√° sendo
 		 * inserido o novo registro.
 		 *  
 		 */
@@ -82,7 +82,7 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 		 *
 		 */
 		if ( !entidade.getInicio().after( referenciaFuncional.getInicio() ))
-			throw new SRHRuntimeException("O InÌcio deve ser maior que o inÌcio da ˙ltima Progress„o Funcional.");
+			throw new SRHRuntimeException("O In√≠cio deve ser maior que o in√≠cio da √∫ltima Progress√£o Funcional.");
 
 
 		// fechando a ult referencia
@@ -95,7 +95,7 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 		entidade.setId(null);
 		dao.salvar(entidade);
 		
-		// Atualizando a classe referÍncia na tabela Funcional
+		// Atualizando a classe refer√™ncia na tabela Funcional
 		Funcional funcional = entidade.getFuncional();
 		funcional.setClasseReferencia(entidade.getClasseReferencia());
 		funcionalDAO.salvar(funcional);
@@ -148,11 +148,11 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 	/**
 	 * Regra de Negocio:
 	 * 
-	 * ∑ Deve ser setado a pessoa (servidor).
-	 * ∑ Deve ser setada a classe referencia.
-	 * ∑ Deve ser setado o tipo de movimento de entrada.
-	 * ∑ Deve ser setado a data inicio.
-	 * ∑ Deve ser setado a descricao.
+	 *  Deve ser setado a pessoa (servidor).
+	 *  Deve ser setada a classe referencia.
+	 *  Deve ser setado o tipo de movimento de entrada.
+	 *  Deve ser setado a data inicio.
+	 *  Deve ser setado a descricao.
 	 * 
 	 * @param entidade Funcional
 	 * 
@@ -163,23 +163,23 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 
 		// validando o servidor
 		if ( entidade.getFuncional() == null )
-			throw new SRHRuntimeException("O Funcion·rio È obrigatÛrio. Digite o nome e efetue a pesquisa.");
+			throw new SRHRuntimeException("O Funcion√°rio √© obrigat√≥rio. Digite o nome e efetue a pesquisa.");
 		
 		// validando a classe referencia
 		if ( entidade.getClasseReferencia() == null )
-			throw new SRHRuntimeException("A Classe/ReferÍncia È obrigatÛria.");
+			throw new SRHRuntimeException("A Classe/Refer√™ncia √© obrigat√≥ria.");
 
 		// validando o tipo movimento
 		if ( entidade.getTipoMovimento() == null )
-			throw new SRHRuntimeException("O Tipo de Movimento È obrigatÛrio.");
+			throw new SRHRuntimeException("O Tipo de Movimento √© obrigat√≥rio.");
 
 		// validando a data inicio
 		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("O InÌcio È obrigatÛrio.");
+			throw new SRHRuntimeException("O In√≠cio √© obrigat√≥rio.");
 
 		// validando a descricao
 		if ( entidade.getDescricao() == null || entidade.getDescricao().equals("") )
-			throw new SRHRuntimeException("DescriÁ„o n„o informada.");
+			throw new SRHRuntimeException("Descri√ß√£o n√£o informada.");
 
 	}
 

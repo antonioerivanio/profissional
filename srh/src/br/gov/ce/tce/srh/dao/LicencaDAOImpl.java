@@ -55,9 +55,12 @@ public class LicencaDAOImpl implements LicencaDAO {
 
 	@Override
 	public void excluir(Licenca entidade) {
-		Query query = entityManager.createQuery("DELETE FROM Licenca l WHERE l.id=:id");
-		query.setParameter("id", entidade.getId());
-		query.executeUpdate();
+//		Query query = entityManager.createQuery("DELETE FROM Licenca l WHERE l.id=:id");
+//		query.setParameter("id", entidade.getId());
+//		query.executeUpdate();
+		
+		entidade = entityManager.merge(entidade);
+		entityManager.remove(entidade);
 	}
 
 

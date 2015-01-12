@@ -1,9 +1,9 @@
 /**
- * Validação de somente número no campo de matrícula
+ * ValidaÃ§Ã£o de somente nÃºmero no campo de matrÃ­cula
  * 
  * @param Object
- *            Evento realizado pelo usuário
- * @return Se for backspace, enter ou número retorna true
+ *            Evento realizado pelo usuÃ¡rio
+ * @return Se for backspace, enter ou nÃºmero retorna true
  */
 function numeric(e) {
 	var code;
@@ -24,7 +24,7 @@ function numeric(e) {
 	return (code == 8) || numcheck.test(keychar);
 }
 
-// Só digitar numeros
+// SÃ³ digitar numeros
 function SoNumeros(obj) {
 
 	chvalidos = '0123456789';

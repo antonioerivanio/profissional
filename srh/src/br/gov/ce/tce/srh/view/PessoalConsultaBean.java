@@ -45,9 +45,12 @@ public class PessoalConsultaBean implements Serializable {
 			// pegando o parametro
 			FacesContext facesContext = FacesContext.getCurrentInstance();  
 			String nome = facesContext.getExternalContext().getRequestParameterMap().get("nome");
-
+			String flServidor = facesContext.getExternalContext().getRequestParameterMap().get("flServidor");
 			
-			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			if(flServidor != null){
+				lista = pessoalService.findServidorByNome(nome);
+			
+			} else if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 				lista = new ArrayList<Pessoal>();
 				lista.add(pessoalService.getByCpf(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf())));
 			} else {
@@ -60,7 +63,7 @@ public class PessoalConsultaBean implements Serializable {
 			}
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

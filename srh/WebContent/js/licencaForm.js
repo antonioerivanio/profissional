@@ -6,19 +6,19 @@ function validarLicenca()
 	
 	if(pu==""){
 		if(pro==""){
-			resposta = confirm("Não foi preenchida a Data de Publicação Oficial e o Número do Processo. Deseja prosseguir a gravação?");
+			resposta = confirm("NÃ£o foi preenchida a Data de PublicaÃ§Ã£o Oficial e o NÃºmero do Processo. Deseja prosseguir a gravaÃ§Ã£o?");
 		}
 	}
 
 	if(pu==""){
 		if(pro!=""){
-			resposta = confirm("Não foi preenchida a Data de Publicação Oficial. Deseja prosseguir a gravação?");
+			resposta = confirm("NÃ£o foi preenchida a Data de PublicaÃ§Ã£o Oficial. Deseja prosseguir a gravaÃ§Ã£o?");
 		}
 	}
 
 	if(pro==""){
 		if(pu!=""){
-			resposta = confirm("Não foi preenchida o Número do Processo. Deseja prosseguir a gravação?");
+			resposta = confirm("NÃ£o foi preenchida o NÃºmero do Processo. Deseja prosseguir a gravaÃ§Ã£o?");
 		}
 	}
 	return resposta;	

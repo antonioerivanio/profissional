@@ -77,7 +77,7 @@ public class InstituicaoServiceImpl implements InstituicaoService {
 
 		Instituicao entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("InstituiÁ„o j· cadastrada. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Institui√ß√£o j√° cadastrada. Opera√ß√£o cancelada.");
 		
 	}
 

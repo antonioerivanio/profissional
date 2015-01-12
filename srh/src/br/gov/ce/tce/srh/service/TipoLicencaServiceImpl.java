@@ -83,7 +83,7 @@ public class TipoLicencaServiceImpl implements TipoLicencaService {
 
 		TipoLicenca entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Tipo de LicenÁa j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Tipo de Licen√ßa j√° cadastrado. Opera√ß√£o cancelada.");
 		
 	}
 

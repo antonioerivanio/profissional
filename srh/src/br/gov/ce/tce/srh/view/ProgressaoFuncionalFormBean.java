@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC031_Manter Progressão Funcional do Servidor
+* Use case : SRH_UC031_Manter ProgressÃ£o Funcional do Servidor
 * 
 * @since   : Jan 17, 2012, 18:28:00
 * @author  : robson.castro@ivia.com.br
@@ -80,7 +80,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 			}
 			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar os dados. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -100,14 +100,14 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 			referenciaFuncionalService.progressao( entidade );
 			limpar();
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso.");
+			logger.info("OperaÃ§Ã£o realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -145,7 +145,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 			} 
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo Classe/Referência. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar o campo Classe/ReferÃªncia. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -171,7 +171,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
         	}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo Movimento. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo Movimento. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -192,7 +192,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
         		comboTipoPublicacao = tipoPublicacaoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo de Publicação. Operação cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo Tipo de PublicaÃ§Ã£o. OperaÃ§Ã£o cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

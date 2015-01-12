@@ -86,7 +86,7 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 			
 			if(entidade.getInicio() != null && entidade.getFim() != null){
 				if(entidade.getInicio().after(entidade.getFim())){
-					throw new SRHRuntimeException("A Data Fim deve ser maior que a Data Inicio.");
+					throw new SRHRuntimeException("A Data Fim deve ser maior que a Data InÃ­cio.");
 				}
 			}
 
@@ -96,15 +96,15 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 			setCategoriaFuncional(new CategoriaFuncional());
 			setEntidade(new CategoriaFuncionalSetor());
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso");
-			logger.info("Operação realizada com sucesso");
+			FacesUtil.addInfoMessage("OperaÃ§Ã£o realizada com sucesso");
+			logger.info("OperaÃ§Ã£o realizada com sucesso");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+					.addErroMessage("Ocorreu algum erro ao salvar. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -125,7 +125,7 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
+					.addErroMessage("Erro ao carregar o campo setor. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -148,7 +148,7 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Erro ao carregar o campo competência. Operação cancelada.");
+					.addErroMessage("Erro ao carregar o campo competÃªncia. OperaÃ§Ã£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 

@@ -19,7 +19,7 @@ import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
-* Use case : SRH_UC034_Manter ExoneraÁ„o do Servidor
+* Use case : SRH_UC034_Manter Exonera√ß√£o do Servidor
 * 
 * @since   : Dez 19, 2011, 17:09:00 
 * @author  : wesllhey.holanda@ivia.com.br
@@ -69,9 +69,9 @@ public class ExoneracaoListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 			if ( getTipo() == null || getTipo().equals(0l) )
-				throw new SRHRuntimeException("Selecione um tipo de exoneraÁ„o.");
+				throw new SRHRuntimeException("Selecione um tipo de exonera√ß√£o.");
 
 			listaEfetivo = new ArrayList<Funcional>();
 			listaRepresentacao = new ArrayList<RepresentacaoFuncional>();
@@ -98,7 +98,7 @@ public class ExoneracaoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -125,11 +125,11 @@ public class ExoneracaoListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 				
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -148,11 +148,11 @@ public class ExoneracaoListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 		}

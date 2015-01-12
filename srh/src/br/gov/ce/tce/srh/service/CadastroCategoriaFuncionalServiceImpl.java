@@ -32,7 +32,7 @@ public class CadastroCategoriaFuncionalServiceImpl implements
 		for (CategoriaFuncional categoria : categorias) {
 			if (entidade.getDescricao().equals(categoria.getDescricao()) && entidade.getId() == null) {
 				throw new SRHRuntimeException(
-						"Já existe uma Categoria com esta descrição");
+						"JÃ¡ existe uma Categoria com esta descriÃ§Ã£o");
 			}
 		}
 		categoriaDAO.salvar(entidade);

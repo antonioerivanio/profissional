@@ -97,10 +97,10 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 			descricaoSituacao = "Extinto";
 			break;
 		case 4:
-			descricaoSituacao = "Em Transição";
+			descricaoSituacao = "Em TransiÃ§Ã£o";
 			break;
 		default:
-			descricaoSituacao = "Não identificado";
+			descricaoSituacao = "NÃ£o identificado";
 			break;
 		} 
 		

@@ -88,7 +88,7 @@ public class CursoAcademicaServiceImpl implements CursoAcademicaService {
 
 		CursoAcademica entidadeJaExiste = dao.getByAreaDescricao(entidade.getArea().getId(), entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Curso de Formação Acadêmica já cadastrado. Operação cancelada.");
+			throw new SRHRuntimeException("Curso de FormaÃ§Ã£o AcadÃªmica jÃ¡ cadastrado. OperaÃ§Ã£o cancelada.");
 		
 	}
 

@@ -48,7 +48,7 @@ public class RepresentacaoSetorDAOImpl implements RepresentacaoSetorDAO {
 		RepresentacaoSetor entidadeJaExiste = getByCargoSetor( entidade.getRepresentacaoCargo().getId(), entidade.getSetor().getId() );
 
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId())) {
-			throw new SRHRuntimeException("Cargo de RepresentaÁ„o do Setor j· cadastrado. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("Cargo de Representa√ß√£o do Setor j√° cadastrado. Opera√ß√£o cancelada.");
 		}
 
 		return entityManager.merge(entidade);

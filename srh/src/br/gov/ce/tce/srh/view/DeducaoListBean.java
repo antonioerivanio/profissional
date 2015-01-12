@@ -25,7 +25,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
- * Use case : SRH_UC049_Manter DeduÁıes do Servidor
+ * Use case : SRH_UC049_Manter Dedu√ß√µes do Servidor
  * 
  * @since   : Apr 17, 2012, 11:58:12 PM
  * @author  : robstownholanda@ivia.com.br
@@ -48,7 +48,7 @@ public class DeducaoListBean implements Serializable {
 	private RelatorioUtil relatorioUtil;
 
 
-	//controle de acesso do formul·rio
+	//controle de acesso do formul√°rio
 	private HtmlForm form;
 	private boolean passouConsultar = false;
 
@@ -61,7 +61,7 @@ public class DeducaoListBean implements Serializable {
 	private List<Deducao> lista;
 	private Deducao entidade = new Deducao();
 
-	//paginaÁ„o
+	//pagina√ß√£o
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -81,7 +81,7 @@ public class DeducaoListBean implements Serializable {
 
 			//valida consulta pessoa
 			if( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			count = deducaoService.count(getEntidade().getPessoal().getId());
 
@@ -99,7 +99,7 @@ public class DeducaoListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -118,17 +118,17 @@ public class DeducaoListBean implements Serializable {
 
 			deducaoService.excluir(entidade);
 
-			FacesUtil.addInfoMessage("Registro excluÌdo com sucesso.");
-			logger.info("Registro excluÌdo com sucesso.");
+			FacesUtil.addInfoMessage("Registro exclu√≠do com sucesso.");
+			logger.info("Registro exclu√≠do com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus„o n„o poder· ser realizada.");
+			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclus√£o n√£o poder√° ser realizada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -147,7 +147,7 @@ public class DeducaoListBean implements Serializable {
 
 			//valida consulta pessoa
 			if( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcion·rio.");
+				throw new SRHRuntimeException("Selecione um funcion√°rio.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("FILTRO", this.entidade.getPessoal().getId());
@@ -160,7 +160,7 @@ public class DeducaoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na geraÁ„o do RelatÛrio de AverbaÁ„o. OperaÁ„o cancelada.");
+			FacesUtil.addErroMessage("Erro na gera√ß√£o do Relat√≥rio de Averba√ß√£o. Opera√ß√£o cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -188,11 +188,11 @@ public class DeducaoListBean implements Serializable {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("MatrÌcula n„o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matr√≠cula n√£o encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -212,11 +212,11 @@ public class DeducaoListBean implements Serializable {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 					this.matricula = funcional.getMatricula();
 				} else {
-					FacesUtil.addInfoMessage("CPF n„o encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF n√£o encontrado ou inativo.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. OperaÁ„o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Opera√ß√£o cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -247,7 +247,7 @@ public class DeducaoListBean implements Serializable {
 	public Deducao getEntidade() {return entidade;}
 	public void setEntidade(Deducao entidade) {this.entidade = entidade;}
 	
-	//PAGINA«√O
+	//PAGINA√á√ÉO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -272,7 +272,7 @@ public class DeducaoListBean implements Serializable {
 
 	public List<Deducao> getPagedList() {return pagedList;}
 	public void setPagedList(List<Deducao> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINA«√O
+	//FIM PAGINA√á√ÉO
 
 
 	public boolean isPassouConsultar() {

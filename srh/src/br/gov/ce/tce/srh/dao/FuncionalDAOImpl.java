@@ -44,8 +44,8 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 
 
 	/**
-	 * M�todo respons�vel em pegar a �ltima m�tricula cadastrada e verificar qual � a pr�xima matr�cula v�lida 
-	 * utilizando-se para isso o validador da matr�cula
+	 * Método responsável em pegar a última matrícula cadastrada e verificar qual é a próxima matrícula válida 
+	 * utilizando-se para isso o validador da matrícula
 	 * 
 	 * @return
 	 * 
@@ -64,10 +64,12 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 				
 				mat = mat + 1;
 				
-				//adicionando quantidades de zeros restante para comp�r a matr�cula no padr�o NNNN-D onde n � um n�mero e D � o n�mero d�gito verificador
+
+				//adicionando quantidades de zeros restante para comparar a matrícula no padrão NNNN-D onde N é um número e D é o dígito verificador
 				matricula = String.format("%5s", mat).replace(' ', '0');
 				
-				//adicionando separador do d�gito verificador
+
+				//adicionando separador do dígito verificador
 				matricula = matricula.substring(0,4)+"-"+matricula.substring(4,5);
 				
 				if( SRHUtils.validarMatricula(matricula)) {
@@ -97,9 +99,12 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 
 	@Override
 	public void excluir(Funcional entidade) {
-		Query query = entityManager.createQuery("DELETE FROM Funcional l WHERE l.id=:id");
-		query.setParameter("id", entidade.getId());
-		query.executeUpdate();
+//		Query query = entityManager.createQuery("DELETE FROM Funcional l WHERE l.id=:id");
+//		query.setParameter("id", entidade.getId());
+//		query.executeUpdate();
+		
+		entidade = entityManager.merge(entidade);
+		entityManager.remove(entidade);
 	}
 
 
@@ -250,11 +255,9 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 		return query.getResultList();
 	}
 	
-	
-	
-	// Consultas replicadas sem o crit�rio de datasaida nula para que se possa ver o hist�rico dos servidores que j� sa�ram.  
+
+	// Consultas replicadas sem o critério de datasaida nula para que se possa ver o histórico dos servidores que já saíram. 
 	// By Zacarias - 06/08/2014
-	
 	
 	@Override
 	@SuppressWarnings("unchecked")

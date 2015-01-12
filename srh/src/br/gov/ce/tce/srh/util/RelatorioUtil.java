@@ -58,7 +58,7 @@ public class RelatorioUtil {
 			throw new Exception("Array de bytes nulo.");  
 
 		if (fileName == null)  
-			throw new Exception("Nome do arquivo é nulo.");  
+			throw new Exception("Nome do arquivo Ã© nulo.");  
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();  
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();  
@@ -76,7 +76,7 @@ public class RelatorioUtil {
 			throw new Exception("Array de bytes nulo.");  
 
 		if (fileName == null)  
-			throw new Exception("Nome do arquivo é nulo.");  
+			throw new Exception("Nome do arquivo Ã© nulo.");  
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();

@@ -58,6 +58,11 @@ public class MotivoDependenciaServiceImpl implements MotivoDependenciaService {
 	}
 
 
+	@Override
+	public List<MotivoDependencia> findByTipo(Long tipo) {
+		return dao.findByTipo(tipo);
+	}
+	
 
 	/**
 	 * Regra de Negocio: 
@@ -71,11 +76,12 @@ public class MotivoDependenciaServiceImpl implements MotivoDependenciaService {
 
 		MotivoDependencia entidadeJaExiste = dao.getByDescricao( entidade.getDescricao() );
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Motivo Dependência já cadastrado. Operação cancelada.");
+			throw new SRHRuntimeException("Motivo DependÃªncia jÃ¡ cadastrado. OperaÃ§Ã£o cancelada.");
 
 	}
 
 
 	public void setDAO(MotivoDependenciaDAO motivoDependenciaDAO) {this.dao = motivoDependenciaDAO;}
+	
 
 }

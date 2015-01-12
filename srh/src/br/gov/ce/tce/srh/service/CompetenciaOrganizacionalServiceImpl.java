@@ -33,7 +33,7 @@ public class CompetenciaOrganizacionalServiceImpl implements CompetenciaOrganiza
 
 		// validando dados obrigatorios
 		if( entidade.getCompetencia() == null )
-			throw new SRHRuntimeException("A competência é obrigatória.");
+			throw new SRHRuntimeException("A competÃªncia Ã© obrigatÃ³ria.");
 
 		// persistindo
 		dao.salvar(entidade);
@@ -43,13 +43,13 @@ public class CompetenciaOrganizacionalServiceImpl implements CompetenciaOrganiza
 	private void validarPeriodo(CompetenciaOrganizacional entidade) {
 		// validar data inicio
 		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("A Data Inicial é obrigatório.");
+			throw new SRHRuntimeException("A Data Inicial Ã© obrigatÃ³ria.");
 
 		/*// validando data final
 		if ( entidade.getFim() == null )
-			throw new SRHRuntimeException("A Data Final é obrigatório.");*/
+			throw new SRHRuntimeException("A Data Final Ã© obrigatÃ³ria.");*/
 
-		// validando se o período inicial é menor que o final
+		// validando se o perÃ­odo inicial Ã© menor que o final
 		if ( entidade.getFim() != null && entidade.getInicio().after(entidade.getFim() ) )
 			throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");		
 	}

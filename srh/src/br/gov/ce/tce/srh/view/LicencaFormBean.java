@@ -24,7 +24,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
-* Use case : SRH_UC036_Lan�ar Licen�a
+* Use case : SRH_UC036_Lançar Licença
 * 
 * @since   : Nov 24, 2011, 10:09:22 AM
 * @author  : robson.castro@ivia.com.br
@@ -98,7 +98,7 @@ public class LicencaFormBean implements Serializable {
 				this.matricula = funcional.getMatricula();
 
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. Opera��o cancelada.");
+			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -119,14 +119,14 @@ public class LicencaFormBean implements Serializable {
 			licencaService.salvar(entidade);
 			limpar();
 
-			FacesUtil.addInfoMessage("Opera��o realizada com sucesso.");
-			logger.info("Opera��o realizada com sucesso.");
+			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
+			logger.info("Operação realizada com sucesso.");
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Opera��o cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -147,7 +147,7 @@ public class LicencaFormBean implements Serializable {
 				this.comboTipoLicenca = tipoLicencaService.findAll();
 
 		} catch (Exception e) {
-	      	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de licen�a. Opera��o cancelada.");
+	      	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de licença. Operação cancelada.");
 	       	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -187,7 +187,7 @@ public class LicencaFormBean implements Serializable {
 			}
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo licen�a especial. Opera��o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo licença especial. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -208,7 +208,7 @@ public class LicencaFormBean implements Serializable {
         		this.comboTipoPublicacao = tipoPublicacaoService.findAll();
 
         } catch (Exception e) {
-        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo publica��o. Opera��o cancelada.");
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo publicação. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -249,11 +249,11 @@ public class LicencaFormBean implements Serializable {
 					getEntidade().setPessoal( funcional.getPessoal() );
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
 				} else {
-					FacesUtil.addInfoMessage("Matr�cula n�o encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Opera��o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -271,14 +271,14 @@ public class LicencaFormBean implements Serializable {
 			try {
 
 				if (!SRHUtils.validarProcesso( this.nrProcesso.substring(6,10) + this.nrProcesso.substring(0,5) + this.nrProcesso.substring(11,12) ) ) {
-					throw new SRHRuntimeException("O N�mero do Processo informado � inv�lido.");
+					throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 				}
 
 			} catch (SRHRuntimeException e) {
 				FacesUtil.addErroMessage(e.getMessage());
 				logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro no campo processo. Opera��o cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro no campo processo. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 			

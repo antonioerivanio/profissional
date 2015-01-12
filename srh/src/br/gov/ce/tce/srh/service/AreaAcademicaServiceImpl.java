@@ -76,7 +76,7 @@ public class AreaAcademicaServiceImpl implements AreaAcademicaService {
 
 		AreaAcademica entidadeJaExiste = dao.getByDescricao(entidade.getDescricao());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("¡rea de FormaÁ„o AcadÍmica j· cadastrada. OperaÁ„o cancelada.");
+			throw new SRHRuntimeException("√Årea de Forma√ß√£o Acad√™mica j√° cadastrada. Opera√ß√£o cancelada.");
 
 	}
 
