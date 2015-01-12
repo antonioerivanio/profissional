@@ -35,7 +35,11 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
 * Use case : SRH_UC050_Emitir Contagem Tempo em Servi�o
+=======
+* Use case : SRH_UC050_Emitir Contagem Tempo em Serviço
+>>>>>>> refs/remotes/origin/master
 =======
 * Use case : SRH_UC050_Emitir Contagem Tempo em Serviço
 >>>>>>> refs/remotes/origin/master
@@ -112,9 +116,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 			// validando campos da entidade
 			if (getEntidade() == null)
-
 				throw new SRHRuntimeException("Selecione um funcionário.");
-
 
 			this.entidade = funcionalService.getById( this.entidade.getId() );
 
@@ -137,9 +139,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( dataFim != null ) {
 					// validando
 					if ( funcional.getExercicio().after(dataFim) )
-
 						throw new SRHRuntimeException("Data fim menor que a Data Início.");
-
 					// caso data fim esteja NULA
 					if ( funcional.getSaida() == null )
 						funcional.setSaida(dataFim);
@@ -219,10 +219,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if(deducao.isFalta())
 					deducao.setDescricaoCompleta("Falta");
 				else
-
 					deducao.setDescricaoCompleta("Dedução");
-
-
 			}
 			if (!deducoes.isEmpty()) {
 				this.listaDeducao.addAll(deducoes);
@@ -261,9 +258,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -282,9 +277,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null )
-
 				throw new SRHRuntimeException("Selecione um funcionário.");
-
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -322,9 +315,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
-
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -355,14 +346,11 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 				} else {
-
 					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
-
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
-
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
