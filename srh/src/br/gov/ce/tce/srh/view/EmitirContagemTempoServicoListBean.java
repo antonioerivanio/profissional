@@ -34,7 +34,11 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
+<<<<<<< HEAD
 * Use case : SRH_UC050_Emitir Contagem Tempo em Serviço
+=======
+* Use case : SRH_UC050_Emitir Contagem Tempo em Serviço
+>>>>>>> refs/remotes/origin/master
 * 
 * @since   : Dez 19, 2011, 17:09:00 AM
 * @author  : wesllhey.holanda@ivia.com.br
@@ -108,6 +112,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 			// validando campos da entidade
 			if (getEntidade() == null)
+
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
 			this.entidade = funcionalService.getById( this.entidade.getId() );
@@ -131,7 +136,9 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( dataFim != null ) {
 					// validando
 					if ( funcional.getExercicio().after(dataFim) )
+
 						throw new SRHRuntimeException("Data fim menor que a Data Início.");
+
 					// caso data fim esteja NULA
 					if ( funcional.getSaida() == null )
 						funcional.setSaida(dataFim);
@@ -211,6 +218,10 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if(deducao.isFalta())
 					deducao.setDescricaoCompleta("Falta");
 				else
+
+					deducao.setDescricaoCompleta("Dedução");
+
+
 					deducao.setDescricaoCompleta("Dedução");
 
 			}
@@ -220,10 +231,12 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 			// percorrendo as deducoes
 			for (Deducao deducao : listaDeducao) {
-				if(deducao.getInicio()!=null && deducao.getInicio().before(SRHUtils.inicioDeducao())){
+				if(!deducao.isFalta())
+					totalDia -= deducao.getQtdeDias();
+				else if(deducao.getInicio()!=null && deducao.getInicio().before(SRHUtils.inicioDeducao())){
 					totalDia -= deducao.getQtdeDias();
 				}
-				
+				 
 			}
 				
 			// Campos da dataTable Tempo
@@ -249,6 +262,10 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+
+
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -268,6 +285,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null )
+
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
@@ -306,6 +324,10 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+
+			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
+
+
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -337,10 +359,17 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 				} else {
+
+					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+
 					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
 				}
 
 			} catch (Exception e) {
+
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+
+
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}

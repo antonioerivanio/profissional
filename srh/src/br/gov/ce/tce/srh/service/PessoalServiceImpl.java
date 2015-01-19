@@ -183,9 +183,20 @@ public class PessoalServiceImpl implements PessoalService {
 			
 			Pessoal entidadeJaExiste = dao.getByCPf( entidade.getCpf() );
 			
-			if ( entidadeJaExiste != null )
-				throw new SRHRuntimeException("CPF já cadastrado. Operação cancelada.");		
-		}
+			if (entidadeJaExiste != null){
+				
+				// quando for inserir
+				if ( entidade.getId() == null )
+					throw new SRHRuntimeException("CPF já cadastrado. Operação cancelada.");
+				
+				// quando for alterar
+				if ( entidade.getId() != null && !entidade.getId().equals(new Long(entidadeJaExiste.getId())))
+					throw new SRHRuntimeException("CPF já cadastrado. Operação cancelada.");
+				
+			}			
+					
+		}			
+
 	}
 
 
@@ -203,7 +214,7 @@ public class PessoalServiceImpl implements PessoalService {
 
 			Pessoal entidadeJaExiste = dao.getByPasep( entidade.getPasep() );
 			
-			if ( entidadeJaExiste != null )
+			if ( entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()) )
 				throw new SRHRuntimeException("PIS/PASEP já cadastrado. Operação cancelada.");
 
 		}
