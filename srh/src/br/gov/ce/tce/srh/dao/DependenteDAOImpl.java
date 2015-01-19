@@ -103,4 +103,15 @@ public class DependenteDAOImpl implements DependenteDAO{
 		}
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Dependente> findByResponsavel(Long idResponsavel) {
+					
+		Query query = entityManager.createQuery("SELECT d FROM Dependente d WHERE d.responsavel.id = :idResponsavel ORDER BY d.dependente.nomeCompleto");
+		query.setParameter("idResponsavel", idResponsavel);				
+		
+		return query.getResultList();
+	}
+
 }

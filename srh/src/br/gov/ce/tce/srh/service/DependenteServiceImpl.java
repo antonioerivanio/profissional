@@ -8,13 +8,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.DependenteDAO;
 import br.gov.ce.tce.srh.domain.Dependente;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("dependenteService")
 public class DependenteServiceImpl implements DependenteService{
 
 	@Autowired
-	private DependenteDAO dependenteDAO;	
+	private DependenteDAO dependenteDAO;
+	
+	@Autowired
+	private PessoalService pessoalService;
 	
 	
 	@Override
@@ -31,12 +35,23 @@ public class DependenteServiceImpl implements DependenteService{
 		}
 		
 		dependenteDAO.salvar(entidade);
+		
+		// Atualiza QTDDEPSF, QTDDEPPREV e QTDDEPIR no registro do Responsável na tabela TB_PESSOAL
+		
+		atualizaQtdDependentes(entidade.getResponsavel().getId());		
+		
 	}
 
 	@Override
 	@Transactional
 	public void excluir(Dependente entidade) {
-		dependenteDAO.excluir(entidade);		
+		
+		dependenteDAO.excluir(entidade);
+		
+		// Atualiza QTDDEPSF, QTDDEPPREV e QTDDEPIR no registro do Responsável na tabela TB_PESSOAL
+		
+		atualizaQtdDependentes(entidade.getResponsavel().getId());		
+		
 	}
 
 	@Override	
@@ -93,6 +108,34 @@ public class DependenteServiceImpl implements DependenteService{
 		if(entidade.getMotivoFim() == null && entidade.getDataFim() != null)
 			throw new SRHRuntimeException("Informe o Motivo Fim.");
 		
+		
+	}
+	
+	@Transactional
+	public void atualizaQtdDependentes(Long idResponsavel){
+		
+		Pessoal responsavel = pessoalService.getById(idResponsavel);
+		
+		List<Dependente> dependentes = dependenteDAO.findByResponsavel(responsavel.getId());
+		
+		long qtdDepIr = 0;
+		long qtdDepPrev = 0;
+		long qtdDepSf = 0;
+		
+		for (Dependente d: dependentes){
+			if(d.isDepIr())
+				qtdDepIr++;
+			if(d.isDepPrev())
+				qtdDepPrev++;
+			if(d.isDepSf())
+				qtdDepSf++;			
+		}		
+		
+		responsavel.setQtdDepir(qtdDepIr);
+		responsavel.setQtdDepprev(qtdDepPrev);
+		responsavel.setQtdDepsf(qtdDepSf);
+		
+		pessoalService.salvar(responsavel);
 		
 	}
 

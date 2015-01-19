@@ -17,6 +17,6 @@ public interface DependenteService {
 	
 	public int count(Long idPessoal);
 
-	public List<Dependente> search(Long idPessoal, int first, int rows);
+	public List<Dependente> search(Long idPessoal, int first, int rows);	
 	
 }

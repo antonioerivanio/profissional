@@ -19,4 +19,6 @@ public interface DependenteDAO {
 	public List<Dependente> search(Long idPessoal, int first, int rows);
 
 	public Dependente findByResponsavelAndDependente(Long idResponsavel, Long idDependente);
+	
+	public List<Dependente> findByResponsavel(Long idResponsavel);
 }
