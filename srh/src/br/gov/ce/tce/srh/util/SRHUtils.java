@@ -414,11 +414,14 @@ public class SRHUtils {
 	}
 	
 	public static String removerMascara(String string) {
-		string = string.replace(".", "");
-		string = string.replace("-", "");
-		string = string.replace("/", "");
-		string = string.replace("(", "");
-		string = string.replace(")", "");
+		if(string != null){
+			string = string.replace(" ", "");
+			string = string.replace(".", "");
+			string = string.replace("-", "");
+			string = string.replace("/", "");
+			string = string.replace("(", "");
+			string = string.replace(")", "");
+		}
 		return string;
 	}
 	
