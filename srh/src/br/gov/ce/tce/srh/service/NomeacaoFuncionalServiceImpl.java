@@ -105,13 +105,19 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 	@Transactional
 	public void alterarNomeacao(Funcional entidade) throws SRHRuntimeException {
 
-		// verificar se data saida eh NULA
+		// verificar se data saida é NULA
 		if ( entidade.getSaida() != null )
 			throw new SRHRuntimeException("A nomeação não pode ser alterada pois já foi exonerada.");
 
-		// verificando quantidade de referencias funcionais
+		Funcional entidadeExistente = funcionalService.getById(entidade.getId());
+		
+		// verificando se houve progessão
 		List<ReferenciaFuncional> listaReferencias = referenciaFuncionalService.findByFuncional( entidade.getId() );
-		if ( listaReferencias.size() > 1 )
+		
+		// caso haja progressão e a Ocupação ou a Classe/Referência tenha sido alterada
+		if ( listaReferencias.size() > 1 &&
+				(!entidade.getOcupacao().equals(entidadeExistente.getOcupacao())						
+						|| !entidade.getClasseReferencia().equals(entidadeExistente.getClasseReferencia())) )
 			throw new SRHRuntimeException("A nomeação não pode ser alterada pois já teve progressão.");
 
 		// alterando

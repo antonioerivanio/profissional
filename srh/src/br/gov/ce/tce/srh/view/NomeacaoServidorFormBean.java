@@ -166,7 +166,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 		getEntidade().setRegime( 1l );
 		getEntidade().setIRRF(true);
 
-		return "incluirAlterar";
+		return "incluir";
 	}
 
 
@@ -209,9 +209,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return "incluirAlterar";
+		return "alterar";
 	}
-
+	
 
 	/**
 	 * Realizar salvar
@@ -225,14 +225,38 @@ public class NomeacaoServidorFormBean implements Serializable {
 			if ( leiIncorporacao != null )
 				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );
 
-			// nomear ou alterar nomeacao
-			if ( this.entidade.getId() == null || this.entidade.getId().equals(0l) ) {
-				nomeacaoFuncionalService.nomear( entidade );
-			} else {
-				nomeacaoFuncionalService.alterarNomeacao( entidade );
-			}
+			nomeacaoFuncionalService.nomear( entidade );			
 
 			limpar();
+
+			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
+			logger.info("Operação realizada com sucesso.");
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
+	
+	
+	/**
+	 * Realizar alterar
+	 * 
+	 * @return
+	 */
+	public String alterar() {
+
+		try {
+
+			if ( leiIncorporacao != null )
+				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );
+			
+			nomeacaoFuncionalService.alterarNomeacao( entidade );			
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -799,8 +823,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public String limpaTela() {
 		limpar();
 		return "nomeacaoServidorForm";
-	}
-
+	}	
+	
 
 	/**
 	 * Gets and Sets
@@ -830,7 +854,11 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public Boolean getTpOcupacaoCargoComissionado() {return tpOcupacaoCargoComissionado;}
 	public void setTpOcupacaoCargoComissionado(Boolean tpOcupacaoCargoComissionado) {this.tpOcupacaoCargoComissionado = tpOcupacaoCargoComissionado;}
 
-	public LeiIncorporacao getLeiIncorporacao() {return leiIncorporacao;}
+	public LeiIncorporacao getLeiIncorporacao() {
+		if(entidade.getLeiIncorporacao() != null)			
+			leiIncorporacao = LeiIncorporacao.getByDescricao(entidade.getLeiIncorporacao());			
+		return leiIncorporacao;
+	}
 	public void setLeiIncorporacao(LeiIncorporacao leiIncorporacao) {this.leiIncorporacao = leiIncorporacao;}	
 
 	public Cbo getCbo1() {return cbo1;}

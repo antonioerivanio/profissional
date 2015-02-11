@@ -196,9 +196,11 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	@Column(name="REGIME")
 	private Long regime;
     
-
 	@Column(name = "IDREPRESENTACAOCARGO")	
 	private Long idRepresentacaoCargo;
+
+	@Column(name="IDSETORDESIGNADO")
+	private Long idSetorDesignado;	
 
 	public Funcional() {
 		//seguindo padrao Java Beans...
@@ -383,7 +385,8 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	public Long getIdRepresentacaoCargo() {return idRepresentacaoCargo;}
 	public void setIdRepresentacaoCargo(Long idRepresentacaoCargo) {this.idRepresentacaoCargo = idRepresentacaoCargo;}
 	
-	
+	public Long getIdSetorDesignado() {return idSetorDesignado;}
+	public void setIdSetorDesignado(Long idSetorDesignado) {this.idSetorDesignado = idSetorDesignado;}
 	
 	
 }

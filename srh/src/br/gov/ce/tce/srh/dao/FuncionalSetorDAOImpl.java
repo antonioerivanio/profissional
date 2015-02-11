@@ -101,7 +101,7 @@ public class FuncionalSetorDAOImpl implements FuncionalSetorDAO {
 	@Override
 	public FuncionalSetor getAtivoByFuncional(Long idFuncional) {
 		try {
-			Query query = entityManager.createQuery("Select rf from FuncionalSetor f where f.funcional.id = :funcional AND f.dataFim IS NULL ");
+			Query query = entityManager.createQuery("Select f from FuncionalSetor f where f.funcional.id = :funcional AND f.dataFim IS NULL ");
 			query.setParameter("funcional", idFuncional);
 			return (FuncionalSetor) query.getSingleResult();
 		} catch (Exception e) {

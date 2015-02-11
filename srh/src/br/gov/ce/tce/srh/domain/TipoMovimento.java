@@ -31,7 +31,10 @@ public class TipoMovimento extends BasicEntity<Long> implements Serializable {
 	@Column(name="TIPO")
 	private Long tipo;
 
-
+	@Column(name="IDSITUACAO")
+	private Long idSituacao;
+	
+	
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
@@ -40,6 +43,9 @@ public class TipoMovimento extends BasicEntity<Long> implements Serializable {
 
 	public Long getTipo() {return tipo;}
 	public void setTipo(Long tipo) {this.tipo = tipo;}
+	
+	public Long getIdSituacao() {return idSituacao;}
+	public void setIdSituacao(Long idSituacao) {this.idSituacao = idSituacao;}
 
 	@Override
 	public Long getId() {return this.id;}

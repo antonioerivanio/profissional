@@ -146,7 +146,7 @@
 
 			</fieldset>
 
-			<fieldset>
+			<fieldset style="padding: 15px">
 
 			<legend>Dados Funcionais</legend>
 
@@ -520,7 +520,7 @@
 			</div>
 			
 			<div class="radios-group box-10">
-				<label>Ativa na Folha?</label>
+				<label>Ativo na Folha?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
@@ -667,11 +667,7 @@
 								 styleClass="maskQtdQuintos"
 								 disabled="#{not nomeacaoServidorFormBean.liberarQtdQuintos or not nomeacaoServidorFormBean.exibirTodosOsCampos}"
 								 value="#{nomeacaoServidorFormBean.entidade.qtdQuintos}"
-								 onkeyup="SoNumeros(this)">
-								 <a4j:support id="validaQtdQuintos" 
-								 			  event="onchange" 
-								 			  ajaxSingle="true"
-								 			  action="#{nomeacaoServidorFormBean.validarRegrasDeNegocioNomeacao}"/>
+								 onkeyup="SoNumeros(this)">								
 					</h:inputText>
 				</div>
 			</div>
