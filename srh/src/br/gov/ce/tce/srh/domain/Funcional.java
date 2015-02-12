@@ -199,6 +199,7 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	@Column(name = "IDREPRESENTACAOCARGO")	
 	private Long idRepresentacaoCargo;
 
+	@NotAudited
 	@Column(name="IDSETORDESIGNADO")
 	private Long idSetorDesignado;	
 
