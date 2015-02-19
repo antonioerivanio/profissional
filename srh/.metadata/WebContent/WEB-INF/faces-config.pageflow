@@ -65,8 +65,8 @@
   <nodes xsi:type="pageflow:PFPage" name="home.xhtml" x="554" y="8626" id="pf1383163849749125" referenceLink="//@navigationRule.36/@navigationCase.0/@toViewId|" inlinks="pf1383163849749123" path="/home.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/motivoDependenciaList.xhtml" x="122" y="13042" id="pf1383163849749126" referenceLink="//@navigationRule.37/@fromViewId|" outlinks="pf1383163849749127 pf1383163849749128" inlinks="pf1383163849749127" path="/paginas/tabelas/motivoDependenciaList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/motivoDependenciaForm.xhtml" x="338" y="13042" id="pf1383163849749129" referenceLink="//@navigationRule.37/@navigationCase.1/@toViewId|" inlinks="pf1383163849749128" path="/paginas/tabelas/motivoDependenciaForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/nomeacaoServidorList.xhtml" x="122" y="13810" id="pf1383163849749130" referenceLink="//@navigationRule.38/@fromViewId|" outlinks="pf1383163849749131 pf1383163849749132" inlinks="pf1383163849749131" path="/paginas/funcional/nomeacaoServidorList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/nomeacaoServidorForm.xhtml" x="338" y="13810" id="pf1383163849749133" referenceLink="//@navigationRule.38/@navigationCase.1/@toViewId|" inlinks="pf1383163849749132" path="/paginas/funcional/nomeacaoServidorForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/nomeacaoServidorList.xhtml" x="122" y="13810" id="pf1383163849749130" referenceLink="//@navigationRule.38/@fromViewId|" outlinks="pf1383163849749131 pf1383163849749132 pf14232261723730" inlinks="pf1383163849749131" path="/paginas/funcional/nomeacaoServidorList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/nomeacaoServidorForm.xhtml" x="338" y="13810" id="pf1383163849749133" referenceLink="//@navigationRule.38/@navigationCase.2/@toViewId|" inlinks="pf1383163849749132" path="/paginas/funcional/nomeacaoServidorForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/categoriaSetorPessoalList.xhtml" x="122" y="14194" id="pf1383163849749134" referenceLink="//@navigationRule.39/@fromViewId|" outlinks="pf1383163849749135 pf1383163849749136" inlinks="pf1383163849749135" path="/paginas/cadastros/categoriaSetorPessoalList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/categoriaSetorPessoalForm.xhtml" x="338" y="14194" id="pf1383163849749137" referenceLink="//@navigationRule.39/@navigationCase.1/@toViewId|" inlinks="pf1383163849749136" path="/paginas/cadastros/categoriaSetorPessoalForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/pessoaList.xhtml" x="122" y="14578" id="pf1383163849749138" referenceLink="//@navigationRule.40/@fromViewId|" outlinks="pf1383163849749139 pf1383163849749140" inlinks="pf1383163849749139" path="/paginas/cadastros/pessoaList.xhtml"/>
@@ -119,6 +119,7 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/licencaFinalizarList.xhtml" x="122" y="23794" id="pf14080241943234" referenceLink="//@navigationRule.34/@navigationCase.0/@toViewId|" outlinks="pf14080241943235" inlinks="pf14080241943235" path="/paginas/funcional/licencaFinalizarList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/dList.xhtml" id="pf14158000432360" referenceLink="//@navigationRule.64/@fromViewId|" outlinks="pf14158000432361 pf14158000432362" inlinks="pf14158000432361" path="/paginas/cadastros/dependenteList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/dependentesForm.xhtml" id="pf14158000432363" referenceLink="//@navigationRule.64/@navigationCase.1/@toViewId|" inlinks="pf14158000432362" path="/paginas/cadastros/dependenteForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/nomeacaoServidorFormEdit.xhtml" id="pf14232261723831" referenceLink="//@navigationRule.38/@navigationCase.2/@toViewId|" inlinks="pf14232261723730" path="/paginas/funcional/nomeacaoServidorFormEdit.xhtml"/>
   <links id="pf13831638497452" target="pf13831638497453" source="pf13831638497450" outcome="incluirAlterar"/>
   <links id="pf13831638497456" target="pf13831638497467" source="pf13831638497454" outcome="incluirAlterar"/>
   <links id="pf138316384974610" target="pf138316384974611" source="pf13831638497468" outcome="incluirAlterar"/>
@@ -151,7 +152,7 @@
   <links id="pf1383163849749121" target="pf1383163849749122" source="pf1383163849749120" outcome="login"/>
   <links id="pf1383163849749123" target="pf1383163849749125" source="pf1383163849749122" outcome="home"/>
   <links id="pf1383163849749128" target="pf1383163849749129" source="pf1383163849749126" outcome="incluirAlterar"/>
-  <links id="pf1383163849749132" target="pf1383163849749133" source="pf1383163849749130" outcome="incluirAlterar"/>
+  <links id="pf1383163849749132" target="pf1383163849749133" source="pf1383163849749130" outcome="incluir"/>
   <links id="pf1383163849749136" target="pf1383163849749137" source="pf1383163849749134" outcome="incluirAlterar"/>
   <links id="pf1383163849749140" target="pf1383163849749141" source="pf1383163849749138" outcome="incluirAlterar"/>
   <links id="pf1383163849749144" target="pf1383163849749145" source="pf1383163849749142" outcome="incluirAlterar"/>
@@ -494,4 +495,5 @@
   </links>
   <links id="pf14158000432361" target="pf14158000432360" source="pf14158000432360" outcome="listar"/>
   <links id="pf14158000432362" target="pf14158000432363" source="pf14158000432360" outcome="incluirAlterar"/>
+  <links id="pf14232261723730" target="pf14232261723831" source="pf1383163849749130" outcome="alterar"/>
 </pageflow:Pageflow>

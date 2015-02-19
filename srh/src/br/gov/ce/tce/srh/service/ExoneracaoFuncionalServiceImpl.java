@@ -1,5 +1,7 @@
 package br.gov.ce.tce.srh.service;
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,7 @@ import br.gov.ce.tce.srh.domain.FuncionalSetor;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.service.sapjava.SetorService;
 
 /**
  * 
@@ -27,17 +30,28 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	@Autowired 
 	private FuncionalSetorService funcionalSetorService;
 	
-
+	@Autowired
+	private SetorService setorService;
+	
+	@Autowired
+	private TipoMovimentoService tipoMovimentoService;
+		
 	@Override
 	@Transactional
 	public void exonerar(Funcional entidade) throws SRHRuntimeException {
 
+		/*
+		 * Regra:
+		 * Validar dados obrigatorios.
+		 * 
+		 */	
+		validarExoneracao(entidade);
+		
+		
 		//Alteração 25/02/2014 - verificando se o tipo de saída é 'Aposentadoria' e alterando funcional
 		if (entidade.getTipoMovimentoSaida().getId() == 26L) {
 
 			entidade.setStatus(5L);
-			entidade.setPonto(false);
-			
 			entidade.getFolha().setId(7L);
 			if (entidade.getOcupacao().getId() == 8L)
 				entidade.getFolha().setId(6L);
@@ -47,13 +61,18 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 			entidade.getSituacao().setId(8L);
 			entidade.setAtipoFp(false);
 		}
+		
 
-		/*
-		 * Regra:
-		 * Validar dados obrigatorios.
-		 * 
-		 */	
-		validarExoneracao(entidade);
+		entidade.setSetor(setorService.getById(113L));
+		entidade.setIdSetorDesignado(null);
+		entidade.setPonto(false);
+		
+		entidade.setTipoMovimentoSaida(tipoMovimentoService.getById(entidade.getTipoMovimentoSaida().getId()));
+				
+		if(entidade.getTipoMovimentoSaida().getIdSituacao() != null)			
+			entidade.getSituacao().setId(entidade.getTipoMovimentoSaida().getIdSituacao());			
+
+		
         //Alteração 06/06/2013 - verificando se o servidor é de cargo apenas comicionado ( verificar se a ocupação é um cargo isolado)
 		Ocupacao ocupacao =  entidade.getOcupacao();
 		if(!ocupacao.isCargoIsolado()){
@@ -70,11 +89,17 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 		}
 		
 		//Alteração 19/09/2013 - Gravando a data fim no Tb_FuncionalSetor - Evitar problema de "Existe lotação ativa para esse Servidor"
-			FuncionalSetor funcionalSetor = funcionalSetorService.getAtivoByFuncional(entidade.getId());
-			if(funcionalSetor!= null){
-				funcionalSetor.setDataFim(entidade.getSaida());
-				funcionalSetorService.salvar(funcionalSetor);
-			}
+		FuncionalSetor funcionalSetor = funcionalSetorService.getAtivoByFuncional(entidade.getId());
+		if(funcionalSetor!= null){
+			funcionalSetor.setDataFim(entidade.getSaida());
+			
+			String novaObservacao = funcionalSetor.getObservacao() + " Exonerado(a) em " + new SimpleDateFormat("dd/MM/yyyy").format(entidade.getSaida()) + ".";
+			if (novaObservacao.length() <= 500)
+				funcionalSetor.setObservacao(novaObservacao);
+			
+			funcionalSetorService.salvar(funcionalSetor);
+		}			
+		
 		// persistindo
 		funcionalService.salvar(entidade);
 	}

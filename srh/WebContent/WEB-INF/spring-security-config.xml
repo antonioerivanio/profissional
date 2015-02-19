@@ -130,6 +130,7 @@
 		<!-- FUNCIONAL -->
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorList.faces" access="ROLE_NOMEACAO" />
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorForm.faces" access="ROLE_NOMEACAO" />
+        <intercept-url pattern="/paginas/funcional/nomeacaoServidorFormEdit.faces" access="ROLE_NOMEACAO_ALTERAR" />
 
         <intercept-url pattern="/paginas/funcional/progressaoFuncionalList.faces" access="ROLE_PROGRESSAO" />
         <intercept-url pattern="/paginas/funcional/progressaoFuncionalForm.faces" access="ROLE_PROGRESSAO" />
