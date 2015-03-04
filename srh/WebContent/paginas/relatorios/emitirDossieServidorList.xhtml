@@ -11,15 +11,28 @@
 	<ui:define name="content">
 
 		<script>
-		function openwindow()
-		{
-			nome = document.getElementById('form:nomeCompletoPessoa').value;
-			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","menubar=0,resizable=0,width=800,height=300");
-			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+		//Original
+	     /* function openwindow()
+			{
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
+			} */
+			
+			// Alteração para incluir os servidores inativos na consulta
+			function openwindow()
+			{
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				findAll = "OK";
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?parametro=" + nome+ ";" + findAll,"mywindow","findAll=OK,scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}			
 			}
-		}
 		</script>
 
 		<div class="titulo-pagina">

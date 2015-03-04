@@ -174,7 +174,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 						this.nome = new String();
 					}
 				} else {
-					setEntidade( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
+					setEntidade( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
 				}
 
 				if ( getEntidade() != null ) {
@@ -203,7 +203,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 					this.cpf = authenticationService.getUsuarioLogado().getCpf();
 					setEntidade( funcionalService.getMatriculaAndNomeByCpf(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf())));
 				} else {
-					setEntidade( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
+					setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));
 				}
 				
 				if ( getEntidade() != null ) {
