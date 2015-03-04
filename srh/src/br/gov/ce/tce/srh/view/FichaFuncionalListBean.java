@@ -229,7 +229,7 @@ public class FichaFuncionalListBean implements Serializable {
 
 			try {
 				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					Funcional funcional = funcionalService.getCpfAndNomeByMatricula(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()));
+					Funcional funcional = funcionalService.getCpfAndNomeByMatriculaAtiva(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()));
 					setEntidade(funcional);
 					if(funcional != null){
 						this.matricula = funcional.getMatricula();
@@ -239,7 +239,7 @@ public class FichaFuncionalListBean implements Serializable {
 						this.nome = new String();
 					}
 				} else {
-					setEntidade( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
+					setEntidade( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
 				}
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
@@ -265,9 +265,9 @@ public class FichaFuncionalListBean implements Serializable {
 				
 				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 					this.cpf = authenticationService.getUsuarioLogado().getCpf();
-					setEntidade( funcionalService.getMatriculaAndNomeByCpf( SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()) ));
+					setEntidade( funcionalService.getMatriculaAndNomeByCpfAtiva( SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()) ));
 				} else {
-					setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));
+					setEntidade( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
 				}
 				
 				if ( getEntidade() != null ) {
