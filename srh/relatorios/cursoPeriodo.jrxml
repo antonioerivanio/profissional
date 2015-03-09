@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cursoPeriodo" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="BACK" class="java.lang.String">
@@ -16,22 +16,34 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT DISTINCT TB_PESSOAL.NOMECOMPLETO,TB_FUNCIONAL.MATRICULA, TB_CURSOPROFISSIONAL.DESCRICAO CURSO, TB_AREAPROFISSIONAL.DESCRICAO AREA,
-TB_CURSOPROFISSIONAL.INICIO,TB_CURSOPROFISSIONAL.FIM ,TB_CURSOPROFISSIONAL.CARGAHORARIA
-FROM TB_FUNCIONAL INNER JOIN (((((TB_PESSOAL INNER JOIN TB_PESSOALCURSOPROF ON TB_PESSOAL.ID = TB_PESSOALCURSOPROF.IDPESSOAL)
-INNER JOIN TB_CURSOPROFISSIONAL ON TB_PESSOALCURSOPROF.IDCURSOPROFISSIONAL = TB_CURSOPROFISSIONAL.ID)
-INNER JOIN TB_AREAPROFISSIONAL ON TB_CURSOPROFISSIONAL.IDAREAPROFISSIONAL = TB_AREAPROFISSIONAL.ID)
-INNER JOIN TB_COMPETENCIACURSO ON TB_CURSOPROFISSIONAL.ID = TB_COMPETENCIACURSO.IDCURSOPROFISSIONAL)
-INNER JOIN TB_COMPETENCIA ON TB_COMPETENCIACURSO.IDCOMPETENCIA = TB_COMPETENCIA.ID) ON TB_FUNCIONAL.IDPESSOAL = TB_PESSOAL.ID
+		<![CDATA[SELECT DISTINCT
+	TB_PESSOAL.NOMECOMPLETO,
+	TB_FUNCIONAL.MATRICULA,
+	TB_CURSOPROFISSIONAL.DESCRICAO CURSO,
+	TB_AREAPROFISSIONAL.DESCRICAO AREA,
+	TB_CURSOPROFISSIONAL.INICIO,
+	TB_CURSOPROFISSIONAL.FIM,
+	TB_CURSOPROFISSIONAL.CARGAHORARIA
+
+
+FROM TB_FUNCIONAL
+	INNER JOIN (((((TB_PESSOAL INNER JOIN TB_PESSOALCURSOPROF ON TB_PESSOAL.ID = TB_PESSOALCURSOPROF.IDPESSOAL)
+	INNER JOIN TB_CURSOPROFISSIONAL ON TB_PESSOALCURSOPROF.IDCURSOPROFISSIONAL = TB_CURSOPROFISSIONAL.ID)
+	INNER JOIN TB_AREAPROFISSIONAL ON TB_CURSOPROFISSIONAL.IDAREAPROFISSIONAL = TB_AREAPROFISSIONAL.ID)
+	INNER JOIN TB_COMPETENCIACURSO ON TB_CURSOPROFISSIONAL.ID = TB_COMPETENCIACURSO.IDCURSOPROFISSIONAL)
+	INNER JOIN TB_COMPETENCIA ON TB_COMPETENCIACURSO.IDCOMPETENCIA = TB_COMPETENCIA.ID) ON TB_FUNCIONAL.IDPESSOAL = TB_PESSOAL.ID
+
 $P!{FILTRO}
-ORDER BY  TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO]]>
+
+ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 	</queryString>
-	<field name="CURSO" class="java.lang.String"/>
 	<field name="NOMECOMPLETO" class="java.lang.String"/>
+	<field name="MATRICULA" class="java.lang.String"/>
+	<field name="CURSO" class="java.lang.String"/>
 	<field name="AREA" class="java.lang.String"/>
 	<field name="INICIO" class="java.sql.Timestamp"/>
 	<field name="FIM" class="java.sql.Timestamp"/>
-	<field name="CARGAHORARIA" class="java.lang.Number"/>
+	<field name="CARGAHORARIA" class="java.math.BigDecimal"/>
 	<variable name="TOTAL_CARGAHORARIA" class="java.lang.Number" resetType="Group" resetGroup="Setor" calculation="Sum">
 		<variableExpression><![CDATA[$F{CARGAHORARIA}]]></variableExpression>
 	</variable>
@@ -92,12 +104,12 @@ ORDER BY  TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO]]>
 		<groupFooter>
 			<band height="28">
 				<textField evaluationTime="Band" pattern="###0">
-					<reportElement x="651" y="8" width="144" height="20"/>
-					<textElement/>
+					<reportElement x="658" y="8" width="144" height="20"/>
+					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression class="java.lang.Number"><![CDATA[$V{TOTAL_CARGAHORARIA}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="506" y="8" width="140" height="18"/>
+					<reportElement x="515" y="8" width="140" height="20"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
 						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
@@ -127,7 +139,7 @@ ORDER BY  TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO]]>
 				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="165" y="41" width="390" height="20" forecolor="#0F2E52"/>
+				<reportElement x="0" y="41" width="802" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>

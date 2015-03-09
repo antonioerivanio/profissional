@@ -19,10 +19,12 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
+import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CursoServidorService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoalService;
+import br.gov.ce.tce.srh.service.TipoOcupacaoService;
 import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -51,6 +53,9 @@ public class CursoPeriodoListBean implements Serializable {
 	
 	@Autowired
 	private PessoalService pessoalService;
+	
+	@Autowired
+	private TipoOcupacaoService tipoOcupacaoService;
 
 
 	// controle de acesso do formulario
@@ -66,10 +71,13 @@ public class CursoPeriodoListBean implements Serializable {
 	private boolean areaAtuacao;
 	private boolean posGraduacao;
 	
+	private TipoOcupacao tipoOcupacao;
+	private List<TipoOcupacao> comboTipoOcupacao;
+	
 	// entidades das telas
 //	private List<FuncionalSetor> lista;
 	private Funcional entidade = new Funcional();
-	private List<String> lista;
+//	private List<String> lista;
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
 	//paginação
@@ -102,14 +110,14 @@ public class CursoPeriodoListBean implements Serializable {
 //				count = funcionalSetorService.count( getEntidade().getPessoal().getId() );
 //			}
 			
-			count = cursoServidorService.count(inicio,fim, areaAtuacao,posGraduacao);
+			count = cursoServidorService.count(inicio,fim, areaAtuacao,posGraduacao,tipoOcupacao);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
 			}
 			
-			List<PessoalCursoProfissional> cursos = cursoServidorService.getCursos( inicio,fim, areaAtuacao,posGraduacao);
+//			List<PessoalCursoProfissional> cursos = cursoServidorService.getCursos( inicio,fim, areaAtuacao,posGraduacao);
 			totalCargaHoraria = new Long(0);
 //			for (PessoalCursoProfissional curso : cursos) {
 //				if(curso!=null && curso.getCursoProfissional()!=null && curso.getCursoProfissional().getCargaHoraria()!=null)
@@ -154,17 +162,29 @@ public class CursoPeriodoListBean implements Serializable {
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			StringBuilder filtro = new StringBuilder();
 			
+			if (tipoOcupacao != null && tipoOcupacao.getId() != null){
+				filtro.append(" INNER JOIN TB_OCUPACAO ON TB_FUNCIONAL.IDOCUPACAO = TB_OCUPACAO.ID " );
+				filtro.append(" INNER JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO " );
+			}
 			
 			filtro.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
 			filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
+			filtro.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 			
 			if(areaAtuacao)
 				filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");
 			if(!posGraduacao)
 				filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
 			
+			if (tipoOcupacao != null && tipoOcupacao.getId() != null){				
+				filtro.append(" AND TB_TIPOOCUPACAO.ID = " + tipoOcupacao.getId() );
+			}		
+			 
+			
 			parametros.put("FILTRO", filtro.toString());
+			
 			System.out.println(filtro.toString());
+			
 			relatorioUtil.relatorio("cursoPeriodo.jasper", parametros, "cursoPeriodo.pdf");
 
 		} catch (SRHRuntimeException e) {
@@ -186,6 +206,8 @@ public class CursoPeriodoListBean implements Serializable {
 		posGraduacao = false;
 		inicio = null;
 		fim = null;
+		tipoOcupacao = null;
+		comboTipoOcupacao = null;
 		return "listar";
 	}
 
@@ -255,6 +277,27 @@ public class CursoPeriodoListBean implements Serializable {
 
 		}
 	}
+	
+	
+	/**
+	 * Combo Tipo Ocupação
+	 * @return
+	 */
+	public List<TipoOcupacao> getComboTipoOcupacao() {
+
+        try {
+
+        	if( this.comboTipoOcupacao == null )
+        		this.comboTipoOcupacao = tipoOcupacaoService.findAll();
+
+        } catch (Exception e) {
+        	FacesUtil.addErroMessage("Erro ao carregar o campo tipo ocupação. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+        return this.comboTipoOcupacao;
+	}
+	
 
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
@@ -288,6 +331,10 @@ public class CursoPeriodoListBean implements Serializable {
 
 	public String getLabelTotalCargaHoraria() {return labelTotalCargaHoraria;}
 	public void setLabelTotalCargaHoraria(String labelTotalCargaHoraria) {this.labelTotalCargaHoraria = labelTotalCargaHoraria;}
+	
+	
+	public TipoOcupacao getTipoOcupacao() {return tipoOcupacao;}
+	public void setTipoOcupacao(TipoOcupacao tipoOcupacao) {this.tipoOcupacao = tipoOcupacao;}
 
 
 	public void setForm(HtmlForm form) {this.form = form;}
@@ -297,7 +344,7 @@ public class CursoPeriodoListBean implements Serializable {
 			this.matricula = new String();
 			this.cpf = new String();
 			this.nome = new String();
-			this.lista  = new ArrayList<String>();
+//			this.lista  = new ArrayList<String>();
 			limparListas();
 			flagRegistroInicial = 0;
 		}
@@ -318,7 +365,7 @@ public class CursoPeriodoListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();	
-			setPagedList(cursoServidorService.search( inicio,fim, areaAtuacao,posGraduacao, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(cursoServidorService.search( inicio, fim, areaAtuacao, posGraduacao, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
