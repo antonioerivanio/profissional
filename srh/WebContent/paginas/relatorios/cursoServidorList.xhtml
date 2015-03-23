@@ -11,15 +11,26 @@
 	<ui:define name="content">
 
 		<script>
-		function openwindow()
-		{
-			nome = document.getElementById('form:nomeCompletoPessoa').value;
-			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
-			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			function openwindow(){
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
 			}
-		}
+			
+			function validaPosGraduacao(){
+				if (document.getElementById('form:profissional').checked == false){					
+					document.getElementById('form:posGraduacao').checked = true;
+				}
+			}
+			
+			function validaProfissional(){
+				if (document.getElementById('form:posGraduacao').checked == false){
+					document.getElementById('form:profissional').checked = true;
+				}
+			}
 		</script>
 
 		<div class="titulo-pagina">
@@ -109,18 +120,32 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="radios-group box-10">
 				<label>Pós-Graduação</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="posGraduacao"
-							value="#{cursoServidorListBean.posGraduacao}">
+							value="#{cursoServidorListBean.posGraduacao}"
+							onchange="validaPosGraduacao()">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
 			</div>
-
+			
+			<div class="radios-group box-10">
+				<label>Profissional</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="profissional"
+							value="#{cursoServidorListBean.profissional}"
+							onchange="validaProfissional()">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
 			
 
 			<h:commandButton id="consultar"

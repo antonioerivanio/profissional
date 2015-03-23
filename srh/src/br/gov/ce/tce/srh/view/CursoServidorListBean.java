@@ -49,7 +49,6 @@ public class CursoServidorListBean implements Serializable {
 	
 
 
-
 	// controle de acesso do formulario
 	private HtmlForm form;
 	private boolean passouConsultar = false;
@@ -60,11 +59,12 @@ public class CursoServidorListBean implements Serializable {
 	private String nome = new String();
 
 	private boolean areaAtuacao;
-	private boolean posGraduacao;
+	private boolean posGraduacao = true;
+	private boolean profissional = true;
 
 	// entidades das telas
 	private Funcional entidade = new Funcional();
-	private List<String> lista;
+//	private List<String> lista;
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
 	//paginação
@@ -91,16 +91,17 @@ public class CursoServidorListBean implements Serializable {
 			
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionário.");		
 			
-			count = cursoServidorService.count(getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, inicio, fim);
+			
+			count = cursoServidorService.count(getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio, fim);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
 			}
 			
-			List<PessoalCursoProfissional> cursos = cursoServidorService.getCursos( getEntidade().getPessoal().getId(), areaAtuacao,posGraduacao, inicio,fim);
+			List<PessoalCursoProfissional> cursos = cursoServidorService.getCursos( getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio,fim);
 			totalCargaHoraria = new Long(0);
 			for (PessoalCursoProfissional curso : cursos) {
 				if(curso!=null && curso.getCursoProfissional()!=null && curso.getCursoProfissional().getCargaHoraria()!=null)
@@ -152,17 +153,18 @@ public class CursoServidorListBean implements Serializable {
 			
 			StringBuilder filtro = new StringBuilder();
 			filtro.append(" WHERE  TB_PESSOAL.id = "+getEntidade().getPessoal().getId());
+			filtro.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 			
 			if ( inicio != null )
-				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
-			
+				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );			
 			if ( fim != null )
-				filtro.append("  AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");	
+				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");	
 			
 			if(areaAtuacao)
-				filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");
-			
-			if(!posGraduacao)
+				filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
+			if(posGraduacao && !profissional)
+				filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 1 ");
+			else if(!posGraduacao && profissional)
 				filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
 			
 			System.out.println(filtro.toString());
@@ -186,7 +188,8 @@ public class CursoServidorListBean implements Serializable {
 		totalCargaHoraria = null;
 		labelTotalCargaHoraria = "";
 		areaAtuacao = false;
-		posGraduacao = false;
+		posGraduacao = true;
+		profissional = true;
 		inicio = null;
 		fim = null;
 		return "listar";
@@ -282,23 +285,16 @@ public class CursoServidorListBean implements Serializable {
 	public Date getInicio() {return inicio;}
 	public void setInicio(Date inicio) {this.inicio = inicio;}
 
+	public Date getFim() {return fim;}
+	public void setFim(Date fim) {this.fim = fim;}
+
 	public boolean isPosGraduacao() {return posGraduacao;}
 	public void setPosGraduacao(boolean posGraduacao) {	this.posGraduacao = posGraduacao;}
+	
+	public boolean isProfissional() {return profissional;}
+	public void setProfissional(boolean profissional) {	this.profissional = profissional;}
 
-
-
-	public Date getFim() {
-		return fim;
-	}
-
-
-
-	public void setFim(Date fim) {
-		this.fim = fim;
-	}
-
-
-
+	
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
 		if (!passouConsultar) {
@@ -306,7 +302,7 @@ public class CursoServidorListBean implements Serializable {
 			this.matricula = new String();
 			this.cpf = new String();
 			this.nome = new String();
-			this.lista  = new ArrayList<String>();
+//			this.lista  = new ArrayList<String>();
 			limparListas();
 			flagRegistroInicial = 0;
 		}
@@ -327,13 +323,12 @@ public class CursoServidorListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();	
-			setPagedList(cursoServidorService.search( getEntidade().getPessoal().getId(), areaAtuacao,posGraduacao, inicio, fim, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(cursoServidorService.search( getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio, fim, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
 				limparListas();
-			}
-			
+			}			
 		}
 		return dataModel;
 	}

@@ -11,15 +11,26 @@
 	<ui:define name="content">	
 			
 		<script>
-		function openwindow()
-		{
-			nome = document.getElementById('form:nomeCompletoPessoa').value;
-			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
-			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			function openwindow(){				
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
 			}
-		}
+			
+			function validaPosGraduacao(){
+				if (document.getElementById('form:profissional').checked == false){					
+					document.getElementById('form:posGraduacao').checked = true;
+				}
+			}
+			
+			function validaProfissional(){
+				if (document.getElementById('form:posGraduacao').checked == false){
+					document.getElementById('form:profissional').checked = true;
+				}
+			}
 		</script>
 
 		<div class="titulo-pagina">
@@ -55,8 +66,7 @@
 								 maxlength="10" />
 				</div>
 			</div> 
-			
-			
+				
 			
 			<div class="radios-group box-10">
 				<label>Area de atuação</label>
@@ -69,13 +79,28 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="radios-group box-10">
 				<label>Pós-Graduação</label>
 				<div class="conteiner" style="margin-top: 3px">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="posGraduacao"
-							value="#{cursoPeriodoListBean.posGraduacao}">
+							value="#{cursoPeriodoListBean.posGraduacao}"
+							onchange="validaPosGraduacao()">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+
+			<div class="radios-group box-10">
+				<label>Profissional</label>
+				<div class="conteiner" style="margin-top: 3px">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="profissional"
+							value="#{cursoPeriodoListBean.profissional}"
+							onchange="validaProfissional()">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
@@ -98,6 +123,21 @@
 				</div>
 			</div>			
 
+			<div class="select-box box-38">
+				<label>Setor</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="setor"
+									 converter="entityConverter" 
+							 		 value="#{cursoPeriodoListBean.setor}">
+						<f:selectItem id="selecioneSetor" itemLabel="Selecione..." itemValue="" />
+						<f:selectItems  id="comboSetor" 
+										value="#{cursoPeriodoListBean.comboSetor}" 
+										var="setor" 
+										itemValue="#{setor}" 
+										itemLabel="#{setor.nome}"  />
+					</h:selectOneMenu>
+				</div>
+			</div>
 			
 
 			<h:commandButton id="consultar"

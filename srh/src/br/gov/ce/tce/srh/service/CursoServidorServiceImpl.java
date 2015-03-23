@@ -12,6 +12,7 @@ import br.gov.ce.tce.srh.domain.CompetenciaCurso;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
+import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("cursoServidorService")
@@ -85,8 +86,8 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 		return dao.count(area, curso);
 	}
 	
-	public int count(Long pessoal, boolean areaAtuacao, boolean posGraduacao, Date inicio, Date fim) {
-		return dao.count(pessoal,areaAtuacao,posGraduacao,  inicio,  fim);
+	public int count(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim) {
+		return dao.count(pessoal, areaAtuacao, posGraduacao, profissional, inicio,  fim);
 	}
 
 
@@ -96,8 +97,8 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 	}
 	
 	@Override
-	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao,boolean posGraduacao, Date inicio,Date fim, int first, int rows) {
-		return dao.search(pessoal, areaAtuacao, posGraduacao, inicio, fim, first, rows);
+	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao,boolean posGraduacao, boolean profissional, Date inicio,Date fim, int first, int rows) {
+		return dao.search(pessoal, areaAtuacao, posGraduacao, profissional, inicio, fim, first, rows);
 	}
 
 //	@Override
@@ -106,8 +107,8 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 //	}
 
 	@Override
-	public List<PessoalCursoProfissional> getCursos(Long pessoal, boolean areaAtuacao, boolean posGraduacao, Date inicio,Date fim){
-		return dao.getCursos(pessoal, areaAtuacao,posGraduacao, inicio, fim);
+	public List<PessoalCursoProfissional> getCursos(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio,Date fim){
+		return dao.getCursos(pessoal, areaAtuacao, posGraduacao, profissional, inicio, fim);
 	}
 	 
 
@@ -141,20 +142,20 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 
 
 	@Override
-	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, TipoOcupacao tipoOcupacao) {
-		return dao.count(inicio,fim,areaAtuacao,posGraduacao,tipoOcupacao);
+	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor) {
+		return dao.count(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor);
 	}
 
 
 	@Override
-	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim,boolean areaAtuacao, boolean posGraduacao) {
-		return dao.getCursos(inicio,fim,areaAtuacao,posGraduacao);
+	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim,boolean areaAtuacao, boolean posGraduacao, boolean profissional) {
+		return dao.getCursos(inicio, fim, areaAtuacao, posGraduacao, profissional);
 	}
 
 
 	@Override
-	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, TipoOcupacao tipoOcupacao, int first, int rows) {
-		return dao.search(inicio, fim, areaAtuacao, posGraduacao, tipoOcupacao, first, rows);
+	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, int first, int rows) {
+		return dao.search(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor, first, rows);
 	}
 
 }

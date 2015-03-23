@@ -20,11 +20,13 @@ import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
+import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CursoServidorService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.service.TipoOcupacaoService;
+import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -56,6 +58,9 @@ public class CursoPeriodoListBean implements Serializable {
 	
 	@Autowired
 	private TipoOcupacaoService tipoOcupacaoService;
+	
+	@Autowired
+	private SetorService setorService;
 
 
 	// controle de acesso do formulario
@@ -69,15 +74,16 @@ public class CursoPeriodoListBean implements Serializable {
 	private Date inicio;
 	private Date fim;
 	private boolean areaAtuacao;
-	private boolean posGraduacao;
+	private boolean posGraduacao = true;
+	private boolean profissional = true;
 	
 	private TipoOcupacao tipoOcupacao;
 	private List<TipoOcupacao> comboTipoOcupacao;
 	
-	// entidades das telas
-//	private List<FuncionalSetor> lista;
+	private Setor setor;
+	private List<Setor> comboSetor;
+	
 	private Funcional entidade = new Funcional();
-//	private List<String> lista;
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
 	//paginação
@@ -110,7 +116,7 @@ public class CursoPeriodoListBean implements Serializable {
 //				count = funcionalSetorService.count( getEntidade().getPessoal().getId() );
 //			}
 			
-			count = cursoServidorService.count(inicio,fim, areaAtuacao,posGraduacao,tipoOcupacao);
+			count = cursoServidorService.count(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -162,23 +168,25 @@ public class CursoPeriodoListBean implements Serializable {
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			StringBuilder filtro = new StringBuilder();
 			
-			if (tipoOcupacao != null && tipoOcupacao.getId() != null){
-				filtro.append(" INNER JOIN TB_OCUPACAO ON TB_FUNCIONAL.IDOCUPACAO = TB_OCUPACAO.ID " );
-				filtro.append(" INNER JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO " );
-			}
-			
 			filtro.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
 			filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
 			filtro.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 			
 			if(areaAtuacao)
-				filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");
-			if(!posGraduacao)
+				filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
+			if(posGraduacao && !profissional)
+				filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 1 ");
+			else if(!posGraduacao && profissional)
 				filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
+		
 			
 			if (tipoOcupacao != null && tipoOcupacao.getId() != null){				
 				filtro.append(" AND TB_TIPOOCUPACAO.ID = " + tipoOcupacao.getId() );
-			}		
+			}
+			
+			if (setor != null && setor.getId() != null){				
+				filtro.append(" AND SAPJAVA.SETOR.IDSETOR = " + setor.getId() );
+			}
 			 
 			
 			parametros.put("FILTRO", filtro.toString());
@@ -203,7 +211,8 @@ public class CursoPeriodoListBean implements Serializable {
 		totalCargaHoraria = null;
 		labelTotalCargaHoraria = "";
 		areaAtuacao = false;
-		posGraduacao = false;
+		posGraduacao = true;
+		profissional = true;
 		inicio = null;
 		fim = null;
 		tipoOcupacao = null;
@@ -298,14 +307,20 @@ public class CursoPeriodoListBean implements Serializable {
         return this.comboTipoOcupacao;
 	}
 	
+	public List<Setor> getComboSetor() {
+		try {
+        	if ( this.comboSetor == null )
+        		this.comboSetor = setorService.findAll();
+        } catch (Exception e) {
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+        return this.comboSetor;
+	}
+	
 
 	public String getNome() {return nome;}
-	public void setNome(String nome) {this.nome = nome;}
-
-//	public List<FuncionalSetor> getLista() {return lista;}
-//	public void setLista(List<FuncionalSetor> lista) {this.lista = lista;}
-	
-	
+	public void setNome(String nome) {this.nome = nome;}	
 	
 	public Funcional getEntidade() {return entidade;}
 	public void setEntidade(Funcional entidade) {this.entidade = entidade;}
@@ -327,14 +342,18 @@ public class CursoPeriodoListBean implements Serializable {
 	
 	public boolean isPosGraduacao() {return posGraduacao;}
 	public void setPosGraduacao(boolean posGraduacao) {this.posGraduacao = posGraduacao;}
-
+	
+	public boolean isProfissional() {return profissional;}
+	public void setProfissional(boolean profissional) {	this.profissional = profissional;}
 
 	public String getLabelTotalCargaHoraria() {return labelTotalCargaHoraria;}
-	public void setLabelTotalCargaHoraria(String labelTotalCargaHoraria) {this.labelTotalCargaHoraria = labelTotalCargaHoraria;}
-	
+	public void setLabelTotalCargaHoraria(String labelTotalCargaHoraria) {this.labelTotalCargaHoraria = labelTotalCargaHoraria;}	
 	
 	public TipoOcupacao getTipoOcupacao() {return tipoOcupacao;}
-	public void setTipoOcupacao(TipoOcupacao tipoOcupacao) {this.tipoOcupacao = tipoOcupacao;}
+	public void setTipoOcupacao(TipoOcupacao tipoOcupacao) {this.tipoOcupacao = tipoOcupacao;}	
+
+	public Setor getSetor() {return setor;}
+	public void setSetor(Setor setor) {this.setor = setor;}
 
 
 	public void setForm(HtmlForm form) {this.form = form;}
@@ -344,7 +363,10 @@ public class CursoPeriodoListBean implements Serializable {
 			this.matricula = new String();
 			this.cpf = new String();
 			this.nome = new String();
-//			this.lista  = new ArrayList<String>();
+			tipoOcupacao = null;
+			comboTipoOcupacao = null;
+			setor = null;
+			comboSetor = null;
 			limparListas();
 			flagRegistroInicial = 0;
 		}
@@ -365,7 +387,7 @@ public class CursoPeriodoListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();	
-			setPagedList(cursoServidorService.search( inicio, fim, areaAtuacao, posGraduacao, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(cursoServidorService.search( inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

@@ -197,14 +197,14 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	public Funcional getMatriculaAndNomeByCpf(String cpf) {
 
 		// com mascara
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf = :cpf");
+		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf = :cpf order by r.id desc");
 		query.setParameter("cpf", cpf);
 		List<Funcional> lista = query.getResultList(); 
 		if (lista.size() > 0)
 			return lista.get(0);
 
 		// sem mascara
-		query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf = '" + SRHUtils.removerMascara( cpf ) + "' ");
+		query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf = '" + SRHUtils.removerMascara( cpf ) + "' order by r.id desc");
 		lista = query.getResultList(); 
 		if (lista.size() > 0)
 			return lista.get(0);
@@ -230,14 +230,14 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	public Funcional getMatriculaAndNomeByCpfAtiva(String cpf) {
 
 		// com mascara
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf LIKE :cpf AND r.saida IS NULL ");
+		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf LIKE :cpf AND r.saida IS NULL order by r.id desc");
 		query.setParameter("cpf", "%" + cpf + "%");
 		List<Funcional> lista = query.getResultList(); 
 		if (lista.size() > 0)
 			return lista.get(0);
 
 		// sem mascara
-		query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf LIKE :cpf AND r.saida IS NULL ");
+		query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) FROM Funcional r WHERE r.pessoal.cpf LIKE :cpf AND r.saida IS NULL order by r.id desc");
 		query.setParameter("cpf", "%"+ SRHUtils.removerMascara( cpf ) + "%");
 		lista = query.getResultList(); 
 		if (lista.size() > 0)
