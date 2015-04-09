@@ -43,47 +43,51 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
-			<div class="input-box box-6">
-				<label for="">Matricula</label>
-				<div class="conteiner">
-					<h:inputText id="matricula"
-								 name="matricula"
-								 maxlength="6" 
-								 styleClass="maskMatricula"
-								 value="#{cursoServidorListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
-        			</h:inputText>
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+		
+				<div class="input-box box-6">
+					<label for="">Matricula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 maxlength="6" 
+									 styleClass="maskMatricula"
+									 value="#{cursoServidorListBean.matricula}" >
+	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+	        			</h:inputText>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-12">
-				<label for="">CPF</label>
-				<div class="conteiner">
-					<h:inputText id="cpf" 
-								 name="cpf"
-								 maxlength="14"
-								 styleClass="maskCpf"
-								 converter="cpfConverter"
-								 value="#{cursoServidorListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
-					</h:inputText>
+	
+				<div class="input-box box-12">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 value="#{cursoServidorListBean.cpf}" >
+							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+						</h:inputText>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-38">
-				<label for="">Nome</label>
-				<div class="conteiner">
-					<h:inputText id="nomeCompletoPessoa"
-								 name="nomeCompletoPessoa"
-								 value="#{cursoServidorListBean.nome}" />
+	
+				<div class="input-box box-38">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{cursoServidorListBean.nome}" />
+					</div>
 				</div>
-			</div>
+				
+				
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
 			
-			
-			<a id="form:Pesquisar" 
-			   href="#" 
-			   onclick="openwindow()" 
-			   class="bt-padrao fl mg-top-18">Pesquisar</a>
+			</ui:fragment>
 			   
 			<div class="input-box box-10" style="clear:both">
 				<label for="">Data Inicio</label>
@@ -153,6 +157,7 @@
 							 action="#{cursoServidorListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 							 reRender="scroller,lista"/>
+			
 			<h:commandButton id="relatorio"
 							 value="Relatório"
 							 action="#{cursoServidorListBean.relatorio}" 
@@ -163,12 +168,6 @@
 
 				<rich:dataTable id="lista" value="#{cursoServidorListBean.dataModel}" var="item" rows="10" binding="#{cursoServidorListBean.dataTable}">
 
-                   <!--  <h:column id="col1">
-                        <f:facet name="header">
-                            ID
-                        </f:facet>
-                        <center><h:outputText id="item1" value="#{item.id}" /></center>
-                    </h:column>-->
                     <h:column id="col2">
                         <f:facet name="header">
                            Curso
@@ -191,8 +190,7 @@
                         	<h:outputText id="item4" value="#{item.cursoProfissional.inicio}">
                         		<f:convertDateTime id="convIni" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
-                        </center>
-                       
+                        </center>                       
                     </h:column>
                     <h:column id="col5">
                         <f:facet name="header">
@@ -211,45 +209,19 @@
                         </f:facet>
                        <center> <h:outputText id="item6" value="#{item.cursoProfissional.cargaHoraria}" /></center>
                        <f:facet style="text-aling:center;" name="footer"><h:outputText  id="item8" value="#{cursoServidorListBean.totalCargaHoraria}" /></f:facet>
-                    </h:column>
-                 
-                <!--  	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}">
-                        <f:facet name="header">
-                            EDITAR
-                        </f:facet>
-                       <h:commandLink id="editar"
-                       				  value="Editar"
-                       				  action="#{funcionalSetorFormBean.prepareAlterar}"
-                       				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{funcionalSetorFormBean.entidade}" value="#{item}" />
-                        </h:commandLink>
-                    </h:column>
-                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_EXCLUIR')}">
-                        <f:facet name="header">
-                            EXCLUIR
-                        </f:facet>
-                        <h:commandLink id="excluir"
-                        			   value="Excluir"
-                        			   action="#{funcionalSetorListBean.excluir}" 
-                        			   styleClass="ico-delete" 
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
-                            <f:setPropertyActionListener target="#{funcionalSetorListBean.entidade}" value="#{item}" />
-                        </h:commandLink>
-                    </h:column> -->
+                    </h:column>              
 
 				</rich:dataTable>
+				
 				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{cursoServidorListBean.pagedList.size() > 0}"/>
+			
 			</div>
 
-			<!--<h:commandButton id="incluir" 
-							 value="Incluir" 
-							 action="#{funcionalSetorFormBean.prepareIncluir}" 
-							 styleClass="bt-padrao fr mg-right-15" 
-							 rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}"/>-->	
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
 							 action="#{cursoServidorListBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
+							 styleClass="bt-padrao fr mg-right-15"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
 							 />			 
 
 		</h:form>

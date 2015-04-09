@@ -58,7 +58,7 @@
 									 name="matricula"
 									 maxlength="6" 
 									 styleClass="maskMatricula"
-									 disabled="#{representacaoFuncionalFormBean.alterarMenu}"
+									 disabled="#{representacaoFuncionalFormBean.alterarMenu or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')) }"
 									 value="#{representacaoFuncionalFormBean.matricula}">
 							<a4j:support event="onchange"
 										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, setor, representacaoCargo"
@@ -72,7 +72,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa" 
 									 name="nomeCompletoPessoa"
-									 disabled="#{representacaoFuncionalFormBean.alterarMenu}"
+									 disabled="#{representacaoFuncionalFormBean.alterarMenu or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')) }"
 									 value="#{representacaoFuncionalFormBean.nome}" />
 					</div>
 				</div>
@@ -176,7 +176,7 @@
 					<h:selectOneMenu id="setor"
 									 converter="entityConverter"
 									 value="#{representacaoFuncionalFormBean.entidade.setor}"
-									 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}">
+									 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}">
 						<f:selectItem id="selecioneSetor" itemLabel="Selecione..." itemValue="" />
 						<f:selectItems id="comboSetor" 
 									   value="#{representacaoFuncionalFormBean.comboSetor}"
@@ -205,7 +205,7 @@
 								 styleClass="maskNoDocumento" 
 								 value="#{representacaoFuncionalFormBean.entidade.numerodocumento}" 
 								 maxlength="9" 
-								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
+								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}"/>
 				</div>
 			</div>
 
@@ -214,7 +214,7 @@
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox value="#{representacaoFuncionalFormBean.entidade.contaTempo}" 
-							disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
+							disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}"/>
 					</div>
 				</div>
 			</div>
@@ -225,7 +225,7 @@
 					<h:selectOneMenu id="representacaoCargo"
 									 converter="entityConverter"
 									 value="#{representacaoFuncionalFormBean.entidade.representacaoCargo}"
-									 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}">
+									 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}">
 						<f:selectItem id="selecioneRepresentacaoCargo" itemLabel="Selecione..." itemValue="" />
 						<f:selectItems id="comboRepresentacaoCargo" 
 									   value="#{representacaoFuncionalFormBean.comboRepresentacaoCargo}"
@@ -247,7 +247,7 @@
 								 converter="dateConverter"
 								 value="#{representacaoFuncionalFormBean.entidade.inicio}" 
 								 maxlength="10" 
-								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
+								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}"/>
 				</div>
 			</div>
 
@@ -257,7 +257,7 @@
 					<h:selectOneMenu id="tipoPublicacao"
 									 converter="entityConverter"
 									 value="#{representacaoFuncionalFormBean.entidade.tipoPublicacaoNomeacao}"
-									 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}">
+									 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}">
 						<f:selectItem id="selecioneTipoPublicacaoSaida" itemLabel="Selecione..." itemValue="" />
 						<f:selectItems id="comboTipoPublicacao" 
 									   value="#{representacaoFuncionalFormBean.comboTipoPublicacao}"
@@ -277,7 +277,7 @@
 								 styleClass="maskData"
 								 maxlength="10"
 								 value="#{representacaoFuncionalFormBean.entidade.doeInicio}"
-								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}">
+								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}">
 					</h:inputText>
 				</div>
 			</div>
@@ -288,7 +288,7 @@
 					<div class="radio-box">
 						<h:selectOneRadio id="tipo"
 										  value="#{representacaoFuncionalFormBean.entidade.tipoNomeacao}"
-										  disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}">
+										  disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR'))}">
 							<f:selectItem id="titular" itemLabel="Titular" itemValue="1" />
 							<f:selectItem id="substituicao" itemLabel="Substituição" itemValue="2" />
 							<f:selectItem id="designado" itemLabel="Designado para responder pela área" itemValue="3"/>
@@ -299,13 +299,15 @@
 
 			</fieldset>
 
-			<h:commandButton action="#{representacaoFuncionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr"
-							 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/representacaoFuncionalList.faces" immediate="true">
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')}">
+				<h:commandButton action="#{representacaoFuncionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr"
+								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
+				<a href="/srh/paginas/funcional/representacaoFuncionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			</ui:fragment>
+			
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/representacaoFuncionalList.faces" immediate="true">
 				<f:setPropertyActionListener target="#{representacaoFuncionalListBean.passouConsultar}" value="true"/>
 			</h:commandButton>			
-			<a href="/srh/paginas/funcional/representacaoFuncionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
-			
 			
 		</h:form>
 

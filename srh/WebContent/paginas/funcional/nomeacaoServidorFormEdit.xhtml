@@ -112,14 +112,16 @@
 							<h:inputText id="nomeCompletoPessoa" required="true" 
 										 name="nomeCompletoPessoa" requiredMessage="Nome é obrigatorio"
 										 value="#{nomeacaoServidorFormBean.nome}" 
-										 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}" />
+										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" />
 						</div>
 					</div>
 		
-					<a id="form:Pesquisar" 
-					   href="#" 
-					   onclick="openwindow()" 
-					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+					<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
+						<a id="form:Pesquisar" 
+						   href="#" 
+						   onclick="openwindow()" 
+						   class="bt-padrao fl mg-top-18">Pesquisar</a>
+					</ui:fragment>
 		
 					<div class="input-box box-100">
 						<label for="">Mãe</label>
@@ -179,7 +181,7 @@
 							<h:selectOneMenu id="tipoEntrada"  
 											 converter="entityConverter" required="true" requiredMessage="Tipo de Entrada é obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.tipoMovimentoEntrada}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}" >
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" >
 								<f:selectItem id="selecioneTipoEntrada" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems  id="comboTipoEntrada" 
 							   					value="#{nomeacaoServidorFormBean.comboTipoEntrada}"
@@ -196,7 +198,7 @@
 							<h:selectOneMenu id="tipoPublicacao"
 											 converter="entityConverter" 
 											 value="#{nomeacaoServidorFormBean.entidade.tipoPublicacaoNomeacao}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneTipoPublicacao" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems 	id="comboTipoPublicacao" 
 							   					value="#{nomeacaoServidorFormBean.comboTipoPublicacao}"
@@ -216,7 +218,7 @@
 										 styleClass="maskData"
 										 maxlength="10"
 										 value="#{nomeacaoServidorFormBean.entidade.doeNomeacao}" 
-										 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 							</h:inputText>
 						</div>
 					</div>
@@ -230,7 +232,7 @@
 										 styleClass="maskData"
 										 maxlength="10" 
 										 value="#{nomeacaoServidorFormBean.entidade.posse}"
-										 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"
+										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}"
 										 onblur="sugerirDataExercicio()" >
 							</h:inputText>
 						</div>
@@ -245,7 +247,7 @@
 										 styleClass="maskData"
 										 maxlength="10"
 										 value="#{nomeacaoServidorFormBean.entidade.exercicio}" 
-										 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}" >
+										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" >
 							</h:inputText>
 						</div>
 					</div>
@@ -256,7 +258,7 @@
 							<h:inputTextarea id="observacao" style="height: 33px;" required="true" requiredMessage="Observação é obrigatorio"
 								value="#{nomeacaoServidorFormBean.entidade.descricaoNomeacao}"
 								onkeyup="this.value = this.value.substring(0, 254);"
-								disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
+								disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}"/>
 							</div>
 					</div>
 		
@@ -266,7 +268,7 @@
 							<h:selectOneMenu id="tipoFolha" 
 											 converter="entityConverter" required="true" requiredMessage="Tipo Folha é obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.folha}" 
-											 disabled="#{nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneTipoFolha" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems  id="comboTipoFolha" 
 							   					value="#{nomeacaoServidorFormBean.comboTipoFolha}"
@@ -283,7 +285,7 @@
 						<div class="conteiner">
 							<h:selectOneMenu id="status" required="true" requiredMessage="Status é obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.status}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneStatus" itemLabel="Selecione..." itemValue="" />
 								<f:selectItem id="status1" itemLabel="Ativo" itemValue="1" />
 		  						<f:selectItem id="status2" itemLabel="Estagiario" itemValue="2" />
@@ -301,7 +303,7 @@
 										 maxlength="15"
 										 styleClass="maskMatriculaEstadual" 
 										 value="#{nomeacaoServidorFormBean.entidade.matriculaEstadual}" 
-										 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 							</h:inputText>
 						</div>
 					</div>
@@ -318,7 +320,7 @@
 							<h:selectOneMenu id="tipoOcupacao" required="true"
 											 converter="entityConverter" requiredMessage="Tipo Ocupação é obrigatorio"
 											 value="#{nomeacaoServidorFormBean.tipoOcupacao}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 							  	<f:selectItem id="selecioneTipoOcupacao" itemLabel="Selecione..." itemValue="" />
 							  	<f:selectItems 	id="comboTipoOcupacao" 
 							  					value="#{nomeacaoServidorFormBean.comboTipoOcupacao}"
@@ -343,7 +345,7 @@
 							<h:selectOneMenu id="tipoCargoFuncao" required="true" requiredMessage="Cargo/Função é obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.ocupacao}"
 											 converter="entityConverter"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneCargoFuncao" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems id="comboCargoFuncao" 
 							   				   value="#{nomeacaoServidorFormBean.comboCargoFuncao}"
@@ -368,7 +370,7 @@
 							<h:selectOneMenu id="tipoClasseReferencia" 
 											 converter="entityConverter"
 											 value="#{nomeacaoServidorFormBean.entidade.classeReferencia}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneClasseReferencia" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems id="comboClasseReferencia"
 							   				   value="#{nomeacaoServidorFormBean.comboClasseReferencia}"
@@ -385,7 +387,7 @@
 							<h:selectOneMenu id="especialidadeCargo" 
 											 converter="entityConverter"
 											 value="#{nomeacaoServidorFormBean.entidade.especialidadeCargo}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneEspecialidadeCargo" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems id="comboEspecialidadeCargo"
 							   				   value="#{nomeacaoServidorFormBean.comboEspecialidadeCargo}"
@@ -409,7 +411,7 @@
 							<h:selectOneMenu id="orientacaoCargo" 
 											 converter="entityConverter"
 											 value="#{nomeacaoServidorFormBean.entidade.orientacaoCargo}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneOrientacaoCargo" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems id="comboOrientacaoCargo"
 							   				   value="#{nomeacaoServidorFormBean.comboOrientacaoCargo}"
@@ -426,7 +428,7 @@
 							<h:selectOneMenu id="situacao" required="true" requiredMessage="Situação é obrigatorio"
 											 converter="entityConverter"
 											 value="#{nomeacaoServidorFormBean.entidade.situacao}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneSituacao" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems id="comboSituacao" 
 							   				   value="#{nomeacaoServidorFormBean.comboSituacao}"
@@ -444,7 +446,7 @@
 								id="vinculo" required="true" requiredMessage="Vínculo é obrigatorio"
 								converter="entityConverter"
 								value="#{nomeacaoServidorFormBean.entidade.vinculo}"
-								disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+								disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneVinculo" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems id="comboVinculo" 
 							   				   value="#{nomeacaoServidorFormBean.comboVinculo}"
@@ -475,7 +477,7 @@
 								<h:selectBooleanCheckbox
 									id="pcc"
 									value="#{nomeacaoServidorFormBean.entidade.calculoPcc}"
-									disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+									disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								</h:selectBooleanCheckbox>
 							</div>
 						</div>
@@ -488,7 +490,7 @@
 								<h:selectBooleanCheckbox
 									id="irpf"
 									value="#{nomeacaoServidorFormBean.entidade.IRRF}"
-									disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+									disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								</h:selectBooleanCheckbox>
 							</div>
 						</div>
@@ -501,7 +503,7 @@
 								<h:selectBooleanCheckbox
 									id="ponto"
 									value="#{nomeacaoServidorFormBean.entidade.ponto}"
-									disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+									disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								</h:selectBooleanCheckbox>
 							</div>
 						</div>
@@ -514,7 +516,7 @@
 								<h:selectBooleanCheckbox
 									id="ativaFolha"
 									value="#{nomeacaoServidorFormBean.entidade.atipoFp}"
-									disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+									disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								</h:selectBooleanCheckbox>
 							</div>
 						</div>
@@ -532,7 +534,7 @@
 								<h:selectOneMenu id="cbo1"
 												 converter="entityConverter"
 												 value="#{nomeacaoServidorFormBean.cbo1}"
-												 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+												 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 									<f:selectItem id="selecioneCBO1" itemLabel="Selecione..." itemValue="" />
 								   	<f:selectItems id="comboCBO1" 
 								   				   value="#{nomeacaoServidorFormBean.comboCBO1}"
@@ -555,7 +557,7 @@
 								<h:selectOneMenu id="cbo2"
 												 converter="entityConverter"
 												 value="#{nomeacaoServidorFormBean.cbo2}" 
-												 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+												 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 									<f:selectItem id="selecioneCBO2" itemLabel="Selecione..." itemValue="" />
 								   	<f:selectItems id="comboCBO2" 
 								   				   value="#{nomeacaoServidorFormBean.comboCBO2}"
@@ -578,7 +580,7 @@
 								<h:selectOneMenu id="cbo3" 
 												 converter="entityConverter"
 												 value="#{nomeacaoServidorFormBean.cbo3}"
-												 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+												 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 									<f:selectItem id="selecioneCBO3" itemLabel="Selecione..." itemValue="" />
 								   	<f:selectItems id="comboCBO3" 
 								   				   value="#{nomeacaoServidorFormBean.comboCBO3}"
@@ -601,7 +603,7 @@
 								<h:selectOneMenu id="cbo4" 
 												 converter="entityConverter"
 												 value="#{nomeacaoServidorFormBean.entidade.cbo}"
-												 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+												 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 									<f:selectItem id="selecioneCBO4" itemLabel="Selecione..." itemValue="" />
 								   	<f:selectItems id="comboCBO4" 
 								   				   value="#{nomeacaoServidorFormBean.comboCBO4}"
@@ -621,7 +623,7 @@
 										 onkeyup="SoNumeros(this)"
 										 maxlength="3" requiredMessage="Proporcionalidade é obrigatorio"
 										 value="#{nomeacaoServidorFormBean.entidade.proporcionalidade}"
-										 disabled="#{nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirTodosOsCampos}" >
+										 disabled="#{(nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" >
 							</h:inputText>
 						</div>
 					</div>		
@@ -631,7 +633,7 @@
 						<div class="conteiner">
 							<h:selectOneMenu id="leiIncorporacao" 
 											 value="#{nomeacaoServidorFormBean.leiIncorporacao}"
-											 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneLeiIncorporacao" itemLabel="Selecione..." itemValue="" />
 							   	<f:selectItems id="comboLeiIncorporacao" 
 							   				   value="#{nomeacaoServidorFormBean.comboLeiIncorporacao}"
@@ -655,7 +657,7 @@
 							<h:inputText id="qtdQuintos"
 										 maxlength="1"
 										 styleClass="maskQtdQuintos"
-										 disabled="#{not nomeacaoServidorFormBean.liberarQtdQuintos or not nomeacaoServidorFormBean.exibirTodosOsCampos}"
+										 disabled="#{(not nomeacaoServidorFormBean.liberarQtdQuintos) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}"
 										 value="#{nomeacaoServidorFormBean.entidade.qtdQuintos}"
 										 onkeyup="SoNumeros(this)">								
 							</h:inputText>
@@ -667,8 +669,8 @@
 						<div class="conteiner">
 							<div class="radio-box">
 							<h:selectOneRadio id="previdencia" 
-											  value="#{nomeacaoServidorFormBean.entidade.previdencia}">
-									      <!--disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos or nomeacaoServidorFormBean.tpOcupacaoCargoComissionado}">-->
+											  value="#{nomeacaoServidorFormBean.entidade.previdencia}"
+											  disabled="#{not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
 								<f:selectItem itemLabel="IPEC" itemValue="1" id="ipec"/>
 								<f:selectItem itemLabel="SUPSEC" itemValue="2" id="supsec"/>
 								<f:selectItem itemLabel="INSS" itemValue="3" id="inss"/>
@@ -690,7 +692,7 @@
 								<h:selectBooleanCheckbox
 									id="abonoPrevidenciario"
 									value="#{nomeacaoServidorFormBean.entidade.abonoPrevidenciario}"
-									disabled="#{not nomeacaoServidorFormBean.exibirPrevSuperSec or nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+									disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								</h:selectBooleanCheckbox>
 							</div>
 						</div>
@@ -701,7 +703,7 @@
 						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectBooleanCheckbox id="SupSecIntegral" value="#{nomeacaoServidorFormBean.entidade.supSecIntegral}" 
-								disabled="#{not nomeacaoServidorFormBean.exibirPrevSuperSec or nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirTodosOsCampos}" 
+								disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" 
 								onmouseover="validarSupSec()"/>
 							</div>
 						</div>
@@ -712,7 +714,7 @@
 						<div class="conteiner">
 							<div class="radio-box">
 							<h:selectOneRadio id="regime" required="true" requiredMessage="Regime é obrigatorio"
-											  disabled="#{nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirTodosOsCampos}" 
+											  disabled="#{(nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" 
 											  value="#{nomeacaoServidorFormBean.entidade.regime}" >
 								<f:selectItem itemLabel="Estatutário" itemValue="1" />
 								<f:selectItem itemLabel="Celetista" itemValue="2" />
@@ -732,7 +734,7 @@
 								<label for="">Orgão</label>
 								<div class="conteiner">
 									<h:selectOneMenu id="orgaoOrigem"
-													 disabled="#{not nomeacaoServidorFormBean.exibirOrgaoEhSalario or not nomeacaoServidorFormBean.exibirTodosOsCampos}"
+													 disabled="#{(not nomeacaoServidorFormBean.exibirOrgaoEhSalario) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}"
 													 value="#{nomeacaoServidorFormBean.entidade.idOrgaoOrigem}">
 										<f:selectItem id="selecioneOrgaoOrigem" itemLabel="Selecione..." itemValue="" />
 									   	<f:selectItems id="comboLeiOrgaoOrigem" 
@@ -749,7 +751,7 @@
 								<div class="conteiner">
 									<h:inputText id="salario"
 												 maxlength="10"
-												 disabled="#{nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirOrgaoEhSalario or not nomeacaoServidorFormBean.exibirTodosOsCampos}"
+												 disabled="#{(nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirOrgaoEhSalario) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}"
 												 styleClass="maskSalario"
 												 value="#{nomeacaoServidorFormBean.entidade.salarioOrigemMonetario}">
 									</h:inputText>
@@ -764,13 +766,16 @@
 			</rich:tabPanel>	
 				
 			<div style="margin-top: 14px;">
-				<h:commandButton action="#{nomeacaoServidorFormBean.alterar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
-		
-				<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/nomeacaoServidorList.faces" immediate="true">
+				
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
+					<h:commandButton action="#{nomeacaoServidorFormBean.alterar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
+					<a href="/srh/paginas/funcional/nomeacaoServidorList.faces" class="bt-voltar fr mg-right-10">Limpar</a>			
+				</ui:fragment>
+				
+				<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/nomeacaoServidorList.faces" immediate="true">
 					<f:setPropertyActionListener target="#{nomeacaoServidorListBean.passouConsultar}" value="true"/>
 				</h:commandButton>				
-				
-				<a href="/srh/paginas/funcional/nomeacaoServidorList.faces" class="bt-voltar fr mg-right-10">Limpar</a>		
+					
 			</div>	
 		
 		</h:form>

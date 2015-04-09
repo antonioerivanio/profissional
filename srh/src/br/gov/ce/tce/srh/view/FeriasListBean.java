@@ -19,6 +19,7 @@ import br.gov.ce.tce.srh.domain.Ferias;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -45,6 +46,9 @@ public class FeriasListBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
 
 
 	//controle de acesso do formulário
@@ -220,7 +224,21 @@ public class FeriasListBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			
+			try {								
+				setCpf(authenticationService.getUsuarioLogado().getCpf());				
+				count = feriasService.count( getEntidade().getFuncional().getPessoal().getId() );
+				flagRegistroInicial = -1;				
+				
+			} catch (Exception e) {
+				limparListas();
+				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}			
+			
+		}else if (!passouConsultar) {
 			setEntidade( new Ferias() );
 			matricula = new String();
 			nome = new String();

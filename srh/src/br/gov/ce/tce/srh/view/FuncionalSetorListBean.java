@@ -233,12 +233,7 @@ public class FuncionalSetorListBean implements Serializable {
 
 			try {
 				
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					this.cpf = authenticationService.getUsuarioLogado().getCpf();
-					getEntidade().setFuncional(funcionalService.getMatriculaAndNomeByCpfAtiva(authenticationService.getUsuarioLogado().getCpf()));
-				} else {
-					getEntidade().setFuncional( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
-				}
+				getEntidade().setFuncional( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
 				
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
@@ -266,7 +261,20 @@ public class FuncionalSetorListBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			
+			try {				
+				setCpf(authenticationService.getUsuarioLogado().getCpf());								
+				count = funcionalSetorService.count( getEntidade().getFuncional().getPessoal().getId() );
+				flagRegistroInicial = -1;				
+				
+			} catch (Exception e) {
+				limparListas();
+				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}			
+			
+		}else if (!passouConsultar) {
 			setEntidade( new FuncionalSetor() );
 			this.matricula = new String();
 			this.cpf = new String();

@@ -32,57 +32,60 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
-			<div class="input-box box-10">
-				<label for="">Matricula</label>
-				<div class="conteiner">
-					<h:inputText id="matricula"
-								 name="matricula"
-								 maxlength="6" 
-								 styleClass="maskMatricula"
-								 value="#{funcionalSetorListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
-        			</h:inputText>
-				</div>
-			</div>
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 
-			<div class="input-box box-15">
-				<label for="">CPF</label>
-				<div class="conteiner">
-					<h:inputText id="cpf" 
-								 name="cpf"
-								 maxlength="14"
-								 styleClass="maskCpf"
-								 converter="cpfConverter"
-								 value="#{funcionalSetorListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
-					</h:inputText>
-				</div>
-			</div>
-
-			<div class="input-box box-38">
-				<label for="">Nome</label>
-				<div class="conteiner">
-					<h:inputText id="nomeCompletoPessoa"
-								 name="nomeCompletoPessoa"
-								 value="#{funcionalSetorListBean.nome}" />
-				</div>
-			</div>
-
-			<a id="form:Pesquisar" 
-			   href="#" 
-			   onclick="openwindow()" 
-			   class="bt-padrao fl mg-top-18">Pesquisar</a>
-
-			<h:commandButton id="consultar"
-							 value="Consultar"
-							 action="#{funcionalSetorListBean.consultar}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
-			<h:commandButton id="relatorio"
-							 value="Relatório"
-							 action="#{funcionalSetorListBean.relatorio}" 
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 style="margin-left: 10px" />
+					<div class="input-box box-10">
+						<label for="">Matricula</label>
+						<div class="conteiner">
+							<h:inputText id="matricula"
+										 name="matricula"
+										 maxlength="6" 
+										 styleClass="maskMatricula"
+										 value="#{funcionalSetorListBean.matricula}" >
+		            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+		        			</h:inputText>
+						</div>
+					</div>
+		
+					<div class="input-box box-15">
+						<label for="">CPF</label>
+						<div class="conteiner">
+							<h:inputText id="cpf" 
+										 name="cpf"
+										 maxlength="14"
+										 styleClass="maskCpf"
+										 converter="cpfConverter"
+										 value="#{funcionalSetorListBean.cpf}" >
+								<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+							</h:inputText>
+						</div>
+					</div>
+		
+					<div class="input-box box-38">
+						<label for="">Nome</label>
+						<div class="conteiner">
+							<h:inputText id="nomeCompletoPessoa"
+										 name="nomeCompletoPessoa"
+										 value="#{funcionalSetorListBean.nome}" />
+						</div>
+					</div>
+		
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()" 
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+		
+					<h:commandButton id="consultar"
+									 value="Consultar"
+									 action="#{funcionalSetorListBean.consultar}"
+									 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+									 reRender="scroller,lista"/>
+					<h:commandButton id="relatorio"
+									 value="Relatório"
+									 action="#{funcionalSetorListBean.relatorio}" 
+									 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+									 style="margin-left: 10px" />
+			</ui:fragment>
 
 			<div class="tabela-dados">
 
@@ -120,8 +123,18 @@
                         	</h:outputText>
                         </center>
                     </h:column>
-                 
-                	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}">
+                	<h:column id="col5" rendered="#{not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}">
+                        <f:facet name="header">
+                            DETALHAR
+                        </f:facet>
+                       <h:commandLink id="detalhar"
+                       				  value="Detalhar"
+                       				  action="#{funcionalSetorFormBean.prepareAlterar}"
+                       				  styleClass="ico-detail" >
+                            <f:setPropertyActionListener target="#{funcionalSetorFormBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -132,7 +145,7 @@
                             <f:setPropertyActionListener target="#{funcionalSetorFormBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_EXCLUIR')}">
+                	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -149,17 +162,24 @@
 				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{funcionalSetorListBean.pagedList.size() > 0}"/>
 			</div>
 
-			<h:commandButton id="incluir" 
-							 value="Incluir" 
-							 action="#{funcionalSetorFormBean.prepareIncluir}" 
-							 styleClass="bt-padrao fr mg-right-15" 
-							 rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}"/>
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{funcionalSetorListBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />				 
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+				<h:commandButton id="incluir" 
+								 value="Incluir" 
+								 action="#{funcionalSetorFormBean.prepareIncluir}" 
+								 styleClass="bt-padrao fr mg-right-15" 
+								 rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}"/>
+				<h:commandButton id="limpaTela"
+								 value="Limpar"
+								 action="#{funcionalSetorListBean.limpaTela}"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 />	
+			</ui:fragment>			 
 
+			<h:commandButton id="relatorio2"
+							 value="Relatório"
+							 action="#{funcionalSetorListBean.relatorio}" 
+							 styleClass="bt-padrao fr mg-right-15" 
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
 		</h:form>
 
 	</ui:define>

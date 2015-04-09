@@ -59,7 +59,8 @@
 								 name="matricula"
 								 maxlength="6"
 								 styleClass="maskMatricula"
-								 value="#{licencaFormBean.matricula}" >
+								 value="#{licencaFormBean.matricula}"
+								 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" >
 						<a4j:support event="onchange"
 									 focus="processo"
 									 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
@@ -73,14 +74,17 @@
 				<div class="conteiner">
 					<h:inputText id="nomeCompletoPessoa"
 								 name="nomeCompletoPessoa"
-								 value="#{licencaFormBean.nome}" />
+								 value="#{licencaFormBean.nome}"
+								 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" />
 				</div>
 			</div>
-
-			<a id="form:Pesquisar" 
-			   href="#" 
-			   onclick="openwindow()" 
-			   class="bt-padrao fl mg-top-18">Pesquisar</a>
+			
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+			</ui:fragment>
 
 			<div class="input-box box-100">
 				<label for="">Mãe</label>
@@ -149,8 +153,11 @@
 				<div class="input-box box-15">
 					<label for="">Processo</label>
 					<div class="conteiner">
-						<h:inputText id="processo" styleClass="maskProcesso" maxlength="10"
-									 value="#{licencaFormBean.nrProcesso}" >
+						<h:inputText id="processo" 
+									 styleClass="maskProcesso" 
+									 maxlength="10"
+									 value="#{licencaFormBean.nrProcesso}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" >
 						<a4j:support event="onchange" focus="tipoLicenca" reRender="messages" ajaxSingle="true" />
 						</h:inputText>
 					</div>
@@ -164,7 +171,8 @@
 										 required="true"
 										 requiredMessage="O tipo de licença é obrigatório."
 										 converter="entityConverter"
-										 onmousemove="validarPessoa()" >
+										 onmousemove="validarPessoa()"
+										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" >
 						  	<f:selectItem id="selecioneTipoLicenca" itemLabel="Selecione..." itemValue="" />
 						  	<f:selectItems 	id="comboTipoLicenca" 
 						  					value="#{licencaFormBean.comboTipoLicenca}"
@@ -189,7 +197,7 @@
 							<h:selectOneMenu id="licencaEspecial"
 											 converter="entityConverter"
 									 		 value="#{licencaFormBean.entidade.licencaEspecial}"
-									 		 disabled="#{not licencaFormBean.exibirComboLicencaEspecial}">
+									 		 disabled="#{(not licencaFormBean.exibirComboLicencaEspecial) or (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR'))}">
 							  	<f:selectItem id="selecionelicencaEspecial" itemLabel="Selecione..." itemValue="" />
 							  	<f:selectItems 	id="combolicencaEspecial" 
 							  					value="#{licencaFormBean.comboLicencaEspecial}"
@@ -213,7 +221,8 @@
 									 required="true"
 									 requiredMessage="O período inicial é obrigatório."
 									 value="#{licencaFormBean.entidade.inicio}"
-									 maxlength="10" /> 
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" /> 
 					</div>
 				</div>
 
@@ -226,7 +235,8 @@
 									 required="true"
 									 requiredMessage="O período final é obrigatório."
 									 value="#{licencaFormBean.entidade.fim}"
-									 maxlength="10" /> 
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" /> 
 					</div>
 				</div>
 
@@ -235,7 +245,8 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoPublicacao"
 										 converter="entityConverter" 
-										 value="#{licencaFormBean.entidade.tipoPublicacao}">
+										 value="#{licencaFormBean.entidade.tipoPublicacao}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
 							<f:selectItem id="selecioneTipoPublicacao" itemLabel="Selecione..." itemValue="" />
 						   	<f:selectItems 	id="comboTipoPublicacao" 
 						   					value="#{licencaFormBean.comboTipoPublicacao}"
@@ -253,7 +264,8 @@
 									 styleClass="maskData" 
 									 converter="dateConverter"
 									 value="#{licencaFormBean.entidade.doe}"
-									 maxlength="10" /> 
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" /> 
 					</div>
 				</div>
 				
@@ -262,7 +274,8 @@
 					<div class="conteiner">
 						<div class="radio-box">
 							<h:selectBooleanCheckbox id="delTempoServico"
-													 value="#{licencaFormBean.entidade.excluitemposerv}" />
+													 value="#{licencaFormBean.entidade.excluitemposerv}"
+													 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" />
 						</div>
 					</div>
 				</div>
@@ -272,7 +285,8 @@
 					<div class="conteiner">
 						<div class="radio-box">
 							<h:selectBooleanCheckbox id="delRetribuicaoFin"
-													 value="#{licencaFormBean.entidade.excluifinanceiro}" />
+													 value="#{licencaFormBean.entidade.excluifinanceiro}"
+													 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" />
 						</div>
 					</div>
 				</div>
@@ -282,17 +296,21 @@
 					<div class="conteiner">
 						<h:inputTextarea id="observacao"
 										 value="#{licencaFormBean.entidade.obs}"
-										 onkeyup="this.value = this.value.substring(0, 99);" />
+										 onkeyup="this.value = this.value.substring(0, 99);"
+										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}"/>
 					</div>
 				</div>
 
 			</fieldset>
-	
-			<h:commandButton action="#{licencaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarLicenca()" />
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/licencaList.faces" immediate="true">
+			
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
+				<h:commandButton action="#{licencaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarLicenca()" />						
+				<a href="/srh/paginas/funcional/licencaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			</ui:fragment>	
+				
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/licencaList.faces" immediate="true">
 				<f:setPropertyActionListener target="#{licencaListBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
-			<a href="/srh/paginas/funcional/licencaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			</h:commandButton>
 
 		</h:form>
 

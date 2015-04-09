@@ -19,37 +19,43 @@
 		<h:form id="form" binding="#{pessoaBean.form}" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
-
-			<div class="input-box box-50">
-				<label for="">Nome</label>
-				<div class="conteiner">
-					<h:inputText id="nome"
-								 name="nome"
-								 value="#{pessoaBean.nome}" />
+			
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+				
+				<div class="input-box box-50">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nome"
+									 name="nome"
+									 value="#{pessoaBean.nome}" />
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-25">
-				<label for="">CPF</label>
-				<div class="conteiner">
-					<h:inputText id="cpf" 
-								 name="cpf"
-								 maxlength="14"
-								 styleClass="maskCpf"
-								 value="#{pessoaBean.cpf}" />
+	
+				<div class="input-box box-25">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 value="#{pessoaBean.cpf}" />
+					</div>
 				</div>
-			</div>
 
-			<h:commandButton id="consultar"
-							 value="Consultar" 
-							 action="#{pessoaBean.consultar}" 
-							 styleClass="bt-padrao fl mg-top-18" 
-							 reRender="scroller,lista"/>
-			<h:commandButton id="relatorio"
+				<h:commandButton id="consultar"
+								 value="Consultar" 
+								 action="#{pessoaBean.consultar}" 
+								 styleClass="bt-padrao fl mg-top-18" 
+								 reRender="scroller,lista"/>
+				
+				<h:commandButton id="relatorio"
 							 value="Relatório"
 							 action="#{pessoaBean.relatorio}" 
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 							 style="margin-left: 10px" />
+			
+			</ui:fragment>				
+			
 
 			<div class="tabela-dados">
 
@@ -71,7 +77,18 @@
                         </f:facet>
                         <h:outputText id="item3" value="#{item.nomeCompleto}" styleClass="cel-50" />
                     </h:column>
-                	<h:column id="col4" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                    <h:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                        <f:facet name="header">
+                            DETALHAR
+                        </f:facet>
+                       <h:commandLink id="detalhar"
+                       				  value="Detalhar"
+                       				  action="#{pessoaBean.prepareAlterar}"
+                       				  styleClass="ico-detail" >
+                            <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>                    
+                	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -82,7 +99,7 @@
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
+                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -100,17 +117,26 @@
 				
 			</div>
 
-			<h:commandButton id="incluir"
-							 value="Incluir"
-							 action="incluirAlterar"
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			
+				<h:commandButton id="incluir"
+								 value="Incluir"
+								 action="incluirAlterar"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_INSERIR')}"/>
+								 
+				<h:commandButton id="limpaTela"
+								 value="Limpar"
+								 action="#{pessoaBean.limpaTela}"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 />		
+			</ui:fragment>				 
+
+			<h:commandButton id="relatorio2"
+							 value="Relatório"
+							 action="#{pessoaBean.relatorio}" 
 							 styleClass="bt-padrao fr mg-right-15" 
-							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_INSERIR')}"/>
-							 
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{pessoaBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />				 
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
 
 		</h:form>
 

@@ -140,7 +140,7 @@
 						<h:selectOneMenu id="classeReferencia" 
 										 converter="entityConverter"
 										 value="#{progressaoFuncionalFormBean.entidade.classeReferencia}"
-										 disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}">
+										 disabled="#{(not progressaoFuncionalFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR'))}">
 							<f:selectItem id="selecioneClasseReferencia" itemLabel="Selecione..."/>
 						   	<f:selectItems id="comboClasseReferencia"
 						   				   value="#{progressaoFuncionalFormBean.comboClasseReferencia}"
@@ -156,7 +156,7 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoMovimento"
 										 converter="entityConverter"
-										 disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}"
+										 disabled="#{(not progressaoFuncionalFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR'))}"
 										 value="#{progressaoFuncionalFormBean.entidade.tipoMovimento}">
 							<f:selectItem id="selecioneTipoMovimento" itemLabel="Selecione..." itemValue="" />
 						   	<f:selectItems id="comboTipoMovimento" 
@@ -172,7 +172,7 @@
 					<label for="">Início *</label>
 					<div class="conteiner">
 						<h:inputText id="inicio"
-									 disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}" 
+									 disabled="#{(not progressaoFuncionalFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR'))}"
 									 styleClass="maskData" 
 									 converter="dateConverter"
 									 value="#{progressaoFuncionalFormBean.entidade.inicio}"
@@ -196,7 +196,7 @@
 					<label for="">Data Doc.</label>
 					<div class="conteiner">
 						<h:inputText id="dataAto"
-									 disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}" 
+									 disabled="#{(not progressaoFuncionalFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR'))}" 
 									 styleClass="maskData"
 									 converter="dateConverter"
 									 value="#{progressaoFuncionalFormBean.entidade.dataAto}"
@@ -209,7 +209,7 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoPublicacao"
 										 converter="entityConverter" 
-										 disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}"	
+										 disabled="#{(not progressaoFuncionalFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR'))}"	
 										 value="#{progressaoFuncionalFormBean.entidade.tipoPublicacao}">
 							<f:selectItem id="selecioneTipoPublicacao" itemLabel="Selecione..." itemValue="" />
 						   	<f:selectItems id="comboTipoPublicacao" 
@@ -225,7 +225,7 @@
 					<label for="">Publicação </label>
 					<div class="conteiner">
 						<h:inputText id="publicacao" 
-									 disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}"	
+									 disabled="#{(not progressaoFuncionalFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR'))}"	
 									 styleClass="maskData" 
 									 converter="dateConverter"
 									 value="#{progressaoFuncionalFormBean.entidade.doeAto}"
@@ -237,7 +237,7 @@
 					<label for="">Descrição *</label>
 					<div class="conteiner">
 						<h:inputTextarea id="observacao"
-										 disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}"
+										 disabled="#{(not progressaoFuncionalFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR'))}"
 										 value="#{progressaoFuncionalFormBean.entidade.descricao}"
 										 onkeyup="this.value = this.value.substring(0, 199);" />
 					</div>
@@ -248,9 +248,10 @@
 			<h:commandButton 
 					action="#{progressaoFuncionalFormBean.salvar}" 
 					disabled="#{not progressaoFuncionalFormBean.exibirTodosOsCampos}"
-					value="Salvar" styleClass="bt-padrao fr"/>
+					value="Salvar" styleClass="bt-padrao fr"
+					rendered="#{LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR')}"/>
 			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/progressaoFuncionalList.faces" immediate="true">
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/progressaoFuncionalList.faces" immediate="true">
 				<f:setPropertyActionListener target="#{progressaoFuncionalListBean.passouConsultar}" value="true"/>
 			</h:commandButton>
 

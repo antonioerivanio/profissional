@@ -26,7 +26,6 @@ import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("cursoServidorListBean")
@@ -64,7 +63,6 @@ public class CursoServidorListBean implements Serializable {
 
 	// entidades das telas
 	private Funcional entidade = new Funcional();
-//	private List<String> lista;
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
 	//paginação
@@ -74,7 +72,7 @@ public class CursoServidorListBean implements Serializable {
 	private List<PessoalCursoProfissional> pagedList = new ArrayList<PessoalCursoProfissional>();
 	private int flagRegistroInicial = 0;
 
-//componente
+	//componente
 	private Long totalCargaHoraria;
 	private String labelTotalCargaHoraria;
 	private Date inicio;
@@ -204,19 +202,9 @@ public class CursoServidorListBean implements Serializable {
 			this.matricula = matricula;
 
 			try {
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					Funcional funcional = funcionalService.getMatriculaAndNomeByCpfAtiva(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()));
-					setEntidade(funcional);
-					if(funcional != null){
-						this.matricula = funcional.getMatricula();
-					} else {
-						this.matricula = new String();
-						this.cpf = new String();
-						this.nome = new String();
-					}
-				} else {
-					setEntidade( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
-				}
+				
+				setEntidade( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
+				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();	
@@ -239,13 +227,8 @@ public class CursoServidorListBean implements Serializable {
 
 			try {
 				
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					this.cpf = authenticationService.getUsuarioLogado().getCpf();
-					setEntidade( funcionalService.getMatriculaAndNomeByCpfAtiva( SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()) ));
-				} else {
-					setEntidade( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
-				}
-				
+				setEntidade( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
+								
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();	
@@ -297,12 +280,14 @@ public class CursoServidorListBean implements Serializable {
 	
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		} else if (!passouConsultar) {
 			setCursoProfissional( new CursoProfissional() );
 			this.matricula = new String();
 			this.cpf = new String();
 			this.nome = new String();
-//			this.lista  = new ArrayList<String>();
 			limparListas();
 			flagRegistroInicial = 0;
 		}

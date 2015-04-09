@@ -124,7 +124,7 @@
         <intercept-url pattern="/paginas/cadastros/categoriaSetorPessoalForm.faces" access="ROLE_CATEGORIA_SETOR_PESSOAL" />        
        
         <intercept-url pattern="/paginas/cadastros/dependenteList.faces" access="ROLE_DEPENDENTE" />
-        <intercept-url pattern="/paginas/cadastros/dependenteForm.faces" access="ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR" />
+        <intercept-url pattern="/paginas/cadastros/dependenteForm.faces" access="ROLE_DEPENDENTE" />
 
 
 		<!-- FUNCIONAL -->

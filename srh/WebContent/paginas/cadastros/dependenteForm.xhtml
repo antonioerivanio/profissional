@@ -44,7 +44,7 @@
 				<div class="conteiner">
 					<h:inputText id="nomeCompletoPessoa"
 								 name="nomeCompletoPessoa"
-								 disabled="#{dependenteFormBean.alterar}"
+								 disabled="#{(not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')) or dependenteFormBean.alterar }"								
 								 value="#{dependenteFormBean.nomeResponsavel}" />
 					<a4j:support event="onchange" reRender="idResponsavel" ajaxSingle="true" />
 				</div>
@@ -62,7 +62,7 @@
 					<h:selectOneMenu id="dependente"
 									 converter="entityConverter" 
 									 value="#{dependenteFormBean.entidade.dependente}"
-									 disabled="#{dependenteFormBean.alterar}" >
+									 disabled="#{(not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')) or dependenteFormBean.alterar }" >
 					  	<f:selectItem id="selecioneDependente" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboDependente"
 					  					value="#{dependenteFormBean.comboDependente}"
@@ -79,7 +79,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="tipoDependencia"
 									 converter="entityConverter" 
-									 value="#{dependenteFormBean.entidade.tipoDependencia}">
+									 value="#{dependenteFormBean.entidade.tipoDependencia}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}" >
 					  	<f:selectItem id="selecioneTipoDependencia" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboTipoDependencia"
 					  					value="#{dependenteFormBean.comboTipoDependencia}"
@@ -101,7 +102,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="motivoInicio"
 									 converter="entityConverter" 
-									 value="#{dependenteFormBean.entidade.motivoInicio}">
+									 value="#{dependenteFormBean.entidade.motivoInicio}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}" >
 					  	<f:selectItem id="selecioneMotivoInicio" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboMotivoInicio"
 					  					value="#{dependenteFormBean.comboMotivoInicio}"
@@ -124,18 +126,20 @@
 					<h:inputText id="dataInicio" 
 								 styleClass="maskData" 
 								 converter="dateConverter"
-								 value="#{dependenteFormBean.entidade.dataInicio}" />
+								 value="#{dependenteFormBean.entidade.dataInicio}"
+								 disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}" />
 				</div>
 			</div>
 			
-			<h:panelGroup rendered="#{dependenteFormBean.alterar}">
+			<h:panelGroup rendered="#{(not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')) or dependenteFormBean.alterar }">
 				
 				<div class="select-box box-50">
 					<label for="">Motivo Fim</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="motivoFim"
 										 converter="entityConverter" 
-										 value="#{dependenteFormBean.entidade.motivoFim}">
+										 value="#{dependenteFormBean.entidade.motivoFim}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
 						  	<f:selectItem id="selecioneMotivoFim" itemLabel="Selecione..."/>
 						  	<f:selectItems 	id="comboMotivoFim"
 						  					value="#{dependenteFormBean.comboMotivoFim}"
@@ -153,7 +157,8 @@
 						<h:inputText id="dataFim" 
 									 styleClass="maskData" 
 									 converter="dateConverter"
-									 value="#{dependenteFormBean.entidade.dataFim}" />
+									 value="#{dependenteFormBean.entidade.dataFim}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}" />
 					</div>
 				</div>
 				
@@ -163,7 +168,9 @@
 				<label>Duração *</label>
 				<div class="conteiner">
 					<div class="radio-box">
-					<h:selectOneRadio id="tipoDuracao" value="#{dependenteFormBean.entidade.tipoDuracao}" >
+					<h:selectOneRadio 	id="tipoDuracao" 
+										value="#{dependenteFormBean.entidade.tipoDuracao}" 
+										disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
 						<f:selectItem id="vitalicio" itemLabel="Vitalício" itemValue="1" />
 						<f:selectItem id="temporario" itemLabel="Temporário" itemValue="2" />						
 					</h:selectOneRadio>
@@ -178,7 +185,8 @@
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="prev"
-							value="#{dependenteFormBean.entidade.depPrev}">
+							value="#{dependenteFormBean.entidade.depPrev}"
+							disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
@@ -191,7 +199,8 @@
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="ir"
-							value="#{dependenteFormBean.entidade.depIr}">
+							value="#{dependenteFormBean.entidade.depIr}"
+							disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
@@ -204,21 +213,23 @@
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="sf"
-							value="#{dependenteFormBean.entidade.depSf}">
+							value="#{dependenteFormBean.entidade.depSf}"
+							disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
 			</div>
 			
 			
-			<h:panelGroup rendered="#{dependenteFormBean.alterar}">
+			<h:panelGroup rendered="#{(not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')) or dependenteFormBean.alterar }">
 				<div class="radios-group box-15" >
 					<label>Universitário?</label>
 					<div class="conteiner">
 						<div class="radio-box">
 							<h:selectBooleanCheckbox
 								id="universitario"
-								value="#{dependenteFormBean.entidade.flUniversitario}">
+								value="#{dependenteFormBean.entidade.flUniversitario}"
+								disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
 							</h:selectBooleanCheckbox>
 						</div>
 					</div>
@@ -232,15 +243,18 @@
 					<h:inputTextarea id="observacao"
 									 value="#{dependenteFormBean.entidade.obs}"
 									 onkeyup="this.value = this.value.substring(0, 199);" 
-									 style="height: 33px;"/>
+									 style="height: 33px;"
+									 disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}"/>
 				</div>
 			</div>
 			
 			
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
+				<h:commandButton action="#{dependenteFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />			
+				<a href="/srh/paginas/cadastros/dependenteForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			</ui:fragment>	
 			
-			<h:commandButton action="#{dependenteFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" style="margin-right: 15px;" />
-			<a href="/srh/paginas/cadastros/dependenteList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/cadastros/dependenteForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			<a href="/srh/paginas/cadastros/dependenteList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

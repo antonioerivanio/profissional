@@ -118,10 +118,9 @@ public class PessoaBean implements Serializable {
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Pessoal> pagedList = new ArrayList<Pessoal>();
-	private int flagRegistroInicial = 0;
-
-
-
+	private int flagRegistroInicial = 0;	
+	
+	
 	/**
 	 * Realizar antes de carregar tela alterar
 	 * 
@@ -130,9 +129,11 @@ public class PessoaBean implements Serializable {
 	public String prepareAlterar() {
 
 		try {
-
-			this.entidade = pessoalService.getById( this.entidade.getId() );
-			
+			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+				this.entidade = pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf());
+			}else{
+				this.entidade = pessoalService.getById( this.entidade.getId() );
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -150,15 +151,9 @@ public class PessoaBean implements Serializable {
 	 */
 	public String consultar() {
 
-		try {
-			
-			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-				nome = new String();
-				cpf = new String();
-				count = pessoalService.count(authenticationService.getUsuarioLogado());
-			} else {
-				count = pessoalService.count(nome, cpf);
-			}
+		try {			
+
+			count = pessoalService.count(nome, cpf);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -565,11 +560,24 @@ public class PessoaBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar){
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			
+			try {			
+				count = pessoalService.count(authenticationService.getUsuarioLogado());
+				flagRegistroInicial = -1;				
+			
+			} catch (Exception e) {
+				limparListas();
+				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}			
+		}else if (!passouConsultar){
 			limpar();
 			limparListas();
 			flagRegistroInicial = 0;
 		}
+		
 		passouConsultar = false;
 		return form;
 	}

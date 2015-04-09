@@ -32,45 +32,49 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<div class="input-box box-15">
-				<label for="">CPF</label>
-				<div class="conteiner">
-					<h:inputText id="cpf" 
-								 name="cpf"
-								 maxlength="14"
-								 styleClass="maskCpf"
-								 converter="cpfConverter"
-								 value="#{dependenteListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" reRender="messages, nomeCompletoPessoa, cpf" ajaxSingle="true" />
-					</h:inputText>
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			
+				<div class="input-box box-15">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 value="#{dependenteListBean.cpf}" >
+							<a4j:support id="cpfChange" event="onchange" reRender="messages, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+						</h:inputText>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-50">
-				<label for="">Servidor</label>
-				<div class="conteiner">
-					<h:inputText id="nomeCompletoPessoa"
-								 name="nomeCompletoPessoa"
-								 value="#{dependenteListBean.nome}" />												
+	
+				<div class="input-box box-50">
+					<label for="">Servidor</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{dependenteListBean.nome}" />												
+					</div>
 				</div>
-			</div>
-
-
-			<a id="form:Pesquisar" 
-			   href="#" 
-			   onclick="openwindowServidor()" 
-			   class="bt-padrao fl mg-top-18">Pesquisar</a>
-
-			<h:commandButton id="consultar"
-							 value="Consultar"
-							 action="#{dependenteListBean.consultar}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
-			<h:commandButton id="Relatório"
-							 value="Relatório"
-							 action="#{dependenteListBean.relatorio}" 
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 style="margin-left: 10px" />
+	
+	
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindowServidor()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+	
+				<h:commandButton id="consultar"
+								 value="Consultar"
+								 action="#{dependenteListBean.consultar}"
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+								 reRender="scroller,lista"/>
+				<h:commandButton id="relatorio"
+								 value="Relatório"
+								 action="#{dependenteListBean.relatorio}" 
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+								 style="margin-left: 10px" />
+								 
+			</ui:fragment>
 
 			<div class="tabela-dados">
 
@@ -130,7 +134,18 @@
                         	<h:outputText id="item62" rendered="#{!item.depIr}" value="0" styleClass="cel-25" />                        	
                         </center>
                     </h:column>                   				
-                	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_ALTERAR')}">
+                	<h:column id="col7" rendered="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_ALTERAR')}">
+                        <f:facet name="header">
+                            DETALHAR
+                        </f:facet>
+                       <h:commandLink id="detalhar"
+                       				  value="Detalhar"
+                       				  action="#{dependenteFormBean.prepareAlterar}"
+                       				  styleClass="ico-detail" >
+                            <f:setPropertyActionListener target="#{dependenteFormBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>                	
+                	<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -141,7 +156,7 @@
                             <f:setPropertyActionListener target="#{dependenteFormBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_EXCLUIR')}">
+                	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -155,19 +170,28 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{consultarAuditoriaBean.dataModel.rowCount > 10}"/>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{dependenteListBean.pagedList.size() > 0}"/>
 				
 			</div>
 
-			<h:commandButton id="incluir"
-							 value="Incluir"
-							 action="#{dependenteFormBean.prepareIncluir}"
-							 styleClass="bt-padrao fr mg-right-15"
-							 rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR')}" />							 
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{dependenteListBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" />				 
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+				<h:commandButton id="incluir"
+								 value="Incluir"
+								 action="#{dependenteFormBean.prepareIncluir}"
+								 styleClass="bt-padrao fr mg-right-15"
+								 rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR')}" />							 
+				<h:commandButton id="limpaTela"
+								 value="Limpar"
+								 action="#{dependenteListBean.limpaTela}"
+								 styleClass="bt-padrao fr mg-right-15" />
+			</ui:fragment>
+			
+			<h:commandButton id="relatorio2"
+								 value="Relatório"
+								 action="#{dependenteListBean.relatorio}" 
+								 styleClass="bt-padrao fr mg-right-15"
+								 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+								 />				 
 
 		</h:form>
 

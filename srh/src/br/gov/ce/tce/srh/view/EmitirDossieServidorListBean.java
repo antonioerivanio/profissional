@@ -21,7 +21,6 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
-import br.gov.ce.tce.srh.util.SRHUtils;
 /**
 * Use case :
 * 
@@ -163,20 +162,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 			this.matricula = matricula;
 
 			try {
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					Funcional funcional = funcionalService.getMatriculaAndNomeByCpfAtiva(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf())); 
-					setEntidade(funcional);
-					if(funcional != null){
-						this.matricula = funcional.getMatricula();
-					} else {
-						this.matricula = new String();
-						this.cpf = new String();
-						this.nome = new String();
-					}
-				} else {
-					setEntidade( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
-				}
-
+				setEntidade( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();
@@ -197,15 +183,8 @@ public class EmitirDossieServidorListBean implements Serializable {
 		if ( !this.cpf.equals(cpf) ) {
 			this.cpf = cpf;
 
-			try {
-				
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					this.cpf = authenticationService.getUsuarioLogado().getCpf();
-					setEntidade( funcionalService.getMatriculaAndNomeByCpf(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf())));
-				} else {
-					setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));
-				}
-				
+			try {				
+				setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();		
@@ -241,13 +220,9 @@ public class EmitirDossieServidorListBean implements Serializable {
 		return passouConsultar;
 	}
 
-
-
 	public void setPassouConsultar(boolean passouConsultar) {
 		this.passouConsultar = passouConsultar;
 	}
-
-
 
 	public void setHistoricoLicenca(boolean historicoLicenca) {this.historicoLicenca = historicoLicenca;}
 
@@ -262,7 +237,11 @@ public class EmitirDossieServidorListBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			lista = new ArrayList<Funcional>();
+			lista.add(entidade); 
+		} else if (!passouConsultar) {
 			setEntidade( null );
 			matricula = new String();
 			cpf = new String();

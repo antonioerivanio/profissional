@@ -59,8 +59,8 @@
 						<h:inputText id="matricula" 
 									 name="matricula"
 									 maxlength="6"
-									 styleClass="maskMatricula"
-									 disabled="#{feriasFormBean.alterar}"
+									 styleClass="maskMatricula"									 
+									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
 									 value="#{feriasFormBean.matricula}">
 							<a4j:support event="onchange"
 										 focus="tipoFerias"
@@ -75,7 +75,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa" 
 									 name="nomeCompletoPessoa"
-									 disabled="#{feriasFormBean.alterar}"
+									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
 									 value="#{feriasFormBean.nome}" />
 					</div>
 				</div>
@@ -156,7 +156,8 @@
 										 converter="entityConverter"
 										 valueChangeListener="#{feriasFormBean.atualizaCampos}" 
 										 onchange="submit();"
-										 value="#{feriasFormBean.entidade.tipoFerias}" >
+										 value="#{feriasFormBean.entidade.tipoFerias}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" >
 							<f:selectItem id="selecioneTipoFerias" itemLabel="Selecione..." itemValue="" />
 					  		<f:selectItems 	id="comboTipoFerias" 
 					  						value="#{feriasFormBean.comboTipoFerias}"
@@ -174,7 +175,8 @@
 									 name="anoReferencia"
 									 value="#{feriasFormBean.entidade.anoReferencia}" 
 									 maxlength="4"
-									 onkeyup="SoNumeros(this)" >
+									 onkeyup="SoNumeros(this)"
+									 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
 						</h:inputText>
 					</div>
 				</div>
@@ -185,7 +187,8 @@
 						<h:inputText id="periodo"
 									 value="#{feriasFormBean.entidade.periodo}"
 									 maxlength="1"
-									 onkeyup="SoNumeros(this)" />   
+									 onkeyup="SoNumeros(this)"
+									 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}"/>   
 					</div>
 				</div>
 
@@ -199,7 +202,7 @@
 									 converter="dateConverter"
 									 value="#{feriasFormBean.inicial}"
 									 maxlength="10"
-									 disabled="#{feriasFormBean.bloquearDatas}" >
+									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
 							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
 						</h:inputText>
 					</div>
@@ -213,7 +216,7 @@
 									 converter="dateConverter"
 									 value="#{feriasFormBean.fim}"
 									 maxlength="10"
-									 disabled="#{feriasFormBean.bloquearDatas}" >
+									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
 							<a4j:support event="onchange" focus="tipoPublicacao" reRender="qtdeDias, messages" ajaxSingle="true"/>
 						</h:inputText>			  
 					</div>
@@ -222,7 +225,9 @@
 				<div class="input-box box-5">
 					<label for="">Dias</label>
 					<div class="conteiner">
-						<h:inputText id="qtdeDias" disabled="#{not feriasFormBean.bloquearDatas and feriasEdicao}" value="#{feriasFormBean.entidade.qtdeDias}" />  
+						<h:inputText id="qtdeDias" 
+									 disabled="#{(not feriasFormBean.bloquearDatas and feriasEdicao) or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" 
+									 value="#{feriasFormBean.entidade.qtdeDias}" />  
 					</div>
 				</div>
 
@@ -231,7 +236,8 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoPublicacao"
 										 converter="entityConverter" 
-										 value="#{feriasFormBean.entidade.tipoPublicacao}"> 
+										 value="#{feriasFormBean.entidade.tipoPublicacao}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" > 
 							<f:selectItem id="selecioneTipoPublicacao" itemLabel="Selecione..." itemValue="" />
 					  		<f:selectItems 	id="comboTipoPublicacao" 
 					  						value="#{feriasFormBean.comboTipoPublicacao}"
@@ -250,7 +256,8 @@
 									 styleClass="maskData" 
 									 converter="dateConverter"
 									 value="#{feriasFormBean.entidade.dataPublicacao}"
-									 maxlength="10" />
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" />
 					</div>
 				</div>
 
@@ -262,7 +269,8 @@
 									 styleClass="maskData" 
 									 converter="dateConverter"
 									 value="#{feriasFormBean.entidade.dataDoAto}" 
-									 maxlength="10" />
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" />
 					</div>
 				</div>
 
@@ -273,17 +281,21 @@
 				<div class="conteiner">
 					<h:inputTextarea id="observacao" 
 									 value="#{feriasFormBean.entidade.observacao}"
-									 onkeyup="this.value = this.value.substring(0, 999);" >
+									 onkeyup="this.value = this.value.substring(0, 999);"
+									 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" >
 									 <f:validateLength maximum="500" />
 					 </h:inputTextarea>
 				</div>
 			</div>
 			
-			<h:commandButton action="#{feriasFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarFerias()"  />
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/feriasList.faces" immediate="true">
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
+				<h:commandButton action="#{feriasFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarFerias()"  />						
+				<a href="/srh/paginas/funcional/feriasForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			</ui:fragment>
+			
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/feriasList.faces" immediate="true">
 				<f:setPropertyActionListener target="#{feriasListBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
-			<a href="/srh/paginas/funcional/feriasForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			</h:commandButton>
 
 		</h:form>
 		

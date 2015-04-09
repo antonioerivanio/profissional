@@ -22,6 +22,7 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.LicencaService;
 import br.gov.ce.tce.srh.service.TipoLicencaService;
+import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -50,6 +51,9 @@ public class LicencaListBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
 
 
 	// controle de acesso do formulario
@@ -288,7 +292,21 @@ public class LicencaListBean implements Serializable {
 
 
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			
+			try {								
+				setCpf(authenticationService.getUsuarioLogado().getCpf());								
+				count = licencaService.count(getEntidade().getPessoal().getId());
+				flagRegistroInicial = -1;				
+				
+			} catch (Exception e) {
+				limparListas();
+				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}			
+			
+		}else if (!passouConsultar) {
 			setEntidade( new Licenca() );
 			setTipoLicenca( null );
 			this.matricula = new String();

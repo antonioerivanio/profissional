@@ -25,7 +25,6 @@ import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
 * Use case : SRH_UC039_Emitir Ficha Funcional
@@ -79,7 +78,6 @@ public class FichaFuncionalListBean implements Serializable {
 		try {
 
 			// validando campos da entidade
-			//if ( getEntidade() == null )
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
@@ -191,13 +189,7 @@ public class FichaFuncionalListBean implements Serializable {
 			} catch (FileNotFoundException e) {
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 				imagemFichaAntiga = parametro.getValor() + "sem_imagem.jpg";
-			}
-
-			//String filtro = " where f.matricula = '" + this.matricula + "' ";
-			//parametros.put("FILTRO", filtro.toString());
-			//parametros.put("IMAGEM_PESSOA", imagemFichaAntiga);
-
-			//relatorioUtil.relatorio("emitirFichaFuncional.jasper", parametros, "fichaFuncional.pdf");
+			}			
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -228,19 +220,7 @@ public class FichaFuncionalListBean implements Serializable {
 			this.matricula = matricula;
 
 			try {
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					Funcional funcional = funcionalService.getCpfAndNomeByMatricula(SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()));
-					setEntidade(funcional);
-					if(funcional != null){
-						this.matricula = funcional.getMatricula();
-					} else {
-						this.matricula = new String();
-						this.cpf = new String();
-						this.nome = new String();
-					}
-				} else {
-					setEntidade( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
-				}
+				setEntidade( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();	
@@ -261,15 +241,8 @@ public class FichaFuncionalListBean implements Serializable {
 		if ( !this.cpf.equals(cpf) ) {
 			this.cpf = cpf;
 
-			try {
-				
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					this.cpf = authenticationService.getUsuarioLogado().getCpf();
-					setEntidade( funcionalService.getMatriculaAndNomeByCpf( SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()) ));
-				} else {
-					setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));
-				}
-				
+			try {				
+				setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();	
@@ -297,7 +270,12 @@ public class FichaFuncionalListBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			lista = new ArrayList<Funcional>();
+			lista.add(entidade); 
+		} else if (!passouConsultar) {
 			setEntidade( new Funcional() );
 			matricula = new String();
 			cpf = new String();

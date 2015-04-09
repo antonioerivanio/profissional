@@ -81,8 +81,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 
 			if ( this.entidade == null ) {
 				throw new SRHRuntimeException("Selecione um funcionário.");
-			}
-			
+			}			
 			
 			lista = new ArrayList<RepresentacaoFuncional>();
 			if(cargo !=null){
@@ -173,22 +172,10 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 		if ( !this.matricula.equals(matricula) ) {
 			this.matricula = matricula;
 
-			try {
+			try {				
 				
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					RepresentacaoFuncional representacaoFuncional = representacaoFuncionalService.getByCpf(authenticationService.getUsuarioLogado().getCpf());
-					setEntidade(representacaoFuncional);
-					if(representacaoFuncional != null){
-						this.matricula = representacaoFuncional.getFuncional().getMatricula();
-					} else {
-						this.matricula = new String();
-						this.cpf = new String();
-						this.nome = new String();
-					}
-				} else {					
-					List<RepresentacaoFuncional> representacaoFuncionals =  representacaoFuncionalService.getByMatricula(matricula);
-					setEntidade(representacaoFuncionals.get(representacaoFuncionals.size()-1));
-				}
+				List<RepresentacaoFuncional> representacaoFuncionals =  representacaoFuncionalService.getByMatricula(matricula);
+				setEntidade(representacaoFuncionals.get(representacaoFuncionals.size()-1));				
 				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
@@ -213,11 +200,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 
 			try {
 				
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					setEntidade( representacaoFuncionalService.getByCpf(authenticationService.getUsuarioLogado().getCpf()));
-				} else {
-					setEntidade( representacaoFuncionalService.getByCpf(cpf) );
-				}
+				setEntidade( representacaoFuncionalService.getByCpf(cpf) );				
 				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
@@ -246,7 +229,10 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		} else if (!passouConsultar) {
 			setEntidade( null );
 			this.matricula = new String();
 			this.cpf = new String();

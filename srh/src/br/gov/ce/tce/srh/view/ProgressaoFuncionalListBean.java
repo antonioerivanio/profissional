@@ -18,6 +18,7 @@ import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.ReferenciaFuncionalService;
+import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -43,6 +44,9 @@ public class ProgressaoFuncionalListBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
 
 
 	// controle de acesso do formulario
@@ -56,7 +60,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 
 	// entidades das telas
 	private List<ReferenciaFuncional> lista;
-	private ReferenciaFuncional entidade;
+	private ReferenciaFuncional entidade = new ReferenciaFuncional();
 
 	//paginação
 	private int count;
@@ -119,7 +123,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
 			StringBuffer filtro = new StringBuffer(); 
-			filtro.append(" F.ID = " + this.entidade.getFuncional().getId());
+			filtro.append(" F.MATRICULA = '" + this.entidade.getFuncional().getMatricula() + "' ");
 			parametros.put("FILTRO", filtro.toString());
 			
 			relatorioUtil.relatorio("progressaoFuncional.jasper", parametros, "progressaoFuncional.pdf");
@@ -197,7 +201,21 @@ public class ProgressaoFuncionalListBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			
+			try {				
+				setCpf(authenticationService.getUsuarioLogado().getCpf());								
+				count = referenciaFuncionalService.count(getEntidade().getFuncional().getMatricula());
+				flagRegistroInicial = -1;				
+				
+			} catch (Exception e) {
+				limparListas();
+				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}			
+			
+		}else if (!passouConsultar) {
 			setEntidade( new ReferenciaFuncional() );
 			matricula = new String();
 			cpf = new String();

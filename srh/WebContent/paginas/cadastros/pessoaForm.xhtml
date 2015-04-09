@@ -52,7 +52,8 @@
 					<h:inputText id="nome"
 								 value="#{pessoaBean.entidade.nome}"
 								 maxlength="40"
-								 onblur="sugerirNomeCompleto()" />    
+								 onblur="sugerirNomeCompleto()"
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>    
 				</div>
 			</div>
 
@@ -61,7 +62,8 @@
 				<div class="conteiner">
 					<h:inputText id="abreviatura"
 								 value="#{pessoaBean.entidade.abreviatura}"
-								 maxlength="25" />
+								 maxlength="25" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -70,7 +72,8 @@
 				<div class="conteiner">
 					<h:inputText id="nomeCompleto"
 								 value="#{pessoaBean.entidade.nomeCompleto}"
-								 maxlength="60" />    
+								 maxlength="60" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>    
 				</div>
 			</div>
 
@@ -79,7 +82,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="estadoCivil" 
 									 converter="entityConverter"
-									 value="#{pessoaBean.entidade.estadoCivil}">
+									 value="#{pessoaBean.entidade.estadoCivil}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 					  	<f:selectItem id="selecioneEstadoCivil" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboEstadoCivil" 
 					  					value="#{pessoaBean.comboEstadoCivil}"
@@ -95,7 +99,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="escolaridade"
 									 converter="entityConverter"
-									 value="#{pessoaBean.entidade.escolaridade}">
+									 value="#{pessoaBean.entidade.escolaridade}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 					  	<f:selectItem id="selecioneEscolaridade" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboEscolaridade" 
 					  					value="#{pessoaBean.comboEscolaridade}"
@@ -111,7 +116,8 @@
 				<div class="conteiner">
 					<div class="radio-box">
 					<h:selectOneRadio id="sexo" 
-									  value="#{pessoaBean.entidade.sexo}" >
+									  value="#{pessoaBean.entidade.sexo}" 
+									  disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 						<f:selectItem id="M" itemLabel="Masculino" itemValue="M" />
 						<f:selectItem id="F" itemLabel="Feminino" itemValue="F" />
 					</h:selectOneRadio>
@@ -128,7 +134,8 @@
 	            	      		   value="#{pessoaBean.arquivo}"
 	                	  		   storage="file" size="20"
 	                  			   valueChangeListener="#{pessoaBean.uploadFoto}"
-	                  			   onchange="submit()" />
+	                  			   onchange="submit()" 
+	                  			   disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 			</div>
 
 
@@ -137,7 +144,8 @@
 				<div class="conteiner">
 					<h:inputText id="nomeMae"
 								 maxlength="60"
-								 value="#{pessoaBean.entidade.nomeMae}" />
+								 value="#{pessoaBean.entidade.nomeMae}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -146,7 +154,8 @@
 				<div class="conteiner">
 					<h:inputText id="nomePai"
 								 maxlength="60"
-								 value="#{pessoaBean.entidade.nomePai}" />
+								 value="#{pessoaBean.entidade.nomePai}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -155,7 +164,8 @@
 				<div class="conteiner">
 					<h:inputText id="naturalidade"
 								 maxlength="30"
-								 value="#{pessoaBean.entidade.naturalidade}" />
+								 value="#{pessoaBean.entidade.naturalidade}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -164,7 +174,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="uf"
 									 converter="entityConverter" 
-									 value="#{pessoaBean.entidade.uf}">
+									 value="#{pessoaBean.entidade.uf}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 					  	<f:selectItem id="selecioneUf"  itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboUf" 
 					  					value="#{pessoaBean.comboUf}"
@@ -181,7 +192,8 @@
 					<h:inputText id="dataNascimento" 
 								 styleClass="maskData" 
 								 converter="dateConverter"
-								 value="#{pessoaBean.entidade.nascimento}" />
+								 value="#{pessoaBean.entidade.nascimento}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -191,7 +203,8 @@
 					<h:inputText id="dataObito" 
 								 styleClass="maskData"
 								 converter="dateConverter"
-								 value="#{pessoaBean.entidade.obito}"  />
+								 value="#{pessoaBean.entidade.obito}"  
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -200,7 +213,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="categoria"
 									 converter="entityConverter" 
-									 value="#{pessoaBean.entidade.categoria}">
+									 value="#{pessoaBean.entidade.categoria}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 					  	<f:selectItem id="selecioneCategoria" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboCategoria"
 					  					value="#{pessoaBean.comboCategoria}"
@@ -226,7 +240,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="biotipo"
 									 converter="entityConverter" 
-									 value="#{pessoaBean.entidade.raca}">
+									 value="#{pessoaBean.entidade.raca}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 					  	<f:selectItem id="selecioneRaca"  itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboRaca" 
 					  					value="#{pessoaBean.comboRaca}"
@@ -241,7 +256,9 @@
 				<h3>Tipo Sanguíneo</h3>
 				<div class="conteiner">
 					<div class="radio-box">
-					<h:selectOneRadio id="tipoSangue" value="#{pessoaBean.entidade.tipoSangue}" >
+					<h:selectOneRadio 	id="tipoSangue" 
+										value="#{pessoaBean.entidade.tipoSangue}" 
+										disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 						<f:selectItem id="A" itemLabel="A" itemValue="A" />
 						<f:selectItem id="B" itemLabel="B" itemValue="B" />
 						<f:selectItem id="AB" itemLabel="AB" itemValue="AB" />
@@ -255,7 +272,9 @@
 				<h3>Fato RH</h3>
 				<div class="conteiner">
 					<div class="radio-box">
-					<h:selectOneRadio id="fatorRH" value="#{pessoaBean.entidade.fatorRH}" >
+					<h:selectOneRadio 	id="fatorRH" 
+										value="#{pessoaBean.entidade.fatorRH}" 
+										disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 						<f:selectItem id="positivo" itemLabel="+" itemValue="+" />
 						<f:selectItem id="negativo" itemLabel="-" itemValue="-" />
 					</h:selectOneRadio>
@@ -279,7 +298,8 @@
 					<h:inputText id="salarioFamilia" 
 								 maxlength="2" required="true" requiredMessage="Salário Família é obrigatório"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.qtdDepsf}" />
+								 value="#{pessoaBean.entidade.qtdDepsf}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -289,7 +309,8 @@
 					<h:inputText id="impostoRenda" 
 								 maxlength="2" required="true" requiredMessage="Imposto de Renda é obrigatório"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.qtdDepir}" />
+								 value="#{pessoaBean.entidade.qtdDepir}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 			
@@ -299,7 +320,8 @@
 					<h:inputText id="previdencia" 
 								 maxlength="2" required="true" requiredMessage="Previdência é obrigatório"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.qtdDepprev}" />
+								 value="#{pessoaBean.entidade.qtdDepprev}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -319,7 +341,8 @@
 					<h:inputText id="rg" 
 								 maxlength="15"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.rg}" />
+								 value="#{pessoaBean.entidade.rg}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -328,7 +351,8 @@
 				<div class="conteiner">
 					<h:inputText id="emissor" 
 								 maxlength="10"
-								 value="#{pessoaBean.entidade.emissorRg}" />
+								 value="#{pessoaBean.entidade.emissorRg}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -337,7 +361,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="ufEmissor"
 									 converter="entityConverter" 
-									 value="#{pessoaBean.entidade.ufEmissorRg}">
+									 value="#{pessoaBean.entidade.ufEmissorRg}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 					  	<f:selectItem id="selecioneUfEmissor" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboUfEmissor"
 					  					value="#{pessoaBean.comboUf}"
@@ -354,7 +379,8 @@
 					<h:inputText id="dataEmissaoRg" 
 								 styleClass="maskData"
 								 converter="dateConverter"
-								 value="#{pessoaBean.entidade.dataEmissaoRg}"  />
+								 value="#{pessoaBean.entidade.dataEmissaoRg}"  
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -366,7 +392,8 @@
 					<h:inputText id="titulo" 
 								 maxlength="12"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.tituloEleitoral}" />
+								 value="#{pessoaBean.entidade.tituloEleitoral}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -376,7 +403,8 @@
 					<h:inputText id="zona" 
 								 maxlength="4"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.zonaEleitoral}" />
+								 value="#{pessoaBean.entidade.zonaEleitoral}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -386,7 +414,8 @@
 					<h:inputText id="secao" 
 								 maxlength="4"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.secaoEleitoral}" />
+								 value="#{pessoaBean.entidade.secaoEleitoral}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -398,7 +427,8 @@
 					<h:inputText id="cpf" 
 								 maxlength="14"
 								 styleClass="maskCpf"
-								 value="#{pessoaBean.entidade.cpf}" />
+								 value="#{pessoaBean.entidade.cpf}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -408,7 +438,8 @@
 					<h:inputText id="pasep" 
 								 maxlength="15"
 								 styleClass="maskPasep"
-								 value="#{pessoaBean.entidade.pasep}" />
+								 value="#{pessoaBean.entidade.pasep}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -418,7 +449,8 @@
 					<h:inputText id="docMilitar" 
 								 maxlength="30"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.documentoMilitar}" />
+								 value="#{pessoaBean.entidade.documentoMilitar}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -436,7 +468,9 @@
 				<h3>Tipo</h3>
 				<div class="conteiner">
 					<div class="radio-box">
-					<h:selectOneRadio id="tipoContaBbd" value="#{pessoaBean.entidade.tipoContaBbd}" >
+					<h:selectOneRadio 	id="tipoContaBbd" 
+										value="#{pessoaBean.entidade.tipoContaBbd}" 
+										disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 						<f:selectItem id="corrente" itemLabel="Conta Corrente" itemValue="1" />
 						<f:selectItem id="poupanca" itemLabel="Poupança" itemValue="2" />
 					</h:selectOneRadio>
@@ -450,7 +484,8 @@
 					<h:inputText id="agenciaBbd" 
 								 maxlength="6"
 								 styleClass="maskAgencia"
-								 value="#{pessoaBean.entidade.agenciaBbd}" />
+								 value="#{pessoaBean.entidade.agenciaBbd}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -460,7 +495,8 @@
 					<h:inputText id="contaBbd" 
 								 maxlength="9"
 								 styleClass="maskConta"
-								 value="#{pessoaBean.entidade.contaBbd}" />
+								 value="#{pessoaBean.entidade.contaBbd}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -479,7 +515,8 @@
 				<div class="conteiner">
 					<h:inputText id="endereco" 
 								 maxlength="40"
-								 value="#{pessoaBean.entidade.endereco}" />
+								 value="#{pessoaBean.entidade.endereco}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -489,7 +526,8 @@
 					<h:inputText id="numero" 
 								 maxlength="5"
 								 onkeyup="SoNumeros(this)"
-								 value="#{pessoaBean.entidade.numero}" />
+								 value="#{pessoaBean.entidade.numero}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -498,7 +536,8 @@
 				<div class="conteiner">
 					<h:inputText id="complemento" 
 								 maxlength="15"
-								 value="#{pessoaBean.entidade.complemento}" />
+								 value="#{pessoaBean.entidade.complemento}"
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}" />
 				</div>
 			</div>
 
@@ -507,7 +546,8 @@
 				<div class="conteiner">
 					<h:inputText id="bairro" 
 								 maxlength="30"
-								 value="#{pessoaBean.entidade.bairro}" />
+								 value="#{pessoaBean.entidade.bairro}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -517,7 +557,8 @@
 					<h:inputText id="cep" 
 								 maxlength="9"
 								 styleClass="maskCep"
-								 value="#{pessoaBean.entidade.cep}" />
+								 value="#{pessoaBean.entidade.cep}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
  
@@ -526,7 +567,8 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="ufEndereco"
 									 converter="entityConverter" 
-									 value="#{pessoaBean.entidade.ufEndereco}">
+									 value="#{pessoaBean.entidade.ufEndereco}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
 					  	<f:selectItem id="selecioneUfEndereco" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboUfEndereco"
 					  					value="#{pessoaBean.comboUf}"
@@ -542,7 +584,8 @@
 				<div class="conteiner">
 					<h:inputText id="municipio"
 								 maxlength="30" 
-								 value="#{pessoaBean.entidade.municipio}" />
+								 value="#{pessoaBean.entidade.municipio}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -552,7 +595,8 @@
 					<h:inputText id="telefone" 
 								 maxlength="14"
 								 styleClass="maskTelefone"
-								 value="#{pessoaBean.entidade.telefone}" />
+								 value="#{pessoaBean.entidade.telefone}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -562,7 +606,8 @@
 					<h:inputText id="celular"
 								 maxlength="14"
 								 styleClass="maskTelefone" 
-								 value="#{pessoaBean.entidade.celular}" />
+								 value="#{pessoaBean.entidade.celular}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -571,7 +616,8 @@
 				<div class="conteiner">
 					<h:inputText id="email" 
 								 maxlength="40"
-								 value="#{pessoaBean.entidade.email}" />
+								 value="#{pessoaBean.entidade.email}" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
 				</div>
 			</div>
 
@@ -590,14 +636,18 @@
 	            	      		   value="#{pessoaBean.ficha}"
 	                	  		   storage="file" size="20"
 	                  			   valueChangeListener="#{pessoaBean.uploadFicha}"
+	                  			   disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"
 	                  			   />
 			</div>
 
 			</fieldset>
 
-			<h:commandButton action="#{pessoaBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
-			<a href="/srh/paginas/cadastros/pessoaList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/cadastros/pessoaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">				
+				<h:commandButton action="#{pessoaBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />				
+				<a href="/srh/paginas/cadastros/pessoaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>			
+			</ui:fragment>
+			
+			<a href="/srh/paginas/cadastros/pessoaList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

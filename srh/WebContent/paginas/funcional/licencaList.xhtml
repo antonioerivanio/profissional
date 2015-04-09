@@ -32,75 +32,78 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
-			<div class="input-box box-8">
-				<label for="">Matricula</label>
-				<div class="conteiner">
-					<h:inputText id="matricula"
-								 name="matricula"
-								 maxlength="6"
-								 styleClass="maskMatricula"
-								 value="#{licencaListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, lista" ajaxSingle="true" />
-        			</h:inputText>
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+
+				<div class="input-box box-8">
+					<label for="">Matricula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 maxlength="6"
+									 styleClass="maskMatricula"
+									 value="#{licencaListBean.matricula}" >
+	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, lista" ajaxSingle="true" />
+	        			</h:inputText>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-12">
-				<label for="">CPF</label>
-				<div class="conteiner">
-					<h:inputText id="cpf" 
-								 name="cpf"
-								 maxlength="14"
-								 styleClass="maskCpf"
-								 converter="cpfConverter"
-								 value="#{licencaListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, lista" ajaxSingle="true" />
-					</h:inputText>
+	
+				<div class="input-box box-12">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 value="#{licencaListBean.cpf}" >
+							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, lista" ajaxSingle="true" />
+						</h:inputText>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-30">
-				<label for="">Nome</label>
-				<div class="conteiner">
-					<h:inputText id="nomeCompletoPessoa"
-								 name="nomeCompletoPessoa"
-								 value="#{licencaListBean.nome}" />
+	
+				<div class="input-box box-30">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{licencaListBean.nome}" />
+					</div>
 				</div>
-			</div>
-
-			<a id="form:Pesquisar" 
-			   href="#" 
-			   onclick="openwindow()" 
-			   class="bt-padrao fl mg-top-18">Pesquisar</a>
-
-
-			<div class="select-box box-20 mg-left-10 ">
-				<label for="">Tipo de Licença</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="tipoLicenca"
-									 value="#{licencaListBean.tipoLicenca}"
-									 converter="entityConverter" >
-					  	<f:selectItem id="selecioneTipoLicenca" itemLabel="Todos" itemValue="" />
-					  	<f:selectItems 	id="comboTipoLicenca" 
-					  					value="#{licencaListBean.comboTipoLicenca}"
-					  					var="tipoLicenca"
-					  					itemValue="#{tipoLicenca}"
-					  					itemLabel="#{tipoLicenca.descricao}" />
-					</h:selectOneMenu>
+	
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+	
+	
+				<div class="select-box box-20 mg-left-10 ">
+					<label for="">Tipo de Licença</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="tipoLicenca"
+										 value="#{licencaListBean.tipoLicenca}"
+										 converter="entityConverter" >
+						  	<f:selectItem id="selecioneTipoLicenca" itemLabel="Todos" itemValue="" />
+						  	<f:selectItems 	id="comboTipoLicenca" 
+						  					value="#{licencaListBean.comboTipoLicenca}"
+						  					var="tipoLicenca"
+						  					itemValue="#{tipoLicenca}"
+						  					itemLabel="#{tipoLicenca.descricao}" />
+						</h:selectOneMenu>
+					</div>
 				</div>
-			</div>
-
-			<h:commandButton id="consultar"
-							 value="Consultar"
-							 action="#{licencaListBean.consultar}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10"
-							 reRender="scroller,lista"/>
-			<h:commandButton id="relatorio"
-							 value="Relatório"
-							 action="#{licencaListBean.relatorio}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 style="margin-left: 10px"
-							 reRender="messages" />
+	
+				<h:commandButton id="consultar"
+								 value="Consultar"
+								 action="#{licencaListBean.consultar}"
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10"
+								 reRender="scroller,lista"/>
+				<h:commandButton id="relatorio"
+								 value="Relatório"
+								 action="#{licencaListBean.relatorio}"
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+								 style="margin-left: 10px"
+								 reRender="messages" />
+			</ui:fragment>
 
 			<div class="tabela-dados">
 				<rich:dataTable id="lista" value="#{licencaListBean.dataModel}" var="item" rows="10" binding="#{licencaListBean.dataTable}">
@@ -116,7 +119,7 @@
                         </f:facet>
                         <h:outputText id="item2" value="#{item.tipoLicenca.descricao}" styleClass="cel-50" />
                     </h:column>
-                    <h:column id="col8" headerClass="cel-50">
+                    <h:column id="col3" headerClass="cel-50">
                         <f:facet id="header2" name="header">
                             Nº Processo
                         </f:facet>
@@ -124,7 +127,7 @@
                         	<f:converter converterId="processoConverter"/>  
                         </h:outputText>
                     </h:column>
-                    <h:column id="col3" headerClass="cel-10">
+                    <h:column id="col4" headerClass="cel-10">
                         <f:facet id="header3" name="header">
                             Início
                         </f:facet>
@@ -134,7 +137,7 @@
                         	</h:outputText>
                         </center>
                     </h:column>
-                     <h:column id="col4" headerClass="cel-10">
+                     <h:column id="col5" headerClass="cel-10">
                         <f:facet id="header4" name="header">
                             Final
                         </f:facet>
@@ -144,7 +147,7 @@
                         	</h:outputText>
                         </center>
                     </h:column>
-                    <h:column id="col5" headerClass="cel-10">
+                    <h:column id="col6" headerClass="cel-10">
                         <f:facet id="header5" name="header">
                             Dias
                         </f:facet>
@@ -152,7 +155,18 @@
                         	<h:outputText id="item5" value="#{item.dias}" styleClass="cel-10" />
                         </center>
                     </h:column>
-                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ALTERAR')}">
+                    <h:column id="col7" rendered="#{not LoginBean.anyGranted('ROLE_LICENCA_ALTERAR')}">
+                        <f:facet name="header">
+                            DETALHAR
+                        </f:facet>
+                       <h:commandLink id="detalhar"
+                       				  value="Detalhar"
+                       				  action="#{licencaFormBean.prepareAlterar}"
+                       				  styleClass="ico-detail" >
+                            <f:setPropertyActionListener target="#{licencaFormBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+                	<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ALTERAR')}">
                         <f:facet id="header6" name="header">
                             EDITAR
                         </f:facet>
@@ -163,7 +177,7 @@
                             <f:setPropertyActionListener target="#{licencaFormBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_LICENCA_EXCLUIR')}">
+                	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_LICENCA_EXCLUIR')}">
                         <f:facet id="header7" name="header">
                             EXCLUIR
                         </f:facet>
@@ -180,18 +194,28 @@
 
 
 			</div>
-
-			<h:commandButton id="incluir"
-							 value="Incluir"
-							 action="#{licencaFormBean.prepareIncluir}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR')}"/>
-							 
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{licencaListBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />								 
+	
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			
+				<h:commandButton id="incluir"
+								 value="Incluir"
+								 action="#{licencaFormBean.prepareIncluir}"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR')}"/>
+								 
+				<h:commandButton id="limpaTela"
+								 value="Limpar"
+								 action="#{licencaListBean.limpaTela}"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 />								 
+			</ui:fragment>
+			
+			<h:commandButton id="relatorio2"
+							 value="Relatório"
+							 action="#{licencaListBean.relatorio}"
+							 styleClass="bt-padrao fr mg-right-15" 								 
+							 reRender="messages"
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
 
 		</h:form>
 

@@ -58,7 +58,7 @@
 									 name="matricula"
 									 maxlength="6" 
 									 styleClass="maskMatricula"
-									 disabled="#{funcionalSetorFormBean.alterar}"
+									 disabled="#{funcionalSetorFormBean.alterar or (not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR'))}"
 									 value="#{funcionalSetorFormBean.matricula}">
 							<a4j:support event="onchange"
 										 focus="setor"
@@ -73,7 +73,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa" 
 									 name="nomeCompletoPessoa"
-									 disabled="#{funcionalSetorFormBean.alterar}"
+									 disabled="#{funcionalSetorFormBean.alterar or (not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR'))}"
 									 value="#{funcionalSetorFormBean.nome}" />
 					</div>
 				</div>
@@ -153,7 +153,8 @@
 									 converter="entityConverter"
 									 required="true"
 									 requiredMessage="O setor é obrigatório."
-									 value="#{funcionalSetorFormBean.entidade.setor}">
+									 value="#{funcionalSetorFormBean.entidade.setor}"
+									 disabled="#{not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR')}" >
 						<f:selectItem id="selecioneSetor" itemLabel="Selecione..." itemValue="" />
 						<f:selectItems 	id="comboSetor" 
 										value="#{funcionalSetorFormBean.comboSetor}"
@@ -174,7 +175,8 @@
 								 required="true"
 								 requiredMessage="A data de inicio é obrigatório." 
 								 value="#{funcionalSetorFormBean.entidade.dataInicio}" 
-								 maxlength="10" /> 
+								 maxlength="10" 
+								 disabled="#{not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR')}" /> 
 				</div>
 			</div>
 
@@ -186,7 +188,8 @@
 								 converter="dateConverter" 
 								 styleClass="maskData"
 								 value="#{funcionalSetorFormBean.entidade.dataFim}" 
-								 maxlength="10" />
+								 maxlength="10"
+								 disabled="#{not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR')}" />
 				</div>
 			</div>
 					
@@ -195,19 +198,22 @@
 				<div class="conteiner">
 					<h:inputTextarea id="observacao"
 									 value="#{funcionalSetorFormBean.entidade.observacao}"
-									 onkeyup="this.value = this.value.substring(0, 500);" />
+									 onkeyup="this.value = this.value.substring(0, 500);" 
+									 disabled="#{not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR')}"/>
 				</div>
 			</div>
 
 			</fieldset>
-
-			<h:commandButton action="#{funcionalSetorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
-			<a href="/srh/paginas/funcional/funcionalSetorList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<h:commandButton id="limpaTelaForm"
-							 value="Limpar"
-							 action="#{funcionalSetorFormBean.limpaTelaForm}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />	
+			
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR')}">
+				<h:commandButton action="#{funcionalSetorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />		
+				<h:commandButton id="limpaTelaForm"
+								 value="Limpar"
+								 action="#{funcionalSetorFormBean.limpaTelaForm}"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 />	
+			</ui:fragment>
+			<a href="/srh/paginas/funcional/funcionalSetorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

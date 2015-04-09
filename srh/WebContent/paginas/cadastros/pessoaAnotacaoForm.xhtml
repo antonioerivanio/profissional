@@ -59,7 +59,7 @@
 									 name="matricula"
 									 maxlength="6"
 									 styleClass="maskMatricula"
-									 disabled="#{funcionalAnotacaoBean.alterar}"
+									 disabled="#{funcionalAnotacaoBean.alterar or ( not LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') ) }"
 									 value="#{funcionalAnotacaoBean.matricula}">
 							<a4j:support event="onchange"
 										 focus="setor"
@@ -74,7 +74,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa" 
 									 name="nomeCompletoPessoa"
-									 disabled="#{funcionalAnotacaoBean.alterar}"
+									 disabled="#{funcionalAnotacaoBean.alterar or ( not LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') ) }"
 									 value="#{funcionalAnotacaoBean.nome}" />
 					</div>
 				</div>
@@ -155,7 +155,8 @@
 								 converter="dateConverter"
 								 styleClass="maskData"
 								 value="#{funcionalAnotacaoBean.entidade.data}" 
-								 maxlength="10" /> 
+								 maxlength="10" 
+								 disabled="#{ not LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') }"/> 
 				</div>
 			</div>
 
@@ -165,7 +166,7 @@
 					<h:inputTextarea id="anotacao"
 									 value="#{funcionalAnotacaoBean.entidade.anotacao}"
 									 onmousemove="this.value = this.value.substring(0, 4000);"
-								    />
+								     disabled="#{ not LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') }"/>
 									 
 				   
 				</div>
@@ -173,14 +174,11 @@
 
 			</fieldset>
 
-			<h:commandButton action="#{funcionalAnotacaoBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
-			<a href="/srh/paginas/cadastros/pessoaAnotacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{funcionalAnotacaoBean.limpaForm}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') }">	
+				<h:commandButton action="#{funcionalAnotacaoBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
+				<h:commandButton id="limpaTela" value="Limpar" action="#{funcionalAnotacaoBean.limpaForm}" styleClass="bt-padrao fr mg-right-10" />
+			</ui:fragment>				 
+			<a href="/srh/paginas/cadastros/pessoaAnotacaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

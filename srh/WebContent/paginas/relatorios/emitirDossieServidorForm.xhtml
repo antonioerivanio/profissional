@@ -437,9 +437,11 @@
 				</div>
 				</fieldset>
 			</h:panelGroup>
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/relatorios/emitirDossieServidorList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{emitirDossieServidorListBean.passouConsultar}" value="true"/>
+			
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/relatorios/emitirDossieServidorList.faces" immediate="true">
+				<f:setPropertyActionListener target="#{emitirDossieServidorListBean.passouConsultar}" value="true"/>			
 			</h:commandButton>
+			
 		</h:form>
 	</ui:define>
 </ui:composition>

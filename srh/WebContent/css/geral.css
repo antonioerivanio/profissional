@@ -649,6 +649,16 @@ body {
             padding: 11px 10px;
         }
         
+        .tabela-dados .ico-detail {
+            display: block;
+            text-indent: -9000px;
+            overflow: hidden;
+            width: 15px;
+            height: 16px;
+            background: url(../img/ico-detail.png) 0 0 no-repeat;
+            margin: 0 auto;
+        }
+        
         .tabela-dados .ico-editar {
             display: block;
             text-indent: -9000px;
