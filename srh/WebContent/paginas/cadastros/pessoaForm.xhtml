@@ -51,7 +51,7 @@
 				<div class="conteiner">
 					<h:inputText id="nome"
 								 value="#{pessoaBean.entidade.nome}"
-								 maxlength="40"
+								 maxlength="200"
 								 onblur="sugerirNomeCompleto()"
 								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>    
 				</div>
