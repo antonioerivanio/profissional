@@ -44,26 +44,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				return null;
 
 			usuario = lista.get(0);
+			
+			int totalDeGruposDoSRH = 0;
 
 			for (GrupoUsuario grupoUsuarios : usuario.getGrupoUsuario()) {
-
+				
 				// verifica se o grupo pertence ao sistema SRH
-				if (grupoUsuarios.getGrupo().getSistema().getSigla().equalsIgnoreCase("SRH")){
+				if (grupoUsuarios.getGrupo().getSistema().getSigla().equalsIgnoreCase("SRH")){					
 
-					// pegando a lista de permissoes
-					Query query = entityManager.createQuery("Select p from Permissao p join fetch p.secao join fetch p.sistema where p.grupo = :grupo ");
-					query.setParameter("grupo", grupoUsuarios.getGrupo().getId() );
-					List<Permissao> listaPermissao = query.getResultList();
-
-					// dando grant
-					for (Permissao permissao : listaPermissao) {
-
-						// verifica se a permissao pertence ao sistema SRH
-						if (permissao.getSistema().getSigla().equalsIgnoreCase("SRH")) {
-							GrantedAuthority result = new GrantedAuthorityImpl(permissao.getSecao().getNome());
-							usuario.getAuthorities().add(result);
+					if (grupoUsuarios.getGrupo().getId() != 49 || (grupoUsuarios.getGrupo().getId() == 49 && totalDeGruposDoSRH == 0)){
+					
+						totalDeGruposDoSRH++;
+						
+						// pegando a lista de permissoes
+						Query query = entityManager.createQuery("Select p from Permissao p join fetch p.secao join fetch p.sistema where p.grupo = :grupo ");
+						query.setParameter("grupo", grupoUsuarios.getGrupo().getId() );
+						List<Permissao> listaPermissao = query.getResultList();
+	
+						// dando grant
+						for (Permissao permissao : listaPermissao) {
+	
+							// verifica se a permissao pertence ao sistema SRH
+							if (permissao.getSistema().getSigla().equalsIgnoreCase("SRH")) {
+								GrantedAuthority result = new GrantedAuthorityImpl(permissao.getSecao().getNome());
+								usuario.getAuthorities().add(result);
+							}
+	
 						}
-
+					
 					}
 
 				}

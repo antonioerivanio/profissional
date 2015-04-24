@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -56,6 +57,7 @@ public class Usuario implements Serializable, UserDetails {
 
 	@OneToMany(mappedBy="usuario", targetEntity=GrupoUsuario.class, fetch=FetchType.EAGER)
 	@BatchSize(size=1000)
+	@OrderBy("grupo")
 	private List<GrupoUsuario> grupoUsuario;
 
 	@Transient

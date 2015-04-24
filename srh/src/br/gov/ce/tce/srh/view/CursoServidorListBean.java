@@ -281,8 +281,7 @@ public class CursoServidorListBean implements Serializable {
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());
-			consultar();
+			setCpf(authenticationService.getUsuarioLogado().getCpf());			
 		} else if (!passouConsultar) {
 			setCursoProfissional( new CursoProfissional() );
 			this.matricula = new String();
