@@ -182,5 +182,15 @@ public class RepresentacaoFuncionalDAOImpl implements RepresentacaoFuncionalDAO 
 		query.setParameter("setor", setor);
 		return query.getResultList();
 	}
+	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<RepresentacaoFuncional> findByCargoSetor(Long cargo, Long setor) {
+		Query query = entityManager.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.representacaoCargo.id = :cargo AND r.setor.id = :setor AND ativo = true ");
+		query.setParameter("cargo", cargo);
+		query.setParameter("setor", setor);
+		return query.getResultList();
+	}
 
 }

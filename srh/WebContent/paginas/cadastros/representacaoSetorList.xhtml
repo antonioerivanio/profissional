@@ -65,25 +65,41 @@
                     </h:column>
                     <h:column id="col3">
                         <f:facet name="header">
+                            Quantidade
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item3" value="#{item.quantidade}" />
+                    	</center>
+                    </h:column>
+                    <h:column id="col4">
+                        <f:facet name="header">
+                            Ocupados
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item4" value="#{representacaoSetorBean.ocupados(item)}" />
+                    	</center>
+                    </h:column>
+                    <h:column id="col5">
+                        <f:facet name="header">
                             Inicio
                         </f:facet>
                         <center>
-	                        <h:outputText id="item3" value="#{item.inicio}" >
+	                        <h:outputText id="item5" value="#{item.inicio}" >
 	                        	<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 	                        </h:outputText>
                         </center>
                     </h:column>
-                    <h:column id="col4">
+                    <h:column id="col6">
                         <f:facet name="header">
                             Fim
                         </f:facet>
                         <center>
-	                        <h:outputText id="item4" value="#{item.fim}" >
+	                        <h:outputText id="item6" value="#{item.fim}" >
 	                        	<f:convertDateTime id="dataFim" type="date" pattern="dd/MM/yyyy" />
 	                        </h:outputText>
                         </center>
                     </h:column>
-                	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_SETOR_ALTERAR')}">
+                	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_SETOR_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -94,7 +110,7 @@
                             <f:setPropertyActionListener target="#{representacaoSetorBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_SETOR_EXCLUIR')}">
+                	<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_SETOR_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>

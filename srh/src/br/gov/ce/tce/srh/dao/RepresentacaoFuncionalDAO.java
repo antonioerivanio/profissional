@@ -23,6 +23,7 @@ public interface RepresentacaoFuncionalDAO {
 	public List<RepresentacaoFuncional> findByPessoal(Long idPessoa);
 	public List<RepresentacaoFuncional> findByFuncional(Long idFuncional);
 	public List<RepresentacaoFuncional> findByTipoNomeacaoCargoSetor(Long tipoNomeacao, Long cargo, Long setor);
+	public List<RepresentacaoFuncional> findByCargoSetor(Long cargo, Long setor);
 	public List<RepresentacaoFuncional> findByUsuarioLogadoSetor(Usuario usuarioLogado, Long idSetor);
 	public List<RepresentacaoFuncional> findByUsuarioLogado(Usuario usuarioLogado);
 

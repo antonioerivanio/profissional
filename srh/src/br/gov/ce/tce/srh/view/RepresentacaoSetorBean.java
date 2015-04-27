@@ -15,7 +15,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.dao.RepresentacaoFuncionalDAO;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
+import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.domain.RepresentacaoSetor;
 import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -44,6 +46,9 @@ public class RepresentacaoSetorBean implements Serializable {
 
 	@Autowired
 	private RepresentacaoCargoService representacaoCargoService;
+	
+	@Autowired
+	private RepresentacaoFuncionalDAO representacaoFuncionalDAO;
 
 	@Autowired
 	private SetorService setorService;
@@ -251,6 +256,15 @@ public class RepresentacaoSetorBean implements Serializable {
 		return "listar";
 	}
 
+	public Long ocupados(RepresentacaoSetor representacaoSetor) {
+		
+		List<RepresentacaoFuncional> representacoesAtivas = representacaoFuncionalDAO.findByCargoSetor(representacaoSetor.getRepresentacaoCargo().getId(), representacaoSetor.getSetor().getId());
+		if (representacoesAtivas == null){
+			return 0L;
+		}else{
+			return (long) representacoesAtivas.size();
+		}
+	}
 
 
 	/**
