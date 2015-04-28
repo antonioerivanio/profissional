@@ -144,72 +144,6 @@
 
 
 
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.progracaoFuncional}">
-
-				<fieldset>
-
-				<legend>Progressão Funcional</legend>
-
-				<br/>
-
-				<div class="tabela-dados">
-	
-					<rich:dataTable id="listaProgrecaoFuncional" value="#{emitirDossieServidorFormBean.listaReferenciaFuncional}" var="item" >
-	
-	                    <h:column id="col1">
-	                        <f:facet name="header">
-	                           Cargo
-	                        </f:facet>
-	                        <h:outputText id="item1" value="#{item.funcional.ocupacao.nomenclatura}" />
-	                    </h:column>
-	                    <h:column id="col2">
-	                        <f:facet name="header">
-	                            Classe/Referência
-	                        </f:facet>
-                        	<h:outputText id="item21" value="#{item.classeReferencia.simbolo.simbolo}" /> - <h:outputText id="item2" value="#{item.classeReferencia.referencia}" />
-	                    </h:column>
-	                    <h:column id="col3">
-	                        <f:facet name="header">
-	                          Movimento
-	                        </f:facet>
-	                        <h:outputText id="item3" value="#{item.tipoMovimento.descricao}" />
-	                    </h:column>
-	                    <h:column id="col4">
-	                        <f:facet name="header">
-	                           Data Início
-	                        </f:facet>
-	                        <center>
-	                        	<h:outputText id="item4" value="#{item.inicio}" >
-	                        		<f:convertDateTime id="convProgressaoInicio" type="date" pattern="dd/MM/yyyy" />
-	                        	</h:outputText>
-	                        </center>
-	                    </h:column>	                    
-	                     <h:column id="col5">
-	                        <f:facet name="header">
-	                           Data Fim
-	                        </f:facet>
-	                        <center>
-	                        	<h:outputText id="item5" value="#{item.fim}" >
-	                        		<f:convertDateTime id="convProgressaoFim" type="date" pattern="dd/MM/yyyy" />
-	                        	</h:outputText>
-	                        </center>
-	                    </h:column>
-						<rich:column headerClass="headerTable" styleClass="columnsTable" style="text-align:right;">
-	                        <f:facet name="header">
-	                           Dias
-	                        </f:facet>
-	                        	<h:outputText id="item6" value="#{item.dias}" />
-	                    </rich:column>
-					</rich:dataTable>
-	
-				</div>
-				
-				</fieldset>
-			
-			</h:panelGroup>
-		
-
-
 			<h:panelGroup rendered="#{emitirDossieServidorListBean.historicoLotacao}">
 
 				<fieldset>
@@ -266,68 +200,7 @@
 				
 				</fieldset>
 		
-			</h:panelGroup>
-			
-
-
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.historicoFerias}">
-
-				<fieldset>
-
-				<legend>Histórico de Férias</legend>
-
-				<br/>				
-
-				<div class="tabela-dados">
-	
-					<rich:dataTable id="listaFerias" value="#{emitirDossieServidorFormBean.listaFerias}" var="item2" >
-	
-	                    <h:column id="col10">
-	                        <f:facet name="header">
-	                          Tipo Férias
-	                        </f:facet>
-	                        <h:outputText id="item1" value="#{item2.tipoFerias.descricao}" />
-	                    </h:column>
-	                    <h:column id="col11">
-	                        <f:facet name="header">
-	                           Referência
-	                        </f:facet>
-	                        <center><h:outputText id="item2" value="#{item2.anoReferencia}" /></center>
-	                    </h:column>
-	                    <h:column id="col12">
-	                        <f:facet name="header">
-	                          Data Início
-	                        </f:facet>
-	                        <center>
-	                        	<h:outputText id="item4" value="#{item2.inicio}" >
-	                        		<f:convertDateTime id="convFeriasInicio" type="date" pattern="dd/MM/yyyy" />
-	                        	</h:outputText>
-	                        </center>
-	                    </h:column>	                    
-	                    <h:column id="col13">
-	                        <f:facet name="header">
-	                          Data Fim
-	                        </f:facet>
-	                        <center>
-	                        	<h:outputText id="item5" value="#{item2.fim}" >
-	                        		<f:convertDateTime id="convFeriasFim" type="date" pattern="dd/MM/yyyy" />
-	                        	</h:outputText>
-	                        </center>
-	                    </h:column>
-						<rich:column headerClass="headerTable" styleClass="columnsTable" style="text-align:right;">
-	                        <f:facet name="header">
-	                           Dias
-	                        </f:facet>
-	                        	<h:outputText id="item6" value="#{item2.dias}" />
-	                    </rich:column>
-	
-					</rich:dataTable>
-	
-				</div>
-				
-				</fieldset>
-
-			</h:panelGroup>
+			</h:panelGroup>		
 			
 
 
@@ -409,6 +282,204 @@
 				</fieldset>
 
 			</h:panelGroup>
+
+
+
+			<h:panelGroup rendered="#{emitirDossieServidorListBean.historicoFerias}">
+
+				<fieldset>
+
+				<legend>Histórico de Férias</legend>
+
+				<br/>				
+
+				<div class="tabela-dados">
+	
+					<rich:dataTable id="listaFerias" value="#{emitirDossieServidorFormBean.listaFerias}" var="item2" >
+	
+	                    <h:column id="col10">
+	                        <f:facet name="header">
+	                          Tipo Férias
+	                        </f:facet>
+	                        <h:outputText id="item1" value="#{item2.tipoFerias.descricao}" />
+	                    </h:column>
+	                    <h:column id="col11">
+	                        <f:facet name="header">
+	                           Referência
+	                        </f:facet>
+	                        <center><h:outputText id="item2" value="#{item2.anoReferencia}" /></center>
+	                    </h:column>
+	                    <h:column id="col12">
+	                        <f:facet name="header">
+	                          Data Início
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item4" value="#{item2.inicio}" >
+	                        		<f:convertDateTime id="convFeriasInicio" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>	                    
+	                    <h:column id="col13">
+	                        <f:facet name="header">
+	                          Data Fim
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item5" value="#{item2.fim}" >
+	                        		<f:convertDateTime id="convFeriasFim" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+						<rich:column headerClass="headerTable" styleClass="columnsTable" style="text-align:right;">
+	                        <f:facet name="header">
+	                           Dias
+	                        </f:facet>
+	                        	<h:outputText id="item6" value="#{item2.dias}" />
+	                    </rich:column>
+	
+					</rich:dataTable>
+	
+				</div>
+				
+				</fieldset>
+
+			</h:panelGroup>
+			
+			
+
+			<h:panelGroup rendered="#{emitirDossieServidorListBean.progracaoFuncional}">
+
+				<fieldset>
+
+				<legend>Progressão Funcional</legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+	
+					<rich:dataTable id="listaProgrecaoFuncional" value="#{emitirDossieServidorFormBean.listaReferenciaFuncional}" var="item" >
+	
+	                    <h:column id="col1">
+	                        <f:facet name="header">
+	                           Cargo
+	                        </f:facet>
+	                        <h:outputText id="item1" value="#{item.funcional.ocupacao.nomenclatura}" />
+	                    </h:column>
+	                    <h:column id="col2">
+	                        <f:facet name="header">
+	                            Classe/Referência
+	                        </f:facet>
+                        	<h:outputText id="item21" value="#{item.classeReferencia.simbolo.simbolo}" /> - <h:outputText id="item2" value="#{item.classeReferencia.referencia}" />
+	                    </h:column>
+	                    <h:column id="col3">
+	                        <f:facet name="header">
+	                          Movimento
+	                        </f:facet>
+	                        <h:outputText id="item3" value="#{item.tipoMovimento.descricao}" />
+	                    </h:column>
+	                    <h:column id="col4">
+	                        <f:facet name="header">
+	                           Data Início
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item4" value="#{item.inicio}" >
+	                        		<f:convertDateTime id="convProgressaoInicio" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>	                    
+	                     <h:column id="col5">
+	                        <f:facet name="header">
+	                           Data Fim
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item5" value="#{item.fim}" >
+	                        		<f:convertDateTime id="convProgressaoFim" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+						<rich:column headerClass="headerTable" styleClass="columnsTable" style="text-align:right;">
+	                        <f:facet name="header">
+	                           Dias
+	                        </f:facet>
+	                        	<h:outputText id="item6" value="#{item.dias}" />
+	                    </rich:column>
+					</rich:dataTable>
+	
+				</div>
+				
+				</fieldset>
+			
+			</h:panelGroup>
+			
+
+
+			<h:panelGroup rendered="#{emitirDossieServidorListBean.representacaoFuncional}">
+
+				<fieldset>
+
+					<legend>Representação Funcional</legend>
+	
+					<br/>
+
+					<div class="tabela-dados">
+		
+						<rich:dataTable id="listaRepresentacaoFuncional" value="#{emitirDossieServidorFormBean.listaRepresentacaoFuncional}" var="item" >
+		
+		                    <h:column id="col2" headerClass="cel-25" >
+		                        <f:facet name="header">
+		                           Setor
+		                        </f:facet>
+		                        <h:outputText id="item2" value="#{item.setor.nome}" styleClass="cel-25" />
+		                    </h:column>
+		                    <h:column id="col3" headerClass="cel-25" >
+		                        <f:facet name="header">
+		                           Cargo
+		                        </f:facet>
+								<h:outputText id="item3" value="#{item.representacaoCargo.nomenclatura}" styleClass="cel-25" />
+		                    </h:column>
+		                    <h:column id="col30" headerClass="cel-25" >
+		                        <f:facet name="header">
+		                           Símbolo
+		                        </f:facet>
+								<h:outputText id="item30" value="#{item.representacaoCargo.simbolo}" styleClass="cel-25" />
+		                    </h:column>
+		                    <h:column id="col31" headerClass="cel-25" >
+		                        <f:facet name="header">
+		                           Tipo Nomeação
+		                        </f:facet>
+								<h:outputText id="item31" value="Titular" styleClass="cel-25" rendered="#{item.tipoNomeacao eq 1}" />
+								<h:outputText id="item32" value="Substituição" styleClass="cel-25" rendered="#{item.tipoNomeacao eq 2}" />
+								<h:outputText id="item33" value="Designado" styleClass="cel-25" rendered="#{item.tipoNomeacao eq 3}" />
+		                    </h:column>
+		                    <h:column id="col4" headerClass="cel-15" >
+		                        <f:facet name="header">
+		                           Inicio
+		                        </f:facet>
+		                        <center>
+		                        	<h:outputText id="item4" value="#{item.inicio}" styleClass="cel-15" >
+		                        		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+		                        	</h:outputText>
+		                        </center>
+		                    </h:column>
+		                      <h:column id="col5" headerClass="cel-15" >
+		                        <f:facet name="header">
+		                          Fim
+		                        </f:facet>
+		                        <center>
+		                        	<h:outputText id="item5" value="#{item.fim}" styleClass="cel-15" >
+		                        		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+		                        	</h:outputText>
+		                        </center>
+		                    </h:column>
+		              
+		               </rich:dataTable>
+			
+					</div>
+
+				</fieldset>
+			
+			</h:panelGroup>
+
+
 			
 			<h:panelGroup rendered="#{emitirDossieServidorListBean.anotacaoServidor}">
 				<fieldset>

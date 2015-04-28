@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirDossiseServidor" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="0.9090909090909095"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="BACK" class="java.lang.String">
@@ -12,11 +12,8 @@
 	<parameter name="LOGO_TCE" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\workspace_ivia\\srh\\relatorios\\"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="HISTORICOLOTACAO" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="HISTORICOFERIAS" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -37,6 +34,9 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="ANOTACAOSERVIDOR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPRESENTACAOFUNCIONAL" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -68,14 +68,14 @@ order by f.ID]]>
 			</rectangle>
 			<image>
 				<reportElement x="633" y="-11" width="168" height="54"/>
-				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="5" y="25" width="161" height="36"/>
-				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="165" y="42" width="390" height="20" forecolor="#0F2E52"/>
+				<reportElement x="5" y="42" width="797" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -83,7 +83,7 @@ order by f.ID]]>
 			</staticText>
 			<image>
 				<reportElement x="1" y="14" width="553" height="65"/>
-				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="2" y="84" width="390" height="20" forecolor="#0F2E52"/>
@@ -95,67 +95,67 @@ order by f.ID]]>
 			<staticText>
 				<reportElement x="2" y="142" width="28" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CPF:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="50" y="124" width="284" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{NOMEMAE}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMAE}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="666" y="142" width="124" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOME}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="472" y="142" width="170" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{EMISSORRG}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMISSORRG}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="642" y="142" width="24" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[UF:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="50" y="106" width="284" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="124" width="48" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[MÃE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="414" y="142" width="58" height="18"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[EMISSOR:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="210" y="142" width="23" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RG:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="233" y="142" width="159" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{RG}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RG}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="106" width="48" height="18"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOME:]]></text>
 			</staticText>
@@ -169,38 +169,38 @@ order by f.ID]]>
 			<staticText>
 				<reportElement x="2" y="194" width="48" height="18"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CARGO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="212" width="48" height="18"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SETOR:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="50" y="194" width="313" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="50" y="212" width="313" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{NMSETOR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NMSETOR}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="427" y="194" width="73" height="18"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DATA INICIO:]]></text>
+				<text><![CDATA[DATA INÍCIO:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="500" y="194" width="100" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{DATAEXERCICIO}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATAEXERCICIO}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="1" y="165" width="800" height="1"/>
@@ -208,7 +208,7 @@ order by f.ID]]>
 			<textField>
 				<reportElement x="50" y="142" width="160" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{CPF}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{CPF}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -218,7 +218,7 @@ order by f.ID]]>
 	<detail>
 		<band height="5">
 			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="0" width="200" height="0">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0">
 					<printWhenExpression><![CDATA[!$P{HISTORICOLOTACAO}.isEmpty()]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="IDPESSOAL">
@@ -228,7 +228,7 @@ order by f.ID]]>
 				<subreportParameter name="LOGO"/>
 				<subreportParameter name="LOGO_TCE"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{HISTORICOLOTACAO}]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{HISTORICOLOTACAO}]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="5">
@@ -243,12 +243,12 @@ order by f.ID]]>
 				<subreportParameter name="LOGO"/>
 				<subreportParameter name="LOGO_TCE"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{HISTORICOLICENCA}]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{HISTORICOLICENCA}]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="6">
 			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="3" width="200" height="0" isRemoveLineWhenBlank="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0" isRemoveLineWhenBlank="true">
 					<printWhenExpression><![CDATA[!$P{HISTORICOFERIAS}.isEmpty()]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="IDPESSOAL">
@@ -258,7 +258,7 @@ order by f.ID]]>
 				<subreportParameter name="LOGO"/>
 				<subreportParameter name="LOGO_TCE"/>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{HISTORICOFERIAS}]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{HISTORICOFERIAS}]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="3">
@@ -273,7 +273,22 @@ order by f.ID]]>
 					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{PROGRACAOFUNCIONAL}]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{PROGRACAOFUNCIONAL}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="5">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[!$P{REPRESENTACAOFUNCIONAL}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="BACK"/>
+				<subreportParameter name="LOGO"/>
+				<subreportParameter name="LOGO_TCE"/>
+				<subreportParameter name="IDPESSOAL">
+					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{REPRESENTACAOFUNCIONAL}]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="5">
@@ -288,7 +303,7 @@ order by f.ID]]>
 					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{ANOTACAOSERVIDOR}]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{ANOTACAOSERVIDOR}]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
@@ -312,7 +327,7 @@ order by f.ID]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="107" y="3" width="613" height="16"/>
@@ -328,12 +343,12 @@ order by f.ID]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="776" y="3" width="25" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

@@ -14,11 +14,13 @@ import br.gov.ce.tce.srh.domain.FuncionalAnotacao;
 import br.gov.ce.tce.srh.domain.FuncionalSetor;
 import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
+import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.service.FuncionalAnotacaoService;
 import br.gov.ce.tce.srh.service.FuncionalSetorService;
 import br.gov.ce.tce.srh.service.LicencaService;
 import br.gov.ce.tce.srh.service.ReferenciaFuncionalService;
+import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**
@@ -49,6 +51,9 @@ public class EmitirDossieServidorFormBean implements Serializable {
 	@Autowired
 	private FuncionalAnotacaoService funcionalAnotacaoService;
 	
+	@Autowired
+	private RepresentacaoFuncionalService representacaoFuncionalService;
+	
 
 	// entidades das telas
 	private Funcional entidade  = new Funcional();
@@ -59,7 +64,7 @@ public class EmitirDossieServidorFormBean implements Serializable {
 	private List<Ferias> listaFerias;
 	private List<Licenca> listaLicenca;
 	private List<FuncionalAnotacao>listaFuncionalAnotacao;
-	
+	private List<RepresentacaoFuncional> listaRepresentacaoFuncional;
 
 
 	/**
@@ -76,6 +81,7 @@ public class EmitirDossieServidorFormBean implements Serializable {
 			this.listaFerias = feriasService.findByPessoal( entidade.getPessoal().getId() );
 			this.listaLicenca = licencaService.findByPessoa( entidade.getPessoal().getId() );
 			this.listaFuncionalAnotacao = funcionalAnotacaoService.findByPessoal( entidade.getPessoal().getId() );
+			this.listaRepresentacaoFuncional = representacaoFuncionalService.findByPessoal(entidade.getPessoal().getId());
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -97,5 +103,6 @@ public class EmitirDossieServidorFormBean implements Serializable {
 	public List<Ferias> getListaFerias() {return listaFerias;}
 	public List<Licenca> getListaLicenca() {return listaLicenca;}
 	public List<FuncionalAnotacao> getListaFuncionalAnotacao() {return listaFuncionalAnotacao;}
+	public List<RepresentacaoFuncional> getListaRepresentacaoFuncional() {return listaRepresentacaoFuncional;}
 	
 }

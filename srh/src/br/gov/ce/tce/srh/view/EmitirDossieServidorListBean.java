@@ -58,6 +58,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 	private boolean historicoLicenca = false;
 	private boolean historicoFerias = false;
 	private boolean progracaoFuncional = false;
+	private boolean representacaoFuncional = false;
 	private boolean anotacaoServidor = false;
 
 
@@ -122,6 +123,9 @@ public class EmitirDossieServidorListBean implements Serializable {
 
 			if ( progracaoFuncional == true )
 				parametros.put("PROGRACAOFUNCIONAL", servletContext.getRealPath("//WEB-INF/relatorios/emitirDossiseServidor_progressaoFuncionalSub.jasper") );
+			
+			if ( representacaoFuncional == true )
+				parametros.put("REPRESENTACAOFUNCIONAL", servletContext.getRealPath("//WEB-INF/relatorios/emitirDossiseServidor_representacaoFuncionalSub.jasper") );
 
 			if ( historicoLotacao == true )
 				parametros.put("HISTORICOLOTACAO",  servletContext.getRealPath("//WEB-INF/relatorios/emitirDossiseServidor_historicolotacaoSub.jasper") );
@@ -231,6 +235,9 @@ public class EmitirDossieServidorListBean implements Serializable {
 
 	public boolean isProgracaoFuncional() {return progracaoFuncional;}
 	public void setProgracaoFuncional(boolean progracaoFuncional) {this.progracaoFuncional = progracaoFuncional;}
+	
+	public boolean isRepresentacaoFuncional() {return representacaoFuncional;}
+	public void setRepresentacaoFuncional(boolean representacaoFuncional) {this.representacaoFuncional = representacaoFuncional;}
 
 	public boolean isAnotacaoServidor() {return anotacaoServidor;}
 	public void setAnotacaoServidor(boolean anotacaoServidor) {this.anotacaoServidor = anotacaoServidor;}
@@ -253,6 +260,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 			this.historicoLicenca = false;
 			this.historicoFerias = false;
 			this.progracaoFuncional = false;
+			this.representacaoFuncional = false;
 			this.anotacaoServidor = false;
 		}
 		passouConsultar = false;
