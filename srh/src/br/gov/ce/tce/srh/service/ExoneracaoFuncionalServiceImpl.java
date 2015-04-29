@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.service;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalSetor;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
+import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.sapjava.SetorService;
 
@@ -35,11 +37,22 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	
 	@Autowired
 	private TipoMovimentoService tipoMovimentoService;
+	
+	@Autowired
+	private RepresentacaoFuncionalService representacaoFuncionalService;
 		
 	@Override
 	@Transactional
 	public void exonerar(Funcional entidade) throws SRHRuntimeException {
 
+		// Verifica a existência de Representação ativa
+		List<RepresentacaoFuncional> representacaoFuncionalList = representacaoFuncionalService.findByFuncional(entidade.getId());
+		for (RepresentacaoFuncional representacaoFuncional : representacaoFuncionalList) {
+			if(representacaoFuncional.isAtivo())
+				throw new SRHRuntimeException("Exoneração não permitida. O funcionário possui Representação ativa.");
+		}
+		
+		
 		/*
 		 * Regra:
 		 * Validar dados obrigatorios.
