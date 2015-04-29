@@ -143,14 +143,14 @@ public class ServidorBean  implements Serializable  {
 
 		try {
 
-			//valida consulta pessoa
-			if( count == 0 )
-				throw new SRHRuntimeException("Realize uma consulta primeiro.");
-
 			Map<String, Object> parametros = new HashMap<String, Object>();
-
+			StringBuilder filtro = new StringBuilder();
 						
-
+			if(this.setor != null){
+				filtro.append(" AND S.IDSETOR = " + this.setor.getId());
+			}
+			
+			parametros.put("FILTRO", filtro.toString());
 			relatorioUtil.relatorio("servidorSetor.jasper", parametros, "servidorSetor.pdf");
 
 		} catch (SRHRuntimeException e) {
