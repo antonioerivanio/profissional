@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,9 +116,17 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 		// verificando com a funcional atual
 		for ( Funcional funcional : listaFuncional ) {
 
-			if ( funcional.getExercicio().before(entidade.getData()) || funcional.getExercicio().equals(entidade.getData()) ) {
+			Date saida = new Date();
+			
+			if (funcional.getSaida() != null)
+				saida = funcional.getSaida();
+			
+			if ( (funcional.getPosse().before(entidade.getData()) || funcional.getPosse().equals(entidade.getData()))
+					&& (saida.after(entidade.getData()) || saida.equals(entidade.getData()))) {
+				
 				selecionada = funcional;
 				entidade.setFuncional(funcional);
+				
 				break;
 			}
 		}
