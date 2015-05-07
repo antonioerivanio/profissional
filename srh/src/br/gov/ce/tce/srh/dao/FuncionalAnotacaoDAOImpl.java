@@ -65,7 +65,7 @@ public class FuncionalAnotacaoDAOImpl implements FuncionalAnotacaoDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<FuncionalAnotacao> search(Long pessoal, int first, int rows) {
-		Query query = entityManager.createQuery("Select p from FuncionalAnotacao p where p.funcional.pessoal.id = :pessoal ORDER BY p.data DESC");
+		Query query = entityManager.createQuery("Select p from FuncionalAnotacao p where p.funcional.pessoal.id = :pessoal ORDER BY p.data DESC, p.id DESC");
 		query.setParameter("pessoal", pessoal);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);

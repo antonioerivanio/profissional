@@ -705,15 +705,15 @@
 					</li>
 				</ui:fragment>
 
-				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNC_COMPETENCIA_SETOR')}">
-					<li>
-						<a href="/srh/paginas/relatorios/funcionarioCompetenciaSetorList.faces">
-						Servidor por Competência e Setor
-						</a>
-					</li>
-				</ui:fragment>
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNC_COMPETENCIA_SETOR')}">					
+					<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+						<li>
+							<a href="/srh/paginas/relatorios/funcionarioCompetenciaSetorList.faces">
+							Servidor por Competência e Setor
+							</a>
+						</li>
+					</ui:fragment>				
 				
-				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNC_COMPETENCIA_SETOR')}">
 					<li>
 						<a href="/srh/paginas/relatorios/emitirContagemTempoServicoList.faces">
 						Emitir Contagem de Tempo de Serviço

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tempoRepresentacao" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="176"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -29,10 +29,10 @@
 	repr.inicio,
 	NVL(repr.fim, current_date) as fim ,
 	doc.descricao as documento,
-	trunc( months_between( ( NVL(repr.fim, current_date) + 1 ) , repr.inicio ) /12 ) anos,
-	mod( trunc(months_between( ( NVL(repr.fim, current_date) + 1 ) , repr.inicio ) ), 12 ) meses,
-  	( NVL(repr.fim, current_date) + 1 ) - add_months( repr.inicio ,trunc( months_between( ( NVL(repr.fim, current_date) + 1 ), repr.inicio ) ) )  dias,
-	(NVL(repr.fim, current_date) + 1) - repr.inicio total_dias
+	( TO_DATE(NVL(repr.fim + 1, SYSDATE)) - TO_DATE(repr.inicio) ) total_dias,
+	trunc ( ( TO_DATE(NVL(repr.fim + 1, SYSDATE)) - TO_DATE(repr.inicio)) / 365 ) anos,
+	trunc ( mod ( (TO_DATE(NVL(repr.fim + 1, SYSDATE)) - TO_DATE(repr.inicio) ) , 365 ) / 30) meses,
+	mod ( mod ( (TO_DATE(NVL(repr.fim + 1, SYSDATE)) - TO_DATE(repr.inicio) ) , 365 ) , 30) dias
 
   from tb_representacaofuncional repr
   	inner join sapjava.setor setor on setor.idsetor = repr.idsetor
@@ -54,10 +54,10 @@
 	<field name="INICIO" class="java.sql.Timestamp"/>
 	<field name="FIM" class="java.sql.Timestamp"/>
 	<field name="DOCUMENTO" class="java.lang.String"/>
+	<field name="TOTAL_DIAS" class="java.math.BigDecimal"/>
 	<field name="ANOS" class="java.math.BigDecimal"/>
 	<field name="MESES" class="java.math.BigDecimal"/>
 	<field name="DIAS" class="java.math.BigDecimal"/>
-	<field name="TOTAL_DIAS" class="java.math.BigDecimal"/>
 	<variable name="TOTAL_DIAS" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{TOTAL_DIAS}]]></variableExpression>
 	</variable>
@@ -334,17 +334,17 @@
 			<textField>
 				<reportElement x="607" y="10" width="38" height="15"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{ANOS}.intValue() + (($V{MESES}.intValue() + ($V{DIAS}.intValue() / 30)) / 12)]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{TOTAL_DIAS}.intValue() / 365]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="648" y="10" width="38" height="15"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[( $V{MESES}.intValue() + ( $V{DIAS}.intValue() / 30 ) ) % 12]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[($V{TOTAL_DIAS}.intValue() % 365) / 30]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="689" y="10" width="38" height="15"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{DIAS}.intValue() % 30]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[($V{TOTAL_DIAS}.intValue() % 365) % 30]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="560" y="10" width="44" height="15" forecolor="#000000"/>

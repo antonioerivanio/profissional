@@ -34,12 +34,6 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
-<<<<<<< HEAD
-* Use case : SRH_UC050_Emitir Contagem Tempo em Serviço
-=======
-* Use case : SRH_UC050_Emitir Contagem Tempo em Serviço
->>>>>>> refs/remotes/origin/master
-* 
 * @since   : Dez 19, 2011, 17:09:00 AM
 * @author  : wesllhey.holanda@ivia.com.br
 */
@@ -125,7 +119,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			this.dia = new Long(0);
 
 
-
 			// carregando tempo servico
 			this.listaFuncional = funcionalService.findByPessoal(entidade.getPessoal().getId(), "desc");
 
@@ -150,15 +143,12 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 					funcional.setSaida( new Date() );
 					dataFim = funcional.getSaida();
 				}
-				// calculando dias  -- ORIGINAL
-				//funcional.setQtdeDias(((long) SRHUtils.dataDiff( funcional.getExercicio(), funcional.getSaida() )));
-				// calculando dias  -- NOVA CONTAGEM
+				
+				// calculando dias
 				funcional.setQtdeDias(((long) SRHUtils.diffData( funcional.getExercicio(), funcional.getSaida() )));
 				totalDia += funcional.getQtdeDias();
 
 			}
-
-
 
 			// carregando ferias em dobro
 			this.listaFerias = feriasService.findByPessoalTipo( entidade.getPessoal().getId(), 5L );
@@ -167,8 +157,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			for (Ferias ferias : listaFerias) {
 				totalDia += ferias.getQtdeDias()*2;
 			}
-				
-
+			
 
 			// carregando licenca
 			this.listaLicenca = licencaService.findByPessoaLicencaEspecial( entidade.getPessoal().getId() );
@@ -178,7 +167,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( licenca.getLicencaEspecial().isContaremdobro() )
 					totalDia += licenca.getLicencaEspecial().getQtdedias();
 			}
-
+			
 			// carregando licenca
 			this.listaLicencaExcluir = licencaService.findByPessoaLicencasExcluirTempoServico(entidade.getPessoal().getId() );
 			List<Deducao> deducoes = new ArrayList<Deducao>(); 
@@ -190,10 +179,9 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				deducao.setQtdeDias(licenca.getDias().longValue());
 				deducao.setDescricao(licenca.getObs());
 				deducao.setDescricaoCompleta(licenca.getTipoLicenca().getDescricao());
-				deducoes.add(deducao);
-				//totalDia -= licenca.getDias();
+				deducoes.add(deducao);				
 			}
-				
+			
 
 			// caregando averbacao
 			this.listaAverbacao = averbacaoService.findByPessoal( entidade.getPessoal().getId() );
@@ -218,12 +206,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if(deducao.isFalta())
 					deducao.setDescricaoCompleta("Falta");
 				else
-
 					deducao.setDescricaoCompleta("Dedução");
-
-
-					deducao.setDescricaoCompleta("Dedução");
-
 			}
 			if (!deducoes.isEmpty()) {
 				this.listaDeducao.addAll(deducoes);
@@ -237,12 +220,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 					totalDia -= deducao.getQtdeDias();
 				}
 				 
-			}
-				
-			// Campos da dataTable Tempo
-			//ano = totalDia / 365;
-			//mes = (totalDia % 365) / 30;
-			//dia = (totalDia % 365) % 30;
+			}			
 	
 			Double a = new Double(0);
 			Double m = new Double(0);
@@ -256,16 +234,14 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			this.mes = m.longValue();
 			this.dia = d.longValue();
 			
+			
 			passouConsultar = true;
 
+		
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (Exception e) {
-
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-
-
+		} catch (Exception e) {			
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -320,15 +296,11 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 			relatorioUtil.relatorio("EmitirContagemTempoServico.jasper", parametros, "EmitirContagemTempoServico.pdf");
 
-		} catch (SRHRuntimeException e) {
+		} catch (SRHRuntimeException e) {			
 			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
 		} catch (Exception e) {
-
-			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
-
-
-			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");			
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -359,17 +331,10 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
 				} else {
-
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
-
 					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
 				}
 
-			} catch (Exception e) {
-
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
-
-
+			} catch (Exception e) {				
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
@@ -408,24 +373,11 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	public Long getMes() {return mes;}
 	public Long getDia() {return dia;}
 	
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
+	public boolean isPassouConsultar() {return passouConsultar;}
+	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
 
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
-
-	public List<Licenca> getListaLicencaExcluir() {
-		return listaLicencaExcluir;
-	}
-
-
-	public void setListaLicencaExcluir(List<Licenca> listaLicencaExcluir) {
-		this.listaLicencaExcluir = listaLicencaExcluir;
-	}
+	public List<Licenca> getListaLicencaExcluir() {return listaLicencaExcluir;}
+	public void setListaLicencaExcluir(List<Licenca> listaLicencaExcluir) {this.listaLicencaExcluir = listaLicencaExcluir;}
 
 
 }
