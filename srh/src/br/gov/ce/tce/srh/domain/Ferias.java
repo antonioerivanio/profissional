@@ -66,7 +66,7 @@ public class Ferias extends BasicEntity<Long> implements Serializable {
     @Column(name = "FIM")
     private Date fim;
 
-    @Column(name = "OBS", length=200)
+    @Column(name = "OBS", length=2000)
     private String observacao;
 
     @Column(name = "QTDEDIAS", nullable=false)

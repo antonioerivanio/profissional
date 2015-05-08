@@ -281,9 +281,9 @@
 				<div class="conteiner">
 					<h:inputTextarea id="observacao" 
 									 value="#{feriasFormBean.entidade.observacao}"
-									 onkeyup="this.value = this.value.substring(0, 999);"
+									 onkeyup="this.value = this.value.substring(0, 1999);"
 									 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" >
-									 <f:validateLength maximum="500" />
+									 <f:validateLength maximum="2000" />
 					 </h:inputTextarea>
 				</div>
 			</div>
