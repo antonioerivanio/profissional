@@ -66,20 +66,13 @@ public class LicencaServiceImpl implements LicencaService {
 		 */
 		validarConformeSexo(entidade);
 		
+		
 		/*
 		 * Regra:
 		 * Verificar a quantidade maxima de dias permitida
 		 * 
 		 */
-		validarMaxDiasTipoLicenca(entidade);
-
-
-		/*
-		 * Regra:
-		 * Validar se o periodo esta dentro da licenca especial
-		 * 
-		 */
-		validarPeriodoInicioLicencaEspecial(entidade);
+		validarMaxDiasTipoLicenca(entidade);		
 
 
 		/*
@@ -99,6 +92,14 @@ public class LicencaServiceImpl implements LicencaService {
 			entidade.setNrprocesso(entidade.getNrprocessoPuro().substring(6,10)+entidade.getNrprocessoPuro().substring(0,5)+entidade.getNrprocessoPuro().substring(11,12));
 
 
+		/*
+		 * Regra:
+		 * Validar se o periodo esta dentro da licenca especial
+		 * 
+		 */
+		validarPeriodoInicioLicencaEspecial(entidade);
+		
+		
 		/*
 		 * Regra:
 		 * Ajustar saldo quando for licenca especial 
@@ -125,24 +126,35 @@ public class LicencaServiceImpl implements LicencaService {
 						SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()) );
 			} 
 		}
+		
+		
+		//finalLicenca é utilizado para saber se a licença cadastrada já terminou
+		Calendar finalLicenca = Calendar.getInstance();
+		finalLicenca.setTime(entidade.getFim());
+		finalLicenca.add(Calendar.DATE, 1);
+		
 		/*
 		 * Regra:
-		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspensão de Vínculo ou Interesse Particular
-		 */
-		Funcional funcional = funcionalDAO.getByPessoaAtivo(entidade.getPessoal().getId());
-		if (entidade.getTipoLicenca().getId() == 1) // Suspensão de Vínculo
-		{
-			Situacao situacao = situacaoDAO.getById(new Long(7));
-			funcional.setSituacao(situacao);
-			funcional.setAtipoFp(false);
+		 * Alterar, se a licença não tiver terminado, Situacao e ativoFp do Funcional quando TipoLicenca for Suspensão de Vínculo ou Interesse Particular
+		 */		
+		if(finalLicenca.getTime().compareTo(new Date()) == 1){
+			
+			Funcional funcional = funcionalDAO.getByPessoaAtivo(entidade.getPessoal().getId());
+			if (entidade.getTipoLicenca().getId() == 1) // Suspensão de Vínculo
+			{
+				Situacao situacao = situacaoDAO.getById(new Long(7));
+				funcional.setSituacao(situacao);
+				funcional.setAtipoFp(false);
+			}
+			else if (entidade.getTipoLicenca().getId() == 2) // Interesse Particular
+			{
+				Situacao situacao = situacaoDAO.getById(new Long(5));
+				funcional.setSituacao(situacao);
+				funcional.setAtipoFp(false);
+			}
+			funcionalDAO.salvar(funcional);
+			
 		}
-		else if (entidade.getTipoLicenca().getId() == 2) // Interesse Particular
-		{
-			Situacao situacao = situacaoDAO.getById(new Long(5));
-			funcional.setSituacao(situacao);
-			funcional.setAtipoFp(false);
-		}
-		funcionalDAO.salvar(funcional);
 		
 		// persistindo
 		dao.salvar(entidade);
@@ -340,8 +352,6 @@ public class LicencaServiceImpl implements LicencaService {
 
 		// validando o nr do processo
 		if (entidade.getNrprocesso() != null && !entidade.getNrprocesso().equals("")) {
-			//if (!SRHUtils.validarProcesso(entidade.getNrprocesso().substring(6,10)+entidade.getNrprocesso().substring(0,5)+entidade.getNrprocesso().substring(11,12))){
-			//if (!SRHUtils.validarProcesso(SRHUtils.removerMascara(entidade.getNrprocessoPuro()))){
 			if (!SRHUtils.validarProcesso(entidade.getNrprocessoPuro().substring(6,10) + entidade.getNrprocessoPuro().substring(0,5) + entidade.getNrprocessoPuro().substring(11,12))){
 				throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 			}
@@ -388,15 +398,7 @@ public class LicencaServiceImpl implements LicencaService {
 	private void validarMaxDiasTipoLicenca(Licenca entidade) {
 
 		int qtdDias = SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim());
-
-		// quando for tipo especial
-		if ( entidade.getTipoLicenca().isEspecial()  ) {
-			LicencaEspecial especial = licencaEspecialService.getById( entidade.getLicencaEspecial().getId() );			
-			if ( qtdDias > especial.getSaldodias() ) 
-				throw new SRHRuntimeException("Quantidade de dias maior que o máximo permitido para esse tipo de licença");
-		}
-
-		// quando nao for especial
+		
 		if ( qtdDias > entidade.getTipoLicenca().getQtdeMaximoDias() )
 			throw new SRHRuntimeException("Quantidade de dias maior que o máximo permitido para esse tipo de licença");
 

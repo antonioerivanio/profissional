@@ -89,7 +89,6 @@ public class LicencaFormBean implements Serializable {
 
 		try {
 
-			//this.nrProcesso = SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(getEntidade().getNrprocesso(), 0); 
 			this.nrProcesso = getEntidade().getNrprocesso();
 			this.nome = getEntidade().getPessoal().getNomeCompleto();
 
@@ -170,7 +169,6 @@ public class LicencaFormBean implements Serializable {
 
         	exibirComboLicencaEspecial = false;
 		
-			// licenca especial
 			if (getEntidade().getTipoLicenca() != null ) {
 				
 				getEntidade().setTipoLicenca( tipoLicencaService.getById( getEntidade().getTipoLicenca().getId() ) );

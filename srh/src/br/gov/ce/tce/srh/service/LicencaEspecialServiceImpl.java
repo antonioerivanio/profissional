@@ -167,20 +167,7 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 
 			if ( !licencaAntigas.getId().equals(entidade.getId()) ) {
 				
-				//FEITO PELA IVIA - PROBLEMA --> CONSIDERAVA OS ANOS EXTREMOS
-
-//				if(licencaAntigas.getAnoinicial() >= entidade.getAnoinicial()
-//						&& licencaAntigas.getAnoinicial() <= entidade.getAnofinal()) {
-//					throw new SRHRuntimeException("Já existe uma licença especial com esse período");
-//				}
-//
-//				if(licencaAntigas.getAnofinal() >= entidade.getAnoinicial()
-//						&& licencaAntigas.getAnofinal() <= entidade.getAnofinal()) {
-//					throw new SRHRuntimeException("Já existe uma licença especial com esse período");
-//				}
-				
-				//Alterado 08/08/2013 - Zacarias e André
-				if(entidade.getAnoinicial()>=licencaAntigas.getAnoinicial()  
+				if(entidade.getAnoinicial() >= licencaAntigas.getAnoinicial()  
 						&& entidade.getAnoinicial() < licencaAntigas.getAnofinal() ) {
 					throw new SRHRuntimeException("Já existe uma licença especial com esse período");
 				}
