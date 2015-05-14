@@ -96,7 +96,8 @@ public class DependenteServiceImpl implements DependenteService{
 		if(entidade.getMotivoInicio() == null || entidade.getMotivoInicio().getId() == 0L)
 			throw new SRHRuntimeException("O Motivo Início é obrigatório.");
 		
-		if(entidade.getDataInicio() == null)
+		// A Data Início é obrigatória para todos os tipo de dependência exceto Conjuge
+		if(entidade.getDataInicio() == null && entidade.getTipoDependencia().getId() != 1L)
 			throw new SRHRuntimeException("A Data Início é obrigatória.");
 		
 		if(entidade.getTipoDuracao() == 0L)
