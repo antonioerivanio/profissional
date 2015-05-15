@@ -10,6 +10,7 @@ import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.html.HtmlDatascroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -68,6 +69,7 @@ public class FuncionalAnotacaoBean implements Serializable {
 	//paginação
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
+	private HtmlDatascroller dataScroller = new HtmlDatascroller();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<FuncionalAnotacao> pagedList = new ArrayList<FuncionalAnotacao>();
 	private int flagRegistroInicial = 0;
@@ -116,6 +118,9 @@ public class FuncionalAnotacaoBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
+			dataTable.setFirst(0);
+			dataScroller.setPage(0);
+			
 			flagRegistroInicial = -1;
 			passouConsultar = true;
 
@@ -327,17 +332,25 @@ public class FuncionalAnotacaoBean implements Serializable {
 	//PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
+		dataScroller = new HtmlDatascroller();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<FuncionalAnotacao>(); 
 	}
 
 	public HtmlDataTable getDataTable() {return dataTable;}
 	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	
+	public HtmlDatascroller getDataScroller() {return dataScroller;}
+	public void setDataScroller(HtmlDatascroller dataScroller) {this.dataScroller = dataScroller;}
+
 
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(funcionalAnotacaoService.search(getEntidade().getFuncional().getPessoal().getId(), getDataTable().getFirst(), getDataTable().getRows()));
+		if( flagRegistroInicial != getDataTable().getFirst()) {
+			
+			flagRegistroInicial = getDataTable().getFirst();						
+				
+			setPagedList(funcionalAnotacaoService.search(getEntidade().getFuncional().getPessoal().getId(), flagRegistroInicial,getDataTable().getRows()));
+			
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

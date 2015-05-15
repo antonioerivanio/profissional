@@ -48,8 +48,12 @@ public class PagedListDataModel extends DataModel {
 	}
 
 	public int getRowIndex() {
-		return ( rowIndex==-1?-1:rowIndex % pageSize);
-		}
+		
+		if(pageSize == 0)
+			rowIndex = -1;
+		
+		return ( rowIndex == -1 ? -1 : rowIndex % pageSize);
+	}
 	public void setRowIndex(int rowIndex) {this.rowIndex = rowIndex;}
 
 	public Object getWrappedData() {return list;}

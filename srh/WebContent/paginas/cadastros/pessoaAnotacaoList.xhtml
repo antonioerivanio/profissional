@@ -155,7 +155,7 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{funcionalAnotacaoBean.pagedList.size() > 0}"/>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false" binding="#{funcionalAnotacaoBean.dataScroller}"/>
 				
 			</div>
 			
