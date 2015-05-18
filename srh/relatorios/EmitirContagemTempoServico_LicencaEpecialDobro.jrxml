@@ -16,9 +16,25 @@
 		<defaultValueExpression><![CDATA["C:\\ivia_workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select l.inicio, l.fim, (le.qtdedias + le.qtdedias) ass, l.obs
-from tb_licenca l, tb_direitolicencaesp le, tb_pessoal p
-where l.idlicencaesp = le.id  and l.idpessoal = p.id and le.id is not null and l.excluitemposerv = 0 and le.contaremdobro > 0 and p.id = $P{IDPESSOAL}
+		<![CDATA[select
+	l.inicio,
+	l.fim,
+	(le.qtdedias + le.qtdedias) ass,
+	l.obs
+
+from
+	tb_licenca l,
+	tb_direitolicencaesp le,
+	tb_pessoal p
+
+where
+	l.idlicencaesp = le.id
+	and l.idpessoal = p.id
+	and le.id is not null
+	and l.excluitemposerv = 0
+	and le.contaremdobro > 0
+	and p.id = $P{IDPESSOAL}
+
 order by l.inicio desc]]>
 	</queryString>
 	<field name="INICIO" class="java.sql.Timestamp"/>
@@ -33,9 +49,9 @@ order by l.inicio desc]]>
 			<staticText>
 				<reportElement x="3" y="11" width="390" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Férias em Dobro]]></text>
+				<text><![CDATA[Licença Especial em Dobro]]></text>
 			</staticText>
 			<line>
 				<reportElement x="1" y="5" width="801" height="1"/>
@@ -87,22 +103,22 @@ order by l.inicio desc]]>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="3" y="1" width="100" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{INICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="107" y="1" width="100" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FIM}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="211" y="1" width="100" height="16"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{ASS}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ASS}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToTallestObject" x="315" y="1" width="487" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OBS}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

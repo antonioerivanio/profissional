@@ -16,7 +16,36 @@
 		<defaultValueExpression><![CDATA["C:\\ivia_workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select 'Ano:' || d.anoreferencia || ' / Mês:' || d.mesreferencia as DESCRICAOCOMPLETA, d.data_inicio, d.data_fim, d.qtdedias, d.descricao as OBS, p.id from tb_deducao d, tb_pessoal p where d.idpessoal = p.id and p.id = $P{IDPESSOAL} union select 'Licença' as DESCRICAOCOMPLETA, l.inicio as DATA_INICIO, l.fim as DATA_FIM, (l.fim-l.inicio) + 1 as QTDEDIAS, l.obs, l.id from TB_LICENCA l where l.idPessoal = $P{IDPESSOAL} and l.excluitemposerv = 1 order by data_inicio desc]]>
+		<![CDATA[select
+	'Ano:' || d.anoreferencia || ' / Mês:' || d.mesreferencia as DESCRICAOCOMPLETA,
+	d.data_inicio,
+	d.data_fim,
+	d.qtdedias,
+	d.descricao as OBS,
+	p.id
+from
+	tb_deducao d,
+	tb_pessoal p
+where
+	d.idpessoal = p.id
+	and p.id = $P{IDPESSOAL}
+
+union
+
+select
+	'Licença' as DESCRICAOCOMPLETA,
+	l.inicio as DATA_INICIO,
+	l.fim as DATA_FIM,
+	(l.fim-l.inicio) + 1 as QTDEDIAS,
+	l.obs,
+	l.id
+from
+	TB_LICENCA l
+where
+	l.idPessoal = $P{IDPESSOAL}
+	and l.excluitemposerv = 1
+
+order by data_inicio desc]]>
 	</queryString>
 	<field name="DESCRICAOCOMPLETA" class="java.lang.String"/>
 	<field name="DATA_INICIO" class="java.sql.Timestamp"/>
@@ -32,7 +61,7 @@
 			<staticText>
 				<reportElement x="3" y="11" width="390" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Deduções de Tempo de Serviço/Contribuição]]></text>
 			</staticText>
@@ -47,35 +76,35 @@
 				<reportElement x="2" y="-1" width="800" height="18" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="3" y="0" width="190" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="3" y="0" width="196" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DESCRIÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="193" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="199" y="0" width="100" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DATA INÍCIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="293" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="299" y="0" width="100" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DATA FIM ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="393" y="0" width="83" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="399" y="0" width="83" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[QTDE. DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="476" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="482" y="0" width="100" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
@@ -91,27 +120,27 @@
 				</reportElement>
 			</rectangle>
 			<textField>
-				<reportElement x="3" y="1" width="190" height="16"/>
+				<reportElement x="3" y="1" width="196" height="16"/>
 				<textElement textAlignment="Left"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAOCOMPLETA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="193" y="1" width="100" height="16"/>
+				<reportElement x="199" y="1" width="100" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATA_INICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="293" y="2" width="100" height="16"/>
+				<reportElement x="299" y="2" width="100" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATA_FIM}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="393" y="1" width="83" height="16"/>
+				<reportElement x="399" y="1" width="83" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="476" y="1" width="326" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="482" y="1" width="320" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font isStrikeThrough="false"/>
 				</textElement>

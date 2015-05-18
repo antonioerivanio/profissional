@@ -130,9 +130,6 @@ public class SRHUtils {
 		GregorianCalendar startTime = new GregorianCalendar();
 		GregorianCalendar endTime = new GregorianCalendar();
 
-		//GregorianCalendar curTime = new GregorianCalendar();
-		//GregorianCalendar baseTime = new GregorianCalendar();
-
 		startTime.setTime(dataLow);
 		endTime.setTime(dataHigh);
 		
@@ -150,13 +147,13 @@ public class SRHUtils {
 		
 		if (mesEnd < mesStart)
 		{
-			totalAnos = (anoEnd - anoStart -1);
+			totalAnos = (anoEnd - anoStart - 1);
 			totalMes = (mesEnd + 12 - mesStart);
 			
 			if(diaEnd < diaStart)
-				totalDias = (diaEnd + 30 - diaStart) + (totalMes-1)*30 + totalAnos*365;
+				totalDias = (diaEnd + 30 - diaStart) + (totalMes - 1) * 30 + totalAnos * 365;
 			else
-				totalDias = (diaEnd - diaStart) + totalMes*30 + totalAnos*365;
+				totalDias = (diaEnd - diaStart) + totalMes * 30 + totalAnos * 365;
 		}
 		else
 		{
@@ -164,9 +161,9 @@ public class SRHUtils {
 			totalMes = (mesEnd - mesStart);
 			
 			if(diaEnd < diaStart)
-				totalDias = (diaEnd + 30 - diaStart) + (totalMes-1)*30 + totalAnos*365;
+				totalDias = (diaEnd + 30 - diaStart) + (totalMes - 1) * 30 + totalAnos * 365;
 			else
-				totalDias = (diaEnd - diaStart) + totalMes*30 + totalAnos*365;
+				totalDias = (diaEnd - diaStart) + totalMes * 30 + totalAnos * 365;
 		}
 
 		

@@ -34,28 +34,36 @@
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<div class="input-box box-10">
-				<label for="">Matrícula</label>
-				<div class="conteiner">
-					<h:inputText id="matricula"
-								 name="matricula"
-								 styleClass="maskMatricula"
-								 value="#{emitirContagemTempoServicoListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" reRender="nomeCompletoPessoa" ajaxSingle="true" />
-        			</h:inputText>
-				</div>
-			</div>			
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			
+				<div class="input-box box-10">
+					<label for="">Matrícula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 styleClass="maskMatricula"
+									 value="#{emitirContagemTempoServicoListBean.matricula}" >
+	            			<a4j:support id="matriculaChange" event="onchange" reRender="nomeCompletoPessoa" ajaxSingle="true" />
+	        			</h:inputText>
+					</div>
+				</div>			
+	
+				<div class="input-box box-38">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{emitirContagemTempoServicoListBean.nome}" />
+					</div>
+				</div>			
+	
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
 
-			<div class="input-box box-38">
-				<label for="">Nome</label>
-				<div class="conteiner">
-					<h:inputText id="nomeCompletoPessoa"
-								 name="nomeCompletoPessoa"
-								 value="#{emitirContagemTempoServicoListBean.nome}" />
-				</div>
-			</div>
+			</ui:fragment>
 
-			   
 			<div class="input-box box-15 mg-left-10" >
 				<label for="">Contar Tempo até:</label>
 				<div class="conteiner">
@@ -67,11 +75,6 @@
 								 maxlength="10" />
 				</div>
 			</div>
-
-			<a id="form:Pesquisar" 
-			   href="#" 
-			   onclick="openwindow()" 
-			   class="bt-padrao fl mg-top-18">Pesquisar</a>
 
 			<h:commandButton id="consultar"
 							 name="consultar"
@@ -118,12 +121,12 @@
 				</h:column>
 				<h:column id="col5">
 					<f:facet name="header">
-						Ações
+						Detalhar
 					</f:facet>
-					<h:commandLink id="editar"
-								   value="Editar"
+					<h:commandLink id="detalhar"
+								   value="Detalhar"
 								   action="incluirAlterar"
-								   styleClass="ico-editar" >
+								   styleClass="ico-detail" >
 					</h:commandLink>
 				</h:column>
 			</rich:dataTable>
@@ -132,7 +135,8 @@
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
 							 action="#{emitirContagemTempoServicoListBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
+							 styleClass="bt-padrao fr mg-right-15"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
 							 />		
 
 		</h:form>

@@ -29,6 +29,7 @@ import br.gov.ce.tce.srh.service.DeducaoService;
 import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.LicencaService;
+import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -64,6 +65,9 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	
 	@Autowired
 	private DeducaoService deducaoService;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
 
 
 	// controle de acesso do formulario
@@ -92,7 +96,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	private Long ano = new Long(0);
 	private Long mes = new Long(0);
 	private Long dia = new Long(0);
-
 
 	
 	/**
@@ -130,7 +133,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 					// validando
 					if ( funcional.getExercicio().after(dataFim) )
 
-						throw new SRHRuntimeException("Data fim menor que a Data Início.");
+						throw new SRHRuntimeException("Data informada menor que a data de Exercício do Cargo atual.");
 
 					// caso data fim esteja NULA
 					if ( funcional.getSaida() == null )
@@ -232,8 +235,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			
 			this.ano = a.longValue();
 			this.mes = m.longValue();
-			this.dia = d.longValue();
-			
+			this.dia = d.longValue();			
 			
 			passouConsultar = true;
 
@@ -313,7 +315,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	}
 
 
-
 	/**
 	 * Gets and Sets
 	 */
@@ -350,7 +351,10 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		if (!passouConsultar) {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setMatricula(funcionalService.getMatriculaAndNomeByCpfAtiva(authenticationService.getUsuarioLogado().getCpf()).getMatricula());
+			consultar();
+		} else if (!passouConsultar) {
 			setEntidade( null );
 			matricula = new String();
 			nome = new String();

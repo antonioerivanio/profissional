@@ -147,8 +147,8 @@
 			<fieldset>
 
 				<legend>
-					Contagem do Tempo até 
-					<h:outputText style="color:blue; padding-left:8px" id="item33" value="#{emitirContagemTempoServicoListBean.dataFim}" >
+					Contagem do Tempo até
+					<h:outputText style="color:blue; padding-left:4px" id="item33" value="#{emitirContagemTempoServicoListBean.dataFim}" >
 	                 <f:convertDateTime id="convDataFim" type="date" pattern="dd/MM/yyyy" />
 	                 </h:outputText>  
 	                        	
@@ -233,7 +233,7 @@
 	                        </h:column>
 	                    <h:column id="col8">
 	                        <f:facet name="header">
-	                          Qtde.Dias
+	                          Qtde. Dias
 	                        </f:facet>
 	                        <center>
 								<h:outputText id="item8" value="#{funcional.qtdeDias}" />  
@@ -277,7 +277,7 @@
 	                    </h:column>
 	                    <h:column id="col11">
 	                        <f:facet name="header">
-	                           Qtde.Dias
+	                           Qtde. Dias
 	                        </f:facet>
 	                      	<center>
 	                      		<h:outputText id="item11" value="#{ferias.qtdeDias*2}" />
@@ -337,7 +337,7 @@
 	                    </h:column>
 	                    <h:column id="col15">
 	                        <f:facet name="header">
-	                           Qtde.Dias
+	                           Qtde. Dias
 	                        </f:facet>
 	                      	<center>
 	                      		<h:outputText id="item15" value="#{licenca.licencaEspecial.qtdedias}" />
@@ -396,7 +396,7 @@
 	                    </h:column>
 	                    <h:column id="col19">
 	                        <f:facet name="header">
-	                           Qtde.Dias
+	                           Qtde. Dias
 	                        </f:facet>
 	                      	<center>
 	                      		<h:outputText id="item19" value="#{averbacao.qtdeDias}" />
@@ -455,7 +455,7 @@
 	                    </h:column>
 	                    <h:column id="col23">
 	                        <f:facet name="header">
-	                           Qtde.Dias
+	                           Qtde. Dias
 	                        </f:facet>
 	                      	<center>
 	                      		<h:outputText id="item23" value="#{acrescimo.qtdeDias}" />
@@ -520,7 +520,7 @@
 	                    </h:column>
 	                    <h:column id="col29">
 	                        <f:facet name="header">
-	                           	Qtde.Dias
+	                           	Qtde. Dias
 	                        </f:facet>
 	                      	<center>
 	                      		<h:outputText id="item29" value="#{deducao.qtdeDias}" />
@@ -541,7 +541,7 @@
 
 			</h:panelGroup>
 					
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/relatorios/emitirContagemTempoServicoList.faces" immediate="true">
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-bottom-10" action="/paginas/relatorios/emitirContagemTempoServicoList.faces" immediate="true">
 				<f:setPropertyActionListener target="#{emitirContagemTempoServicoListBean.passouConsultar}" value="true"/>
 			</h:commandButton>
 

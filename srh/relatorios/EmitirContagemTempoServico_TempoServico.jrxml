@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirDossiseServidor_abotacaoServidor" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="246"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="IDPESSOAL" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -17,16 +17,24 @@
 	</parameter>
 	<parameter name="SAIDA" class="java.util.Date"/>
 	<queryString>
-		<![CDATA[select ((nvl(f.datasaida, nvl($P{SAIDA}, sysdate)) - f.dataexercicio)+1) as datadif,
+		<![CDATA[SELECT
+	DIFERENCA_DATA( nvl(f.datasaida, nvl($P{SAIDA}, SYSDATE)), f.dataexercicio) AS datadif,
         o.nomenclatura,
         f.dataexercicio,
-        nvl(f.datasaida, nvl($P{SAIDA}, sysdate))as datasaida
-        , f.descricaonomeacao
-from tb_funcional f, tb_ocupacao o, tb_pessoal p
-where f.idocupacao = o.id
-and f.idpessoal = p.id
-and p.id = $P{IDPESSOAL}
-order by f.dataexercicio desc]]>
+        nvl(f.datasaida, nvl($P{SAIDA}, SYSDATE)) AS datasaida,
+        f.descricaonomeacao
+
+FROM
+	tb_funcional f,
+	tb_ocupacao o,
+	tb_pessoal p
+
+WHERE
+	f.idocupacao = o.id
+	AND f.idpessoal = p.id
+	AND p.id = $P{IDPESSOAL}
+
+ORDER BY f.dataexercicio DESC]]>
 	</queryString>
 	<field name="DATADIF" class="java.math.BigDecimal"/>
 	<field name="NOMENCLATURA" class="java.lang.String"/>
@@ -41,7 +49,7 @@ order by f.dataexercicio desc]]>
 			<staticText>
 				<reportElement x="3" y="11" width="799" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Tempo de Serviço/Contribuição (Tribunal de Contas do Estado do Ceará - TCE)]]></text>
 			</staticText>
@@ -63,28 +71,28 @@ order by f.dataexercicio desc]]>
 				<text><![CDATA[CARGO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="188" y="0" width="113" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="188" y="0" width="100" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INÍCIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="419" y="0" width="113" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<reportElement x="401" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[QTDE.DIAS]]></text>
+				<text><![CDATA[QTDE. DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="0" width="118" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="288" y="0" width="100" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ATÉ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="532" y="0" width="270" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="492" y="0" width="310" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
@@ -102,29 +110,27 @@ order by f.dataexercicio desc]]>
 			<textField>
 				<reportElement x="3" y="1" width="185" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="188" y="1" width="113" height="16"/>
+				<reportElement x="188" y="1" width="100" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{DATAEXERCICIO}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATAEXERCICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="301" y="1" width="118" height="16"/>
+				<reportElement x="288" y="1" width="100" height="16"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{DATASAIDA}]]></textFieldExpression>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATASAIDA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="532" y="1" width="270" height="16"/>
-				<textElement>
-					<paragraph lineSpacing="Proportional"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{DESCRICAONOMEACAO}]]></textFieldExpression>
+				<reportElement x="492" y="1" width="310" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAONOMEACAO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="419" y="1" width="113" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{DATADIF}]]></textFieldExpression>
+				<reportElement x="401" y="1" width="80" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DATADIF}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -16,9 +16,21 @@
 		<defaultValueExpression><![CDATA["C:\\ivia_workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select fe.anoreferencia, (fe.qtdedias + fe.qtdedias) as qtdedias, fe.obs, f.id
-from tb_ferias fe, tb_funcional f
-where fe.idfuncional = f.id  and fe.tipoferias = 5 and f.idPessoal = $P{IDPESSOAL}
+		<![CDATA[select
+	fe.anoreferencia,
+	(fe.qtdedias + fe.qtdedias) as qtdedias,
+	fe.obs,
+	f.id
+
+from
+	tb_ferias fe,
+	tb_funcional f
+
+where
+	fe.idfuncional = f.id
+	and fe.tipoferias = 5
+	and f.idPessoal = $P{IDPESSOAL}
+
 order by f.id]]>
 	</queryString>
 	<field name="ANOREFERENCIA" class="java.math.BigDecimal"/>
@@ -33,7 +45,7 @@ order by f.id]]>
 			<staticText>
 				<reportElement x="3" y="11" width="390" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Férias em Dobro]]></text>
 			</staticText>
@@ -80,17 +92,17 @@ order by f.id]]>
 			<textField>
 				<reportElement x="3" y="1" width="100" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="107" y="1" width="113" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="220" y="1" width="582" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{OBS}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
