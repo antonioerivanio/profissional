@@ -42,14 +42,14 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		validarDados(entidade);
 
 		/*
-		 * Regra
+		 * Regra temporariamente inválida em 20/05/2015, para evitar o uso do IDSETORDESIGNADO 
 		 * 
 		 * Quando for tipo nomeacao TITULAR, o setor selecionado deve ser o mesmo do funcionario
 		 */
-		if(entidade.getTipoNomeacao() == 1 && entidade.getFuncional().getSetor() != null && entidade.getFuncional().getSetor().getId() != null){
-				if ( !entidade.getFuncional().getSetor().getId().equals(entidade.getSetor().getId()))
-					throw new SRHRuntimeException("Inclusão não permitida, quando tipo nomeação for titular, o setor deve ser o mesmo do funcionario.");
-			}
+//		if(entidade.getTipoNomeacao() == 1 && entidade.getFuncional().getSetor() != null && entidade.getFuncional().getSetor().getId() != null){
+//				if ( !entidade.getFuncional().getSetor().getId().equals(entidade.getSetor().getId()))
+//					throw new SRHRuntimeException("Inclusão não permitida, quando tipo nomeação for titular, o setor deve ser o mesmo do funcionario.");
+//		}
 
 		/*
 		 * Regra
@@ -58,7 +58,7 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		 * 
 		 */
 		if ( entidade.getFim() != null )
-			throw new SRHRuntimeException("Alteração não permitida para esta representação, não esta ativa.");
+			throw new SRHRuntimeException("Alteração não permitida para esta representação, pois não está ativa.");
 
 
 //		// validando o inicio da representacao conforme a funcional
