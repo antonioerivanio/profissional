@@ -16,12 +16,23 @@
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select fe.id, tf.DESCRICAO, fe.ANOREFERENCIA, fe.INICIO, fe.FIM, NVL(TRUNC((NVL(fe.FIM, current_date) - fe.INICIO)+1, 0),0) DIAS
-from TB_FERIAS fe
-inner join TB_TIPOFERIAS tf on fe.TIPOFERIAS = tf.ID
-inner join TB_FUNCIONAL f on fe.IDFUNCIONAL = f.ID
-where f.idpessoal = $P!{IDPESSOAL}
-order by fe.ANOREFERENCIA desc]]>
+		<![CDATA[select
+	fe.id,
+	tf.DESCRICAO,
+	fe.ANOREFERENCIA,
+	fe.INICIO,
+	fe.FIM,
+	fe.QTDEDIAS DIAS
+
+from
+	TB_FERIAS fe
+	inner join TB_TIPOFERIAS tf on fe.TIPOFERIAS = tf.ID
+	inner join TB_FUNCIONAL f on fe.IDFUNCIONAL = f.ID
+
+where
+	f.idpessoal = $P!{IDPESSOAL}
+
+order by fe.ANOREFERENCIA desc, fe.INICIO desc ]]>
 	</queryString>
 	<field name="ID" class="java.math.BigDecimal"/>
 	<field name="DESCRICAO" class="java.lang.String"/>
