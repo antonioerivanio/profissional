@@ -13,6 +13,7 @@
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="FILTRO" class="java.lang.String"/>
+	<parameter name="VINCULO" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT S.NMSETOR nomeSetor,
                 F.NOMECOMPLETO nomeCompleto,
@@ -20,25 +21,24 @@
                 decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) referencia,
                 RC.NOMENCLATURA representacao,
                 RC.SIMBOLO simbolo,
-                RS.HIERARQUIA hierarquia,
-                S.NRORDEMSETORFOLHA nrOrdemSetorFolha
+                S.NRORDEMSETORFOLHA nrOrdemSetorFolha,
+		F.IDFOLHA idFolha,
+		O.ORDEMOCUPACAO ordemOcupacao
 
 FROM SRH.TB_FUNCIONAL F
-		LEFT JOIN SRH.TB_REPRESENTACAOCARGO RC ON F.IDREPRESENTACAOCARGO = RC.ID
-		LEFT JOIN SAPJAVA.SETOR S ON F.IDSETOR = S.IDSETOR
-		LEFT JOIN SRH.TB_OCUPACAO O ON F.IDOCUPACAO = O.ID
-		LEFT JOIN SRH.TB_CLASSEREFERENCIA CR ON F.IDCLASSEREFERENCIA = CR.ID
-		LEFT JOIN SRH.TB_REPRESENTACAOSETOR RS ON RS.IDSETOR = S.IDSETOR AND RS.IDREPRESENTACAOCARGO = RC.ID
+    	LEFT JOIN SRH.TB_OCUPACAO O ON F.IDOCUPACAO = O.ID
+    	LEFT JOIN SRH.TB_TIPOOCUPACAO TOC ON O.TIPOOCUPACAO = TOC.ID
+	LEFT JOIN SRH.TB_CLASSEREFERENCIA CR ON F.IDCLASSEREFERENCIA = CR.ID
+    	LEFT JOIN SAPJAVA.SETOR S ON F.IDSETOR = S.IDSETOR
+	LEFT JOIN SRH.TB_REPRESENTACAOFUNCIONAL RF ON RF.IDFUNCIONAL = F.ID AND RF.FIM IS NULL
+	LEFT JOIN SRH.TB_REPRESENTACAOCARGO RC ON RF.IDREPRESENTACAOCARGO = RC.ID
+
 
 WHERE 	F.ATIVOFP = 1
-        AND F.STATUS < 3
         AND F.IDSITUACAO < 4
-        AND F.DATASAIDA IS NULL
-        AND F.DOESAIDA IS NULL
 
-$P!{FILTRO}
 
-ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO]]>
+$P!{FILTRO}]]>
 	</queryString>
 	<field name="NOMESETOR" class="java.lang.String"/>
 	<field name="NOMECOMPLETO" class="java.lang.String"/>
@@ -46,8 +46,9 @@ ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO]]>
 	<field name="REFERENCIA" class="java.lang.String"/>
 	<field name="REPRESENTACAO" class="java.lang.String"/>
 	<field name="SIMBOLO" class="java.lang.String"/>
-	<field name="HIERARQUIA" class="java.math.BigDecimal"/>
 	<field name="NRORDEMSETORFOLHA" class="java.math.BigDecimal"/>
+	<field name="IDFOLHA" class="java.math.BigDecimal"/>
+	<field name="ORDEMOCUPACAO" class="java.math.BigDecimal"/>
 	<variable name="QNTSETOR" class="java.lang.Integer" incrementType="Group" incrementGroup="Setor" calculation="Sum">
 		<variableExpression><![CDATA[1]]></variableExpression>
 		<initialValueExpression><![CDATA[1]]></initialValueExpression>
@@ -67,35 +68,14 @@ ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO]]>
 					<reportElement x="0" y="26" width="555" height="18" backcolor="#195297"/>
 				</rectangle>
 				<staticText>
-					<reportElement x="499" y="26" width="55" height="18" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[SIMBOLO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="319" y="26" width="75" height="18" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[REFERÊNCIA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="2" y="26" width="190" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="2" y="26" width="277" height="18" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[NOME]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="397" y="26" width="102" height="18" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[REPRESENTAÇÃO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="193" y="26" width="125" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="279" y="26" width="277" height="18" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
@@ -124,7 +104,7 @@ ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="88">
+		<band height="110">
 			<rectangle>
 				<reportElement x="1" y="0" width="554" height="79" forecolor="#CCCCCC"/>
 			</rectangle>
@@ -137,16 +117,30 @@ ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO]]>
 				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="5" y="25" width="161" height="36"/>
+				<reportElement x="6" y="5" width="130" height="29"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="105" y="41" width="450" height="20" forecolor="#0F2E52"/>
+				<reportElement x="0" y="41" width="556" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Relatório de Servidores por Setor]]></text>
+				<text><![CDATA[Relatório por Setor]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="6" y="87" width="547" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["VÍNCULO: " +
+( $P{VINCULO} == 1 ? "MEMBROS" :
+    ( $P{VINCULO} == 6 ? "ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO" :
+        ( $P{VINCULO} == 7 ? "ESTAGIÁRIOS NÍVEL MÉDIO" :
+            ( $P{VINCULO} == 8 ? "CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO" : "" )) ) )]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="109" width="554" height="1"/>
+			</line>
 		</band>
 	</title>
 	<detail>
@@ -157,27 +151,12 @@ ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO]]>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="319" y="0" width="75" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="397" y="0" width="102" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{REPRESENTACAO}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="499" y="0" width="55" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIMBOLO}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="190" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="277" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="193" y="0" width="125" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="278" y="0" width="277" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>
@@ -275,7 +254,7 @@ ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[TOTAL DE SERVIDORES:]]></text>
+				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="521" y="27" width="34" height="18"/>

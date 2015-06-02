@@ -16,6 +16,8 @@ public class Servidor implements Serializable{
 	private BigDecimal ROWNUM_;
 	private BigDecimal hierarquia;
 	private BigDecimal nrOrdemSetorFolha;
+	private BigDecimal idFolha;
+	private BigDecimal ordemOcupacao;
 
 	public String getNomeSetor() {
 		return nomeSetor;
@@ -87,6 +89,22 @@ public class Servidor implements Serializable{
 
 	public void setNrOrdemSetorFolha(BigDecimal nrOrdemSetorFolha) {
 		this.nrOrdemSetorFolha = nrOrdemSetorFolha;
+	}
+
+	public BigDecimal getIdFolha() {
+		return idFolha;
+	}
+
+	public void setIdFolha(BigDecimal idFolha) {
+		this.idFolha = idFolha;
+	}
+
+	public BigDecimal getOrdemOcupacao() {
+		return ordemOcupacao;
+	}
+
+	public void setOrdemOcupacao(BigDecimal ordemOcupacao) {
+		this.ordemOcupacao = ordemOcupacao;
 	}
 	
 	

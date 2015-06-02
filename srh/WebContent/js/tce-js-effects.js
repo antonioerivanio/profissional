@@ -38,23 +38,8 @@ jQuery(document).ready(function($) {
         
     });
     
-    //  FIM EFEITOS MENU PRINCIPAL
-    
-    // INICIO CORES TABELA
-    
-    //$(".tabela-dados table tr:even td").addClass("linha-cinza");
-    
-    $(".tabela-dados table tr").mouseover(function(){
-        
-        $(this).addClass("linha-over")
-        
-    }).mouseout(function(){
-        
-        $(this).removeClass("linha-over")
-        
-    })
-    
-    // FIM CORES TABELA
+    //  FIM EFEITOS MENU PRINCIPAL    
+   
     
     // INICIO MASCARAS
 

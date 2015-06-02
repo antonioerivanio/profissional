@@ -624,9 +624,13 @@ body {
             background-color: #F0F0F6;
         }
         
-        .tabela-dados .linha-over td {
+        .tabela-dados .rich-table tr:hover {
             background-color: #edf4fd;
         }
+        
+        .tabela-dados .rich-table-footer {
+        	background-color: #ccc !important;
+        }  
         
         .tabela-dados th.cel-75,
         .tabela-dados td.cel-75 {

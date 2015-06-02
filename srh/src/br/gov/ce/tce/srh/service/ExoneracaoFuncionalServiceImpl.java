@@ -48,7 +48,7 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 		// Verifica a existência de Representação ativa
 		List<RepresentacaoFuncional> representacaoFuncionalList = representacaoFuncionalService.findByFuncional(entidade.getId());
 		for (RepresentacaoFuncional representacaoFuncional : representacaoFuncionalList) {
-			if(representacaoFuncional.isAtivo())
+			if(representacaoFuncional.getFim() == null)
 				throw new SRHRuntimeException("Exoneração não permitida. O funcionário possui Representação ativa.");
 		}
 		

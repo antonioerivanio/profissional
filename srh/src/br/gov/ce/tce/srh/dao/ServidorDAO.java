@@ -7,8 +7,8 @@ import br.gov.ce.tce.srh.domain.sapjava.Setor;
 
 public interface ServidorDAO {
 
-	List<Servidor> consultarServidoresPorSetor(Setor setor, int firstResult, int maxResults) throws Exception;
+	List<Servidor> consultarServidoresPorSetor(Setor setor, Integer vinculo, int firstResult, int maxResults) throws Exception;
 
-	int getCountServidoresPorSetor(Setor setor);
+	int getCountServidoresPorSetor(Setor setor, Integer vinculo);
 
 }

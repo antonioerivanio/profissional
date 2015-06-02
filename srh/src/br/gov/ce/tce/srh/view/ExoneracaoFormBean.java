@@ -70,9 +70,7 @@ public class ExoneracaoFormBean implements Serializable {
 			// exonerar representacao
 			if ( this.representacao != null)
 				representacaoFuncionalService.exonerar(representacao);
-
-			this.funcional = null;
-			this.representacao = null;
+			
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -83,6 +81,11 @@ public class ExoneracaoFormBean implements Serializable {
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}finally{
+			
+			this.funcional = null;			
+			this.representacao = null;
+			
 		}
 
 		return null;

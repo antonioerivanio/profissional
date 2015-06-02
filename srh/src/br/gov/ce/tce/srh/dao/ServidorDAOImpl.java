@@ -34,8 +34,8 @@ public class ServidorDAOImpl implements ServidorDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Servidor> consultarServidoresPorSetor(Setor setor, int firstResult, int maxResults) {
-		Query query = getQueryServidoresPorSetor(setor);
+	public List<Servidor> consultarServidoresPorSetor(Setor setor, Integer vinculo, int firstResult, int maxResults) {
+		Query query = getQueryServidoresPorSetor(setor, vinculo);
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);
 		query.setResultTransformer(Transformers.aliasToBean(Servidor.class));
@@ -44,8 +44,8 @@ public class ServidorDAOImpl implements ServidorDAO {
 	}
 
 	@Override
-	public int getCountServidoresPorSetor(Setor setor) {
-		return count(getQueryServidoresPorSetor(setor));
+	public int getCountServidoresPorSetor(Setor setor, Integer vinculo) {
+		return count(getQueryServidoresPorSetor(setor, vinculo));
 	}
 
 
@@ -55,37 +55,78 @@ public class ServidorDAOImpl implements ServidorDAO {
 		return count.intValue();
 	}
 	
-	private Query getQueryServidoresPorSetor(Setor setor) {
+	private Query getQueryServidoresPorSetor(Setor setor, Integer vinculo) {
 		StringBuilder sql = new StringBuilder();
-
-//		sql.append("SELECT S.NMSETOR \"nomeSetor\", ");
-//		sql.append("F.NOMECOMPLETO \"nomeCompleto\", ");
-//		sql.append("O.NOMENCLATURA \"cargo\", ");
-//		sql.append("decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) \"referencia\", ");
-//		sql.append("RC.NOMENCLATURA \"representacao\", ");
-//		sql.append("RC.SIMBOLO \"simbolo\" ");
-//		sql.append("FROM SRH.TB_REPRESENTACAOFUNCIONAL RF RIGHT JOIN SRH.TB_FUNCIONAL F ON RF.IDFUNCIONAL = F.ID INNER JOIN SAPJAVA.SETOR S ON F.IDSETOR = S.IDSETOR INNER JOIN SRH.TB_OCUPACAO O ON F.IDOCUPACAO = O.ID LEFT JOIN SRH.TB_REPRESENTACAOCARGO RC ON RF.IDREPRESENTACAOCARGO = RC.ID LEFT JOIN SRH.TB_CLASSEREFERENCIA CR ON F.IDCLASSEREFERENCIA = CR.ID ");
-//		sql.append("WHERE F.IDTIPOMOVIMENTOSAIDA Is Null AND F.ATIVOFP=1 AND RF.IDTIPOMOVIMENTOFIM Is Null ");
-//		sql.append("AND S.IDSETOR = " + setor.getId());
-//		sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO ");
 		
-		sql.append("SELECT DISTINCT S.NMSETOR \"nomeSetor\", F.NOMECOMPLETO \"nomeCompleto\", O.NOMENCLATURA \"cargo\", decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) \"referencia\", RC.NOMENCLATURA \"representacao\", RC.SIMBOLO \"simbolo\", RS.HIERARQUIA \"hierarquia\", S.NRORDEMSETORFOLHA \"nrOrdemSetorFolha\" ");
+		sql.append("SELECT DISTINCT S.NMSETOR \"nomeSetor\", "
+				+ "F.NOMECOMPLETO \"nomeCompleto\", "
+				+ "O.NOMENCLATURA \"cargo\", "
+				+ "decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) \"referencia\", "
+				+ "RC.NOMENCLATURA \"representacao\", "
+				+ "RC.SIMBOLO \"simbolo\", "
+				+ "S.NRORDEMSETORFOLHA \"nrOrdemSetorFolha\", "
+				+ "F.IDFOLHA \"idFolha\", "
+				+ "O.ORDEMOCUPACAO \"ordemOcupacao\"");
+		
 		sql.append("FROM SRH.TB_FUNCIONAL F ");
-		sql.append("LEFT JOIN SRH.TB_REPRESENTACAOCARGO RC ON F.IDREPRESENTACAOCARGO = RC.ID ");
-		sql.append("LEFT JOIN SAPJAVA.SETOR S ON F.IDSETOR = S.IDSETOR ");
 		sql.append("LEFT JOIN SRH.TB_OCUPACAO O ON F.IDOCUPACAO = O.ID ");
+		sql.append("LEFT JOIN SRH.TB_TIPOOCUPACAO TOC ON O.TIPOOCUPACAO = TOC.ID ");
 		sql.append("LEFT JOIN SRH.TB_CLASSEREFERENCIA CR ON F.IDCLASSEREFERENCIA = CR.ID ");
-		sql.append("LEFT JOIN SRH.TB_REPRESENTACAOSETOR RS ON RS.IDSETOR = S.IDSETOR AND RS.IDREPRESENTACAOCARGO = RC.ID ");
-		sql.append("WHERE 1=1 ");
-		sql.append("AND F.ATIVOFP           = 1 ");
-		sql.append("AND F.STATUS            < 3 ");
-		sql.append("AND F.IDSITUACAO        < 4 ");
-		sql.append("AND F.DATASAIDA        IS NULL ");
-		sql.append("AND F.DOESAIDA         IS NULL ");
-		if (setor != null)
-			sql.append("AND S.IDSETOR = " + setor.getId());
-		sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
-
+		sql.append("LEFT JOIN SAPJAVA.SETOR S ON F.IDSETOR = S.IDSETOR ");
+		sql.append("LEFT JOIN SRH.TB_REPRESENTACAOFUNCIONAL RF ON RF.IDFUNCIONAL = F.ID AND RF.FIM IS NULL ");
+		sql.append("LEFT JOIN SRH.TB_REPRESENTACAOCARGO RC ON RF.IDREPRESENTACAOCARGO = RC.ID ");
+			
+		sql.append("WHERE F.ATIVOFP = 1 ");		
+		sql.append("AND F.IDSITUACAO < 4 ");
+		
+		if(setor != null){
+			sql.append("AND S.IDSETOR = " + setor.getId() + " ");
+		}
+		
+		if(vinculo == 1){ // MEMBROS
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS = 1 ");
+			sql.append("AND TOC.ID = 1 ");
+			sql.append("ORDER BY O.ORDEMOCUPACAO, S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
+		}else if(vinculo == 2){ // SERVIDORES ATIVOS
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS = 1 ");
+			sql.append("AND (TOC.ID = 2 OR TOC.ID = 3) ");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+		}else if(vinculo == 3){ // SERVIDORES INATIVOS
+			sql.append("AND F.STATUS = 5 ");
+			sql.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+		}else if(vinculo == 4){ // OCUPANTES DE CARGO COMICIONADO
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS = 1 ");
+			sql.append("AND RF.ID IS NOT NULL ");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+		}else if(vinculo == 5){ // OCUPANTES SOMENTE CARGO COMICIONADO
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS = 1 ");
+			sql.append("AND RF.ID IS NOT NULL ");
+			sql.append("AND TOC.ID = 6 ");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+		}else if(vinculo == 6){ // ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS = 2 ");
+			sql.append("AND TOC.ID = 5 ");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
+		}else if(vinculo == 7){ // ESTAGIÁRIOS NÍVEL MÉDIO
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS = 2 ");
+			sql.append("AND TOC.ID = 4 ");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
+		}else if(vinculo == 8){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND TOC.ID = 8 ");
+			sql.append("ORDER BY F.NOMECOMPLETO");
+		}else{
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS < 3 ");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+		}
+		
 		Query query = getSession().createSQLQuery(sql.toString());
 
 		return query;

@@ -9,7 +9,7 @@
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
-
+		
 		<div class="titulo-pagina">
 
 			<h2>Servidores por Setor</h2>
@@ -18,16 +18,33 @@
 
 		<h:form id="form" binding="#{servidorBean.form}" styleClass="formularios box-border">
 
-			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />			
 			
 			<div id="div1" class="select-box box-38">
-				<h:outputLabel id="lblSetor" value="SETOR"/>
+				<h:outputLabel id="lblSetor" value="Setor"/>
 				<div id="div2" class="conteiner">
 					<h:selectOneMenu id="cmbSetor" 
 							 value="#{servidorBean.setor}" converter="entityConverter">
 						<f:selectItem id="siSelecione1" itemLabel="TODOS" />
 						<f:selectItems id="siSetor" value="#{servidorBean.comboSetor}" 
 							var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
+					</h:selectOneMenu>
+				</div>
+			</div>
+			
+			<div id="div3" class="select-box box-38">
+				<h:outputLabel id="lblVinculo" value="Vínculo"/>
+				<div id="div4" class="conteiner">
+					<h:selectOneMenu id="cmbVinculo" value="#{servidorBean.vinculo}">							  
+						<f:selectItem itemLabel="TODOS" itemValue="0" id="item0" />
+						<f:selectItem itemLabel="Membros" itemValue="1" id="item1" />
+						<f:selectItem itemLabel="Servidores Ativos" itemValue="2" id="item2" />
+						<f:selectItem itemLabel="Servidores Inativos" itemValue="3" id="item3" />
+						<f:selectItem itemLabel="Ocupantes de Cargo Comissionado" itemValue="4" id="item4" />
+						<f:selectItem itemLabel="Ocupantes Somente Cargo Comissionado" itemValue="5" id="item5" />						
+						<f:selectItem itemLabel="Estagiários Nível Superior" itemValue="6" id="item6" />
+						<f:selectItem itemLabel="Estagiários Nível Médio" itemValue="7" id="item7" />
+						<f:selectItem itemLabel="Cessão de Servidor Sem Nenhuma Remuneração" itemValue="8" id="item8" />											
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -44,42 +61,89 @@
 							 action="#{servidorBean.relatorio}" 
  							 styleClass="bt-padrao fl mg-top-18 mg-left-10"  
  							 style="margin-left: 10px" />			
- 				<div class="tabela-dados">
+ 			
+ 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{servidorBean.dataModel}" var="item" rows="10" binding="#{servidorBean.dataTable}">
-
-					<rich:column id="c1" headerClass="headerTable" styleClass="columnsTable">
+				<rich:dataTable id="lista" 
+								value="#{servidorBean.dataModel}" 
+								var="item" 
+								rows="10" 
+								binding="#{servidorBean.dataTable}"
+								rendered="#{servidorBean.count > 0}" >					
+					
+					<rich:column id="c1" headerClass="headerTable" styleClass="columnsTable" rendered="#{servidorBean.vinculo ne 3}">
 						<f:facet name="header">Setor</f:facet>
 						<h:outputText id="cv1" value="#{item.nomeSetor}" />
 					</rich:column>
+					
 					<rich:column id="c2" headerClass="headerTable" styleClass="columnsTable">
 						<f:facet name="header">Nome</f:facet>
 						<h:outputText id="cv2" value="#{item.nomeCompleto}" />
 					</rich:column>
+					
 					<rich:column id="c3" headerClass="headerTable" styleClass="columnsTable">
 						<f:facet name="header">Cargo</f:facet>
 						<h:outputText id="cv3" value="#{item.cargo}" />
 					</rich:column>
-					<rich:column id="c4" headerClass="headerTable" styleClass="columnsTable">
+					
+					<rich:column 	id="c4" 
+									headerClass="headerTable" 
+									styleClass="columnsTable"
+									rendered="#{servidorBean.vinculo eq 0 
+												or servidorBean.vinculo eq 2 
+												or servidorBean.vinculo eq 3
+												or servidorBean.vinculo eq 4}">
+						
 						<f:facet name="header">Referencia</f:facet>
+						
 						<h:outputText id="cv4" value="#{item.referencia}" />
 					</rich:column>
-					<rich:column id="c5" headerClass="headerTable" styleClass="columnsTable">
+					
+					<rich:column 	id="c5" 
+									headerClass="headerTable" 
+									styleClass="columnsTable"
+									rendered="#{servidorBean.vinculo eq 0 
+												or servidorBean.vinculo eq 2 
+												or servidorBean.vinculo eq 4 
+												or servidorBean.vinculo eq 5}">
+						
 						<f:facet name="header">Representacao</f:facet>
+						
 						<h:outputText id="cv5" value="#{item.representacao}" />
 					</rich:column>
-					<rich:column id="c6" headerClass="headerTable" styleClass="columnsTable">
+					
+					<rich:column 	id="c6" 
+									headerClass="headerTable" 
+									styleClass="columnsTable"
+									rendered="#{servidorBean.vinculo eq 0 
+												or servidorBean.vinculo eq 2 
+												or servidorBean.vinculo eq 4 
+												or servidorBean.vinculo eq 5}">
+						
 						<f:facet name="header">Simbolo</f:facet>
+						
 						<h:outputText id="cv6" value="#{item.simbolo}" />
-					</rich:column>
-					<rich:column id="c7" headerClass="headerTable" styleClass="columnsTable">
-						<f:facet name="header">Hierarquia</f:facet>
-						<h:outputText id="cv7" value="#{item.hierarquia}" />
-					</rich:column>
+					</rich:column>										
+					
+					<f:facet id="f1" name="footer">
+						<h:outputText style="float: right; margin-right: 10px;" id="f1" value="TOTAL: #{servidorBean.count}" />
+					</f:facet>					
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{servidorBean.pagedList.size() > 0}"/>
+				
+				<rich:datascroller  id="scroller"
+									align="center" 
+									for="lista" 
+									stepControls="hide"
+									renderIfSinglePage="false"
+									binding="#{servidorBean.dataScroller}"/>
 
 			</div>
+			
+			<h:commandButton id="limpar"
+							 value="Limpar"
+							 action="#{servidorBean.limpar}"
+							 styleClass="bt-padrao fr mg-right-15"
+							 />	
 			
 		</h:form>
 
