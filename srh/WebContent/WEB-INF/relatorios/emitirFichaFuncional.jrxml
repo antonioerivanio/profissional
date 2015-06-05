@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirFichaFuncional" pageWidth="900" pageHeight="595" orientation="Landscape" columnWidth="860" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="213"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -30,16 +30,16 @@
        p.rg, p.documentomilitar, p.tituloeleitoral,
        p.zonaeleitoral, p.secaoeleitoral, decode(p.cpf, NULL,NULL,Translate(To_Char(p.cpf/100,'000,000,000.00'),',.' ,'.-')) as cpf, p.pasep
   from tb_funcional f
-inner join tb_pessoal p on p.id = f.idpessoal
-inner join tb_ocupacao o on o.id = f.idocupacao
-left join tb_uf u on u.UF = p.UF
-left join tb_estadocivil ec on ec.id = p.idestadocivil
-left join tb_referenciafuncional r on r.idfuncional = f.id
-left join tb_tipomovimento m on m.id = decode(o.flcargoisolado, 1, f.idtipomovimentoentrada, r.idtipomovimento)
-left join tb_classereferencia c on c.id = r.idclassereferencia
-left join tb_simbolo s on s.id = c.idsimbolo
+	inner join tb_pessoal p on p.id = f.idpessoal
+	inner join tb_ocupacao o on o.id = f.idocupacao
+	left join tb_uf u on u.UF = p.UF
+	left join tb_estadocivil ec on ec.id = p.idestadocivil
+	left join tb_referenciafuncional r on r.idfuncional = f.id
+	left join tb_tipomovimento m on m.id = decode(o.flcargoisolado, 1, f.idtipomovimentoentrada, r.idtipomovimento)
+	left join tb_classereferencia c on c.id = r.idclassereferencia
+	left join tb_simbolo s on s.id = c.idsimbolo
 $P!{FILTRO}
-order by f.dataexercicio desc;]]>
+order by exercicio desc]]>
 	</queryString>
 	<field name="PROVIMENTO" class="java.lang.String"/>
 	<field name="CARGO" class="java.lang.String"/>
@@ -112,7 +112,7 @@ order by f.dataexercicio desc;]]>
 				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="247" y="42" width="390" height="20" forecolor="#0F2E52"/>
+				<reportElement x="1" y="42" width="859" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -396,7 +396,7 @@ order by f.dataexercicio desc;]]>
 				<reportElement x="1" y="2" width="859" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="107" y="3" width="672" height="16"/>
+				<reportElement x="0" y="3" width="860" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
