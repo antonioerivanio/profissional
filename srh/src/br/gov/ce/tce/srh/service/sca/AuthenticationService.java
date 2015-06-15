@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -31,11 +32,19 @@ public class AuthenticationService {
 		try {
 
 			// criptografia MD5
-			password = toMd5(password.toUpperCase());
+//			password = toMd5(password.toUpperCase());
+			
+//			password = toMd5(password);
 
 			// autenticando spring security
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username.toUpperCase(), password);
-			Authentication authenticate = authenticationManager.authenticate(token);
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+			Authentication authenticate;
+			try {
+				authenticate = authenticationManager.authenticate(token);
+			} catch (BadCredentialsException e) {
+				e.printStackTrace();
+				throw new RuntimeException("Login ou senha inválidos.");
+			}
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
 
 			// pergando o usuario

@@ -20,7 +20,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
 @Entity
 @Table(name="USUARIO", schema="SCA")
@@ -28,7 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
   @NamedQuery(name = "Usuario.findByUsername", 
               query = "SELECT usu FROM Usuario usu WHERE usu.username = :username")
 })
-public class Usuario implements Serializable, UserDetails {
+public class Usuario implements Serializable, LdapUserDetails {
 
 	private static final long serialVersionUID = -8451679170281063697L;
 
@@ -63,7 +63,10 @@ public class Usuario implements Serializable, UserDetails {
 	@Transient
 	private Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
-    @Transient
+	@Transient
+	private String dn;
+	
+	@Transient
     public Collection<GrantedAuthority> getAuthorities() {
     	return this.authorities;
     }
@@ -156,5 +159,14 @@ public class Usuario implements Serializable, UserDetails {
 		}
     	return false;
     }
+
+	@Override
+	public String getDn() {		
+		return this.dn;
+	}	
+
+    public void setDn(String dn) {
+		this.dn = dn;
+	}
 
 }

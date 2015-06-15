@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.gov.ce.tce.srh.dao.UsuarioDAO;
+import br.gov.ce.tce.srh.domain.sca.Permissao;
 import br.gov.ce.tce.srh.domain.sca.Usuario;
 
 /**
@@ -31,7 +32,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return dao.findAll();
 	}
 
+	@Override
+	public Usuario findByUsername(String username) {
+		return dao.findByUsername(username);
+	}
 
+	@Override
+	public List<Permissao> findPermissoesByUsuarioAndSistema(Usuario usuario, String siglaSistema) {
+		return dao.findPermissoesByUsuarioAndSistema(usuario, siglaSistema);
+	}
+
+	@Override
+	public Usuario findByCpf(String cpf) {
+		return dao.findByCpf(cpf);
+	}
+	
 	public void setDAO(UsuarioDAO dao) { this.dao = dao; }
 
 }

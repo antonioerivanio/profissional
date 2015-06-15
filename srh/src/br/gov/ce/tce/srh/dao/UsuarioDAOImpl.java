@@ -3,11 +3,14 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import br.gov.ce.tce.srh.domain.sca.Permissao;
 import br.gov.ce.tce.srh.domain.sca.Usuario;
 
 /**
@@ -40,4 +43,43 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		return entityManager.createQuery("SELECT DISTINCT e FROM Usuario e join e.grupoUsuario gu join gu.grupo g join g.sistema s WHERE s.sigla = 'SRH' ORDER BY e.nome ASC").getResultList();
 	}
 
+	
+	@Override
+	public Usuario findByUsername(String username) {
+		try {
+			String sql = "SELECT usu FROM Usuario usu WHERE UPPER(usu.username) = UPPER(:username)";
+			return entityManager.createQuery(sql, Usuario.class)
+					.setParameter("username", username).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Permissao> findPermissoesByUsuarioAndSistema(Usuario usuario, String siglaSistema) {
+		
+		String sql = "SELECT p FROM GrupoUsuario AS gu "
+				+ "INNER JOIN gu.grupo AS g "
+				+ "INNER JOIN g.permissoes AS p";
+		sql += " WHERE g.sistema.sigla = :sigla AND p.sistema.sigla = :sigla AND gu.usuario = :usuario";
+		
+		TypedQuery<Permissao> query = entityManager.createQuery(sql, Permissao.class);
+		
+		query.setParameter("sigla", siglaSistema);
+		query.setParameter("usuario", usuario.getId());
+		List<Permissao> permissaoList = query.getResultList();		
+		return permissaoList;
+	} 
+
+	
+	@Override
+	public Usuario findByCpf(String cpf) {
+		try {
+			String sql = "SELECT usu FROM Usuario usu WHERE UPPER(usu.cpf) = UPPER(:cpf)";
+			return entityManager.createQuery(sql, Usuario.class)
+					.setParameter("cpf", cpf).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 }

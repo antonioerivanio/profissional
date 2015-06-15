@@ -1,11 +1,14 @@
 package br.gov.ce.tce.srh.domain.sca;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,12 +18,24 @@ public class Grupo {
 	@Id
 	private Long id;
 
+	@Column(name="NOME")
+	private String nome;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "SISTEMA")	
 	private Sistema sistema;
+	
+	@OneToMany
+	@JoinColumn(name = "GRUPO", referencedColumnName = "id")
+	private List<Permissao> permissoes;	
 
-	@Column(name="NOME")
-	private String nome;
+	public List<Permissao> getPermissoes() {
+		return permissoes;
+	}
+
+	public void setPermissoes(List<Permissao> permissoes) {
+		this.permissoes = permissoes;
+	}
 
 	public Long getId() {
 		return id;
