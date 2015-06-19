@@ -10,7 +10,7 @@ public class PagedListDataModel extends DataModel {
 
 	private int totalNumRows;
 
-	private int pageSize;
+	private int pageSize = 10;
 
 	private List list;
 
@@ -20,43 +20,50 @@ public class PagedListDataModel extends DataModel {
 		super();
 		setWrappedData(list);
 		this.totalNumRows = totalNumRows;
-		this.pageSize = list.size();
 	}
 
 	public boolean isRowAvailable() {
 		if (list == null)
 			return false;
-
-		int rowIndex = getRowIndex();
-		if (rowIndex >= 0 && rowIndex < list.size())
+		
+		if (getRowIndex() >= 0 && getRowIndex() < list.size())
 			return true;
-		else
-			return false;
+		
+		return false;
 	}
 
 	public int getRowCount() {return totalNumRows;}
 
 	public Object getRowData() {
-		if (list == null)
+		if (list == null)			
 			return null;
+		
 		else if (!isRowAvailable())
 			throw new IllegalArgumentException();
+		
 		else {
 			int dataIndex = getRowIndex();
-			return list.get(dataIndex);
+			
+			if(dataIndex < list.size())			
+				return list.get(dataIndex);
+			
+			return null;
 		}
 	}
 
 	public int getRowIndex() {
 		
-		if(pageSize == 0)
-			rowIndex = -1;
+		if(getPageSize() == 0)
+			this.rowIndex = -1;
 		
-		return ( rowIndex == -1 ? -1 : rowIndex % pageSize);
+		return ( this.rowIndex == -1 ? -1 : this.rowIndex % this.pageSize );
 	}
 	public void setRowIndex(int rowIndex) {this.rowIndex = rowIndex;}
 
 	public Object getWrappedData() {return list;}
 	public void setWrappedData(Object list) {this.list = (List) list;}
+
+	public int getPageSize() {return pageSize;}
+	public void setPageSize(int pageSize) {this.pageSize = pageSize;}
 
 }

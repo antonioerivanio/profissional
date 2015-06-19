@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
-import org.richfaces.component.html.HtmlDatascroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -67,13 +65,11 @@ public class FuncionalAnotacaoBean implements Serializable {
 	private FuncionalAnotacao entidade = new FuncionalAnotacao();
 
 	//paginação
-	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
-	private HtmlDatascroller dataScroller = new HtmlDatascroller();
+	private int count;	
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<FuncionalAnotacao> pagedList = new ArrayList<FuncionalAnotacao>();
-	private int flagRegistroInicial = 0;
-
+	private int flagRegistroInicial;
+	private Integer pagina = 1;
 
 
 	/**
@@ -107,6 +103,8 @@ public class FuncionalAnotacaoBean implements Serializable {
 
 		try {
 
+			limparListas();			
+			
 			// validando campos da entidade
 			if ( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
@@ -116,12 +114,10 @@ public class FuncionalAnotacaoBean implements Serializable {
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
-			}
-
-			dataTable.setFirst(0);
-			dataScroller.setPage(0);
+			}		
 			
 			flagRegistroInicial = -1;
+			
 			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
@@ -308,8 +304,18 @@ public class FuncionalAnotacaoBean implements Serializable {
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 			
 			try {
+				
+				limparListas();
+				
 				setCpf(authenticationService.getUsuarioLogado().getCpf());				
+				
 				count = funcionalAnotacaoService.count( getEntidade().getFuncional().getPessoal().getId() );				
+				
+				if (count == 0) {
+					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+					logger.info("Nenhum registro foi encontrado.");
+				}	
+				
 				flagRegistroInicial = -1;				
 				
 			} catch (Exception e) {
@@ -323,7 +329,9 @@ public class FuncionalAnotacaoBean implements Serializable {
 			limparListas();
 			flagRegistroInicial = 0;
 		}
+		
 		passouConsultar = false;
+		
 		return form;
 	}
 
@@ -331,25 +339,18 @@ public class FuncionalAnotacaoBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
-		dataScroller = new HtmlDatascroller();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<FuncionalAnotacao>(); 
+		pagedList = new ArrayList<FuncionalAnotacao>();
+		pagina = 1;		
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-	
-	public HtmlDatascroller getDataScroller() {return dataScroller;}
-	public void setDataScroller(HtmlDatascroller dataScroller) {this.dataScroller = dataScroller;}
-
-
-	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst()) {
+	public PagedListDataModel getDataModel() {		
+		
+		if( flagRegistroInicial != getPrimeiroDaPagina()) {
 			
-			flagRegistroInicial = getDataTable().getFirst();						
+			flagRegistroInicial = getPrimeiroDaPagina();						
 				
-			setPagedList(funcionalAnotacaoService.search(getEntidade().getFuncional().getPessoal().getId(), flagRegistroInicial,getDataTable().getRows()));
+			setPagedList(funcionalAnotacaoService.search(getEntidade().getFuncional().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize()));
 			
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
@@ -366,6 +367,11 @@ public class FuncionalAnotacaoBean implements Serializable {
 
 	public List<FuncionalAnotacao> getPagedList() {return pagedList;}
 	public void setPagedList(List<FuncionalAnotacao> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINAÇÃO
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 
+	//FIM PAGINAÇÃO
 }

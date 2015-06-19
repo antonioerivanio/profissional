@@ -78,8 +78,7 @@
 				<h:commandButton id="consultar"
 								 value="Consultar"
 								 action="#{funcionalAnotacaoBean.consultar}"
-								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-								 reRender="scroller,lista"/>
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10" />
 				<h:commandButton id="relatorio"
 								 value="Relatório"
 								 action="#{funcionalAnotacaoBean.relatorio}" 
@@ -89,7 +88,10 @@
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{funcionalAnotacaoBean.dataModel}" var="item" rows="10" binding="#{funcionalAnotacaoBean.dataTable}">
+				<rich:dataTable id="lista" 								 
+								var="item" 
+								rows="#{funcionalAnotacaoBean.dataModel.pageSize}" 
+								value="#{funcionalAnotacaoBean.dataModel}">
 
                     <h:column id="col0" headerClass="cel-25">
                         <f:facet name="header">
@@ -155,7 +157,11 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false" binding="#{funcionalAnotacaoBean.dataScroller}"/>
+				<rich:datascroller 	id="scroller" 
+									for="lista" 
+									stepControls="hide" 									
+									renderIfSinglePage="false" 
+									page="#{funcionalAnotacaoBean.pagina}"/>
 				
 			</div>
 			
