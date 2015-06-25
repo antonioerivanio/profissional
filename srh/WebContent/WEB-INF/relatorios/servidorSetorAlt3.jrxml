@@ -19,7 +19,7 @@
                 F.NOMECOMPLETO nomeCompleto,
                 O.NOMENCLATURA cargo,
                 decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) referencia,
-                RC.NOMENCLATURA representacao,
+                RC.NOMENCLATURA || decode(RF.TIPONOMEACAO, '1', ' - Titular', decode(RF.TIPONOMEACAO, '2', ' - Substituto', decode(RF.TIPONOMEACAO, '3', ' - Designado', ''))) representacao,
                 RC.SIMBOLO simbolo,
                 S.NRORDEMSETORFOLHA nrOrdemSetorFolha,
 		F.IDFOLHA idFolha,
@@ -82,14 +82,14 @@ $P!{FILTRO}]]>
 					<text><![CDATA[NOME]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="378" y="26" width="120" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="348" y="26" width="150" height="18" forecolor="#FFFFFF"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[REPRESENTAÇÃO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="204" y="26" width="170" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="204" y="26" width="140" height="18" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
@@ -163,7 +163,7 @@ $P!{FILTRO}]]>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="378" y="0" width="120" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="348" y="0" width="150" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{REPRESENTACAO}]]></textFieldExpression>
 			</textField>
@@ -178,7 +178,7 @@ $P!{FILTRO}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="204" y="0" width="170" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="204" y="0" width="140" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>

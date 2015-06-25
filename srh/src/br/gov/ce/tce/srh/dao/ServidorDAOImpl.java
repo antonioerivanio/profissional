@@ -62,7 +62,7 @@ public class ServidorDAOImpl implements ServidorDAO {
 				+ "F.NOMECOMPLETO \"nomeCompleto\", "
 				+ "O.NOMENCLATURA \"cargo\", "
 				+ "decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) \"referencia\", "
-				+ "RC.NOMENCLATURA \"representacao\", "
+				+ "RC.NOMENCLATURA || decode(RF.TIPONOMEACAO, '1', ' - Titular', decode(RF.TIPONOMEACAO, '2', ' - Substituto', decode(RF.TIPONOMEACAO, '3', ' - Designado', ''))) \"representacao\", "
 				+ "RC.SIMBOLO \"simbolo\", "
 				+ "S.NRORDEMSETORFOLHA \"nrOrdemSetorFolha\", "
 				+ "F.IDFOLHA \"idFolha\", "
@@ -91,6 +91,7 @@ public class ServidorDAOImpl implements ServidorDAO {
 		}else if(vinculo == 2){ // SERVIDORES ATIVOS
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");
+			sql.append("AND O.SITUACAO < 3 ");
 			sql.append("AND (TOC.ID = 2 OR TOC.ID = 3) ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 		}else if(vinculo == 3){ // SERVIDORES INATIVOS
@@ -100,6 +101,7 @@ public class ServidorDAOImpl implements ServidorDAO {
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");
 			sql.append("AND RF.ID IS NOT NULL ");
+			sql.append("AND O.SITUACAO < 3 ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 		}else if(vinculo == 5){ // OCUPANTES SOMENTE CARGO COMICIONADO
 			sql.append("AND F.DATASAIDA IS NULL ");
@@ -119,11 +121,13 @@ public class ServidorDAOImpl implements ServidorDAO {
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
 		}else if(vinculo == 8){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
 			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND O.SITUACAO < 3 ");
 			sql.append("AND TOC.ID = 8 ");
 			sql.append("ORDER BY F.NOMECOMPLETO");
 		}else{
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS < 3 ");
+			sql.append("AND O.SITUACAO < 3 ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 		}
 		

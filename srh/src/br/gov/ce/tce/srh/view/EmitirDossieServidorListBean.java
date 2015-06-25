@@ -60,6 +60,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 	private boolean progracaoFuncional = false;
 	private boolean representacaoFuncional = false;
 	private boolean anotacaoServidor = false;
+	private boolean marcaTodos = false;
 
 
 	// entidades das telas
@@ -241,6 +242,29 @@ public class EmitirDossieServidorListBean implements Serializable {
 
 	public boolean isAnotacaoServidor() {return anotacaoServidor;}
 	public void setAnotacaoServidor(boolean anotacaoServidor) {this.anotacaoServidor = anotacaoServidor;}
+	
+	public boolean isMarcaTodos() {return marcaTodos;}
+	public void setMarcaTodos(boolean marcaTodos) {
+		this.marcaTodos = marcaTodos;		
+		if(marcaTodos){
+			this.dadosPessoais = true;
+			this.historicoLotacao = true;
+			this.historicoLicenca = true;
+			this.historicoFerias = true;
+			this.progracaoFuncional = true;
+			this.representacaoFuncional = true;
+			this.anotacaoServidor = true;
+		}else{
+			this.dadosPessoais = false;
+			this.historicoLotacao = false;
+			this.historicoLicenca = false;
+			this.historicoFerias = false;
+			this.progracaoFuncional = false;
+			this.representacaoFuncional = false;
+			this.anotacaoServidor = false;			
+		}
+	}
+
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
@@ -254,14 +278,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 			cpf = new String();
 			nome = new String();
 			lista = new ArrayList<Funcional>();
-
-			this.dadosPessoais = false;
-			this.historicoLotacao = false;
-			this.historicoLicenca = false;
-			this.historicoFerias = false;
-			this.progracaoFuncional = false;
-			this.representacaoFuncional = false;
-			this.anotacaoServidor = false;
+			setMarcaTodos(false);
 		}
 		passouConsultar = false;
 		return form;

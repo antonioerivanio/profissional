@@ -182,6 +182,7 @@ public class ServidorBean  implements Serializable  {
 			}else if(vinculo == 2){ // SERVIDORES ATIVOS
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
+				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("AND (TOC.ID = 2 OR TOC.ID = 3) ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 			}else if(vinculo == 3){ // SERVIDORES INATIVOS
@@ -189,8 +190,9 @@ public class ServidorBean  implements Serializable  {
 				filtro.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 			}else if(vinculo == 4){ // OCUPANTES DE CARGO COMICIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
-				filtro.append("AND F.STATUS = 1 ");
+				filtro.append("AND F.STATUS = 1 ");					
 				filtro.append("AND RF.ID IS NOT NULL ");
+				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 			}else if(vinculo == 5){ // OCUPANTES SOMENTE CARGO COMICIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
@@ -210,11 +212,13 @@ public class ServidorBean  implements Serializable  {
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
 			}else if(vinculo == 8){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
 				filtro.append("AND F.DATASAIDA IS NULL ");
+				filtro.append("AND O.SITUACAO < 3 ");	
 				filtro.append("AND TOC.ID = 8 ");
 				filtro.append("ORDER BY F.NOMECOMPLETO");
 			}else{
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS < 3 ");
+				filtro.append("AND O.SITUACAO < 3 ");				 
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 			}
 			

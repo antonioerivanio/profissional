@@ -19,7 +19,7 @@
                 F.NOMECOMPLETO nomeCompleto,
                 O.NOMENCLATURA cargo,
                 decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) referencia,
-                RC.NOMENCLATURA representacao,
+                RC.NOMENCLATURA || decode(RF.TIPONOMEACAO, '1', ' - Titular', decode(RF.TIPONOMEACAO, '2', ' - Substituto', decode(RF.TIPONOMEACAO, '3', ' - Designado', ''))) representacao,
                 RC.SIMBOLO simbolo,
                 S.NRORDEMSETORFOLHA nrOrdemSetorFolha,
 		F.IDFOLHA idFolha,
@@ -75,7 +75,7 @@ $P!{FILTRO}]]>
 					<text><![CDATA[SIMBOLO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="319" y="26" width="75" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="301" y="26" width="75" height="18" forecolor="#FFFFFF"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
@@ -89,14 +89,14 @@ $P!{FILTRO}]]>
 					<text><![CDATA[NOME]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="397" y="26" width="102" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="383" y="26" width="115" height="18" forecolor="#FFFFFF"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[REPRESENTAÇÃO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="193" y="26" width="125" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="190" y="26" width="110" height="18" forecolor="#FFFFFF"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
@@ -171,12 +171,12 @@ $P!{FILTRO}]]>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="319" y="0" width="75" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="301" y="0" width="75" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="397" y="0" width="102" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="383" y="0" width="115" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{REPRESENTACAO}]]></textFieldExpression>
 			</textField>
@@ -191,7 +191,7 @@ $P!{FILTRO}]]>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="193" y="0" width="125" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="190" y="0" width="110" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>
