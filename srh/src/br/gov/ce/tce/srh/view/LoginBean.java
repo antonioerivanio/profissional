@@ -40,8 +40,8 @@ public class LoginBean implements Serializable {
 			mensagemLogin = authenticationService.login(login, senha);
 
 		} catch (Exception e) {
-	    	this.mensagem = "Erro de conexão interna do sistema.";
-			FacesUtil.addErroMessage("Erro de conexão interno do sistema. Operação cancelada.");
+	    	this.mensagem = e.getMessage();
+			FacesUtil.addErroMessage(e.getMessage() + " Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			return "loginInvalido";
 		}

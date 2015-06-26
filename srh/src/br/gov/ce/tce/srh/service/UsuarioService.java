@@ -17,4 +17,6 @@ public interface UsuarioService {
 			String siglaSistema);
 	
 	public Usuario findByCpf(String cpf);
+	
+	public Usuario salvar(Usuario entidade);
 }

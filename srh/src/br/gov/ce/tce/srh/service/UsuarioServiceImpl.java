@@ -48,5 +48,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 	
 	public void setDAO(UsuarioDAO dao) { this.dao = dao; }
+	
+	@Override
+	public Usuario salvar(Usuario entidade) {
+		return dao.salvar(entidade);
+	}
 
 }

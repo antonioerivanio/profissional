@@ -17,5 +17,6 @@ public interface UsuarioDAO {
 			String siglaSistema);
 
 	public Usuario findByCpf(String cpf);
-
+	
+	public Usuario salvar(Usuario entidade);
 }

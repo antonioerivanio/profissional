@@ -39,7 +39,7 @@ public class CustomUserDetailsMapper extends LdapUserDetailsMapper {
 
 			// verificando a lista de usuarios
 			if (lista == null || lista.size() == 0)
-				return null;
+				throw new RuntimeException("Usuário não tem acesso aos sistemas!");
 
 			usuario = lista.get(0);
 			

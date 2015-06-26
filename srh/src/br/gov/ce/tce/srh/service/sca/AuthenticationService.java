@@ -13,11 +13,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.domain.sca.Usuario;
+import br.gov.ce.tce.srh.service.UsuarioService;
 
 @Component
 public class AuthenticationService {
@@ -25,16 +26,12 @@ public class AuthenticationService {
 	@Autowired
 	@Qualifier("authenticationManager")
 	private AuthenticationManager authenticationManager;
-
 	
+	@Autowired
+	private UsuarioService usuarioService;
+	
+	@Transactional
 	public String login(String username, String password) {
-
-		try {
-
-			// criptografia MD5
-//			password = toMd5(password.toUpperCase());
-			
-//			password = toMd5(password);
 
 			// autenticando spring security
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
@@ -43,16 +40,17 @@ public class AuthenticationService {
 				authenticate = authenticationManager.authenticate(token);
 			} catch (BadCredentialsException e) {
 				e.printStackTrace();
-				throw new RuntimeException("Login ou senha inválidos.");
+				throw new RuntimeException("Login ou senha inválidos!");
 			}
+			
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
-
+			
 			// pergando o usuario
 			Usuario usuario = (Usuario) getUsuarioLogado();
 			
 			// verificando se o usuario esta ativo
 			if (!usuario.isEnabled()) {
-				return "Usuário nao esta ativo!";
+				return "Usuário não está ativo!";
 			}
 
 			// Verificando se a senha esta expirada
@@ -62,19 +60,22 @@ public class AuthenticationService {
 
 			// verificando se o usuario tem alguma permissao
 			if (usuario.getAuthorities().size() == 0) {
-				return "Usuário não tem permissão de acesso";
+				return "Usuário não tem permissão de acesso!";
 			}
 
 			// verificando autenticacao
 			if (authenticate.isAuthenticated()) {
+				
+				password = toMd5(password);
+				
+				usuario.setPassword(password);
+				
+				usuarioService.salvar(usuario);				
+				
 				return "ok";
 			}
-
-		}
-
-		catch (AuthenticationException e) {}
 		
-		return "Login ou senha inválidos";
+		return null;
 	}
 
 

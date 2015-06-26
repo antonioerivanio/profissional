@@ -82,4 +82,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			return null;
 		}
 	}
+	
+	
+	@Override
+	public Usuario salvar(Usuario entidade) {		
+		return entityManager.merge(entidade);
+	}
 }
