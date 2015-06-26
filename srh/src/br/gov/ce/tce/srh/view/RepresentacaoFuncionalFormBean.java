@@ -75,8 +75,6 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 	private Boolean alterarMenu = false;
 	
 
-
-
 	/**
 	 * Realizar antes de carregar tela incluir
 	 * 
@@ -98,9 +96,8 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 		this.alterar = true;
 
 		this.nome = getEntidade().getFuncional().getNomeCompleto();
-		this.matricula = getEntidade().getFuncional().getMatricula();
+		this.matricula = getEntidade().getFuncional().getMatricula();		
 		
-		// exibir todos os campos?
 		exibirTodosOsCampos = true;
 		alterarMenu = true;
 		if(entidade.getFim() == null){

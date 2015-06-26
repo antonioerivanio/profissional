@@ -68,7 +68,7 @@ public class DeducaoDAOImpl implements DeducaoDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Deducao> search(Long idPessoal, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT e FROM Deducao e WHERE e.pessoal.id = :pessoal order by e.inicio desc ");
+		Query query = entityManager.createQuery("SELECT e FROM Deducao e WHERE e.pessoal.id = :pessoal ORDER BY e.anoReferencia DESC, e.mesReferencia");
 		query.setParameter("pessoal", idPessoal);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);

@@ -12,6 +12,7 @@
         <form-login login-page="/login.faces" authentication-failure-url="/login.faces" />
         <access-denied-handler error-page="/semPermissao.faces" />
 
+
 		<!-- TABELAS -->
         <intercept-url pattern="/paginas/tabelas/competenciasGeraisList.faces" access="ROLE_COMPETENCIA_FUNCIONAL" />
         <intercept-url pattern="/paginas/tabelas/competenciasGeraisForm.faces" access="ROLE_COMPETENCIA_FUNCIONAL" />
@@ -86,6 +87,7 @@
         <intercept-url pattern="/paginas/tabelas/tipoDocumentoForm.faces" access="ROLE_TIPO_DOCUMENTO" />
 
 
+
 		<!-- CADASTRO -->
         <intercept-url pattern="/paginas/cadastros/pessoaList.faces" access="ROLE_PESSOA" />
         <intercept-url pattern="/paginas/cadastros/pessoaForm.faces" access="ROLE_PESSOA" />
@@ -95,36 +97,40 @@
 
         <intercept-url pattern="/paginas/cadastros/pessoaCursoGraduacaoList.faces" access="ROLE_PESSOA_CURSO_GRADUACAO" />
         <intercept-url pattern="/paginas/cadastros/pessoaCursoGraduacaoForm.faces" access="ROLE_PESSOA_CURSO_GRADUACAO" />
-
-        <intercept-url pattern="/paginas/cadastros/representacaoSetorList.faces" access="ROLE_REPRESENTACAO_SETOR" />
-        <intercept-url pattern="/paginas/cadastros/representacaoSetorForm.faces" access="ROLE_REPRESENTACAO_SETOR" />
-
-        <intercept-url pattern="/paginas/cadastros/representacaoValorList.faces" access="ROLE_REPRESENTACAO_VALOR" />
-        <intercept-url pattern="/paginas/cadastros/representacaoValorForm.faces" access="ROLE_REPRESENTACAO_VALOR" />
-
-        <intercept-url pattern="/paginas/cadastros/publicacaoList.faces" access="ROLE_PUBLICACAO" />
-        <intercept-url pattern="/paginas/cadastros/publicacaoForm.faces" access="ROLE_PUBLICACAO" />
         
+        <intercept-url pattern="/paginas/cadastros/dependenteList.faces" access="ROLE_DEPENDENTE" />
+        <intercept-url pattern="/paginas/cadastros/dependenteForm.faces" access="ROLE_DEPENDENTE" />
+
         <intercept-url pattern="/paginas/cadastros/atestoPessoaList.faces" access="ROLE_COMPETENCIA_SERVIDOR" />
         <intercept-url pattern="/paginas/cadastros/atestoPessoaForm.faces" access="ROLE_COMPETENCIA_SERVIDOR" />
-        
-        <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalList.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
-        <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalForm.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
+
+        <intercept-url pattern="/paginas/cadastros/competenciaOrganizacionalList.faces" access="ROLE_COMPETENCIA_ORGANIZACIONAL" />
+        <intercept-url pattern="/paginas/cadastros/competenciaOrganizacionalForm.faces" access="ROLE_COMPETENCIA_ORGANIZACIONAL" />
         
         <intercept-url pattern="/paginas/cadastros/competenciaSetorialList.faces" access="ROLE_COMPETENCIA_SETORIAL" />
         <intercept-url pattern="/paginas/cadastros/competenciaSetorialForm.faces" access="ROLE_COMPETENCIA_SETORIAL" />
         
-        <intercept-url pattern="/paginas/cadastros/competenciaOrganizacionalList.faces" access="ROLE_COMPETENCIA_ORGANIZACIONAL" />
-        <intercept-url pattern="/paginas/cadastros/competenciaOrganizacionalForm.faces" access="ROLE_COMPETENCIA_ORGANIZACIONAL" />
+        <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalList.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
+        <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalForm.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
         
         <intercept-url pattern="/paginas/cadastros/categoriaFuncionalSetorList.faces" access="ROLE_COMPETENCIA_FUNCIONAL_SETOR" />
         <intercept-url pattern="/paginas/cadastros/categoriaFuncionalSetorForm.faces" access="ROLE_COMPETENCIA_FUNCIONAL_SETOR" />
         
         <intercept-url pattern="/paginas/cadastros/categoriaSetorPessoalList.faces" access="ROLE_CATEGORIA_SETOR_PESSOAL" />
-        <intercept-url pattern="/paginas/cadastros/categoriaSetorPessoalForm.faces" access="ROLE_CATEGORIA_SETOR_PESSOAL" />        
-       
-        <intercept-url pattern="/paginas/cadastros/dependenteList.faces" access="ROLE_DEPENDENTE" />
-        <intercept-url pattern="/paginas/cadastros/dependenteForm.faces" access="ROLE_DEPENDENTE" />
+        <intercept-url pattern="/paginas/cadastros/categoriaSetorPessoalForm.faces" access="ROLE_CATEGORIA_SETOR_PESSOAL" /> 
+               
+        <intercept-url pattern="/paginas/cadastros/pessoaAnotacaoList.faces" access="ROLE_ANOTACAO_SERVIDOR" />
+        <intercept-url pattern="/paginas/cadastros/pessoaAnotacaoForm.faces" access="ROLE_ANOTACAO_SERVIDOR" />
+        
+        <intercept-url pattern="/paginas/cadastros/publicacaoList.faces" access="ROLE_PUBLICACAO" />
+        <intercept-url pattern="/paginas/cadastros/publicacaoForm.faces" access="ROLE_PUBLICACAO" />        
+        
+        <intercept-url pattern="/paginas/cadastros/representacaoSetorList.faces" access="ROLE_REPRESENTACAO_SETOR" />
+        <intercept-url pattern="/paginas/cadastros/representacaoSetorForm.faces" access="ROLE_REPRESENTACAO_SETOR" />
+
+        <intercept-url pattern="/paginas/cadastros/representacaoValorList.faces" access="ROLE_REPRESENTACAO_VALOR" />
+        <intercept-url pattern="/paginas/cadastros/representacaoValorForm.faces" access="ROLE_REPRESENTACAO_VALOR" />      
+
 
 
 		<!-- FUNCIONAL -->

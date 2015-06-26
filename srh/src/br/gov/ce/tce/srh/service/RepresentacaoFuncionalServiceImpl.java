@@ -251,20 +251,23 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	 */
 	private void validarRepresentacaoAnteriorAtiva(RepresentacaoFuncional entidade) {
 
-		// validando representacao ativa por tipo
-		RepresentacaoFuncional representacao = dao.getByFuncionalTipo( entidade.getFuncional().getId(), entidade.getTipoNomeacao() );
-		if ( representacao != null )
-			throw new SRHRuntimeException("Não será permitido inserir nova representação, pois este servidor possui outra ativa com o mesmo tipo.");
-
-		// verificando se é membro
-		if(entidade.getFuncional().getOcupacao() != null && entidade.getFuncional().getOcupacao().getTipoOcupacao() != null
-				&& entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() != null){
-			if ( entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() == 1l ) {
-				throw new SRHRuntimeException("Não é permitido representação para servidores do tipo Membro.");
+		if ( entidade.getId() == null ) {
+			
+			// validando representacao ativa por tipo
+			RepresentacaoFuncional representacao = dao.getByFuncionalTipo( entidade.getFuncional().getId(), entidade.getTipoNomeacao() );
+			if ( representacao != null )
+				throw new SRHRuntimeException("Não será permitido inserir nova representação, pois este servidor possui outra ativa com o mesmo tipo.");
+		
+		
+			// verificando se é membro
+			if(entidade.getFuncional().getOcupacao() != null && entidade.getFuncional().getOcupacao().getTipoOcupacao() != null
+					&& entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() != null){
+				if ( entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() == 1l ) {
+					throw new SRHRuntimeException("Não é permitido representação para servidores do tipo Membro.");
+				}
 			}
-		}
 		
-		
+		}		
 	}
 
 	/**

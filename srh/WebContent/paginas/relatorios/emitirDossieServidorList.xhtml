@@ -79,8 +79,18 @@
 			   			
 			<div class="radios-group box-100" style="width: inherit;">
 				<h3>Opções</h3>
-				<div class="conteiner">
-					<div class="radio-box">
+				<div class="conteiner" style="display: inline-block; float: left; margin-right: 0px; border-right: 0px;">
+					<div style="margin: 1px 3px 0px">
+						<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.marcaTodos}" id="marcaTodos">
+							<a4j:support id="marcaTodosEvento" 
+									 event="onchange"
+									 ajaxSingle="true" 
+									 reRender="historicoLotacao, historicoLicenca, historicoFerias, progracaoFuncional, representacaoFuncional, anotacaoServidor" />
+						</h:selectBooleanCheckbox>						
+					</div>
+				</div>
+				<div class="conteiner">					
+					<div class="radio-box" style="margin-left: 4px;">
 					 Histórico de Lotação<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.historicoLotacao}" id="historicoLotacao"/>
 					</div>
 					 <div class="radio-box">
@@ -101,20 +111,19 @@
 				</div>
 			</div>
 			
-			<h:commandButton id="consultar"
-							 name="consultar"
-							 action="#{emitirDossieServidorListBean.consultar}"
-							 value="Consultar"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10"
-							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
-			
 			<h:commandButton id="relatorio"
 							 name="relatorio"
 							 action="#{emitirDossieServidorListBean.relatorio}" 
 							 value="Relatório" 
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 style="margin-left: 10px" />
+							 styleClass="bt-padrao fr mg-top-15 mg-left-10 mg-right-15" 
+							 style="margin-left: 10px; clear: both;" />
 			
+			<h:commandButton id="consultar"
+							 name="consultar"
+							 action="#{emitirDossieServidorListBean.consultar}"
+							 value="Consultar"
+							 styleClass="bt-padrao fr mg-top-15 mg-left-10"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
 			
 
 			<div class="tabela-dados">

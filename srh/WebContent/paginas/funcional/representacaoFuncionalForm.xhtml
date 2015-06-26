@@ -239,7 +239,7 @@
 			<br/><br/><br/><br/><br/>
 
 			<div class="input-box box-15">
-				<label for="">Inicio da Vigência</label>
+				<label for="">Inicio da Vigência *</label>
 				<div class="conteiner">
 					<h:inputText id="inicioVigencia" 
 								 name="inicioVigencia"
@@ -269,7 +269,7 @@
 			</div>
 
 			<div class="input-box box-15">
-				<label for="">Data da Publicação</label>
+				<label for="">Data da Publicação *</label>
 				<div class="conteiner">
 					<h:inputText id="publicacao"
 								 name="publicacao"
@@ -283,7 +283,7 @@
 			</div>
 
 			<div class="radios-group box-50">
-				<label for="">Tipo Nomeação</label>
+				<label for="">Tipo Nomeação *</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectOneRadio id="tipo"
@@ -304,10 +304,8 @@
 								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
 				<a href="/srh/paginas/funcional/representacaoFuncionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 			</ui:fragment>
-			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/representacaoFuncionalList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{representacaoFuncionalListBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
+						
+			<a href="/srh/paginas/funcional/representacaoFuncionalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>		
 			
 		</h:form>
 
