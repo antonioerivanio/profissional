@@ -66,11 +66,11 @@ public class AuthenticationService {
 			// verificando autenticacao
 			if (authenticate.isAuthenticated()) {
 				
-				password = toMd5(password);
-				
-				usuario.setPassword(password);
-				
-				usuarioService.salvar(usuario);				
+//				password = toMd5(password);
+//				
+//				usuario.setPassword(password);
+//				
+//				usuarioService.salvar(usuario);				
 				
 				return "ok";
 			}

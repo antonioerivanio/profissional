@@ -26,7 +26,7 @@ import org.springframework.security.ldap.userdetails.LdapUserDetails;
 @Table(name="USUARIO", schema="SCA")
 @NamedQueries({
   @NamedQuery(name = "Usuario.findByUsername", 
-              query = "SELECT usu FROM Usuario usu WHERE usu.username = :username")
+              query = "SELECT usu FROM Usuario usu WHERE UPPER(usu.username) = UPPER(:username)")
 })
 public class Usuario implements Serializable, LdapUserDetails {
 
