@@ -64,8 +64,8 @@
 	<class>br.gov.ce.tce.srh.domain.Vinculo</class>
 
 	<!-- sapjava -->
-	<class>br.gov.ce.tce.srh.domain.sapjava.Entidade</class>
-	<class>br.gov.ce.tce.srh.domain.sapjava.Setor</class>
+	<class>br.gov.ce.tce.srh.sapjava.domain.Entidade</class>
+	<class>br.gov.ce.tce.srh.sapjava.domain.Setor</class>
 
 
 	<!-- LOCALHOST ORACLE -->  	

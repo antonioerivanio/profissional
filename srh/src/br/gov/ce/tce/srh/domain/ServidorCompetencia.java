@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Entity
 @SuppressWarnings("serial")

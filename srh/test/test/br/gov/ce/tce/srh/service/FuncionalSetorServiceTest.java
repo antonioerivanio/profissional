@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.dao.FuncionalSetorDAO;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalSetor;
 import br.gov.ce.tce.srh.domain.Pessoal;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.FuncionalServiceImpl;
 import br.gov.ce.tce.srh.service.FuncionalSetorServiceImpl;

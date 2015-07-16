@@ -16,11 +16,11 @@ import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoAcademica;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.ServidorCompetencia;
+import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.AtestoPessoaService;
 import br.gov.ce.tce.srh.service.CompetenciaCursoService;
 import br.gov.ce.tce.srh.service.CompetenciaGraduacaoService;
 import br.gov.ce.tce.srh.service.PessoalCursoAcademicaService;
-import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**

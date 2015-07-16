@@ -8,11 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javax.swing.text.MaskFormatter;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import br.gov.ce.tce.srh.domain.sca.Usuario;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 /**
  * @author robson.castro

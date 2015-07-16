@@ -24,9 +24,11 @@ import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.domain.Vinculo;
-import br.gov.ce.tce.srh.domain.sapjava.Entidade;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Entidade;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.sapjava.service.EntidadeService;
+import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.CboService;
 import br.gov.ce.tce.srh.service.ClasseReferenciaService;
 import br.gov.ce.tce.srh.service.EspecialidadeCargoService;
@@ -41,8 +43,6 @@ import br.gov.ce.tce.srh.service.TipoMovimentoService;
 import br.gov.ce.tce.srh.service.TipoOcupacaoService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.service.VinculoService;
-import br.gov.ce.tce.srh.service.sapjava.EntidadeService;
-import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**

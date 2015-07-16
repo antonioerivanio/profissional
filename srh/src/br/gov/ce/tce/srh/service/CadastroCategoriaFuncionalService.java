@@ -3,8 +3,8 @@ package br.gov.ce.tce.srh.service;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.CategoriaFuncional;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public interface CadastroCategoriaFuncionalService {
 

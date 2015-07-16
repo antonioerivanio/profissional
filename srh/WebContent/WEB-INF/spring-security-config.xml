@@ -3,7 +3,7 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
 
@@ -196,7 +196,7 @@
         <authentication-provider user-service-ref="userDetailsService" />
     </authentication-manager> -->
 
-	<authentication-manager alias="authenticationManager">
+	<!-- <authentication-manager alias="authenticationManager">
 		<ldap-authentication-provider
 			user-search-filter="sAMAccountName={0}" user-search-base="OU=Users,OU=TCE"
 			group-search-filter="(&amp;(objectclass=group)(member={0}))"
@@ -204,6 +204,20 @@
 	</authentication-manager>
 
 	<ldap-server url="ldap://172.26.18.25:389/DC=tce,DC=ce,DC=gov,DC=br"
-		manager-dn="ocomon@tce.ce.gov.br" manager-password="TCESTI@admin@servicedesk1" />
+		manager-dn="ocomon@tce.ce.gov.br" manager-password="TCESTI@admin@servicedesk1" /> -->
+		
+		
+	<beans:bean id="ldapActiveDirectoryAuthProvider" 
+            class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+        <beans:constructor-arg value="tce.ce.gov.br" />
+        <beans:constructor-arg value="ldap://172.26.18.25:389/"/> 
+        <beans:property name="userDetailsContextMapper" ref="customUserDetailsMapper"/>
+        <beans:property name="useAuthenticationRequestCredentials" value="true"/>   
+        <beans:property name="convertSubErrorCodesToExceptions" value="true" />
+    </beans:bean>
+	
+	<authentication-manager alias="authenticationManager">
+	    <authentication-provider ref="ldapActiveDirectoryAuthProvider" />
+	</authentication-manager>
 
 </beans:beans>

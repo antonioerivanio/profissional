@@ -15,12 +15,12 @@ import br.gov.ce.tce.srh.domain.AreaSetor;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalAreaSetor;
 import br.gov.ce.tce.srh.domain.FuncionalAreaSetorPk;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.AreaSetorService;
 import br.gov.ce.tce.srh.service.FuncionalAreaSetorService;
 import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**

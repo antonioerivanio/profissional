@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 /**
  * Referente a tabela: TB_AREASETOR

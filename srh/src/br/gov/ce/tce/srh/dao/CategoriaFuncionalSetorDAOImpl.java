@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.CategoriaFuncionalSetor;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Repository
 public class CategoriaFuncionalSetorDAOImpl implements CategoriaFuncionalSetorDAO {

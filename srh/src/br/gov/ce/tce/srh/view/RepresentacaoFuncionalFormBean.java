@@ -15,14 +15,14 @@ import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.domain.RepresentacaoSetor;
 import br.gov.ce.tce.srh.domain.TipoDocumento;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.service.RepresentacaoSetorService;
 import br.gov.ce.tce.srh.service.TipoDocumentoService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
-import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**

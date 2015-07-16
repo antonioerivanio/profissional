@@ -13,8 +13,8 @@ import br.gov.ce.tce.srh.dao.RepresentacaoFuncionalDAO;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.domain.RepresentacaoSetor;
-import br.gov.ce.tce.srh.domain.sca.Usuario;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 /**
  * 

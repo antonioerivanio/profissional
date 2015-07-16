@@ -19,8 +19,8 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Test;
 
-import br.gov.ce.tce.srh.dao.sapjava.SetorDAOImpl;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.dao.SetorDAOImpl;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public class SetorDAOTest extends DatabaseTestCase {
 
@@ -83,7 +83,7 @@ public class SetorDAOTest extends DatabaseTestCase {
 	}
 
 	/**
-	 * Test of br.gov.ce.tce.srh.dao.sapjava.SetorDAOImpl.findAll
+	 * Test of br.gov.ce.tce.srh.sapjava.dao.SetorDAOImpl.findAll
 	 */
     @Test
     public void testFindAll() throws Exception {

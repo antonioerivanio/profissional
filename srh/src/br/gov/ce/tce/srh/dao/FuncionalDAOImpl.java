@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.domain.sca.Usuario;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 

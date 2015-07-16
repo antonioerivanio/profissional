@@ -17,7 +17,7 @@ import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Test;
 
-import br.gov.ce.tce.srh.domain.sca.Secao;
+import br.gov.ce.tce.srh.sca.domain.Secao;
 
 public class SecaoTest extends DatabaseTestCase {
 

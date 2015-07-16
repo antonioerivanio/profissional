@@ -17,7 +17,7 @@ import org.dbunit.dataset.ITableMetaData;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Test;
 
-import br.gov.ce.tce.srh.domain.sca.Sistema;
+import br.gov.ce.tce.srh.sca.domain.Sistema;
 
 public class SistemaTest extends DatabaseTestCase {
 

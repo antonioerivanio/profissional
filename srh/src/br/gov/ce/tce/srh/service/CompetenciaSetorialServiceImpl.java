@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.CompetenciaSetorialDAO;
 import br.gov.ce.tce.srh.domain.CompetenciaSetorial;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Service("competenciaSetorialServiceImpl")
 public class CompetenciaSetorialServiceImpl implements CompetenciaSetorialService {

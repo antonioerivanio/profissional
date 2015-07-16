@@ -12,8 +12,8 @@ import br.gov.ce.tce.srh.domain.CompetenciaCurso;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Service("cursoServidorService")
 public class CursoServidorServiceImpl implements CursoServidorService {

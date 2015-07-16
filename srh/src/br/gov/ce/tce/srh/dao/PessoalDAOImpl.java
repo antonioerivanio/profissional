@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Pessoal;
-import br.gov.ce.tce.srh.domain.sca.Usuario;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**

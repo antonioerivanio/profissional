@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.ServidorDAO;
 import br.gov.ce.tce.srh.domain.Servidor;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Service("servidorService")
 public class ServidorServiceImpl implements ServidorService {

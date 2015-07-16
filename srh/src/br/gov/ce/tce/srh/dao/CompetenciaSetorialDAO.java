@@ -3,7 +3,7 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.CompetenciaSetorial;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public interface CompetenciaSetorialDAO {
 	

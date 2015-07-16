@@ -12,7 +12,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Repository
 public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {

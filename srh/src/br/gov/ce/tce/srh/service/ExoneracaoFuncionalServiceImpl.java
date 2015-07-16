@@ -13,7 +13,7 @@ import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
 import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.sapjava.SetorService;
+import br.gov.ce.tce.srh.sapjava.service.SetorService;
 
 /**
  * 

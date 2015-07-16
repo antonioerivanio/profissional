@@ -5,8 +5,8 @@ import java.util.List;
 
 import br.gov.ce.tce.srh.domain.CompetenciaGraduacao;
 import br.gov.ce.tce.srh.domain.PessoalCursoAcademica;
-import br.gov.ce.tce.srh.domain.sca.Usuario;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 public interface PessoalCursoAcademicaService {
 

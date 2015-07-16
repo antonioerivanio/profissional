@@ -20,8 +20,8 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
 
-import br.gov.ce.tce.srh.domain.sca.GrupoUsuario;
-import br.gov.ce.tce.srh.domain.sca.Usuario;
+import br.gov.ce.tce.srh.sca.domain.GrupoUsuario;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 public class UsuarioTest extends DatabaseTestCase {
 

@@ -10,9 +10,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.gov.ce.tce.srh.dao.sapjava.SetorDAO;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
-import br.gov.ce.tce.srh.service.sapjava.SetorServiceImpl;
+import br.gov.ce.tce.srh.sapjava.dao.SetorDAO;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.sapjava.service.SetorServiceImpl;
 
 public class SetorServiceTest {
 
@@ -28,7 +28,7 @@ public class SetorServiceTest {
 
 
 	/**
-	 * Test of br.gov.ce.tce.srh.service.sapjava.SetorServiceImpl.findAll
+	 * Test of br.gov.ce.tce.srh.sapjava.service.SetorServiceImpl.findAll
 	 */
 	@Test
 	public void testFindAll(){

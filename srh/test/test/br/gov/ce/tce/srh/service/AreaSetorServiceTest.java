@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import br.gov.ce.tce.srh.dao.AreaSetorDAO;
 import br.gov.ce.tce.srh.domain.AreaSetor;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AreaSetorServiceImpl;
 

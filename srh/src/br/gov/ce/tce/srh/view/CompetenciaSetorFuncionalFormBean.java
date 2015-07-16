@@ -13,12 +13,12 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.CategoriaFuncionalSetor;
 import br.gov.ce.tce.srh.domain.Competencia;
 import br.gov.ce.tce.srh.domain.CompetenciaSetorFuncional;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorService;
 import br.gov.ce.tce.srh.service.CompetenciaService;
 import br.gov.ce.tce.srh.service.CompetenciaSetorFuncionalService;
-import br.gov.ce.tce.srh.service.sapjava.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 /**

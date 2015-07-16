@@ -22,8 +22,8 @@ import org.hibernate.envers.RevisionEntity;
 import org.hibernate.envers.RevisionNumber;
 import org.hibernate.envers.RevisionTimestamp;
 
-import br.gov.ce.tce.srh.domain.sca.Usuario;
-import br.gov.ce.tce.srh.service.sca.RevisaoListener;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
+import br.gov.ce.tce.srh.sca.service.RevisaoListener;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")

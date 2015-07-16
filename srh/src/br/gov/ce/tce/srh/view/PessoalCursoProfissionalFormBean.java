@@ -17,6 +17,7 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissionalPk;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.AreaProfissionalService;
 import br.gov.ce.tce.srh.service.CompetenciaCursoService;
 import br.gov.ce.tce.srh.service.CompetenciaService;
@@ -24,7 +25,6 @@ import br.gov.ce.tce.srh.service.CursoProfissionalService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoalCursoProfissionalService;
 import br.gov.ce.tce.srh.service.PessoalService;
-import br.gov.ce.tce.srh.service.sca.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 

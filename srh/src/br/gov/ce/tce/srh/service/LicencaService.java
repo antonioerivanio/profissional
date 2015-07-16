@@ -3,7 +3,6 @@ package br.gov.ce.tce.srh.service;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.Licenca;
-import br.gov.ce.tce.srh.domain.LicencaEspecial;
 import br.gov.ce.tce.srh.domain.TipoLicenca;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 

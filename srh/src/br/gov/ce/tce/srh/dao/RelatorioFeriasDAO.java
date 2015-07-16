@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public interface RelatorioFeriasDAO {
 

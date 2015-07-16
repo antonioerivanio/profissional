@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import br.gov.ce.tce.srh.dao.AreaSetorDAOImpl;
 import br.gov.ce.tce.srh.domain.AreaSetor;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 /**
  *

@@ -11,8 +11,8 @@ import br.gov.ce.tce.srh.dao.CategoriaFuncionalDAO;
 import br.gov.ce.tce.srh.dao.CategoriaFuncionalSetorDAO;
 import br.gov.ce.tce.srh.domain.CategoriaFuncional;
 import br.gov.ce.tce.srh.domain.CategoriaFuncionalSetor;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Service("cadastroCategoriaService")
 public class CadastroCategoriaFuncionalServiceImpl implements

@@ -89,7 +89,11 @@
 			
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{progressaoFuncionalListBean.dataModel}" var="item" rows="10" binding="#{progressaoFuncionalListBean.dataTable}">
+				<rich:dataTable id="lista" 
+								var="item"
+								rows="#{progressaoFuncionalListBean.dataModel.pageSize}" 
+								value="#{progressaoFuncionalListBean.dataModel}">
+								
 					 <h:column id="col1">
                         <f:facet name="header">
                             Ordem
@@ -157,7 +161,11 @@
                         </h:commandLink>
                     </h:column>
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{progressaoFuncionalListBean.pagedList.size() > 0}"/>
+				<rich:datascroller  id="scroller"
+									for="lista" 
+									stepControls="hide" 
+									renderIfSinglePage="false" 
+									page="#{progressaoFuncionalListBean.pagina}" />
 			</div>
 
 

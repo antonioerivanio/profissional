@@ -24,7 +24,7 @@ import org.junit.Test;
 import br.gov.ce.tce.srh.dao.RepresentacaoSetorDAOImpl;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.domain.RepresentacaoSetor;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 /**

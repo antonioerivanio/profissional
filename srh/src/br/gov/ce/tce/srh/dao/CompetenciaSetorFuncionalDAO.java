@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.gov.ce.tce.srh.domain.CategoriaFuncional;
 import br.gov.ce.tce.srh.domain.CompetenciaSetorFuncional;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public interface CompetenciaSetorFuncionalDAO {
 

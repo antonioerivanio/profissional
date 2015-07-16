@@ -26,7 +26,7 @@ public class ParametroServiceTest {
 
 
 	/**
-	 * Test of br.gov.ce.tce.srh.service.sapjava.ParametroServiceImpl.findAll
+	 * Test of br.gov.ce.tce.srh.sapjava.service.ParametroServiceImpl.findAll
 	 */
 	@Test
 	public void testFindAll(){

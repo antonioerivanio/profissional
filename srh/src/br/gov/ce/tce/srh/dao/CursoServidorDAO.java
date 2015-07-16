@@ -6,7 +6,7 @@ import java.util.List;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public interface CursoServidorDAO {
 

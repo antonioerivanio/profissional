@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**

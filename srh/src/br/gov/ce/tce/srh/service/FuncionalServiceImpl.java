@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.FuncionalDAO;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
-import br.gov.ce.tce.srh.domain.sca.Usuario;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 /**
  * 

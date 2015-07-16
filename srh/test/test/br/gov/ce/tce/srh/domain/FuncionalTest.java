@@ -29,7 +29,7 @@ import br.gov.ce.tce.srh.domain.Situacao;
 import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.domain.Vinculo;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public class FuncionalTest extends DatabaseTestCase {
 

@@ -3,7 +3,7 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.Pessoal;
-import br.gov.ce.tce.srh.domain.sca.Usuario;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 public interface PessoalDAO {
 

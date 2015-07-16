@@ -82,7 +82,7 @@ public class ParametroDAOTest extends DatabaseTestCase {
 	}
 
 	/**
-	 * Test of br.gov.ce.tce.srh.dao.sapjava.ParametroDAOImpl.getByNome
+	 * Test of br.gov.ce.tce.srh.sapjava.dao.ParametroDAOImpl.getByNome
 	 */
     @Test
     public void testGetByNome() throws Exception {

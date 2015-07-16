@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.ce.tce.srh.dao.RelatorioFeriasDAO;
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("relatorioFeriasService")

@@ -24,7 +24,7 @@ import org.junit.Test;
 import br.gov.ce.tce.srh.dao.FuncionalSetorDAOImpl;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalSetor;
-import br.gov.ce.tce.srh.domain.sapjava.Setor;
+import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public class FuncionalSetorDAOTest extends DatabaseTestCase {
 

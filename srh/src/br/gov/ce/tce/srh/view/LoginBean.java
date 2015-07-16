@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.service.sca.AuthenticationService;
+import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
