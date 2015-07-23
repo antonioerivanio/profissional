@@ -147,7 +147,7 @@ $P!{FILTRO}]]>
 					<font size="12" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["VÍNCULO: " +
-( $P{VINCULO} == 5 ? "OCUPANTES SOMENTE CARGO COMICIONADO" :
+( $P{VINCULO} == 5 ? "OCUPANTES SOMENTE CARGO COMISSIONADO" :
     "" )]]></textFieldExpression>
 			</textField>
 			<line>
