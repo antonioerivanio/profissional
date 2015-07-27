@@ -89,13 +89,23 @@
 			
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{representacaoFuncionalListBean.dataModel}" var="item" rows="10" binding="#{representacaoFuncionalListBean.dataTable}">
+				<rich:dataTable id="lista"								 
+								var="item"
+								rows="#{representacaoFuncionalListBean.dataModel.pageSize}" 
+								value="#{representacaoFuncionalListBean.dataModel}"
+								>
 
-                    <h:column id="col1">
+                    <h:column id="col0">
                         <f:facet name="header">
                             ID
                         </f:facet>
-                        <center><h:outputText id="item1" value="#{item.id}" /></center>
+                        <center><h:outputText id="item0" value="#{item.id}" /></center>
+                    </h:column>
+                    <h:column id="col1" headerClass="cel-25" >
+                        <f:facet name="header">
+                           Ocupação
+                        </f:facet>
+						<h:outputText id="item1" value="#{item.funcional.ocupacao.nomenclatura}" styleClass="cel-25" />
                     </h:column>
                     <h:column id="col2" headerClass="cel-25" >
                         <f:facet name="header">
@@ -105,7 +115,7 @@
                     </h:column>
                     <h:column id="col3" headerClass="cel-25" >
                         <f:facet name="header">
-                           Cargo
+                           Cargo Comissionado
                         </f:facet>
 						<h:outputText id="item3" value="#{item.representacaoCargo.nomenclatura}" styleClass="cel-25" />
                     </h:column>
@@ -179,7 +189,11 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{representacaoFuncionalListBean.pagedList.size() > 0}"/>
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide" 
+									renderIfSinglePage="false" 
+									page="#{representacaoFuncionalListBean.pagina}" />
 			</div>
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">

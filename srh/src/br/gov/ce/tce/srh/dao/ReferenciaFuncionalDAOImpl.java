@@ -55,9 +55,7 @@ public class ReferenciaFuncionalDAOImpl implements ReferenciaFuncionalDAO {
 
 
 	@Override
-	public void excluirAll(Long idFuncional) throws SRHRuntimeException {
-//		entityManager.createQuery("DELETE FROM ReferenciaFuncional rf WHERE rf.funcional.id = :id").setParameter("id", idFuncional).executeUpdate();
-		
+	public void excluirAll(Long idFuncional) throws SRHRuntimeException {		
 		List<ReferenciaFuncional> referenciaFuncionalList = this.findByFuncional(idFuncional);
 		
 		for (ReferenciaFuncional referenciaFuncional : referenciaFuncionalList) {
@@ -84,6 +82,25 @@ public class ReferenciaFuncionalDAOImpl implements ReferenciaFuncionalDAO {
 		return query.getResultList();
 	}
 
+	
+	@Override
+	public int count(Long idPessoa) {
+		Query query = entityManager.createQuery("Select count (rf) from ReferenciaFuncional rf where rf.funcional.pessoal.id = :idPessoa ");
+		query.setParameter("idPessoa", idPessoa);
+		return ((Long) query.getSingleResult()).intValue();
+	}
+
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<ReferenciaFuncional> search(Long idPessoa, int first, int rows) {
+		Query query = entityManager.createQuery("Select rf from ReferenciaFuncional rf where rf.funcional.pessoal.id = :idPessoa order by rf.inicio desc ");
+		query.setParameter("idPessoa", idPessoa);
+		query.setFirstResult(first);
+		query.setMaxResults(rows);
+		return query.getResultList();
+	}
+	
 
 	@Override
 	public ReferenciaFuncional getAtivoByFuncional(Long idFuncional) {

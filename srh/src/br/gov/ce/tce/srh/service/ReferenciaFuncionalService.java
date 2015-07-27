@@ -10,6 +10,9 @@ public interface ReferenciaFuncionalService {
 	public int count(String matricula);
 	public List<ReferenciaFuncional> search(String matricula, int first, int rows);
 
+	public int count(Long idPessoa);
+	public List<ReferenciaFuncional> search(Long idPessoa, int first, int rows);
+	
 	public void salvar(ReferenciaFuncional entidade) throws SRHRuntimeException;
 	public void progressao(ReferenciaFuncional entidade) throws SRHRuntimeException;
 

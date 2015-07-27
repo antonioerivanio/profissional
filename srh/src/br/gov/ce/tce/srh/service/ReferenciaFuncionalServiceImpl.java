@@ -119,6 +119,18 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 		return dao.search(matricula, first, rows);
 	}
 
+	
+	@Override
+	public int count(Long idPessoa) {
+		return dao.count(idPessoa);
+	}
+
+
+	@Override
+	public List<ReferenciaFuncional> search(Long idPessoa, int first, int rows) {
+		return dao.search(idPessoa, first, rows);
+	}
+	
 
 	@Override
 	public List<ReferenciaFuncional> findByPessoa(Long idPessoa) {

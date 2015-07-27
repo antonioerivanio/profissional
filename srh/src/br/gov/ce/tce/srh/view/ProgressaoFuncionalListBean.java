@@ -84,7 +84,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			if ( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
-			count = referenciaFuncionalService.count(getEntidade().getFuncional().getMatricula());
+			count = referenciaFuncionalService.count(getEntidade().getFuncional().getPessoal().getId());
 	
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -219,7 +219,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			
 			try {				
 				setCpf(authenticationService.getUsuarioLogado().getCpf());								
-				count = referenciaFuncionalService.count(getEntidade().getFuncional().getMatricula());
+				count = referenciaFuncionalService.count(getEntidade().getFuncional().getPessoal().getId());
 				flagRegistroInicial = -1;				
 				
 			} catch (Exception e) {
@@ -251,7 +251,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			
 			flagRegistroInicial = getPrimeiroDaPagina();
 			
-			setPagedList(referenciaFuncionalService.search(getEntidade().getFuncional().getMatricula(), flagRegistroInicial, dataModel.getPageSize()));
+			setPagedList(referenciaFuncionalService.search(getEntidade().getFuncional().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize()));
 			
 			if(count != 0){			
 				dataModel = new PagedListDataModel(getPagedList(), count);			
