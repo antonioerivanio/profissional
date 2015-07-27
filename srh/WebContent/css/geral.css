@@ -203,16 +203,17 @@ body {
     }
     
         .topo h1 a, .login-topo h1 a {
-            width: 368px;
-            height: 121px;            
+            margin-top: 13px;  
+  			width: 368px;
+  			height: 91px;           
             display: block;
-            background: url(../img/logo-srh.png) 0 0 no-repeat;
+            background: url(../img/logo-srh-telas.png) 0 0 no-repeat;
             text-indent: -9000px;
         }
             
     .topo .logo-tce {
         width: 153px;
-        height: 31px;
+        height: 32px;
         overflow: hidden;
         background: url(../img/logo-tce.png) 0 0 no-repeat;
         text-indent: -9000px;
