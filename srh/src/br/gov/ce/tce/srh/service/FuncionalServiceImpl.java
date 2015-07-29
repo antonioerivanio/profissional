@@ -74,13 +74,13 @@ public class FuncionalServiceImpl implements FuncionalService {
 
 
 	@Override
-	public List<String> findByNome(String nome) {
+	public List<Funcional> findByNome(String nome) {
 		return dao.findByNome(nome);
 	}
 	
 	
 	@Override
-	public List<String> findByUsuariologado(Usuario usuarioLogado) {
+	public List<Funcional> findByUsuariologado(Usuario usuarioLogado) {
 		return dao.findByUsuariologado(usuarioLogado);
 	}
 
@@ -136,6 +136,12 @@ public class FuncionalServiceImpl implements FuncionalService {
 		return dao.getMatriculaAndNomeByCpf(cpf);
 	}
 
+	
+	@Override
+	public List<Funcional> getMatriculaAndNomeByCpfList(String cpf) {
+		return dao.getMatriculaAndNomeByCpfList(cpf);
+	}
+	
 
 	public void setDAO(FuncionalDAO dao) {this.dao = dao;}
 	
@@ -145,7 +151,7 @@ public class FuncionalServiceImpl implements FuncionalService {
 	}
 
 	@Override
-	public List<String> findAllByNome(String nome) {
+	public List<Funcional> findAllByNome(String nome) {
 		return dao.findAllByNome(nome);
 	}
 	

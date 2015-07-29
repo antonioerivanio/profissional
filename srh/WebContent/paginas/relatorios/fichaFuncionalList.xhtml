@@ -88,7 +88,7 @@
 
 				<rich:dataTable id="lista" value="#{fichaFuncionalListBean.lista}" var="item" >
 
-                    <h:column id="col1">
+                   <!--  <h:column id="col1">
                         <f:facet name="header">
                            ID
                         </f:facet>
@@ -103,6 +103,12 @@
                         		<f:converter converterId="cpfConverter"/>
                         	</h:outputText>
                         </center>
+                    </h:column> -->
+                    <h:column id="col2">
+                        <f:facet name="header">
+                           MATRÍCULA
+                        </f:facet>
+                        <center><h:outputText id="item2" value="#{item.matricula}" /></center>
                     </h:column>
                      <h:column id="col3">
                          <f:facet name="header">
@@ -117,25 +123,25 @@
                         <center><h:outputText id="item4" value="#{item.ocupacao.nomenclatura}" /></center>
                     </h:column>
                 	<h:column id="col5">
-                        <f:facet name="header">
-                            Visualizar Ficha
-                        </f:facet>
+                       <f:facet name="header">
+                           Visualizar Ficha
+                       </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
                        				  action="#{fichaFuncionalListBean.relatorio}"
                        				  styleClass="ico-editar" >
-                        </h:commandLink>
+                       		<f:setPropertyActionListener target="#{fichaFuncionalListBean.entidade}" value="#{item}" />
+                       </h:commandLink>
                     </h:column>
                     <h:column id="col6">
-                        <f:facet name="header">
-                            Ficha Digitalizada
-                        </f:facet>
+                       <f:facet name="header">
+                           Ficha Digitalizada
+                       </f:facet>
                        <h:commandLink id="fichaAntiga"
                        				  value="Ficha Antiga"
                        				  action="#{fichaFuncionalListBean.relatorioFichaAntiga}"
                        				  styleClass="ico-editar" target="_blank" >
-                        </h:commandLink>
-                        <!-- <a4j:htmlCommandLink actionListener="#{fichaFuncionalListBean.relatorioFichaAntiga}" value="Ficha Antiga" target="_blank" /> --> 
+                       </h:commandLink>                        
                     </h:column>
 
 				</rich:dataTable>

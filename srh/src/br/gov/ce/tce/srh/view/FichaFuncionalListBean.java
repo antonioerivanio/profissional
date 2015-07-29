@@ -79,10 +79,7 @@ public class FichaFuncionalListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
-
-			lista = new ArrayList<Funcional>();
-			lista.add(entidade); 
+				throw new SRHRuntimeException("Selecione um funcionário.");			 
 
 			if (lista.size() == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -139,7 +136,7 @@ public class FichaFuncionalListBean implements Serializable {
 				imagemPessoa = parametro.getValor() + "sem_imagem.jpg";
 			}
 
-			String filtro = " where f.matricula = '" + this.matricula + "' ";
+			String filtro = " where f.matricula = '" + getEntidade().getMatricula() + "' ";
 			parametros.put("FILTRO", filtro.toString());
 			parametros.put("IMAGEM_PESSOA", imagemPessoa);
 
@@ -241,15 +238,16 @@ public class FichaFuncionalListBean implements Serializable {
 		if ( !this.cpf.equals(cpf) ) {
 			this.cpf = cpf;
 
-			try {				
-				setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));				
-				if ( getEntidade() != null ) {
+			try {			
+				List<Funcional> funcionalList = funcionalService.getMatriculaAndNomeByCpfList( this.cpf );				
+				if ( funcionalList != null && funcionalList.size() > 0 ) {
+					this.lista = funcionalList;
+					setEntidade(funcionalList.get(0));
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();	
 				} else {
 					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
 				}
-
 				
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
@@ -272,9 +270,7 @@ public class FichaFuncionalListBean implements Serializable {
 	public HtmlForm getForm() {
 		
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());
-			lista = new ArrayList<Funcional>();
-			lista.add(entidade); 
+			setCpf(authenticationService.getUsuarioLogado().getCpf());			
 		} else if (!passouConsultar) {
 			setEntidade( new Funcional() );
 			matricula = new String();

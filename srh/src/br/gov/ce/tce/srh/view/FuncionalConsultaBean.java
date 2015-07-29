@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -39,7 +40,7 @@ public class FuncionalConsultaBean implements Serializable {
 	private HtmlForm form;
 
 	// entidades das telas
-	private List<String> lista;
+	private List<Funcional> lista;
 
 
 
@@ -77,11 +78,9 @@ public class FuncionalConsultaBean implements Serializable {
 				lista = funcionalService.findByUsuariologado(authenticationService.getUsuarioLogado());
 			} else if (findAll!=null && findAll.equals("OK")){
 				lista = funcionalService.findAllByNome(nome);
-			}
-			else{
+			} else{
 				lista = funcionalService.findByNome(nome);
-			}
-			
+			}		
 			
 			
 			if (lista.size() == 0) {
@@ -96,11 +95,11 @@ public class FuncionalConsultaBean implements Serializable {
 
 	}
 
-	public List<String> getLista(){return lista;}
+	public List<Funcional> getLista(){return lista;}
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		lista = new ArrayList<String>();
+		lista = new ArrayList<Funcional>();
 		consultar();
 		return form;
 	}

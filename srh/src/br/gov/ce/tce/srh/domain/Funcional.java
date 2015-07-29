@@ -241,6 +241,14 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 		this.posse = dataPosse;
 	}
 	
+	public Funcional(Long id, String matricula, Pessoal pessoal, Setor setor) {
+		//Para Dynamic Instatiation
+		this.id = id;
+		this.matricula = matricula;
+		this.pessoal = pessoal;
+		this.setor = setor;
+	}
+	
 	public Pessoal getPessoal() {return pessoal;}
 	public void setPessoal(Pessoal pessoal) {this.pessoal = pessoal;}
 

@@ -1,5 +1,7 @@
 package br.gov.ce.tce.srh.sca.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +15,9 @@ import org.hibernate.annotations.BatchSize;
 @Entity
 @Table(name="GRUPOUSUARIO", schema="SCA")
 @BatchSize(size=1000)
-public class GrupoUsuario {
+public class GrupoUsuario implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	private Long id;

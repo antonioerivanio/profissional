@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirDossiseServidor_progressaoFuncionalSub" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="IDPESSOAL" class="java.lang.String" isForPrompting="false">
@@ -22,12 +22,14 @@
 	rf.tiponomeacao,
 	rf.INICIO,
 	rf.FIM,
+	o.nomenclatura,
 	TRUNC((NVL(rf.FIM, current_date) - rf.INICIO)+1, 0) DIAS
 
 from TB_FUNCIONAL f
 inner join TB_REPRESENTACAOFUNCIONAL rf on rf.IDFUNCIONAL = f.ID
 inner join TB_REPRESENTACAOCARGO rc on rf.IDREPRESENTACAOCARGO = rc.ID
 inner join SAPJAVA.SETOR s on rf.IDSETOR = s.IDSETOR
+inner join TB_OCUPACAO o on f.IDOCUPACAO = o.ID
 
 where f.idPessoal = $P!{IDPESSOAL}
 
@@ -40,6 +42,7 @@ order by rf.inicio desc]]>
 	<field name="INICIO" class="java.sql.Timestamp"/>
 	<field name="FIM" class="java.sql.Timestamp"/>
 	<field name="DIAS" class="java.math.BigDecimal"/>
+	<field name="NOMENCLATURA" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -63,99 +66,111 @@ order by rf.inicio desc]]>
 				<reportElement x="0" y="0" width="802" height="18" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="3" y="0" width="180" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="176" y="0" width="120" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SETOR]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="566" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="609" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INÍCIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="655" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="679" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FIM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="344" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="435" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SÍMBOLO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="188" y="0" width="150" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="298" y="0" width="135" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CARGO]]></text>
+				<text><![CDATA[CARGO COMISSIONADO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="450" y="0" width="110" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="508" y="0" width="100" height="18" forecolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TIPO NOMEAÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="743" y="0" width="50" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="749" y="0" width="50" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="0" width="170" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OCUPAÇÃO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="802" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="1" width="802" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="3" y="1" width="180" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="176" y="1" width="120" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{SETOR}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="188" y="1" width="150" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="298" y="1" width="135" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="450" y="1" width="110" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="508" y="1" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[( $F{TIPONOMEACAO}.equals( new BigDecimal("1") ) ? "Titular" :
     ( $F{TIPONOMEACAO}.equals( new BigDecimal("2") ) ? "Substituição" :
         ( $F{TIPONOMEACAO}.equals( new BigDecimal("3") ) ? "Designado" : "" ) ) )]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="566" y="1" width="80" height="16"/>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="609" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{INICIO}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="655" y="1" width="80" height="16"/>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="679" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FIM}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="344" y="1" width="100" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="435" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{SIMBOLO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="743" y="1" width="50" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="749" y="1" width="50" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DIAS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="4" y="1" width="170" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

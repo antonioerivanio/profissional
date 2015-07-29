@@ -50,9 +50,9 @@ public class PessoalCursoProfissionalServiceImpl implements PessoalCursoProfissi
 		if (!alterar) {
 
 			// verificando se o curso ja existe
-			PessoalCursoProfissional existe = dao.getByCurso(listaPessoaCurso.get(0).getCursoProfissional().getId());
-			if (existe != null)
-				throw new SRHRuntimeException("Este curso já foi cadastrado.");
+			List<PessoalCursoProfissional> existe = dao.findByCurso(listaPessoaCurso.get(0).getCursoProfissional().getId());
+			if (existe != null && existe.size() > 0)
+				throw new SRHRuntimeException("Este curso já possui Servidores cadastrados. Altere o registro existente para incluir outros Servidores.");
 
 		}
 		
@@ -137,6 +137,7 @@ public class PessoalCursoProfissionalServiceImpl implements PessoalCursoProfissi
 		
 		if (listaPessoaCurso == null || listaPessoaCurso.size() == 0)
 			throw new SRHRuntimeException("Nenhum servidor cadastrado, é obrigatório pelo menos um servidor.");
+		
 		//Zacarias Gomes - 19/05/2014
 		//alteração para permitir cadatrar curso de conselheiro/auditor/procurador que não possui competência.
 		if (listaCompetencias == null || listaCompetencias.size() == 0){
@@ -146,13 +147,11 @@ public class PessoalCursoProfissionalServiceImpl implements PessoalCursoProfissi
 					isCompetenciaObrigatoria = false;
 				else
 					isCompetenciaObrigatoria = true;
+			}		
 		}
 		
-		}
 		if (isCompetenciaObrigatoria && (listaCompetencias == null || listaCompetencias.size() == 0))
-			throw new SRHRuntimeException("Nenhuma competência cadastrada, é obrigatório pelo menos uma competência.");
-
-		
+			throw new SRHRuntimeException("Nenhuma competência cadastrada, é obrigatório pelo menos uma competência.");		
 
 	}
 

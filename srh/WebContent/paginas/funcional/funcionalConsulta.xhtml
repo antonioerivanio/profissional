@@ -78,20 +78,21 @@
                             Selecionar
                         </f:facet>
                         <center>
-                        <INPUT TYPE="radio" NAME="seleciona" VALUE="#{item[0]},#{item[1]},#{item[2]},#{item[3]},#{item[4]},#{item[5]},#{item[6]},#{item[7]},#{item[8]},#{item[9]},#{item[10]}" onClick="retorno(this)" />
+                        	<input type="radio" name="seleciona" 
+                        			value="#{item.matricula},#{item.id},#{item.pessoal.id},#{item.pessoal.nomeCompleto},#{item.pessoal.nomeMae},#{item.pessoal.cpf},#{item.pessoal.rg},#{item.pessoal.emissorRg},#{item.pessoal.ufEmissorRg.id},#{item.setor.id},#{item.setor.nome}" onClick="retorno(this)" />
                         </center>
                     </h:column>
 					<h:column id="col2">
                         <f:facet name="header">
                             Matricula
                         </f:facet>
-                        <center><h:outputText id="item2" value="#{item[0]}" /></center>
+                        <center><h:outputText id="item2" value="#{item.matricula}" /></center>
                     </h:column>
 					<h:column id="col3" headerClass="cel-75">
                         <f:facet name="header">
                             Nome
                         </f:facet>
-                        <h:outputText id="item3" value="#{item[3]}" styleClass="cel-75" />
+                        <h:outputText id="item3" value="#{item.pessoal.nomeCompleto}" styleClass="cel-75" />
                     </h:column>
 
 				</rich:dataTable>
