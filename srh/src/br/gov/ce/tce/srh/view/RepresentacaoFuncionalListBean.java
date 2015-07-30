@@ -287,6 +287,9 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 	public List<RepresentacaoFuncional> getPagedList() {return pagedList;}
 	public void setPagedList(List<RepresentacaoFuncional> pagedList) {this.pagedList = pagedList;}
 	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 	
 	//FIM PAGINAÇÃO
