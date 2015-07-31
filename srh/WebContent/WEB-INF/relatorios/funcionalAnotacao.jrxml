@@ -29,9 +29,6 @@ ORDER BY a.DATA desc, a.ID desc]]>
 	<field name="ID" class="java.math.BigDecimal"/>
 	<field name="DATA" class="java.sql.Timestamp"/>
 	<field name="ANOTACAO" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="80">
 			<rectangle>
@@ -130,13 +127,8 @@ ORDER BY a.DATA desc, a.ID desc]]>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="181" y="0" width="368" height="16" isPrintWhenDetailOverflows="true"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ANOTACAO}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="96" y="0" width="80" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="5" y="0" width="91" height="16" isPrintWhenDetailOverflows="true"/>
@@ -145,11 +137,13 @@ ORDER BY a.DATA desc, a.ID desc]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
 			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="96" y="0" width="80" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATA}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<line>
@@ -189,7 +183,4 @@ ORDER BY a.DATA desc, a.ID desc]]>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>

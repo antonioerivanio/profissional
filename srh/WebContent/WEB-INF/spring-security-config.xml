@@ -187,7 +187,9 @@
 
         <intercept-url pattern="/paginas/relatorios/tempoRepresentacaoFuncionalList.faces" access="ROLE_TEMPO_REPRESENTACAO" />
         <intercept-url pattern="/paginas/relatorios/funcionarioCompetenciaSetorList.faces" access="ROLE_FUNC_COMPETENCIA_SETOR" />
+        
         <intercept-url pattern="/paginas/relatorios/servidorlist.faces" access="ROLE_SERVIDOR_SETOR" />
+        <intercept-url pattern="/paginas/relatorios/cursoServidorList.faces" access="ROLE_SERVIDOR_SETOR" />
         
 
     </http>

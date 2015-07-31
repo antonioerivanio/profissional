@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="representacaoFuncional" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="0.75"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="614"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -39,7 +39,7 @@ order by repr.inicio desc]]>
 	<title>
 		<band height="80">
 			<rectangle>
-				<reportElement x="1" y="0" width="801" height="79" forecolor="#CCCCCC"/>
+				<reportElement x="0" y="0" width="802" height="79" forecolor="#CCCCCC"/>
 			</rectangle>
 			<image>
 				<reportElement x="1" y="14" width="801" height="65"/>
@@ -65,7 +65,7 @@ order by repr.inicio desc]]>
 	<pageHeader>
 		<band height="45">
 			<rectangle>
-				<reportElement x="1" y="3" width="801" height="38" forecolor="#CCCCCC"/>
+				<reportElement x="0" y="3" width="802" height="38" forecolor="#CCCCCC"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="3" y="3" width="70" height="18"/>
@@ -100,7 +100,7 @@ order by repr.inicio desc]]>
 	<columnHeader>
 		<band height="19" splitType="Stretch">
 			<rectangle>
-				<reportElement x="2" y="1" width="800" height="18" backcolor="#195297"/>
+				<reportElement x="0" y="1" width="802" height="18" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="56" y="1" width="150" height="18" forecolor="#FFFFFF"/>
@@ -156,7 +156,7 @@ order by repr.inicio desc]]>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToTallestObject" x="1" y="1" width="801" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="1" width="802" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>

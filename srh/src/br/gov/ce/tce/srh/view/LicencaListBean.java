@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -72,10 +71,10 @@ public class LicencaListBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Licenca> pagedList = new ArrayList<Licenca>(); 
-	private int flagRegistroInicial = -1;
+	private int flagRegistroInicial = 0;
+	private Integer pagina = 1;
 
 	// combo
 	private List<TipoLicenca> comboTipoLicenca;
@@ -90,6 +89,8 @@ public class LicencaListBean implements Serializable {
 	public String consultar() {
 
 		try {
+			
+			limparListas();
 
 			// validando campos da entidade
 			if ( getEntidade().getPessoal() == null )
@@ -107,6 +108,7 @@ public class LicencaListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
+			
 			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
@@ -298,6 +300,7 @@ public class LicencaListBean implements Serializable {
 			try {								
 				setCpf(authenticationService.getUsuarioLogado().getCpf());								
 				count = licencaService.count(getEntidade().getPessoal().getId());
+				limparListas();
 				flagRegistroInicial = -1;				
 				
 			} catch (Exception e) {
@@ -323,22 +326,19 @@ public class LicencaListBean implements Serializable {
 
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<Licenca>(); 
+		pagedList = new ArrayList<Licenca>();
+		pagina = 1;
 	}
-
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-
+	
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();
+		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
+			flagRegistroInicial = getPrimeiroDaPagina();
 			
 			if ( this.tipoLicenca != null) {
-				setPagedList( licencaService.search( getEntidade().getPessoal().getId(), this.tipoLicenca.getId(), getDataTable().getFirst(), getDataTable().getRows()) );
+				setPagedList( licencaService.search( getEntidade().getPessoal().getId(), this.tipoLicenca.getId(), flagRegistroInicial, dataModel.getPageSize()) );
 			} else { 
-				setPagedList(licencaService.search(getEntidade().getPessoal().getId(), getDataTable().getFirst(), getDataTable().getRows()));
+				setPagedList(licencaService.search( getEntidade().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize() ));
 			}
 
 			if ( count != 0 ) {
@@ -352,5 +352,11 @@ public class LicencaListBean implements Serializable {
 
 	public List<Licenca> getPagedList() {return pagedList;}
 	public void setPagedList(List<Licenca> pagedList) {this.pagedList = pagedList;}
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
+	
 	//FIM PAGINAÇÃO
 }

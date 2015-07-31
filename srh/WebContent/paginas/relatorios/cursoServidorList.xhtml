@@ -166,7 +166,11 @@
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{cursoServidorListBean.dataModel}" var="item" rows="10" binding="#{cursoServidorListBean.dataTable}">
+				<rich:dataTable id="lista"								
+								var="item" 								
+								rows="#{cursoServidorListBean.dataModel.pageSize}" 
+								value="#{cursoServidorListBean.dataModel}"
+								>
 
                     <h:column id="col2">
                         <f:facet name="header">
@@ -213,7 +217,11 @@
 
 				</rich:dataTable>
 				
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{cursoServidorListBean.pagedList.size() > 0}"/>
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide" 
+									renderIfSinglePage="false" 
+									page="#{cursoServidorListBean.pagina}"/>
 			
 			</div>
 
@@ -222,6 +230,13 @@
 							 action="#{cursoServidorListBean.limpaTela}"
 							 styleClass="bt-padrao fr mg-right-15"
 							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+							 />
+			
+			<h:commandButton id="limparListas"
+							 value="Limpar"
+							 action="#{cursoServidorListBean.limpaTelaServidor}"
+							 styleClass="bt-padrao fr mg-right-15"
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
 							 />			 
 
 		</h:form>

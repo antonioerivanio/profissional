@@ -123,10 +123,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 				throw new SRHRuntimeException("Selecione uma pessoa.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
-
-			StringBuffer filtro = new StringBuffer(); 
-			filtro.append(" F.MATRICULA = '" + this.entidade.getFuncional().getMatricula() + "' ");
-			parametros.put("FILTRO", filtro.toString());
+			parametros.put("FILTRO", entidade.getFuncional().getPessoal().getId().toString());
 			
 			relatorioUtil.relatorio("progressaoFuncional.jasper", parametros, "progressaoFuncional.pdf");
 
@@ -220,6 +217,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			try {				
 				setCpf(authenticationService.getUsuarioLogado().getCpf());								
 				count = referenciaFuncionalService.count(getEntidade().getFuncional().getPessoal().getId());
+				limparListas();
 				flagRegistroInicial = -1;				
 				
 			} catch (Exception e) {

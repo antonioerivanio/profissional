@@ -69,8 +69,6 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 
-
-
 	/**
 	 * Realizar Consulta
 	 * 
@@ -243,6 +241,7 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 			try {				
 				setCpf(authenticationService.getUsuarioLogado().getCpf());								
 				count = representacaoFuncionalService.count( getEntidade().getFuncional().getPessoal().getId() );
+				limparListas();
 				flagRegistroInicial = -1;				
 				
 			} catch (Exception e) {

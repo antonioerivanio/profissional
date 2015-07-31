@@ -89,7 +89,10 @@
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{funcionalSetorListBean.dataModel}" var="item" rows="10" binding="#{funcionalSetorListBean.dataTable}">
+				<rich:dataTable id="lista"
+								var="item"				 
+								rows="#{funcionalSetorListBean.dataModel.pageSize}" 
+								value="#{funcionalSetorListBean.dataModel}" >
 
                     <h:column id="col1">
                         <f:facet name="header">
@@ -159,7 +162,11 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{funcionalSetorListBean.pagedList.size() > 0}"/>
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide"
+									renderIfSinglePage="false"
+									page="#{funcionalSetorListBean.pagina}" />
 			</div>
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
@@ -175,11 +182,11 @@
 								 />	
 			</ui:fragment>			 
 
-			<h:commandButton id="relatorio2"
+			<!-- <h:commandButton id="relatorio2"
 							 value="Relatório"
 							 action="#{funcionalSetorListBean.relatorio}" 
 							 styleClass="bt-padrao fr mg-right-15" 
-							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" /> -->
 		</h:form>
 
 	</ui:define>

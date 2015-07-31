@@ -101,7 +101,10 @@
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{nomeacaoServidorListBean.dataModel}" var="item" rows="10" binding="#{nomeacaoServidorListBean.dataTable}">
+				<rich:dataTable id="lista" 
+								var="item" 
+								rows="#{nomeacaoServidorListBean.dataModel.pageSize}"
+								value="#{nomeacaoServidorListBean.dataModel}" >
 
                     <h:column id="col1" headerClass="cel-15" >
                         <f:facet name="header">
@@ -185,7 +188,11 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{nomeacaoServidorListBean.pagedList.size() > 0}"/>
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide" 									
+									renderIfSinglePage="false"
+									page="#{representacaoFuncionalListBean.pagina}" />
 			</div>
 
 			<h:commandButton id="incluir" 

@@ -22,7 +22,6 @@ import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
-import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -115,11 +114,10 @@ public class PessoaBean implements Serializable {
 	
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Pessoal> pagedList = new ArrayList<Pessoal>();
 	private int flagRegistroInicial = 0;	
-	
+	private Integer pagina = 1;
 	
 	/**
 	 * Realizar antes de carregar tela alterar
@@ -152,6 +150,8 @@ public class PessoaBean implements Serializable {
 	public String consultar() {
 
 		try {			
+			
+			limparListas();
 
 			count = pessoalService.count(nome, cpf);
 
@@ -161,6 +161,7 @@ public class PessoaBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
+			
 			passouConsultar = true;
 			
 		} catch (Exception e) {
@@ -565,6 +566,7 @@ public class PessoaBean implements Serializable {
 			
 			try {			
 				count = pessoalService.count(authenticationService.getUsuarioLogado());
+				limparListas();
 				flagRegistroInicial = -1;				
 			
 			} catch (Exception e) {
@@ -593,22 +595,19 @@ public class PessoaBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<Pessoal>(); 
+		pagedList = new ArrayList<Pessoal>();		
+		pagina = 1;
 	}
-
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-
+	
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();
+		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
+			flagRegistroInicial = getPrimeiroDaPagina();
 			
 			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-				setPagedList(pessoalService.search(authenticationService.getUsuarioLogado(), getDataTable().getFirst(), getDataTable().getRows()));
+				setPagedList(pessoalService.search(authenticationService.getUsuarioLogado(), flagRegistroInicial, dataModel.getPageSize()));
 			} else {
-				setPagedList(pessoalService.search(nome, cpf, getDataTable().getFirst(), getDataTable().getRows()));
+				setPagedList(pessoalService.search(nome, cpf, flagRegistroInicial, dataModel.getPageSize()));
 			}
 			
 			if(count != 0){
@@ -623,6 +622,12 @@ public class PessoaBean implements Serializable {
 
 	public List<Pessoal> getPagedList() {return pagedList;}
 	public void setPagedList(List<Pessoal> pagedList) {this.pagedList = pagedList;}
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
+	
 	//FIM PAGINAÇÃO
 
 }

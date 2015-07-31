@@ -89,7 +89,11 @@
 			
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{feriasListBean.dataModel}" var="item" rows="10" binding="#{feriasListBean.dataTable}">
+				<rich:dataTable id="lista" 
+								var="item" 
+								rows="#{feriasListBean.dataModel.pageSize}"
+								value="#{feriasListBean.dataModel}" 
+								>
 
                		<h:column id="col1" headerClass="cel-25">
                         <f:facet name="header">
@@ -177,7 +181,11 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{feriasListBean.pagedList.size() > 0}"/>
+				<rich:datascroller 	id="scroller" 
+									for="lista" 
+									stepControls="hide"									
+									renderIfSinglePage="false"
+									page="#{feriasListBean.pagina}" />
 			</div>
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">

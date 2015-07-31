@@ -59,7 +59,10 @@
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{pessoaBean.dataModel}" var="item" rows="10" binding="#{pessoaBean.dataTable}">
+				<rich:dataTable id="lista" 
+								var="item" 
+								rows="#{pessoaBean.dataModel.pageSize}" 
+								value="#{pessoaBean.dataModel}" >
 
                     <h:column id="col2" headerClass="cel-25">
                         <f:facet name="header">
@@ -113,7 +116,11 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{pessoaBean.pagedList.size() > 0}"/>
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide"
+									renderIfSinglePage="false"
+									page="#{pessoaBean.pagina}" />
 				
 			</div>
 
@@ -132,11 +139,11 @@
 								 />		
 			</ui:fragment>				 
 
-			<h:commandButton id="relatorio2"
+			<!-- <h:commandButton id="relatorio2"
 							 value="Relatório"
 							 action="#{pessoaBean.relatorio}" 
 							 styleClass="bt-padrao fr mg-right-15" 
-							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" /> -->
 
 		</h:form>
 

@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -62,11 +61,10 @@ public class NomeacaoServidorListBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Funcional> pagedList = new ArrayList<Funcional>();
 	private int flagRegistroInicial = 0;
-
+	private Integer pagina = 1;
 
 
 	/**
@@ -77,6 +75,8 @@ public class NomeacaoServidorListBean implements Serializable {
 	public String consultar() {
 
 		try {
+			
+			limparListas();
 
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
@@ -255,6 +255,7 @@ public class NomeacaoServidorListBean implements Serializable {
 			try {
 				setCpf(authenticationService.getUsuarioLogado().getCpf());								
 				count = funcionalService.count(getEntidade().getPessoal().getId(), "DESC");
+				limparListas();
 				flagRegistroInicial = -1;				
 				
 			} catch (Exception e) {
@@ -282,18 +283,15 @@ public class NomeacaoServidorListBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<Funcional>(); 
+		pagedList = new ArrayList<Funcional>();
+		pagina = 1;
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(funcionalService.search(getEntidade().getPessoal().getId(), "DESC", getDataTable().getFirst(), getDataTable().getRows()));
+		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
+			flagRegistroInicial = getPrimeiroDaPagina();
+			setPagedList(funcionalService.search(getEntidade().getPessoal().getId(), "DESC", flagRegistroInicial, dataModel.getPageSize()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -305,6 +303,12 @@ public class NomeacaoServidorListBean implements Serializable {
 
 	public List<Funcional> getPagedList() {return pagedList;}
 	public void setPagedList(List<Funcional> pagedList) {this.pagedList = pagedList;}
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
+	
 	//FIM PAGINAÇÃO
 
 

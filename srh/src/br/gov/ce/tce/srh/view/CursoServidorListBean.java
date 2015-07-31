@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -66,11 +65,11 @@ public class CursoServidorListBean implements Serializable {
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
 	//paginação
-	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private int count;	
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<PessoalCursoProfissional> pagedList = new ArrayList<PessoalCursoProfissional>();
 	private int flagRegistroInicial = 0;
+	private Integer pagina = 1;
 
 	//componente
 	private Long totalCargaHoraria;
@@ -86,6 +85,8 @@ public class CursoServidorListBean implements Serializable {
 	public String consultar() {
 
 		try {
+			
+			limparListas();
 			
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
@@ -107,7 +108,9 @@ public class CursoServidorListBean implements Serializable {
 			}
 			
 			labelTotalCargaHoraria = "Total Carga Horária:";
+			
 			flagRegistroInicial = -1;
+			
 			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
@@ -183,6 +186,17 @@ public class CursoServidorListBean implements Serializable {
 
 	public String limpaTela() {
 		setEntidade(new Funcional());
+		limpar();
+		return "listar";
+	}
+	
+	public String limpaTelaServidor() {
+		limparListas();
+		limpar();
+		return "listar";
+	}
+
+	public void limpar(){
 		totalCargaHoraria = null;
 		labelTotalCargaHoraria = "";
 		areaAtuacao = false;
@@ -190,9 +204,8 @@ public class CursoServidorListBean implements Serializable {
 		profissional = true;
 		inicio = null;
 		fim = null;
-		return "listar";
 	}
-
+	
 	/**
 	 * Gets and Sets
 	 */
@@ -281,13 +294,15 @@ public class CursoServidorListBean implements Serializable {
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());			
-		} else if (!passouConsultar) {
+			setCpf(authenticationService.getUsuarioLogado().getCpf());						
+		} 
+		if (!passouConsultar) {
 			setCursoProfissional( new CursoProfissional() );
 			this.matricula = new String();
 			this.cpf = new String();
 			this.nome = new String();
 			limparListas();
+			limpar();
 			flagRegistroInicial = 0;
 		}
 		passouConsultar = false;
@@ -295,19 +310,16 @@ public class CursoServidorListBean implements Serializable {
 	}
 	
 	//PAGINAÇÃO
-	private void limparListas() {
-		dataTable = new HtmlDataTable();
+	private void limparListas() {		
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<PessoalCursoProfissional>(); 
-	}
-
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+		pagedList = new ArrayList<PessoalCursoProfissional>();
+		pagina = 1;
+	}	
 
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();	
-			setPagedList(cursoServidorService.search( getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio, fim, getDataTable().getFirst(), getDataTable().getRows()));
+		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
+			flagRegistroInicial = getPrimeiroDaPagina();	
+			setPagedList(cursoServidorService.search( getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio, fim, flagRegistroInicial, dataModel.getPageSize()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -319,6 +331,12 @@ public class CursoServidorListBean implements Serializable {
 
 	public List<PessoalCursoProfissional> getPagedList() {return pagedList;}
 	public void setPagedList(List<PessoalCursoProfissional> pagedList) {this.pagedList = pagedList;}
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
+	
 	//FIM PAGINAÇÃO
 
 }

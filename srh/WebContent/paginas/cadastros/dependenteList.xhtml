@@ -78,7 +78,10 @@
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{dependenteListBean.dataModel}" var="item" rows="10" binding="#{dependenteListBean.dataTable}">
+				<rich:dataTable id="lista" 
+								var="item" 
+								rows="#{dependenteListBean.dataModel.pageSize}"
+								value="#{dependenteListBean.dataModel}">
 
                     <h:column id="col1" headerClass="cel-25">
                         <f:facet name="header">
@@ -170,7 +173,11 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{dependenteListBean.pagedList.size() > 0}"/>
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide" 									 
+									renderIfSinglePage="false"
+									page="#{dependenteListBean.pagina}" />
 				
 			</div>
 

@@ -106,7 +106,10 @@
 			</ui:fragment>
 
 			<div class="tabela-dados">
-				<rich:dataTable id="lista" value="#{licencaListBean.dataModel}" var="item" rows="10" binding="#{licencaListBean.dataTable}">
+				<rich:dataTable id="lista" 
+								var="item" 
+								rows="#{licencaListBean.dataModel.pageSize}"
+								value="#{licencaListBean.dataModel}" >
 					 <h:column id="col1">
                         <f:facet id="header1" name="header">
                             ID
@@ -190,7 +193,11 @@
                         </h:commandLink>
                     </h:column>
 				</rich:dataTable>
-			<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{licencaListBean.pagedList.size() > 0}"/>
+			<rich:datascroller  id="scroller" 
+								for="lista" 
+								stepControls="hide" 								
+								renderIfSinglePage="false"
+								page="#{licencaListBean.pagina}" />
 
 
 			</div>
