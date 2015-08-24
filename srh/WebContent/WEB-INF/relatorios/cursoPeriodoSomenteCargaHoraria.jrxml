@@ -83,7 +83,7 @@ ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					</reportElement>
 				</rectangle>
 				<staticText>
-					<reportElement x="386" y="80" width="140" height="18" isRemoveLineWhenBlank="true" forecolor="#FFFFFF">
+					<reportElement x="386" y="80" width="140" height="18" forecolor="#FFFFFF">
 						<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
@@ -92,7 +92,7 @@ ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<text><![CDATA[AREA]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="605" y="80" width="75" height="18" isRemoveLineWhenBlank="true" forecolor="#FFFFFF">
+					<reportElement x="605" y="80" width="75" height="18" forecolor="#FFFFFF">
 						<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -101,7 +101,7 @@ ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<text><![CDATA[FIM]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="528" y="80" width="75" height="18" isRemoveLineWhenBlank="true" forecolor="#FFFFFF">
+					<reportElement x="528" y="80" width="75" height="18" forecolor="#FFFFFF">
 						<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -110,7 +110,7 @@ ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<text><![CDATA[ INICIO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="6" y="80" width="378" height="18" isRemoveLineWhenBlank="true" forecolor="#FFFFFF">
+					<reportElement x="6" y="80" width="378" height="18" forecolor="#FFFFFF">
 						<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -119,7 +119,7 @@ ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<text><![CDATA[CURSO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="682" y="80" width="118" height="18" isRemoveLineWhenBlank="true" forecolor="#FFFFFF">
+					<reportElement x="682" y="80" width="118" height="18" forecolor="#FFFFFF">
 						<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -166,38 +166,18 @@ ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 		</groupHeader>
 		<groupFooter>
 			<band height="28">
-				<textField evaluationTime="Band" pattern="###0">
-					<reportElement x="679" y="1" width="123" height="20">
-						<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
-					</reportElement>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression class="java.lang.Number"><![CDATA[$V{TOTAL_CARGAHORARIA}]]></textFieldExpression>
-				</textField>
 				<staticText>
-					<reportElement x="536" y="1" width="140" height="20">
-						<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
-					</reportElement>
+					<reportElement x="536" y="1" width="140" height="20"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
 						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[TOTAL CARGA HORÁRIA:]]></text>
 				</staticText>
 				<textField evaluationTime="Band" pattern="###0">
-					<reportElement x="149" y="1" width="123" height="20">
-						<printWhenExpression><![CDATA[$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
-					</reportElement>
+					<reportElement x="679" y="1" width="123" height="20"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression class="java.lang.Number"><![CDATA[$V{TOTAL_CARGAHORARIA}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="6" y="1" width="140" height="20">
-						<printWhenExpression><![CDATA[$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
-						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<text><![CDATA[TOTAL CARGA HORÁRIA:]]></text>
-				</staticText>
 			</band>
 		</groupFooter>
 	</group>
@@ -231,7 +211,7 @@ ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC]]>
 		</band>
 	</title>
 	<detail>
-		<band height="22" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<printWhenExpression><![CDATA[!$P{TIPORELATORIO}.equals( 2L )]]></printWhenExpression>
 			<rectangle>
 				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="3" width="800" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">

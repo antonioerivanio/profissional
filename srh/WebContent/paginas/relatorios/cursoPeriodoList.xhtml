@@ -139,6 +139,17 @@
 				</div>
 			</div>
 			
+			<div class="select-box box-38">
+				<label>Tipo de Relatório</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="tipoRelatorio"
+						 		 value="#{cursoPeriodoListBean.tipoRelatorio}">
+						<f:selectItem itemLabel="Completo" itemValue="1" />
+						<f:selectItem itemLabel="Somente Carga Horária" itemValue="2" />
+					</h:selectOneMenu>
+				</div>
+			</div>
+			
 
 			<h:commandButton id="consultar"
 							 value="Consultar"

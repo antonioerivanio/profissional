@@ -96,6 +96,8 @@ public class CursoPeriodoListBean implements Serializable {
 //componente
 	private Long totalCargaHoraria;
 	private String labelTotalCargaHoraria;
+	
+	private Long tipoRelatorio = 1L;
 
 	/**
 	 * Realizar Consulta
@@ -193,6 +195,8 @@ public class CursoPeriodoListBean implements Serializable {
 			
 			System.out.println(filtro.toString());
 			
+			parametros.put("TIPORELATORIO", tipoRelatorio);
+			
 			relatorioUtil.relatorio("cursoPeriodo.jasper", parametros, "cursoPeriodo.pdf");
 
 		} catch (SRHRuntimeException e) {
@@ -217,6 +221,7 @@ public class CursoPeriodoListBean implements Serializable {
 		fim = null;
 		tipoOcupacao = null;
 		comboTipoOcupacao = null;
+		tipoRelatorio = null;
 		return "listar";
 	}
 
@@ -355,6 +360,9 @@ public class CursoPeriodoListBean implements Serializable {
 	public Setor getSetor() {return setor;}
 	public void setSetor(Setor setor) {this.setor = setor;}
 
+	public Long getTipoRelatorio() {return tipoRelatorio;}
+	public void setTipoRelatorio(Long tipoRelatorio) {this.tipoRelatorio = tipoRelatorio;}
+	
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
