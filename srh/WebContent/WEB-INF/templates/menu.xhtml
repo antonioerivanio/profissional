@@ -450,6 +450,14 @@
 				</li>
 			</ui:fragment>
 			
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETORIAL')}">
+				<li>
+					<a href="/srh/paginas/cadastros/atribuicaoSetorList.faces">
+					Atribuição Setorial
+					</a>
+				</li>
+			</ui:fragment>
+			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_FUNCIONAL')}">
 				<li>
 					<a href="/srh/paginas/cadastros/competenciaSetorFuncionalList.faces">

@@ -110,6 +110,9 @@
         <intercept-url pattern="/paginas/cadastros/competenciaSetorialList.faces" access="ROLE_COMPETENCIA_SETORIAL" />
         <intercept-url pattern="/paginas/cadastros/competenciaSetorialForm.faces" access="ROLE_COMPETENCIA_SETORIAL" />
         
+        <intercept-url pattern="/paginas/cadastros/atribuicaoSetorList.faces" access="ROLE_COMPETENCIA_SETORIAL" />
+        <intercept-url pattern="/paginas/cadastros/atribuicaoSetorForm.faces" access="ROLE_COMPETENCIA_SETORIAL" />
+        
         <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalList.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
         <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalForm.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
         

@@ -13,6 +13,7 @@
 	<class>br.gov.ce.tce.srh.domain.AreaSetor</class>
 	<class>br.gov.ce.tce.srh.domain.AreaSetorCompetencia</class>
 	<class>br.gov.ce.tce.srh.domain.AtestoPessoa</class>
+	<class>br.gov.ce.tce.srh.domain.AtribuicaoSetor</class>
 	<class>br.gov.ce.tce.srh.domain.Averbacao</class>
 	<class>br.gov.ce.tce.srh.domain.CategoriaFuncional</class>
 	<class>br.gov.ce.tce.srh.domain.Cbo</class>
