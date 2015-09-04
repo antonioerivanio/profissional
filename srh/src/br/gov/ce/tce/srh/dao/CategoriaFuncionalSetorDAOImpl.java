@@ -27,8 +27,7 @@ public class CategoriaFuncionalSetorDAOImpl implements CategoriaFuncionalSetorDA
 
 	@Override
 	public int count(Setor setor) {
-		Query query = entityManager.createQuery("Select count(c) from CategoriaFuncionalSetor c " +
-				"join   c.setor where c.setor.id = :setor ORDER BY c.id");
+		Query query = entityManager.createQuery("Select count(c) from CategoriaFuncionalSetor c where c.setor.id = :setor");
 		query.setParameter("setor", setor.getId());
 		return ((Long) query.getSingleResult()).intValue();
 	}
@@ -36,8 +35,7 @@ public class CategoriaFuncionalSetorDAOImpl implements CategoriaFuncionalSetorDA
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CategoriaFuncionalSetor> search(Setor setor, int first, int rows) {
-		Query query = entityManager.createQuery("Select c from CategoriaFuncionalSetor c " +
-				"join  c.setor where c.setor.id = :setor ORDER BY c.id");
+		Query query = entityManager.createQuery("Select c from CategoriaFuncionalSetor c where c.setor.id = :setor ORDER BY c.categoriaFuncional.descricao");
 		query.setParameter("setor", setor.getId());
 		query.setFirstResult(first);
 		query.setMaxResults(rows);
@@ -65,14 +63,14 @@ public class CategoriaFuncionalSetorDAOImpl implements CategoriaFuncionalSetorDA
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CategoriaFuncionalSetor> findAll() {
-		return entityManager.createQuery("SELECT c FROM CategoriaFuncionalSetor c ORDER BY c.categoriaFuncional.descricao").getResultList();
+		return entityManager.createQuery("SELECT c FROM CategoriaFuncionalSetor c ORDER BY c.setor.nome, c.categoriaFuncional.descricao").getResultList();
 	}
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CategoriaFuncionalSetor> findBySetor(Setor setor) {
-		Query query = entityManager.createQuery("Select c from CategoriaFuncionalSetor c " +
-				"join   c.setor where c.setor.id = :setor ORDER BY c.id");
+		Query query = entityManager.createQuery("Select c from CategoriaFuncionalSetor c where c.setor.id = :setor ORDER BY c.categoriaFuncional.descricao");
 		query.setParameter("setor", setor.getId());
 		return query.getResultList();
 	}

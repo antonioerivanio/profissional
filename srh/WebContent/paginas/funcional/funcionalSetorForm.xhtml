@@ -146,10 +146,10 @@
 
 			<br/>
 
-			<div class="select-box box-25">
+			<div class="select-box box-38">
 				<label for="">Setor *</label>
 				<div class="conteiner">
-					<h:selectOneMenu id="setor"
+					<h:selectOneMenu id="cmbSetor"
 									 converter="entityConverter"
 									 required="true"
 									 requiredMessage="O setor é obrigatório."
@@ -164,8 +164,18 @@
 					</h:selectOneMenu>
 				</div>
 			</div>
+			
+			<div class="radio-box fl mg-top-25">
+				 Exibir somente setores ativos	
+				 <h:selectBooleanCheckbox value="#{funcionalSetorFormBean.setoresAtivos}" id="setoresAtivos" >
+				 	<a4j:support id="atualizaSetores" 
+								 event="onclick"
+								 ajaxSingle="true" 
+								 reRender="cmbSetor" />									
+				 </h:selectBooleanCheckbox>
+			</div>
 
-			<div class="input-box box-10">
+			<div class="input-box box-10" style="clear:both">
 				<label for="">Data Inicio *</label>
 				<div class="conteiner">
 					<h:inputText id="dataInicio" 
@@ -206,12 +216,11 @@
 			</fieldset>
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR')}">
-				<h:commandButton action="#{funcionalSetorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />		
-				<h:commandButton id="limpaTelaForm"
-								 value="Limpar"
-								 action="#{funcionalSetorFormBean.limpaTelaForm}"
-								 styleClass="bt-padrao fr mg-right-15" 
-								 />	
+			<h:commandButton action="#{funcionalSetorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />		
+			<h:commandButton 	id="limpaTelaForm"
+								value="Limpar"
+								action="#{funcionalSetorFormBean.limpaTelaForm}"
+								styleClass="bt-padrao fr mg-right-10" />	
 			</ui:fragment>
 			<a href="/srh/paginas/funcional/funcionalSetorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 

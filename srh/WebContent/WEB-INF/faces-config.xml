@@ -499,6 +499,18 @@
    <to-view-id>/paginas/cadastros/categoriaSetorPessoalForm.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <!-- Categoria Funcional Setor Responsabilidade -->
+ <navigation-rule>
+  <from-view-id>/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeList.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>listar</from-outcome>
+   <to-view-id>/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeList.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>incluirAlterar</from-outcome>
+   <to-view-id>/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeForm.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  <!-- Pessoal -->
  <navigation-rule>
   <from-view-id>/paginas/cadastros/pessoaList.xhtml</from-view-id>

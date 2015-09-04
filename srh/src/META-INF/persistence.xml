@@ -67,8 +67,9 @@
 	<class>br.gov.ce.tce.srh.domain.TipoPublicacao</class>
 	<class>br.gov.ce.tce.srh.domain.Uf</class>
 	<class>br.gov.ce.tce.srh.domain.Vinculo</class>
-	<class>br.gov.ce.tce.srh.domain.CategoriaSetorPessoal</class>
+	<class>br.gov.ce.tce.srh.domain.CategoriaSetorPessoal</class>	
 	<class>br.gov.ce.tce.srh.domain.CategoriaFuncionalSetor</class>
+	<class>br.gov.ce.tce.srh.domain.CategoriaFuncionalSetorResponsabilidade</class>
 
 	<!-- sapjava -->
 	<class>br.gov.ce.tce.srh.sapjava.domain.Entidade</class>

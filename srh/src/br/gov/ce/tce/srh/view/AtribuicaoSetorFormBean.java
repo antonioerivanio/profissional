@@ -33,6 +33,7 @@ public class AtribuicaoSetorFormBean  implements Serializable {
 	private Long tipo = 1L;	
 	
 	private List<Setor> comboSetor;
+	private boolean setoresAtivos = true;
 	
 	public String prepareIncluir() {
 		setSetor(new Setor());
@@ -73,21 +74,24 @@ public class AtribuicaoSetorFormBean  implements Serializable {
 
 		try {
 
-			if (this.comboSetor == null)
-				this.comboSetor = setorService.findAll();
+			if ( this.setoresAtivos )
+				this.comboSetor = setorService.findTodosAtivos();
+	       	else
+	       		this.comboSetor = setorService.findAll();
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+	       	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return this.comboSetor;
+	    return this.comboSetor;
 	}
 	
 	public String limpaTela() {
-		setTipo(1L);
+		this.tipo = 1L;
 		setEntidade(new AtribuicaoSetor());
 		setSetor(new Setor());
+		this.setoresAtivos = true;
 		return null;
 	}
 	
@@ -96,8 +100,16 @@ public class AtribuicaoSetorFormBean  implements Serializable {
 
 	public Setor getSetor() {return setor;}
 	public void setSetor(Setor setor) {this.setor = setor;}
+	
+	public boolean isSetoresAtivos() {return this.setoresAtivos;}
+	public void setSetoresAtivos(boolean setoresAtivos) {this.setoresAtivos = setoresAtivos;}
 
-	public Long getTipo() {return this.tipo;}
+	public Long getTipo() {
+		if(entidade != null && entidade.getTipo() != null){
+			this.tipo = entidade.getTipo(); 
+		}
+		return this.tipo;
+	}
 
 	public void setTipo(Long tipo) {
 		this.tipo = tipo;

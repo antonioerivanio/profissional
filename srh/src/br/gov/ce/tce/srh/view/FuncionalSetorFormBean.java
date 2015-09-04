@@ -49,6 +49,7 @@ public class FuncionalSetorFormBean implements Serializable {
 
 	// combos
 	private List<Setor> comboSetor;
+	private boolean setoresAtivos = true;
 
 
 
@@ -118,18 +119,20 @@ public class FuncionalSetorFormBean implements Serializable {
 	 * @return
 	 */
 	public List<Setor> getComboSetor() {
-		
+			
 		try {
 
-			if ( this.comboSetor == null )
-				this.comboSetor = setorService.findAll();
+			if ( this.setoresAtivos )
+				this.comboSetor = setorService.findTodosAtivos();
+	       	else
+	       		this.comboSetor = setorService.findAll();
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+	       	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return this.comboSetor;
+	    return this.comboSetor;
 	}
 
 
@@ -185,5 +188,8 @@ public class FuncionalSetorFormBean implements Serializable {
     public void setEntidade(FuncionalSetor entidade) {this.entidade = entidade;}
 
 	public boolean isAlterar() {return alterar;}
+	
+	public boolean isSetoresAtivos() {return this.setoresAtivos;}
+	public void setSetoresAtivos(boolean setoresAtivos) {this.setoresAtivos = setoresAtivos;}
 
 }

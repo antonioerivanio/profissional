@@ -21,10 +21,10 @@
 
 	            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
 				
-				<div class="select-box box-50">
+				<div class="select-box box-38">
 					<label for="">Setor *</label>
 					<div class="conteiner">
-						<h:selectOneMenu id="setor" 
+						<h:selectOneMenu id="cmbSetor" 
 										 value="#{atribuicaoSetorFormBean.entidade.setor}"
 										 converter="entityConverter"
 										 required="true"
@@ -39,6 +39,15 @@
 					</div>
 				</div>
 				
+				<div class="radio-box fl mg-top-25">
+					 Exibir somente setores ativos	
+					 <h:selectBooleanCheckbox value="#{atribuicaoSetorFormBean.setoresAtivos}" id="setoresAtivos" >
+					 	<a4j:support id="atualizaSetores" 
+									 event="onclick"
+									 ajaxSingle="true" 
+									 reRender="cmbSetor" />									
+					 </h:selectBooleanCheckbox>
+				</div>				
 			
 				<div class="radios-group box-30" style="clear:both">
 					<label for="">Tipo</label>

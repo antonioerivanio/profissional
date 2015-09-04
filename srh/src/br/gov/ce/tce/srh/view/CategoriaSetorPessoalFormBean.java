@@ -19,8 +19,6 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
-import br.gov.ce.tce.srh.sapjava.service.SetorService;
-import br.gov.ce.tce.srh.service.CadastroCategoriaFuncionalService;
 import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorService;
 import br.gov.ce.tce.srh.service.CategoriaSetorPessoalService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -32,15 +30,10 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 @ManagedBean
 public class CategoriaSetorPessoalFormBean implements Serializable {
 
-	static Logger logger = Logger
-			.getLogger(CategoriaSetorPessoalFormBean.class);
+	static Logger logger = Logger.getLogger(CategoriaSetorPessoalFormBean.class);
 
 	@Autowired
-	private CategoriaSetorPessoalService categoriaSetorPessoalService;
-	@Autowired
-	private SetorService setorService;
-	@Autowired
-	private CadastroCategoriaFuncionalService cadastroCategoriaFuncionalService;
+	private CategoriaSetorPessoalService categoriaSetorPessoalService;	
 	@Autowired
 	private FuncionalService funcionalService;
 	@Autowired
@@ -93,8 +86,7 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 		this.alterar = true;
 		this.passouConsultar = true;
 
-		this.funcional = funcionalService.getByPessoaAtivo(getEntidade()
-				.getPessoal().getId());
+		this.funcional = funcionalService.getByPessoaAtivo(getEntidade().getPessoal().getId());
 
 		this.matricula = this.funcional.getMatricula();
 		this.nome = getEntidade().getPessoal().getNomeCompleto();
@@ -111,8 +103,7 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 		getEntidade().setCategoriaFuncionalSetor(new CategoriaFuncionalSetor());
 		getEntidade().setPessoal(new Pessoal());
 		getEntidade().getCategoriaFuncionalSetor().setSetor(new Setor());
-		getEntidade().getCategoriaFuncionalSetor().setCategoriaFuncional(
-				new CategoriaFuncional());
+		getEntidade().getCategoriaFuncionalSetor().setCategoriaFuncional(new CategoriaFuncional());
 
 		this.alterar = false;
 		this.passouConsultar = false;
@@ -160,8 +151,7 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 	 */
 	public List<CategoriaFuncionalSetor> carregarSetores() {
 		if (categoriaFuncionalSetores != null) {
-			categoriaFuncionalSetores = categoriaFuncionalSetorService
-					.findAll();
+			categoriaFuncionalSetores = categoriaFuncionalSetorService	.findAll();
 		}
 		return categoriaFuncionalSetores;
 	}
@@ -169,16 +159,11 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 	public void carregarCategorias() {
 		if (categorias != null) {
 
-			if (entidade.getCategoriaFuncionalSetor().getId() != null
-					&& entidade.getCategoriaFuncionalSetor().getId() != 0) {
-				CategoriaFuncionalSetor categoriaFuncionalSetor = categoriaFuncionalSetorService
-						.findById(entidade.getCategoriaFuncionalSetor().getId());
-				getEntidade().setCategoriaFuncionalSetor(
-						categoriaFuncionalSetor);
+			if (entidade.getCategoriaFuncionalSetor().getId() != null && entidade.getCategoriaFuncionalSetor().getId() != 0) {
+				CategoriaFuncionalSetor categoriaFuncionalSetor = categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId());
+				getEntidade().setCategoriaFuncionalSetor(categoriaFuncionalSetor);
 
-				categorias = categoriaFuncionalSetorService
-						.findBySetor(entidade.getCategoriaFuncionalSetor()
-								.getSetor());
+				categorias = categoriaFuncionalSetorService.findBySetor(entidade.getCategoriaFuncionalSetor().getSetor());
 
 			}
 

@@ -36,7 +36,7 @@ public class SetorDAOImpl implements SetorDAO {
 	public List<Setor> findTodosAtivos(){
 		return entityManager.createNamedQuery("Setor.findTodosAtivos").getResultList();
 	}
-
+	
 
 	// TODO - remover
 	@Override

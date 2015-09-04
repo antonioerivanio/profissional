@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Responsabilidades por Categoria Funcional e Setor</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{categoriaFuncionalSetorResponsabilidadeListBean.form}" styleClass="formularios box-border">
+
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="select-box box-38">
+				<label for="">Setor *</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="cmbSetor" 
+									 value="#{categoriaFuncionalSetorResponsabilidadeListBean.setor}"
+									 converter="entityConverter">
+					  	<f:selectItem id="selecioneSetor" itemLabel="Selecione..." itemValue="" />
+					  	<f:selectItems 	id="comboSetor" 
+					  					value="#{categoriaFuncionalSetorResponsabilidadeListBean.comboSetor}"
+					  					var="setor"
+					  					itemValue="#{setor}"
+					  					itemLabel="#{setor.nome}"
+					  					/>
+					</h:selectOneMenu>
+				</div>
+			</div>
+			
+			<div class="radio-box fl mg-top-25">
+				 Exibir somente setores ativos	
+				 <h:selectBooleanCheckbox value="#{categoriaFuncionalSetorResponsabilidadeListBean.setoresAtivos}" id="setoresAtivos" >
+				 	<a4j:support id="atualizaSetores" 
+								 event="onclick"
+								 ajaxSingle="true" 
+								 reRender="cmbSetor" />									
+				 </h:selectBooleanCheckbox>
+			</div>
+			
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{categoriaFuncionalSetorResponsabilidadeListBean.consultar}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-30" 
+							 reRender="scroller,lista"/>
+ 		
+
+			 <div class="tabela-dados">
+
+				 <rich:dataTable 	id="lista" 
+				 					var="item" 
+				 					rows="#{categoriaFuncionalSetorResponsabilidadeListBean.dataModel.pageSize}"
+				 					value="#{categoriaFuncionalSetorResponsabilidadeListBean.dataModel}">
+				 					
+					 <h:column id="col1" headerClass="cel-50">
+                        <f:facet name="header">
+                            Categoria Funcional
+                        </f:facet>
+                        <center><h:outputText id="item1" value="#{item.categoriaFuncionalSetor.categoriaFuncional.descricao}" styleClass="cel-50" /></center>
+                    </h:column>
+                    <h:column id="col2" headerClass="cel-50">
+                        <f:facet name="header">
+                            Descrição
+                        </f:facet>
+                        <h:outputText id="item2" value="#{item.descricao}" styleClass="cel-50" />
+                    </h:column>
+                    <h:column id="col3" headerClass="cel-25">
+                        <f:facet name="header">
+                            Início
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item3" value="#{item.inicio}" styleClass="cel-50" >
+                        		<f:convertDateTime id="dataInicio" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                    <h:column id="col4" headerClass="cel-25">
+                        <f:facet name="header">
+                            Fim
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item4" value="#{item.fim}" styleClass="cel-50" >
+                        		<f:convertDateTime id="dataFim" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column> 
+                	<h:column id="col5">
+                        <f:facet name="header">
+                            EDITAR
+                        </f:facet>
+                       <h:commandLink id="editar"
+                       				  value="Editar"
+                       				  action="#{categoriaFuncionalSetorResponsabilidadeFormBean.prepareAlterar}"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{categoriaFuncionalSetorResponsabilidadeFormBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+                	<h:column id="col6">
+                        <f:facet name="header">
+                            EXCLUIR
+                        </f:facet>
+                        <h:commandLink id="excluir"
+                        			   value="Excluir"
+                        			   action="#{categoriaFuncionalSetorResponsabilidadeListBean.excluir}"
+                        			   styleClass="ico-delete"
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                            <f:setPropertyActionListener target="#{categoriaFuncionalSetorResponsabilidadeListBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+
+				</rich:dataTable> 
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide" 
+									renderIfSinglePage="false" 
+									page="#{categoriaFuncionalSetorResponsabilidadeListBean.pagina}"/>
+				
+			</div>
+
+			<h:commandButton id="incluir"
+							 value="Incluir"
+							 action="#{categoriaFuncionalSetorResponsabilidadeFormBean.prepareIncluir}"
+							 styleClass="bt-padrao fr mg-right-15" />
+			
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{categoriaFuncionalSetorResponsabilidadeListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15" />				 
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
