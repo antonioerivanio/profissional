@@ -68,9 +68,9 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if ((posGraduacao && !profissional) || (!posGraduacao && profissional))
 			sql.append(" AND e.cursoProfissional.posGraduacao = :posGraduacao");
 		if (inicio != null ) 	
-			sql.append(" AND e.cursoProfissional.inicio >= :inicio");		
+			sql.append(" AND e.cursoProfissional.fim >= :inicio");		
 		if (fim != null) 
-			sql.append(" AND e.cursoProfissional.inicio <= :fim ");
+			sql.append(" AND e.cursoProfissional.fim <= :fim ");
 		
 		sql.append(" ORDER BY e.cursoProfissional.inicio desc");
 		
@@ -139,9 +139,9 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if ((posGraduacao && !profissional) || (!posGraduacao && profissional))
 			sql.append(" AND e.cursoProfissional.posGraduacao = :posGraduacao");		
 		if (inicio != null ) 	
-			sql.append(" AND e.cursoProfissional.inicio >= :inicio");		
+			sql.append(" AND e.cursoProfissional.fim >= :inicio");		
 		if (fim != null) 
-			sql.append(" AND e.cursoProfissional.inicio <= :fim ");
+			sql.append(" AND e.cursoProfissional.fim <= :fim ");
 		
 		sql.append(" ORDER BY e.cursoProfissional.inicio desc");
 		
@@ -179,9 +179,9 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if ((posGraduacao && !profissional) || (!posGraduacao && profissional))
 			sql.append(" AND e.cursoProfissional.posGraduacao = :posGraduacao");		
 		if (inicio != null ) 	
-			sql.append(" AND e.cursoProfissional.inicio >= :inicio");		
+			sql.append(" AND e.cursoProfissional.fim >= :inicio");		
 		if (fim != null) 
-			sql.append(" AND e.cursoProfissional.inicio <= :fim ");
+			sql.append(" AND e.cursoProfissional.fim <= :fim ");
 		
 		sql.append(" ORDER BY e.cursoProfissional.inicio desc");
 		
@@ -220,8 +220,8 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		sql.append("LEFT JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO ");
 		sql.append("LEFT JOIN SAPJAVA.SETOR ON DECODE(TB_FUNCIONAL.IDSETORDESIGNADO, NULL, TB_FUNCIONAL.IDSETOR, TB_FUNCIONAL.IDSETORDESIGNADO) = SAPJAVA.SETOR.IDSETOR ");
 
-		sql.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
-		sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
+		sql.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
+		sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
 		sql.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 		
 		if(areaAtuacao)
@@ -264,8 +264,8 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		sql.append(" LEFT JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO ");
 		sql.append(" LEFT JOIN SAPJAVA.SETOR ON DECODE(TB_FUNCIONAL.IDSETORDESIGNADO, NULL, TB_FUNCIONAL.IDSETOR, TB_FUNCIONAL.IDSETORDESIGNADO) = SAPJAVA.SETOR.IDSETOR ");
 
-		sql.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
-		sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
+		sql.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
+		sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
 		sql.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 		
 		if(areaAtuacao)
@@ -282,7 +282,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if (setor != null && setor.getId() != null)				
 			sql.append(" AND SAPJAVA.SETOR.IDSETOR = " + setor.getId() );	
 			
-		sql.append(" ORDER BY TB_PESSOAL.NOMECOMPLETO,TB_CURSOPROFISSIONAL.INICIO DESC");
+		sql.append(" ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESSOAL.NOMECOMPLETO");
 		
 		Query query = entityManager.createNativeQuery(sql.toString(), PessoalCursoProfissional.class);		
 		

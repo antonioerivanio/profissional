@@ -59,6 +59,7 @@ public class CursoServidorListBean implements Serializable {
 	private boolean areaAtuacao;
 	private boolean posGraduacao = true;
 	private boolean profissional = true;
+	private boolean somenteCargaHoraria;
 
 	// entidades das telas
 	private Funcional entidade = new Funcional();
@@ -138,7 +139,7 @@ public class CursoServidorListBean implements Serializable {
 		try {
 
 			// validando campos da entidade
-			if ( getEntidade() == null || getEntidade().getPessoal() == null )
+			if (  !somenteCargaHoraria && (getEntidade() == null || getEntidade().getPessoal() == null) )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
@@ -153,13 +154,17 @@ public class CursoServidorListBean implements Serializable {
 				fimFormato = formatador.format(fim); 
 			
 			StringBuilder filtro = new StringBuilder();
-			filtro.append(" WHERE  TB_PESSOAL.id = "+getEntidade().getPessoal().getId());
+			filtro.append(" WHERE  1 = 1 ");
+			
+			if(!somenteCargaHoraria)
+				filtro.append(" AND TB_PESSOAL.id = "+getEntidade().getPessoal().getId());
+			
 			filtro.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 			
 			if ( inicio != null )
-				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );			
+				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );			
 			if ( fim != null )
-				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");	
+				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");	
 			
 			if(areaAtuacao)
 				filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
@@ -171,7 +176,14 @@ public class CursoServidorListBean implements Serializable {
 			System.out.println(filtro.toString());
 			
 			parametros.put("FILTRO", filtro.toString());
-			relatorioUtil.relatorio("cursoServidor.jasper", parametros, "cursoServidor.pdf");
+			
+			if(somenteCargaHoraria){
+				parametros.put("DATA_INICIO", inicioFormato);
+				parametros.put("DATA_FIM", fimFormato);
+				relatorioUtil.relatorio("cursoServidorSomenteCargaHoraria.jasper", parametros, "cursoPeriodoSomenteCargaHoraria.pdf");
+			}else{				
+				relatorioUtil.relatorio("cursoServidor.jasper", parametros, "cursoServidor.pdf");
+			}
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -202,6 +214,7 @@ public class CursoServidorListBean implements Serializable {
 		areaAtuacao = false;
 		posGraduacao = true;
 		profissional = true;
+		somenteCargaHoraria = false;
 		inicio = null;
 		fim = null;
 	}
@@ -289,6 +302,9 @@ public class CursoServidorListBean implements Serializable {
 	
 	public boolean isProfissional() {return profissional;}
 	public void setProfissional(boolean profissional) {	this.profissional = profissional;}
+	
+	public boolean isSomenteCargaHoraria() {return this.somenteCargaHoraria;}
+	public void setSomenteCargaHoraria(boolean somenteCargaHoraria) {	this.somenteCargaHoraria = somenteCargaHoraria;}
 
 	
 	public void setForm(HtmlForm form) {this.form = form;}

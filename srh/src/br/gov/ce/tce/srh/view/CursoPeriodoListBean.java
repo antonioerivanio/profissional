@@ -93,11 +93,10 @@ public class CursoPeriodoListBean implements Serializable {
 	private List<PessoalCursoProfissional> pagedList = new ArrayList<PessoalCursoProfissional>();
 	private int flagRegistroInicial = 0;
 
-//componente
+	//componente
 	private Long totalCargaHoraria;
 	private String labelTotalCargaHoraria;
 	
-	private Long tipoRelatorio = 1L;
 
 	/**
 	 * Realizar Consulta
@@ -111,12 +110,6 @@ public class CursoPeriodoListBean implements Serializable {
 			// validando campos da entidade
 			if ( inicio == null || fim == null )
 				throw new SRHRuntimeException("Informe o período ");
-
-//			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-//				count = funcionalSetorService.count(pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf()).getId());
-//			} else {
-//				count = funcionalSetorService.count( getEntidade().getPessoal().getId() );
-//			}
 			
 			count = cursoServidorService.count(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor);
 
@@ -125,14 +118,8 @@ public class CursoPeriodoListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 			
-//			List<PessoalCursoProfissional> cursos = cursoServidorService.getCursos( inicio,fim, areaAtuacao,posGraduacao);
-			totalCargaHoraria = new Long(0);
-//			for (PessoalCursoProfissional curso : cursos) {
-//				if(curso!=null && curso.getCursoProfissional()!=null && curso.getCursoProfissional().getCargaHoraria()!=null)
-//					totalCargaHoraria = totalCargaHoraria + curso.getCursoProfissional().getCargaHoraria();
-//			}
-//			
-//			labelTotalCargaHoraria = "Total Carga Horária:";
+			totalCargaHoraria = 0L;
+
 			flagRegistroInicial = -1;
 			passouConsultar = true;
 
@@ -170,8 +157,8 @@ public class CursoPeriodoListBean implements Serializable {
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			StringBuilder filtro = new StringBuilder();
 			
-			filtro.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
-			filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.INICIO,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
+			filtro.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
+			filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
 			filtro.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 			
 			if(areaAtuacao)
@@ -188,16 +175,13 @@ public class CursoPeriodoListBean implements Serializable {
 			
 			if (setor != null && setor.getId() != null){				
 				filtro.append(" AND SAPJAVA.SETOR.IDSETOR = " + setor.getId() );
-			}
-			 
+			}			 
 			
 			parametros.put("FILTRO", filtro.toString());
 			
 			System.out.println(filtro.toString());
 			
-			parametros.put("TIPORELATORIO", tipoRelatorio);
-			
-			relatorioUtil.relatorio("cursoPeriodo.jasper", parametros, "cursoPeriodo.pdf");
+			relatorioUtil.relatorio("cursoPeriodo.jasper", parametros, "cursoPeriodo.pdf");			
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -221,7 +205,6 @@ public class CursoPeriodoListBean implements Serializable {
 		fim = null;
 		tipoOcupacao = null;
 		comboTipoOcupacao = null;
-		tipoRelatorio = null;
 		return "listar";
 	}
 
@@ -358,11 +341,7 @@ public class CursoPeriodoListBean implements Serializable {
 	public void setTipoOcupacao(TipoOcupacao tipoOcupacao) {this.tipoOcupacao = tipoOcupacao;}	
 
 	public Setor getSetor() {return setor;}
-	public void setSetor(Setor setor) {this.setor = setor;}
-
-	public Long getTipoRelatorio() {return tipoRelatorio;}
-	public void setTipoRelatorio(Long tipoRelatorio) {this.tipoRelatorio = tipoRelatorio;}
-	
+	public void setSetor(Setor setor) {this.setor = setor;}	
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {

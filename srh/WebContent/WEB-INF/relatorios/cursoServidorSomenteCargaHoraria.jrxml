@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cursoPeriodo" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="175"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="BACK" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO_TCE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATA_INICIO" class="java.lang.String"/>
+	<parameter name="DATA_FIM" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+  SUM(TB_CURSOPROFISSIONAL.CARGAHORARIA) CARGAHORARIA,
+  TB_PESSOAL.ID IDPESSOAL,
+  TB_PESSOAL.NOMECOMPLETO,
+  TB_FUNCIONAL.MATRICULA,
+  TB_OCUPACAO.NOMENCLATURA AS CARGOEFETIVO,
+  TB_REPRESENTACAOCARGO.NOMENCLATURA AS CARGOCOMISSAO,
+  TB_REPRESENTACAOCARGO.SIMBOLO AS SIMBOLO,
+  SAPJAVA.SETOR.NMSETOR AS LOTACAO
+
+FROM TB_FUNCIONAL
+  INNER JOIN TB_PESSOAL ON TB_FUNCIONAL.IDPESSOAL = TB_PESSOAL.ID
+  INNER JOIN TB_PESSOALCURSOPROF ON TB_PESSOAL.ID = TB_PESSOALCURSOPROF.IDPESSOAL
+  INNER JOIN TB_CURSOPROFISSIONAL ON TB_PESSOALCURSOPROF.IDCURSOPROFISSIONAL = TB_CURSOPROFISSIONAL.ID
+  LEFT JOIN TB_OCUPACAO ON TB_FUNCIONAL.IDOCUPACAO = TB_OCUPACAO.ID
+  LEFT JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO
+  LEFT JOIN TB_REPRESENTACAOCARGO ON TB_FUNCIONAL.IDREPRESENTACAOCARGO = TB_REPRESENTACAOCARGO.ID
+  LEFT JOIN SAPJAVA.SETOR ON DECODE(TB_FUNCIONAL.IDSETORDESIGNADO, NULL, TB_FUNCIONAL.IDSETOR, TB_FUNCIONAL.IDSETORDESIGNADO) = SAPJAVA.SETOR.IDSETOR
+
+$P!{FILTRO}
+
+GROUP BY TB_PESSOAL.ID,
+  	 TB_PESSOAL.NOMECOMPLETO,
+  	 TB_FUNCIONAL.MATRICULA,
+  	 TB_OCUPACAO.NOMENCLATURA,
+  	 TB_REPRESENTACAOCARGO.NOMENCLATURA,
+  	 TB_REPRESENTACAOCARGO.SIMBOLO,
+  	 SAPJAVA.SETOR.NMSETOR
+
+ORDER BY TB_PESSOAL.NOMECOMPLETO]]>
+	</queryString>
+	<field name="IDPESSOAL" class="java.math.BigDecimal"/>
+	<field name="NOMECOMPLETO" class="java.lang.String"/>
+	<field name="MATRICULA" class="java.lang.String"/>
+	<field name="CARGAHORARIA" class="java.math.BigDecimal"/>
+	<field name="CARGOEFETIVO" class="java.lang.String"/>
+	<field name="CARGOCOMISSAO" class="java.lang.String"/>
+	<field name="SIMBOLO" class="java.lang.String"/>
+	<field name="LOTACAO" class="java.lang.String"/>
+	<title>
+		<band height="107">
+			<rectangle>
+				<reportElement x="1" y="0" width="800" height="79" forecolor="#CCCCCC"/>
+			</rectangle>
+			<image>
+				<reportElement x="1" y="14" width="554" height="65"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="619" y="-11" width="168" height="54"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="5" y="25" width="161" height="36"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="41" width="802" height="20" forecolor="#0F2E52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Carga Horária Cursada por Servidor]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="2" y="84" width="796" height="18">
+					<printWhenExpression><![CDATA[!$P{DATA_INICIO}.equals( null ) && !$P{DATA_INICIO}.equals( "" )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["PERÍODO: de " + $P{DATA_INICIO} + " a " + $P{DATA_FIM}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="18">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="17" isRemoveLineWhenBlank="true" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="282" y="0" width="240" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO/FUNÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="0" width="200" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SERVIDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="701" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CARGA HORÁRIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="522" y="0" width="179" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[LOTAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="0" width="79" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[MATRÍCULA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="800" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="701" y="1" width="90" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$F{CARGAHORARIA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="3" y="1" width="200" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="282" y="1" width="240" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[( $F{CARGOEFETIVO} == null ? "" : $F{CARGOEFETIVO} )
++ ( $F{CARGOCOMISSAO} == null ? "" : " - " + $F{CARGOCOMISSAO} + ( $F{SIMBOLO} == null? "" : " " + $F{SIMBOLO} ) )]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="522" y="1" width="179" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LOTACAO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="203" y="1" width="79" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MATRICULA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<line>
+				<reportElement x="-1" y="2" width="803" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="3" width="803" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
+			</staticText>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="773" y="2" width="30" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="674" y="2" width="95" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
