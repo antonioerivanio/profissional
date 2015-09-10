@@ -146,6 +146,10 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	@Column(name="ATIVOFP")
 	private boolean atipoFp;
 	
+	@NotAudited
+	@Column(name="FLPORTALTRANSPARENCIA")
+	private boolean ativoPortal;
+	
 	@Column(name="IRRF")
 	private boolean IRRF;
 
@@ -396,6 +400,9 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	
 	public Long getIdSetorDesignado() {return idSetorDesignado;}
 	public void setIdSetorDesignado(Long idSetorDesignado) {this.idSetorDesignado = idSetorDesignado;}
+
+	public boolean isAtivoPortal() {return ativoPortal;}
+	public void setAtivoPortal(boolean ativoPortal) {this.ativoPortal = ativoPortal;}
 	
 	
 }

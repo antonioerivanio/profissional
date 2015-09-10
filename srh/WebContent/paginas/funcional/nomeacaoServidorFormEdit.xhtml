@@ -522,6 +522,19 @@
 						</div>
 					</div>
 					
+					<div class="radios-group box-18">
+						<label>Ativo no Portal da Transparência?</label>
+						<div class="conteiner">
+							<div class="radio-box">
+								<h:selectBooleanCheckbox
+									id="ativoPortal"
+									value="#{nomeacaoServidorFormBean.entidade.ativoPortal}"
+									disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
+								</h:selectBooleanCheckbox>
+							</div>
+						</div>
+					</div>
+					
 					<fieldset>
 
 					<legend>Código Brasileiro de Ocupações</legend>

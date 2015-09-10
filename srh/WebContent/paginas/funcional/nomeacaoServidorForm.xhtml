@@ -480,7 +480,7 @@
 				</div>
 			</div>
 			
-			<div class="radios-group box-10">
+			<div class="radios-group box-10" style="clear: both;">
 				<label>Cáculo PCC?</label>
 				<div class="conteiner">
 					<div class="radio-box">
@@ -531,6 +531,20 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="radios-group box-18">
+				<label>Ativo no Portal da Transparência?</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="ativoPortal"
+							value="#{nomeacaoServidorFormBean.entidade.ativoPortal}"
+							disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+			
 			</fieldset>
 			
 			<fieldset class="conteiner">
