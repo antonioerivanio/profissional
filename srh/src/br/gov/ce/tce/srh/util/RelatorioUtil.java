@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.util;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -8,9 +9,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import net.sf.jasperreports.engine.JRRewindableDataSource;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
@@ -46,6 +49,34 @@ public class RelatorioUtil {
 		JasperPrint print;
 
 		print = JasperFillManager.fillReport(pathRel, parametros, dataSource.getConnection());
+		byte[] bytes = JasperExportManager.exportReportToPdf(print);
+		writeBytesAsAttachedTextFile(bytes, nomeArquivo);
+
+		return null;
+	}
+	
+	public String relatorio(String arquivoRelatorio, Map<String, Object> parametros, String nomeArquivo, List<?> relatorioList) throws Exception {  
+
+		// pegando o servlet context
+		FacesContext facesContext = FacesContext.getCurrentInstance();  
+		ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+
+		JRRewindableDataSource dataSource = relatorioList == null ? new net.sf.jasperreports.engine.JREmptyDataSource() : new JRBeanCollectionDataSource(relatorioList);
+
+		String logo = servletContext.getRealPath("//img/" + "logo-srh.png");
+		String logo_tce = servletContext.getRealPath("//img/" + "logo-tce-report.png");
+		String back = servletContext.getRealPath("//img/" + "bg-topo.png");
+		String pathRel = servletContext.getRealPath("//WEB-INF/relatorios/" + arquivoRelatorio);  
+
+		//parametros 		
+		parametros.put("LOGO", logo);
+		parametros.put("LOGO_TCE", logo_tce);
+		parametros.put("BACK", back);
+
+		// Fill the report using an empty data source
+		JasperPrint print;
+
+		print = JasperFillManager.fillReport(pathRel, parametros, dataSource);
 		byte[] bytes = JasperExportManager.exportReportToPdf(print);
 		writeBytesAsAttachedTextFile(bytes, nomeArquivo);
 

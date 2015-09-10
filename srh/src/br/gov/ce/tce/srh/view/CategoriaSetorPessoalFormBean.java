@@ -19,6 +19,7 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorService;
 import br.gov.ce.tce.srh.service.CategoriaSetorPessoalService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -38,6 +39,8 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 	private FuncionalService funcionalService;
 	@Autowired
 	private CategoriaFuncionalSetorService categoriaFuncionalSetorService;
+	@Autowired
+	private SetorService setorService;
 
 	private CategoriaSetorPessoal entidade = new CategoriaSetorPessoal();
 	private Funcional funcional;
@@ -49,7 +52,9 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 	private boolean passouConsultar = false;
 	private boolean alterar = false;
 
-	private List<CategoriaFuncionalSetor> categoriaFuncionalSetores = null;
+	private List<Setor> comboSetor;
+	private boolean setoresAtivos = true;
+	private Setor setor;
 	private List<CategoriaFuncionalSetor> categorias = null;
 
 	private String matricula = new String();
@@ -85,18 +90,18 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 
 		this.alterar = true;
 		this.passouConsultar = true;
+		
+		entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId()));
 
 		this.funcional = funcionalService.getByPessoaAtivo(getEntidade().getPessoal().getId());
 
 		this.matricula = this.funcional.getMatricula();
-		this.nome = getEntidade().getPessoal().getNomeCompleto();
+		this.nome = getEntidade().getPessoal().getNomeCompleto();				
+		this.setor = entidade.getCategoriaFuncionalSetor().getSetor();
 
 		return "incluirAlterar";
 	}
 
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		setEntidade(new CategoriaSetorPessoal());
@@ -112,16 +117,18 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 		this.matricula = new String();
 		this.nome = new String();
 
-		categoriaFuncionalSetores = new ArrayList<CategoriaFuncionalSetor>();
-		categorias = new ArrayList<CategoriaFuncionalSetor>();
+		this.comboSetor = null;
+		this.setor = null;
+		this.categorias = new ArrayList<CategoriaFuncionalSetor>();
+		this.setoresAtivos = true;
 		this.funcional = null;
 
 	}
 
 	public String salvar() {
 		try {
-			entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService
-					.findById(entidade.getCategoriaFuncionalSetor().getId()));
+			
+//			entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId()));
 
 			if (ativa) {
 				entidade.setAtiva(1L);
@@ -129,6 +136,7 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 				entidade.setAtiva(0L);
 			}
 			categoriaSetorPessoalService.salvar(entidade);
+			
 			limpar();
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
@@ -146,14 +154,21 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 		return null;
 	}
 
-	/**
-	 * CARREGAR TODOS DOS SETORES DO SISTEMA
-	 */
-	public List<CategoriaFuncionalSetor> carregarSetores() {
-		if (categoriaFuncionalSetores != null) {
-			categoriaFuncionalSetores = categoriaFuncionalSetorService	.findAll();
+	public List<Setor> getComboSetor() {
+
+        try {
+
+    	   	if ( this.setoresAtivos )
+        		this.comboSetor = setorService.findTodosAtivos();
+        	else
+        		this.comboSetor = setorService.findAll();        	
+        	
+        } catch (Exception e) {
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		return categoriaFuncionalSetores;
+
+        return this.comboSetor;
 	}
 
 	public void carregarCategorias() {
@@ -173,13 +188,8 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 	/**
 	 * GETTERS e SETTERS
 	 */
-	public CategoriaSetorPessoal getEntidade() {
-		return entidade;
-	}
-
-	public void setEntidade(CategoriaSetorPessoal entidade) {
-		this.entidade = entidade;
-	}
+	public CategoriaSetorPessoal getEntidade() {return entidade;}
+	public void setEntidade(CategoriaSetorPessoal entidade) {this.entidade = entidade;}
 
 	public HtmlForm getForm() {
 		if (!passouConsultar) {
@@ -188,31 +198,15 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 		passouConsultar = false;
 		return form;
 	}
+	public void setForm(HtmlForm form) {this.form = form;}
 
-	public void setForm(HtmlForm form) {
-		this.form = form;
-	}
+	public boolean isPassouConsultar() {return passouConsultar;}
+	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
 
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
+	public boolean isAlterar() {return alterar;}
+	public void setAlterar(boolean alterar) {this.alterar = alterar;}
 
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
-	public boolean isAlterar() {
-		return alterar;
-	}
-
-	public void setAlterar(boolean alterar) {
-		this.alterar = alterar;
-	}
-
-	public String getMatricula() {
-		return matricula;
-	}
-
+	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if (!this.matricula.equalsIgnoreCase(matricula)) {
 			this.matricula = matricula;
@@ -237,38 +231,25 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 
 		}
 	}
-
-	public List<CategoriaFuncionalSetor> getCategoriaFuncionalSetores() {
-		return carregarSetores();
-	}
-
-	public void setCategoriaFuncionalSetores(
-			List<CategoriaFuncionalSetor> categoriaFuncionalSetores) {
-		this.categoriaFuncionalSetores = categoriaFuncionalSetores;
-	}
+	
+	public boolean isSetoresAtivos() {return this.setoresAtivos;}
+	public void setSetoresAtivos(boolean setoresAtivos) {this.setoresAtivos = setoresAtivos;}
+	
+	public Setor getSetor() {return setor;}
+	public void setSetor(Setor setor) {this.setor = setor;}
 
 	public List<CategoriaFuncionalSetor> getCategorias() {
+		if(setor != null){
+			categorias = categoriaFuncionalSetorService.findBySetor(setor);
+		}		
 		return categorias;
 	}
+	public void setCategorias(List<CategoriaFuncionalSetor> categorias) {this.categorias = categorias;}
 
-	public void setCategorias(List<CategoriaFuncionalSetor> categorias) {
-		this.categorias = categorias;
-	}
+	public String getNome() {return nome;}
+	public void setNome(String nome) {this.nome = nome;}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public boolean isAtiva() {
-		return ativa;
-	}
-
-	public void setAtiva(boolean ativa) {
-		this.ativa = ativa;
-	}
+	public boolean isAtiva() {return ativa;}
+	public void setAtiva(boolean ativa) {this.ativa = ativa;}
 
 }

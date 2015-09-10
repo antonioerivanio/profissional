@@ -78,13 +78,11 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
 
         try {
 
-        	if(comboSetor == null){
-	        	if ( this.setoresAtivos )
-	        		this.comboSetor = setorService.findTodosAtivos();
-	        	else
-	        		this.comboSetor = setorService.findAll();
-        	}
-        	
+        	if ( this.setoresAtivos )
+        		this.comboSetor = setorService.findTodosAtivos();
+        	else
+        		this.comboSetor = setorService.findAll();
+        	        	
         } catch (Exception e) {
         	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());

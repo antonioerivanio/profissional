@@ -161,31 +161,46 @@
 				<div class="select-box box-35">
 					<label for="">Setor *</label>
 					<div class="conteiner">
-						<h:selectOneMenu id="setor" 
-										 value="#{categoriaSetorPessoalFormBean.entidade.categoriaFuncionalSetor}"
-										 converter="entityConverter" required="true" requiredMessage="O campo 'Setor' é obrigatório.">
+						<h:selectOneMenu id="cmbSetor" 
+										 value="#{categoriaSetorPessoalFormBean.setor}"
+										 converter="entityConverter" 
+										 required="true" 
+										 requiredMessage="Setor é obrigatório.">
 						  	<f:selectItem id="selecioneSetor" itemLabel="Selecione..." itemValue="" />
 						  	<f:selectItems 	id="comboSetor" 
-						  					value="#{categoriaSetorPessoalFormBean.categoriaFuncionalSetores}"
+						  					value="#{categoriaSetorPessoalFormBean.comboSetor}"
 						  					var="setor"
 						  					itemValue="#{setor}"
-						  					itemLabel="#{setor.setor.nome}"
+						  					itemLabel="#{setor.nome}"
 						  					/>
-						  	<a4j:support id="carregaCategorias" 
-					  				 event="onchange" 
-					  				 ajaxSingle="true"
-					  				 action="#{categoriaSetorPessoalFormBean.carregarCategorias}"
-					  				 reRender="categoria"/>
+						  	<a4j:support 	id="carregaCategorias"
+						  		 	 		event="onchange" 
+					  				 		ajaxSingle="true"					  				 		
+					  				 		reRender="categoria"/>
 						</h:selectOneMenu>
 					</div>
 				</div>
 				
+				<div class="radio-box fl mg-top-25">
+					 Exibir somente setores ativos
+					 <h:selectBooleanCheckbox value="#{categoriaSetorPessoalFormBean.setoresAtivos}" id="setoresAtivos" >
+					 	<a4j:support id="atualizaSetores" 
+									 event="onclick"
+									 ajaxSingle="true" 
+									 reRender="cmbSetor" />									
+					 </h:selectBooleanCheckbox>
+				</div>
+								
+				<br /><br /><br /><br /><br /><br />
+				
 				<div class="select-box box-35">
-					<label for="">Categoria *</label>
+					<label for="">Categoria Funcional *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="categoria" 
 										 value="#{categoriaSetorPessoalFormBean.entidade.categoriaFuncionalSetor}"
-										 converter="entityConverter" required="true" requiredMessage="O campo 'Categoria' é obrigatório.">
+										 converter="entityConverter" 
+										 required="true" 
+										 requiredMessage="Categoria Funcional é obrigatória.">
 						  	<f:selectItem id="selecioneCategoria" itemLabel="Selecione..." itemValue="" />
 						  	<f:selectItems 	id="comboCategoria" 
 						  					value="#{categoriaSetorPessoalFormBean.categorias}"

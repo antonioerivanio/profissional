@@ -41,10 +41,9 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 			.getLogger(CategoriaSetorPessoalListBean.class);
 
 	@Autowired
-	CategoriaSetorPessoalService categoriaSetorPessoalService;
+	private CategoriaSetorPessoalService categoriaSetorPessoalService;
 	@Autowired
-	FuncionalService funcionalService;
-
+	private FuncionalService funcionalService;
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
@@ -162,7 +161,7 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			FacesUtil
-					.addErroMessage("Erro na geração do Relatório de Averbação. Operação cancelada.");
+					.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 																																	

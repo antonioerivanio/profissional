@@ -2,7 +2,9 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.component.html.HtmlForm;
 
@@ -20,6 +22,9 @@ import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorResponsabilidadeService;
 import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
+import br.gov.ce.tce.srh.util.RelatorioDataSource;
+import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("categoriaFuncionalSetorResponsabilidadeListBean")
@@ -34,6 +39,8 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	private CategoriaFuncionalSetorService categoriaFuncionalSetorService;	
 	@Autowired
 	private SetorService setorService;
+	@Autowired
+	private RelatorioUtil relatorioUtil;
 
 	// controle de acesso do formulario
 	private HtmlForm form;
@@ -87,6 +94,60 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 		}		
 
 		return "listar";
+	}
+	
+	public String relatorio() {
+
+		try {
+			
+			if (count == 0) {
+				FacesUtil.addInfoMessage("Nenhum registro foi encontrado. Realize uma consulta antes de solicitar o relatório.");
+				logger.info("Nenhum registro foi encontrado. Realize uma consulta antes de solicitar o relatório.");
+				return null;
+			}
+			
+			List<CategoriaFuncionalSetorResponsabilidade> consultaList = categoriaFuncionalSetorResponsabilidadeService.search(setor, opcaoAtiva, flagRegistroInicial, count);
+			
+			List<RelatorioDataSource> relatorioList = new ArrayList<RelatorioDataSource>(consultaList.size());
+
+			for (CategoriaFuncionalSetorResponsabilidade e : consultaList) {
+				RelatorioDataSource r = new RelatorioDataSource();
+				
+				r.setCategoria(e.getCategoriaFuncionalSetor().getCategoriaFuncional().getDescricao());
+				
+				if(e.getTipo() == 1L){
+					r.setTipo("Sumário da Função");
+				}else if(e.getTipo() == 2L){
+					r.setTipo("Responsabilidades e Atividades");
+				}			
+				
+				r.setDescricao(e.getDescricao());
+				
+				if(e.getInicio() != null)
+					r.setInicio(SRHUtils.formataData("dd/MM/yyyy", e.getInicio()));
+				if(e.getFim() != null)
+					r.setFim(SRHUtils.formataData("dd/MM/yyyy", e.getFim()));
+							
+				relatorioList.add(r);
+			}
+			
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			
+			Setor setor = setorService.getById(this.setor.getId());
+			
+			parametros.put("SETOR", setor.getNome());
+			
+			relatorioUtil.relatorio("responsabilidadesCategoriaFuncionalSetor.jasper", parametros,"responsabilidadesCategoriaFuncionalSetor.pdf", relatorioList);
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+																																	
+		return null;
 	}
 	
 	public String excluir() {
