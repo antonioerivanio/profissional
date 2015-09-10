@@ -19,7 +19,17 @@
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
 			<div id="div1" class="select-box box-38">
-				<h:outputLabel id="lblSetor" value="Setor"/>
+				<h:outputLabel id="lblSetor" value="Setor *">
+					<div class="radio-box mg-left-10 " style="display: inline-block;">
+					 Exibir somente setores ativos	
+					 <h:selectBooleanCheckbox value="#{atribuicaoSetorListBean.setoresAtivos}" id="setoresAtivos" >
+					 	<a4j:support id="atualizaSetores" 
+									 event="onclick"
+									 ajaxSingle="true" 
+									 reRender="cmbSetor" />									
+					 </h:selectBooleanCheckbox>
+					</div>
+				</h:outputLabel>
 				<div id="div2" class="conteiner">
 					<h:selectOneMenu id="cmbSetor" value="#{atribuicaoSetorListBean.entidade.setor}" converter="entityConverter">
 						<f:selectItem id="siSelecione1" itemLabel="Selecione..." />
@@ -27,17 +37,19 @@
 							var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
 					</h:selectOneMenu>
 				</div>				
-			</div>			
+			</div>					
 			
-			<div class="radio-box fl mg-top-25">
-				 Exibir somente setores ativos	
-				 <h:selectBooleanCheckbox value="#{atribuicaoSetorListBean.setoresAtivos}" id="setoresAtivos" >
-				 	<a4j:support id="atualizaSetores" 
-								 event="onclick"
-								 ajaxSingle="true" 
-								 reRender="cmbSetor" />									
-				 </h:selectBooleanCheckbox>
-			</div>			
+			
+			<div id="div3" class="select-box box-25">
+				<h:outputLabel id="lblAtiva" value="Atribuições"/>
+				<div id="div4" class="conteiner">
+					<h:selectOneMenu id="cmbAtiva" value="#{atribuicaoSetorListBean.opcaoAtiva}" >
+						<f:selectItem id="si1" itemLabel="Todas" itemValue="0" />
+						<f:selectItem id="si2" itemLabel="Somente Ativas" itemValue="1" />
+						<f:selectItem id="si3" itemLabel="Somente Inativas" itemValue="2" />
+					</h:selectOneMenu>
+				</div>				
+			</div>
 			
 			
 			<h:commandButton id="consultar"
@@ -53,18 +65,35 @@
 								rows="#{atribuicaoSetorListBean.dataModel.pageSize}"
 								value="#{atribuicaoSetorListBean.dataModel}">				
 					
-					<rich:column id="clmTipo"  >
+					<rich:column id="clmTipo" >
 						<f:facet id="lblTipo" name="header">TIPO</f:facet>
 						<center>
 							<h:outputText id="tipo1" value="Geral" styleClass="cel-75" rendered="#{item.tipo eq 1}" />
 							<h:outputText id="tipo2" value="Específica" styleClass="cel-75" rendered="#{item.tipo eq 2}" />
 						</center>
-					</rich:column>					
-					
+					</rich:column>	
+													
 					<h:column id="clmDescricao" headerClass="cel-50">
                         <f:facet id="lblDescricao" name="header">DESCRIÇÃO</f:facet>
                         <h:outputText id="descricao" value="#{item.descricao}" styleClass="cel-50" />
                     </h:column>
+					
+					<rich:column id="clmInicio" >
+						<f:facet id="lblInicio" name="header">INICIO</f:facet>
+						<center>
+	                        <h:outputText id="item2" value="#{item.inicio}" >
+	                        	<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+					</rich:column>
+					<rich:column id="clmFim" >
+						<f:facet id="lblFim" name="header">FIM</f:facet>
+						<center>
+	                        <h:outputText id="item3" value="#{item.fim}" >
+	                        	<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+					</rich:column>					
 					
 					<rich:column id="clmEditar" >
 						<f:facet id="lblEditar" name="header">EDITAR</f:facet>

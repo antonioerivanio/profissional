@@ -21,7 +21,17 @@
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
 			<div class="select-box box-38">
-				<label for="">Setor *</label>
+				<h:outputLabel id="lblSetor" value="Setor *">
+					<div class="radio-box mg-left-10 " style="display: inline-block;">
+						 Exibir somente setores ativos	
+						 <h:selectBooleanCheckbox value="#{categoriaFuncionalSetorResponsabilidadeListBean.setoresAtivos}" id="setoresAtivos" >
+						 	<a4j:support id="atualizaSetores" 
+										 event="onclick"
+										 ajaxSingle="true" 
+										 reRender="cmbSetor" />									
+						 </h:selectBooleanCheckbox>
+					</div>				
+				</h:outputLabel>
 				<div class="conteiner">
 					<h:selectOneMenu id="cmbSetor" 
 									 value="#{categoriaFuncionalSetorResponsabilidadeListBean.setor}"
@@ -35,16 +45,17 @@
 					  					/>
 					</h:selectOneMenu>
 				</div>
-			</div>
+			</div>			
 			
-			<div class="radio-box fl mg-top-25">
-				 Exibir somente setores ativos	
-				 <h:selectBooleanCheckbox value="#{categoriaFuncionalSetorResponsabilidadeListBean.setoresAtivos}" id="setoresAtivos" >
-				 	<a4j:support id="atualizaSetores" 
-								 event="onclick"
-								 ajaxSingle="true" 
-								 reRender="cmbSetor" />									
-				 </h:selectBooleanCheckbox>
+			<div id="div3" class="select-box box-25">
+				<h:outputLabel id="lblResp" value="Responsabilidades"/>
+				<div id="div4" class="conteiner">
+					<h:selectOneMenu id="cmbAtiva" value="#{categoriaFuncionalSetorResponsabilidadeListBean.opcaoAtiva}" >
+						<f:selectItem id="si1" itemLabel="Todas" itemValue="0" />
+						<f:selectItem id="si2" itemLabel="Somente Ativas" itemValue="1" />
+						<f:selectItem id="si3" itemLabel="Somente Inativas" itemValue="2" />
+					</h:selectOneMenu>
+				</div>				
 			</div>
 			
 			<h:commandButton id="consultar"
@@ -67,6 +78,15 @@
                         </f:facet>
                         <center><h:outputText id="item1" value="#{item.categoriaFuncionalSetor.categoriaFuncional.descricao}" styleClass="cel-50" /></center>
                     </h:column>
+                    
+                    <rich:column id="clmTipo" >
+						<f:facet id="lblTipo" name="header">TIPO</f:facet>
+						<center>
+							<h:outputText id="tipo1" value="Sumário da Função" styleClass="cel-75" rendered="#{item.tipo eq 1}" />
+							<h:outputText id="tipo2" value="Responsabilidades e Atividades" styleClass="cel-75" rendered="#{item.tipo eq 2}" />
+						</center>
+					</rich:column>
+                    
                     <h:column id="col2" headerClass="cel-50">
                         <f:facet name="header">
                             Descrição

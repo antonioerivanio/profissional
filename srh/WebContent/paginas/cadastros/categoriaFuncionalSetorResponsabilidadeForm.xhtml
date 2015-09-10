@@ -74,8 +74,22 @@
 						</h:selectOneMenu>
 					</div>
 				</div>
-			
-				<br /><br /><br /><br /><br /><br />
+				
+				<br /><br /><br /><br /><br />				
+				
+				<div class="radios-group box-38">
+					<label for="">Tipo</label>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectOneRadio id="tipo" value="#{categoriaFuncionalSetorResponsabilidadeFormBean.tipo}" >					  					  	
+								<f:selectItem id="siSumario" itemLabel="Sumário da Função" itemValue="1" />
+								<f:selectItem id="siResp" itemLabel="Responsabilidades e Atividades" itemValue="2" />
+							</h:selectOneRadio>
+						</div>
+					</div>
+				</div>
+				
+				<br /><br /><br /><br /><br />
 
 				<div class="input-box box-15">
 					<label for="">Início *</label>

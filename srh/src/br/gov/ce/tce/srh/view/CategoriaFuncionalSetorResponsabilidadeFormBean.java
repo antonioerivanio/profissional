@@ -37,6 +37,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
 	private List<Setor> comboSetor;
 	private boolean setoresAtivos = true;
 	private Setor setor;
+	private Long tipo = 1L;	
 	
 	private List<CategoriaFuncionalSetor> categorias;
 	
@@ -93,6 +94,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
 	}
 	
 	public String limpaTela() {
+		this.tipo = 1L;
 		setEntidade(new CategoriaFuncionalSetorResponsabilidade());		
 		this.comboSetor = null;
 		this.setor = null;
@@ -117,5 +119,18 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
 		return categorias;
 	}
 	public void setCategorias(List<CategoriaFuncionalSetor> categorias) {this.categorias = categorias;}
+	public Long getTipo() {
+		if(entidade != null && entidade.getTipo() != null){
+			this.tipo = entidade.getTipo(); 
+		}
+		return this.tipo;
+	}
+
+	public void setTipo(Long tipo) {
+		this.tipo = tipo;
+		if(entidade != null){
+			entidade.setTipo(tipo); 
+		}
+	}	
 	
 }

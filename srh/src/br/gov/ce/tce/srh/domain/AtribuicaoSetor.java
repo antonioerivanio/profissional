@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,11 @@ public class AtribuicaoSetor extends BasicEntity<Long> implements Serializable{
 	@Column(name="DESCRICAO")
 	private String descricao;	
 	
+	@Column(name = "INICIO")
+	private Date inicio;
+
+	@Column(name = "FIM")
+	private Date fim;
 	
 	
 	public Long getTipo() {return tipo;}
@@ -42,7 +48,13 @@ public class AtribuicaoSetor extends BasicEntity<Long> implements Serializable{
 
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
-
+	
+	public Date getInicio() {return inicio;}
+	public void setInicio(Date inicio) {this.inicio = inicio;}
+	
+	public Date getFim() {return fim;}
+	public void setFim(Date fim) {this.fim = fim;}
+	
 	@Override
 	public Long getId() {return this.id;}
 	

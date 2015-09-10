@@ -28,17 +28,35 @@ public class CategoriaFuncionalSetorResponsabilidadeDAOImpl implements Categoria
 	}
 	
 	@Override
-	public int count(Setor setor) {
-		Query query = entityManager.createQuery("Select count(c) from CategoriaFuncionalSetorResponsabilidade c where c.categoriaFuncionalSetor.setor.id = :setor");
+	public int count(Setor setor, int opcaoAtiva) {
+		
+		String filtro = "";
+		
+		if(opcaoAtiva == 1){
+			filtro = "AND c.fim is null";
+		}else if(opcaoAtiva == 2){
+			filtro = "AND c.fim is not null";
+		}
+			
+		Query query = entityManager.createQuery("Select count(c) from CategoriaFuncionalSetorResponsabilidade c where c.categoriaFuncionalSetor.setor.id = :setor " + filtro);
 		query.setParameter("setor", setor.getId());
 		return ((Long) query.getSingleResult()).intValue();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<CategoriaFuncionalSetorResponsabilidade> search(Setor setor, int first, int rows) {
+	public List<CategoriaFuncionalSetorResponsabilidade> search(Setor setor, int opcaoAtiva, int first, int rows) {
+		
+		String filtro = "";
+		
+		if(opcaoAtiva == 1){
+			filtro = "AND c.fim is null";
+		}else if(opcaoAtiva == 2){
+			filtro = "AND c.fim is not null";
+		}
+		
 		Query query = entityManager.createQuery("Select c from CategoriaFuncionalSetorResponsabilidade c where c.categoriaFuncionalSetor.setor.id = :setor "
-												+ "ORDER BY c.categoriaFuncionalSetor.categoriaFuncional.descricao, c.inicio DESC");
+				+ filtro + " ORDER BY c.categoriaFuncionalSetor.categoriaFuncional.descricao, c.tipo, c.inicio DESC, c.id DESC");
 		query.setParameter("setor", setor.getId());
 		query.setFirstResult(first);
 		query.setMaxResults(rows);

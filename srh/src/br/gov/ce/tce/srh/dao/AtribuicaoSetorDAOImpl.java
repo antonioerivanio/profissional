@@ -26,33 +26,37 @@ public class AtribuicaoSetorDAOImpl implements AtribuicaoSetorDAO{
 	}	
 	
 	@Override
-	public int count(Setor setor) {
+	public int count(Setor setor, int opcaoAtiva) {
 		
-		Query query;
+		String filtro = "";
 		
-		if(setor == null){
-			query = entityManager.createQuery("Select count(a) from AtribuicaoSetor a");
-		}else{
-			query = entityManager.createQuery("Select count(a) from AtribuicaoSetor a where a.setor.id = :setorId");			
-			query.setParameter("setorId", setor.getId());
-		}		
-			
+		if(opcaoAtiva == 1){
+			filtro = "AND a.fim is null";
+		}else if(opcaoAtiva == 2){
+			filtro = "AND a.fim is not null";
+		}
+		
+		Query query = entityManager.createQuery("Select count(a) from AtribuicaoSetor a where a.setor.id = :setorId " + filtro);			
+		query.setParameter("setorId", setor.getId());
+					
 		return ((Long) query.getSingleResult()).intValue();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<AtribuicaoSetor> search(Setor setor, int first,	int rows) {
+	public List<AtribuicaoSetor> search(Setor setor, int opcaoAtiva, int first,	int rows) {
 		
-		Query query;
+		String filtro = "";
 		
-		if(setor == null){
-			query = entityManager.createQuery("Select a from AtribuicaoSetor a ORDER BY a.setor.nome");
-		}else{
-			query = entityManager.createQuery("Select a from AtribuicaoSetor a where a.setor.id = :setorId ORDER BY a.setor.nome");
-			query.setParameter("setorId", setor.getId());			
+		if(opcaoAtiva == 1){
+			filtro = "AND a.fim is null";
+		}else if(opcaoAtiva == 2){
+			filtro = "AND a.fim is not null";
 		}
 		
+		Query query = entityManager.createQuery("Select a from AtribuicaoSetor a where a.setor.id = :setorId " + filtro + " ORDER BY a.tipo, a.inicio DESC, a.id desc");
+		
+		query.setParameter("setorId", setor.getId());				
 		query.setFirstResult(first);
 		query.setMaxResults(rows);
 		
@@ -81,15 +85,14 @@ public class AtribuicaoSetorDAOImpl implements AtribuicaoSetorDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AtribuicaoSetor> findAll() {
-		return entityManager.createQuery("SELECT a FROM AtribuicaoSetor a ORDER BY a.setor.nome").getResultList();
+		return entityManager.createQuery("SELECT a FROM AtribuicaoSetor a ORDER BY a.tipo, a.inicio DESC, a.id desc, a.setor.nome").getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AtribuicaoSetor> findBySetor(Setor setor) {
-		Query query = entityManager.createQuery("Select a from AtribuicaoSetor a where a.setor.id = :setorId ORDER BY a.setor.nome");
+		Query query = entityManager.createQuery("Select a from AtribuicaoSetor a where a.setor.id = :setorId ORDER BY a.tipo, a.inicio DESC, a.id desc");
 		query.setParameter("setorId", setor.getId());
 		return query.getResultList();
 	}	
-
 }

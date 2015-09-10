@@ -43,6 +43,7 @@ public class AtribuicaoSetorListBean implements Serializable {
 	// combos
 	private List<Setor> comboSetor;
 	private boolean setoresAtivos = true;
+	private int opcaoAtiva = 0;
 	
 	// paginação
 	private int count;
@@ -61,7 +62,7 @@ public class AtribuicaoSetorListBean implements Serializable {
 			if( entidade == null || entidade.getSetor() == null )
 				throw new SRHRuntimeException("Selecione um setor.");
 			
-			count = atribuicaoSetorService.count(entidade.getSetor());
+			count = atribuicaoSetorService.count(entidade.getSetor(), opcaoAtiva);
 	
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -101,8 +102,7 @@ public class AtribuicaoSetorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		entidade = new AtribuicaoSetor();
+		
 		return consultar();
 	}	
 	
@@ -134,8 +134,11 @@ public class AtribuicaoSetorListBean implements Serializable {
 	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
 	
 	public boolean isSetoresAtivos() {return this.setoresAtivos;}
-	public void setSetoresAtivos(boolean setoresAtivos) {this.setoresAtivos = setoresAtivos;}
-	
+	public void setSetoresAtivos(boolean setoresAtivos) {this.setoresAtivos = setoresAtivos;}	
+
+	public int getOpcaoAtiva() {return opcaoAtiva;}
+	public void setOpcaoAtiva(int opcaoAtiva) {this.opcaoAtiva = opcaoAtiva;}
+
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
 		if (!passouConsultar) {			
@@ -151,6 +154,7 @@ public class AtribuicaoSetorListBean implements Serializable {
 		setEntidade( new AtribuicaoSetor() );
 		comboSetor = null;
 		setoresAtivos = true;
+		opcaoAtiva = 0;
 	}
 	
 	public String limpaTela() {
@@ -172,7 +176,7 @@ public class AtribuicaoSetorListBean implements Serializable {
 			
 			flagRegistroInicial = getPrimeiroDaPagina();
 			
-			setPagedList(atribuicaoSetorService.search(entidade.getSetor(), flagRegistroInicial, dataModel.getPageSize()));
+			setPagedList(atribuicaoSetorService.search(entidade.getSetor(), opcaoAtiva, flagRegistroInicial, dataModel.getPageSize()));
 			
 			if(count != 0){			
 				dataModel = new PagedListDataModel(getPagedList(), count);			

@@ -46,7 +46,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	private List<Setor> comboSetor;
 	private boolean setoresAtivos = true;
 	private Setor setor;
-	
+	private int opcaoAtiva = 0;
 	
 	// paginação
 	private int count;
@@ -65,7 +65,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 			if( setor == null )
 				throw new SRHRuntimeException("Selecione um setor.");
 			
-			count = categoriaFuncionalSetorResponsabilidadeService.count(setor);
+			count = categoriaFuncionalSetorResponsabilidadeService.count(setor, opcaoAtiva);
 	
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -106,7 +106,6 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		entidade = new CategoriaFuncionalSetorResponsabilidade();
 		return consultar();
 	}	
 	
@@ -138,6 +137,9 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	
 	public Setor getSetor() {return setor;}
 	public void setSetor(Setor setor) {this.setor = setor;}
+	
+	public int getOpcaoAtiva() {return opcaoAtiva;}
+	public void setOpcaoAtiva(int opcaoAtiva) {this.opcaoAtiva = opcaoAtiva;}
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
@@ -155,6 +157,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 		comboSetor = null;
 		setoresAtivos = true;
 		setor = null;
+		opcaoAtiva = 0;
 	}
 	
 	public String limpaTela() {
@@ -176,7 +179,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 			
 			flagRegistroInicial = getPrimeiroDaPagina();
 			
-			setPagedList(categoriaFuncionalSetorResponsabilidadeService.search(setor, flagRegistroInicial, dataModel.getPageSize()));
+			setPagedList(categoriaFuncionalSetorResponsabilidadeService.search(setor, opcaoAtiva, flagRegistroInicial, dataModel.getPageSize()));
 			
 			if(count != 0){			
 				dataModel = new PagedListDataModel(getPagedList(), count);			

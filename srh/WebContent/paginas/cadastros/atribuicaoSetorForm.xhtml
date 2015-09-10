@@ -61,7 +61,30 @@
 					</div>
 				</div>
 			
-			
+				<div class="input-box box-15">
+					<label for="">Início *</label>
+					<div class="conteiner">
+						<h:inputText id="inicio" 
+									 styleClass="maskData"
+									 converter="dateConverter"
+									 value="#{atribuicaoSetorFormBean.entidade.inicio}"
+									 maxlength="10" 
+									 required="true" requiredMessage="Início é obrigatório.">
+						</h:inputText>			  
+					</div>
+				</div>
+				<div class="input-box box-15">
+					<label for="">Fim</label>
+					<div class="conteiner">
+						<h:inputText id="fim" 
+									 styleClass="maskData"
+									 converter="dateConverter"
+									 value="#{atribuicaoSetorFormBean.entidade.fim}"
+									 maxlength="10" >
+						</h:inputText>			  
+					</div>
+				</div>
+						
 				<div class="textarea-box box-100">
 					<label for="">Descrição *</label>
 					<div class="conteiner">

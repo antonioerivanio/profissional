@@ -31,12 +31,18 @@ public class CategoriaFuncionalSetorResponsabilidade extends BasicEntity<Long> i
 
 	@Column(name = "FIM")
 	private Date fim;
+	
+	@Column(name="TIPO")
+	private Long tipo;
 
 	@Override
 	public Long getId() {return this.id;}	
 	@Override
 	public void setId(Long id) {this.id = id;}
 
+	public Long getTipo() {return tipo;}
+	public void setTipo(Long tipo) {this.tipo = tipo;}
+	
 	public CategoriaFuncionalSetor getCategoriaFuncionalSetor() {return categoriaFuncionalSetor;}
 	public void setCategoriaFuncionalSetor(CategoriaFuncionalSetor categoriaFuncionalSetor) {this.categoriaFuncionalSetor = categoriaFuncionalSetor;}
 	

@@ -8,8 +8,8 @@ import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public interface AtribuicaoSetorService {
 	
-	public int count(Setor setor);
-	public List<AtribuicaoSetor> search(Setor setor, int first, int rows);
+	public int count(Setor setor, int opcaoAtiva);
+	public List<AtribuicaoSetor> search(Setor setor, int opcaoAtiva, int first, int rows);
 	
 	public void salvar(AtribuicaoSetor entidade) throws SRHRuntimeException;
 	

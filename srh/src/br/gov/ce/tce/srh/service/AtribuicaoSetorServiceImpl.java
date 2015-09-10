@@ -10,6 +10,7 @@ import br.gov.ce.tce.srh.dao.AtribuicaoSetorDAO;
 import br.gov.ce.tce.srh.domain.AtribuicaoSetor;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("atribuicaoSetorService")
 public class AtribuicaoSetorServiceImpl implements AtribuicaoSetorService{
@@ -18,13 +19,13 @@ public class AtribuicaoSetorServiceImpl implements AtribuicaoSetorService{
 	private AtribuicaoSetorDAO dao;
 	
 	@Override
-	public int count(Setor setor) {
-		return dao.count(setor);
+	public int count(Setor setor, int opcaoAtiva) {
+		return dao.count(setor, opcaoAtiva);
 	}
 
 	@Override
-	public List<AtribuicaoSetor> search(Setor setor, int first, int rows) {
-		return dao.search(setor, first, rows);
+	public List<AtribuicaoSetor> search(Setor setor, int opcaoAtiva, int first, int rows) {
+		return dao.search(setor, opcaoAtiva, first, rows);
 	}
 
 	@Override
@@ -33,13 +34,19 @@ public class AtribuicaoSetorServiceImpl implements AtribuicaoSetorService{
 
 		if(entidade.getDescricao().length() > 1000){
 			throw new SRHRuntimeException("O campo Descrição ultrapassou o limite de 1000 caracteres.");
-		}		
+		}
+		
+		if (entidade.getInicio() != null && entidade.getFim() != null) {
+			if ( SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getInicio(), 1).after(entidade.getFim()) )
+				throw new SRHRuntimeException("A Data Fim deve ser maior que a Data Início.");
+		}
 		
 		List<AtribuicaoSetor> atribuicaoSetorList = findBySetor(entidade.getSetor());
 		
 		for (AtribuicaoSetor atribuicaoSetor : atribuicaoSetorList) {
-			if(entidade.getId() == null && entidade.getTipo() == atribuicaoSetor.getTipo())
-				throw new SRHRuntimeException("Já existe atribuição deste tipo cadastrada para este setor.");
+			if(entidade.getTipo() == 1 && entidade.getFim() == null && atribuicaoSetor.getTipo() == 1 && atribuicaoSetor.getFim() == null
+					&& ( entidade.getId() == null || entidade.getId() != atribuicaoSetor.getId() ) )
+				throw new SRHRuntimeException("Já existe Atribuição Geral ativa cadastrada para este setor.");
 		}
 		
 		dao.salvar(entidade);
@@ -64,6 +71,6 @@ public class AtribuicaoSetorServiceImpl implements AtribuicaoSetorService{
 	@Override
 	public List<AtribuicaoSetor> findBySetor(Setor setor) {		
 		return dao.findBySetor(setor);		
-	}	
-
+	}
+	
 }

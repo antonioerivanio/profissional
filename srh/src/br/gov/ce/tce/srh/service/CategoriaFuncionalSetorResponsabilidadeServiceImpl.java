@@ -19,13 +19,13 @@ public class CategoriaFuncionalSetorResponsabilidadeServiceImpl implements Categ
 	private CategoriaFuncionalSetorResponsabilidadeDAO dao;
 
 	@Override
-	public int count(Setor setor) {
-		return dao.count(setor);
+	public int count(Setor setor, int opcaoAtiva) {
+		return dao.count(setor, opcaoAtiva);
 	}
 
 	@Override
-	public List<CategoriaFuncionalSetorResponsabilidade> search(Setor setor, int first, int rows) {
-		return dao.search(setor, first, rows);
+	public List<CategoriaFuncionalSetorResponsabilidade> search(Setor setor, int opcaoAtiva, int first, int rows) {
+		return dao.search(setor, opcaoAtiva, first, rows);
 	}
 
 	@Transactional
@@ -40,39 +40,13 @@ public class CategoriaFuncionalSetorResponsabilidadeServiceImpl implements Categ
 			if ( SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getInicio(), 1).after(entidade.getFim()) )
 				throw new SRHRuntimeException("A Data Fim deve ser maior que a Data Início.");
 		}
-		
-		if(entidade.getId() == null){
-			List<CategoriaFuncionalSetorResponsabilidade> listAtivas = dao.findAtivaByCategoriaFuncionalSetor(entidade.getCategoriaFuncionalSetor());
-			if(listAtivas != null && listAtivas.size() > 0){
-				throw new SRHRuntimeException("Existe registro de Responsabilidades ativo relacionado a esta Categoria Funcional neste Setor.");
-			}
-		}
-		
-		List<CategoriaFuncionalSetorResponsabilidade> categoriaFuncionalSetorResponsabilidades = dao.findByCategoriaFuncionalSetor(entidade.getCategoriaFuncionalSetor());
-		
-		for (CategoriaFuncionalSetorResponsabilidade categoriaFuncionalSetorResponsabilidade : categoriaFuncionalSetorResponsabilidades) {
-			if ( entidade.getId() == null || !entidade.getId().equals(categoriaFuncionalSetorResponsabilidade.getId()) ) {
-
-				Long anteriorInicio = categoriaFuncionalSetorResponsabilidade.getInicio().getTime();
-				Long anteriorFim = categoriaFuncionalSetorResponsabilidade.getFim().getTime();
-				Long novaInicio = entidade.getInicio().getTime();
-				Long novaFim = entidade.getFim().getTime();
 				
-				// validando periodo inicial
-				if( novaInicio <= anteriorInicio && novaFim >= anteriorInicio ){
-					throw new SRHRuntimeException("Já existe registo de Responsabilidades cadastrado neste período para esta Categoria Funcional neste Setor.");
-				}
-
-				// validando periodo final
-				if( novaInicio <= anteriorFim && novaFim >= anteriorFim  ){
-					throw new SRHRuntimeException("Já existe registo de Responsabilidades cadastrado neste período para esta Categoria Funcional neste Setor.");
-				}
-
-				// validando periodo no meio
-				if( novaInicio > anteriorInicio  && novaFim < anteriorFim ) {
-					throw new SRHRuntimeException("Já existe registo de Responsabilidades cadastrado neste período para esta Categoria Funcional neste Setor.");
-				}
-			}
+		List<CategoriaFuncionalSetorResponsabilidade> respList = dao.findByCategoriaFuncionalSetor(entidade.getCategoriaFuncionalSetor());
+		
+		for (CategoriaFuncionalSetorResponsabilidade resp : respList) {
+			if(entidade.getTipo() == 1 && entidade.getFim() == null && resp.getTipo() == 1 && resp.getFim() == null
+					&& ( entidade.getId() == null || entidade.getId() != resp.getId() ) )
+				throw new SRHRuntimeException("Já existe Sumário da Função ativo cadastrado para esta função.");
 		}
 		
 		
