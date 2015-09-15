@@ -176,7 +176,7 @@
 			<div class="radios-group box-15">
 				<rich:panel id="richpanel">
 			        <label>Somente Carga Horária</label>
-			        <rich:toolTip followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+			        <rich:toolTip id="tooltip" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
 				            <span style="white-space:nowrap">
 				                Marcar essa opção somente para relatório consolidado <br />
 				                com cargas horárias atingidas por cada servidor do TCE.
@@ -214,21 +214,21 @@
 								>
 
                     <h:column id="col2">
-                        <f:facet name="header">
+                        <f:facet id="f1" name="header">
                            Curso
                         </f:facet>
                         <h:outputText id="item2" value="#{item.cursoProfissional.descricao}" />
-                        <f:facet name="footer"></f:facet>
+                        <f:facet id="f2" name="footer"></f:facet>
                     </h:column>
                     <h:column id="col3">
-                        <f:facet name="header">
+                        <f:facet id="f3" name="header">
                            Área
                         </f:facet>
                         <h:outputText id="item3" value="#{item.cursoProfissional.area.descricao}" />
                        
                     </h:column>
                     <h:column id="col4">
-                        <f:facet name="header">
+                        <f:facet id="f4" name="header">
                           Início
                         </f:facet>
                         <center>
@@ -238,22 +238,22 @@
                         </center>                       
                     </h:column>
                     <h:column id="col5">
-                        <f:facet name="header">
+                        <f:facet id="f5" name="header">
                           Fim
                         </f:facet>
                         <center>
                         	<h:outputText id="item5" value="#{item.cursoProfissional.fim}">
-                        		<f:convertDateTime id="convIni" type="date" pattern="dd/MM/yyyy" />
+                        		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
-                         <f:facet style="text-aling:center;" name="footer"><h:outputText  id="item7" value="#{cursoServidorListBean.labelTotalCargaHoraria}" /></f:facet>
+                         <f:facet id="f6" style="text-aling:center;" name="footer"><h:outputText id="item7" value="#{cursoServidorListBean.labelTotalCargaHoraria}" /></f:facet>
                     </h:column>
                     <h:column id="col6">
-                        <f:facet name="header">
+                        <f:facet id="f7" name="header">
                            Carga Horária
                         </f:facet>
                        <center> <h:outputText id="item6" value="#{item.cursoProfissional.cargaHoraria}" /></center>
-                       <f:facet style="text-aling:center;" name="footer"><h:outputText  id="item8" value="#{cursoServidorListBean.totalCargaHoraria}" /></f:facet>
+                       <f:facet id="f8" style="text-aling:center;" name="footer"><h:outputText  id="item8" value="#{cursoServidorListBean.totalCargaHoraria}" /></f:facet>
                     </h:column>              
 
 				</rich:dataTable>
