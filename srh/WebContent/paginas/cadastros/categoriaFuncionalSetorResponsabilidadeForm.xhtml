@@ -10,7 +10,7 @@
 
 	<ui:define name="content">
 
-		<div class="titulo-pagina">
+		<div id="div1" class="titulo-pagina">
 
 			<h2>Cadastro de Responsabilidades por Categoria Funcional e Setor</h2>
 
@@ -20,11 +20,11 @@
 		 
 		 	<fieldset>
 			
-			 <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+			 <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
-				<div class="select-box box-35">
+				<div id="div2" class="select-box box-35">
 					<label for="">Setor *</label>
-					<div class="conteiner">
+					<div id="div3" class="conteiner">
 						<h:selectOneMenu id="cmbSetor" 
 										 value="#{categoriaFuncionalSetorResponsabilidadeFormBean.setor}"
 										 converter="entityConverter" 
@@ -45,9 +45,9 @@
 					</div>
 				</div>
 				
-				<div class="radio-box fl mg-top-25">
+				<div id="div4" class="radio-box fl mg-top-25">
 					 Exibir somente setores ativos
-					 <h:selectBooleanCheckbox value="#{categoriaFuncionalSetorResponsabilidadeFormBean.setoresAtivos}" id="setoresAtivos" >
+					 <h:selectBooleanCheckbox id="setoresAtivos" value="#{categoriaFuncionalSetorResponsabilidadeFormBean.setoresAtivos}" >
 					 	<a4j:support id="atualizaSetores" 
 									 event="onclick"
 									 ajaxSingle="true" 
@@ -57,9 +57,9 @@
 				
 				<br /><br /><br /><br /><br /><br />
 				
-				<div class="select-box box-35">
+				<div id="div5" class="select-box box-35">
 					<label for="">Categoria Funcional *</label>
-					<div class="conteiner">
+					<div id="div6" class="conteiner">
 						<h:selectOneMenu id="categoria" 
 										 value="#{categoriaFuncionalSetorResponsabilidadeFormBean.entidade.categoriaFuncionalSetor}"
 										 converter="entityConverter" 
@@ -77,10 +77,10 @@
 				
 				<br /><br /><br /><br /><br />				
 				
-				<div class="radios-group box-38">
+				<div id="div7" class="radios-group box-38">
 					<label for="">Tipo</label>
-					<div class="conteiner">
-						<div class="radio-box">
+					<div id="div8" class="conteiner">
+						<div id="div9" class="radio-box">
 							<h:selectOneRadio id="tipo" value="#{categoriaFuncionalSetorResponsabilidadeFormBean.tipo}" >					  					  	
 								<f:selectItem id="siSumario" itemLabel="Sumário da Função" itemValue="1" />
 								<f:selectItem id="siResp" itemLabel="Responsabilidades e Atividades" itemValue="2" />
@@ -91,9 +91,9 @@
 				
 				<br /><br /><br /><br /><br />
 
-				<div class="input-box box-15">
+				<div id="div10" class="input-box box-15" style="clear: both;">
 					<label for="">Início *</label>
-					<div class="conteiner">
+					<div id="div11" class="conteiner">
 						<h:inputText id="inicio" 
 									 styleClass="maskData"
 									 converter="dateConverter"
@@ -103,9 +103,9 @@
 						</h:inputText>			  
 					</div>
 				</div>
-				<div class="input-box box-15">
+				<div id="div12" class="input-box box-15">
 					<label for="">Fim</label>
-					<div class="conteiner">
+					<div id="div13" class="conteiner">
 						<h:inputText id="fim" 
 									 styleClass="maskData"
 									 converter="dateConverter"
@@ -117,9 +117,9 @@
 				
 				<br /><br /><br /><br /><br />
 				
-				<div class="textarea-box box-100">
+				<div id="div14" class="textarea-box box-100">
 					<label for="">Descrição *</label>
-					<div class="conteiner">
+					<div id="div15" class="conteiner">
 						<h:inputTextarea id="descricao"
 										 value="#{categoriaFuncionalSetorResponsabilidadeFormBean.entidade.descricao}"										 
 										 required="true"
@@ -130,7 +130,7 @@
 					
 			</fieldset>
 	
-			<h:commandButton action="#{categoriaFuncionalSetorResponsabilidadeFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
+			<h:commandButton id="salvar" action="#{categoriaFuncionalSetorResponsabilidadeFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<h:commandButton id="limpaTela" value="Limpar" action="#{categoriaFuncionalSetorResponsabilidadeFormBean.limpaTela}" styleClass="bt-padrao fr mg-right-10" />
 			<a href="/srh/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
 			

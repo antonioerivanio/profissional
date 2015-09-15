@@ -165,6 +165,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 		getEntidade().setQtdQuintos( 0l );
 		getEntidade().setRegime( 1l );
 		getEntidade().setIRRF(true);
+		getEntidade().setAtivoPortal(true);
 
 		return "incluir";
 	}

@@ -32,6 +32,27 @@
 				}
 			}
 		</script>
+		
+		<style>
+	        .tooltip {
+	            background-color: rgb(243, 242, 242);
+			    border-width: 1px;
+			    padding: 10px;
+			    border-radius: 5px;
+			    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.51);
+	        }
+	        .rich-panel-body {
+	        	padding: 0px; 
+	        }
+	        .rich-panel {
+	        	border-style: none;
+    			padding: 0px;
+    			background-color:#ffffff;
+	        }
+	        .rich-tool-tip{
+	        	border-color: #195297;
+	        }
+    	</style>
 
 		<div class="titulo-pagina">
 
@@ -90,7 +111,7 @@
 			</ui:fragment>
 			   
 			<div class="input-box box-10" style="clear:both">
-				<label for="">Data Inicio</label>
+				<label for="">Data Início</label>
 				<div class="conteiner">
 					<h:inputText id="dataInicio" 
 								 name="dataInicio"
@@ -114,7 +135,7 @@
 			</div> 
 			
 			<div class="radios-group box-10">
-				<label>Area de atuação</label>
+				<h3>Area de atuação</h3>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
@@ -151,19 +172,27 @@
 				</div>
 			</div>
 			
+						
 			<div class="radios-group box-15">
-				<label>Somente Carga Horária</label>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox
-							id="somenteCargaHoraria"
-							value="#{cursoServidorListBean.somenteCargaHoraria}">
-						</h:selectBooleanCheckbox>
+				<rich:panel id="richpanel">
+			        <label>Somente Carga Horária</label>
+			        <rich:toolTip followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+				            <span style="white-space:nowrap">
+				                Marcar essa opção somente para relatório consolidado <br />
+				                com cargas horárias atingidas por cada servidor do TCE.
+				            </span>
+			      	</rich:toolTip>
+			      	<div class="conteiner">
+				      	<div class="radio-box">
+							<h:selectBooleanCheckbox
+								id="somenteCargaHoraria"
+								value="#{cursoServidorListBean.somenteCargaHoraria}">
+							</h:selectBooleanCheckbox>
+						</div>
 					</div>
-				</div>
+			    </rich:panel>
 			</div>
 			
-
 			<h:commandButton id="consultar"
 							 value="Consultar"
 							 action="#{cursoServidorListBean.consultar}"
