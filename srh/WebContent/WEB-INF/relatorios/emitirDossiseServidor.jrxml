@@ -43,7 +43,7 @@
 		<![CDATA[select f.ID, f.MATRICULA, f.NOMECOMPLETO, f.DATAEXERCICIO, p.NOMEMAE, p.RG, p.EMISSORRG, u.NOME, o.NOMENCLATURA
 from TB_FUNCIONAL f
 inner join TB_PESSOAL p on f.idpessoal = p.id
-left join TB_UF u on p.uf = u.uf
+left join TB_UF u on p.UFEMISSORRG = u.uf
 inner join TB_OCUPACAO o on f.idocupacao = o.id
 where f.ID = $P!{IDFUNCIONAL}
 order by f.ID]]>
@@ -103,7 +103,7 @@ order by f.ID]]>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMAE}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="666" y="142" width="124" height="18"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOME}]]></textFieldExpression>
