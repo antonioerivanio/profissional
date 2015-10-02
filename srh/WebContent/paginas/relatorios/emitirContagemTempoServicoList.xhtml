@@ -90,46 +90,47 @@
 
 			<div class="tabela-dados">
 
-			<rich:dataTable id="lista" value="#{emitirContagemTempoServicoListBean.entidade}" var="item" >
-				<h:column id="col1">
-					<f:facet name="header">
-						ID
-					</f:facet>
-					<center><h:outputText id="item1" value="#{item.id}" /></center>
-				</h:column>
-                <h:column id="col2">
-					<f:facet name="header">
-						Matrícula
-					</f:facet>
-					<center>
-						<h:outputText id="item2" value="#{item.matricula}">
-							<f:converter converterId="matriculaConverter"/>
-						</h:outputText>
-					</center>
-				</h:column>
-				<h:column id="col3">
-					<f:facet name="header">
-						Nome
-					</f:facet>
-					<center><h:outputText id="item3" value="#{item.nomeCompleto}" /></center>
-				</h:column>
-				<h:column id="col4">
-					<f:facet name="header">
-						Setor
-					</f:facet>
-					<center><h:outputText id="item4" value="#{item.setor.nome}" /></center>
-				</h:column>
-				<h:column id="col5">
-					<f:facet name="header">
-						Detalhar
-					</f:facet>
-					<h:commandLink id="detalhar"
-								   value="Detalhar"
-								   action="incluirAlterar"
-								   styleClass="ico-detail" >
-					</h:commandLink>
-				</h:column>
-			</rich:dataTable>
+				<rich:dataTable id="lista" value="#{emitirContagemTempoServicoListBean.entidade}" var="item" >
+					<h:column id="col1">
+						<f:facet name="header">
+							ID
+						</f:facet>
+						<center><h:outputText id="item1" value="#{item.id}" /></center>
+					</h:column>
+	                <h:column id="col2">
+						<f:facet name="header">
+							Matrícula
+						</f:facet>
+						<center>
+							<h:outputText id="item2" value="#{item.matricula}">
+								<f:converter converterId="matriculaConverter"/>
+							</h:outputText>
+						</center>
+					</h:column>
+					<h:column id="col3">
+						<f:facet name="header">
+							Nome
+						</f:facet>
+						<center><h:outputText id="item3" value="#{item.nomeCompleto}" /></center>
+					</h:column>
+					<h:column id="col4">
+						<f:facet name="header">
+							Setor
+						</f:facet>
+						<center><h:outputText id="item4" value="#{item.setor.nome}" /></center>
+					</h:column>
+					<h:column id="col5">
+						<f:facet name="header">
+							Detalhar
+						</f:facet>
+						<h:commandLink id="detalhar"
+									   value="Detalhar"
+									   action="incluirAlterar"
+									   styleClass="ico-detail" >
+						</h:commandLink>
+					</h:column>
+				</rich:dataTable>
+				
 			</div>
 			
 			<h:commandButton id="limpaTela"

@@ -34,7 +34,7 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 		//entidade.setQtdeDias((long) SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()));
 		
 		// calculado quantidade de dias -- NOVA CONTAGEM
-		entidade.setQtdeDias((long) SRHUtils.diffData(entidade.getInicio(), entidade.getFim()));
+		entidade.setQtdeDias((long) SRHUtils.dataDiffAverbacao(entidade.getInicio(), entidade.getFim()));
 		
 		/*
 		 * Regra:

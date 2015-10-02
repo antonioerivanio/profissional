@@ -529,7 +529,7 @@
 								<h:selectBooleanCheckbox
 									id="ativoPortal"
 									value="#{nomeacaoServidorFormBean.entidade.ativoPortal}"
-									disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
+									disabled="#{not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
 								</h:selectBooleanCheckbox>
 							</div>
 						</div>

@@ -107,13 +107,15 @@
 
 				<br/>
 
-				<div class="input-box box-45">
-					<label for="">Setor</label>
+				<div class="input-box box-10" style="float: left;">
+					<label for="">Matrícula</label>
 					<div class="conteiner">
-						<h:inputText id="setor" 
-									 name="setor"
-									 disabled="true"
-									 value="#{emitirContagemTempoServicoListBean.entidade.setor.nome}" />
+						<h:inputText id="matriculaFuncional" 
+									 styleClass="maskMatricula"
+									 maxlength="5"
+									 disabled="true" 
+									 value="#{emitirContagemTempoServicoListBean.matricula}" >
+						</h:inputText>
 					</div>
 				</div>
 
@@ -135,6 +137,18 @@
 									 disabled="true"
 									 converter="dateConverter"
 									 value="#{emitirContagemTempoServicoListBean.entidade.exercicio}" />
+					</div>
+				</div>
+				
+				<br />
+				
+				<div class="input-box box-45">
+					<label for="">Setor</label>
+					<div class="conteiner">
+						<h:inputText id="setor" 
+									 name="setor"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.setor.nome}" />
 					</div>
 				</div>
 
@@ -425,7 +439,7 @@
 
 				<fieldset>
 
-				<legend>Acrécimos de Tempo de Serviço</legend>
+				<legend>Acréscimos de Tempo de Serviço</legend>
 
 				<br/>
 

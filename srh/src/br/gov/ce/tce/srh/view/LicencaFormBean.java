@@ -263,7 +263,7 @@ public class LicencaFormBean implements Serializable {
 
 	public String getNrProcesso() {return nrProcesso;}
 	public void setNrProcesso(String nrProcesso) {
-		if ( !this.nrProcesso.equals(nrProcesso) ) {
+		if ( !nrProcesso.equals(this.nrProcesso) ) {
 			this.nrProcesso = nrProcesso;
 
 			try {

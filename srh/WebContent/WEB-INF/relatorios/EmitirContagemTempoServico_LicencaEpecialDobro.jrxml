@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirDossiseServidor_abotacaoServidor" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EmitirContagemTempoServico_LicencaEpecialDobro" pageWidth="802" pageHeight="71" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="IDPESSOAL" class="java.lang.String" isForPrompting="false">
@@ -19,19 +19,16 @@
 		<![CDATA[select
 	l.inicio,
 	l.fim,
-	(le.qtdedias + le.qtdedias) ass,
+	(le.qtdedias * 2) ass,
 	l.obs
 
 from
-	tb_licenca l,
-	tb_direitolicencaesp le,
-	tb_pessoal p
+	tb_licenca l
+	inner join tb_direitolicencaesp le on l.idlicencaesp = le.id
+	inner join tb_pessoal p on l.idpessoal = p.id
 
 where
-	l.idlicencaesp = le.id
-	and l.idpessoal = p.id
-	and le.id is not null
-	and l.excluitemposerv = 0
+	l.excluitemposerv = 0
 	and le.contaremdobro > 0
 	and p.id = $P{IDPESSOAL}
 
@@ -41,91 +38,82 @@ order by l.inicio desc]]>
 	<field name="FIM" class="java.sql.Timestamp"/>
 	<field name="ASS" class="java.math.BigDecimal"/>
 	<field name="OBS" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="35">
 			<staticText>
 				<reportElement x="3" y="11" width="390" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Licença Especial em Dobro]]></text>
 			</staticText>
 			<line>
-				<reportElement x="1" y="5" width="801" height="1"/>
+				<reportElement x="0" y="5" width="802" height="1"/>
 			</line>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement x="2" y="-1" width="800" height="18" backcolor="#195297"/>
+				<reportElement x="1" y="0" width="800" height="18" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="3" y="0" width="100" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[DATA INÍCIO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="107" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="82" y="0" width="80" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DATA FIM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="211" y="0" width="100" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="162" y="0" width="80" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[QTDE. DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="315" y="0" width="113" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="256" y="0" width="113" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OBSERVAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA INÍCIO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="801" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="1" width="802" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="3" y="1" width="100" height="16"/>
+				<reportElement x="1" y="1" width="80" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{INICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="107" y="1" width="100" height="16"/>
+				<reportElement x="82" y="1" width="80" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FIM}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="211" y="1" width="100" height="16"/>
+				<reportElement x="162" y="1" width="80" height="16"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ASS}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="315" y="1" width="487" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="256" y="1" width="546" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>

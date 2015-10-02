@@ -47,17 +47,18 @@ public class SRHUtils {
 	}
 
 	/**
-	 * Método responsável por retornar a data inicio do TCE 15/12/1998
+	 * Método responsável por retornar a data a partir da qual não 
+	 * se deduz faltas do tempo de serviço
 	 * @return data inicio
 	 */
-	public static Date inicioDeducao() {
-		Calendar dtInicio = new GregorianCalendar();
-		dtInicio.set(1998, 11, 15);
-		return dtInicio.getTime();
+	public static Date fimDeducaoDeFaltas() {
+		Calendar dtFim = new GregorianCalendar();
+		dtFim.set(1998, 11, 16);
+		return dtFim.getTime();
 	}
 	/**
-	 * Método para comparar as das e retornar o numero de dias de diferença
-	 * entre elas
+	 * Método para comparar duas datas e retornar o número de dias de diferença
+	 * entre elas. Leva em consideração ano bissexto 
 	 * 
 	 * @param dataLow 
 	 * @param dataHigh
@@ -94,14 +95,11 @@ public class SRHUtils {
 
 		// Para cada mes e ano, vai de mes em mes pegar o ultimo dia para import
 		// acumulando
-		// no total de dias. Ja leva em consideracao ano bissesto
-		while (curTime.get(GregorianCalendar.YEAR) < baseTime
-				.get(GregorianCalendar.YEAR)
-				|| curTime.get(GregorianCalendar.MONTH) < baseTime
-						.get(GregorianCalendar.MONTH)) {
+		// no total de dias. Ja leva em consideracao ano bissexto
+		while (curTime.get(GregorianCalendar.YEAR) < baseTime.get(GregorianCalendar.YEAR)
+				|| curTime.get(GregorianCalendar.MONTH) < baseTime.get(GregorianCalendar.MONTH)) {
 
-			int max_day = curTime
-					.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
+			int max_day = curTime.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
 			result_months += max_day;
 			curTime.add(GregorianCalendar.MONTH, 1);
 
@@ -110,15 +108,14 @@ public class SRHUtils {
 		// Marca que é um saldo negativo ou positivo
 		result_months = result_months * dif_multiplier;
 
-		// Retirna a diferenca de dias do total dos meses
-		result_days += (endTime.get(GregorianCalendar.DAY_OF_MONTH) - startTime
-				.get(GregorianCalendar.DAY_OF_MONTH));
+		// Retorna a diferenca de dias do total dos meses
+		result_days += (endTime.get(GregorianCalendar.DAY_OF_MONTH) - startTime.get(GregorianCalendar.DAY_OF_MONTH));
 
 		return result_years + result_months + result_days + 1;
 	}
 	
 	/**
-	 * Método para comparar as das e retornar o numero de dias de diferença
+	 * Método com cálculo específico para Averbação que compara duas datas e retorna o numero de dias de diferença
 	 * entre elas
 	 * 
 	 * @param dataLow 
@@ -126,7 +123,7 @@ public class SRHUtils {
 	 * 
 	 * @return int
 	 */
-	public static int diffData(Date dataLow, Date dataHigh) {
+	public static int dataDiffAverbacao(Date dataLow, Date dataHigh) {
 
 		GregorianCalendar startTime = new GregorianCalendar();
 		GregorianCalendar endTime = new GregorianCalendar();
@@ -146,8 +143,8 @@ public class SRHUtils {
 		int totalMes = 0;
 		int totalDias = 0;
 		
-		if (mesEnd < mesStart)
-		{
+		if (mesEnd < mesStart){
+			
 			totalAnos = (anoEnd - anoStart - 1);
 			totalMes = (mesEnd + 12 - mesStart);
 			
@@ -155,9 +152,9 @@ public class SRHUtils {
 				totalDias = (diaEnd + 30 - diaStart) + (totalMes - 1) * 30 + totalAnos * 365;
 			else
 				totalDias = (diaEnd - diaStart) + totalMes * 30 + totalAnos * 365;
-		}
-		else
-		{
+		
+		}else{
+			
 			totalAnos = (anoEnd - anoStart);
 			totalMes = (mesEnd - mesStart);
 			
@@ -165,12 +162,152 @@ public class SRHUtils {
 				totalDias = (diaEnd + 30 - diaStart) + (totalMes - 1) * 30 + totalAnos * 365;
 			else
 				totalDias = (diaEnd - diaStart) + totalMes * 30 + totalAnos * 365;
+		
+		}		
+
+		return totalDias + 1;
+	}
+	
+	
+	/**
+	 * Método para comparar duas datas e retornar o número de dias de diferença entre elas.
+	 * O cálculo foi tirado do SCP
+	 * 
+	 * @param qtdDias 	
+	 * 
+	 * @return int[]
+	 */
+	public static int dataDiffSCP(Date dataInicio, Date dataFim) {
+
+		GregorianCalendar inicio = new GregorianCalendar();
+		GregorianCalendar fim = new GregorianCalendar();
+
+		int totalDias = 0;
+
+		inicio.setTime(dataInicio);
+		fim.setTime(dataFim);
+
+		int anoInicio = inicio.get(Calendar.YEAR);
+		int anoFim = fim.get(Calendar.YEAR);
+		int mesInicio = inicio.get(Calendar.MONTH);
+		int mesFim = fim.get(Calendar.MONTH);
+		int diaInicio = inicio.get(Calendar.DAY_OF_MONTH);
+		int diaFim = fim.get(Calendar.DAY_OF_MONTH);
+
+		if (diaFim < diaInicio) {
+			diaFim += 30;
+			mesFim -= 1;
 		}
 
+		int dias = diaFim - diaInicio;
+
+		if (mesFim < mesInicio) {
+			mesFim += 12;
+			anoFim -= 1;
+		}
+
+		int meses = mesFim - mesInicio;
+
+		int anos = anoFim - anoInicio;
+
+		totalDias += anos * 365;
+		totalDias += meses * 30;
+		totalDias += dias;
+
+		return totalDias + 1;
+	}
+
+	
+	/**
+	 * Método que compara duas datas e retorna o número de anos, meses e dias entre elas.
+	 * O cálculo foi tirado do SCP
+	 * 
+	 * @param qtdDias 	
+	 * 
+	 * @return long[]
+	 */
+	public static long[] anosMesesDias(long qtdDias) {
+
+		long anos, meses, dias, restante;
+
+		anos = qtdDias / 365;
+		restante = qtdDias % 365;
+
+		if (restante >= 360) {
+			anos++;
+			meses = 0;
+			dias = 0;
+		}else{
+			meses = restante / 30;
+			dias = restante % 30;	
+		}				
+
+		long[] retorno = {anos, meses, dias};
+		
+		return retorno;
+	}
+	
+	
+	/**
+	 * Método que compara duas datas e retorna o número de anos, meses e dias entre elas.
+	 * O cálculo feito no método produz um resultado próximo ao demonstrativo da simulação do
+	 * cálculo do tempo de contribuição do INSS
+	 * 
+	 * @param dataInicio 
+	 * @param dataFim
+	 * 
+	 * @return long[]
+	 */
+	public static long[] anosMesesDias(Date dataInicio, Date dataFim) {
+
+		long anos = 0, meses = 0, dias = 0;
+		
+		GregorianCalendar inicio = new GregorianCalendar();
+		GregorianCalendar fim = new GregorianCalendar();		
+
+		inicio.setTime(dataInicio);
+		fim.setTime(dataFim);
+
+		int anoInicio = inicio.get(Calendar.YEAR);
+		int anoFim = fim.get(Calendar.YEAR);
+		int mesInicio = inicio.get(Calendar.MONTH);
+		int mesFim = fim.get(Calendar.MONTH);
+		int diaInicio = inicio.get(Calendar.DAY_OF_MONTH);
+		int diaFim = fim.get(Calendar.DAY_OF_MONTH);
 		
 
-		return totalDias;
+		if (diaFim < diaInicio) {
+			diaFim += 30;
+			mesFim -= 1;
+		}
+
+		dias = diaFim - diaInicio + 1;
+		
+		if( dias >= 30 || ( dias >= 28 && mesFim == 1 ) ){
+			dias = 0;
+			meses++;
+		}		
+		
+		if (mesFim < mesInicio) {
+			mesFim += 12;
+			anoFim -= 1;
+		}
+
+		meses += mesFim - mesInicio;
+
+		if(meses == 12){
+			meses = 0;
+			anos++;
+		}
+		
+		anos += anoFim - anoInicio;	
+		
+
+		long[] retorno = {anos, meses, dias};
+		
+		return retorno;
 	}
+	
 	
 	 /**
 	  * Formata uma data de acordo com o parâmetro passado
@@ -179,12 +316,9 @@ public class SRHUtils {
 	  * @param data
 	  * @return data formatada
 	  */
-	 public static String formataData(String formato, Date data) {
-		 
-		 SimpleDateFormat sdf = new SimpleDateFormat(formato);
-		 
-		 return sdf.format(data);
-		 
+	 public static String formataData(String formato, Date data) {		 
+		 SimpleDateFormat sdf = new SimpleDateFormat(formato);		 
+		 return sdf.format(data);		 
 	 }
 	
 	/** 

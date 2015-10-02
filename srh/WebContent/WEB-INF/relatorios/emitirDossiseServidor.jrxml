@@ -40,12 +40,23 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select f.ID, f.MATRICULA, f.NOMECOMPLETO, f.DATAEXERCICIO, p.NOMEMAE, p.RG, p.EMISSORRG, u.NOME, o.NOMENCLATURA
-from TB_FUNCIONAL f
-inner join TB_PESSOAL p on f.idpessoal = p.id
-left join TB_UF u on p.UFEMISSORRG = u.uf
-inner join TB_OCUPACAO o on f.idocupacao = o.id
+		<![CDATA[select  f.ID,
+	f.MATRICULA,
+        f.NOMECOMPLETO,
+	f.DATAEXERCICIO,
+	p.NOMEMAE,
+	p.RG,
+	p.EMISSORRG,
+	u.NOME,
+	o.NOMENCLATURA
+
+from 	TB_FUNCIONAL f
+	inner join TB_PESSOAL p on f.idpessoal = p.id
+	left join TB_UF u on p.UFEMISSORRG = u.uf
+	inner join TB_OCUPACAO o on f.idocupacao = o.id
+
 where f.ID = $P!{IDFUNCIONAL}
+
 order by f.ID]]>
 	</queryString>
 	<field name="ID" class="java.math.BigDecimal"/>

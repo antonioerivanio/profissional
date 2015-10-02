@@ -109,7 +109,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 			// validando campos da entidade
 			if (getEntidade() == null)
-
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
 			this.entidade = funcionalService.getById( this.entidade.getId() );
@@ -132,8 +131,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( dataFim != null ) {
 					// validando
 					if ( funcional.getExercicio().after(dataFim) )
-
-						throw new SRHRuntimeException("Data informada menor que a data de Exercício do Cargo atual.");
+						throw new SRHRuntimeException("A data informada é anterior a data de Exercício do Cargo atual.");
 
 					// caso data fim esteja NULA
 					if ( funcional.getSaida() == null )
@@ -148,7 +146,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				}
 				
 				// calculando dias
-				funcional.setQtdeDias(((long) SRHUtils.diffData( funcional.getExercicio(), funcional.getSaida() )));
+				funcional.setQtdeDias(((long) SRHUtils.dataDiffAverbacao( funcional.getExercicio(), funcional.getSaida() )));
 				totalDia += funcional.getQtdeDias();
 
 			}
@@ -156,35 +154,20 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			// carregando ferias em dobro
 			this.listaFerias = feriasService.findByPessoalTipo( entidade.getPessoal().getId(), 5L );
 
-			// percorrendo as ferias
+			// percorrendo as ferias em dobro
 			for (Ferias ferias : listaFerias) {
 				totalDia += ferias.getQtdeDias()*2;
 			}
 			
 
-			// carregando licenca
+			// carregando licencas especiais
 			this.listaLicenca = licencaService.findByPessoaLicencaEspecial( entidade.getPessoal().getId() );
 
-			// percorrendo as licencas
+			// percorrendo as licencas especiais
 			for (Licenca licenca : listaLicenca) {
 				if ( licenca.getLicencaEspecial().isContaremdobro() )
-					totalDia += licenca.getLicencaEspecial().getQtdedias();
-			}
-			
-			// carregando licenca
-			this.listaLicencaExcluir = licencaService.findByPessoaLicencasExcluirTempoServico(entidade.getPessoal().getId() );
-			List<Deducao> deducoes = new ArrayList<Deducao>(); 
-			// percorrendo as licencas
-			for (Licenca licenca : listaLicencaExcluir) {
-				Deducao deducao = new Deducao();
-				deducao.setInicio(licenca.getInicio());
-				deducao.setFim(licenca.getFim());
-				deducao.setQtdeDias(licenca.getDias().longValue());
-				deducao.setDescricao(licenca.getObs());
-				deducao.setDescricaoCompleta(licenca.getTipoLicenca().getDescricao());
-				deducoes.add(deducao);				
-			}
-			
+					totalDia += licenca.getLicencaEspecial().getQtdedias()*2;
+			}			
 
 			// caregando averbacao
 			this.listaAverbacao = averbacaoService.findByPessoal( entidade.getPessoal().getId() );
@@ -200,8 +183,8 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			// percorrendo os acrescimos
 			for (Acrescimo acrescimo : listaAcrescimo) {
 				totalDia += acrescimo.getQtdeDias();
-			}
-
+			}			
+			
 			// carregando deducoes
 			this.listaDeducao = deducaoService.findByPessoal( entidade.getPessoal().getId() );
 			
@@ -211,6 +194,23 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				else
 					deducao.setDescricaoCompleta("Dedução");
 			}
+			
+			// carregando licenca
+			this.listaLicencaExcluir = licencaService.findByPessoaLicencasExcluirTempoServico(entidade.getPessoal().getId() );
+			List<Deducao> deducoes = new ArrayList<Deducao>(); 
+			
+			// percorrendo as licencas
+			for (Licenca licenca : listaLicencaExcluir) {
+				Deducao deducao = new Deducao();
+				deducao.setInicio(licenca.getInicio());
+				deducao.setFim(licenca.getFim());
+				deducao.setQtdeDias(licenca.getDias().longValue());
+				deducao.setDescricao(licenca.getObs());
+				deducao.setDescricaoCompleta(licenca.getTipoLicenca().getDescricao());
+				deducoes.add(deducao);				
+			}
+			
+			
 			if (!deducoes.isEmpty()) {
 				this.listaDeducao.addAll(deducoes);
 			}
@@ -219,7 +219,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			for (Deducao deducao : listaDeducao) {
 				if(!deducao.isFalta())
 					totalDia -= deducao.getQtdeDias();
-				else if(deducao.getInicio()!=null && deducao.getInicio().before(SRHUtils.inicioDeducao())){
+				else if(deducao.getInicio()!=null && deducao.getInicio().before(SRHUtils.fimDeducaoDeFaltas())){
 					totalDia -= deducao.getQtdeDias();
 				}
 				 
@@ -261,16 +261,14 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 		try {
 
-			// validando campos da entidade
-			if ( getEntidade() == null )
-
-				throw new SRHRuntimeException("Selecione um funcionário.");
+			if( getListaFuncional().size() == 0 )
+				throw new SRHRuntimeException("Dados insuficientes para gerar o relatório.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
 
-			parametros.put("CPF", entidade.getPessoal().getCpf());
+			parametros.put("CPF", entidade.getPessoal().getCpf() );
 			parametros.put("IDFUNCIONAL", entidade.getId().toString() );
 			parametros.put("IDPESSOAL", entidade.getPessoal().getId().toString() );
 			
@@ -284,26 +282,29 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			} else {
 				parametros.put("SAIDA", new Date());
 			}
-				parametros.put("A", servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_TempoServico.jasper") );
-
-				parametros.put("B",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_FeriasDobro.jasper") );
-
-				parametros.put("C",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_LicencaEpecialDobro.jasper") );
-
-				parametros.put("D",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_averbacaoTempoServico.jasper") );
 			
-				parametros.put("E",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_AcreascimosTempoServico.jasper") );
-				
-				parametros.put("F",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_DeducoesTempoServico.jasper") );
+			parametros.put("A", servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_TempoServico.jasper") );
+
+			parametros.put("B",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_FeriasDobro.jasper") );
+
+			parametros.put("C",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_LicencaEpecialDobro.jasper") );
+
+			parametros.put("D",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_averbacaoTempoServico.jasper") );
+		
+			parametros.put("E",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_AcreascimosTempoServico.jasper") );
+			
+			parametros.put("F",  servletContext.getRealPath("//WEB-INF/relatorios/EmitirContagemTempoServico_DeducoesTempoServico.jasper") );
 
 			relatorioUtil.relatorio("EmitirContagemTempoServico.jasper", parametros, "EmitirContagemTempoServico.pdf");
 
 		} catch (SRHRuntimeException e) {			
 			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+			return "listar";
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");			
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			return "listar";
 		}
 
 		return null;
