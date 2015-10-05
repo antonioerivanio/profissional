@@ -185,21 +185,27 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				totalDia += acrescimo.getQtdeDias();
 			}			
 			
-			// carregando deducoes
-			this.listaDeducao = deducaoService.findByPessoal( entidade.getPessoal().getId() );
 			
-			for (Deducao deducao : listaDeducao) {
-				if(deducao.isFalta())
-					deducao.setDescricaoCompleta("Falta");
-				else
+			this.listaDeducao = new ArrayList<Deducao>();
+			
+			// carregando deducoes
+			List<Deducao> deducoes = deducaoService.findByPessoal( entidade.getPessoal().getId() );
+			
+			for (Deducao deducao : deducoes) {
+				if(deducao.isFalta()){
+					if(deducao.getInicio()!= null && deducao.getInicio().before(SRHUtils.fimDeducaoDeFaltas())) {
+						deducao.setDescricaoCompleta("Falta");
+						listaDeducao.add(deducao);
+					}	
+				}else{
 					deducao.setDescricaoCompleta("Dedução");
+					listaDeducao.add(deducao);
+				}
 			}
 			
 			// carregando licenca
-			this.listaLicencaExcluir = licencaService.findByPessoaLicencasExcluirTempoServico(entidade.getPessoal().getId() );
-			List<Deducao> deducoes = new ArrayList<Deducao>(); 
+			this.listaLicencaExcluir = licencaService.findByPessoaLicencasExcluirTempoServico(entidade.getPessoal().getId() );			
 			
-			// percorrendo as licencas
 			for (Licenca licenca : listaLicencaExcluir) {
 				Deducao deducao = new Deducao();
 				deducao.setInicio(licenca.getInicio());
@@ -207,35 +213,19 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				deducao.setQtdeDias(licenca.getDias().longValue());
 				deducao.setDescricao(licenca.getObs());
 				deducao.setDescricaoCompleta(licenca.getTipoLicenca().getDescricao());
-				deducoes.add(deducao);				
+				listaDeducao.add(deducao);				
 			}
 			
-			
-			if (!deducoes.isEmpty()) {
-				this.listaDeducao.addAll(deducoes);
-			}
-
 			// percorrendo as deducoes
 			for (Deducao deducao : listaDeducao) {
-				if(!deducao.isFalta())
-					totalDia -= deducao.getQtdeDias();
-				else if(deducao.getInicio()!=null && deducao.getInicio().before(SRHUtils.fimDeducaoDeFaltas())){
-					totalDia -= deducao.getQtdeDias();
-				}
-				 
+				totalDia -= deducao.getQtdeDias();							 
 			}			
 	
-			Double a = new Double(0);
-			Double m = new Double(0);
-			Double d = new Double(0);
+			long [] anosMesesDias = SRHUtils.anosMesesDiasEstatuto(totalDia); 			
 			
-			a = new Double(totalDia) / 365;
-			m = ((new Double(totalDia) / 365) - a.intValue()) * 12;
-			d = ((((new Double(totalDia) / 365) - a.intValue()) * 12) - m.intValue()) * 30;
-			
-			this.ano = a.longValue();
-			this.mes = m.longValue();
-			this.dia = d.longValue();			
+			this.ano = anosMesesDias[0];
+			this.mes = anosMesesDias[1];
+			this.dia = anosMesesDias[2];			
 			
 			passouConsultar = true;
 

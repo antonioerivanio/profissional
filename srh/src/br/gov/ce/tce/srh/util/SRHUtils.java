@@ -216,6 +216,21 @@ public class SRHUtils {
 
 		return totalDias + 1;
 	}
+	
+	public static long[] anosMesesDiasEstatuto(long qtdDias) {
+
+		long anos, meses, dias;
+
+		anos = qtdDias / 365;
+		
+		meses = (qtdDias - (365 * anos)) / 30;
+		
+		dias =  (qtdDias - (365 * anos) - (30 * meses));						
+
+		long[] retorno = {anos, meses, dias};
+		
+		return retorno;
+	}
 
 	
 	/**

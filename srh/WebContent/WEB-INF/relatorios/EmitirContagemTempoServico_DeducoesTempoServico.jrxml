@@ -28,7 +28,7 @@ from
 	inner join tb_pessoal p on d.idpessoal = p.id
 where
 	p.id = $P{IDPESSOAL}
-
+	and (falta <> 1 or (falta = 1 and d.data_inicio <= TO_DATE('15/12/1998', 'dd/mm/yyyy')))
 union
 
 select
