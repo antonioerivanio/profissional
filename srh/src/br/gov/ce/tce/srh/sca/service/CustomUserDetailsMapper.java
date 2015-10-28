@@ -35,7 +35,7 @@ public class CustomUserDetailsMapper extends LdapUserDetailsMapper {
 			Usuario usuario;
 
 			// pegando o usuario
-			List<Usuario> lista = entityManager.createNamedQuery("Usuario.findByUsername", Usuario.class).setParameter("username", username.toUpperCase()).getResultList();
+			List<Usuario> lista = entityManager.createNamedQuery("Usuario.findByUsername", Usuario.class).setParameter("username", username).getResultList();
 
 			// verificando a lista de usuarios
 			if (lista == null || lista.size() == 0)

@@ -92,7 +92,7 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 			// finalizando a referencia funcional
 			ReferenciaFuncional referencia = referenciaFuncionalService.getAtivoByFuncional( entidade.getId() );
 			if ( referencia == null )
-				throw new SRHRuntimeException("Ocorreu algum erro ao salvar, a referencia do cargo não foi encontrada. Operação cancelada.");
+				throw new SRHRuntimeException("Ocorreu algum erro ao salvar, a referência do cargo não foi encontrada. Operação cancelada.");
 			referencia.setFim( entidade.getSaida() );
 			referencia.setDoeAto( entidade.getDoeSaida() );
 			

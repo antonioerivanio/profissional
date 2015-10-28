@@ -215,8 +215,7 @@
 		manager-dn="ocomon@tce.ce.gov.br" manager-password="TCESTI@admin@servicedesk1" /> -->
 		
 		
-	<beans:bean id="ldapActiveDirectoryAuthProvider" 
-            class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+	<beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
         <beans:constructor-arg value="tce.ce.gov.br" />
         <beans:constructor-arg value="ldap://172.26.18.25:389/"/> 
         <beans:property name="userDetailsContextMapper" ref="customUserDetailsMapper"/>

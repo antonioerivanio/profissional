@@ -62,15 +62,25 @@ public class AuthenticationService {
 			if (!usuario.isEnabled()) {
 				return "Usuário não está ativo!";
 			}
-
+			
 			// Verificando se a senha esta expirada
 			if (!usuario.isAccountNonExpired()) {
-				return "Senha expirada!";
+				return "Conta expirada!";
 			}
 
 			// verificando se o usuario tem alguma permissao
 			if (usuario.getAuthorities().size() == 0) {
 				return "Usuário não tem permissão de acesso!";
+			}
+			
+			// verificando se o usuario esta bloqueado
+			if (!usuario.isAccountNonLocked()) {
+				return "Usuário bloqueado!";
+			}
+			
+			// verificando se a senha expirou
+			if (!usuario.isCredentialsNonExpired()) {
+				return "Senha expirada!";
 			}
 
 			// verificando autenticacao

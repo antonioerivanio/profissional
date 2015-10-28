@@ -112,6 +112,11 @@ public class FeriasServiceImpl implements FeriasService {
 	public List<Ferias> findByPessoal(Long idPessoal) {
 		return dao.findByPessoal(idPessoal);
 	}
+	
+	@Override
+	public Ferias findMaisRecenteByPessoal(Long idPessoal) {
+		return dao.findMaisRecenteByPessoal(idPessoal);
+	}
 
 
 	@Override

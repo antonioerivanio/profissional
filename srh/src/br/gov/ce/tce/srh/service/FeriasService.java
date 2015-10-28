@@ -20,5 +20,6 @@ public interface FeriasService {
 	public List<Ferias> findByPessoalTipo(Long idPessoal, Long tipo);
 	
 	public void calculaQtdeDias(Ferias entidade) throws SRHRuntimeException;
+	public Ferias findMaisRecenteByPessoal(Long idPessoal);
 	
 }

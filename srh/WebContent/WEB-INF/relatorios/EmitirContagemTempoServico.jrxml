@@ -107,7 +107,7 @@ order by f.ID]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Contagem de Tempo de Serviço/Contribuição]]></text>
+				<text><![CDATA[Contagem de Tempo de Contribuição]]></text>
 			</staticText>
 			<image>
 				<reportElement x="1" y="14" width="572" height="65"/>

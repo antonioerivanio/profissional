@@ -111,7 +111,7 @@ ORDER BY F.DATAEXERCICIO DESC]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="191" y="4" width="322" height="18" forecolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMENCLATURA} + " - " + $F{SIMBOLO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMENCLATURA} + ( $F{SIMBOLO} == null || $F{SIMBOLO}.equals("") ? "" :" - " + $F{SIMBOLO} )]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="5" y="49" width="56" height="16"/>

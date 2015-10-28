@@ -42,7 +42,7 @@ order by a.data_inicio desc]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Acréscimo de Tempo de Serviço]]></text>
+				<text><![CDATA[Acréscimo de Tempo de Contribuição]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1"/>

@@ -128,6 +128,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private Boolean liberarQtdQuintos = false;
 	private Boolean exibirPrevSuperSec = false;
 	private Boolean exibirOrgaoEhSalario = false;
+	private Boolean digitarMatricula = false;
 
 
 	// combos
@@ -225,6 +226,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 			if ( leiIncorporacao != null )
 				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );
+			
+			if ( !digitarMatricula )
+				entidade.setMatricula(null);
 
 			nomeacaoFuncionalService.nomear( entidade );			
 
@@ -787,10 +791,12 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private void limpar() {
 
 		this.alterar = false;
+		this.digitarMatricula = false;
 
 		this.pessoa = new Long(0);
 		this.nome = null;
-
+		entidade = new Funcional();
+		
 		// CBOs
 		this.cbo1 = null;
 		this.cbo2 = null;
@@ -878,6 +884,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public Boolean getLiberarQtdQuintos() {return liberarQtdQuintos;}
 	public Boolean getExibirPrevSuperSec() {return exibirPrevSuperSec;}
 	public Boolean getExibirOrgaoEhSalario() {return exibirOrgaoEhSalario;}
+
+	public Boolean getDigitarMatricula() {return digitarMatricula;}
+	public void setDigitarMatricula(Boolean digitarMatricula) {this.digitarMatricula = digitarMatricula;}	
 
 
 }

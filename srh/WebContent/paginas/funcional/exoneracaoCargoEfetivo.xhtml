@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui:composition template="../../WEB-INF/templates/page.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -31,6 +31,17 @@
 				alert('Digite pelo menos 3 caracteres para a pesquisa');
 			}
 		}
+		
+		function verificaFeriasPosterior(){			
+			
+			var existeFeriasPosterior = document.getElementById("form:existeFeriasPosterior").value;			
+						
+			if (existeFeriasPosterior == 'true'){
+				return confirm('Existe lanÃ§amento de FÃ©rias com data final posterior ao Ãºltimo dia trabalhado informado. Deseja prosseguir a gravaÃ§Ã£o?');	
+			}
+			
+		}
+		
 		</script>
 
 		<div class="titulo-pagina">
@@ -71,7 +82,7 @@
 				</div>
 
 				<div class="input-box box-100">
-					<label for="">Mãe</label>
+					<label for="">MÃ£e</label>
 					<div class="conteiner">
 						<h:inputText id="mae" 
 									 name="mae"
@@ -128,12 +139,12 @@
 			<!-- Exoneracao -->
 			<fieldset>
 
-				<legend>Exoneração</legend>
+				<legend>ExoneraÃ§Ã£o</legend>
 
 				<br />
 
 				<div class="select-box box-25">
-					<label for="">Tipo Publicação *</label>
+					<label for="">Tipo PublicaÃ§Ã£o *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoPublicacao"
 										 converter="entityConverter"
@@ -149,7 +160,7 @@
 				</div>
 
 				<div class="input-box box-10">
-					<label for="">Publicação *</label>
+					<label for="">PublicaÃ§Ã£o *</label>
 					<div class="conteiner">
 						<h:inputText id="publicacao" 
 									 name="publicacao"
@@ -177,19 +188,27 @@
 				</div>
 
 				<div class="input-box box-12">
-					<label for="">Último dia trabalhado *</label>
+					<label for="">Ãšltimo dia trabalhado *</label>
 					<div class="conteiner">
 						<h:inputText id="dataFinal" 
 									 name="dataFinal"
 									 converter="dateConverter" 
 									 styleClass="maskData"
 									 value="#{exoneracaoFormBean.funcional.saida}" 
-									 maxlength="10" />
+									 maxlength="10">
+							<a4j:support id="dataFinalChange" 
+										 event="onblur" 
+										 actionListener="#{exoneracaoFormBean.verificaFeriasPosterior()}" 
+										 ajaxSingle="true" 
+										 reRender="existeFeriasPosterior" />									 
+						</h:inputText>
+						
+						<h:inputHidden id="existeFeriasPosterior" value="#{exoneracaoFormBean.existeFeriasPosterior}" />
 					</div>
 				</div>
 
 				<div class="textarea-box box-100">
-					<label for="">Observação da Saída *</label>
+					<label for="">ObservaÃ§Ã£o da SaÃ­da *</label>
 					<div class="conteiner">
 						<h:inputTextarea id="observacaoSaida"
 										 value="#{exoneracaoFormBean.funcional.descricaoSaida}"
@@ -199,7 +218,11 @@
 
 			</fieldset>
 
-			<h:commandButton action="#{exoneracaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
+			<h:commandButton action="#{exoneracaoFormBean.salvar}" 
+							 value="Salvar" 
+							 styleClass="bt-padrao fr"
+							 onclick="return verificaFeriasPosterior();"/>
+			
 			<a href="/srh/paginas/funcional/exoneracaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
 
 		</h:form>

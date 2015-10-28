@@ -35,7 +35,7 @@
 
 			function desbloquearCampoMatricula()
 			{
-					var checkMatricula =  document.getElementById('form:digitarMatricula').checked;
+					var checkMatricula = document.getElementById('form:digitarMatricula').checked;
 					if(checkMatricula){
 						document.getElementById('form:matriculaFuncional').disabled = false;
 						document.getElementById('form:matriculaFuncional').focus();
@@ -161,6 +161,7 @@
 						<h:selectBooleanCheckbox
 							id="digitarMatricula"
 							disabled="#{nomeacaoServidorFormBean.alterar or not nomeacaoServidorFormBean.exibirTodosOsCampos}"
+							value="#{nomeacaoServidorFormBean.digitarMatricula}"
 							onclick="desbloquearCampoMatricula()">
 						</h:selectBooleanCheckbox>
 					</div>
@@ -172,7 +173,6 @@
 				<div class="conteiner">
 					<h:inputText id="matriculaFuncional" 
 								 styleClass="maskMatricula"
-								 maxlength="5"
 								 disabled="#{nomeacaoServidorFormBean.alterar or not nomeacaoServidorFormBean.exibirTodosOsCampos}" 
 								 value="#{nomeacaoServidorFormBean.entidade.matricula}" >
 					</h:inputText>

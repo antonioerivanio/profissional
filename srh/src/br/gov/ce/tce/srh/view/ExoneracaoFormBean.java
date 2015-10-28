@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Ferias;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.ExoneracaoFuncionalService;
+import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.service.TipoMovimentoService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
@@ -43,6 +45,9 @@ public class ExoneracaoFormBean implements Serializable {
 	
 	@Autowired
 	private TipoPublicacaoService tipoPublicacaoService;
+	
+	@Autowired
+	private FeriasService feriasService;
 
 	// entidades das telas
 	private Funcional funcional;
@@ -51,6 +56,8 @@ public class ExoneracaoFormBean implements Serializable {
 	// combos
 	List<TipoPublicacao> comboTipoPublicacao;
 	List<TipoMovimento> comboTipoMovimento;
+	
+	private boolean existeFeriasPosterior = false;
 
 
 
@@ -71,6 +78,9 @@ public class ExoneracaoFormBean implements Serializable {
 			if ( this.representacao != null)
 				representacaoFuncionalService.exonerar(representacao);
 			
+			this.funcional = null;			
+			this.representacao = null;
+			this.existeFeriasPosterior = false;
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -81,11 +91,6 @@ public class ExoneracaoFormBean implements Serializable {
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}finally{
-			
-			this.funcional = null;			
-			this.representacao = null;
-			
 		}
 
 		return null;
@@ -132,6 +137,28 @@ public class ExoneracaoFormBean implements Serializable {
 
 		return this.comboTipoMovimento;
 	}
+	
+	
+	public void verificaFeriasPosterior(){
+		
+		try {
+			
+			this.existeFeriasPosterior = false;
+			
+			if(funcional.getSaida() != null){
+			
+				Ferias ferias = feriasService.findMaisRecenteByPessoal(funcional.getPessoal().getId());					
+				
+				if(ferias.getFim().after(funcional.getSaida()))
+					this.existeFeriasPosterior = true;
+					
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.existeFeriasPosterior = false;
+		}		
+		
+	}
 
 
 	/**
@@ -142,5 +169,10 @@ public class ExoneracaoFormBean implements Serializable {
 
 	public RepresentacaoFuncional getRepresentacao() {return representacao;}
 	public void setRepresentacao(RepresentacaoFuncional representacao) {this.representacao = representacao;}
+
+	public boolean isExisteFeriasPosterior() {return existeFeriasPosterior;}
+	public void setExisteFeriasPosterior(boolean existeFeriasPosterior) {this.existeFeriasPosterior = existeFeriasPosterior;}
+	
+	
 
 }
