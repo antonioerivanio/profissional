@@ -31,6 +31,10 @@
 					document.getElementById('form:profissional').checked = true;
 				}
 			}
+			
+			function desmarcaSomenteCargaHoraria(){
+				document.getElementById('form:somenteCargaHoraria').checked = false;				
+			}
 		</script>
 		
 		<style>
@@ -74,7 +78,7 @@
 									 maxlength="6" 
 									 styleClass="maskMatricula"
 									 value="#{cursoServidorListBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" ajaxSingle="true" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -88,7 +92,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 value="#{cursoServidorListBean.cpf}" >
-							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" ajaxSingle="true" />
 						</h:inputText>
 					</div>
 				</div>
@@ -98,7 +102,8 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa"
 									 name="nomeCompletoPessoa"
-									 value="#{cursoServidorListBean.nome}" />
+									 value="#{cursoServidorListBean.nome}"									
+									 onchange="desmarcaSomenteCargaHoraria()" />
 					</div>
 				</div>
 				
@@ -179,7 +184,7 @@
 			        <rich:toolTip id="tooltip" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
 				            <span style="white-space:nowrap">
 				                Marcar essa opção somente para relatório consolidado <br />
-				                com cargas horárias atingidas por cada servidor do TCE.
+				                com cargas horárias atingidas por cada servidor do TCE. 
 				            </span>
 			      	</rich:toolTip>
 			      	<div class="conteiner">
@@ -187,6 +192,11 @@
 							<h:selectBooleanCheckbox
 								id="somenteCargaHoraria"
 								value="#{cursoServidorListBean.somenteCargaHoraria}">
+									<a4j:support id="somenteCargaHorariaClick" 
+									 event="onclick"
+									 action="#{cursoServidorListBean.somenteCargaHorariaAction}"
+									 ajaxSingle="true" 
+									 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller" />
 							</h:selectBooleanCheckbox>
 						</div>
 					</div>

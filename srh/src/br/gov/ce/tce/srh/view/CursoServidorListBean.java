@@ -91,7 +91,7 @@ public class CursoServidorListBean implements Serializable {
 			
 			// validando campos da entidade
 			if ( getEntidade() == null || getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");		
+				throw new SRHRuntimeException("Para realizar uma consulta, selecione um funcionário.");		
 			
 			
 			count = cursoServidorService.count(getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio, fim);
@@ -140,7 +140,7 @@ public class CursoServidorListBean implements Serializable {
 
 			// validando campos da entidade
 			if (  !somenteCargaHoraria && (getEntidade() == null || getEntidade().getPessoal() == null) )
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Para gerar o Relatório de Curso por Servidor, selecione um funcionário. Para gerar o Relatório de Carga Horária Cursada por Servidor, marque a opção Somente Carga Horária.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			
@@ -224,7 +224,7 @@ public class CursoServidorListBean implements Serializable {
 	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
-		if ( !this.matricula.equals(matricula) ) {
+		if ( !matricula.equals("") && !matricula.equals(this.matricula) ) {
 			this.matricula = matricula;
 
 			try {
@@ -233,7 +233,8 @@ public class CursoServidorListBean implements Serializable {
 				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
-					this.cpf = getEntidade().getPessoal().getCpf();	
+					this.cpf = getEntidade().getPessoal().getCpf();
+					this.somenteCargaHoraria = false;
 				} else {
 					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
 				}
@@ -248,7 +249,7 @@ public class CursoServidorListBean implements Serializable {
 
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
-		if ( !this.cpf.equals(cpf) ) {
+		if ( !cpf.equals("") && !cpf.equals(this.cpf) ) {
 			this.cpf = cpf;
 
 			try {
@@ -257,7 +258,8 @@ public class CursoServidorListBean implements Serializable {
 								
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
-					this.matricula = getEntidade().getMatricula();	
+					this.matricula = getEntidade().getMatricula();
+					this.somenteCargaHoraria = false;
 				} else {
 					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
 				}
@@ -304,7 +306,17 @@ public class CursoServidorListBean implements Serializable {
 	public void setProfissional(boolean profissional) {	this.profissional = profissional;}
 	
 	public boolean isSomenteCargaHoraria() {return this.somenteCargaHoraria;}
-	public void setSomenteCargaHoraria(boolean somenteCargaHoraria) {	this.somenteCargaHoraria = somenteCargaHoraria;}
+	public void setSomenteCargaHoraria(boolean somenteCargaHoraria) {this.somenteCargaHoraria = somenteCargaHoraria;}
+	
+	public void somenteCargaHorariaAction() {	
+		this.matricula = null;
+		this.cpf = null;
+		this.nome = null;	
+		this.totalCargaHoraria = null;
+		this.labelTotalCargaHoraria = null;
+		limparListas();
+		flagRegistroInicial = 0;
+	}
 
 	
 	public void setForm(HtmlForm form) {this.form = form;}
