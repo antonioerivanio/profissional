@@ -82,6 +82,8 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		 * 
 		 */
 		validarLimitePessoas(entidade);
+		
+//		TODO Atualizar funcional somente em caso de Titular ou Designado
 		Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
 		funcional.setIdRepresentacaoCargo(entidade.getRepresentacaoCargo().getId());
 		funcionalDAO.salvar(funcional);

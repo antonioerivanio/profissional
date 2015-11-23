@@ -42,8 +42,7 @@
 									 name="matricula"
 									 maxlength="6"
 									 styleClass="maskMatricula"
-									 value="#{nomeacaoServidorListBean.matricula}"
-									 disabled="#{not nomeacaoServidorListBean.exibirTodosOsCampos}" >
+									 value="#{nomeacaoServidorListBean.matricula}" >
 	            			<a4j:support id="matriculaChange" event="onchange" reRender="cpf, nomeCompletoPessoa, messages" ajaxSingle="true" />
 	        			</h:inputText>
 					</div>
@@ -57,8 +56,7 @@
 									 maxlength="14"
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
-									 value="#{nomeacaoServidorListBean.cpf}"
-									 disabled="#{not nomeacaoServidorListBean.exibirTodosOsCampos}" >
+									 value="#{nomeacaoServidorListBean.cpf}" >
 							<a4j:support id="cpfChange" event="onchange" reRender="matricula, nomeCompletoPessoa, messages" ajaxSingle="true" />
 						</h:inputText>
 					</div>
@@ -69,8 +67,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa"
 									 name="nomeCompletoPessoa"
-									 value="#{nomeacaoServidorListBean.nome}"
-									 disabled="#{not nomeacaoServidorListBean.exibirTodosOsCampos}" />
+									 value="#{nomeacaoServidorListBean.nome}" />
 					</div>
 				</div>
 

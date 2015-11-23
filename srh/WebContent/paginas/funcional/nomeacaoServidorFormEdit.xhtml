@@ -19,19 +19,7 @@
 				} else {
 					alert('Digite pelo menos 3 caracteres para a pesquisa');
 				}
-			}
-
-			function desbloquearCampoMatricula()
-			{
-					var checkMatricula =  document.getElementById('form:digitarMatricula').checked;
-					if(checkMatricula){
-						document.getElementById('form:matriculaFuncional').disabled = false;
-						document.getElementById('form:matriculaFuncional').focus();
-					}else{
-						document.getElementById('form:matriculaFuncional').disabled = true;
-						document.getElementById('form:matriculaFuncional').value = "";
-					}
-			}
+			}			
 
 			function sugerirDataExercicio()
 			{

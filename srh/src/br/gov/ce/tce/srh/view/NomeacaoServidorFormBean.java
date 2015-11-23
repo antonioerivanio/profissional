@@ -160,7 +160,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	 */
 	public String prepareIncluir() {
 		limpar();
-
+		
 		setEntidade( new Funcional() );
 		getEntidade().setProporcionalidade( 100l );
 		getEntidade().setQtdQuintos( 0l );
@@ -180,10 +180,10 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public String prepareAlterar() {
 
 		try {
-
 			limpar();
-			this.alterar = true;
-
+			
+			this.alterar = true;			
+			
 			this.entidade = funcionalService.getById( this.entidade.getId() );
 
 			// dados pessoais
@@ -225,15 +225,11 @@ public class NomeacaoServidorFormBean implements Serializable {
 		try {
 
 			if ( leiIncorporacao != null )
-				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );
-			
-			if ( !digitarMatricula )
-				entidade.setMatricula(null);
+				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );			
 
 			nomeacaoFuncionalService.nomear( entidade );			
 
-			limpar();
-
+			
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
 
@@ -786,7 +782,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	
 
 	/**
-	 * Limpar form
+	 * Limpar form incluir
 	 */
 	private void limpar() {
 
@@ -795,7 +791,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 		this.pessoa = new Long(0);
 		this.nome = null;
-		entidade = new Funcional();
+		
 		
 		// CBOs
 		this.cbo1 = null;
@@ -825,7 +821,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 		this.comboCBO4 = null;
 		this.comboLeiIncorporacao = null;
 		this.comboOrgaoOrigem = null;
-	}
+	}	
 	
 	public String limpaTela() {
 		limpar();
@@ -886,7 +882,12 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public Boolean getExibirOrgaoEhSalario() {return exibirOrgaoEhSalario;}
 
 	public Boolean getDigitarMatricula() {return digitarMatricula;}
-	public void setDigitarMatricula(Boolean digitarMatricula) {this.digitarMatricula = digitarMatricula;}	
+	public void setDigitarMatricula(Boolean digitarMatricula) {
+		this.digitarMatricula = digitarMatricula;
+		if(!digitarMatricula){
+			entidade.setMatricula(new String());
+		}
+	}	
 
 
 }
