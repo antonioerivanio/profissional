@@ -39,12 +39,13 @@
 						<f:selectItem itemLabel="TODOS" itemValue="0" id="item0" />
 						<f:selectItem itemLabel="Membros" itemValue="1" id="item1" />
 						<f:selectItem itemLabel="Servidores Ativos" itemValue="2" id="item2" />
-						<f:selectItem itemLabel="Servidores Inativos" itemValue="3" id="item3" />
-						<f:selectItem itemLabel="Ocupantes de Cargo Comissionado" itemValue="4" id="item4" />
-						<f:selectItem itemLabel="Ocupantes Somente Cargo Comissionado" itemValue="5" id="item5" />						
-						<f:selectItem itemLabel="Estagiários Nível Superior" itemValue="6" id="item6" />
-						<f:selectItem itemLabel="Estagiários Nível Médio" itemValue="7" id="item7" />
-						<f:selectItem itemLabel="Cessão de Servidor Sem Nenhuma Remuneração" itemValue="8" id="item8" />											
+						<f:selectItem itemLabel="Servidores Efetivos" itemValue="3" id="item3" />
+						<f:selectItem itemLabel="Servidores Inativos" itemValue="4" id="item4" />
+						<f:selectItem itemLabel="Ocupantes de Cargo Comissionado" itemValue="5" id="item5" />
+						<f:selectItem itemLabel="Ocupantes Somente Cargo Comissionado" itemValue="6" id="item6" />						
+						<f:selectItem itemLabel="Estagiários Nível Superior" itemValue="7" id="item7" />
+						<f:selectItem itemLabel="Estagiários Nível Médio" itemValue="8" id="item8" />
+						<f:selectItem itemLabel="Cessão de Servidor Sem Nenhuma Remuneração" itemValue="9" id="item9" />											
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -90,9 +91,10 @@
 									headerClass="headerTable" 
 									styleClass="columnsTable"
 									rendered="#{servidorBean.vinculo eq 0 
-												or servidorBean.vinculo eq 2 
-												or servidorBean.vinculo eq 3
-												or servidorBean.vinculo eq 4}">
+												or servidorBean.vinculo eq 2
+												or servidorBean.vinculo eq 3 
+												or servidorBean.vinculo eq 4
+												or servidorBean.vinculo eq 5}">
 						
 						<f:facet name="header">Referencia</f:facet>
 						
@@ -104,8 +106,8 @@
 									styleClass="columnsTable"
 									rendered="#{servidorBean.vinculo eq 0 
 												or servidorBean.vinculo eq 2 
-												or servidorBean.vinculo eq 4 
-												or servidorBean.vinculo eq 5}">
+												or servidorBean.vinculo eq 5 
+												or servidorBean.vinculo eq 6}">
 						
 						<f:facet name="header">Representacao</f:facet>
 						
@@ -117,8 +119,8 @@
 									styleClass="columnsTable"
 									rendered="#{servidorBean.vinculo eq 0 
 												or servidorBean.vinculo eq 2 
-												or servidorBean.vinculo eq 4 
-												or servidorBean.vinculo eq 5}">
+												or servidorBean.vinculo eq 5 
+												or servidorBean.vinculo eq 6}">
 						
 						<f:facet name="header">Simbolo</f:facet>
 						

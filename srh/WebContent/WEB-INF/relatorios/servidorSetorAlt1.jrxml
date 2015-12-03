@@ -134,9 +134,9 @@ $P!{FILTRO}]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["VÍNCULO: " +
 ( $P{VINCULO} == 1 ? "MEMBROS" :
-    ( $P{VINCULO} == 6 ? "ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO" :
-        ( $P{VINCULO} == 7 ? "ESTAGIÁRIOS NÍVEL MÉDIO" :
-            ( $P{VINCULO} == 8 ? "CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO" : "" )) ) )]]></textFieldExpression>
+    ( $P{VINCULO} == 7 ? "ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO" :
+        ( $P{VINCULO} == 8 ? "ESTAGIÁRIOS NÍVEL MÉDIO" :
+            ( $P{VINCULO} == 9 ? "CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO" : "" )) ) )]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="109" width="554" height="1"/>

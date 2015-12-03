@@ -92,42 +92,48 @@ public class ServidorDAOImpl implements ServidorDAO {
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");
 			sql.append("AND O.SITUACAO < 3 ");
-			sql.append("AND (TOC.ID = 2 OR TOC.ID = 3) ");
+			sql.append("AND TOC.ID IN (2, 3, 6) ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-		}else if(vinculo == 3){ // SERVIDORES INATIVOS
-			sql.append("AND F.STATUS = 5 ");
-			sql.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-		}else if(vinculo == 4){ // OCUPANTES DE CARGO COMICIONADO
+		}else if(vinculo == 3){ // SERVIDORES EFETIVOS
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");
+			sql.append("AND O.SITUACAO < 3 ");
+			sql.append("AND (TOC.ID = 2) ");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+		}else if(vinculo == 4){ // SERVIDORES INATIVOS
+			sql.append("AND F.STATUS = 5 ");
+			sql.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+		}else if(vinculo == 5){ // OCUPANTES DE CARGO COMICIONADO
+			sql.append("AND F.DATASAIDA IS NULL ");
+			sql.append("AND F.STATUS = 1 ");					
 			sql.append("AND RF.ID IS NOT NULL ");
 			sql.append("AND O.SITUACAO < 3 ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-		}else if(vinculo == 5){ // OCUPANTES SOMENTE CARGO COMICIONADO
+		}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMICIONADO
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");
 			sql.append("AND RF.ID IS NOT NULL ");
 			sql.append("AND TOC.ID = 6 ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-		}else if(vinculo == 6){ // ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO
+		}else if(vinculo == 7){ // ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 2 ");
 			sql.append("AND TOC.ID = 5 ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
-		}else if(vinculo == 7){ // ESTAGIÁRIOS NÍVEL MÉDIO
+		}else if(vinculo == 8){ // ESTAGIÁRIOS NÍVEL MÉDIO
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 2 ");
 			sql.append("AND TOC.ID = 4 ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
-		}else if(vinculo == 8){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
+		}else if(vinculo == 9){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
 			sql.append("AND F.DATASAIDA IS NULL ");
-			sql.append("AND O.SITUACAO < 3 ");
+			sql.append("AND O.SITUACAO < 3 ");	
 			sql.append("AND TOC.ID = 8 ");
 			sql.append("ORDER BY F.NOMECOMPLETO");
 		}else{
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS < 3 ");
-			sql.append("AND O.SITUACAO < 3 ");
+			sql.append("AND O.SITUACAO < 3 ");				 
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
 		}
 		

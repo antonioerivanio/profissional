@@ -83,10 +83,14 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		 */
 		validarLimitePessoas(entidade);
 		
-//		TODO Atualizar funcional somente em caso de Titular ou Designado
-		Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
-		funcional.setIdRepresentacaoCargo(entidade.getRepresentacaoCargo().getId());
-		funcionalDAO.salvar(funcional);
+		
+		if(atualizaIdRepresentacaoCargo(entidade)){
+
+			Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
+			funcional.setIdRepresentacaoCargo(entidade.getRepresentacaoCargo().getId());
+			funcionalDAO.salvar(funcional);
+		
+		}
 		
 		// persistindo
 		dao.salvar(entidade);
@@ -96,6 +100,16 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	@Override
 	@Transactional
 	public void excluir(RepresentacaoFuncional entidade) {
+		
+		if(entidade.getFim() == null && atualizaIdRepresentacaoCargo(entidade)){
+			
+			Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
+			funcional.setIdRepresentacaoCargo(null);
+			funcionalDAO.salvar(funcional);
+		
+		}
+		
+		
 		dao.excluir(entidade);
 	}
 
@@ -111,12 +125,15 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		 */	
 		validarExoneracao(entidade);
 
-		// Alteração 14/08/2013
-		Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
-		funcional.setIdRepresentacaoCargo(null);
-		funcionalDAO.salvar(funcional);
+		if(atualizaIdRepresentacaoCargo(entidade)){
+			
+			Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
+			funcional.setIdRepresentacaoCargo(null);
+			funcionalDAO.salvar(funcional);
 		
-		// persistindo
+		}
+		
+		
 		entidade.setAtivo(false);
 		dao.salvar(entidade);
 		
@@ -338,6 +355,35 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		// validando a data final
 		if (entidade.getFim() == null)
 			throw new SRHRuntimeException("A Data Final é obrigatória.");
+
+	}
+	
+	
+	/**
+	 * Regra de Negocio:
+	 * 
+	 * 1. Ao nomear ou exonerar 1-TITULAR, o campo IDREPRESENTACAOCARGO da TB_FUNCIONAL deverá ser atualizado.
+	 * 2. Ao nomear ou exonerar 2-SUBSTITUTO, não alterar o campo IDREPRESENTACAOCARGO da TB_FUNCIONAL;
+	 * 3. Ao nomear ou exonerar 3-DESIGNADO, atualizar o campo IDREPRESENTACAOCARGO da TB_FUNCIONAL se quem estiver sendo nomeado/exonerado não for titular de outro cargo;
+	 *	
+	 * 
+	 * @param entidade
+	 * 
+	 */
+	private boolean atualizaIdRepresentacaoCargo(RepresentacaoFuncional entidade) {
+
+		if(entidade.getTipoNomeacao() == 1){ // TITULAR
+			return true;		
+		}else if(entidade.getTipoNomeacao() == 2){ // SUBSTITUICAO
+			return false;
+		}else if(entidade.getTipoNomeacao() == 3){ // DESIGNADO
+			RepresentacaoFuncional representacao = dao.getByFuncionalTipo( entidade.getFuncional().getId(), 1L ); // TITULAR
+			if(representacao == null){
+				return true;
+			}			
+		}
+		
+		return false;
 
 	}
 

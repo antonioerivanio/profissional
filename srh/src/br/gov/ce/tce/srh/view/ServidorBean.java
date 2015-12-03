@@ -183,34 +183,40 @@ public class ServidorBean  implements Serializable  {
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND O.SITUACAO < 3 ");
-				filtro.append("AND (TOC.ID = 2 OR TOC.ID = 3) ");
+				filtro.append("AND TOC.ID IN (2, 3, 6) ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-			}else if(vinculo == 3){ // SERVIDORES INATIVOS
+			}else if(vinculo == 3){ // SERVIDORES EFETIVOS
+				filtro.append("AND F.DATASAIDA IS NULL ");
+				filtro.append("AND F.STATUS = 1 ");
+				filtro.append("AND O.SITUACAO < 3 ");
+				filtro.append("AND (TOC.ID = 2) ");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+			}else if(vinculo == 4){ // SERVIDORES INATIVOS
 				filtro.append("AND F.STATUS = 5 ");
 				filtro.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-			}else if(vinculo == 4){ // OCUPANTES DE CARGO COMICIONADO
+			}else if(vinculo == 5){ // OCUPANTES DE CARGO COMICIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");					
 				filtro.append("AND RF.ID IS NOT NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-			}else if(vinculo == 5){ // OCUPANTES SOMENTE CARGO COMICIONADO
+			}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMICIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND RF.ID IS NOT NULL ");
 				filtro.append("AND TOC.ID = 6 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-			}else if(vinculo == 6){ // ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO
+			}else if(vinculo == 7){ // ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 5 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
-			}else if(vinculo == 7){ // ESTAGIÁRIOS NÍVEL MÉDIO
+			}else if(vinculo == 8){ // ESTAGIÁRIOS NÍVEL MÉDIO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 4 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
-			}else if(vinculo == 8){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
+			}else if(vinculo == 9){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");	
 				filtro.append("AND TOC.ID = 8 ");
@@ -225,11 +231,11 @@ public class ServidorBean  implements Serializable  {
 			parametros.put("FILTRO", filtro.toString());
 			parametros.put("VINCULO", vinculo);
 				
-			if(vinculo == 1 || vinculo >= 6)
+			if(vinculo == 1 || vinculo >= 7)
 				relatorioUtil.relatorio("servidorSetorAlt1.jasper", parametros, "servidorSetor.pdf");
-			else if(vinculo == 3)
+			else if(vinculo == 4)
 				relatorioUtil.relatorio("servidorSetorAlt2.jasper", parametros, "servidorSetor.pdf");
-			else if(vinculo == 5)
+			else if(vinculo == 6)
 				relatorioUtil.relatorio("servidorSetorAlt3.jasper", parametros, "servidorSetor.pdf");
 			else
 				relatorioUtil.relatorio("servidorSetor.jasper", parametros, "servidorSetor.pdf");

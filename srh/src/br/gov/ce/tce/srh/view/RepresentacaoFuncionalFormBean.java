@@ -201,7 +201,10 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 			if ( this.entidade.getSetor() != null && this.comboRepresentacaoCargo == null ) {
 
 				this.comboRepresentacaoCargo = new ArrayList<RepresentacaoCargo>();
-				for ( RepresentacaoSetor reprSetor : representacaoSetorService.findBySetorAtivo( getEntidade().getSetor().getId(), true )) {
+				
+				List<RepresentacaoSetor> representacaoSetorList = representacaoSetorService.findBySetorAtivo( getEntidade().getSetor().getId(), true );
+				
+				for ( RepresentacaoSetor reprSetor : representacaoSetorList) {
 					this.comboRepresentacaoCargo.add( reprSetor.getRepresentacaoCargo() );
 				}
 			}

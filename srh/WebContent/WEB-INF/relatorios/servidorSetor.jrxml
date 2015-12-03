@@ -155,8 +155,9 @@ $P!{FILTRO}]]>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["VÍNCULO: " +
 ( $P{VINCULO} == 2 ? "SERVIDORES ATIVOS" :
-    ( $P{VINCULO} == 4 ? "OCUPANTES DE CARGO COMISSIONADO" :
-        "TODOS" ) )]]></textFieldExpression>
+    ( $P{VINCULO} == 3 ? "SERVIDORES EFETIVOS" :
+         ( $P{VINCULO} == 5 ? "OCUPANTES DE CARGO COMISSIONADO" :
+            "TODOS" ) ) )]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="109" width="554" height="1"/>

@@ -82,7 +82,7 @@ $P!{FILTRO}]]>
 					<font size="12" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["VÍNCULO: " +
-( $P{VINCULO} == 3 ? "SERVIDORES INATIVOS" :
+( $P{VINCULO} == 4 ? "SERVIDORES INATIVOS" :
     "" )]]></textFieldExpression>
 			</textField>
 			<rectangle>
