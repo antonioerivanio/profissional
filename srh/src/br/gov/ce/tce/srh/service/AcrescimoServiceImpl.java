@@ -31,18 +31,16 @@ public class AcrescimoServiceImpl implements AcrescimoService {
 		validaDados(entidade);
 
 
-		// calculado quantidade de dias
-		entidade.setQtdeDias((long) SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()));
-
 		
-		/*
-		 * Regra:
-		 * 
-		 * Validando Acrescimos existentes.
-		 * 
-		 */
-		verificandoAcrescimosExistentes(entidade);
+		if(entidade.getInicio() != null && entidade.getFim() != null) {
+			
+			// calculado quantidade de dias
+			entidade.setQtdeDias((long) SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()));
 
+			verificandoAcrescimosExistentes(entidade);
+	
+		}
+		
 
 	    // persistindo
 		dao.salvar(entidade);
@@ -93,17 +91,17 @@ public class AcrescimoServiceImpl implements AcrescimoService {
 		// validando o servidor
 		if (entidade.getPessoal() == null)
 			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
-
-		// validar data inicio
-		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("A Data Inicial é obrigatório.");
-
+				
+		// validando data inicial
+		if ( entidade.getInicio() == null && entidade.getFim() != null )
+			throw new SRHRuntimeException("Informe a Data Inicial.");
+		
 		// validando data final
-		if ( entidade.getFim() == null )
-			throw new SRHRuntimeException("A Data Final é obrigatório.");
+		if ( entidade.getInicio() != null && entidade.getFim() == null )
+			throw new SRHRuntimeException("Informe a Data Final.");		
 
 		// validando se o período inicial é menor que o final
-		if ( entidade.getInicio().after(entidade.getFim() ) )
+		if (entidade.getInicio() != null && entidade.getFim() != null && entidade.getInicio().after(entidade.getFim() ) )
 			throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");
 
 		// validando qtde dias
@@ -140,24 +138,25 @@ public class AcrescimoServiceImpl implements AcrescimoService {
 				continue;
 			}
 
-			// validando periodo de acrescimo inicial 
-			if( acrescimoExistente.getInicio().after( entidade.getInicio() )
-					&& acrescimoExistente.getInicio().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Já existe um Acrescimo cadastrado nesse período de tempo.");
+			if(acrescimoExistente.getInicio() != null && acrescimoExistente.getFim() != null){
+				// validando periodo de acrescimo inicial 
+				if( acrescimoExistente.getInicio().after( entidade.getInicio() )
+						&& acrescimoExistente.getInicio().before( entidade.getFim() ) ) {
+					throw new SRHRuntimeException("Já existe um Acréscimo cadastrado nesse período de tempo.");
+				}
+	
+				// validando periodo de acrescimo final
+				if( acrescimoExistente.getFim().after( entidade.getInicio() )
+						&& acrescimoExistente.getFim().before( entidade.getFim() ) ) {
+					throw new SRHRuntimeException("Já existe um Acréscimo cadastrado nesse período de tempo.");
+				}
+	
+				// validando periodo de acrescimo no meio
+				if( acrescimoExistente.getInicio().before( entidade.getInicio() )
+						&& acrescimoExistente.getFim().after( entidade.getFim() ) ) {
+					throw new SRHRuntimeException("Já existe um Acréscimo cadastrado nesse período de tempo.");
+				}
 			}
-
-			// validando periodo de acrescimo final
-			if( acrescimoExistente.getFim().after( entidade.getInicio() )
-					&& acrescimoExistente.getFim().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Já existe um Acrescimo cadastrado nesse período de tempo.");
-			}
-
-			// validando periodo de acrescimo no meio
-			if( acrescimoExistente.getInicio().before( entidade.getInicio() )
-					&& acrescimoExistente.getFim().after( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Já existe um Acrescimo cadastrado nesse período de tempo.");
-			}
-
 		}
 	}
 

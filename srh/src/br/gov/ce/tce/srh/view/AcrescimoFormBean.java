@@ -176,11 +176,14 @@ public class AcrescimoFormBean implements Serializable {
 
 		this.inicio = inicio;
 
-		try {
-
-			if ( this.inicio != null && this.fim != null)
-				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicio, this.fim ));
-
+		try {			
+			if (this.inicio != null){
+				
+				entidade.setQtdeDias(null);
+				
+				if (this.fim != null)
+					entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicio, this.fim ));
+			}
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
@@ -196,11 +199,15 @@ public class AcrescimoFormBean implements Serializable {
 
 		this.fim = fim; 
 
-		try {
-
-			if (this.inicio != null && this.fim != null )
-				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicio, this.fim ) );
-
+		try {			
+			if (this.fim != null){
+				
+				entidade.setQtdeDias(null);
+				
+				if (this.inicio != null){
+					entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicio, this.fim ) );
+				}
+			}
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
@@ -211,6 +218,12 @@ public class AcrescimoFormBean implements Serializable {
 
 	}
 
+	
+	public void apagaDatas(){
+		this.inicio = null;
+		this.fim = null;
+	}
+	
 	public boolean isBloquearDatas() {return bloquearDatas;}
 	public boolean isAlterar() {return alterar;}
 	
