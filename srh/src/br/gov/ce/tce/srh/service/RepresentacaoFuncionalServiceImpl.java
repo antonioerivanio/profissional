@@ -101,7 +101,10 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	@Transactional
 	public void excluir(RepresentacaoFuncional entidade) {
 		
-		if(entidade.getFim() == null && atualizaIdRepresentacaoCargo(entidade)){
+		if ( entidade.getFim() != null )
+			throw new SRHRuntimeException("A representação não pode ser excluída pois já foi exonerada.");
+		
+		if ( atualizaIdRepresentacaoCargo(entidade) ){
 			
 			Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
 			funcional.setIdRepresentacaoCargo(null);
