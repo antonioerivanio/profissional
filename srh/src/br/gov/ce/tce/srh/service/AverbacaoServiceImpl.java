@@ -124,6 +124,10 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 		if (entidade.getEsfera() == null || entidade.getEsfera() == 0l )
 			throw new SRHRuntimeException("A esfera é obrigatória.");
 
+		// validando subtipo
+		if (entidade.getSubtipo() == null || entidade.getSubtipo().getId() == 0l )
+			throw new SRHRuntimeException("O subtipo é obrigatório.");
+		
 		// validando previdencia
 		if (entidade.getPrevidencia() == null || entidade.getPrevidencia() == 0l )
 			throw new SRHRuntimeException("A previdência é obrigatória.");

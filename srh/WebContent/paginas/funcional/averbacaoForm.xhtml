@@ -53,7 +53,7 @@
 				<h:inputHidden id="alterar" disabled="true" value="#{averbacaoFormBean.alterar}" />
 
 				<div class="input-box box-10">
-					<label for="">Matricula</label>
+					<label for="">Matrícula</label>
 					<div class="conteiner">
 						<h:inputText id="matricula" 
 									 name="matricula"
@@ -170,7 +170,7 @@
 				</div>
 
 				<div class="select-box box-35">
-					<label for="">Municípios *</label>
+					<label for="">Município *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="municipio"
 										 converter="entityConverter"
@@ -227,20 +227,45 @@
 					<div class="conteiner">
 						<h:inputText id="qtdeDias" disabled="true" value="#{averbacaoFormBean.entidade.qtdeDias}" />  
 					</div>
-				</div>
-
-				<div class="select-box box-20">
+				</div>				
+				
+				<div class="select-box box-35">
 					<label for="">Esfera *</label>
 					<div class="conteiner">
-						<h:selectOneMenu id="esfera" 
-										 value="#{averbacaoFormBean.entidade.esfera}" > 
+						<h:selectOneMenu id="esfera"
+										 value="#{averbacaoFormBean.entidade.esfera}" >
 							<f:selectItem id="selecioneEsfera" itemLabel="Selecione..." itemValue="" />
-							<f:selectItem id="federal" itemLabel="Federal" itemValue="1" />
-							<f:selectItem id="estadual" itemLabel="Estadual" itemValue="2" />
-							<f:selectItem id="municipal" itemLabel="Municipal" itemValue="3" />
-							<f:selectItem id="privado" itemLabel="Privado" itemValue="4" />
-						</h:selectOneMenu>    
+							<f:selectItems id="comboEsfera" 
+										   value="#{averbacaoFormBean.comboEsfera}"
+										   var="esfera"
+										   itemValue="#{esfera.id}"
+										   itemLabel="#{esfera.descricao}" />
+	
+						    <a4j:support id="carregaSubtipo"
+						  				 event="onchange" 
+						  				 ajaxSingle="true"	
+						  				 focus="subtipo"
+						  				 action="#{averbacaoFormBean.carregaSubtipo}"
+						  				 reRender="subtipo"/>
+							
+						</h:selectOneMenu>
 					</div>
+				</div>
+				
+				<div class="select-box box-35">
+					<label for="">Subtipo *</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="subtipo"
+										 converter="entityConverter"
+										 value="#{averbacaoFormBean.entidade.subtipo}">
+							<f:selectItem id="selecioneSubtipo" itemLabel="Selecione..." itemValue="" />
+							<f:selectItems id="comboSubtipo" 
+										   value="#{averbacaoFormBean.comboSubtipo}"
+										   var="subtipo"
+										   itemValue="#{subtipo}"
+										   itemLabel="#{subtipo.descricao}" />
+						</h:selectOneMenu>
+					</div>			
 				</div>
 
 				<div class="radios-group box-50">
@@ -254,7 +279,7 @@
 						</h:selectOneRadio>
 						</div>
 					</div>
-				</div>
+				</div>					
 
 				<div class="textarea-box box-100">
 					<label for="">Descrição *</label>
@@ -269,7 +294,7 @@
 
 			<h:commandButton action="#{averbacaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/funcional/averbacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/funcional/averbacaoForm.faces" class="bt-voltar fr mg-right-10">Listar</a>
+			<a href="/srh/paginas/funcional/averbacaoForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
 

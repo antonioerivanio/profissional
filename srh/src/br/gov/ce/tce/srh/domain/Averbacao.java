@@ -63,6 +63,9 @@ public class Averbacao extends BasicEntity<Long> implements Serializable {
     @Column(name = "DESCRICAO", length=200)
     private String descricao;
 
+    @ManyToOne
+	@JoinColumn(name = "SUBTIPOTEMPOSERVICO")
+	private SubtipoTempoServico subtipo;
 
     public Pessoal getPessoal() {return pessoal;}
 	public void setPessoal(Pessoal pessoal) {this.pessoal = pessoal;}
@@ -93,7 +96,10 @@ public class Averbacao extends BasicEntity<Long> implements Serializable {
 
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
-
+	
+	public SubtipoTempoServico getSubtipo() {return subtipo;}
+	public void setSubtipo(SubtipoTempoServico subtipoTempoServico) {this.subtipo = subtipoTempoServico;}
+	
 	@Override
 	public Long getId() {return this.id;}
 	

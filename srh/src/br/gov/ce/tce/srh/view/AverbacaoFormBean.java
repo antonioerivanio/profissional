@@ -12,11 +12,15 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.Averbacao;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Municipio;
+import br.gov.ce.tce.srh.domain.SubtipoTempoServico;
+import br.gov.ce.tce.srh.domain.TipoTempoServico;
 import br.gov.ce.tce.srh.domain.Uf;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AverbacaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.MunicipioService;
+import br.gov.ce.tce.srh.service.SubtipoTempoServicoService;
+import br.gov.ce.tce.srh.service.TipoTempoServicoService;
 import br.gov.ce.tce.srh.service.UfService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -47,6 +51,13 @@ public class AverbacaoFormBean implements Serializable {
 	@Autowired
 	private UfService ufService;
 	
+	@Autowired
+	private TipoTempoServicoService tipoTempoServicoService;
+	
+	@Autowired
+	private SubtipoTempoServicoService subtipoTempoServicoService;	
+	
+	
 
 	//endidade das telas
 	private Averbacao entidade = new Averbacao();
@@ -64,6 +75,8 @@ public class AverbacaoFormBean implements Serializable {
 	// combos
 	private List<Uf> comboUf;
 	private List<Municipio> comboMunicipio;
+	private List<TipoTempoServico> comboEsfera;
+	private List<SubtipoTempoServico> comboSubtipo;
 
 
 
@@ -183,6 +196,46 @@ public class AverbacaoFormBean implements Serializable {
 	}
 
 
+	public List<TipoTempoServico> getComboEsfera() {
+
+		try {
+
+			if ( this.comboEsfera == null)
+				this.comboEsfera = tipoTempoServicoService.findAll();
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar o campo Esfera. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return this.comboEsfera;
+	}
+	
+	
+	public void carregaSubtipo() {
+		this.comboSubtipo = null;
+		getComboSubtipo();			
+	}
+
+
+	public List<SubtipoTempoServico> getComboSubtipo() {
+
+		try {
+
+			if ( this.entidade.getEsfera() != null && this.comboSubtipo == null ) {
+
+				this.comboSubtipo = subtipoTempoServicoService.findByTipoTempoServico(this.entidade.getEsfera());
+				
+			}
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar o campo Subtipo. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return this.comboSubtipo;
+	}
+	
 	/**
 	 * Limpar form
 	 */
@@ -198,6 +251,12 @@ public class AverbacaoFormBean implements Serializable {
 		this.inicio = null;
 		this.fim = null;
 		this.bloquearDatas = false;
+		
+		this.comboUf = null;
+		this.comboMunicipio = null;
+		this.comboEsfera = null;
+		this.comboSubtipo = null;
+
 	}
 
 
@@ -241,7 +300,7 @@ public class AverbacaoFormBean implements Serializable {
 		try {
 
 			if ( this.inicio != null && this.fim != null)
-				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicio, this.fim ));
+				entidade.setQtdeDias( (long) SRHUtils.dataDiffAverbacao( this.inicio, this.fim ));
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -261,7 +320,7 @@ public class AverbacaoFormBean implements Serializable {
 		try {
 
 			if (this.inicio != null && this.fim != null )
-				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicio, this.fim ) );
+				entidade.setQtdeDias( (long) SRHUtils.dataDiffAverbacao( this.inicio, this.fim ) );
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
