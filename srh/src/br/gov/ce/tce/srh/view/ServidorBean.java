@@ -184,7 +184,8 @@ public class ServidorBean  implements Serializable  {
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("AND TOC.ID IN (2, 3, 6) ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+//				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, RC.SIMBOLO, F.NOMECOMPLETO");
 			}else if(vinculo == 3){ // SERVIDORES EFETIVOS
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
@@ -194,13 +195,13 @@ public class ServidorBean  implements Serializable  {
 			}else if(vinculo == 4){ // SERVIDORES INATIVOS
 				filtro.append("AND F.STATUS = 5 ");
 				filtro.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-			}else if(vinculo == 5){ // OCUPANTES DE CARGO COMICIONADO
+			}else if(vinculo == 5){ // OCUPANTES DE CARGO COMISSIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");					
 				filtro.append("AND RF.ID IS NOT NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-			}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMICIONADO
+			}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMISSIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND RF.ID IS NOT NULL ");

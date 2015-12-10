@@ -86,7 +86,7 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 			entidade.getSituacao().setId(entidade.getTipoMovimentoSaida().getIdSituacao());			
 
 		
-        //Alteração 06/06/2013 - verificando se o servidor é de cargo apenas comicionado ( verificar se a ocupação é um cargo isolado)
+        //Alteração 06/06/2013 - verificando se o servidor é de cargo apenas comissionado ( verificar se a ocupação é um cargo isolado)
 		Ocupacao ocupacao =  entidade.getOcupacao();
 		if(!ocupacao.isCargoIsolado()){
 			// finalizando a referencia funcional

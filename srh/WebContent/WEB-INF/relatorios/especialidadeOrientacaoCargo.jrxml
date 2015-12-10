@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="servidorSetor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="120"/>
+	<property name="ireport.x" value="31"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="BACK" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
@@ -13,7 +13,7 @@
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT o.nomenclatura cargo, e.area area, e.descricao especialidade, oc.descricao orientacao, f.nome nome
+		<![CDATA[SELECT DISTINCT o.nomenclatura cargo, e.area area, e.descricao especialidade, oc.descricao orientacao, f.nome nome
 FROM tb_especialidadecargo ec
 INNER JOIN tb_ocupacao o on o.id = ec.idocupacao
 INNER JOIN tb_especialidade e on e.id = ec.idespecialidade
@@ -28,16 +28,16 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 	<field name="ESPECIALIDADE" class="java.lang.String"/>
 	<field name="ORIENTACAO" class="java.lang.String"/>
 	<field name="NOME" class="java.lang.String"/>
-	<group name="cargo" isStartNewPage="true" isReprintHeaderOnEachPage="true" keepTogether="true">
+	<group name="cargo" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{CARGO}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
+			<band height="19" splitType="Stretch">
 				<textField isBlankWhenNull="true">
 					<reportElement x="0" y="2" width="478" height="16" printWhenGroupChanges="cargo"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["CARGO: " + $F{CARGO}.toUpperCase()]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["CARGO: " + $F{CARGO}.toUpperCase()]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="0" y="18" width="554" height="1"/>
@@ -47,21 +47,21 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["TOTAL: " + $V{cargo_COUNT}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["TOTAL: " + $V{cargo_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 	</group>
-	<group name="area" isReprintHeaderOnEachPage="true" keepTogether="true">
+	<group name="area" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{AREA}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
+			<band height="19" splitType="Stretch">
 				<textField isBlankWhenNull="true">
 					<reportElement x="20" y="2" width="458" height="16" printWhenGroupChanges="area"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["ÁREA: " + $F{AREA}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["ÁREA: " + $F{AREA}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="20" y="18" width="534" height="1"/>
@@ -71,21 +71,21 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["TOTAL: " + $V{area_COUNT}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["TOTAL: " + $V{area_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 	</group>
-	<group name="especialidade" isReprintHeaderOnEachPage="true" keepTogether="true">
+	<group name="especialidade" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{ESPECIALIDADE}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
+			<band height="19" splitType="Stretch">
 				<textField isBlankWhenNull="true">
 					<reportElement x="40" y="2" width="438" height="16" printWhenGroupChanges="especialidade"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["ESPECIALIDADE: " + $F{ESPECIALIDADE}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["ESPECIALIDADE: " + $F{ESPECIALIDADE}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="40" y="18" width="514" height="1"/>
@@ -95,21 +95,21 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["TOTAL: " + $V{especialidade_COUNT}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["TOTAL: " + $V{especialidade_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 	</group>
-	<group name="orientacao" isReprintHeaderOnEachPage="true" keepTogether="true">
+	<group name="orientacao" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{ORIENTACAO}]]></groupExpression>
 		<groupHeader>
-			<band height="41">
+			<band height="40" splitType="Stretch">
 				<textField isBlankWhenNull="true">
 					<reportElement x="60" y="2" width="418" height="16" printWhenGroupChanges="orientacao"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["ORIENTAÇÃO: " + $F{ORIENTACAO}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["ORIENTAÇÃO: " + $F{ORIENTACAO}]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement x="80" y="22" width="474" height="18" backcolor="#195297"/>
@@ -127,20 +127,14 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["TOTAL: " + $V{orientacao_COUNT}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["TOTAL: " + $V{orientacao_COUNT}]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="60" y="18" width="494" height="1"/>
 				</line>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band/>
-		</groupFooter>
 	</group>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<title>
 		<band height="80">
 			<rectangle>
@@ -148,15 +142,15 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 			</rectangle>
 			<image>
 				<reportElement x="1" y="14" width="554" height="65"/>
-				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="390" y="-11" width="168" height="54"/>
-				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="5" y="25" width="161" height="36"/>
-				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="165" y="41" width="390" height="20" forecolor="#0F2E52"/>
@@ -167,12 +161,6 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 			</staticText>
 		</band>
 	</title>
-	<pageHeader>
-		<band/>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<rectangle>
@@ -180,33 +168,30 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
-			<textField>
-				<reportElement x="80" y="0" width="475" height="16"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="80" y="0" width="475" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
 				<box leftPadding="2"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOME}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="2" width="554" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="103" y="3" width="448" height="16"/>
+				<reportElement x="0" y="3" width="554" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="534" y="3" width="21" height="16"/>
+				<reportElement key="textField-5" x="534" y="2" width="21" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-4" x="478" y="2" width="57" height="16" forecolor="#000000"/>
@@ -217,7 +202,7 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
@@ -228,11 +213,8 @@ ORDER BY o.nomenclatura, e.area, e.descricao, oc.descricao, f.nome]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>

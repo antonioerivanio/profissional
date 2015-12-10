@@ -93,7 +93,8 @@ public class ServidorDAOImpl implements ServidorDAO {
 			sql.append("AND F.STATUS = 1 ");
 			sql.append("AND O.SITUACAO < 3 ");
 			sql.append("AND TOC.ID IN (2, 3, 6) ");
-			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+//			sql.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+			sql.append("ORDER BY S.NRORDEMSETORFOLHA, RC.SIMBOLO, F.NOMECOMPLETO");
 		}else if(vinculo == 3){ // SERVIDORES EFETIVOS
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");
@@ -103,13 +104,13 @@ public class ServidorDAOImpl implements ServidorDAO {
 		}else if(vinculo == 4){ // SERVIDORES INATIVOS
 			sql.append("AND F.STATUS = 5 ");
 			sql.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-		}else if(vinculo == 5){ // OCUPANTES DE CARGO COMICIONADO
+		}else if(vinculo == 5){ // OCUPANTES DE CARGO COMISSIONADO
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");					
 			sql.append("AND RF.ID IS NOT NULL ");
 			sql.append("AND O.SITUACAO < 3 ");
 			sql.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-		}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMICIONADO
+		}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMISSIONADO
 			sql.append("AND F.DATASAIDA IS NULL ");
 			sql.append("AND F.STATUS = 1 ");
 			sql.append("AND RF.ID IS NOT NULL ");
