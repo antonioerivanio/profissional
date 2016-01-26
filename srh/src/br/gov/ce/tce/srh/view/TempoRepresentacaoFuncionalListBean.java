@@ -79,9 +79,16 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 
 		try {
 
-			if ( this.entidade == null ) {
+			if ( this.matricula.equals("") || 
+				 this.cpf.equals("") ||
+				 this.nome.equals("")) {
 				throw new SRHRuntimeException("Selecione um funcionário.");
 			}			
+			
+			if ( this.entidade == null ) {
+				throw new SRHRuntimeException("Servidor não possui Representação.");
+			}	
+			
 			
 			lista = new ArrayList<RepresentacaoFuncional>();
 			if(cargo !=null){
@@ -174,19 +181,20 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 
 			try {				
 				
-				List<RepresentacaoFuncional> representacaoFuncionals =  representacaoFuncionalService.getByMatricula(matricula);
-				setEntidade(representacaoFuncionals.get(representacaoFuncionals.size()-1));				
+				List<RepresentacaoFuncional> representacaoFuncionais =  representacaoFuncionalService.getByMatricula(matricula);
+				
+				if(representacaoFuncionais.size() > 0){
+					setEntidade(representacaoFuncionais.get(representacaoFuncionais.size()-1));
+				}								
 				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.cpf = getEntidade().getFuncional().getPessoal().getCpf();
 					this.cargos = ocupacaoService.findByPessoa(getEntidade().getFuncional().getPessoal().getId());
-				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");					
-				}
+				} 
 
 			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matrícula. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
 
@@ -199,16 +207,17 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 			this.cpf = cpf;
 
 			try {
+				List<RepresentacaoFuncional> representacaoFuncionais =  representacaoFuncionalService.getByCpf(cpf);
 				
-				setEntidade( representacaoFuncionalService.getByCpf(cpf) );				
+				if(representacaoFuncionais.size() > 0){
+					setEntidade(representacaoFuncionais.get(representacaoFuncionais.size()-1));
+				}
 				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.matricula = getEntidade().getFuncional().getMatricula();	
 					this.cargos = ocupacaoService.findByPessoa(getEntidade().getFuncional().getPessoal().getId());
-				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
-				}
+				} 
 
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");

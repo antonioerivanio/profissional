@@ -18,7 +18,7 @@ public interface RepresentacaoFuncionalService {
 
 	public RepresentacaoFuncional getByid(Long id);
 	public List<RepresentacaoFuncional> getByMatricula(String matricula);
-	public RepresentacaoFuncional getByCpf(String cpf);
+	public List<RepresentacaoFuncional> getByCpf(String cpf);
 	
 	public List<RepresentacaoFuncional> findByNome(String nome);
 	public List<RepresentacaoFuncional> findByNomeSetor(String nome, Long idSetor);

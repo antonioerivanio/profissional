@@ -168,7 +168,7 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 
 	@Override
-	public RepresentacaoFuncional getByCpf(String cpf) {
+	public List<RepresentacaoFuncional> getByCpf(String cpf) {
 		return dao.getByCpf(cpf);
 	}
 

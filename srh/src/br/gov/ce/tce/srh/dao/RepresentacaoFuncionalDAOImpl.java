@@ -93,8 +93,7 @@ public class RepresentacaoFuncionalDAOImpl implements RepresentacaoFuncionalDAO 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<RepresentacaoFuncional> getByMatricula(String matricula) {
-		Query query = entityManager
-				.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.funcional.matricula = :matricula ORDER BY r.id DESC");
+		Query query = entityManager.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.funcional.matricula = :matricula ORDER BY r.id DESC");
 		query.setParameter("matricula", matricula);
 		return query.getResultList();
 
@@ -113,12 +112,12 @@ public class RepresentacaoFuncionalDAOImpl implements RepresentacaoFuncionalDAO 
 		}
 	}
 
-
+	@SuppressWarnings("unchecked")
 	@Override
-	public RepresentacaoFuncional getByCpf(String cpf) {
+	public List<RepresentacaoFuncional> getByCpf(String cpf) {
 		try {
 			Query query = entityManager.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.funcional.pessoal.cpf = '" + SRHUtils.removerMascara( cpf ) + "'");
-			return (RepresentacaoFuncional) query.getResultList().get(0);
+			return query.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}

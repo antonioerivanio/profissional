@@ -15,7 +15,7 @@ public interface RepresentacaoFuncionalDAO {
 
 	public RepresentacaoFuncional getById(Long id);
 	public List<RepresentacaoFuncional> getByMatricula(String matricula);
-	public RepresentacaoFuncional getByCpf(String cpf);
+	public List<RepresentacaoFuncional> getByCpf(String cpf);
 	public RepresentacaoFuncional getByFuncionalTipo(Long funcional, Long tipoNomeacao);
 
 	public List<RepresentacaoFuncional> findByNome(String nome);
