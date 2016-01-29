@@ -49,6 +49,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 	// entidades das telas
 	private ReferenciaFuncional entidade = new ReferenciaFuncional();
 	private Boolean exibirTodosOsCampos = true;
+	private Boolean permiteSalvar = true;
 
 	//Combos
 	private List<ClasseReferencia> comboClasseReferencia;
@@ -68,11 +69,12 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 
 			limpar();
 
-			// exibir todos os campos?
-			if ( this.entidade.getFim() == null ) {
+			if ( this.entidade.getClasseReferencia() == this.entidade.getFuncional().getClasseReferencia() ) {
 				exibirTodosOsCampos = true;
+				permiteSalvar = true;
 				getEntidade().setTipoMovimento(null);
 				getEntidade().setInicio(null);
+				getEntidade().setFim(null);
 				getEntidade().setTipoPublicacao(null);
 				getEntidade().setDataAto(null);
 				getEntidade().setDoeAto(null);
@@ -132,9 +134,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 
     				if ( exibirTodosOsCampos == true ) {
 
-    					//if ( entidade.getReferencia() > this.entidade.getClasseReferencia().getReferencia() ) {
-    						this.comboClasseReferencia.add(entidade);
-    					//}
+    					this.comboClasseReferencia.add(entidade);
 
     				} else {
     					this.comboClasseReferencia.add(entidade);
@@ -204,9 +204,8 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 	 * Limpar form
 	 */
 	private void limpar() {
-		//TODO
-		this.exibirTodosOsCampos = true;
-		
+		exibirTodosOsCampos = true;
+		permiteSalvar = false;
 		comboClasseReferencia = null;
 		comboTipoMovimento = null;
 		comboTipoPublicacao = null;
@@ -221,5 +220,11 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 
 	public Boolean getExibirTodosOsCampos() {return exibirTodosOsCampos;}
 	public void setExibirTodosOsCampos(Boolean exibirTodosOsCampos) {this.exibirTodosOsCampos = exibirTodosOsCampos;}
+
+
+	public Boolean getPermiteSalvar() {return permiteSalvar;}
+	public void setPermiteSalvar(Boolean permiteSalvar) {this.permiteSalvar = permiteSalvar;}
+	
+	
 
 }

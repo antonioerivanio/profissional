@@ -52,45 +52,54 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 	@Transactional
 	public void progressao(ReferenciaFuncional entidade) throws SRHRuntimeException {
 
+		ReferenciaFuncional referenciaAnterior = getById( entidade.getId() );
+		
+		if ( referenciaAnterior.getClasseReferencia() != referenciaAnterior.getFuncional().getClasseReferencia() ){
+			throw new SRHRuntimeException("Operação cancelada. Cadastre a nova Progressão a partir da última Progressão Funcional do Servidor.");
+		}
+		
 		// validando dados obrigatorios.
-		validar(entidade);
-
+		validar(entidade);		
 
 		/*
 		 * Regra: 
-		 * Não será permitido alterar uma nova progressão com data Fim preenchidos e que o Tipo Movimento != 3 
+		 * Não será permitido cadastrar uma nova progressão com data Fim preenchida, exceto o ultimo registro
+		 * para aposentados (STATUS = 5) com o tipo de movimento descompressão (tipoMovimento = 25)
 		 * 
 		 */
 		entidade.setTipoMovimento( tipoMovimentoService.getById( entidade.getTipoMovimento().getId() ));
-		if ( entidade.getFim() != null || entidade.getTipoMovimento().getTipo() != 3 )
-			throw new SRHRuntimeException("Não é permitido alterar a Progressão Funcional que contenha data Fim preenchida ou Movimento do tipo 3.");
-
+		if ( referenciaAnterior.getFim() != null ) { 
+			if( (referenciaAnterior.getFuncional().getTipoMovimentoSaida() != null && referenciaAnterior.getFuncional().getTipoMovimentoSaida().getId() != 26)
+				|| entidade.getFuncional().getStatus() != 5 
+				|| entidade.getTipoMovimento().getTipo() != 3 
+				|| entidade.getTipoMovimento().getId() != 25 ){
+			
+					throw new SRHRuntimeException("Não é permitido realizar o cadastro após o fechamento da última Progressão, exceto Descompressão para aposentados.");
+			}
+		}
+		
+		
+		/*
+		 * Regra 
+		 * Se a referencia anterior não tiver data fim, a data inicio tem que ser maior que da ultima data inicio.
+		 * Se a referencia anterior tiver data fim ( só no caso de descompressão ), a data inicio tem que ser maior que da ultima data fim.
+		 */
+		if(referenciaAnterior.getFim() == null){			
+			if ( !entidade.getInicio().after( referenciaAnterior.getInicio() ))
+				throw new SRHRuntimeException("O Início deve ser posterior ao início da última Progressão Funcional.");						
+		} else if ( !entidade.getInicio().after( referenciaAnterior.getFim() ) ){
+				throw new SRHRuntimeException("O Início deve ser posterior ao fim da última Progressão Funcional.");		
+		}
+		
 		
 		/*
 		 * Regra: 
-		 * Quando incluir uma progressão funcional, o registro anterior será automaticamente encerrado,
-		 * pois o Sistem deverá atualizar a data de fim que está nula, para a data de início-1 que está sendo
-		 * inserido o novo registro.
-		 *  
+		 * Quando incluir uma progressão funcional o registro anterior será automaticamente encerrado ou a data fim sobrescrita, no caso de descompressão,
+		 * para a um dia antes do início da nova Progressão
 		 */
-		ReferenciaFuncional referenciaFuncional = getById( entidade.getId() ); // findFimIsNull(entidade.getFuncional().getId());
-
-
-		/*
-		 * Regra 
-		 * A data inicio tem que ser maior que da ultima data inicio
-		 *
-		 */
-		if ( !entidade.getInicio().after( referenciaFuncional.getInicio() ))
-			throw new SRHRuntimeException("O Início deve ser maior que o início da última Progressão Funcional.");
-
-
-		// fechando a ult referencia
-		if( referenciaFuncional != null ) {
-			referenciaFuncional.setFim(SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getInicio(), -1));
-			dao.salvar(referenciaFuncional);
-		}
-
+		referenciaAnterior.setFim(SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getInicio(), -1));
+		dao.salvar(referenciaAnterior);
+				
 		// persistindo
 		entidade.setId(null);
 		dao.salvar(entidade);
@@ -187,7 +196,7 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 
 		// validando a data inicio
 		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("O Início é obrigatório.");
+			throw new SRHRuntimeException("O Início é obrigatório.");		
 
 		// validando a descricao
 		if ( entidade.getDescricao() == null || entidade.getDescricao().equals("") )
