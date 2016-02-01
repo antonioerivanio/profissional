@@ -95,7 +95,7 @@ public class FeriasDAOImpl implements FeriasDAO {
 	
 	@Override
 	public Ferias findMaisRecenteByPessoal(Long idPessoal) {
-		Query query = entityManager.createQuery("SELECT f FROM Ferias f WHERE f.funcional.pessoal.id = :pessoal order by f.fim desc");
+		Query query = entityManager.createQuery("SELECT f FROM Ferias f WHERE f.funcional.pessoal.id = :pessoal AND f.fim IS NOT NULL ORDER BY f.fim DESC");
 		query.setParameter("pessoal", idPessoal);
 		query.setMaxResults(1);
 		return (Ferias) query.getSingleResult();
