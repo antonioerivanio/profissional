@@ -126,7 +126,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 		// validando a data fim
 		if (entidade.getDataFim() != null) {
 			if (entidade.getDataInicio().after(entidade.getDataFim())) {
-				throw new SRHRuntimeException("A data de inicio deve ser menor que a data fim.");
+				throw new SRHRuntimeException("A data fim da lotação deve ser posterior a data início.");
 			}
 		}
 

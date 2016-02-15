@@ -59,28 +59,30 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		 */
 		if ( entidade.getFim() != null )
 			throw new SRHRuntimeException("Alteração não permitida para esta representação, pois não está ativa.");
+		
+		
+		/*
+		 * Regra
+		 * 
+		 * So nao pode ter representacao quem for do tipo ocupacao Membro.
+		 * 
+		 */
+		if(entidade.getId() == null 
+				&& entidade.getFuncional().getOcupacao() != null 
+				&& entidade.getFuncional().getOcupacao().getTipoOcupacao() != null 
+				&& entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() == 1l ) {
+			throw new SRHRuntimeException("Não é permitido representação para servidores do tipo Membro.");
+		}
 
 
 //		// validando o inicio da representacao conforme a funcional
 //		if ( entidade.getInicio().before( entidade.getFuncional().getExercicio()) )
 //			throw new SRHRuntimeException("O Inicio da Vigência deve ser maior que a data de exercicio do servidor.");
 
+		
+		validarRepresentacaoAnterior(entidade);		
 
-		/*
-		 * Regra
-		 * 
-		 * Não serão permitidas mais de uma representação por tipo.
-		 * 
-		 */
-		validarRepresentacaoAnteriorAtiva(entidade);
-
-
-		/*
-		 * Regra
-		 * 
-		 * Validar limite de pessoas
-		 * 
-		 */
+		
 		validarLimitePessoas(entidade);
 		
 		
@@ -245,7 +247,7 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 		// validando inicio vigencia
 		if (entidade.getInicio() == null)
-			throw new SRHRuntimeException("O Inicio da Vigência é obrigatório.");
+			throw new SRHRuntimeException("O Início da Vigência é obrigatório.");
 
 		// validando o tipo de publicacao
 		if (entidade.getTipoPublicacaoNomeacao() == null)
@@ -253,7 +255,7 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 		// validando data publicacao
 		if (entidade.getDoeInicio() == null)
-			throw new SRHRuntimeException("A Data de Publicação Inicio da Vigência é obrigatória.");
+			throw new SRHRuntimeException("A Data de Publicação Início da Vigência é obrigatória.");
 
 		// validando tipo nomeação
 		if (entidade.getTipoNomeacao() == null || entidade.getTipoNomeacao().equals(0l))
@@ -265,13 +267,13 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	/**
 	 * Regra de Negocio:
 	 * 
-	 *  So pode ter 1 representacao ativa por tipo. 
-	 *  So nao pode ter representacao que for do tipo ocupacao Membro.
+	 *  So pode ter 1 representacao ativa por tipo.
+	 *  O início da vigência da nova representação deve ser posterior ao último dia trabalhado da representação anterior. 
 	 *  
 	 * @param entidade
 	 * 
 	 */
-	private void validarRepresentacaoAnteriorAtiva(RepresentacaoFuncional entidade) {
+	private void validarRepresentacaoAnterior(RepresentacaoFuncional entidade) {
 
 		if ( entidade.getId() == null ) {
 			
@@ -279,16 +281,15 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 			RepresentacaoFuncional representacao = dao.getByFuncionalTipo( entidade.getFuncional().getId(), entidade.getTipoNomeacao() );
 			if ( representacao != null )
 				throw new SRHRuntimeException("Não será permitido inserir nova representação, pois este servidor possui outra ativa com o mesmo tipo.");
-		
-		
-			// verificando se é membro
-			if(entidade.getFuncional().getOcupacao() != null && entidade.getFuncional().getOcupacao().getTipoOcupacao() != null
-					&& entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() != null){
-				if ( entidade.getFuncional().getOcupacao().getTipoOcupacao().getId() == 1l ) {
-					throw new SRHRuntimeException("Não é permitido representação para servidores do tipo Membro.");
-				}
-			}
-		
+			
+			
+			List<RepresentacaoFuncional> representacoes = dao.findByFuncional(entidade.getFuncional().getId());
+			
+			if(representacoes != null 
+					&& representacoes.get(0) != null
+					&& !entidade.getInicio().after(representacoes.get(0).getFim()))
+				throw new SRHRuntimeException("O início da vigência da nova representação deve ser posterior ao último dia trabalhado da representação anterior.");
+			
 		}		
 	}
 
@@ -357,7 +358,9 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 		// validando a data final
 		if (entidade.getFim() == null)
-			throw new SRHRuntimeException("A Data Final é obrigatória.");
+			throw new SRHRuntimeException("O último dia trabalhado é obrigatório.");
+		else if (entidade.getInicio().after(entidade.getFim()))
+			throw new SRHRuntimeException("O último dia trabalhado deve ser posterior a data de início da vigência.");
 
 	}
 	
