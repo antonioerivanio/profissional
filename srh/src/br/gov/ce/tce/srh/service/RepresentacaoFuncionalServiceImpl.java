@@ -282,14 +282,27 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 			if ( representacao != null )
 				throw new SRHRuntimeException("Não será permitido inserir nova representação, pois este servidor possui outra ativa com o mesmo tipo.");
 			
-			
-			List<RepresentacaoFuncional> representacoes = dao.findByFuncional(entidade.getFuncional().getId());
-			
-			if(representacoes != null 
-					&& representacoes.get(0) != null
-					&& !entidade.getInicio().after(representacoes.get(0).getFim()))
-				throw new SRHRuntimeException("O início da vigência da nova representação deve ser posterior ao último dia trabalhado da representação anterior.");
-			
+			// se for uma nomeção do tipo Titular, validar a data início com a data fim da representação Titular anterior 
+			if (entidade.getTipoNomeacao() == 1){
+				
+				List<RepresentacaoFuncional> representacoes = dao.findByFuncional(entidade.getFuncional().getId());
+				
+				if(representacoes != null && representacoes.size() > 0) {
+					
+					RepresentacaoFuncional representacaoTitular = null;
+					
+					for (RepresentacaoFuncional representacaoFuncional : representacoes) {
+						if(representacaoFuncional.getTipoNomeacao() == 1){
+							representacaoTitular = representacaoFuncional;
+							break;
+						}						
+					}				
+				
+					if(representacaoTitular != null && !entidade.getInicio().after(representacaoTitular.getFim()))
+						throw new SRHRuntimeException("O início da vigência da nova representação deve ser posterior ao último dia trabalhado da representação anterior do tipo Titular.");
+				}
+				
+			}
 		}		
 	}
 
