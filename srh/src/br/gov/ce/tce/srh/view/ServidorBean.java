@@ -56,6 +56,7 @@ public class ServidorBean  implements Serializable  {
 	private List<Servidor> lista;	
 	private Setor setor;
 	private Integer vinculo; 
+	private Boolean ativoPortal = true;
 	
 	// combos
 	private List<Setor> comboSetor;
@@ -79,7 +80,7 @@ public class ServidorBean  implements Serializable  {
 
 		try {
 
-			setCount(servidorService.getCountServidoresPorSetor( this.setor, this.vinculo ));
+			setCount(servidorService.getCountServidoresPorSetor( this.setor, this.vinculo, this.ativoPortal ));
 
 			if (getCount() == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -148,7 +149,7 @@ public class ServidorBean  implements Serializable  {
 	public PagedListDataModel getDataModel() throws Exception {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(servidorService.consultarServidoresPorSetor(this.setor, this.vinculo, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(servidorService.consultarServidoresPorSetor(this.setor, this.vinculo, this.ativoPortal, getDataTable().getFirst(), getDataTable().getRows()));
 			if(getCount() != 0){
 				dataModel = new PagedListDataModel(getPagedList(), getCount());
 			} else {
@@ -169,7 +170,11 @@ public class ServidorBean  implements Serializable  {
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			StringBuilder filtro = new StringBuilder();
-						
+			
+			if(this.ativoPortal){
+				filtro.append("AND F.FLPORTALTRANSPARENCIA = 1 ");
+			}
+			
 			if(this.setor != null){
 				filtro.append("AND S.IDSETOR = " + this.setor.getId() + " ");
 			}
@@ -285,5 +290,8 @@ public class ServidorBean  implements Serializable  {
 
 	public int getCount() {return count;}
 	public void setCount(int count) {this.count = count;}
+
+	public Boolean getAtivoPortal() {return ativoPortal;}
+	public void setAtivoPortal(Boolean ativoPortal) {this.ativoPortal = ativoPortal;}	
 
 }

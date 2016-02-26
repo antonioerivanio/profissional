@@ -69,12 +69,11 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 
 			limpar();
 
-			if ( this.entidade.getClasseReferencia() == this.entidade.getFuncional().getClasseReferencia() ) {
+			if ( this.entidade.getFim() == null) {
 				exibirTodosOsCampos = true;
 				permiteSalvar = true;
 				getEntidade().setTipoMovimento(null);
 				getEntidade().setInicio(null);
-				getEntidade().setFim(null);
 				getEntidade().setTipoPublicacao(null);
 				getEntidade().setDataAto(null);
 				getEntidade().setDoeAto(null);

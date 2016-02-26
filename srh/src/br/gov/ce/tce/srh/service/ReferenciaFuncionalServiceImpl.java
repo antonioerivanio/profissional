@@ -54,47 +54,35 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 
 		ReferenciaFuncional referenciaAnterior = getById( entidade.getId() );
 		
-		if ( referenciaAnterior.getClasseReferencia() != referenciaAnterior.getFuncional().getClasseReferencia() ){
-			throw new SRHRuntimeException("Operação cancelada. Cadastre a nova Progressão a partir da última Progressão Funcional do Servidor.");
+		if ( referenciaAnterior.getFim() != null ){
+			throw new SRHRuntimeException("Operação cancelada. Cadastre a nova Progressão a partir da última Progressão não finalizada do registro Funcional.");
 		}
 		
 		// validando dados obrigatorios.
 		validar(entidade);		
 
-		/*
-		 * Regra: 
-		 * Não será permitido cadastrar uma nova progressão com data Fim preenchida, exceto o ultimo registro
-		 * para aposentados (STATUS = 5) com o tipo de movimento descompressão (tipoMovimento = 25)
-		 * 
-		 */
+		
 		entidade.setTipoMovimento( tipoMovimentoService.getById( entidade.getTipoMovimento().getId() ));
-		if ( referenciaAnterior.getFim() != null ) { 
-			if( (referenciaAnterior.getFuncional().getTipoMovimentoSaida() != null && referenciaAnterior.getFuncional().getTipoMovimentoSaida().getId() != 26)
-				|| entidade.getFuncional().getStatus() != 5 
-				|| entidade.getTipoMovimento().getTipo() != 3 
-				|| entidade.getTipoMovimento().getId() != 25 ){
-			
-					throw new SRHRuntimeException("Não é permitido realizar o cadastro após o fechamento da última Progressão, exceto Descompressão para aposentados.");
-			}
-		}
+		
+		if( (	referenciaAnterior.getFuncional().getSaida() != null 
+				&& referenciaAnterior.getFuncional().getTipoMovimentoSaida() != null 
+				&& referenciaAnterior.getFuncional().getTipoMovimentoSaida().getId() != 26
+			)
+			|| entidade.getFuncional().getStatus() != 5 
+			|| entidade.getTipoMovimento().getTipo() != 3 
+			|| entidade.getTipoMovimento().getId() != 25 ){
+		
+				throw new SRHRuntimeException("Não é permitido realizar Progressão para registros funcionais finalizados, exceto Descompressão para aposentados.");
+		}		
 		
 		
-		/*
-		 * Regra 
-		 * Se a referencia anterior não tiver data fim, a data inicio tem que ser maior que da ultima data inicio.
-		 * Se a referencia anterior tiver data fim ( só no caso de descompressão ), a data inicio tem que ser maior que da ultima data fim.
-		 */
-		if(referenciaAnterior.getFim() == null){			
-			if ( !entidade.getInicio().after( referenciaAnterior.getInicio() ))
-				throw new SRHRuntimeException("O Início deve ser posterior ao início da última Progressão Funcional.");						
-		} else if ( !entidade.getInicio().after( referenciaAnterior.getFim() ) ){
-				throw new SRHRuntimeException("O Início deve ser posterior ao fim da última Progressão Funcional.");		
-		}
+		if ( !entidade.getInicio().after( referenciaAnterior.getInicio() ))
+			throw new SRHRuntimeException("O Início deve ser posterior ao início da última Progressão Funcional.");						
 		
-		
+				
 		/*
 		 * Regra: 
-		 * Quando incluir uma progressão funcional o registro anterior será automaticamente encerrado ou a data fim sobrescrita, no caso de descompressão,
+		 * Quando incluir uma progressão funcional o registro anterior será automaticamente encerrado
 		 * para a um dia antes do início da nova Progressão
 		 */
 		referenciaAnterior.setFim(SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getInicio(), -1));

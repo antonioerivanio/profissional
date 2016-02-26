@@ -18,14 +18,14 @@ public class ServidorServiceImpl implements ServidorService {
 	
 	@Transactional
 	@Override
-	public List<Servidor> consultarServidoresPorSetor(Setor setor, Integer vinculo, int firstResult, int maxResults) throws Exception {
-		return dao.consultarServidoresPorSetor(setor, vinculo, firstResult, maxResults);
+	public List<Servidor> consultarServidoresPorSetor(Setor setor, Integer vinculo, Boolean ativoPortal, int firstResult, int maxResults) throws Exception {
+		return dao.consultarServidoresPorSetor(setor, vinculo, ativoPortal, firstResult, maxResults);
 	}
 
 	@Transactional
 	@Override
-	public int getCountServidoresPorSetor(Setor setor, Integer vinculo) {
-		return dao.getCountServidoresPorSetor(setor, vinculo);
+	public int getCountServidoresPorSetor(Setor setor, Integer vinculo, Boolean ativoPortal) {
+		return dao.getCountServidoresPorSetor(setor, vinculo, ativoPortal);
 	}
 
 }

@@ -34,8 +34,8 @@ public class ServidorDAOImpl implements ServidorDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Servidor> consultarServidoresPorSetor(Setor setor, Integer vinculo, int firstResult, int maxResults) {
-		Query query = getQueryServidoresPorSetor(setor, vinculo);
+	public List<Servidor> consultarServidoresPorSetor(Setor setor, Integer vinculo, Boolean ativoPortal, int firstResult, int maxResults) {
+		Query query = getQueryServidoresPorSetor(setor, vinculo, ativoPortal);
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);
 		query.setResultTransformer(Transformers.aliasToBean(Servidor.class));
@@ -44,8 +44,8 @@ public class ServidorDAOImpl implements ServidorDAO {
 	}
 
 	@Override
-	public int getCountServidoresPorSetor(Setor setor, Integer vinculo) {
-		return count(getQueryServidoresPorSetor(setor, vinculo));
+	public int getCountServidoresPorSetor(Setor setor, Integer vinculo, Boolean ativoPortal) {
+		return count(getQueryServidoresPorSetor(setor, vinculo, ativoPortal));
 	}
 
 
@@ -55,7 +55,7 @@ public class ServidorDAOImpl implements ServidorDAO {
 		return count.intValue();
 	}
 	
-	private Query getQueryServidoresPorSetor(Setor setor, Integer vinculo) {
+	private Query getQueryServidoresPorSetor(Setor setor, Integer vinculo, Boolean ativoPortal) {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT DISTINCT S.NMSETOR \"nomeSetor\", "
@@ -78,6 +78,10 @@ public class ServidorDAOImpl implements ServidorDAO {
 			
 		sql.append("WHERE F.ATIVOFP = 1 ");		
 		sql.append("AND F.IDSITUACAO < 4 ");
+				
+		if(ativoPortal){
+			sql.append("AND F.FLPORTALTRANSPARENCIA = 1 ");
+		}		
 		
 		if(setor != null){
 			sql.append("AND S.IDSETOR = " + setor.getId() + " ");
