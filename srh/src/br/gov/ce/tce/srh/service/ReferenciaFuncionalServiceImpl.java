@@ -64,15 +64,16 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 		
 		entidade.setTipoMovimento( tipoMovimentoService.getById( entidade.getTipoMovimento().getId() ));
 		
-		if( (	referenciaAnterior.getFuncional().getSaida() != null 
-				&& referenciaAnterior.getFuncional().getTipoMovimentoSaida() != null 
-				&& referenciaAnterior.getFuncional().getTipoMovimentoSaida().getId() != 26
-			)
-			|| entidade.getFuncional().getStatus() != 5 
-			|| entidade.getTipoMovimento().getTipo() != 3 
-			|| entidade.getTipoMovimento().getId() != 25 ){
-		
+		if(	referenciaAnterior.getFuncional().getSaida() != null ) {
+			
+			if( ( referenciaAnterior.getFuncional().getTipoMovimentoSaida() != null 
+					&& referenciaAnterior.getFuncional().getTipoMovimentoSaida().getId() != 26 )			
+				|| entidade.getFuncional().getStatus() != 5 
+				|| entidade.getTipoMovimento().getTipo() != 3 
+				|| entidade.getTipoMovimento().getId() != 25 ) {
+			
 				throw new SRHRuntimeException("Não é permitido realizar Progressão para registros funcionais finalizados, exceto Descompressão para aposentados.");
+			}
 		}		
 		
 		
