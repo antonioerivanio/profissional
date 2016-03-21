@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.PessoalCursoAcademica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.PessoalCursoAcademicaService;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -46,9 +45,6 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 	
-	@Autowired
-	private AuthenticationService authenticationService;
-
 
 	// controle de acesso do formulario
 	private HtmlForm form;
@@ -82,13 +78,9 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 
 			// validando campos da entidade
 			if ( getEntidade().getPessoal() == null)
-				throw new SRHRuntimeException("Selecione um funcionário.");
+				throw new SRHRuntimeException("Selecione um funcionário.");			
 			
-			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-				count = pessoalCursoAcademicaService.count(authenticationService.getUsuarioLogado());
-			} else {
-				count = pessoalCursoAcademicaService.count( getEntidade().getPessoal().getId() );
-			}
+			count = pessoalCursoAcademicaService.count( getEntidade().getPessoal().getId() );			
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -146,22 +138,14 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 	public String relatorio() {
 
 		try {
-
+			
 			if ( getEntidade().getPessoal() == null)
 				throw new SRHRuntimeException("Selecione uma pessoa.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 
-			String filtro = " WHERE pessoalcurso.IDPESSOAL = " + getEntidade().getPessoal().getId();
-			parametros.put("FILTRO", filtro.toString());
+			parametros.put("FILTRO", " WHERE pessoalcurso.IDPESSOAL = " + getEntidade().getPessoal().getId());
 			
-			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-				parametros.put("CPF", authenticationService.getUsuarioLogado().getCpf());
-			} else {
-				parametros.put("CPF", this.cpf);
-			}
-			
-
 			relatorioUtil.relatorio("pessoalCursoGraduacao.jasper", parametros, "pessoalCursoGraduacao.pdf");
 
 		} catch (SRHRuntimeException e) {
@@ -191,12 +175,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 
 			try {
 
-				if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-					this.cpf = authenticationService.getUsuarioLogado().getCpf();
-					getEntidade().setPessoal( pessoalService.getByCpf( authenticationService.getUsuarioLogado().getCpf() ) );
-				} else {
-					getEntidade().setPessoal( pessoalService.getByCpf( cpf ) );
-				}
+				getEntidade().setPessoal( pessoalService.getByCpf( cpf ) );
 				
 				if (getEntidade().getPessoal() != null) {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
@@ -248,11 +227,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
 			
-			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-				setPagedList(pessoalCursoAcademicaService.search(authenticationService.getUsuarioLogado(), getDataTable().getFirst(), getDataTable().getRows()));
-			} else {
-				setPagedList(pessoalCursoAcademicaService.search(getEntidade().getPessoal().getId(), getDataTable().getFirst(), getDataTable().getRows()));
-			}
+			setPagedList(pessoalCursoAcademicaService.search(getEntidade().getPessoal().getId(), getDataTable().getFirst(), getDataTable().getRows()));
 			
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);

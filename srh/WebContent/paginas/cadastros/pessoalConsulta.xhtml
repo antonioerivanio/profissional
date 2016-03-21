@@ -20,6 +20,20 @@
 		        margin-bottom: 10px;
 		        min-height: 100px;
 		    }
+		    .rich-table-cell {
+				position: relative;				
+		    }
+		    .rich-table-cell label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				display: block;
+		    }
+		    .rich-table-cell label:hover {
+		    	cursor: pointer;
+		    }
 		</style>
 
 		<script>
@@ -71,14 +85,16 @@
                         <f:facet name="header">
                             Selecionar
                         </f:facet>
+                        <label for="#{item.id}"></label>
                         <center>
-                        <INPUT TYPE="radio" NAME="seleciona" VALUE="#{item.cpf},#{item.id},#{item.nomeCompleto},#{item.rg},#{item.emissorRg},#{item.ufEmissorRg.id},#{item.nomeMae}" onClick="retorno(this)" />
+                        	<input type="radio" id="#{item.id}" name="seleciona" value="#{item.cpf},#{item.id},#{item.nomeCompleto},#{item.rg},#{item.emissorRg},#{item.ufEmissorRg.id},#{item.nomeMae}" onclick="retorno(this)" />
                         </center>
                     </h:column>
 					<h:column id="col2" headerClass="cel-50">
                         <f:facet name="header">
                             Cpf
                         </f:facet>
+                        <label for="#{item.id}"></label>
                         <center>
                         	<h:outputText id="item2" value="#{item.cpf}" styleClass="cel-50" >
                         		<f:converter converterId="cpfConverter" />
@@ -89,6 +105,7 @@
                         <f:facet name="header">
                             Nome
                         </f:facet>
+                        <label for="#{item.id}"></label>
                         <center><h:outputText id="item3" value="#{item.nomeCompleto}" styleClass="cel-50" /></center>
                     </h:column>
 

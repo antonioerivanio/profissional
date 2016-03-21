@@ -43,15 +43,12 @@ public class CursoServidorListBean implements Serializable {
 	private RelatorioUtil relatorioUtil;
 	
 	@Autowired
-	private AuthenticationService authenticationService;
-	
+	private AuthenticationService authenticationService;	
 
 
-	// controle de acesso do formulario
 	private HtmlForm form;
 	private boolean passouConsultar = false;
 
-	// parametros da tela de consulta
 	private String matricula = new String();
 	private String cpf = new String();
 	private String nome = new String();
@@ -60,29 +57,23 @@ public class CursoServidorListBean implements Serializable {
 	private boolean posGraduacao = true;
 	private boolean profissional = true;
 	private boolean somenteCargaHoraria;
+	private boolean somenteCursoGraduacao;
 
-	// entidades das telas
 	private Funcional entidade = new Funcional();
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
-	//paginação
 	private int count;	
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<PessoalCursoProfissional> pagedList = new ArrayList<PessoalCursoProfissional>();
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 
-	//componente
 	private Long totalCargaHoraria;
 	private String labelTotalCargaHoraria;
 	private Date inicio;
 	private Date fim;
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
+	
 	public String consultar() {
 
 		try {
@@ -128,59 +119,55 @@ public class CursoServidorListBean implements Serializable {
 	}
 
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */	
 	public String relatorio() {
 
 		try {
 
-			// validando campos da entidade
-			if (  !somenteCargaHoraria && (getEntidade() == null || getEntidade().getPessoal() == null) )
-				throw new SRHRuntimeException("Para gerar o Relatório de Curso por Servidor, selecione um funcionário. Para gerar o Relatório de Carga Horária Cursada por Servidor, marque a opção Somente Carga Horária.");
+			if ( !somenteCargaHoraria && !somenteCursoGraduacao && (getEntidade() == null || getEntidade().getPessoal() == null) )
+				throw new SRHRuntimeException("Para gerar o Relatório de Curso por Servidor, selecione um funcionário.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			
 			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");   
 			String inicioFormato="";
 			String fimFormato="";
-			
-			if ( inicio != null )
-				inicioFormato = formatador.format(inicio); 
-			if ( fim != null )
-				fimFormato = formatador.format(fim); 
-			
+						
 			StringBuilder filtro = new StringBuilder();
 			filtro.append(" WHERE  1 = 1 ");
 			
-			if(!somenteCargaHoraria)
+			if(!somenteCargaHoraria && !somenteCursoGraduacao )
 				filtro.append(" AND TB_PESSOAL.id = "+getEntidade().getPessoal().getId());
 			
 			filtro.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
 			
-			if ( inicio != null )
-				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );			
-			if ( fim != null )
-				filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");	
-			
-			if(areaAtuacao)
-				filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
-			if(posGraduacao && !profissional)
-				filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 1 ");
-			else if(!posGraduacao && profissional)
-				filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
-			
-			System.out.println(filtro.toString());
-			
-			parametros.put("FILTRO", filtro.toString());
-			
-			if(somenteCargaHoraria){
+			if(!somenteCursoGraduacao ) {
+				
+				if ( inicio != null ){
+					inicioFormato = formatador.format(inicio); 
+					filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
+				}	
+				if ( fim != null ) {
+					fimFormato = formatador.format(fim);
+					filtro.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");	
+				}
+				if(areaAtuacao)
+					filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
+				if(posGraduacao && !profissional)
+					filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 1 ");
+				else if(!posGraduacao && profissional)
+					filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
+				
 				parametros.put("DATA_INICIO", inicioFormato);
 				parametros.put("DATA_FIM", fimFormato);
-				relatorioUtil.relatorio("cursoServidorSomenteCargaHoraria.jasper", parametros, "cursoPeriodoSomenteCargaHoraria.pdf");
+				
+			}
+			
+			parametros.put("FILTRO", filtro.toString());
+						
+			if(somenteCargaHoraria){				
+				relatorioUtil.relatorio("cursoServidorSomenteCargaHoraria.jasper", parametros, "cursoServidorSomenteCargaHoraria.pdf");
+			}else if(somenteCursoGraduacao){				
+				relatorioUtil.relatorio("cursoServidorSomenteCursoGraduacao.jasper", parametros, "cursoServidorSomenteCursoGraduacao.pdf");
 			}else{				
 				relatorioUtil.relatorio("cursoServidor.jasper", parametros, "cursoServidor.pdf");
 			}
@@ -215,6 +202,7 @@ public class CursoServidorListBean implements Serializable {
 		posGraduacao = true;
 		profissional = true;
 		somenteCargaHoraria = false;
+		somenteCursoGraduacao = false;
 		inicio = null;
 		fim = null;
 	}
@@ -235,6 +223,7 @@ public class CursoServidorListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.cpf = getEntidade().getPessoal().getCpf();
 					this.somenteCargaHoraria = false;
+					this.somenteCursoGraduacao = false;
 				} else {
 					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
 				}
@@ -260,6 +249,7 @@ public class CursoServidorListBean implements Serializable {
 					this.nome = getEntidade().getNomeCompleto();
 					this.matricula = getEntidade().getMatricula();
 					this.somenteCargaHoraria = false;
+					this.somenteCursoGraduacao = false;
 				} else {
 					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
 				}
@@ -308,6 +298,9 @@ public class CursoServidorListBean implements Serializable {
 	public boolean isSomenteCargaHoraria() {return this.somenteCargaHoraria;}
 	public void setSomenteCargaHoraria(boolean somenteCargaHoraria) {this.somenteCargaHoraria = somenteCargaHoraria;}
 	
+	public boolean isSomenteCursoGraduacao() {return this.somenteCursoGraduacao;}
+	public void setSomenteCursoGraduacao(boolean somenteCursoGraduacao) {this.somenteCursoGraduacao = somenteCursoGraduacao;}
+	
 	public void somenteCargaHorariaAction() {	
 		this.matricula = null;
 		this.cpf = null;
@@ -316,6 +309,20 @@ public class CursoServidorListBean implements Serializable {
 		this.labelTotalCargaHoraria = null;
 		limparListas();
 		flagRegistroInicial = 0;
+		this.somenteCursoGraduacao = false;
+	}
+	
+	public void somenteCursoGraduacaoAction() {	
+		this.matricula = null;
+		this.cpf = null;
+		this.nome = null;	
+		this.totalCargaHoraria = null;
+		this.labelTotalCargaHoraria = null;
+		limparListas();
+		flagRegistroInicial = 0;
+		this.somenteCargaHoraria = false;
+		this.inicio = null;
+		this.fim = null;
 	}
 
 	

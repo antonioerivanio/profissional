@@ -33,8 +33,9 @@
 			}
 			
 			function desmarcaSomenteCargaHoraria(){
-				document.getElementById('form:somenteCargaHoraria').checked = false;				
-			}
+				document.getElementById('form:somenteCargaHoraria').checked = false;
+				document.getElementById('form:somenteCursoGraduacao').checked = false;
+			}			
 		</script>
 		
 		<style>
@@ -70,48 +71,110 @@
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 		
-				<div class="input-box box-6">
-					<label for="">Matricula</label>
-					<div class="conteiner">
-						<h:inputText id="matricula"
-									 name="matricula"
-									 maxlength="6" 
-									 styleClass="maskMatricula"
-									 value="#{cursoServidorListBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" ajaxSingle="true" />
-	        			</h:inputText>
+				<div style="display: flex;">
+					<div class="input-box box-6">
+						<label for="">Matricula</label>
+						<div class="conteiner">
+							<h:inputText id="matricula"
+										 name="matricula"
+										 maxlength="6" 
+										 styleClass="maskMatricula"
+										 value="#{cursoServidorListBean.matricula}"
+										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
+		            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" ajaxSingle="true" />
+		        			</h:inputText>
+						</div>
 					</div>
-				</div>
-	
-				<div class="input-box box-12">
-					<label for="">CPF</label>
-					<div class="conteiner">
-						<h:inputText id="cpf" 
-									 name="cpf"
-									 maxlength="14"
-									 styleClass="maskCpf"
-									 converter="cpfConverter"
-									 value="#{cursoServidorListBean.cpf}" >
-							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" ajaxSingle="true" />
-						</h:inputText>
+		
+					<div class="input-box box-12">
+						<label for="">CPF</label>
+						<div class="conteiner">
+							<h:inputText id="cpf" 
+										 name="cpf"
+										 maxlength="14"
+										 styleClass="maskCpf"
+										 converter="cpfConverter"
+										 value="#{cursoServidorListBean.cpf}"
+										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
+								<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" ajaxSingle="true" />
+							</h:inputText>
+						</div>
 					</div>
-				</div>
-	
-				<div class="input-box box-38">
-					<label for="">Nome</label>
-					<div class="conteiner">
-						<h:inputText id="nomeCompletoPessoa"
-									 name="nomeCompletoPessoa"
-									 value="#{cursoServidorListBean.nome}"									
-									 onchange="desmarcaSomenteCargaHoraria()" />
+		
+					<div class="input-box box-38">
+						<label for="">Nome</label>
+						<div class="conteiner">
+							<h:inputText id="nomeCompletoPessoa"
+										 name="nomeCompletoPessoa"
+										 value="#{cursoServidorListBean.nome}"									
+										 onchange="desmarcaSomenteCargaHoraria()"
+										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" />
+						</div>
 					</div>
-				</div>
+									
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()" 
+					   class="bt-padrao fl mg-top-18 cl">Pesquisar</a>
 				
+				</div>	   
+				   
+				<div>  
+				   
+					<div class="radios-group box-15">
+						<rich:panel id="richpane1l">
+					        <label>Somente Carga Horária</label>
+					        <rich:toolTip id="tooltip1" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+						            <span style="white-space:nowrap">
+						                Marcar essa opção somente para relatório consolidado <br />
+						                com cargas horárias atingidas por cada servidor do TCE. 
+						            </span>
+					      	</rich:toolTip>
+					      	<div class="conteiner">
+						      	<div class="radio-box">
+									<h:selectBooleanCheckbox
+										id="somenteCargaHoraria"
+										value="#{cursoServidorListBean.somenteCargaHoraria}"
+										disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
+											<a4j:support id="somenteCargaHorariaClick" 
+											 event="onclick"
+											 action="#{cursoServidorListBean.somenteCargaHorariaAction}"
+											 ajaxSingle="true" 
+											 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCursoGraduacao, consultar" />
+									</h:selectBooleanCheckbox>
+								</div>
+							</div>
+					    </rich:panel>
+					</div>
+					
+					<div class="radios-group box-15">
+						<rich:panel id="richpanel2">
+					        <label>Somente Curso Graduação</label>
+					        <rich:toolTip id="toolti2" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+						            <span style="white-space:nowrap">
+						                Marcar essa opção somente para relatório consolidado <br />
+						                com cursos de graduação de cada servidor do TCE. 
+						            </span>
+					      	</rich:toolTip>
+					      	<div class="conteiner">
+						      	<div class="radio-box">
+									<h:selectBooleanCheckbox
+										id="somenteCursoGraduacao"
+										value="#{cursoServidorListBean.somenteCursoGraduacao}"
+										disabled="#{cursoServidorListBean.somenteCargaHoraria}">
+											<a4j:support id="somenteCursoGraduacaoClick" 
+											 event="onclick"
+											 action="#{cursoServidorListBean.somenteCursoGraduacaoAction}"
+											 ajaxSingle="true" 
+											 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCargaHoraria, dataInicio, dataFim, atuacao, posGraduacao, profissional, consultar"
+											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />
+									</h:selectBooleanCheckbox>
+								</div>
+							</div>
+					    </rich:panel>
+					</div>
 				
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindow()" 
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</div>
 			
 			</ui:fragment>
 			   
@@ -123,7 +186,8 @@
 								 styleClass="maskData" 
 								 converter="dateConverter"
 								 value="#{cursoServidorListBean.inicio}" 
-								 maxlength="10" />
+								 maxlength="10"
+								 disabled="#{cursoServidorListBean.somenteCursoGraduacao}" />
 				</div>
 			</div>
 
@@ -135,7 +199,8 @@
 								 styleClass="maskData"
 								 converter="dateConverter"
 								 value="#{cursoServidorListBean.fim}" 
-								 maxlength="10" />
+								 maxlength="10"
+								 disabled="#{cursoServidorListBean.somenteCursoGraduacao}" />
 				</div>
 			</div> 
 			
@@ -145,7 +210,8 @@
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="atuacao"
-							value="#{cursoServidorListBean.areaAtuacao}">
+							value="#{cursoServidorListBean.areaAtuacao}"
+							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
@@ -158,7 +224,8 @@
 						<h:selectBooleanCheckbox
 							id="posGraduacao"
 							value="#{cursoServidorListBean.posGraduacao}"
-							onchange="validaPosGraduacao()">
+							onchange="validaPosGraduacao()"
+							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
@@ -171,49 +238,40 @@
 						<h:selectBooleanCheckbox
 							id="profissional"
 							value="#{cursoServidorListBean.profissional}"
-							onchange="validaProfissional()">
+							onchange="validaProfissional()"
+							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
-			</div>
+			</div>			
 			
-						
-			<div class="radios-group box-15">
-				<rich:panel id="richpanel">
-			        <label>Somente Carga Horária</label>
-			        <rich:toolTip id="tooltip" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
-				            <span style="white-space:nowrap">
-				                Marcar essa opção somente para relatório consolidado <br />
-				                com cargas horárias atingidas por cada servidor do TCE. 
-				            </span>
-			      	</rich:toolTip>
-			      	<div class="conteiner">
-				      	<div class="radio-box">
-							<h:selectBooleanCheckbox
-								id="somenteCargaHoraria"
-								value="#{cursoServidorListBean.somenteCargaHoraria}">
-									<a4j:support id="somenteCargaHorariaClick" 
-									 event="onclick"
-									 action="#{cursoServidorListBean.somenteCargaHorariaAction}"
-									 ajaxSingle="true" 
-									 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller" />
-							</h:selectBooleanCheckbox>
-						</div>
-					</div>
-			    </rich:panel>
-			</div>
 			
 			<h:commandButton id="consultar"
 							 value="Consultar"
 							 action="#{cursoServidorListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
+							 reRender="scroller,lista"
+							 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}"/>
 			
 			<h:commandButton id="relatorio"
 							 value="Relatório"
 							 action="#{cursoServidorListBean.relatorio}" 
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 							 style="margin-left: 10px" />
+							 
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{cursoServidorListBean.limpaTela}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+							 />
+			
+			<h:commandButton id="limparListas"
+							 value="Limpar"
+							 action="#{cursoServidorListBean.limpaTelaServidor}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10"
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+							 />				 
 
 			<div class="tabela-dados">
 
@@ -274,21 +332,7 @@
 									renderIfSinglePage="false" 
 									page="#{cursoServidorListBean.pagina}"/>
 			
-			</div>
-
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{cursoServidorListBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15"
-							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
-							 />
-			
-			<h:commandButton id="limparListas"
-							 value="Limpar"
-							 action="#{cursoServidorListBean.limpaTelaServidor}"
-							 styleClass="bt-padrao fr mg-right-15"
-							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
-							 />			 
+			</div>						 
 
 		</h:form>
 
