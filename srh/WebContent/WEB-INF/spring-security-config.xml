@@ -201,7 +201,7 @@
     </http>
 	
 	
-	<!--DESENVOLVIMENTO-->
+	<!-- SCA - DESENVOLVIMENTO -->
 	<!--
 	<authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
@@ -210,11 +210,11 @@
 	
 <!--***********************************************************************************************************************************************************-->	
 		
-	<!--PRODUÇÃO-->
+	<!-- AD - PRODUÇÃO -->
 	
 	<beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
         <beans:constructor-arg value="tce.ce.gov.br" />
-        <beans:constructor-arg value="ldap://172.26.18.25:389/"/> 
+        <beans:constructor-arg value="ldap://tce.ce.gov.br/"/> 
         <beans:property name="userDetailsContextMapper" ref="customUserDetailsMapper"/>
         <beans:property name="useAuthenticationRequestCredentials" value="true"/>   
         <beans:property name="convertSubErrorCodesToExceptions" value="true" />
