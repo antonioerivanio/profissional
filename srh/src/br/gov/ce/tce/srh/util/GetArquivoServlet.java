@@ -22,12 +22,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import br.gov.ce.tce.srh.domain.Parametro;
-import br.gov.ce.tce.srh.service.ParametroService;
-
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
+import br.gov.ce.tce.srh.domain.Parametro;
+import br.gov.ce.tce.srh.service.ParametroService;
 
 /**
  * Classe para pegar a imagem no servidor
