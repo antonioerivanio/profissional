@@ -52,7 +52,7 @@ public class RepresentacaoSetor extends BasicEntity<Long> implements Serializabl
     @Column(name = "ATIVO", nullable=false)
     private boolean ativo;
 
-    @Column(name = "OBSERVACAO", length=100)
+    @Column(name = "OBSERVACAO", length=500)
     private String observacao;
 
     @Column(name = "HIERARQUIA", nullable=false)
