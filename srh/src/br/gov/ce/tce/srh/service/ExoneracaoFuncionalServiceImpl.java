@@ -133,11 +133,11 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 		// validando a data final
 		if (entidade.getSaida() == null)
 			throw new SRHRuntimeException("O último dia trabalhado é obrigatório.");
-		else {		
-			if (entidade.getExercicio().after(entidade.getSaida())) {
-				throw new SRHRuntimeException("O último dia trabalhado deve ser posterior a data de Exercício.");
-			}
-		}
+//		else {		
+//			if (entidade.getExercicio().after(entidade.getSaida())) {
+//				throw new SRHRuntimeException("O último dia trabalhado deve ser posterior a data de Exercício.");
+//			}
+//		}
 
 		// validando a observacao da saida
 		if (entidade.getDescricaoSaida() == null || entidade.getDescricaoSaida().equals(""))
