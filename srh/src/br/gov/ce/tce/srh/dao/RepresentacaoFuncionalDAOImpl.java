@@ -175,7 +175,7 @@ public class RepresentacaoFuncionalDAOImpl implements RepresentacaoFuncionalDAO 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<RepresentacaoFuncional> findByTipoNomeacaoCargoSetor(Long tipoNomeacao, Long cargo, Long setor) {
-		Query query = entityManager.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.tipoNomeacao = :nomeacao AND r.representacaoCargo.id = :cargo AND r.setor.id = :setor AND ativo = true ");
+		Query query = entityManager.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.tipoNomeacao = :nomeacao AND r.representacaoCargo.id = :cargo AND r.setor.id = :setor AND fim is null ");
 		query.setParameter("nomeacao", tipoNomeacao );
 		query.setParameter("cargo", cargo);
 		query.setParameter("setor", setor);
@@ -186,7 +186,7 @@ public class RepresentacaoFuncionalDAOImpl implements RepresentacaoFuncionalDAO 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<RepresentacaoFuncional> findByCargoSetor(Long cargo, Long setor) {
-		Query query = entityManager.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.representacaoCargo.id = :cargo AND r.setor.id = :setor AND ativo = true ");
+		Query query = entityManager.createQuery("SELECT r FROM RepresentacaoFuncional r WHERE r.representacaoCargo.id = :cargo AND r.setor.id = :setor AND fim is null ");
 		query.setParameter("cargo", cargo);
 		query.setParameter("setor", setor);
 		return query.getResultList();
