@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui:composition template="../../WEB-INF/templates/page.xhtml"
 	  xmlns="http://www.w3.org/1999/xhtml"      
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -11,8 +11,7 @@
 	<ui:define name="content">
 	
 		<script>
-			function openwindow()
-			{
+			function openwindow() {
 				var nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
 					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
@@ -21,10 +20,18 @@
 				}
 			}			
 
-			function sugerirDataExercicio()
-			{
+			function sugerirDataExercicio() {
 				document.getElementById('form:exercicio').value = document.getElementById('form:posse').value;
 				document.getElementById('form:exercicio').focus();
+			}
+			
+			function confirmaFundoPrevidencia() {	
+				
+				var emitirAlertaFundoPrevidencia = document.getElementById('form:emitirAlertaFundoPrevidencia').value;			
+				
+				if (emitirAlertaFundoPrevidencia == 'true'){
+					return confirm('Houve alteraÃ§Ã£o no tipo de Fundo PrevidenciÃ¡rio. Confirma a alteraÃ§Ã£o?');	
+				}
 			}
 		</script>
 
@@ -69,7 +76,7 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Alteração de Nomeação do Servidor</h2>
+			<h2>AlteraÃ§Ã£o de NomeaÃ§Ã£o do Servidor</h2>
 
 		</div>
 
@@ -82,7 +89,7 @@
 
 			<rich:tabPanel switchType="client">
 			
-				 <rich:tab label="Admissão">				
+				 <rich:tab label="AdmissÃ£o">				
 	
 					
 		            
@@ -98,7 +105,7 @@
 						<label for="">Nome *</label>
 						<div class="conteiner">
 							<h:inputText id="nomeCompletoPessoa" required="true" 
-										 name="nomeCompletoPessoa" requiredMessage="Nome é obrigatorio"
+										 name="nomeCompletoPessoa" requiredMessage="Nome Ã© obrigatorio"
 										 value="#{nomeacaoServidorFormBean.nome}" 
 										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" />
 						</div>
@@ -112,7 +119,7 @@
 					</ui:fragment>
 		
 					<div class="input-box box-100">
-						<label for="">Mãe</label>
+						<label for="">MÃ£e</label>
 						<div class="conteiner">
 							<h:inputText id="mae"
 										 name="mae"
@@ -167,7 +174,7 @@
 						<label for="">Tipo de Entrada *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="tipoEntrada"  
-											 converter="entityConverter" required="true" requiredMessage="Tipo de Entrada é obrigatorio"
+											 converter="entityConverter" required="true" requiredMessage="Tipo de Entrada Ã© obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.tipoMovimentoEntrada}"
 											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" >
 								<f:selectItem id="selecioneTipoEntrada" itemLabel="Selecione..." itemValue="" />
@@ -181,7 +188,7 @@
 					</div>
 		
 					<div class="select-box box-25">
-						<label for="">Tipo de Publicação </label>
+						<label for="">Tipo de PublicaÃ§Ã£o </label>
 						<div class="conteiner">
 							<h:selectOneMenu id="tipoPublicacao"
 											 converter="entityConverter" 
@@ -198,7 +205,7 @@
 					</div>
 		
 					<div class="input-box box-15">
-						<label for="">Publicação da Nomeação </label>
+						<label for="">PublicaÃ§Ã£o da NomeaÃ§Ã£o </label>
 						<div class="conteiner">
 							<h:inputText id="publicacao"
 										 name="publicacao"
@@ -215,7 +222,7 @@
 						<label for="">Posse *</label>
 						<div class="conteiner">
 							<h:inputText id="posse" required="true"
-										 name="posse" requiredMessage="Posse é obrigatorio"
+										 name="posse" requiredMessage="Posse Ã© obrigatorio"
 										 converter="dateConverter"
 										 styleClass="maskData"
 										 maxlength="10" 
@@ -227,23 +234,27 @@
 					</div>
 		
 					<div class="input-box box-10">
-						<label for="">Exercício *</label>
+						<label for="">ExercÃ­cio *</label>
 						<div class="conteiner">
 							<h:inputText id="exercicio" required="true"
-										 name="exercicio" requiredMessage="Exercício é obrigatorio"
+										 name="exercicio" requiredMessage="ExercÃ­cio Ã© obrigatorio"
 										 converter="dateConverter"
 										 styleClass="maskData"
 										 maxlength="10"
 										 value="#{nomeacaoServidorFormBean.entidade.exercicio}" 
 										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" >
+										 <a4j:support event="onblur" 
+								 			  		  action="#{nomeacaoServidorFormBean.alteraFundoPrevidencia}" 
+											  		  ajaxSingle="true"
+											  		  reRender="fundoPrevidenciaTela, emitirAlertaFundoPrevidencia"/>
 							</h:inputText>
 						</div>
 					</div>
 		
 					<div class="textarea-box box-100">
-							<label for="">Observação *</label>
+							<label for="">ObservaÃ§Ã£o *</label>
 							<div class="conteiner">
-							<h:inputTextarea id="observacao" style="height: 33px;" required="true" requiredMessage="Observação é obrigatorio"
+							<h:inputTextarea id="observacao" style="height: 33px;" required="true" requiredMessage="ObservaÃ§Ã£o Ã© obrigatorio"
 								value="#{nomeacaoServidorFormBean.entidade.descricaoNomeacao}"
 								onkeyup="this.value = this.value.substring(0, 254);"
 								disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}"/>
@@ -254,7 +265,7 @@
 						<label for="">Tipo Folha *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="tipoFolha" 
-											 converter="entityConverter" required="true" requiredMessage="Tipo Folha é obrigatorio"
+											 converter="entityConverter" required="true" requiredMessage="Tipo Folha Ã© obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.folha}" 
 											 disabled="#{(nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneTipoFolha" itemLabel="Selecione..." itemValue="" />
@@ -271,21 +282,21 @@
 					<div class="select-box box-25">
 						<label for="">Status *</label>
 						<div class="conteiner">
-							<h:selectOneMenu id="status" required="true" requiredMessage="Status é obrigatorio"
+							<h:selectOneMenu id="status" required="true" requiredMessage="Status Ã© obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.status}"
 											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								<f:selectItem id="selecioneStatus" itemLabel="Selecione..." itemValue="" />
 								<f:selectItem id="status1" itemLabel="Ativo" itemValue="1" />
 		  						<f:selectItem id="status2" itemLabel="Estagiario" itemValue="2" />
 		  						<f:selectItem id="status5" itemLabel="Inativo" itemValue="5" />
-		  						<f:selectItem id="status8" itemLabel="Pensão Alimenticia Ativos" itemValue="8" />
-		  						<f:selectItem id="status9" itemLabel="Pensão Alimenticia Inativos" itemValue="9" />
+		  						<f:selectItem id="status8" itemLabel="PensÃ£o Alimenticia Ativos" itemValue="8" />
+		  						<f:selectItem id="status9" itemLabel="PensÃ£o Alimenticia Inativos" itemValue="9" />
 							</h:selectOneMenu>
 						</div>
 					</div>
 	
 					<div class="input-box box-25">
-						<label for="">Matrícula Estadual</label>
+						<label for="">MatrÃ­cula Estadual</label>
 						<div class="conteiner">
 							<h:inputText id="matriculaEstadual" 
 										 maxlength="15"
@@ -298,15 +309,15 @@
 	
 				</rich:tab>
 	
-				<rich:tab label="Cargo / Função">
+				<rich:tab label="Cargo / FunÃ§Ã£o">
 		
 					<br/>				
 		
 					<div class="select-box box-25">
-						<label for="">Tipo Ocupação *</label>
+						<label for="">Tipo OcupaÃ§Ã£o *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="tipoOcupacao" required="true"
-											 converter="entityConverter" requiredMessage="Tipo Ocupação é obrigatorio"
+											 converter="entityConverter" requiredMessage="Tipo OcupaÃ§Ã£o Ã© obrigatorio"
 											 value="#{nomeacaoServidorFormBean.tipoOcupacao}"
 											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 							  	<f:selectItem id="selecioneTipoOcupacao" itemLabel="Selecione..." itemValue="" />
@@ -321,16 +332,16 @@
 							  				 ajaxSingle="true"	
 							  				 focus="tipoCargoFuncao"
 							  				 action="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
-							  				 reRender="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, regime, salario"/>
+							  				 reRender="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, fundoPrevidenciaTela, emitirAlertaFundoPrevidencia, regime, salario"/>
 		
 							</h:selectOneMenu>
 						</div>
 					</div>
 		
 					<div class="select-box box-25">
-						<label for="">Cargo/Função *</label>
+						<label for="">Cargo/FunÃ§Ã£o *</label>
 						<div class="conteiner">
-							<h:selectOneMenu id="tipoCargoFuncao" required="true" requiredMessage="Cargo/Função é obrigatorio"
+							<h:selectOneMenu id="tipoCargoFuncao" required="true" requiredMessage="Cargo/FunÃ§Ã£o Ã© obrigatorio"
 											 value="#{nomeacaoServidorFormBean.entidade.ocupacao}"
 											 converter="entityConverter"
 											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
@@ -353,7 +364,7 @@
 					</div>
 		
 					<div class="select-box box-25">
-						<label for="">Classe/Referência *</label>
+						<label for="">Classe/ReferÃªncia *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="tipoClasseReferencia" 
 											 converter="entityConverter"
@@ -394,7 +405,7 @@
 					</div>
 					
 					<div class="select-box box-25">
-						<label for="">Orientação</label>
+						<label for="">OrientaÃ§Ã£o</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="orientacaoCargo" 
 											 converter="entityConverter"
@@ -411,9 +422,9 @@
 					</div>
 		
 					<div class="select-box box-25">
-						<label for="">Situação *</label>
+						<label for="">SituaÃ§Ã£o *</label>
 						<div class="conteiner">
-							<h:selectOneMenu id="situacao" required="true" requiredMessage="Situação é obrigatorio"
+							<h:selectOneMenu id="situacao" required="true" requiredMessage="SituaÃ§Ã£o Ã© obrigatorio"
 											 converter="entityConverter"
 											 value="#{nomeacaoServidorFormBean.entidade.situacao}"
 											 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
@@ -428,10 +439,10 @@
 					</div>
 					
 					<div class="select-box box-25">
-						<label for="">Vínculo *</label>
+						<label for="">VÃ­nculo *</label>
 						<div class="conteiner">
 							<h:selectOneMenu 
-								id="vinculo" required="true" requiredMessage="Vínculo é obrigatorio"
+								id="vinculo" required="true" requiredMessage="VÃ­nculo Ã© obrigatorio"
 								converter="entityConverter"
 								value="#{nomeacaoServidorFormBean.entidade.vinculo}"
 								disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
@@ -459,7 +470,7 @@
 					<br/>
 	
 					<div class="radios-group box-10">
-						<label>Cálculo PCC?</label>
+						<label for="form:pcc">CÃ¡lculo PCC?</label>
 						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectBooleanCheckbox
@@ -472,7 +483,7 @@
 					</div>
 					
 					<div class="radios-group box-10">
-						<label>Paga IRPF?</label>
+						<label for="form:irpf">Paga IRPF?</label>
 						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectBooleanCheckbox
@@ -485,7 +496,7 @@
 					</div>
 					
 					<div class="radios-group box-10">
-						<label>Bate Ponto?</label>
+						<label for="form:ponto">Bate Ponto?</label>
 						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectBooleanCheckbox
@@ -498,11 +509,11 @@
 					</div>
 					
 					<div class="radios-group box-10">
-						<label>Ativo na Folha?</label>
+						<label for="form:ativoFolha">Ativo na Folha?</label>
 						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectBooleanCheckbox
-									id="ativaFolha"
+									id="ativoFolha"
 									value="#{nomeacaoServidorFormBean.entidade.atipoFp}"
 									disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								</h:selectBooleanCheckbox>
@@ -511,7 +522,7 @@
 					</div>
 					
 					<div class="radios-group box-18">
-						<label>Ativo no Portal da Transparência?</label>
+						<label for="form:ativoPortal">Ativo no Portal da TransparÃªncia?</label>
 						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectBooleanCheckbox
@@ -525,7 +536,7 @@
 					
 					<fieldset>
 
-					<legend>Código Brasileiro de Ocupações</legend>
+					<legend>CÃ³digo Brasileiro de OcupaÃ§Ãµes</legend>
 						
 						<br/>
 	
@@ -622,7 +633,7 @@
 						<div class="conteiner">
 							<h:inputText id="proporcionalidade" required="true"
 										 onkeyup="SoNumeros(this)"
-										 maxlength="3" requiredMessage="Proporcionalidade é obrigatorio"
+										 maxlength="3" requiredMessage="Proporcionalidade Ã© obrigatorio"
 										 value="#{nomeacaoServidorFormBean.entidade.proporcionalidade}"
 										 disabled="#{(nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" >
 							</h:inputText>
@@ -630,7 +641,7 @@
 					</div>		
 		
 					<div class="select-box box-25">
-						<label for="">Lei Incorporação</label>
+						<label for="">Lei IncorporaÃ§Ã£o</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="leiIncorporacao" 
 											 value="#{nomeacaoServidorFormBean.leiIncorporacao}"
@@ -652,7 +663,7 @@
 						</div>
 					</div>
 					
-					<div class="input-box box-10" style="float: left;">
+					<div class="input-box box-10">
 						<label for="">Qtd. Quintos *</label>
 						<div class="conteiner">
 							<h:inputText id="qtdQuintos"
@@ -665,59 +676,101 @@
 						</div>
 					</div>
 		
-					<div class="radios-group box-40" style="clear:both">
-						<label for="">Previdência *</label>
+					<div class="radios-group box-38 clr">
+						<label for="">PrevidÃªncia *</label>
 						<div class="conteiner">
 							<div class="radio-box">
 							<h:selectOneRadio id="previdencia" 
 											  value="#{nomeacaoServidorFormBean.entidade.previdencia}"
-											  disabled="#{not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
+											  disabled="#{(not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))
+											  				or nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+									  						or nomeacaoServidorFormBean.tipoOcupacao.id eq 5 }">
 								<f:selectItem itemLabel="IPEC" itemValue="1" id="ipec"/>
 								<f:selectItem itemLabel="SUPSEC" itemValue="2" id="supsec"/>
 								<f:selectItem itemLabel="INSS" itemValue="3" id="inss"/>
-								<f:selectItem itemLabel="SEM PREVIDÊNCIA" itemValue="4" id="semprev"/>
+								<f:selectItem itemLabel="SEM PREVIDÃŠNCIA" itemValue="4" id="semprev"/>
 								<a4j:support id="carregaPrevidenciaSupSec" 
-										 	 event="onclick" 
+										 	 event="onclick"
+										 	 action="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}" 
 										 	 ajaxSingle="true"
-										 	 action="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}"
-										 	 reRender="abonoPrevidenciario,SupSecIntegral"/>
+										 	 reRender="abonoPrevidenciario, SupSecIntegral, fundoPrevidenciaTela, emitirAlertaFundoPrevidencia"/>								
 							</h:selectOneRadio>
 							</div>
 						</div>
 					</div>
 		
-					 <div class="radios-group box-15" >
-					 <label>Abono Previdenciário?</label>
+					<div class="radios-group box-14" >
+					 	<label for="form:abonoPrevidenciario">Abono PrevidenciÃ¡rio?</label>
 						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectBooleanCheckbox
 									id="abonoPrevidenciario"
 									value="#{nomeacaoServidorFormBean.entidade.abonoPrevidenciario}"
-									disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
+									disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) 
+												or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) 
+												or (not nomeacaoServidorFormBean.exibirTodosOsCampos)
+												or nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+									  			or nomeacaoServidorFormBean.tipoOcupacao.id eq 5 
+												or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}">
 								</h:selectBooleanCheckbox>
 							</div>
 						</div>
 					</div>
 					
-					<div class="radios-group box-15" >
-						<label>SUPSEC Integral?</label>
+					<div class="radios-group box-12" >
+						<label for="form:SupSecIntegral">SUPSEC Integral?</label>
 						<div class="conteiner">
 							<div class="radio-box">
-								<h:selectBooleanCheckbox id="SupSecIntegral" value="#{nomeacaoServidorFormBean.entidade.supSecIntegral}" 
-								disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" 
-								onmouseover="validarSupSec()"/>
+								<h:selectBooleanCheckbox 
+									id="SupSecIntegral" 
+									value="#{nomeacaoServidorFormBean.entidade.supSecIntegral}" 
+									disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) 
+												or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) 
+												or (not nomeacaoServidorFormBean.exibirTodosOsCampos) 
+												or nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+									  			or nomeacaoServidorFormBean.tipoOcupacao.id eq 5
+												or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" 
+									onmouseover="validarSupSec()"/>
 							</div>
 						</div>
 					</div>
 		
-					<div class="radios-group box-25">
+					<div class="radios-group box-28">
+						<label>Fundo PrevidenciÃ¡rio</label>						
+						<div class="conteiner">
+							<div class="radio-box">
+							<h:selectOneRadio id="fundoPrevidenciaTela"
+											  value="#{nomeacaoServidorFormBean.fundoPrevidenciaTela}"
+											  disabled="#{	(not nomeacaoServidorFormBean.exibirPrevSuperSec)
+											  				or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) 
+											  				or (not nomeacaoServidorFormBean.exibirTodosOsCampos)
+											  				or nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+															or nomeacaoServidorFormBean.tipoOcupacao.id eq 5 
+											  				or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" >
+								<f:selectItem itemLabel="NÃ£o se aplica" itemValue="0" />			  				 
+								<f:selectItem itemLabel="Funaprev" itemValue="1" />
+								<f:selectItem itemLabel="Previd" itemValue="2" itemDisabled="#{(not nomeacaoServidorFormBean.exibirPrevid)}"/>
+								<a4j:support event="onclick"
+										 	 action="#{nomeacaoServidorFormBean.atualizaEmitirAlertaFundoPrevidencia}" 
+										 	 ajaxSingle="true"
+										 	 reRender="emitirAlertaFundoPrevidencia"/>
+							</h:selectOneRadio>							
+							</div>
+						</div>
+						<h:inputHidden 
+							id="emitirAlertaFundoPrevidencia"
+							value="#{nomeacaoServidorFormBean.emitirAlertaFundoPrevidencia}">							
+						</h:inputHidden>
+					</div>
+		
+					<div class="radios-group box-20 clr">
 						<label for="">Regime *</label>
 						<div class="conteiner">
 							<div class="radio-box">
-							<h:selectOneRadio id="regime" required="true" requiredMessage="Regime é obrigatorio"
+							<h:selectOneRadio id="regime" required="true" requiredMessage="Regime Ã© obrigatorio"
 											  disabled="#{(nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" 
 											  value="#{nomeacaoServidorFormBean.entidade.regime}" >
-								<f:selectItem itemLabel="Estatutário" itemValue="1" />
+								<f:selectItem itemLabel="EstatutÃ¡rio" itemValue="1" />
 								<f:selectItem itemLabel="Celetista" itemValue="2" />
 							</h:selectOneRadio>
 							</div>
@@ -726,13 +779,13 @@
 		
 					<fieldset>
 			
-						<legend>Orgão Origem</legend>
+						<legend>OrgÃ£o Origem</legend>
 			
 						<br/>
 		
 			            <div class="conteiner">
 							<div class="select-box box-50">
-								<label for="">Orgão</label>
+								<label for="">OrgÃ£o</label>
 								<div class="conteiner">
 									<h:selectOneMenu id="orgaoOrigem"
 													 disabled="#{(not nomeacaoServidorFormBean.exibirOrgaoEhSalario) or (not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}"
@@ -748,7 +801,7 @@
 							</div>
 				 			
 				 			<div class="input-box box-15">
-								<label for="">Salário</label>
+								<label for="">SalÃ¡rio</label>
 								<div class="conteiner">
 									<h:inputText id="salario"
 												 maxlength="10"
@@ -769,7 +822,11 @@
 			<div style="margin-top: 14px;">
 				
 				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
-					<h:commandButton action="#{nomeacaoServidorFormBean.alterar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
+					<h:commandButton action="#{nomeacaoServidorFormBean.alterar}" 
+									 value="Salvar" 
+									 styleClass="bt-padrao fr" 
+									 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"
+									 onclick="return confirmaFundoPrevidencia();"/>
 					<a href="/srh/paginas/funcional/nomeacaoServidorList.faces" class="bt-voltar fr mg-right-10">Limpar</a>			
 				</ui:fragment>
 				

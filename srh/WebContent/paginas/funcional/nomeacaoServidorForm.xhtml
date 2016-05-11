@@ -23,8 +23,7 @@
 		</style>
 
 		<script>
-			function openwindow()
-			{
+			function openwindow() {
 				var nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
 					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
@@ -33,8 +32,7 @@
 				}
 			}			
 
-			function sugerirDataExercicio()
-			{
+			function sugerirDataExercicio()	{
 				document.getElementById('form:exercicio').value = document.getElementById('form:posse').value;
 				document.getElementById('form:exercicio').focus();
 			}
@@ -143,7 +141,7 @@
 			<fieldset>
 
 			<div class="radios-group box-10" style="float: left;">
-				<label>Digitar Matrícula?</label>
+				<label for="form:digitarMatricula">Digitar Matrícula?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
@@ -154,14 +152,14 @@
 							<a4j:support id="digitarMatriculaEvento" 
 									 event="onclick"
 									 ajaxSingle="true" 
-									 reRender="matriculaFuncional" oncomplete=" jQuery('.maskMatricula').mask('9999-9',{placeholder:' '});"/>
+									 reRender="matriculaFuncional" oncomplete="jQuery('.maskMatricula').mask('9999-9',{placeholder:' '});"/>
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
 			</div>
 
 			<div class="input-box box-10" style="float: left;">
-				<label for="">Matrícula</label>
+				<label>Matrícula</label>
 				<div class="conteiner">
 					<h:inputText id="matriculaFuncional" 
 								 styleClass="maskMatricula"
@@ -245,6 +243,10 @@
 								 maxlength="10"
 								 value="#{nomeacaoServidorFormBean.entidade.exercicio}" 
 								 disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}" >
+								 <a4j:support event="onblur" 
+								 			  action="#{nomeacaoServidorFormBean.alteraFundoPrevidencia}" 
+											  ajaxSingle="true"
+											  reRender="fundoPrevidenciaTela"/>
 					</h:inputText>
 				</div>
 			</div>
@@ -296,7 +298,7 @@
 					  				 ajaxSingle="true"	
 					  				 focus="tipoCargoFuncao"
 					  				 action="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
-					  				 reRender="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, regime, salario"/>
+					  				 reRender="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, fundoPrevidenciaTela, regime, salario"/>
 
 					</h:selectOneMenu>
 				</div>
@@ -472,8 +474,8 @@
 				</div>
 			</div>
 			
-			<div class="radios-group box-10" style="clear: both;">
-				<label>Cálculo PCC?</label>
+			<div class="radios-group box-10 clr">
+				<label for="form:pcc">Cálculo PCC?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
@@ -486,7 +488,7 @@
 			</div>
 			
 			<div class="radios-group box-10">
-				<label>Paga IRPF?</label>
+				<label for="form:irpf">Paga IRPF?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
@@ -499,7 +501,7 @@
 			</div>
 			
 			<div class="radios-group box-10">
-				<label>Bate Ponto?</label>
+				<label for="form:ponto">Bate Ponto?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
@@ -512,11 +514,11 @@
 			</div>
 			
 			<div class="radios-group box-10">
-				<label>Ativo na Folha?</label>
+				<label for="form:ativoFolha">Ativo na Folha?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
-							id="ativaFolha"
+							id="ativoFolha"
 							value="#{nomeacaoServidorFormBean.entidade.atipoFp}"
 							disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}">
 						</h:selectBooleanCheckbox>
@@ -525,7 +527,7 @@
 			</div>
 			
 			<div class="radios-group box-18">
-				<label>Ativo no Portal da Transparência?</label>
+				<label for="form:ativoPortal">Ativo no Portal da Transparência?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
@@ -665,7 +667,7 @@
 				</div>
 			</div>
 			
-			<div class="input-box box-10" style="float: left;">
+			<div class="input-box box-10">
 				<label for="">Qtd. Quintos *</label>
 				<div class="conteiner">
 					<h:inputText id="qtdQuintos"
@@ -678,52 +680,82 @@
 				</div>
 			</div>
 
-			<div class="radios-group box-40" style="clear:both">
+			<div class="radios-group box-38 clr">
 				<label for="">Previdência *</label>
 				<div class="conteiner">
 					<div class="radio-box">
 					<h:selectOneRadio id="previdencia" 
-									  value="#{nomeacaoServidorFormBean.entidade.previdencia}">
-							      <!--disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos or nomeacaoServidorFormBean.tpOcupacaoCargoComissionado}">-->
+									  value="#{nomeacaoServidorFormBean.entidade.previdencia}"
+									  disabled="#{	nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+									  				or nomeacaoServidorFormBean.tipoOcupacao.id eq 5 }">
 						<f:selectItem itemLabel="IPEC" itemValue="1" id="ipec"/>
 						<f:selectItem itemLabel="SUPSEC" itemValue="2" id="supsec"/>
 						<f:selectItem itemLabel="INSS" itemValue="3" id="inss"/>
 						<f:selectItem itemLabel="SEM PREVIDÊNCIA" itemValue="4" id="semprev"/>
 						<a4j:support id="carregaPrevidenciaSupSec" 
-								 	 event="onclick" 
+								 	 event="onclick"
+								 	 action="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}" 
 								 	 ajaxSingle="true"
-								 	 action="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}"
-								 	 reRender="abonoPrevidenciario,SupSecIntegral"/>
+								 	 reRender="abonoPrevidenciario, SupSecIntegral, fundoPrevidenciaTela"/>					
 					</h:selectOneRadio>
 					</div>
 				</div>
-			</div>
+			</div>	
 
-			 <div class="radios-group box-15" >
-			 <label>Abono Previdenciário?</label>
+			<div class="radios-group box-14" >
+				<label for="form:abonoPrevidenciario">Abono Previdenciário?</label>
 				<div class="conteiner">
 					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="abonoPrevidenciario"
 							value="#{nomeacaoServidorFormBean.entidade.abonoPrevidenciario}"
-							disabled="#{not nomeacaoServidorFormBean.exibirPrevSuperSec or nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirTodosOsCampos}">
+							disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) 
+										or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) 
+										or (not nomeacaoServidorFormBean.exibirTodosOsCampos)
+										or nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+									  	or nomeacaoServidorFormBean.tipoOcupacao.id eq 5 }" >
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
 			</div>
 			
-			<div class="radios-group box-15" >
-				<label>SUPSEC Integral?</label>
+			<div class="radios-group box-12" >
+				<label for="form:SupSecIntegral">SUPSEC Integral?</label>
 				<div class="conteiner">
 					<div class="radio-box">
-						<h:selectBooleanCheckbox id="SupSecIntegral" value="#{nomeacaoServidorFormBean.entidade.supSecIntegral}" 
-						disabled="#{not nomeacaoServidorFormBean.exibirPrevSuperSec or nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not nomeacaoServidorFormBean.exibirTodosOsCampos}" 
-						onmouseover="validarSupSec()"/>
+						<h:selectBooleanCheckbox 	
+							id="SupSecIntegral" 
+							value="#{nomeacaoServidorFormBean.entidade.supSecIntegral}" 
+							disabled="#{(not nomeacaoServidorFormBean.exibirPrevSuperSec) 
+										or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) 
+										or (not nomeacaoServidorFormBean.exibirTodosOsCampos)
+										or nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+										or nomeacaoServidorFormBean.tipoOcupacao.id eq 5 }" 
+							onmouseover="validarSupSec()"/>
+					</div>
+				</div>
+			</div>
+			
+			<div class="radios-group box-28">
+				<label>Fundo Previdenciário</label>
+				<div class="conteiner">
+					<div class="radio-box">
+					<h:selectOneRadio id="fundoPrevidenciaTela"
+									  value="#{nomeacaoServidorFormBean.fundoPrevidenciaTela}" 
+									  disabled="#{	(not nomeacaoServidorFormBean.exibirPrevSuperSec) 
+									  				or (nomeacaoServidorFormBean.tpOcupacaoCargoComissionado) 
+									  				or (not nomeacaoServidorFormBean.exibirTodosOsCampos)
+									  				or nomeacaoServidorFormBean.tipoOcupacao.id eq 4 
+													or nomeacaoServidorFormBean.tipoOcupacao.id eq 5 }" >
+						<f:selectItem itemLabel="Não se aplica" itemValue="0" />
+						<f:selectItem itemLabel="Funaprev" itemValue="1" />
+						<f:selectItem itemLabel="Previd" itemValue="2" itemDisabled="#{(not nomeacaoServidorFormBean.exibirPrevid)}"/>
+					</h:selectOneRadio>
 					</div>
 				</div>
 			</div>
 
-			<div class="radios-group box-25">
+			<div class="radios-group box-20 clr">
 				<label for="">Regime *</label>
 				<div class="conteiner">
 					<div class="radio-box">
@@ -735,7 +767,7 @@
 					</h:selectOneRadio>
 					</div>
 				</div>
-			</div>
+			</div>		
 
 			</fieldset>
 
@@ -780,18 +812,19 @@
 			</fieldset>
 			
 			<h:commandButton action="#{nomeacaoServidorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
-
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/nomeacaoServidorList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{nomeacaoServidorListBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
 			
-			<!-- <h:commandButton id="limpaForm"
+			  
+			<h:commandButton id="limpaForm"
 							 value="Limpar"
-							 action="#{nomeacaoServidorFormBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 /> -->
-							 
-			<a href="/srh/paginas/funcional/nomeacaoServidorForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+							 action="#{nomeacaoServidorFormBean.prepareIncluir}"
+							 styleClass="bt-padrao fr mg-right-10"
+							 immediate="true" 
+							 />		
+			
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/nomeacaoServidorList.faces?faces-redirect=true" immediate="true">
+				<f:setPropertyActionListener target="#{nomeacaoServidorListBean.passouConsultar}" value="true"/>
+			</h:commandButton>
+			
 			
 		</h:form>
 

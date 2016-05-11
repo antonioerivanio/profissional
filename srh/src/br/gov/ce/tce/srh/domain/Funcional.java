@@ -207,6 +207,9 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	@Column(name="IDSETORDESIGNADO")
 	private Long idSetorDesignado;	
 
+	@Column(name="FUNDOPREVIDENCIA")
+	private Long fundoPrevidencia;	
+	
 	public Funcional() {
 		//seguindo padrao Java Beans...
 	}
@@ -403,6 +406,8 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 
 	public boolean isAtivoPortal() {return ativoPortal;}
 	public void setAtivoPortal(boolean ativoPortal) {this.ativoPortal = ativoPortal;}
-	
+
+	public Long getFundoPrevidencia() {return fundoPrevidencia;}
+	public void setFundoPrevidencia(Long fundoPrevidencia) {this.fundoPrevidencia = fundoPrevidencia;}		
 	
 }
