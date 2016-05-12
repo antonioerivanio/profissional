@@ -33,7 +33,8 @@ public class RelatorioFeriasServiceImpl implements RelatorioFeriasService {
 		List<RelatorioFerias> relatorioFerias = dao.findByParameter(setor, tiposFerias, inicio, fim, firstResult, maxResults);
 		
 		for (RelatorioFerias rf: relatorioFerias) {
-			rf.setDias(SRHUtils.dataDiff(rf.getInicio(), rf.getFim()));
+			if(rf.getInicio() != null && rf.getFim()!= null)
+				rf.setDias(SRHUtils.dataDiff(rf.getInicio(), rf.getFim()));
 		}
 		
 		return relatorioFerias;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirDossiseServidor_historicoFeriasSub" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="IDPESSOAL" class="java.lang.String" isForPrompting="false">
@@ -20,6 +20,7 @@
 	fe.id,
 	tf.DESCRICAO,
 	fe.ANOREFERENCIA,
+	fe.PERIODO,
 	fe.INICIO,
 	fe.FIM,
 	fe.QTDEDIAS DIAS
@@ -32,7 +33,7 @@ from
 where
 	f.idpessoal = $P!{IDPESSOAL}
 
-order by fe.ANOREFERENCIA desc, fe.INICIO desc ]]>
+order by fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 	</queryString>
 	<field name="ID" class="java.math.BigDecimal"/>
 	<field name="DESCRICAO" class="java.lang.String"/>
@@ -40,6 +41,7 @@ order by fe.ANOREFERENCIA desc, fe.INICIO desc ]]>
 	<field name="INICIO" class="java.sql.Timestamp"/>
 	<field name="FIM" class="java.sql.Timestamp"/>
 	<field name="DIAS" class="java.lang.Integer"/>
+	<field name="PERIODO" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -70,21 +72,21 @@ order by fe.ANOREFERENCIA desc, fe.INICIO desc ]]>
 				<text><![CDATA[TIPO FÉRIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="421" y="0" width="130" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="402" y="0" width="90" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[REFERÊNCIA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="567" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="577" y="0" width="80" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INÍCIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="656" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="661" y="0" width="80" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
@@ -97,6 +99,13 @@ order by fe.ANOREFERENCIA desc, fe.INICIO desc ]]>
 				</textElement>
 				<text><![CDATA[DIAS]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="493" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERÍODO]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -106,30 +115,35 @@ order by fe.ANOREFERENCIA desc, fe.INICIO desc ]]>
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="2" y="1" width="400" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="421" y="1" width="130" height="16"/>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="402" y="1" width="90" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="567" y="1" width="80" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="577" y="1" width="80" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{INICIO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="656" y="1" width="80" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="661" y="1" width="80" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FIM}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToTallestObject" x="743" y="1" width="50" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DIAS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{DIAS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="493" y="1" width="80" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PERIODO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
