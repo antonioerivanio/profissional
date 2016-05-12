@@ -89,7 +89,7 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 			sql.append("and TB_FERIAS.INICIO <= to_date('" + dateToString(fim) +"', 'dd/MM/yyyy') ");					
 		}
 		
-		sql.append("ORDER BY TB_PESSOAL.NOMECOMPLETO ");
+		sql.append("ORDER BY TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC, TB_FERIAS.FIM DESC ");
 
 						
 		return sql.toString();

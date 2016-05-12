@@ -123,39 +123,58 @@ public class RelatorioFeriasListBean implements Serializable {
 			//valida consulta pessoa
 			if( count == 0 )
 				throw new SRHRuntimeException("Realize uma consulta primeiro.");
-
 			
-			//  formatando parametros para trabalhar somento com strings na query do irepport
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			String inicioAux = null;
 			String fimAux = null;
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			String tiposFeriasAux = "";
 			
 			if (inicio != null){
-				inicioAux = formatter.format(inicio);
+				inicioAux = dateFormat.format(inicio);
 			}
 			
 			if (fim != null){
-				fimAux = formatter.format(fim);
+				fimAux = dateFormat.format(fim);
 			}
 			
-			String tiposFeriasAux = "";
-			boolean primeiro = true;
-			for (String tipoferias : tiposFerias) {
-				if(primeiro){
-					primeiro = false;
-				}else{
-					tiposFeriasAux += " , ";
-				}
-				tiposFeriasAux += tipoferias;				
+			StringBuilder paramWhere = new StringBuilder("WHERE 1=1 "); 
+
+			if (setor!=null && setor.getId() != null && setor.getId() != 0L){
+				paramWhere.append("and tb_funcional.idsetor = '" + setor.getId() + "' " );
 			}
+			
+			if (tiposFerias != null && !tiposFerias.isEmpty()){
+				boolean primeiro = true;
+				String temp = "";
+				temp += "and TB_FERIAS.TIPOFERIAS in (";
+				for (String string : tiposFerias) {
+					if(primeiro){
+						primeiro = false;
+					}else{
+						tiposFeriasAux += ", ";
+					}
+					tiposFeriasAux += string;
+				}
+				temp += tiposFeriasAux + ") ";
+				paramWhere.append(temp);
+			}
+			
+			if (inicio != null) {
+				paramWhere.append("and TB_FERIAS.INICIO >= to_date('" + inicioAux +"', 'dd/MM/yyyy') ");					
+			}
+			
+			if (fim != null) {
+				paramWhere.append("and TB_FERIAS.INICIO <= to_date('" + fimAux +"', 'dd/MM/yyyy') ");					
+			}			
 			
 			Map<String, Object> parametros = new HashMap<String, Object>();
-			parametros.put("IDSETORFILTRO", setor==null?null:setor.getId());
-			parametros.put("SETORFILTRO", setor==null?null:setor.getNome());
-			parametros.put("TIPOSFERIASFILTRO", tiposFerias.isEmpty()?null:tiposFeriasAux);
+			parametros.put("IDSETORFILTRO", setor == null ? null : setor.getId());
+			parametros.put("SETORFILTRO", setor == null ? null : setor.getNome());
+			parametros.put("TIPOSFERIASFILTRO", tiposFerias.isEmpty() ? null : tiposFeriasAux);
 			parametros.put("INICIOFILTRO",  inicioAux);
 			parametros.put("FIMFILTRO", fimAux);
-						
+			parametros.put("PARAMWHERE", paramWhere.toString());
+					
 
 			relatorioUtil.relatorio("feriasSetor.jasper", parametros, "feriasSetor.pdf");
 
