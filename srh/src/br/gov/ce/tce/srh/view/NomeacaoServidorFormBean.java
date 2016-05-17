@@ -2,9 +2,6 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.event.ValueChangeEvent;
@@ -115,7 +112,6 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 	private String nome;
 	private Long pessoa = new Long(0);
-	private Long fundoPrevidenciaTela = new Long(0);
 
 	private TipoOcupacao tipoOcupacao;
 	private LeiIncorporacao leiIncorporacao;
@@ -130,13 +126,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private Boolean exibirTodosOsCampos = false;
 	private Boolean tpOcupacaoCargoComissionado = false;
 	private Boolean liberarQtdQuintos = false;
+	private Boolean exibirPrevSuperSec = false;
 	private Boolean exibirOrgaoEhSalario = false;
 	private Boolean digitarMatricula = false;
-	
-	private Boolean exibirPrevidencia = false;
-	private Boolean exibirPrevSuperSec = false;
-	private Boolean exibirPrevid = false;
-	private Boolean emitirAlertaFundoPrevidencia = false;
 
 
 	// combos
@@ -158,7 +150,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private List<LeiIncorporacao> comboLeiIncorporacao;
 	private List<Entidade> comboOrgaoOrigem;
 
-	
+
+
+
 	/**
 	 * Realizar antes de carregar tela incluir
 	 * 
@@ -174,7 +168,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 		getEntidade().setIRRF(true);
 		getEntidade().setAtivoPortal(true);
 
-		return "nomeacaoServidorForm?faces-redirect=true";
+		return "incluir";
 	}
 
 
@@ -193,10 +187,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 			this.entidade = funcionalService.getById( this.entidade.getId() );
 
 			// dados pessoais
-			this.pessoa = this.entidade.getPessoal().getId();
-			this.nome = this.entidade.getPessoal().getNomeCompleto();
-			if(this.entidade.getFundoPrevidencia() != null)
-				this.fundoPrevidenciaTela = this.entidade.getFundoPrevidencia();
+			this.pessoa = getEntidade().getPessoal().getId();
+			this.nome = getEntidade().getPessoal().getNomeCompleto();
 
 			// CBOs
 			if ( this.entidade.getCbo() != null) {
@@ -205,30 +197,14 @@ public class NomeacaoServidorFormBean implements Serializable {
 				this.cbo1 = cboService.getByCodigo( this.cbo2.getCodigo().substring(0, this.cbo2.getCodigo().length() - 1) );				
 			}
 
-			// carregar dados ocupacao
-			if ( this.entidade.getOcupacao() != null ) {
+			// carrgar dados ocupacao
+			if ( this.entidade.getOcupacao() != null )
 				this.tipoOcupacao = getEntidade().getOcupacao().getTipoOcupacao();
-				
-				if( getTipoOcupacao().getId() == 6L ) {					
-					this.tpOcupacaoCargoComissionado = true;
-				} else {
-					this.tpOcupacaoCargoComissionado = false;
-				}
-			}
 			
 			// exibir todos os campos?
 			exibirTodosOsCampos = false;
 			if(entidade.getSaida() == null)
 				exibirTodosOsCampos = true;
-			
-			
-			// Validação de campos relacionados a previdência
-			if( new Long (2L).equals(entidade.getPrevidencia()) )
-				this.exibirPrevSuperSec = true;				
-			else
-				this.exibirPrevSuperSec = false;
-			
-			alteraFundoPrevidencia();
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -251,9 +227,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 			if ( leiIncorporacao != null )
 				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );			
 
-			this.entidade.setFundoPrevidencia(fundoPrevidenciaTela);
-			
-			nomeacaoFuncionalService.nomear( entidade );
+			nomeacaoFuncionalService.nomear( entidade );			
+
 			
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -278,10 +253,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public String alterar() {
 
 		try {
+
 			if ( leiIncorporacao != null )
-				this.entidade.setLeiIncorporacao( this.leiIncorporacao.getDescricao() );
-			
-			this.entidade.setFundoPrevidencia(fundoPrevidenciaTela);
+				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );
 			
 			nomeacaoFuncionalService.alterarNomeacao( entidade );			
 
@@ -399,58 +373,24 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 			setTipoOcupacao( tipoOcupacaoService.getById( getTipoOcupacao().getId() ));
 
-			// se for Ocupante somente Cargo Comissionado
-			if( getTipoOcupacao().getId() == 6L ) {
-				
+			if( getTipoOcupacao().getDescricao().equalsIgnoreCase("Ocupante somente Cargo Comissionado") ) {
 				this.tpOcupacaoCargoComissionado = true;
 				this.entidade.setFolha(new Folha());
 				this.entidade.getFolha().setId(2l);
-				
-				this.entidade.setProporcionalidade(100L);
-				
 				this.entidade.setPrevidencia(2L);
 				this.entidade.setSupSecIntegral(false);
 				this.entidade.setAbonoPrevidenciario(false);
-				this.setFundoPrevidenciaTela(0L);
-				
-				this.entidade.setRegime(1L);
-				
+				this.entidade.setProporcionalidade(100L);
 				this.entidade.setSalarioOrigem(new BigDecimal(0));
 				this.entidade.setSalarioOrigemMonetario("0");
-				
+				this.entidade.setRegime(1L);
 			} else {
-				
 				this.tpOcupacaoCargoComissionado = false;
-				
-				// se for estagiário
-				if( getTipoOcupacao().getId() == 4L || getTipoOcupacao().getId() == 5L ) {
-					
-					this.entidade.setFolha(new Folha());
-					this.entidade.getFolha().setId(4L);
-					
-					this.entidade.setPrevidencia(4L);
-					this.entidade.setSupSecIntegral(false);
-					this.entidade.setAbonoPrevidenciario(false);
-					this.setFundoPrevidenciaTela(0L);
-				
-				} else {
-					
-					this.entidade.setFolha(new Folha());
-					
-					this.entidade.setPrevidencia(null);
-					this.entidade.setSupSecIntegral(false);
-					this.entidade.setAbonoPrevidenciario(false);
-					this.setFundoPrevidenciaTela(0L);
-					
-					this.exibirPrevSuperSec = false;
-				}				
-				
-			}			
+			}
 
 			this.comboCargoFuncao = null;
 			this.comboClasseReferencia = null;
-			getComboCargoFuncao();
-			
+			getComboCargoFuncao();			
 		}
 	}
 
@@ -802,80 +742,24 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 
 	/**
-	 * Liberar os campos Abono, SUPSEC e Fundo Presidenciario conforme a Previdencia
+	 * Liberar os campos Abono e SUPSEC conforme a Previdencia
 	 * 
 	 */
 	public void carregaPrevidenciaSupSec() {
 
 		if( entidade.getPrevidencia() != null ) {
-			
-			if( new Long(2L).equals(entidade.getPrevidencia()) ) {
-				this.exibirPrevSuperSec = true;				
+
+			if( entidade.getPrevidencia() == 2 ) {
+				this.exibirPrevSuperSec = true;
 			} else {
-				this.exibirPrevSuperSec = false;				
-				this.entidade.setAbonoPrevidenciario(false);
-				if(this.tpOcupacaoCargoComissionado){
-					this.entidade.setSupSecIntegral(false);
-				} else {
-					this.entidade.setSupSecIntegral(true);
-				}
+				this.exibirPrevSuperSec = false;
+				entidade.setAbonoPrevidenciario(false);
+				entidade.setSupSecIntegral(true);
 			}
-			
-			alteraFundoPrevidencia();
 
 		}
 	}
 
-	/**
-	 * Controla a alteração do fundo previdenciário
-	 */
-	public void alteraFundoPrevidencia(){
-		
-		if( entidade.getPrevidencia() != null ) {
-			
-			if( new Long(2L).equals(entidade.getPrevidencia()) ) {
-				
-				if(this.entidade.getExercicio() == null){
-					this.exibirPrevid = false;
-					this.fundoPrevidenciaTela = new Long(0L);
-				} else {
-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-					try {
-						Date date = formatter.parse("01/01/2014");
-						if(!entidade.getExercicio().before(date)){
-							this.exibirPrevid = true;
-						}else{
-							this.exibirPrevid = false;
-							if ( new Long(2L).equals(entidade.getFundoPrevidencia()) )
-								this.fundoPrevidenciaTela = new Long(0L);
-						}
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-				}
-			
-			} else {
-				this.exibirPrevid = false;
-				this.fundoPrevidenciaTela = new Long(0);
-			}
-			
-			atualizaEmitirAlertaFundoPrevidencia();
-		}
-		
-	}
-	
-	/**
-	 * Atualiza flag emitirAlertaFundoPrevidencia de acordo com o fundo previdenciário
-	 */
-	public void atualizaEmitirAlertaFundoPrevidencia(){
-		
-		if(this.fundoPrevidenciaTela.equals(this.entidade.getFundoPrevidencia())){
-			this.emitirAlertaFundoPrevidencia = false;
-		} else {
-			this.emitirAlertaFundoPrevidencia = true;
-		}
-		
-	}
 
 	/**
 	 * Liberar o campo Orgao Origem conforme o Vinculo
@@ -905,10 +789,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 		this.alterar = false;
 		this.digitarMatricula = false;
 
-		this.pessoa = new Long(0);		
+		this.pessoa = new Long(0);
 		this.nome = null;
-		this.fundoPrevidenciaTela = new Long(0);
-		this.emitirAlertaFundoPrevidencia = false;
 		
 		
 		// CBOs
@@ -996,9 +878,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public Boolean getAlterar() {return alterar;}
 	public Boolean getExibirTodosOsCampos() {return exibirTodosOsCampos;}
 	public Boolean getLiberarQtdQuintos() {return liberarQtdQuintos;}
+	public Boolean getExibirPrevSuperSec() {return exibirPrevSuperSec;}
 	public Boolean getExibirOrgaoEhSalario() {return exibirOrgaoEhSalario;}
-	public Boolean getExibirPrevSuperSec() {return this.exibirPrevSuperSec;}
-	public Boolean getExibirPrevid() {return this.exibirPrevid;}
 
 	public Boolean getDigitarMatricula() {return digitarMatricula;}
 	public void setDigitarMatricula(Boolean digitarMatricula) {
@@ -1006,16 +887,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 		if(!digitarMatricula){
 			entidade.setMatricula(new String());
 		}
-	}
+	}	
 
-	public Long getFundoPrevidenciaTela() {return fundoPrevidenciaTela;}
-	public void setFundoPrevidenciaTela(Long fundoPrevidenciaTela) {this.fundoPrevidenciaTela = fundoPrevidenciaTela;}
 
-	public Boolean getEmitirAlertaFundoPrevidencia() {return emitirAlertaFundoPrevidencia;}
-	public void setEmitirAlertaFundoPrevidencia(Boolean emitirAlertaFundoPrevidencia) {this.emitirAlertaFundoPrevidencia = emitirAlertaFundoPrevidencia;}
-
-	public Boolean getExibirPrevidencia() {return exibirPrevidencia;}
-	public void setExibirPrevidencia(Boolean exibirPrevidencia) {this.exibirPrevidencia = exibirPrevidencia;}			
-
-	
 }
