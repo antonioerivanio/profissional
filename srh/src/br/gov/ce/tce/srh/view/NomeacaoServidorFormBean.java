@@ -209,7 +209,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 			if ( this.entidade.getOcupacao() != null ) {
 				this.tipoOcupacao = getEntidade().getOcupacao().getTipoOcupacao();
 				
-				if( getTipoOcupacao().getId() == 6 ) {					
+				if( getTipoOcupacao().getId() == 6L ) {					
 					this.tpOcupacaoCargoComissionado = true;
 				} else {
 					this.tpOcupacaoCargoComissionado = false;
@@ -223,7 +223,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 			
 			
 			// Validação de campos relacionados a previdência
-			if( entidade.getPrevidencia() == 2 )
+			if( new Long (2L).equals(entidade.getPrevidencia()) )
 				this.exibirPrevSuperSec = true;				
 			else
 				this.exibirPrevSuperSec = false;
@@ -400,7 +400,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 			setTipoOcupacao( tipoOcupacaoService.getById( getTipoOcupacao().getId() ));
 
 			// se for Ocupante somente Cargo Comissionado
-			if( getTipoOcupacao().getId() == 6 ) {
+			if( getTipoOcupacao().getId() == 6L ) {
 				
 				this.tpOcupacaoCargoComissionado = true;
 				this.entidade.setFolha(new Folha());
@@ -423,7 +423,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 				this.tpOcupacaoCargoComissionado = false;
 				
 				// se for estagiário
-				if( getTipoOcupacao().getId() == 4 || getTipoOcupacao().getId() == 5 ) {
+				if( getTipoOcupacao().getId() == 4L || getTipoOcupacao().getId() == 5L ) {
 					
 					this.entidade.setFolha(new Folha());
 					this.entidade.getFolha().setId(4L);
@@ -809,7 +809,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 		if( entidade.getPrevidencia() != null ) {
 			
-			if( entidade.getPrevidencia() == 2 ) {
+			if( new Long(2L).equals(entidade.getPrevidencia()) ) {
 				this.exibirPrevSuperSec = true;				
 			} else {
 				this.exibirPrevSuperSec = false;				
@@ -833,22 +833,21 @@ public class NomeacaoServidorFormBean implements Serializable {
 		
 		if( entidade.getPrevidencia() != null ) {
 			
-			if( entidade.getPrevidencia() == 2 ) {
+			if( new Long(2L).equals(entidade.getPrevidencia()) ) {
 				
 				if(this.entidade.getExercicio() == null){
 					this.exibirPrevid = false;
-					this.fundoPrevidenciaTela = new Long(0);
+					this.fundoPrevidenciaTela = new Long(0L);
 				} else {
 					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-					Date date;
 					try {
-						date = formatter.parse("01/01/2014");
+						Date date = formatter.parse("01/01/2014");
 						if(!entidade.getExercicio().before(date)){
 							this.exibirPrevid = true;
 						}else{
 							this.exibirPrevid = false;
-							if (entidade.getFundoPrevidencia() == 2L)
-								this.fundoPrevidenciaTela = new Long(0);
+							if ( new Long(2L).equals(entidade.getFundoPrevidencia()) )
+								this.fundoPrevidenciaTela = new Long(0L);
 						}
 					} catch (ParseException e) {
 						e.printStackTrace();
