@@ -826,3 +826,25 @@ body {
 }
 
 /* FIM BOTOES */
+
+.msg-dev-div {
+	background-image: url("../img/ico-dev.png");
+    background-repeat: no-repeat;
+    height: 20px;
+    background-size: auto 100%;    
+}
+
+.msg-dev {
+	color: red;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding-left: 24px;
+    padding-top: 5px;
+    display: block;
+}
+
+.msg-dev-home {
+	position: absolute;
+    left: 40%;
+    top: 2%;		
+}

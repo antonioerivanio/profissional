@@ -4,7 +4,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:sec="http://www.springframework.org/security/facelets/tags"  >
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	  >
 
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-16" />
@@ -39,37 +40,7 @@
 
                 <div class="topo">
 					
-                    <h1>
-                        <a href="#" title="">
-                            SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceara
-                        </a>
-                       
-                    </h1>
-                    
-                   
-					
-                    <h2 class="logo-tce">
-                        Tribunal de Contas do Estado  do Cear√°
-                    </h2>
-					
-					<!-- <div class="manual-srh" style="margin-top: -10px; cursor:pointer;float:right;margin-right:191px;margin-top:-102px;">
-                          <a href="/srh/manual-srh/manual_SRH.pdf" target="_blank">Manual do Usu·rio</a>
-					</div> --> 
-					
-                    <div class="login-box">
-						
-					    
-                    	<h:form>
-                        <h2 class="dn">Login</h2>
-
-                        <p>Ol·, <span class="user"><h:outputText value="#{LoginBean.usuarioLogado}" /></span></p>
-
-                        <h:outputLink title="Sair" 
-                        	value="#{facesContext.externalContext.requestContextPath}/logout.jsp">
-							<h:outputText value="Sair"/>
-						</h:outputLink>
-						</h:form>
-                    </div>
+                    <ui:include src="topo.xhtml"/>
 
                 </div>
 
