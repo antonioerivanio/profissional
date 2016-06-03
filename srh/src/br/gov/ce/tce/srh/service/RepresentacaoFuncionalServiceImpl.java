@@ -123,11 +123,10 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	@Transactional
 	public void exonerar(RepresentacaoFuncional entidade) throws SRHRuntimeException {
 
-		/*
-		 * Regra:
-		 * Validar dados obrigatorios.
-		 * 
-		 */	
+		List<RepresentacaoFuncional> representacaoFuncionalList = dao.findByFuncional(entidade.getFuncional().getId());
+		if(!entidade.getId().equals(representacaoFuncionalList.get(0).getId()))
+			throw new SRHRuntimeException("Exoneração não permitida. Somente o último registro de Representação pode ser exonerado/editado.");
+		
 		validarExoneracao(entidade);
 
 		if(atualizaIdRepresentacaoCargo(entidade)){
