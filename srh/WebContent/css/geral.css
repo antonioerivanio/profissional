@@ -212,11 +212,10 @@ body {
     }
     
         .topo h1 a, .login-topo h1 a {
-            margin-top: 13px;  
-  			width: 368px;
-  			height: 91px;           
+            width: 368px;
+            height: 121px;             
             display: block;
-            background: url(../img/logo-srh-telas.png) 0 0 no-repeat;
+            background: url(../img/logo-srh.png) 0 0 no-repeat;
             text-indent: -9000px;
         }
             
