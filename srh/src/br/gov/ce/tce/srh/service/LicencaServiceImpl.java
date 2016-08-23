@@ -118,8 +118,9 @@ public class LicencaServiceImpl implements LicencaService {
 				//remove
 				Licenca licencaEspecialBD = dao.getById(entidade.getId());
 				
-				licencaEspecialService.ajustarSaldo( licencaEspecialBD.getLicencaEspecial().getId(), "INSERIR", 
-						SRHUtils.dataDiff(licencaEspecialBD.getInicio(), licencaEspecialBD.getFim()) );
+				if ( licencaEspecialBD.getLicencaEspecial() != null )
+					licencaEspecialService.ajustarSaldo( licencaEspecialBD.getLicencaEspecial().getId(), "INSERIR", 
+							SRHUtils.dataDiff(licencaEspecialBD.getInicio(), licencaEspecialBD.getFim()) );
 				
 				//adicona
 				licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "REMOVER", 
