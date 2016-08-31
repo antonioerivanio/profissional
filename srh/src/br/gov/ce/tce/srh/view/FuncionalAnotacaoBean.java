@@ -251,12 +251,12 @@ public class FuncionalAnotacaoBean implements Serializable {
 
 			try {
 
-				getEntidade().setFuncional( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
+				getEntidade().setFuncional( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
 				if ( getEntidade().getFuncional() != null) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.cpf = getEntidade().getFuncional().getPessoal().getCpf();	
 				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+					FacesUtil.addInfoMessage("Matrícula não encontrada.");
 				}
 
 			} catch (Exception e) {
@@ -274,12 +274,12 @@ public class FuncionalAnotacaoBean implements Serializable {
 
 			try {
 
-				getEntidade().setFuncional( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
+				getEntidade().setFuncional( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					this.matricula = getEntidade().getFuncional().getMatricula();
 				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
+					FacesUtil.addInfoMessage("CPF não encontrado.");
 				}
 
 			} catch (Exception e) {

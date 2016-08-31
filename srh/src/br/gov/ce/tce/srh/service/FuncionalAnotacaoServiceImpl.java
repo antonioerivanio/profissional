@@ -1,6 +1,8 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +34,27 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 	public FuncionalAnotacao salvar(FuncionalAnotacao entidade)throws SRHRuntimeException {
 
 		// validando dados obrigatorios.
-		validarDados(entidade);
+		validarDadosObrigatorios(entidade);
 
 		/*
 		 * Regra
 		 * Setar o IDFUNCIONAL conforme a data
 		 */
 		setandoFuncionalConformeData(entidade);
+		
+		
+		Date dataNascimento = entidade.getFuncional().getPessoal().getNascimento();
+		
+		Calendar c = new GregorianCalendar();				
+		c.setTime(dataNascimento);		
+		c.add(Calendar.YEAR, 100);
+		
+		Date dataMaxima = c.getTime();
+		
+		if(entidade.getData().before(dataNascimento) || entidade.getData().after(dataMaxima))
+			throw new SRHRuntimeException("Data inválida.");
+		
+		
 
 		// persistindo
 		return dao.salvar(entidade);
@@ -79,7 +95,7 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 	 * @throws SRHRuntimeException 
 	 *  
 	 */
-	private void validarDados(FuncionalAnotacao entidade) {
+	private void validarDadosObrigatorios(FuncionalAnotacao entidade) {
 
 		// validando o servidor
 		if (entidade.getFuncional() == null)
@@ -131,9 +147,10 @@ public class FuncionalAnotacaoServiceImpl implements FuncionalAnotacaoService {
 			}
 		}
 
-		// caso nenhuma funcional foi encontrada
-		if ( selecionada == null )
-			throw new SRHRuntimeException("A data da anotação não condiz com nenhum periodo de nomeação do Funcionário. Digite outra data.");
+		// caso nenhuma funcional seja encontrada, é setado o funcional com id maior
+		if ( selecionada == null && listaFuncional != null && !listaFuncional.isEmpty()) {
+			entidade.setFuncional(listaFuncional.get(0));
+		}	
 
 	}
 
