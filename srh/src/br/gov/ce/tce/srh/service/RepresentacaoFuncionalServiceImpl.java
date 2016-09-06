@@ -124,8 +124,23 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	public void exonerar(RepresentacaoFuncional entidade) throws SRHRuntimeException {
 
 		List<RepresentacaoFuncional> representacaoFuncionalList = dao.findByFuncional(entidade.getFuncional().getId());
-		if(!entidade.getId().equals(representacaoFuncionalList.get(0).getId()))
-			throw new SRHRuntimeException("Exoneração não permitida. Somente o último registro de Representação pode ser exonerado/editado.");
+		
+		Long ultimoTitular = null;
+		Long ultimoSubstituicao = null;
+		Long ultimoDesignado = null;
+		
+		for (RepresentacaoFuncional representacaoFuncional : representacaoFuncionalList) {
+			if (ultimoTitular == null && representacaoFuncional.getTipoNomeacao() == 1){
+				ultimoTitular = representacaoFuncional.getId();
+			} else if (ultimoSubstituicao == null && representacaoFuncional.getTipoNomeacao() == 2){
+				ultimoSubstituicao = representacaoFuncional.getId();
+			} else if (ultimoDesignado == null && representacaoFuncional.getTipoNomeacao() == 3){
+				ultimoDesignado = representacaoFuncional.getId();
+			}
+		}
+		
+		if(!entidade.getId().equals(ultimoTitular) && !entidade.getId().equals(ultimoSubstituicao) && !entidade.getId().equals(ultimoDesignado))
+			throw new SRHRuntimeException("Exoneração não permitida. Para cada tipo de nomeação, somente o último registro de Representação pode ser exonerado/editado.");
 		
 		validarExoneracao(entidade);
 
