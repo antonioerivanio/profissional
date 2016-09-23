@@ -371,7 +371,9 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			listaPessoaCurso.add(pessoaCurso);
 
 			// limpando os campos
-			setEntidade( new PessoalCursoProfissional() );
+			PessoalCursoProfissional pessoaCursoNovo = new PessoalCursoProfissional();
+			pessoaCursoNovo.setAreaAtuacao(getEntidade().isAreaAtuacao());
+			setEntidade( pessoaCursoNovo );
 
 			this.cpf = new String();
 			this.nome = new String();
