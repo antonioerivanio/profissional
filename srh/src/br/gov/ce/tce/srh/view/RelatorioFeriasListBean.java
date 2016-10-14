@@ -260,7 +260,7 @@ public class RelatorioFeriasListBean implements Serializable {
 
 
 	public void setSetor(Setor setor) {
-		this.setor = setor;
+		this.setor = setorService.getById(setor.getId());
 	}
 
 

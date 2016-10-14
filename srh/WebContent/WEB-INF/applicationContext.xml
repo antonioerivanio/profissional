@@ -30,12 +30,32 @@
          </property>  
     </bean>
 
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
         <property name="driverClassName" value="${database.driver}"/>
         <property name="url" value="${database.url}"/>
         <property name="username" value="${database.username}"/>
         <property name="password" value="${database.password}"/>
-    </bean>
+    </bean> -->
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${database.driver}" />
+		<property name="jdbcUrl" value="${database.url}" />
+		<property name="user" value="${database.username}" />
+		<property name="password" value="${database.password}" />
+		<property name="acquireIncrement" value="${database.acquireIncrement}" />
+		<property name="initialPoolSize" value="${database.initialPoolSize}" />
+		<property name="minPoolSize" value="${database.minPoolSize}" />
+		<property name="maxPoolSize" value="${database.maxPoolSize}" />
+		<property name="maxIdleTime" value="${database.maxIdleTime}" />
+		<property name="maxIdleTimeExcessConnections" value="${database.maxIdleTimeExcessConnections}" />
+		<property name="unreturnedConnectionTimeout" value="${database.unreturnedConnectionTimeout}" />
+		<property name="checkoutTimeout" value="${database.checkoutTimeout}" />
+		<property name="idleConnectionTestPeriod" value="${database.idleConnectionTestPeriod}" />
+		<property name="preferredTestQuery" value="${database.preferredTestQuery}" />
+        <property name="testConnectionOnCheckout" value="${database.testConnectionOnCheckout}" />
+        <property name="testConnectionOnCheckin" value="${database.testConnectionOnCheckin}" />
+	</bean>
+
 
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
