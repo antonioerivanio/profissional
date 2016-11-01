@@ -61,7 +61,7 @@
 								 styleClass="maskMatricula"
 								 value="#{licencaFormBean.matricula}"
 								 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" >
-						<a4j:support event="onchange"
+						<a4j:support event="onblur"
 									 focus="processo"
 									 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 									 ajaxSingle="true" />

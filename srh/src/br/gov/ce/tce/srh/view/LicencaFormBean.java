@@ -173,9 +173,11 @@ public class LicencaFormBean implements Serializable {
 				
 				getEntidade().setTipoLicenca( tipoLicencaService.getById( getEntidade().getTipoLicenca().getId() ) );
 	
-				if ( getEntidade().getTipoLicenca().isEspecial() ) {
+				if ( getEntidade().getTipoLicenca().isEspecial() && this.entidade.getPessoal() != null) {
+					
+					List<LicencaEspecial> licencas = licencaEspecialService.findByPessoalComSaldo( this.entidade.getPessoal().getId() );
 	
-		        	for ( LicencaEspecial entidade : licencaEspecialService.findByPessoalComSaldo( this.entidade.getPessoal().getId() )){
+		        	for ( LicencaEspecial entidade : licencas ){
 		        		exibirComboLicencaEspecial = true;
 		            	toReturn.add(entidade);	
 		            }

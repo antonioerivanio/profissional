@@ -39,9 +39,11 @@
 		<script>
 			function retorno(component){
 				var mySplit = component.value.split(",");
-	
-				if (window.opener.document.getElementById('form:matricula') != null)
+				
+				if (window.opener.document.getElementById('form:matricula') != null){
 					window.opener.document.getElementById('form:matricula').value = (mySplit[0]);
+					window.opener.document.getElementById('form:matricula').focus();
+				}
 				if (window.opener.document.getElementById('form:idFuncional') != null)
 					window.opener.document.getElementById('form:idFuncional').value = mySplit[1];
 				if (window.opener.document.getElementById('form:idPessoa') != null)

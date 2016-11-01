@@ -100,7 +100,7 @@ public class LicencaEspecialDAOImpl implements LicencaEspecialDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<LicencaEspecial> findByPessoalComSaldo(Long pessoal) {
-		Query query = entityManager.createQuery("Select l from LicencaEspecial l where l.pessoal.id = :pessoal and l.saldodias > 0 and l.contaremdobro = false ORDER BY l.anoinicial DESC");
+		Query query = entityManager.createQuery("Select l from LicencaEspecial l where l.pessoal.id = :pessoal and l.saldodias > 0 ORDER BY l.anoinicial DESC");
 		query.setParameter("pessoal", pessoal);
 		return query.getResultList();
 	}
