@@ -35,7 +35,7 @@
 				Olá, <span class="user"><h:outputText value="#{LoginBean.usuarioLogado}" /></span>
 			</p>
 	
-			<h:outputLink title="Sair" value="#{facesContext.externalContext.requestContextPath}/logout.jsp">
+			<h:outputLink title="Sair" value="#{loginBean.logout}">
 				<h:outputText value="Sair" />
 			</h:outputLink>
 		</h:form>
