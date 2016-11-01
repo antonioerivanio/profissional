@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,18 +42,26 @@ public class AuthenticationService {
 			
 			
 			try {
-				authenticate = authenticationManager.authenticate(token);
+				 authenticate = authenticationManager.authenticate(token);
 			} catch (DisabledException e) {
 				e.printStackTrace();
 				throw new RuntimeException("Usuário desabilitado!");
 			} catch (LockedException e) {
 				e.printStackTrace();
 				throw new RuntimeException("Usuário bloqueado!");
+			} catch (CredentialsExpiredException e) {
+				e.printStackTrace();
+				throw new RuntimeException("Conta expirada!");
+			} catch (UsernameNotFoundException e) {
+				e.printStackTrace();
+				throw new RuntimeException("Nenhum usuário com esse login foi encontrado!");
 			} catch (BadCredentialsException e) {
 				e.printStackTrace();
 				throw new RuntimeException("Login ou senha inválidos!");
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("Erro ao logar!");
 			}			
-			
 			
 			SecurityContextHolder.getContext().setAuthentication(authenticate);
 			
