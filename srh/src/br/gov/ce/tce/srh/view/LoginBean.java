@@ -67,7 +67,7 @@ public class LoginBean implements Serializable {
 
 	public String logout() {
 		authenticationService.logout();
-		return "login";
+		return "/login.faces?faces-redirect=true";
 	}
 
 	public String getUsuarioLogado() {

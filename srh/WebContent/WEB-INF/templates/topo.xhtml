@@ -35,9 +35,9 @@
 				Olá, <span class="user"><h:outputText value="#{LoginBean.usuarioLogado}" /></span>
 			</p>
 	
-			<h:outputLink title="Sair" value="#{loginBean.logout}">
+			<h:commandLink title="Sair" action="#{LoginBean.logout}">
 				<h:outputText value="Sair" />
-			</h:outputLink>
+			</h:commandLink>
 		</h:form>
 	</div>
 
