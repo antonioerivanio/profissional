@@ -42,17 +42,15 @@
 		<property name="jdbcUrl" value="${database.url}" />
 		<property name="user" value="${database.username}" />
 		<property name="password" value="${database.password}" />
-		<!--property name="acquireIncrement" value="${database.acquireIncrement}" /-->
-		<!--property name="initialPoolSize" value="${database.initialPoolSize}" /-->
+		
+        <property name="acquireIncrement" value="${database.acquireIncrement}" />
+		<property name="initialPoolSize" value="${database.initialPoolSize}" />
 		<property name="minPoolSize" value="${database.minPoolSize}" />
 		<property name="maxPoolSize" value="${database.maxPoolSize}" />
+		<property name="maxConnectionAge" value="${database.maxConnectionAge}" />
 		<property name="maxIdleTime" value="${database.maxIdleTime}" />
 		<property name="maxIdleTimeExcessConnections" value="${database.maxIdleTimeExcessConnections}" />
 		<property name="testConnectionOnCheckout" value="${database.testConnectionOnCheckout}" />
-		<property name="maxStatements" value="${database.maxStatements}" />
-		<!--property name="idleConnectionTestPeriod" value="${database.idleConnectionTestPeriod}" /-->
-		<!--property name="preferredTestQuery" value="${database.preferredTestQuery}" /-->
-        <!--property name="testConnectionOnCheckin" value="${database.testConnectionOnCheckin}" /-->
 	</bean>
 
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
