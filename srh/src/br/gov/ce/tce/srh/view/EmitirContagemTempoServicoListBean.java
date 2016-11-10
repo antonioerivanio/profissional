@@ -22,6 +22,7 @@ import br.gov.ce.tce.srh.domain.Deducao;
 import br.gov.ce.tce.srh.domain.Ferias;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Licenca;
+import br.gov.ce.tce.srh.domain.LicencaEspecial;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.AcrescimoService;
@@ -29,6 +30,7 @@ import br.gov.ce.tce.srh.service.AverbacaoService;
 import br.gov.ce.tce.srh.service.DeducaoService;
 import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.LicencaEspecialService;
 import br.gov.ce.tce.srh.service.LicencaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -56,6 +58,9 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	
 	@Autowired
 	private LicencaService licencaService;
+	
+	@Autowired
+	private LicencaEspecialService licencaEspecialService;
 	
 	@Autowired
 	private AverbacaoService averbacaoService;
@@ -86,6 +91,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	private List<Funcional> listaFuncional = new ArrayList<Funcional>();
 	private List<Ferias> listaFerias = new ArrayList<Ferias>();
 	private List<Licenca> listaLicenca = new ArrayList<Licenca>();
+	private List<LicencaEspecial> listaLicencaEspecial = new ArrayList<LicencaEspecial>();
 	private List<Licenca> listaLicencaExcluir = new ArrayList<Licenca>();
 	private List<Averbacao> listaAverbacao = new ArrayList<Averbacao>();
 	private List<Acrescimo> listaAcrescimo = new ArrayList<Acrescimo>();
@@ -160,13 +166,12 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			}
 			
 
-			// carregando licencas especiais
-			this.listaLicenca = licencaService.findByPessoaLicencaEspecial( entidade.getPessoal().getId() );
-
-			// percorrendo as licencas especiais
-			for (Licenca licenca : listaLicenca) {
-				if ( licenca.getLicencaEspecial().isContaremdobro() )
-					totalDia += licenca.getLicencaEspecial().getQtdedias()*2;
+			// carregando licencas especiais			
+			this.listaLicencaEspecial = licencaEspecialService.findByPessoalComSaldo(entidade.getPessoal().getId());
+			
+			for (LicencaEspecial licencaEspecial : listaLicencaEspecial) {
+				if ( licencaEspecial.isContaremdobro() )
+					totalDia += licencaEspecial.getQtdedias()*2;
 			}			
 
 			// caregando averbacao
@@ -359,6 +364,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	public List<Funcional> getListaFuncional() {return listaFuncional;}
 	public List<Ferias> getListaFerias() {return listaFerias;}
 	public List<Licenca> getListaLicenca() {return listaLicenca;}
+	public List<LicencaEspecial> getListaLicencaEspecial() {return listaLicencaEspecial;}
 	public List<Averbacao> getListaAverbacao() {return listaAverbacao;}
 	public List<Acrescimo> getListaAcrescimo() {return listaAcrescimo;}
 	public List<Deducao> getListaDeducao() {return listaDeducao;}
