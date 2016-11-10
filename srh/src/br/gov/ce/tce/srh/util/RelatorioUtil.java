@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.util;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
@@ -47,11 +48,15 @@ public class RelatorioUtil {
 
 		// Fill the report using an empty data source
 		JasperPrint print;
+		
+		Connection connection = dataSource.getConnection();
 
-		print = JasperFillManager.fillReport(pathRel, parametros, dataSource.getConnection());
+		print = JasperFillManager.fillReport(pathRel, parametros, connection);
 		byte[] bytes = JasperExportManager.exportReportToPdf(print);
 		writeBytesAsAttachedTextFile(bytes, nomeArquivo);
 
+		connection.close();
+		
 		return null;
 	}
 	
