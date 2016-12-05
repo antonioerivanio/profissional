@@ -16,6 +16,7 @@ public interface LicencaEspecialDAO {
 	public LicencaEspecial getById(Long id);
 
 	public List<LicencaEspecial> findByPessoal(Long pessoal);
-	public List<LicencaEspecial> findByPessoalComSaldo(Long pessoal);
+	public List<LicencaEspecial> findByPessoalComSaldo(Long pessoal);	
+	public List<LicencaEspecial> findByPessoalContaEmDobro(Long pessoal);
 
 }

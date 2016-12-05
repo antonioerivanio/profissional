@@ -104,5 +104,14 @@ public class LicencaEspecialDAOImpl implements LicencaEspecialDAO {
 		query.setParameter("pessoal", pessoal);
 		return query.getResultList();
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<LicencaEspecial> findByPessoalContaEmDobro(Long pessoal) {
+		Query query = entityManager.createQuery("Select l from LicencaEspecial l where l.pessoal.id = :pessoal and l.saldodias > 0 and l.contaremdobro = true ORDER BY l.anoinicial DESC");		
+		query.setParameter("pessoal", pessoal);
+		return query.getResultList();
+	}
+	
 
 }

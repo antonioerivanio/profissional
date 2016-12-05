@@ -17,8 +17,9 @@ public interface LicencaEspecialService {
 
 	public List<LicencaEspecial> findByPessoal(Long Pessoal);
 	public List<LicencaEspecial> findByPessoalComSaldo(Long pessoal);
+	public List<LicencaEspecial> findByPessoalContaEmDobro(Long pessoal);	
 
 	public Long calcularQtdeDias(Long anoInicial, Long anoFinal) throws SRHRuntimeException;
-	public void ajustarSaldo(Long idLicencaEspecial, String acao, int qtdDias)	throws SRHRuntimeException;
+	public void ajustarSaldo(Long idLicencaEspecial, String acao, int qtdDias)	throws SRHRuntimeException;	
 
 }

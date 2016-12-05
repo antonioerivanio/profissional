@@ -167,7 +167,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			
 
 			// carregando licencas especiais			
-			this.listaLicencaEspecial = licencaEspecialService.findByPessoalComSaldo(entidade.getPessoal().getId());
+			this.listaLicencaEspecial = licencaEspecialService.findByPessoalContaEmDobro(entidade.getPessoal().getId());
 			
 			for (LicencaEspecial licencaEspecial : listaLicencaEspecial) {
 				if ( licencaEspecial.isContaremdobro() )

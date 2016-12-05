@@ -113,6 +113,11 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 	public List<LicencaEspecial> findByPessoalComSaldo(Long pessoal){
 		return dao.findByPessoalComSaldo(pessoal);
 	}
+	
+	@Override
+	public List<LicencaEspecial> findByPessoalContaEmDobro(Long pessoal){
+		return dao.findByPessoalContaEmDobro(pessoal);
+	}
 
 
 

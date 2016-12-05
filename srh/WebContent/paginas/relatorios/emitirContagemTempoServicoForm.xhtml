@@ -316,7 +316,7 @@
 
 			<!-- Licenca em Dobro -->					
 
-			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaLicenca.size() > 0}">
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaLicencaEspecial.size() > 0}">
 
 			<fieldset>
 
@@ -326,27 +326,23 @@
 
 				<div class="tabela-dados">
 
-					<rich:dataTable id="listaLicenca" value="#{emitirContagemTempoServicoListBean.listaLicenca}" var="licenca" >
+					<rich:dataTable id="listaLicenca" value="#{emitirContagemTempoServicoListBean.listaLicencaEspecial}" var="licenca" >
 
 	                    <h:column id="col13">
 	                        <f:facet name="header">
-	                         	Data Início
+	                         	Ano Inicial
 	                        </f:facet>
 	                        <center>
-	                        	<h:outputText id="item13" value="#{licenca.inicio}" >
-	                        		<f:convertDateTime id="convLicencaInicio" type="date" pattern="dd/MM/yyyy" />
-	                        	</h:outputText>
+	                        	<h:outputText id="item13" value="#{licenca.anoinicial}" />
 	                        </center>
 	                    </h:column>
 
 						<h:column id="col14">
 							<f:facet name="header">
-								Data Fim
+								Ano Final
 	                        </f:facet>
 	                        <center>
-	                        	<h:outputText id="item14" value="#{licenca.fim}" >
-	                        		<f:convertDateTime id="convLicencaFim" type="date" pattern="dd/MM/yyyy" />
-	                        	</h:outputText>
+	                        	<h:outputText id="item14" value="#{licenca.anofinal}" />
 	                        </center>
 	                    </h:column>
 	                    <h:column id="col15">
@@ -354,14 +350,22 @@
 	                           Qtde. Dias
 	                        </f:facet>
 	                      	<center>
-	                      		<h:outputText id="item15" value="#{licenca.licencaEspecial.qtdedias}" />
+	                      		<h:outputText id="item15" value="#{licenca.qtdedias}" />
+	                      	</center>
+	                    </h:column>
+	                    <h:column id="col151">
+	                        <f:facet name="header">
+	                           Saldo
+	                        </f:facet>
+	                      	<center>
+	                      		<h:outputText id="item151" value="#{licenca.saldodias}" />
 	                      	</center>
 	                    </h:column>
 	                    <h:column id="col16">
 	                        <f:facet name="header">
-	                        	Observação
+	                        	Descrição
 	                        </f:facet>
-                        	<h:outputText id="item16" value="#{licenca.obs}" />
+                        	<h:outputText id="item16" value="#{licenca.descricao}" />
 						</h:column>
 
 					</rich:dataTable>

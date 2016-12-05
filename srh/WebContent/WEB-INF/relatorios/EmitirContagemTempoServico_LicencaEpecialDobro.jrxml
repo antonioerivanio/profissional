@@ -17,27 +17,27 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select
-	l.inicio,
-	l.fim,
-	(le.qtdedias * 2) ass,
-	l.obs
+	le.anoinicial,
+	le.anofinal,
+	le.qtdedias,
+	le.saldodias,
+	le.descricao
 
 from
-	tb_licenca l
-	inner join tb_direitolicencaesp le on l.idlicencaesp = le.id
-	inner join tb_pessoal p on l.idpessoal = p.id
+	tb_direitolicencaesp le
 
 where
-	l.excluitemposerv = 0
+	le.idpessoal = $P{IDPESSOAL}
 	and le.contaremdobro > 0
-	and p.id = $P{IDPESSOAL}
+	and le.saldodias > 0
 
-order by l.inicio desc]]>
+order by le.anoinicial desc]]>
 	</queryString>
-	<field name="INICIO" class="java.sql.Timestamp"/>
-	<field name="FIM" class="java.sql.Timestamp"/>
-	<field name="ASS" class="java.math.BigDecimal"/>
-	<field name="OBS" class="java.lang.String"/>
+	<field name="ANOINICIAL" class="java.lang.Integer"/>
+	<field name="ANOFINAL" class="java.lang.Integer"/>
+	<field name="QTDEDIAS" class="java.lang.Integer"/>
+	<field name="SALDODIAS" class="java.lang.Integer"/>
+	<field name="DESCRICAO" class="java.lang.String"/>
 	<title>
 		<band height="35">
 			<staticText>
@@ -58,32 +58,39 @@ order by l.inicio desc]]>
 				<reportElement x="1" y="0" width="800" height="18" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="82" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="72" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DATA FIM]]></text>
+				<text><![CDATA[ANO FINAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="162" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="144" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[QTDE. DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="256" y="0" width="113" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[OBSERVAÇÃO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="1" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="216" y="0" width="60" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DATA INÍCIO]]></text>
+				<text><![CDATA[SALDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="0" width="113" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANO INICIAL]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -94,25 +101,30 @@ order by l.inicio desc]]>
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="1" y="1" width="80" height="16"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="1" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{INICIO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ANOINICIAL}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="82" y="1" width="80" height="16"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="72" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FIM}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ANOFINAL}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="162" y="1" width="80" height="16"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ASS}]]></textFieldExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement x="144" y="1" width="70" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="256" y="1" width="546" height="16"/>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="216" y="1" width="60" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SALDODIAS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="278" y="1" width="523" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{OBS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
