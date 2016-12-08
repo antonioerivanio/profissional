@@ -58,35 +58,28 @@ order by le.anoinicial desc]]>
 				<reportElement x="1" y="0" width="800" height="18" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="72" y="0" width="70" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="80" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ANO FINAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="144" y="0" width="70" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="152" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[QTDE. DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="216" y="0" width="60" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SALDO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="278" y="0" width="113" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="229" y="0" width="113" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DESCRIÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="0" width="70" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="8" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
@@ -102,27 +95,22 @@ order by le.anoinicial desc]]>
 				</reportElement>
 			</rectangle>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="1" y="1" width="70" height="16"/>
+				<reportElement x="8" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ANOINICIAL}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="72" y="1" width="70" height="16"/>
+				<reportElement x="80" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ANOFINAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="144" y="1" width="70" height="16"/>
+				<reportElement x="152" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="216" y="1" width="60" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{SALDODIAS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{SALDODIAS}*2]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="278" y="1" width="523" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="229" y="1" width="572" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
 			</textField>
