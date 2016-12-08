@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ferias" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
@@ -16,7 +16,7 @@
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select t.descricao, fe.ANOREFERENCIA, fe.INICIO, fe.FIM, fe.QTDEDIAS, fu.MATRICULA, fu.NOMECOMPLETO, o.nomenclatura
+		<![CDATA[select t.descricao, fe.ANOREFERENCIA, fe.PERIODO, fe.INICIO, fe.FIM, fe.QTDEDIAS, fu.MATRICULA, fu.NOMECOMPLETO, o.nomenclatura
 from TB_FERIAS fe
 inner join TB_FUNCIONAL fu on fe.idfuncional = fu.id
 inner join TB_OCUPACAO o on fu.idocupacao = o.id
@@ -32,6 +32,7 @@ ORDER BY fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 	<field name="MATRICULA" class="java.lang.String"/>
 	<field name="NOMECOMPLETO" class="java.lang.String"/>
 	<field name="NOMENCLATURA" class="java.lang.String"/>
+	<field name="PERIODO" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -53,7 +54,7 @@ ORDER BY fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="165" y="41" width="390" height="20" forecolor="#0F2E52"/>
+				<reportElement x="119" y="41" width="436" height="20" forecolor="#0F2E52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -102,28 +103,28 @@ ORDER BY fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 				<reportElement x="2" y="-1" width="553" height="18" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="171" y="1" width="99" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="140" y="0" width="130" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TIPO FÉRIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="356" y="1" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="390" y="0" width="62" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INICIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="435" y="0" width="80" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="452" y="0" width="62" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FIM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="1" width="87" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="270" y="0" width="60" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
@@ -137,11 +138,18 @@ ORDER BY fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 				<text><![CDATA[DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="171" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="0" y="-1" width="140" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NOMENCLATURA]]></text>
+				<text><![CDATA[CARGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="60" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERÍODO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -153,17 +161,22 @@ ORDER BY fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="171" y="0" width="99" height="16"/>
+				<reportElement x="140" y="0" width="130" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{DESCRICAO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="270" y="0" width="86" height="16"/>
+				<reportElement x="270" y="0" width="60" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="330" y="0" width="60" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PERIODO}]]></textFieldExpression>
+			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="356" y="0" width="80" height="16"/>
+				<reportElement x="390" y="0" width="62" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
 			</textField>
@@ -173,12 +186,12 @@ ORDER BY fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 				<textFieldExpression><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="434" y="0" width="80" height="16"/>
+				<reportElement x="452" y="0" width="62" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="0" width="171" height="16"/>
+				<reportElement x="0" y="0" width="140" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
 			</textField>
@@ -193,12 +206,12 @@ ORDER BY fe.ANOREFERENCIA desc, fe.INICIO desc]]>
 				<reportElement x="1" y="2" width="554" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="103" y="3" width="448" height="16"/>
+				<reportElement x="0" y="3" width="554" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="534" y="3" width="21" height="16"/>
+				<reportElement key="textField-5" x="534" y="2" width="21" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
