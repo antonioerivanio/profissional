@@ -183,55 +183,55 @@ public class ServidorBean  implements Serializable  {
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND TOC.ID = 1 ");
-				filtro.append("ORDER BY O.ORDEMOCUPACAO, S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
+				filtro.append("ORDER BY O.ORDEMOCUPACAO, S.NRORDEMSETORFOLHA, P.NOMECOMPLETO");
 			}else if(vinculo == 2){ // SERVIDORES ATIVOS
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("AND TOC.ID IN (2, 3, 6) ");
-//				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, RC.SIMBOLO, F.NOMECOMPLETO");
+//				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, RC.SIMBOLO, P.NOMECOMPLETO");
 			}else if(vinculo == 3){ // SERVIDORES EFETIVOS
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("AND (TOC.ID = 2) ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 4){ // SERVIDORES INATIVOS
 				filtro.append("AND F.STATUS = 5 ");
-				filtro.append("ORDER BY O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+				filtro.append("ORDER BY O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 5){ // OCUPANTES DE CARGO COMISSIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");					
 				filtro.append("AND RF.ID IS NOT NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMISSIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND RF.ID IS NOT NULL ");
 				filtro.append("AND TOC.ID = 6 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 7){ // ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 5 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, P.NOMECOMPLETO");
 			}else if(vinculo == 8){ // ESTAGIÁRIOS NÍVEL MÉDIO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 4 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, P.NOMECOMPLETO");
 			}else if(vinculo == 9){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");	
 				filtro.append("AND TOC.ID = 8 ");
-				filtro.append("ORDER BY F.NOMECOMPLETO");
+				filtro.append("ORDER BY P.NOMECOMPLETO");
 			}else{
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS < 3 ");
 				filtro.append("AND O.SITUACAO < 3 ");				 
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, F.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}
 			
 			parametros.put("FILTRO", filtro.toString());
