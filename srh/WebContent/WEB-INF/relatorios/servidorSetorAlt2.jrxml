@@ -16,7 +16,7 @@
 	<parameter name="VINCULO" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT S.NMSETOR nomeSetor,
-                F.NOMECOMPLETO nomeCompleto,
+                P.NOMECOMPLETO nomeCompleto,
                 O.NOMENCLATURA cargo,
                 decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) referencia,
                 RC.NOMENCLATURA representacao,
@@ -26,6 +26,7 @@
 		O.ORDEMOCUPACAO ordemOcupacao
 
 FROM SRH.TB_FUNCIONAL F
+	INNER JOIN SRH.TB_PESSOAL P ON F.IDPESSOAL = P.ID
     	LEFT JOIN SRH.TB_OCUPACAO O ON F.IDOCUPACAO = O.ID
     	LEFT JOIN SRH.TB_TIPOOCUPACAO TOC ON O.TIPOOCUPACAO = TOC.ID
 	LEFT JOIN SRH.TB_CLASSEREFERENCIA CR ON F.IDCLASSEREFERENCIA = CR.ID
@@ -59,15 +60,15 @@ $P!{FILTRO}]]>
 			</rectangle>
 			<image>
 				<reportElement x="1" y="14" width="554" height="65"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
+				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="390" y="-11" width="168" height="54"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="6" y="5" width="130" height="29"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="41" width="555" height="20" forecolor="#0F2E52"/>
@@ -81,7 +82,7 @@ $P!{FILTRO}]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="12" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["VÍNCULO: " +
+				<textFieldExpression><![CDATA["VÍNCULO: " +
 ( $P{VINCULO} == 4 ? "SERVIDORES INATIVOS" :
     "" )]]></textFieldExpression>
 			</textField>
@@ -121,17 +122,17 @@ $P!{FILTRO}]]>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToTallestObject" x="475" y="0" width="75" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="260" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToTallestObject" x="269" y="0" width="200" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CARGO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -151,7 +152,7 @@ $P!{FILTRO}]]>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="524" y="3" width="30" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-4" x="430" y="3" width="90" height="16" forecolor="#000000"/>
@@ -162,7 +163,7 @@ $P!{FILTRO}]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
@@ -173,7 +174,7 @@ $P!{FILTRO}]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
@@ -188,12 +189,12 @@ $P!{FILTRO}]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="523" y="3" width="30" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-4" x="429" y="3" width="90" height="16" forecolor="#000000"/>
@@ -204,7 +205,7 @@ $P!{FILTRO}]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="145" y="3" width="267" height="16"/>
@@ -231,7 +232,7 @@ $P!{FILTRO}]]>
 			<textField>
 				<reportElement x="521" y="27" width="34" height="18"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
