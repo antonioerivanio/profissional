@@ -4,21 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.event.ValueChangeEvent;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Ferias;
-import br.gov.ce.tce.srh.domain.Parametro;
 import br.gov.ce.tce.srh.domain.TipoFerias;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.service.TipoFeriasService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -49,12 +45,7 @@ public class FeriasFormBean implements Serializable {
 	
 	@Autowired
 	private TipoPublicacaoService tipoPublicacaoService;
-
-	@Autowired
-	private ParametroService parametroService;
 	
-
-	//endidade das telas
 	private Ferias entidade = new Ferias();
 
 	private String matricula = new String();
@@ -62,56 +53,36 @@ public class FeriasFormBean implements Serializable {
 
 	private Date inicial;
 	private Date fim;
+	private TipoFerias tipoFerias;
 
-	private boolean feriasEdicao = false;
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
 
-	// combos
 	private List<TipoFerias> comboTipoFerias;
 	private List<TipoPublicacao> comboTipoPublicacao;
 
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
 	public String prepareIncluir() {
 		limpar();
 		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
 	public String prepareAlterar() {
 
 		this.alterar = true;
 
 		try {
-			Parametro p = parametroService.getByNome("FERIASEDICAO");
-			//Se for SIM = 1
-			if (p.getValor().equals("1")) {
-				feriasEdicao = true;
-			}else{
-				feriasEdicao = false;
-			}
+			
 			this.matricula = entidade.getFuncional().getMatricula();
 			this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
 
 			this.inicial = entidade.getInicio();
 			this.fim = entidade.getFim();
-			// ressalvas ou em dobro
-			if ( (entidade.getTipoFerias().getId().equals(4l) || entidade.getTipoFerias().getId().equals(5l)) & !feriasEdicao ){
-				this.bloquearDatas = true;
-			}else{
-				this.bloquearDatas = false;
-			}
+			this.tipoFerias = entidade.getTipoFerias();
+			
+			if(entidade.getTipoFerias().consideraSomenteQtdeDias())
+				bloquearDatas = true;
+			else
+				bloquearDatas = false;
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -119,20 +90,15 @@ public class FeriasFormBean implements Serializable {
 		}
 
 		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
+	}	
+	
 	public String salvar() {
 		
 		try {
 
 			this.entidade.setInicio(this.inicial);
 			this.entidade.setFim(this.fim);
+			this.entidade.setTipoFerias(this.tipoFerias);
 
 			feriasService.salvar(entidade);
 			limpar();
@@ -150,13 +116,7 @@ public class FeriasFormBean implements Serializable {
 		
 		return null;
 	}
-
-
-	/**
-	 * Combo Tipo de Ferias
-	 * 
-	 * @return
-	 */
+	
 	public List<TipoFerias> getComboTipoFerias() {
 
 		try {
@@ -171,31 +131,7 @@ public class FeriasFormBean implements Serializable {
 
 		return this.comboTipoFerias;
 	}
-
 	
-	/**
-	 * Combo Classe Referencia
-	 * 
-	 * @return
-	 */
-	public void atualizaCampos(ValueChangeEvent event) {
-
-		getEntidade().setTipoFerias( (TipoFerias) event.getNewValue() );
-
-		if( (entidade.getTipoFerias().getId().equals(4l) || entidade.getTipoFerias().getId().equals(5l) ) & !feriasEdicao ) {
-			this.bloquearDatas = true;
-		} else {
-			this.bloquearDatas = false;
-		}
-
-	}
-
-
-	/**
-	 * Combo Tipo de Publicacao
-	 * 
-	 * @return
-	 */
 	public List<TipoPublicacao> getComboTipoPublicacao() {
 
 		try {
@@ -211,10 +147,6 @@ public class FeriasFormBean implements Serializable {
 		return this.comboTipoPublicacao;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		this.alterar = false;
@@ -227,16 +159,13 @@ public class FeriasFormBean implements Serializable {
 		
 		this.inicial = null;
 		this.fim = null;
+		this.tipoFerias = null;
 		this.bloquearDatas = false;
 
 		this.comboTipoFerias = null;
 		this.comboTipoPublicacao = null;
 	}
-
-
-	/**
-	 * Gets and Sets
-	 */
+	
 	public Ferias getEntidade() { return entidade; }
 	public void setEntidade(Ferias entidade) { this.entidade = entidade; }
 
@@ -267,56 +196,58 @@ public class FeriasFormBean implements Serializable {
 
 	public Date getInicial() {return inicial;}
 	public void setInicial(Date inicial) {
-
 		this.inicial = inicial;
-
-		try {
-
-			if ( this.inicial != null && this.fim != null)
-				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicial, this.fim ));
-
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data inicial. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
+		atualizaQtdeDias();
 	}
 
 	public Date getFim() { return fim; }
 	public void setFim(Date fim) {
+		this.fim = fim;
+		atualizaQtdeDias();
+	}	
+	
+	public TipoFerias getTipoFerias() {return tipoFerias;}
+	public void setTipoFerias(TipoFerias tipoFerias) {this.tipoFerias = tipoFerias;}
 
-		this.fim = fim; 
+	public boolean isBloquearDatas() {return bloquearDatas;}
+	public boolean isAlterar() {return alterar;}
 
+			
+	public void atualizaBloqueioDeDatas(){
+		
+		if ( this.tipoFerias!= null && tipoFerias.consideraSomenteQtdeDias() ){
+			this.bloquearDatas = true;
+			this.inicial = null;
+			this.fim = null;
+		}else{
+			this.bloquearDatas = false;			
+		}
+		
+		atualizaQtdeDias();
+	}
+	
+	private void atualizaQtdeDias(){
 		try {
-
-			if (this.inicial != null && this.fim != null )
-				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicial, this.fim ) );
-
+			
+			if ( (entidade.getTipoFerias() != null && !entidade.getTipoFerias().consideraSomenteQtdeDias())
+					|| this.tipoFerias == null 
+					|| !this.tipoFerias.consideraSomenteQtdeDias() ){
+				
+				entidade.setQtdeDias(null);
+			}
+				
+			if( this.inicial != null && this.fim != null )
+				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicial, this.fim ));
+			
+		
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro no campo data final. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu um erro na atualização da quantidade de dias. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-	}
-
-	
-	public boolean isBloquearDatas() {return bloquearDatas;}
-	public boolean isAlterar() {return alterar;}
-
-
-	public boolean isFeriasEdicao() {
-		return feriasEdicao;
-	}
-
-
-	public void setFeriasEdicao(boolean feriasEdicao) {
-		this.feriasEdicao = feriasEdicao;
+		
 	}
 	
 }

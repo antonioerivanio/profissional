@@ -116,7 +116,7 @@ public class Ferias extends BasicEntity<Long> implements Serializable {
 		Date dini = (getInicio()==null?new Date():getInicio());
 		dias = SRHUtils.dataDiff(dini, dfim);
 		return dias;
-	}
+	}	
 
 	@Override
 	public Long getId() {return this.id;}

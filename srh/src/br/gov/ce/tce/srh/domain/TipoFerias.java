@@ -34,4 +34,14 @@ public class TipoFerias extends BasicEntity<Long> implements Serializable {
 	@Override
 	public void setId(Long id) {this.id = id;}
 	
+	public boolean consideraSomenteQtdeDias() {	
+		// Férias ressalvadas (id = 4)
+		// Férias contadas em dobro (id = 5)
+		// Abono pecuniário de férias (id = 7)
+		if(id == 4L || id == 5L || id == 7L)
+			return true;
+		
+		return false;
+	}
+	
 }

@@ -154,22 +154,26 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoFerias"
 										 converter="entityConverter"
-										 valueChangeListener="#{feriasFormBean.atualizaCampos}" 
-										 onchange="submit();"
-										 value="#{feriasFormBean.entidade.tipoFerias}"
+										 value="#{feriasFormBean.tipoFerias}"
 										 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" >
 							<f:selectItem id="selecioneTipoFerias" itemLabel="Selecione..." itemValue="" />
 					  		<f:selectItems 	id="comboTipoFerias" 
 					  						value="#{feriasFormBean.comboTipoFerias}"
 					  						var="tipoFerias"
 					  						itemValue="#{tipoFerias}"
-					  						itemLabel="#{tipoFerias.descricao}"/>
+					  						itemLabel="#{tipoFerias.descricao}"/>					  						
+					  		<a4j:support id="atualizaDatas"
+					  				 event="onchange" 
+					  				 ajaxSingle="true"	
+					  				 action="#{feriasFormBean.atualizaBloqueioDeDatas}"
+					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
+					  				 reRender="inicio,fim,qtdeDias"/>				
 						</h:selectOneMenu>    
 					</div>
 				</div>
 
 				<div class="input-box box-10">
-					<label for="">Ano Referência*</label>
+					<label for="">Ano Referência *</label>
 					<div class="conteiner">
 						<h:inputText id="anoReferencia" 
 									 name="anoReferencia"
@@ -226,8 +230,11 @@
 					<label for="">Dias</label>
 					<div class="conteiner">
 						<h:inputText id="qtdeDias" 
-									 disabled="#{(not feriasFormBean.bloquearDatas and feriasEdicao) or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" 
-									 value="#{feriasFormBean.entidade.qtdeDias}" />  
+									 value="#{feriasFormBean.entidade.qtdeDias}"
+									 maxlength="4"
+									 onkeyup="SoNumeros(this)"
+									 disabled="#{(not feriasFormBean.bloquearDatas) or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" 
+									 />  
 					</div>
 				</div>
 
