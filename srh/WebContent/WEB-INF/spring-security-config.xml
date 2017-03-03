@@ -6,14 +6,18 @@
              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
     <global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
-
-    <http auto-config="true" > 
-
-        <form-login login-page="/login.faces" authentication-failure-url="/login.faces" />
+		
+    <http auto-config="true"> 
+    
+    	<form-login login-page="/login.faces" authentication-failure-url="/login.faces" />
+        
         <access-denied-handler error-page="/semPermissao.faces" />
 
+		<intercept-url pattern="/home.faces" access="ROLE_FUNCIONAL" />
 
 		<!-- TABELAS -->
+		<intercept-url pattern="/paginas/tabelas/*" access="ROLE_TABELAS" />		
+		
         <intercept-url pattern="/paginas/tabelas/competenciasGeraisList.faces" access="ROLE_COMPETENCIA_FUNCIONAL" />
         <intercept-url pattern="/paginas/tabelas/competenciasGeraisForm.faces" access="ROLE_COMPETENCIA_FUNCIONAL" />
 
@@ -89,6 +93,8 @@
 
 
 		<!-- CADASTRO -->
+		<intercept-url pattern="/paginas/cadastros/*" access="ROLE_CADASTROS" />
+		
         <intercept-url pattern="/paginas/cadastros/pessoaList.faces" access="ROLE_PESSOA" />
         <intercept-url pattern="/paginas/cadastros/pessoaForm.faces" access="ROLE_PESSOA" />
 
@@ -140,6 +146,8 @@
 
 
 		<!-- FUNCIONAL -->
+		<intercept-url pattern="/paginas/funcional/*" access="ROLE_FUNCIONAL" />
+		
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorList.faces" access="ROLE_NOMEACAO" />
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorForm.faces" access="ROLE_NOMEACAO" />
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorFormEdit.faces" access="ROLE_NOMEACAO_ALTERAR" />
@@ -183,6 +191,8 @@
 
 
 		<!-- MENU RELATORIO -->
+		<intercept-url pattern="/paginas/relatorios/*" access="ROLE_RELATORIO" />
+		
 		<intercept-url pattern="/paginas/relatorios/auditoriaList.faces" access="ROLE_AUDITORIA" />
 		
         <intercept-url pattern="/paginas/relatorios/fichaFuncionalList.faces" access="ROLE_FICHA_FUNCIONAL" />

@@ -6,6 +6,9 @@
 	xmlns:sec="http://www.springframework.org/security/facelets/tags"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
+	<script type="text/javascript">
+		window.onload = function() {calcOffset();};
+	</script>
 
 	<h1>
 		<a href="#" title=""> SRH - Sistema de Recursos Humanos do Tribunal	de Contas do Ceara </a>
@@ -27,17 +30,28 @@
 		</div>
 	</ui:fragment>
 	
+		
 	<div class="login-box">
-		<h:form>
+		<h:form id="login-form">
+			
 			<h2 class="dn">Login</h2>
 	
 			<p>
 				Olá, <span class="user"><h:outputText value="#{LoginBean.usuarioLogado}" /></span>
-			</p>
+			</p>			
+				
+			<span id="relogio">
+				<h:graphicImage url="/img/icon-time.png" title="Tempo para a sessão expirar"></h:graphicImage>
+				<span id="min"></span>
+				<span>:</span>
+				<span id="sec"></span>				
+			</span>
 	
-			<h:commandLink title="Sair" action="#{LoginBean.logout}">
+			<h:commandLink title="Sair" action="#{LoginBean.logout}" id="sair">
 				<h:outputText value="Sair" />
 			</h:commandLink>
+				
+			
 		</h:form>
 	</div>
 

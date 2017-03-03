@@ -250,7 +250,6 @@ body {
         padding: 8px;
         border-radius: 8px;
         overflow: auto;
-		max-wid\th: 220px;
     }
     
         .topo .login-box p {
@@ -266,7 +265,7 @@ body {
         .topo .login-box a {
             float: right;
             color: #505050;
-            margin-left: 50px;
+            margin-left: 10px;
             display: block;
             padding-right: 15px;
             background: url(../img/ico-logout.png) right 3px no-repeat;
@@ -846,4 +845,91 @@ body {
 	position: absolute;
     left: 40%;
     top: 40%;		
+}
+
+#login-form #relogio {
+	display: inline-block; 
+	margin-left: 30px; 
+	border-right: 1px solid #505050; 
+	padding-right: 10px; 
+	vertical-align:middle;
+}
+
+#login-form #relogio > img{
+	width: 15px;
+	vertical-align:middle; 
+	margin-right: 2px;
+}
+
+#login-form #relogio > span{
+	vertical-align:middle;
+	font-weight: bold;
+}
+
+#countdown{
+	text-align: center;
+	margin-top: 20px;
+    margin-bottom: 20px;	
+}
+
+#countdown > span{ 
+	color: #79828A; 
+	font-size: 50px;	
+}
+
+.bt-dialog-sessao{ 
+	text-decoration: none;
+	text-align: center;
+	padding: 10px;
+	display: inline-block;
+	float: right;
+	margin: 0px 0px 0px 15px;		
+}
+
+.sessao-expirada-msg{	
+	color: #246788;
+    padding: 15px;	
+}
+
+.sessao-expirada-text, .sessao-expirada-text b{
+	font-size: 16px;
+    line-height: 1.5em;
+}
+
+.rich-mpnl-mask-div{
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.rich-mpnl-shadow {
+	display: none;
+}
+
+.modal-actions{
+	display: inline-block;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding: 15px;
+    border-top: 1px solid #e4e4e4;
+}
+
+.rich-mpnl-content {
+	padding: 0px;
+	border-radius: 5px;
+	moz-border-radius: 5px;
+	webkit-border-radius: 5px;
+}
+
+.rich-mpnl-text {
+	padding: 8px;
+	font-size: 16px;
+	font-weight: normal;
+	background: #195297;
+	border: 1px solid #113664;
+}
+
+.rich-mp-container{
+	top: 40px !important;
 }
