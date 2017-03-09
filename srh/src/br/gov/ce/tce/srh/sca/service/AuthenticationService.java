@@ -115,7 +115,8 @@ public class AuthenticationService {
 	private void invalidateSession() {
 		FacesContext fc = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-		session.invalidate();
+		if (session != null)
+			session.invalidate();
 	}
 
 
