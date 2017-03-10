@@ -1,6 +1,9 @@
 package br.gov.ce.tce.srh.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -27,6 +30,8 @@ public class FeriasServiceImpl implements FeriasService {
 	public void salvar(Ferias entidade) throws SRHRuntimeException {		
 		
 		validaDadosObrigatorios(entidade);
+				
+		validaDataInicial(entidade);
 		
 		validaAnoReferencia (entidade);
 
@@ -36,11 +41,13 @@ public class FeriasServiceImpl implements FeriasService {
  
 		validaQtdeDias(entidade);
 		
-		validarQtdeDiasNoAnoReferenciaEPeriodo(entidade);		
+		validaQtdeDiasParaOMesmoAnoReferenciaPeriodoETipo(entidade);
+		
+		validaQtdeDiasParaOMesmoAnoReferenciaEPeriodo(entidade);
 
-		setandoFuncionalConformeData(entidade);
+		setaFuncionalConformeData(entidade);
 	    
-	    verificandoFeriasExistentes(entidade);
+	    verificaFeriasExistentes(entidade);
 	    
 		dao.salvar(entidade);
 	}
@@ -194,7 +201,7 @@ public class FeriasServiceImpl implements FeriasService {
 
 	}	
 	
-	private void setandoFuncionalConformeData(Ferias entidade) {
+	private void setaFuncionalConformeData(Ferias entidade) {
 
 		if ( !entidade.getTipoFerias().consideraSomenteQtdeDias() ) {
 
@@ -222,19 +229,22 @@ public class FeriasServiceImpl implements FeriasService {
 	/**
 	 * Regra de Negocio:
 	 *  
-	 * O Período Inicial e Final devem ser checados para saber se já foi lançada nenhuma 
-	 * ferias para o servidor neste mesmo período.
+	 * O Período Inicial e Final devem ser checados para saber se já foi lançada ferias para o servidor neste mesmo período.
+	 * 
+	 * Checagem não deve ser feita para ferias com tipo que considera somente qtde de dias e Periodo de pagamento do terco constitucional (tipo ferias id = 2)
 	 * 
 	 * @param entidade
 	 *
 	 * @throws SRHRuntimeException
 	 * 
 	 */
-	private void verificandoFeriasExistentes(Ferias entidade) throws SRHRuntimeException {
+	private void verificaFeriasExistentes(Ferias entidade) throws SRHRuntimeException {
 		
-		if ( !entidade.getTipoFerias().consideraSomenteQtdeDias() ) {
+		if ( !entidade.getTipoFerias().consideraSomenteQtdeDias() && entidade.getTipoFerias().getId().intValue() != 2) {
 
 			List<Ferias> ferias = dao.findByPessoal( entidade.getFuncional().getPessoal().getId() );
+			String mensagemDeErro = "Já existe Férias cadastrada nesse intervalo de datas.";
+			
 			
 			for (Ferias feriasExistentes : ferias) {
 
@@ -247,27 +257,28 @@ public class FeriasServiceImpl implements FeriasService {
 				if ( feriasExistentes.getTipoFerias().consideraSomenteQtdeDias() ) {
 					continue;
 				}
-
-				// verificar o tempo apenas se as ferias são do mesmo tipo
-				if ( feriasExistentes.getTipoFerias().equals(entidade.getTipoFerias())) {
 				
-					// validando periodo de ferias inicial 
-					if( feriasExistentes.getInicio().after( entidade.getInicio() )
-							&& feriasExistentes.getInicio().before( entidade.getFim() ) ) {
-						throw new SRHRuntimeException("Já existe Férias cadastrada nesse período de tempo.");
-					}
-	
-					// validando periodo de ferias final
-					if( feriasExistentes.getFim().after( entidade.getInicio() )
-							&& feriasExistentes.getFim().before( entidade.getFim() ) ) {
-						throw new SRHRuntimeException("Já existe Férias cadastrada nesse período de tempo.");
-					}
-	
-					// validando periodo de ferias no meio
-					if( feriasExistentes.getInicio().before( entidade.getInicio() )
-							&& feriasExistentes.getFim().after( entidade.getFim() ) ) {
-						throw new SRHRuntimeException("Já existe Férias cadastrada nesse período de tempo.");
-					}
+				// nao compara com ferias do tipo Periodo de pagamento do terco constitucional
+				if ( feriasExistentes.getTipoFerias().getId().intValue() == 2 ) {
+					continue;
+				}				
+				
+				// validando periodo inicial
+				if( (feriasExistentes.getInicio().after(entidade.getInicio()) || feriasExistentes.getInicio().equals(entidade.getInicio())) 
+						&& ( feriasExistentes.getInicio().before(entidade.getFim()) || feriasExistentes.getInicio().equals(entidade.getFim()))){
+					throw new SRHRuntimeException(mensagemDeErro);
+				}
+
+				// validando periodo final
+				if( (feriasExistentes.getFim().after(entidade.getInicio()) || feriasExistentes.getFim().equals(entidade.getInicio())) 
+						&& ( feriasExistentes.getFim().before(entidade.getFim()) || feriasExistentes.getFim().equals(entidade.getFim()))){
+					throw new SRHRuntimeException(mensagemDeErro);
+				}
+
+				// validando periodo no meio
+				if( feriasExistentes.getInicio().before( entidade.getInicio() )
+						&& feriasExistentes.getFim().after( entidade.getFim() ) ) {
+					throw new SRHRuntimeException(mensagemDeErro);
 				}
 
 			}
@@ -286,33 +297,101 @@ public class FeriasServiceImpl implements FeriasService {
 	 * @throws SRHRuntimeException
 	 * 
 	 */
-	private void validarQtdeDiasNoAnoReferenciaEPeriodo(Ferias entidade) {
+	private void validaQtdeDiasParaOMesmoAnoReferenciaPeriodoETipo(Ferias entidade) {		
+
+		List<Ferias> ferias = dao.findByPessoalPeriodoReferencia( entidade.getFuncional().getPessoal().getId(), entidade.getPeriodo(), entidade.getAnoReferencia(), entidade.getTipoFerias().getId());
+
+		long somaDias = 0;
+		
+		
+		for (Ferias feriasExistentes : ferias) {
+
+			if(!feriasExistentes.getId().equals(entidade.getId())){
+				somaDias += feriasExistentes.getQtdeDias();	
+			}
+		}
 
 		
-		if ( !entidade.getTipoFerias().consideraSomenteQtdeDias() ) {
+		somaDias += entidade.getQtdeDias();
 
-			List<Ferias> ferias = dao.findByPessoalPeriodoReferencia( entidade.getFuncional().getPessoal().getId(), entidade.getPeriodo(), entidade.getAnoReferencia(), entidade.getTipoFerias().getId());
+		
+		if ( somaDias > 30 )
+			throw new SRHRuntimeException("A quantidade total de dias de férias não pode ser maior que 30 dias para o mesmo Período, Ano Referência e Tipo de férias.");
 
-			long somaDias = 0;
-			
-			
-			for (Ferias feriasExistentes : ferias) {
-
-				if(!feriasExistentes.getId().equals(entidade.getId())){
-					somaDias += feriasExistentes.getQtdeDias();	
-				}
-			}
-
-			
-			somaDias += entidade.getQtdeDias();
-
-			
-			if ( somaDias > 30 )
-				throw new SRHRuntimeException("A quantidade total de dias de férias não pode ser maior que 30 dias para o mesmo Período, Ano Referência e Tipo de férias.");
-
-		}
 	}
 
+	
+	/**
+	 * Regra de Negocio:
+	 *  
+	 * O Período e o Ano Referencia devem ser checados para saber quantos dias ja foram utilizados, nao podendo ser lançada 
+	 * ferias para o servidor neste mesmo período e ano de referencia com o somatorio > 30 dias.
+	 * 
+	 * @param entidade
+	 *
+	 * @throws SRHRuntimeException
+	 * 
+	 */
+	private void validaQtdeDiasParaOMesmoAnoReferenciaEPeriodo(Ferias entidade) {		
+
+		List<Ferias> ferias = dao.findByPessoalPeriodoReferencia( entidade.getFuncional().getPessoal().getId(), entidade.getPeriodo(), entidade.getAnoReferencia());
+
+		long diasDeTipoFeriasSemPeriodo = 0;
+		long diasDeFuicao = 0;
+		long diasDeSomenteTerco = 0;
+		long diasDeFruicaoETerco = 0;
+		
+		if (entidade.getTipoFerias().consideraSomenteQtdeDias()){
+			diasDeTipoFeriasSemPeriodo += entidade.getQtdeDias();
+		} else if (entidade.getTipoFerias().getId().intValue() == 1){
+			diasDeFuicao += entidade.getQtdeDias();
+		} else if (entidade.getTipoFerias().getId().intValue() == 2){
+			diasDeSomenteTerco += entidade.getQtdeDias();
+		} else if (entidade.getTipoFerias().getId().intValue() == 3){
+			diasDeFruicaoETerco += entidade.getQtdeDias();
+		}
+		
+		for (Ferias feriasExistentes : ferias) {
+
+			if(!feriasExistentes.getId().equals(entidade.getId())){
+				
+				if (feriasExistentes.getTipoFerias().consideraSomenteQtdeDias()){
+					diasDeTipoFeriasSemPeriodo += feriasExistentes.getQtdeDias();
+				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 1){
+					diasDeFuicao += feriasExistentes.getQtdeDias();
+				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 2){
+					diasDeSomenteTerco += feriasExistentes.getQtdeDias();
+				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 3){
+					diasDeFruicaoETerco += feriasExistentes.getQtdeDias();
+				}			
+			}
+		}
+		
+		if ( diasDeTipoFeriasSemPeriodo > 30
+			 || diasDeFuicao + diasDeTipoFeriasSemPeriodo > 30
+			 || diasDeSomenteTerco + diasDeTipoFeriasSemPeriodo > 30
+			 || diasDeFruicaoETerco + diasDeTipoFeriasSemPeriodo > 30 )
+			throw new SRHRuntimeException("Quantidade de dias maior que 30 para o mesmo Período e Ano Referência.");
+
+	}
+	
+	private void validaDataInicial(Ferias entidade){
+		if(!entidade.getTipoFerias().consideraSomenteQtdeDias()) {
+		
+			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+			try {
+				Date data = formato.parse("05/10/1988");
+				//
+				if (entidade.getInicio().before(data) && (entidade.getTipoFerias().getId().intValue() == 2 || entidade.getTipoFerias().getId().intValue() == 3) ){
+					throw new SRHRuntimeException("A Data Inicial deve ser posterior a 04/10/1988 para os tipos Período pagamento do terço constitucional e Período de fruição das férias e do pagamento do terço constitucional.");
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		
+		}
+	}
+	
 
 	public void setDAO(FeriasDAO dao){this.dao = dao;}
 

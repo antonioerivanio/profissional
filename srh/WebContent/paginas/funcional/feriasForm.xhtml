@@ -154,7 +154,7 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoFerias"
 										 converter="entityConverter"
-										 value="#{feriasFormBean.tipoFerias}"
+										 value="#{feriasFormBean.entidade.tipoFerias}"
 										 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" >
 							<f:selectItem id="selecioneTipoFerias" itemLabel="Selecione..." itemValue="" />
 					  		<f:selectItems 	id="comboTipoFerias" 

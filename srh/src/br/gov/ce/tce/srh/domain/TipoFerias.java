@@ -37,8 +37,9 @@ public class TipoFerias extends BasicEntity<Long> implements Serializable {
 	public boolean consideraSomenteQtdeDias() {	
 		// Férias ressalvadas (id = 4)
 		// Férias contadas em dobro (id = 5)
+		// Férias indenizadas (id = 6)
 		// Abono pecuniário de férias (id = 7)
-		if(id == 4L || id == 5L || id == 7L)
+		if(id.intValue() >= 4 && id.intValue() <= 7)
 			return true;
 		
 		return false;

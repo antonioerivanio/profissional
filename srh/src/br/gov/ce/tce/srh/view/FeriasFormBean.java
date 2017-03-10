@@ -53,7 +53,6 @@ public class FeriasFormBean implements Serializable {
 
 	private Date inicial;
 	private Date fim;
-	private TipoFerias tipoFerias;
 
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
@@ -77,7 +76,6 @@ public class FeriasFormBean implements Serializable {
 
 			this.inicial = entidade.getInicio();
 			this.fim = entidade.getFim();
-			this.tipoFerias = entidade.getTipoFerias();
 			
 			if(entidade.getTipoFerias().consideraSomenteQtdeDias())
 				bloquearDatas = true;
@@ -98,7 +96,6 @@ public class FeriasFormBean implements Serializable {
 
 			this.entidade.setInicio(this.inicial);
 			this.entidade.setFim(this.fim);
-			this.entidade.setTipoFerias(this.tipoFerias);
 
 			feriasService.salvar(entidade);
 			limpar();
@@ -159,7 +156,6 @@ public class FeriasFormBean implements Serializable {
 		
 		this.inicial = null;
 		this.fim = null;
-		this.tipoFerias = null;
 		this.bloquearDatas = false;
 
 		this.comboTipoFerias = null;
@@ -206,39 +202,26 @@ public class FeriasFormBean implements Serializable {
 		atualizaQtdeDias();
 	}	
 	
-	public TipoFerias getTipoFerias() {return tipoFerias;}
-	public void setTipoFerias(TipoFerias tipoFerias) {this.tipoFerias = tipoFerias;}
-
 	public boolean isBloquearDatas() {return bloquearDatas;}
 	public boolean isAlterar() {return alterar;}
-
 			
 	public void atualizaBloqueioDeDatas(){
 		
-		if ( this.tipoFerias!= null && tipoFerias.consideraSomenteQtdeDias() ){
-			this.bloquearDatas = true;
-			this.inicial = null;
-			this.fim = null;
-		}else{
-			this.bloquearDatas = false;			
-		}
+		this.inicial = null;
+		this.fim = null;
+		this.entidade.setQtdeDias(null);
+		this.bloquearDatas = false;
 		
-		atualizaQtdeDias();
+		if ( entidade.getTipoFerias() != null && entidade.getTipoFerias().consideraSomenteQtdeDias() ) {
+			this.bloquearDatas = true;
+		}	
 	}
 	
 	private void atualizaQtdeDias(){
 		try {
 			
-			if ( (entidade.getTipoFerias() != null && !entidade.getTipoFerias().consideraSomenteQtdeDias())
-					|| this.tipoFerias == null 
-					|| !this.tipoFerias.consideraSomenteQtdeDias() ){
-				
-				entidade.setQtdeDias(null);
-			}
-				
 			if( this.inicial != null && this.fim != null )
 				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicial, this.fim ));
-			
 		
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());

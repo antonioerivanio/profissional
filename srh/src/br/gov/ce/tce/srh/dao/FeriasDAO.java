@@ -24,6 +24,7 @@ public interface FeriasDAO {
 	public List<Ferias> findByPessoalTipo(Long idPessoal, Long tipo);
 	
 	public List<Ferias> findByPessoalPeriodoReferencia(Long idPessoal, Long periodo, Long anoReferencia, Long tipo);
+	public List<Ferias> findByPessoalPeriodoReferencia(Long idPessoal, Long periodo, Long anoReferencia);
 	public Ferias findMaisRecenteByPessoal(Long idPessoal);
 
 }

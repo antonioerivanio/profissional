@@ -112,6 +112,17 @@ public class FeriasDAOImpl implements FeriasDAO {
 		query.setParameter("tipo", tipo);
 		return query.getResultList();
 	}
+	
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Ferias> findByPessoalPeriodoReferencia(Long idPessoal, Long periodo, Long anoReferencia) {
+		Query query = entityManager.createQuery("SELECT f FROM Ferias f WHERE f.funcional.pessoal.id = :pessoal AND f.periodo = :periodo AND f.anoReferencia = :ano");
+		query.setParameter("pessoal", idPessoal);
+		query.setParameter("periodo", periodo);
+		query.setParameter("ano", anoReferencia);
+		return query.getResultList();
+	}
 
 
 	@Override
