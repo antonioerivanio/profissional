@@ -92,10 +92,10 @@ public class FeriasServiceImpl implements FeriasService {
 		if (entidade.getTipoFerias() == null)
 			throw new SRHRuntimeException("O Tipo de Férias é obrigatório.");
 
-		if (entidade.getAnoReferencia() == null || entidade.getAnoReferencia() <= 0L)
+		if (entidade.getAnoReferencia() == null || entidade.getAnoReferencia().intValue() <= 0)
 			throw new SRHRuntimeException("O Ano Referência é obrigatório.");
 
-		if (entidade.getPeriodo() == null || entidade.getPeriodo() <= 0L)
+		if (entidade.getPeriodo() == null || entidade.getPeriodo().intValue() <= 0)
 			throw new SRHRuntimeException("O Período é obrigatório.");
 		
 		if ( !entidade.getTipoFerias().consideraSomenteQtdeDias() ) {
@@ -111,24 +111,24 @@ public class FeriasServiceImpl implements FeriasService {
 
 		}
 		
-		if (entidade.getQtdeDias() == null || entidade.getQtdeDias() <= 0L)
+		if (entidade.getQtdeDias() == null || entidade.getQtdeDias().intValue() <= 0)
 			throw new SRHRuntimeException("A quantidade de dias deve ser maior que zero.");
 
 	}	
 	
 	private void validaAnoReferencia(Ferias entidade) throws SRHRuntimeException {
 		
-		if (entidade.getAnoReferencia() < 1935) {
+		if (entidade.getAnoReferencia().intValue() < 1935) {
 			throw new SRHRuntimeException("O ano de Referência não pode ser menor que 1935.");
 		}		
 		
 		Calendar cal = GregorianCalendar.getInstance();
 	    int ano = cal.get(Calendar.YEAR);
-		if ( entidade.getAnoReferencia() > (ano + 1) ) {
+		if ( entidade.getAnoReferencia().intValue() > (ano + 1) ) {
 			throw new SRHRuntimeException("O ano de Referência não pode ser superior a 1 ano do Ano vigente.");
 		}
 		
-		if ( entidade.getTipoFerias().getId().equals(5l) && entidade.getAnoReferencia() > 1998 )
+		if ( entidade.getTipoFerias().getId().equals(5l) && entidade.getAnoReferencia().intValue() > 1998 )
 			throw new SRHRuntimeException("A referência deve ser menor ou igual a 1998 para Férias contadas em dobro.");		
 
 	}
@@ -381,7 +381,7 @@ public class FeriasServiceImpl implements FeriasService {
 			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 			try {
 				Date data = formato.parse("05/10/1988");
-				//
+				
 				if (entidade.getInicio().before(data) && (entidade.getTipoFerias().getId().intValue() == 2 || entidade.getTipoFerias().getId().intValue() == 3) ){
 					throw new SRHRuntimeException("A Data Inicial deve ser posterior a 04/10/1988 para os tipos Período pagamento do terço constitucional e Período de fruição das férias e do pagamento do terço constitucional.");
 				}
