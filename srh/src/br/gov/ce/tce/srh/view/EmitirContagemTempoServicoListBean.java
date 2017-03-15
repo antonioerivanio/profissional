@@ -171,7 +171,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			
 			for (LicencaEspecial licencaEspecial : listaLicencaEspecial) {
 				if ( licencaEspecial.isContaremdobro() )
-					totalDia += licencaEspecial.getQtdedias()*2;
+					totalDia += licencaEspecial.getSaldodias()*2;
 			}			
 
 			// caregando averbacao
