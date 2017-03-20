@@ -315,6 +315,9 @@ public class FeriasServiceImpl implements FeriasService {
 		somaDias += entidade.getQtdeDias();
 
 		
+		if(entidade.getTipoFerias().getId() == 7 && somaDias > 10)
+			throw new SRHRuntimeException("A quantidade total de dias de férias não pode ser maior que 10 dias para Abono pecuniário de férias no mesmo Ano Referência e Período.");
+		
 		if ( somaDias > 30 )
 			throw new SRHRuntimeException("A quantidade total de dias de férias não pode ser maior que 30 dias para o mesmo Período, Ano Referência e Tipo de férias.");
 
@@ -336,42 +339,63 @@ public class FeriasServiceImpl implements FeriasService {
 
 		List<Ferias> ferias = dao.findByPessoalPeriodoReferencia( entidade.getFuncional().getPessoal().getId(), entidade.getPeriodo(), entidade.getAnoReferencia());
 
-		long diasDeTipoFeriasSemPeriodo = 0;
 		long diasDeFuicao = 0;
 		long diasDeSomenteTerco = 0;
 		long diasDeFruicaoETerco = 0;
+		long diasDeResalvada = 0;
+		long diasDeContadaEmDobro = 0;
+		long diasDeIndenizadas = 0;
+		long diasDeAbono = 0;
 		
-		if (entidade.getTipoFerias().consideraSomenteQtdeDias()){
-			diasDeTipoFeriasSemPeriodo += entidade.getQtdeDias();
-		} else if (entidade.getTipoFerias().getId().intValue() == 1){
+		
+		if (entidade.getTipoFerias().getId().intValue() == 1){
 			diasDeFuicao += entidade.getQtdeDias();
 		} else if (entidade.getTipoFerias().getId().intValue() == 2){
 			diasDeSomenteTerco += entidade.getQtdeDias();
 		} else if (entidade.getTipoFerias().getId().intValue() == 3){
 			diasDeFruicaoETerco += entidade.getQtdeDias();
+		} else if (entidade.getTipoFerias().getId().intValue() == 4){
+			diasDeResalvada += entidade.getQtdeDias();
+		} else if (entidade.getTipoFerias().getId().intValue() == 5){
+			diasDeContadaEmDobro += entidade.getQtdeDias();
+		} else if (entidade.getTipoFerias().getId().intValue() == 6){
+			diasDeIndenizadas += entidade.getQtdeDias();
+		} else if (entidade.getTipoFerias().getId().intValue() == 7){
+			diasDeAbono += entidade.getQtdeDias();
 		}
+		
 		
 		for (Ferias feriasExistentes : ferias) {
 
 			if(!feriasExistentes.getId().equals(entidade.getId())){
 				
-				if (feriasExistentes.getTipoFerias().consideraSomenteQtdeDias()){
-					diasDeTipoFeriasSemPeriodo += feriasExistentes.getQtdeDias();
-				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 1){
+				if (feriasExistentes.getTipoFerias().getId().intValue() == 1){
 					diasDeFuicao += feriasExistentes.getQtdeDias();
 				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 2){
 					diasDeSomenteTerco += feriasExistentes.getQtdeDias();
 				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 3){
 					diasDeFruicaoETerco += feriasExistentes.getQtdeDias();
+				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 4){
+					diasDeResalvada += feriasExistentes.getQtdeDias();
+				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 5){
+					diasDeContadaEmDobro += feriasExistentes.getQtdeDias();
+				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 6){
+					diasDeIndenizadas += feriasExistentes.getQtdeDias();
+				} else if (feriasExistentes.getTipoFerias().getId().intValue() == 7){
+					diasDeAbono += feriasExistentes.getQtdeDias();
 				}			
 			}
 		}
 		
-		if ( diasDeTipoFeriasSemPeriodo > 30
-			 || diasDeFuicao + diasDeTipoFeriasSemPeriodo > 30
-			 || diasDeSomenteTerco + diasDeTipoFeriasSemPeriodo > 30
-			 || diasDeFruicaoETerco + diasDeTipoFeriasSemPeriodo > 30 )
-			throw new SRHRuntimeException("Quantidade de dias maior que 30 para o mesmo Período e Ano Referência.");
+		if ( diasDeFruicaoETerco > 0 && ( diasDeFuicao > 0 || diasDeSomenteTerco > 0))
+			throw new SRHRuntimeException("Ação não permitida. Verifique os lançamentos de Período de fruição de férias e Período de pagamento do terço constitucional para o Ano Referência e Período informados.");
+		
+		
+		if ( diasDeResalvada + diasDeContadaEmDobro + diasDeIndenizadas + diasDeAbono > 30
+			 || diasDeFuicao + diasDeResalvada + diasDeContadaEmDobro + diasDeIndenizadas + diasDeAbono > 30
+			 || diasDeFruicaoETerco + diasDeResalvada + diasDeContadaEmDobro + diasDeIndenizadas + diasDeAbono > 30			 
+			 || diasDeSomenteTerco + diasDeContadaEmDobro > 30 )
+			throw new SRHRuntimeException("Quantidade de dias maior que o permitido para o mesmo Ano Referência e Período.");
 
 	}
 	
