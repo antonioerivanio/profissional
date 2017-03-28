@@ -21,7 +21,6 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.CadastroCategoriaFuncionalService;
-import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorService;
 import br.gov.ce.tce.srh.service.CompetenciaSetorFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -51,10 +50,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 	private CadastroCategoriaFuncionalService categoriaFuncionalService;
 
 	@Autowired
-	private RelatorioUtil relatorioUtil;
-	
-	@Autowired
-	private CategoriaFuncionalSetorService categoriaFuncionalSetorService;
+	private RelatorioUtil relatorioUtil;	
 
 
 	//controle de acesso do formulário

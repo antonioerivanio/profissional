@@ -15,12 +15,10 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.domain.TipoLicenca;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.LicencaService;
 import br.gov.ce.tce.srh.service.TipoLicencaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
-import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 /**
 * Use case : SRH_UC036_Lançar Licença
@@ -40,12 +38,6 @@ public class LicencaFinalizarListBean implements Serializable {
 
 	@Autowired
 	private TipoLicencaService tipoLicencaService;
-
-	@Autowired
-	private FuncionalService funcionalService;
-
-	@Autowired
-	private RelatorioUtil relatorioUtil;
 
 
 	// controle de acesso do formulario

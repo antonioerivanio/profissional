@@ -19,7 +19,6 @@ import br.gov.ce.tce.srh.domain.CompetenciaSetorial;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
-import br.gov.ce.tce.srh.service.CompetenciaService;
 import br.gov.ce.tce.srh.service.CompetenciaSetorialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -37,9 +36,6 @@ public class CompetenciaSetorialListBean implements Serializable {
 
 	@Autowired
 	private SetorService setorService;
-
-	@Autowired
-	private CompetenciaService competenciaService;
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;

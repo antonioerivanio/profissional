@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:a4j="http://richfaces.org/a4j" >
+
+	<ui:define name="content">
+	
+		<style type="text/css" >
+		    .formularios fieldset,
+		    .box-border {
+		        padding: 15px;
+		        min-height: 100px;	        
+		    }		    	    
+		    .rich-tab-header{
+				font-size: 14px;
+				padding: 8px 10px;
+				font-weight: bold;				
+			}
+			.rich-tab-active{
+		    	background-image: none;
+				background-color: white;
+				color: #1c5ba7;
+				border-bottom-width: 1px;				
+			}
+			.rich-tab-inactive{
+				background-image: none;
+				background-color: #EFEFEF;
+				color: #505050;
+				cursor: pointer;				
+			}			
+			.rich-tab-inactive:hover {
+				color: #1c5ba7;
+			}
+			.rich-tabpanel-content{
+				background-color: white;
+				padding: 20px;
+			}
+			
+			.conteiner {
+				margin-right: 30px;
+			}
+			
+		</style>
+		
+		<div class="titulo-pagina"><h2>Relatório de Servidores</h2></div>
+
+	
+		<h:form id="form" binding="#{relatorioServidorBean.form}" styleClass="formularios box-border">
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />			
+			
+			
+			<rich:tabPanel switchType="client">
+			
+				<rich:tab label="Por sexo">
+					
+					<div class="select-box box-16">
+						<label for="sexo">Sexo</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="sexo" value="#{relatorioServidorBean.sexo}">							  
+								<f:selectItem itemLabel="Selecione..." itemValue="0"/>
+								<f:selectItem itemLabel="Masculino" itemValue="1"/>
+								<f:selectItem itemLabel="Feminino" itemValue="2" />																	
+							</h:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="radios-group box-32">
+						<label for="form:incluirMembro">Incluir no relatório Conselheiros, Auditores e Procuradores</label>
+						<div class="conteiner">
+							<div class="radio-box">
+								<h:selectBooleanCheckbox id="incluirMembro" value="#{relatorioServidorBean.incluirMembros}" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="radios-group box-34">
+						<label for="form:agruparServidoresQueTemFilhos">Marque se deseja agrupar por servidor(a) que possui filho(a)</label>
+						<div class="conteiner">
+							<div class="radio-box">
+								<h:selectBooleanCheckbox id="agruparServidoresQueTemFilhos" value="#{relatorioServidorBean.agruparServidoresQueTemFilhos}" />
+							</div>
+						</div>
+					</div>
+		
+					<br /><br /><br /><br /><br />
+					
+					<h:commandButton value="Gerar relatório" id="relatorio"
+									 action="#{relatorioServidorBean.relatorio}" 
+		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10" /> 			
+ 					
+				</rich:tab>
+			
+			
+			</rich:tabPanel>	
+			
+			
+		</h:form>
+
+	</ui:define>
+	
+	
+</ui:composition>

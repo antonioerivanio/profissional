@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
-import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -33,9 +32,6 @@ public class RepresentanteFuncionalConsultaBean implements Serializable {
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
 	
-	@Autowired
-	private AuthenticationService authenticationService;
-
 	// controle de acesso do formulario
 	private HtmlForm form;
 

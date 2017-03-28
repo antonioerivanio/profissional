@@ -19,7 +19,6 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorResponsabilidadeService;
-import br.gov.ce.tce.srh.service.CategoriaFuncionalSetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioDataSource;
@@ -35,8 +34,6 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	
 	@Autowired
 	private CategoriaFuncionalSetorResponsabilidadeService categoriaFuncionalSetorResponsabilidadeService;
-	@Autowired
-	private CategoriaFuncionalSetorService categoriaFuncionalSetorService;	
 	@Autowired
 	private SetorService setorService;
 	@Autowired

@@ -26,7 +26,6 @@ import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CursoServidorService;
 import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.service.TipoOcupacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -52,10 +51,7 @@ public class CursoPeriodoListBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-	
-	@Autowired
-	private PessoalService pessoalService;
-	
+		
 	@Autowired
 	private TipoOcupacaoService tipoOcupacaoService;
 	
