@@ -27,7 +27,8 @@ public class RelatorioServidorBean  implements Serializable  {
 	
 	private HtmlForm form;
 		
-	private Integer sexo; 
+	private Integer sexo;
+	private Integer mes; 
 	private Boolean incluirMembros;
 	private Boolean agruparServidoresQueTemFilhos;	
 		
@@ -43,7 +44,7 @@ public class RelatorioServidorBean  implements Serializable  {
 		return "listar";
 	}
 		
-	public String relatorio() {
+	public String relatorioPorSexo() {
 
 		try {
 
@@ -76,6 +77,32 @@ public class RelatorioServidorBean  implements Serializable  {
 		return null;
 	}
 	
+	public String relatorioAniversariantes() {
+
+		try {
+			
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			StringBuilder filtro = new StringBuilder();
+			
+			if ( mes > 0 )
+				filtro.append(" AND MESANIVERSARIO = " + mes );
+			
+			parametros.put("FILTRO", filtro.toString());
+			
+			
+			relatorioUtil.relatorio("servidoresAniversariantes.jasper", parametros, "aniversariantes"	+ ".pdf");
+		
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
+	
 	
 	public Integer getSexo() {return sexo;}
 	public void setSexo(Integer sexo) {this.sexo = sexo;}
@@ -83,6 +110,9 @@ public class RelatorioServidorBean  implements Serializable  {
 	public void setIncluirMembros(Boolean incluirMembros) {this.incluirMembros = incluirMembros;}
 	public Boolean getAgruparServidoresQueTemFilhos() {return agruparServidoresQueTemFilhos;}
 	public void setAgruparServidoresQueTemFilhos(Boolean agruparServidoresQueTemFilhos) {this.agruparServidoresQueTemFilhos = agruparServidoresQueTemFilhos;}
+	public Integer getMes() {return mes;}
+	public void setMes(Integer mes) {this.mes = mes;}
+	
 
 			
 
