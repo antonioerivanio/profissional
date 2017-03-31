@@ -16,6 +16,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="MES" class="java.lang.Integer"/>
+	<parameter name="ORDEM" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM
 
@@ -50,7 +51,7 @@ WHERE   F.ATIVOFP = 1
         AND F.STATUS < 3
         AND O.SITUACAO < 3
 
-ORDER BY mesAniversario, diaAniversario, P.NOMECOMPLETO
+$P!{ORDEM}
 
 )
 

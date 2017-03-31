@@ -195,7 +195,7 @@ ORDER BY P.SEXO DESC, TEM_FILHO DESC, P.NOMECOMPLETO]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Relatório de Servidores por sexo]]></text>
+				<text><![CDATA[Relatório de Servidores por Sexo]]></text>
 			</staticText>
 		</band>
 	</title>

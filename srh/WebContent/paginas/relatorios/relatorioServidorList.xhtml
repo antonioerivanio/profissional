@@ -119,6 +119,21 @@
 						</div>
 					</div>					
 		
+					
+					<div class="radios-group box-20">
+						<label for="">Ordenar por</label>
+						<div class="conteiner" style="padding: 5px 6px;">
+							<div class="radio-box">
+								<h:selectOneRadio id="ordem" value="#{relatorioServidorBean.ordemAniversariantes}">
+									<f:selectItem itemLabel="Dia" itemValue="1" />
+									<f:selectItem itemLabel="Nome" itemValue="2" />									
+								</h:selectOneRadio>
+							</div>
+						</div>
+					</div>
+					
+					
+		
 					<br /><br /><br /><br /><br />
 					
 					<h:commandButton value="Gerar relatório" id="relatorioAniversariantes"

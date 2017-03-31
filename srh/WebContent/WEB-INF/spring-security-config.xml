@@ -13,41 +13,52 @@
         
         <access-denied-handler error-page="/semPermissao.faces" />
 
-		<intercept-url pattern="/home.faces" access="ROLE_FUNCIONAL" />
+		<intercept-url pattern="/home.faces" access="ROLE_TABELAS,ROLE_CADASTROS,ROLE_FUNCIONAL,ROLE_RELATORIO_CONSULTA,ROLE_RELATORIO" />
+
+
 
 		<!-- TABELAS -->
 		<intercept-url pattern="/paginas/tabelas/*" access="ROLE_TABELAS" />		
+        
+        <intercept-url pattern="/paginas/tabelas/cargoList.faces" access="ROLE_CARGO" />
+        <intercept-url pattern="/paginas/tabelas/cargoForm.faces" access="ROLE_CARGO" />
 		
+        <intercept-url pattern="/paginas/tabelas/especialidadeCargoList.faces" access="ROLE_ESPECIALIDADE_CARGO" />
+        <intercept-url pattern="/paginas/tabelas/especialidadeCargoForm.faces" access="ROLE_ESPECIALIDADE_CARGO" />
+        
+        <intercept-url pattern="/paginas/tabelas/orientacaoCargoList.faces" access="ROLE_ESPECIALIDADE_CARGO" />
+        <intercept-url pattern="/paginas/tabelas/orientacaoCargoForm.faces" access="ROLE_ESPECIALIDADE_CARGO" />
+        
+        <intercept-url pattern="/paginas/tabelas/classeReferenciaList.faces" access="ROLE_CLASSE_REFERENCIA_CARGO" />
+        <intercept-url pattern="/paginas/tabelas/classeReferenciaForm.faces" access="ROLE_CLASSE_REFERENCIA_CARGO" />        
+        
+        <intercept-url pattern="/paginas/cadastros/representacaoSetorList.faces" access="ROLE_REPRESENTACAO_SETOR" />
+        <intercept-url pattern="/paginas/cadastros/representacaoSetorForm.faces" access="ROLE_REPRESENTACAO_SETOR" />
+        
+        <intercept-url pattern="/paginas/cadastros/representacaoValorList.faces" access="ROLE_REPRESENTACAO_VALOR" />
+        <intercept-url pattern="/paginas/cadastros/representacaoValorForm.faces" access="ROLE_REPRESENTACAO_VALOR" />      
+        
+        <intercept-url pattern="/paginas/tabelas/cargoComissionadoList.faces" access="ROLE_CARGO_REPRESENTACAO" />
+        <intercept-url pattern="/paginas/tabelas/cargoComissionadoForm.faces" access="ROLE_CARGO_REPRESENTACAO" />
+        
         <intercept-url pattern="/paginas/tabelas/competenciasGeraisList.faces" access="ROLE_COMPETENCIA_FUNCIONAL" />
         <intercept-url pattern="/paginas/tabelas/competenciasGeraisForm.faces" access="ROLE_COMPETENCIA_FUNCIONAL" />
-
-		<intercept-url pattern="/paginas/tabelas/categoriaFuncionalList.faces" access="ROLE_CATEGORIA_FUNCIONAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/categoriaFuncionalList.faces" access="ROLE_CATEGORIA_FUNCIONAL" />
         <intercept-url pattern="/paginas/tabelas/categoriaFuncionalForm.faces" access="ROLE_CATEGORIA_FUNCIONAL" />
-
+        
         <intercept-url pattern="/paginas/tabelas/areaSetorList.faces" access="ROLE_AREA_COMPETENCIA_SETOR" />
         <intercept-url pattern="/paginas/tabelas/areaSetorForm.faces" access="ROLE_AREA_COMPETENCIA_SETOR" />
 
         <intercept-url pattern="/paginas/tabelas/areaSetorCompetenciaList.faces" access="ROLE_COMPETENCIA_SETOR" />
         <intercept-url pattern="/paginas/tabelas/areaSetorCompetenciaForm.faces" access="ROLE_COMPETENCIA_SETOR" />
-
-        <intercept-url pattern="/paginas/tabelas/cargoList.faces" access="ROLE_CARGO" />
-        <intercept-url pattern="/paginas/tabelas/cargoForm.faces" access="ROLE_CARGO" />
-
-        <intercept-url pattern="/paginas/tabelas/especialidadeCargoList.faces" access="ROLE_ESPECIALIDADE_CARGO" />
-        <intercept-url pattern="/paginas/tabelas/especialidadeCargoForm.faces" access="ROLE_ESPECIALIDADE_CARGO" />
-
-        <intercept-url pattern="/paginas/tabelas/classeReferenciaList.faces" access="ROLE_CLASSE_REFERENCIA_CARGO" />
-        <intercept-url pattern="/paginas/tabelas/classeReferenciaForm.faces" access="ROLE_CLASSE_REFERENCIA_CARGO" />
-
-        <intercept-url pattern="/paginas/tabelas/cargoComissionadoList.faces" access="ROLE_CARGO_REPRESENTACAO" />
-        <intercept-url pattern="/paginas/tabelas/cargoComissionadoForm.faces" access="ROLE_CARGO_REPRESENTACAO" />
-
+		
         <intercept-url pattern="/paginas/tabelas/tipoDependenciaList.faces" access="ROLE_TIPO_DEPENDENTES" />
         <intercept-url pattern="/paginas/tabelas/tipoDependenciaForm.faces" access="ROLE_TIPO_DEPENDENTES" />
 
         <intercept-url pattern="/paginas/tabelas/motivoDependenciaList.faces" access="ROLE_MOTIVO_DEPENDENCIA" />
         <intercept-url pattern="/paginas/tabelas/motivoDependenciaForm.faces" access="ROLE_MOTIVO_DEPENDENCIA" />
-
+		
         <intercept-url pattern="/paginas/tabelas/escolaridadeList.faces" access="ROLE_ESCOLARIDADE" />
         <intercept-url pattern="/paginas/tabelas/escolaridadeForm.faces" access="ROLE_ESCOLARIDADE" />
 
@@ -64,7 +75,7 @@
         <intercept-url pattern="/paginas/tabelas/areaProfissionalForm.faces" access="ROLE_FORMACAO_PROFISSIONAL_AREA" />
 
         <intercept-url pattern="/paginas/tabelas/cursoProfissionalList.faces" access="ROLE_FORMACAO_PROFISSIONAL_CURSOS" />
-        <intercept-url pattern="/paginas/tabelas/cursoProfissionalForm.faces" access="ROLE_FORMACAO_PROFISSIONAL_CURSOS" />
+        <intercept-url pattern="/paginas/tabelas/cursoProfissionalForm.faces" access="ROLE_FORMACAO_PROFISSIONAL_CURSOS" />		
 
         <intercept-url pattern="/paginas/tabelas/tipoBeneficioList.faces" access="ROLE_TIPO_BENEFICIO" />
         <intercept-url pattern="/paginas/tabelas/tipoBeneficioForm.faces" access="ROLE_TIPO_BENEFICIO" />
@@ -116,8 +127,8 @@
         <intercept-url pattern="/paginas/cadastros/competenciaSetorialList.faces" access="ROLE_COMPETENCIA_SETORIAL" />
         <intercept-url pattern="/paginas/cadastros/competenciaSetorialForm.faces" access="ROLE_COMPETENCIA_SETORIAL" />
         
-        <intercept-url pattern="/paginas/cadastros/atribuicaoSetorList.faces" access="ROLE_COMPETENCIA_SETORIAL" />
-        <intercept-url pattern="/paginas/cadastros/atribuicaoSetorForm.faces" access="ROLE_COMPETENCIA_SETORIAL" />
+        <intercept-url pattern="/paginas/cadastros/atribuicaoSetorList.faces" access="ROLE_ATRIBUICAO_SETORIAL" />
+        <intercept-url pattern="/paginas/cadastros/atribuicaoSetorForm.faces" access="ROLE_ATRIBUICAO_SETORIAL" />
         
         <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalList.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
         <intercept-url pattern="/paginas/cadastros/competenciaSetorFuncionalForm.faces" access="ROLE_COMPETENCIA_SETOR_FUNCIONAL" />
@@ -136,12 +147,6 @@
         
         <intercept-url pattern="/paginas/cadastros/publicacaoList.faces" access="ROLE_PUBLICACAO" />
         <intercept-url pattern="/paginas/cadastros/publicacaoForm.faces" access="ROLE_PUBLICACAO" />        
-        
-        <intercept-url pattern="/paginas/cadastros/representacaoSetorList.faces" access="ROLE_REPRESENTACAO_SETOR" />
-        <intercept-url pattern="/paginas/cadastros/representacaoSetorForm.faces" access="ROLE_REPRESENTACAO_SETOR" />
-
-        <intercept-url pattern="/paginas/cadastros/representacaoValorList.faces" access="ROLE_REPRESENTACAO_VALOR" />
-        <intercept-url pattern="/paginas/cadastros/representacaoValorForm.faces" access="ROLE_REPRESENTACAO_VALOR" />      
 
 
 
@@ -175,6 +180,7 @@
 
         <intercept-url pattern="/paginas/funcional/licencaList.faces" access="ROLE_LICENCA" />
         <intercept-url pattern="/paginas/funcional/licencaForm.faces" access="ROLE_LICENCA" />
+        <intercept-url pattern="/paginas/funcional/licencaFinalizarList.faces" access="ROLE_LICENCA_ALTERAR" />
 
         <intercept-url pattern="/paginas/funcional/feriasList.faces" access="ROLE_FERIAS" />
         <intercept-url pattern="/paginas/funcional/feriasForm.faces" access="ROLE_FERIAS" />
@@ -189,12 +195,11 @@
         <intercept-url pattern="/paginas/funcional/deducaoForm.faces" access="ROLE_DEDUCAO" />
 
 
-
-		<!-- MENU RELATORIO -->
-		<intercept-url pattern="/paginas/relatorios/*" access="ROLE_RELATORIO" />
+		<!-- MENU CONSULTA E RELATORIO -->
+		<intercept-url pattern="/paginas/relatorios/*" access="ROLE_RELATORIO,ROLE_RELATORIO_CONSULTA" />
 		
-		<intercept-url pattern="/paginas/relatorios/auditoriaList.faces" access="ROLE_AUDITORIA" />
 		
+		<!-- MENU CONSULTA-->
         <intercept-url pattern="/paginas/relatorios/fichaFuncionalList.faces" access="ROLE_FICHA_FUNCIONAL" />
         <intercept-url pattern="/paginas/relatorios/fichaFuncionalForm.faces" access="ROLE_FICHA_FUNCIONAL" />
 
@@ -202,12 +207,26 @@
         <intercept-url pattern="/paginas/relatorios/emitirDossieServidorForm.faces" access="ROLE_DOSSIE_SERVIDOR" />
 
         <intercept-url pattern="/paginas/relatorios/tempoRepresentacaoFuncionalList.faces" access="ROLE_TEMPO_REPRESENTACAO" />
-        <intercept-url pattern="/paginas/relatorios/funcionarioCompetenciaSetorList.faces" access="ROLE_FUNC_COMPETENCIA_SETOR" />
         
-        <intercept-url pattern="/paginas/relatorios/servidorlist.faces" access="ROLE_SERVIDOR_SETOR" />
-        <intercept-url pattern="/paginas/relatorios/cursoServidorList.faces" access="ROLE_SERVIDOR_SETOR" />
+        <intercept-url pattern="/paginas/relatorios/emitirContagemTempoServicoList.faces" access="ROLE_TEMPO_CONTRIBUICAO" />
+                                      
+        <intercept-url pattern="/paginas/relatorios/cursoServidorList.faces" access="ROLE_CURSO_SERVIDOR" />
         
+        
+        <!-- MENU RELATORIO -->        
+		
+		<intercept-url pattern="/paginas/relatorios/auditoriaList.faces" access="ROLE_AUDITORIA" />
 
+		<intercept-url pattern="/paginas/relatorios/funcionarioCompetenciaSetorList.faces" access="ROLE_FUNC_COMPETENCIA_SETOR" />
+		
+		<intercept-url pattern="/paginas/relatorios/relatorioFeriasList.faces" access="ROLE_RELATORIO_FERIAS" />
+
+		<intercept-url pattern="/paginas/relatorios/servidorlist.faces" access="ROLE_RELATORIO_SERVIDOR" />
+		
+		<intercept-url pattern="/paginas/relatorios/relatorioServidorList.faces" access="ROLE_RELATORIO_SERVIDOR" />
+		
+		<intercept-url pattern="/paginas/relatorios/cursoPeriodoList.faces" access="ROLE_CURSO_PERIODO" />
+		
     </http>
 	
 	

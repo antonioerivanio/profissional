@@ -28,12 +28,14 @@ public class RelatorioServidorBean  implements Serializable  {
 	private HtmlForm form;
 		
 	private Integer sexo;
-	private Integer mes; 
+	private Integer mes;
+	private Integer ordemAniversariantes;
 	private Boolean incluirMembros;
 	private Boolean agruparServidoresQueTemFilhos;	
 		
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
+		ordemAniversariantes = 1;
 		sexo = 0;					
 		incluirMembros = false;
 		agruparServidoresQueTemFilhos = false;
@@ -89,6 +91,11 @@ public class RelatorioServidorBean  implements Serializable  {
 			
 			parametros.put("FILTRO", filtro.toString());
 			
+			if ( ordemAniversariantes == 1 ) {
+				parametros.put("ORDEM", "ORDER BY mesAniversario, diaAniversario, P.NOMECOMPLETO");
+			} if ( ordemAniversariantes == 2 ) {
+				parametros.put("ORDEM", "ORDER BY mesAniversario, P.NOMECOMPLETO");
+			}			
 			
 			relatorioUtil.relatorio("servidoresAniversariantes.jasper", parametros, "aniversariantes"	+ ".pdf");
 		
@@ -112,6 +119,8 @@ public class RelatorioServidorBean  implements Serializable  {
 	public void setAgruparServidoresQueTemFilhos(Boolean agruparServidoresQueTemFilhos) {this.agruparServidoresQueTemFilhos = agruparServidoresQueTemFilhos;}
 	public Integer getMes() {return mes;}
 	public void setMes(Integer mes) {this.mes = mes;}
+	public Integer getOrdemAniversariantes() {return ordemAniversariantes;}
+	public void setOrdemAniversariantes(Integer ordemAniversariantes) {this.ordemAniversariantes = ordemAniversariantes;}
 	
 
 			
