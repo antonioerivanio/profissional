@@ -18,8 +18,7 @@
 
 
 		<!-- TABELAS -->
-		<intercept-url pattern="/paginas/tabelas/*" access="ROLE_TABELAS" />		
-        
+		       
         <intercept-url pattern="/paginas/tabelas/cargoList.faces" access="ROLE_CARGO" />
         <intercept-url pattern="/paginas/tabelas/cargoForm.faces" access="ROLE_CARGO" />
 		
@@ -101,11 +100,11 @@
         <intercept-url pattern="/paginas/tabelas/tipoDocumentoList.faces" access="ROLE_TIPO_DOCUMENTO" />
         <intercept-url pattern="/paginas/tabelas/tipoDocumentoForm.faces" access="ROLE_TIPO_DOCUMENTO" />
 
+		<intercept-url pattern="/paginas/tabelas/*" access="ROLE_TABELAS" />
 
 
 		<!-- CADASTRO -->
-		<intercept-url pattern="/paginas/cadastros/*" access="ROLE_CADASTROS" />
-		
+			
         <intercept-url pattern="/paginas/cadastros/pessoaList.faces" access="ROLE_PESSOA" />
         <intercept-url pattern="/paginas/cadastros/pessoaForm.faces" access="ROLE_PESSOA" />
 
@@ -148,11 +147,10 @@
         <intercept-url pattern="/paginas/cadastros/publicacaoList.faces" access="ROLE_PUBLICACAO" />
         <intercept-url pattern="/paginas/cadastros/publicacaoForm.faces" access="ROLE_PUBLICACAO" />        
 
-
+		<intercept-url pattern="/paginas/cadastros/*" access="ROLE_CADASTROS" />
 
 		<!-- FUNCIONAL -->
-		<intercept-url pattern="/paginas/funcional/*" access="ROLE_FUNCIONAL" />
-		
+				
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorList.faces" access="ROLE_NOMEACAO" />
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorForm.faces" access="ROLE_NOMEACAO" />
         <intercept-url pattern="/paginas/funcional/nomeacaoServidorFormEdit.faces" access="ROLE_NOMEACAO_ALTERAR" />
@@ -194,11 +192,9 @@
         <intercept-url pattern="/paginas/funcional/deducaoList.faces" access="ROLE_DEDUCAO" />
         <intercept-url pattern="/paginas/funcional/deducaoForm.faces" access="ROLE_DEDUCAO" />
 
+		<intercept-url pattern="/paginas/funcional/*" access="ROLE_FUNCIONAL" />
+		
 
-		<!-- MENU CONSULTA E RELATORIO -->
-		<intercept-url pattern="/paginas/relatorios/*" access="ROLE_RELATORIO,ROLE_RELATORIO_CONSULTA" />
-		
-		
 		<!-- MENU CONSULTA-->
         <intercept-url pattern="/paginas/relatorios/fichaFuncionalList.faces" access="ROLE_FICHA_FUNCIONAL" />
         <intercept-url pattern="/paginas/relatorios/fichaFuncionalForm.faces" access="ROLE_FICHA_FUNCIONAL" />
@@ -226,6 +222,10 @@
 		<intercept-url pattern="/paginas/relatorios/relatorioServidorList.faces" access="ROLE_RELATORIO_SERVIDOR" />
 		
 		<intercept-url pattern="/paginas/relatorios/cursoPeriodoList.faces" access="ROLE_CURSO_PERIODO" />
+		
+		
+		<!-- MENU CONSULTA E RELATORIO -->
+		<intercept-url pattern="/paginas/relatorios/*" access="ROLE_RELATORIO" />
 		
     </http>
 	
