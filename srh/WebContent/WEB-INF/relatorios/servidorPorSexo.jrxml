@@ -17,6 +17,9 @@
 	</parameter>
 	<parameter name="AGRUPAR_QUEM_TEM_FILHO" class="java.lang.Boolean"/>
 	<parameter name="SEXO" class="java.lang.Integer"/>
+	<parameter name="ORDEM" class="java.lang.String">
+		<defaultValueExpression><![CDATA[( $P{AGRUPAR_QUEM_TEM_FILHO} ? "ORDER BY P.SEXO DESC, TEM_FILHO DESC, P.NOMECOMPLETO" : "ORDER BY P.SEXO DESC, P.NOMECOMPLETO" )]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT DISTINCT P.NOMECOMPLETO nomeCompleto,
                 P.SEXO,
@@ -49,8 +52,8 @@ WHERE 	F.ATIVOFP = 1
 
 	$P!{FILTRO}
 
-
-ORDER BY P.SEXO DESC, TEM_FILHO DESC, P.NOMECOMPLETO]]>
+$P!{ORDEM}
+]]>
 	</queryString>
 	<field name="NOMESETOR" class="java.lang.String"/>
 	<field name="NOMECOMPLETO" class="java.lang.String"/>
@@ -125,7 +128,7 @@ ORDER BY P.SEXO DESC, TEM_FILHO DESC, P.NOMECOMPLETO]]>
 		</groupFooter>
 	</group>
 	<group name="TEM_FILHO">
-		<groupExpression><![CDATA[$F{TEM_FILHO}]]></groupExpression>
+		<groupExpression><![CDATA[$P{AGRUPAR_QUEM_TEM_FILHO} && $F{TEM_FILHO}]]></groupExpression>
 		<groupHeader>
 			<band height="52">
 				<printWhenExpression><![CDATA[$P{AGRUPAR_QUEM_TEM_FILHO}]]></printWhenExpression>
