@@ -824,5 +824,13 @@
 			<to-view-id>/paginas/relatorios/relatorioServidorList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Relatório de demonstrativo de cargos -->
+	<navigation-rule>
+		<from-view-id>/paginas/relatorios/relatorioDemonstrativoDeCargosList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/relatorios/relatorioDemonstrativoDeCargosList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

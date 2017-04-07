@@ -221,6 +221,8 @@
 		
 		<intercept-url pattern="/paginas/relatorios/relatorioServidorList.faces" access="ROLE_RELATORIO_SERVIDOR" />
 		
+		<intercept-url pattern="/paginas/relatorios/relatorioDemonstrativoDeCargosList.faces" access="ROLE_RELATORIO_SERVIDOR" />
+		
 		<intercept-url pattern="/paginas/relatorios/cursoPeriodoList.faces" access="ROLE_CURSO_PERIODO" />
 		
 		
