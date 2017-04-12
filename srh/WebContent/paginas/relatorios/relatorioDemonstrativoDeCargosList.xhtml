@@ -71,7 +71,7 @@
 					
 					<div class="radios-group box-30" style="margin-top: 26px; margin-left: 20px;">						
 						<h:selectBooleanCheckbox id="ativoPortal" value="#{relatorioDemonstrativoCargoBean.ativoPortal}" style="float:left; margin-right: 5px;"/>
-						<label style="float:left;" for="ativoPortal">Somente servidores ativos no Portal da Transparência?</label>											
+						<label style="float:left;" for="form:ativoPortal">Somente servidores ativos no Portal da Transparência?</label>											
 					</div>
 					
 					
@@ -87,7 +87,21 @@
 				
 				<rich:tab id="tab2" label="Quantitativo">
 					
-					 			
+					<div class="radios-group box-30" style="margin-top: 26px;">						
+						<h:selectBooleanCheckbox id="quantitativoDetalhado" value="#{relatorioDemonstrativoCargoBean.quantitativoDetalhado}" style="float:left; margin-right: 5px;"/>
+						<label style="float:left;" for="form:quantitativoDetalhado">Detalhar funcionais por cargo?</label>											
+					</div>
+					
+					<div class="radios-group box-30" style="margin-top: 26px;">						
+						<h:selectBooleanCheckbox id="ativoPortalAbaQuantitativo" value="#{relatorioDemonstrativoCargoBean.ativoPortalAbaQuantitativo}" style="float:left; margin-right: 5px;"/>
+						<label style="float:left;" for="form:ativoPortalAbaQuantitativo">Somente servidores ativos no Portal da Transparência?</label>											
+					</div> 
+					
+					<br /><br /><br /><br /><br />
+					
+					<h:commandButton value="Gerar relatório" id="relatorioQuantitativoDeCargos"
+									 action="#{relatorioDemonstrativoCargoBean.relatorioQuantitativoDeCargos}" 
+		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10" />			
  					
 				</rich:tab>			
 			

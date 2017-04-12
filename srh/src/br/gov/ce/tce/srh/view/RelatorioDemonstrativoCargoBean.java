@@ -35,6 +35,8 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 	private HtmlForm form;
 	
 	private Boolean ativoPortal;
+	private Boolean ativoPortalAbaQuantitativo;
+	private Boolean quantitativoDetalhado;
 	private Integer tipoDeQuantitativo;
 	private TipoOcupacao tipoOcupacao;
 	private List<TipoOcupacao> comboTipoOcupacao;
@@ -42,7 +44,9 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 		
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
-		ativoPortal = true;		
+		ativoPortal = true;
+		ativoPortalAbaQuantitativo = true;
+		quantitativoDetalhado = false;
 		tipoDeQuantitativo = 1;
 		tipoOcupacao = null;
 		comboTipoOcupacao = null;
@@ -80,7 +84,34 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 		}
 
 		return null;
-	}		
+	}
+	
+	public String relatorioQuantitativoDeCargos() {
+
+		try {
+
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			StringBuilder filtro = new StringBuilder();
+			
+			if(this.ativoPortalAbaQuantitativo){
+				filtro.append(" AND TB_FUNCIONAL.FLPORTALTRANSPARENCIA = 1 ");
+			}
+						
+			parametros.put("FILTRO", filtro.toString());
+			parametros.put("DETALHAR", quantitativoDetalhado);
+						
+			relatorioUtil.relatorio("quantitativoCargo.jasper", parametros, "quantitativoCargo"	+ ".pdf");
+		
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
 	
 	public List<TipoOcupacao> getComboTipoOcupacao() {
 		try {
@@ -93,7 +124,11 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
         return this.comboTipoOcupacao;
 	}
 	public Boolean getAtivoPortal() {return ativoPortal;}
-	public void setAtivoPortal(Boolean ativoPortal) {this.ativoPortal = ativoPortal;}
+	public void setAtivoPortal(Boolean ativoPortal) {this.ativoPortal = ativoPortal;}	
+	public Boolean getAtivoPortalAbaQuantitativo() {return ativoPortalAbaQuantitativo;}
+	public void setAtivoPortalAbaQuantitativo(Boolean ativoPortalAbaQuantitativo) {this.ativoPortalAbaQuantitativo = ativoPortalAbaQuantitativo;}
+	public Boolean getQuantitativoDetalhado() {return quantitativoDetalhado;}
+	public void setQuantitativoDetalhado(Boolean quantitativoDetalhado) {this.quantitativoDetalhado = quantitativoDetalhado;}
 	public Integer getTipoDeQuantitativo() {return tipoDeQuantitativo;}
 	public void setTipoDeQuantitativo(Integer tipoDeQuantitativo) {this.tipoDeQuantitativo = tipoDeQuantitativo;}
 	public TipoOcupacao getTipoOcupacao() {return tipoOcupacao;}
