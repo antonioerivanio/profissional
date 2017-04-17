@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="quantitativoCargoComplemento" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="FILTRO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  TB_TIPOOCUPACAO.ID ID,
+        TB_TIPOOCUPACAO.DESCRICAO TIPO_OCUPACAO,
+        TB_OCUPACAO.NOMENCLATURA CARGO,
+        COUNT(TB_FUNCIONAL.ID) OCUPADOS
+
+FROM        srh.TB_TIPOOCUPACAO
+INNER JOIN  srh.TB_OCUPACAO        ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO
+INNER JOIN  srh.TB_FUNCIONAL       ON TB_OCUPACAO.ID = TB_FUNCIONAL.IDOCUPACAO
+
+WHERE TB_FUNCIONAL.IDSITUACAO IN (1, 2, 3, 5, 7)
+      AND TB_FUNCIONAL.DATASAIDA IS NULL
+      AND TB_FUNCIONAL.STATUS IN (1, 2)
+      AND TB_TIPOOCUPACAO.ID NOT IN (1, 2)
+      $P!{FILTRO}
+
+GROUP BY  TB_TIPOOCUPACAO.ID,
+          TB_TIPOOCUPACAO.DESCRICAO,
+          TB_OCUPACAO.NOMENCLATURA,
+          TB_OCUPACAO.QUANTIDADE,
+          TB_FUNCIONAL.IDOCUPACAO,
+          TB_OCUPACAO.ORDEMOCUPACAO
+
+ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="TIPO_OCUPACAO" class="java.lang.String"/>
+	<field name="CARGO" class="java.lang.String"/>
+	<field name="OCUPADOS" class="java.lang.Integer"/>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement x="0" y="2" width="555" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="431" y="2" width="124" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OCUPADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="2" width="203" height="18" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO OCUPAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="206" y="2" width="225" height="18" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="3" y="1" width="202" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TIPO_OCUPACAO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="206" y="1" width="225" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="431" y="1" width="124" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OCUPADOS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

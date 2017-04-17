@@ -104,7 +104,4 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_FUNCIONAL.NOME]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
 </jasperReport>

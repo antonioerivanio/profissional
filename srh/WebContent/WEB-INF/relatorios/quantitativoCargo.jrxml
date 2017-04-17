@@ -33,6 +33,7 @@ INNER JOIN  srh.TB_FUNCIONAL       ON TB_OCUPACAO.ID = TB_FUNCIONAL.IDOCUPACAO
 WHERE TB_FUNCIONAL.IDSITUACAO IN (1, 2, 3, 5, 7)
       AND TB_FUNCIONAL.DATASAIDA IS NULL
       AND TB_FUNCIONAL.STATUS IN (1, 2)
+      AND TB_TIPOOCUPACAO.ID IN (1, 2)
       $P!{FILTRO}
 
 GROUP BY  TB_TIPOOCUPACAO.ID,
@@ -49,6 +50,70 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 	<field name="CARGO" class="java.lang.String"/>
 	<field name="QUANTIDADE" class="java.lang.Integer"/>
 	<field name="OCUPADOS" class="java.lang.Integer"/>
+	<group name="DETALHAMENTO">
+		<groupFooter>
+			<band height="41">
+				<printWhenExpression><![CDATA[$P{DETALHAR}]]></printWhenExpression>
+				<subreport>
+					<reportElement positionType="Float" x="1" y="13" width="555" height="28"/>
+					<subreportParameter name="FILTRO">
+						<subreportParameterExpression><![CDATA[$P{FILTRO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "quantitativoCargoDetalhe.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="QUANTITATIVO">
+		<groupHeader>
+			<band height="24">
+				<rectangle>
+					<reportElement x="0" y="6" width="555" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
+				</rectangle>
+				<staticText>
+					<reportElement x="485" y="6" width="69" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[OCUPADOS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="2" y="6" width="203" height="18" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TIPO OCUPAÇÃO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="205" y="6" width="225" height="18" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CARGO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="430" y="6" width="55" height="18" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[QUANT.]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="34">
+				<subreport>
+					<reportElement positionType="Float" x="1" y="9" width="555" height="25"/>
+					<subreportParameter name="FILTRO">
+						<subreportParameterExpression><![CDATA[$P{FILTRO}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "quantitativoCargoComplemento.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupFooter>
+	</group>
 	<title>
 		<band height="86">
 			<rectangle>
@@ -75,45 +140,10 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 			</staticText>
 		</band>
 	</title>
-	<columnHeader>
-		<band height="20">
-			<rectangle>
-				<reportElement x="0" y="2" width="555" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
-			</rectangle>
-			<staticText>
-				<reportElement x="485" y="2" width="69" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[OCUPADOS]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="2" y="2" width="203" height="18" forecolor="#FFFFFF"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TIPO OCUPAÇÃO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="205" y="2" width="225" height="18" forecolor="#FFFFFF"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CARGO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="430" y="2" width="55" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[QUANT.]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="-1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
@@ -139,26 +169,29 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
-			<line>
-				<reportElement x="1" y="2" width="554" height="1"/>
-			</line>
+		<band height="19">
 			<staticText>
-				<reportElement x="146" y="3" width="267" height="16"/>
+				<reportElement x="3" y="3" width="552" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
-			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="524" y="3" width="30" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			<line>
+				<reportElement x="0" y="3" width="555" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="0" y="3" width="100" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="430" y="3" width="90" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="442" y="3" width="90" height="16" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -168,69 +201,11 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="536" y="3" width="20" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
-	<lastPageFooter>
-		<band height="20">
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="524" y="3" width="30" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="430" y="3" width="90" height="16" forecolor="#000000"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="146" y="3" width="267" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
-			</staticText>
-			<line>
-				<reportElement x="1" y="2" width="554" height="1"/>
-			</line>
-		</band>
-	</lastPageFooter>
-	<summary>
-		<band height="51">
-			<printWhenExpression><![CDATA[$P{DETALHAR}]]></printWhenExpression>
-			<subreport>
-				<reportElement x="1" y="23" width="555" height="28"/>
-				<subreportParameter name="FILTRO">
-					<subreportParameterExpression><![CDATA[$P{FILTRO}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "quantitativoCargoDetalhe.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-	</summary>
 </jasperReport>

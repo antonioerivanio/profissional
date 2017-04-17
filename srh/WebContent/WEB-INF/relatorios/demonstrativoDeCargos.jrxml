@@ -22,8 +22,8 @@
                 F.MATRICULA matricula,
                 S.NMSETOR nomeSetor,
                 O.NOMENCLATURA cargo,
-                decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) referencia,
-                RC.NOMENCLATURA || decode(RF.TIPONOMEACAO, '1', ' - Titular', decode(RF.TIPONOMEACAO, '2', ' - Substituto', decode(RF.TIPONOMEACAO, '3', ' - Designado', ''))) representacao,
+                decode(CR.REFERENCIA, null, ' ', 'REF-' || TRIM(TO_CHAR(CR.REFERENCIA,'00'))) referencia,
+                RC.NOMENCLATURA || DECODE(RF.TIPONOMEACAO, 1, ' - Titular', '') representacao,
                 RC.SIMBOLO simbolo
 
 FROM SRH.TB_FUNCIONAL F
@@ -32,7 +32,7 @@ FROM SRH.TB_FUNCIONAL F
       LEFT JOIN SRH.TB_TIPOOCUPACAO TOC ON O.TIPOOCUPACAO = TOC.ID
       LEFT JOIN SRH.TB_CLASSEREFERENCIA CR ON F.IDCLASSEREFERENCIA = CR.ID
       LEFT JOIN SAPJAVA.SETOR S ON F.IDSETOR = S.IDSETOR
-      LEFT JOIN SRH.TB_REPRESENTACAOFUNCIONAL RF ON RF.IDFUNCIONAL = F.ID AND RF.FIM IS NULL
+      LEFT JOIN SRH.TB_REPRESENTACAOFUNCIONAL RF ON RF.IDFUNCIONAL = F.ID AND RF.TIPONOMEACAO = 1 AND RF.FIM IS NULL
       LEFT JOIN SRH.TB_REPRESENTACAOCARGO RC ON RF.IDREPRESENTACAOCARGO = RC.ID
 
 
@@ -177,12 +177,12 @@ ORDER BY nomeCompleto]]>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="772" y="3" width="30" height="16"/>
+				<reportElement key="textField-5" x="781" y="3" width="20" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="678" y="3" width="90" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="688" y="3" width="90" height="16" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -219,12 +219,12 @@ ORDER BY nomeCompleto]]>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="772" y="3" width="30" height="16"/>
+				<reportElement key="textField-5" x="781" y="3" width="20" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="678" y="3" width="90" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="688" y="3" width="90" height="16" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

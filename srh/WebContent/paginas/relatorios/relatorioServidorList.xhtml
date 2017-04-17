@@ -57,6 +57,51 @@
 			
 			<rich:tabPanel id="tabPanel" switchType="client">
 			
+				<rich:tab id="tab3" label="Por setor">
+			
+					<div class="select-box box-38">
+						<label>Setor</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="cmbSetor" value="#{relatorioServidorBean.setor}" converter="entityConverter">
+								<f:selectItem itemLabel="TODOS" />
+								<f:selectItems value="#{relatorioServidorBean.comboSetor}" var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
+							</h:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="select-box box-36">
+						<h:outputLabel id="lblVinculo" value="Vínculo"/>
+						<div class="conteiner">
+							<h:selectOneMenu id="cmbVinculo" value="#{relatorioServidorBean.vinculo}">							  
+								<f:selectItem itemLabel="TODOS" itemValue="0"/>
+								<f:selectItem itemLabel="Membros" itemValue="1"/>
+								<f:selectItem itemLabel="Servidores Ativos" itemValue="2"/>
+								<f:selectItem itemLabel="Servidores Efetivos" itemValue="3"/>
+								<f:selectItem itemLabel="Servidores Inativos" itemValue="4"/>
+								<f:selectItem itemLabel="Ocupantes de Cargo Comissionado" itemValue="5"/>
+								<f:selectItem itemLabel="Ocupantes Somente Cargo Comissionado" itemValue="6"/>						
+								<f:selectItem itemLabel="Estagiários Nível Superior" itemValue="7"/>
+								<f:selectItem itemLabel="Estagiários Nível Médio" itemValue="8"/>
+								<f:selectItem itemLabel="Cessão de Servidor Sem Nenhuma Remuneração" itemValue="9"/>											
+							</h:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="radios-group box-30" style="margin-top: 26px;">						
+						<h:selectBooleanCheckbox id="ativoPortal" value="#{relatorioServidorBean.ativoPortal}" style="float:left; margin-right: 5px;"/>
+						<label style="float:left;" for="form:ativoPortal">Somente servidores ativos no Portal da Transparência?</label>											
+					</div>
+							
+					
+					<br /><br /><br /><br /><br />
+					
+					<h:commandButton value="Gerar relatório" id="relatorioPorSetor"
+									 action="#{relatorioServidorBean.relatorioPorSetor}" 
+		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10" /> 
+							
+			
+				</rich:tab>
+			
 				<rich:tab id="tab1" label="Por sexo">
 					
 					<div class="select-box box-16">
@@ -69,23 +114,15 @@
 							</h:selectOneMenu>
 						</div>
 					</div>
-					
-					<div class="radios-group box-32">
-						<label for="form:incluirMembro">Incluir no relatório Conselheiros, Auditores e Procuradores</label>
-						<div class="conteiner">
-							<div class="radio-box">
-								<h:selectBooleanCheckbox id="incluirMembro" value="#{relatorioServidorBean.incluirMembros}" />
-							</div>
-						</div>
+												
+					<div class="radios-group box-32" style="margin-top: 26px; margin-left: 20px;">
+						<h:selectBooleanCheckbox id="incluirMembro" value="#{relatorioServidorBean.incluirMembros}" style="float:left; margin-right: 5px;"/>
+						<label style="float:left;" for="form:incluirMembro">Incluir no relatório Conselheiros, Auditores e Procuradores</label>
 					</div>
 					
-					<div class="radios-group box-34">
-						<label for="form:agruparServidoresQueTemFilhos">Marque se deseja agrupar por servidor(a) que possui filho(a)</label>
-						<div class="conteiner">
-							<div class="radio-box">
-								<h:selectBooleanCheckbox id="agruparServidoresQueTemFilhos" value="#{relatorioServidorBean.agruparServidoresQueTemFilhos}" />
-							</div>
-						</div>
+					<div class="radios-group box-34" style="margin-top: 26px; margin-left: 20px;">
+						<h:selectBooleanCheckbox id="agruparServidoresQueTemFilhos" value="#{relatorioServidorBean.agruparServidoresQueTemFilhos}" style="float:left; margin-right: 5px;" />
+						<label style="float:left;" for="form:agruparServidoresQueTemFilhos">Marque se deseja agrupar por servidor(a) que possui filho(a)</label>
 					</div>
 		
 					<br /><br /><br /><br /><br />
