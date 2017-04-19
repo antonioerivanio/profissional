@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * Referente a tabela: TB_AVERBACAO
@@ -62,6 +63,15 @@ public class Averbacao extends BasicEntity<Long> implements Serializable {
 
     @Column(name = "DESCRICAO", length=200)
     private String descricao;
+    
+    @Transient
+	private String anos;
+	
+	@Transient
+	private String meses;
+		
+	@Transient
+	private String dias;
 
     @ManyToOne
 	@JoinColumn(name = "SUBTIPOTEMPOSERVICO")
@@ -105,5 +115,14 @@ public class Averbacao extends BasicEntity<Long> implements Serializable {
 	
 	@Override
 	public void setId(Long id) {this.id = id;}
+	
+	public String getAnos() {return anos;}
+	public void setAnos(String anos) {this.anos = anos;}
+
+	public String getMeses() {return meses;}
+	public void setMeses(String meses) {this.meses = meses;}
+
+	public String getDias() {return dias;}
+	public void setDias(String dias) {this.dias = dias;}
 	
 }

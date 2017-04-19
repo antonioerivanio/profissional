@@ -205,7 +205,16 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 
 	@NotAudited
 	@Column(name="IDSETORDESIGNADO")
-	private Long idSetorDesignado;	
+	private Long idSetorDesignado;
+	
+	@Transient
+	private int anos;
+	
+	@Transient
+	private int meses;
+		
+	@Transient
+	private int dias;
 
 	public Funcional() {
 		//seguindo padrao Java Beans...
@@ -403,6 +412,15 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 
 	public boolean isAtivoPortal() {return ativoPortal;}
 	public void setAtivoPortal(boolean ativoPortal) {this.ativoPortal = ativoPortal;}
+
+	public int getAnos() {return anos;}
+	public void setAnos(int anos) {this.anos = anos;}
+
+	public int getMeses() {return meses;}
+	public void setMeses(int meses) {this.meses = meses;}
+
+	public int getDias() {return dias;}
+	public void setDias(int dias) {this.dias = dias;}	
 	
 	
 }

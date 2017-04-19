@@ -86,7 +86,35 @@ public class RelatorioUtil {
 		writeBytesAsAttachedTextFile(bytes, nomeArquivo);
 
 		return null;
-	}
+	}	
+	
+	public String relatorioComEmptyDataSource(String arquivoRelatorio, Map<String, Object> parametros, String nomeArquivo) throws Exception {  
+
+		// pegando o servlet context
+		FacesContext facesContext = FacesContext.getCurrentInstance();  
+		ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+
+		JRRewindableDataSource dataSource = new net.sf.jasperreports.engine.JREmptyDataSource();
+
+		String logo = servletContext.getRealPath("//img/" + "logo-srh.png");
+		String logo_tce = servletContext.getRealPath("//img/" + "logo-tce-report.png");
+		String back = servletContext.getRealPath("//img/" + "bg-topo.png");
+		String pathRel = servletContext.getRealPath("//WEB-INF/relatorios/" + arquivoRelatorio);  
+
+		//parametros 		
+		parametros.put("LOGO", logo);
+		parametros.put("LOGO_TCE", logo_tce);
+		parametros.put("BACK", back);
+
+		// Fill the report using an empty data source
+		JasperPrint print;
+
+		print = JasperFillManager.fillReport(pathRel, parametros, dataSource);
+		byte[] bytes = JasperExportManager.exportReportToPdf(print);
+		writeBytesAsAttachedTextFile(bytes, nomeArquivo);
+
+		return null;
+	}	
 	
 	protected void writeBytesAsAttachedTextFile(byte[] bytes, String fileName) throws Exception {  
 

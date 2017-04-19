@@ -2,7 +2,53 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirContagemTempoServico" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="425"/>
+	<subDataset name="listaFuncional">
+		<field name="ocupacao" class="br.gov.ce.tce.srh.domain.Ocupacao"/>
+		<field name="exercicio" class="java.util.Date"/>
+		<field name="saida" class="java.util.Date"/>
+		<field name="qtdeDias" class="java.lang.Long"/>
+		<field name="descricaoNomeacao" class="java.lang.String"/>
+		<field name="anos" class="java.lang.Integer"/>
+		<field name="meses" class="java.lang.Integer"/>
+		<field name="dias" class="java.lang.Integer"/>
+	</subDataset>
+	<subDataset name="listaFerias">
+		<field name="anoReferencia" class="java.lang.Long"/>
+		<field name="qtdeDias" class="java.lang.Long"/>
+		<field name="observacao" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="listaLicenca">
+		<field name="anoinicial" class="java.lang.Long"/>
+		<field name="anofinal" class="java.lang.Long"/>
+		<field name="saldodias" class="java.lang.Long"/>
+		<field name="descricao" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="listaAverbacao">
+		<field name="inicio" class="java.util.Date"/>
+		<field name="fim" class="java.util.Date"/>
+		<field name="anos" class="java.lang.String"/>
+		<field name="meses" class="java.lang.String"/>
+		<field name="dias" class="java.lang.String"/>
+		<field name="qtdeDias" class="java.lang.Long"/>
+		<field name="descricao" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="listaAcrescimo">
+		<field name="inicio" class="java.util.Date"/>
+		<field name="fim" class="java.util.Date"/>
+		<field name="qtdeDias" class="java.lang.Long"/>
+		<field name="descricao" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="listaDeducao">
+		<field name="descricaoCompleta" class="java.lang.String"/>
+		<field name="inicio" class="java.util.Date"/>
+		<field name="fim" class="java.util.Date"/>
+		<field name="anos" class="java.lang.String"/>
+		<field name="meses" class="java.lang.String"/>
+		<field name="dias" class="java.lang.String"/>
+		<field name="qtdeDias" class="java.lang.Long"/>
+		<field name="descricao" class="java.lang.String"/>
+	</subDataset>
 	<parameter name="BACK" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
 	</parameter>
@@ -13,94 +59,31 @@
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\workspace_ivia\\srh\\relatorios\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="FERIAS" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="LICENCA" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="IDFUNCIONAL" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="IDPESSOAL" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="AVERBACAO" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="ACRESCIMO" class="java.lang.String">
-		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
-	</parameter>
-	<parameter name="CPF" class="java.lang.String"/>
-	<parameter name="DEDUCAO" class="java.lang.String"/>
-	<parameter name="SAIDA" class="java.util.Date"/>
-	<parameter name="SERVICO" class="java.lang.String"/>
-	<parameter name="TOTALDIA" class="java.lang.String"/>
-	<parameter name="TOTALANO" class="java.lang.String"/>
-	<parameter name="TOTALMES" class="java.lang.String"/>
-	<parameter name="DIA" class="java.lang.String"/>
-	<parameter name="A" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Users\\joel.neves\\workspace\\srh\\relatorios\\EmitirContagemTempoServico_TempoServico.jrxml"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="B" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Users\\joel.neves\\workspace\\srh\\relatorios\\EmitirContagemTempoServico_FeriasDobro.jrxml"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="C" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Users\\joel.neves\\workspace\\srh\\relatorios\\EmitirContagemTempoServico_LicencaEpecialDobro.jrxml"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="D" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Users\\joel.neves\\workspace\\srh\\relatorios\\EmitirContagemTempoServico_averbacaoTempoServico.jrxml"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="E" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Users\\joel.neves\\workspace\\srh\\relatorios\\EmitirContagemTempoServico_AcreascimosTempoServico.jrxml"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="F" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Users\\joel.neves\\workspace\\srh\\relatorios\\EmitirContagemTempoServico_DeducoesTempoServico.jrxml"]]></defaultValueExpression>
-	</parameter>
+	<parameter name="funcional" class="br.gov.ce.tce.srh.domain.Funcional" isForPrompting="false"/>
+	<parameter name="totalDia" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="totalAno" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="totalMes" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="dia" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="saida" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="listaFuncional" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="listaFerias" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="listaLicenca" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="listaAverbacao" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="listaAcrescimo" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="listaDeducao" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<queryString>
-		<![CDATA[select
-	f.ID,
-	f.NOMECOMPLETO,
-	f.MATRICULA,
-	f.DATAEXERCICIO,
-	p.NOMEMAE,
-	p.RG,
-	p.EMISSORRG,
-	u.NOME,
-	o.NOMENCLATURA,
-	s.NMSETOR
-
-from TB_FUNCIONAL f
-	inner join TB_PESSOAL p on f.idpessoal = p.id
-	left join TB_UF u on p.UFEMISSORRG = u.uf
-	inner join TB_OCUPACAO o on f.idocupacao = o.id
-	inner join SAPJAVA.setor s on f.idsetor = s.idsetor
-
-
-where f.ID = $P!{IDFUNCIONAL}
-
-order by f.ID]]>
+		<![CDATA[]]>
 	</queryString>
-	<field name="ID" class="java.math.BigDecimal"/>
-	<field name="NOMECOMPLETO" class="java.lang.String"/>
-	<field name="MATRICULA" class="java.lang.String"/>
-	<field name="DATAEXERCICIO" class="java.sql.Timestamp"/>
-	<field name="NOMEMAE" class="java.lang.String"/>
-	<field name="RG" class="java.lang.String"/>
-	<field name="EMISSORRG" class="java.lang.String"/>
-	<field name="NOME" class="java.lang.String"/>
-	<field name="NOMENCLATURA" class="java.lang.String"/>
-	<field name="NMSETOR" class="java.lang.String"/>
 	<title>
-		<band height="230">
+		<band height="249">
 			<rectangle>
 				<reportElement x="1" y="0" width="800" height="79" forecolor="#CCCCCC"/>
 			</rectangle>
 			<image>
 				<reportElement x="633" y="-11" width="168" height="54"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="42" width="802" height="20" forecolor="#0F2E52"/>
@@ -111,11 +94,11 @@ order by f.ID]]>
 			</staticText>
 			<image>
 				<reportElement x="1" y="14" width="572" height="65"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
+				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="5" y="25" width="161" height="36"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="3" y="84" width="390" height="20" forecolor="#0F2E52"/>
@@ -131,20 +114,20 @@ order by f.ID]]>
 				</textElement>
 				<text><![CDATA[CPF:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="50" y="124" width="284" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMEMAE}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getPessoal().getNomeMae()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="649" y="142" width="124" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOME}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getPessoal().getUfEmissorRg().getNome()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="458" y="142" width="163" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMISSORRG}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getPessoal().getEmissorRg()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="625" y="142" width="24" height="18"/>
@@ -153,10 +136,10 @@ order by f.ID]]>
 				</textElement>
 				<text><![CDATA[UF:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="50" y="106" width="284" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getPessoal().getNomeCompleto()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="124" width="48" height="18"/>
@@ -179,10 +162,10 @@ order by f.ID]]>
 				</textElement>
 				<text><![CDATA[RG:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="233" y="142" width="159" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{RG}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getPessoal().getRg()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="106" width="48" height="18"/>
@@ -212,15 +195,15 @@ order by f.ID]]>
 				</textElement>
 				<text><![CDATA[SETOR:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="257" y="192" width="364" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMENCLATURA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getOcupacao().getNomenclatura()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="75" y="210" width="727" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NMSETOR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getSetor().getNome()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="625" y="192" width="73" height="18"/>
@@ -229,23 +212,23 @@ order by f.ID]]>
 				</textElement>
 				<text><![CDATA[DATA INÍCIO:]]></text>
 			</staticText>
-			<textField pattern="dd/MM/yyyy">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="698" y="192" width="104" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{DATAEXERCICIO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getExercicio()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="165" width="802" height="1"/>
 			</line>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="50" y="142" width="160" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{CPF}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getPessoal().getCpf()]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="75" y="192" width="125" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{MATRICULA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{funcional}.getMatricula()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="3" y="192" width="73" height="18"/>
@@ -257,158 +240,744 @@ order by f.ID]]>
 		</band>
 	</title>
 	<detail>
-		<band height="83">
+		<band height="90">
 			<line>
-				<reportElement x="0" y="5" width="802" height="1"/>
+				<reportElement x="0" y="4" width="802" height="1"/>
 			</line>
-			<rectangle>
-				<reportElement x="0" y="38" width="802" height="18" backcolor="#195297"/>
-			</rectangle>
 			<staticText>
-				<reportElement x="3" y="11" width="145" height="20" forecolor="#0F2E52"/>
+				<reportElement x="3" y="4" width="145" height="35" forecolor="#0F2E52"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Contagem do Tempo até]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="203" y="38" width="100" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="148" y="5" width="100" height="35" forecolor="#0000FF" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[MESES]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{saida}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="38" width="802" height="18" backcolor="#195297"/>
+			</rectangle>
 			<staticText>
-				<reportElement x="3" y="38" width="93" height="18" forecolor="#FFFFFF"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+				<reportElement x="5" y="38" width="93" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL DE DIAS]]></text>
 			</staticText>
 			<staticText>
+				<reportElement x="107" y="38" width="93" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="38" width="100" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MESES]]></text>
+			</staticText>
+			<staticText>
 				<reportElement x="307" y="38" width="100" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="57" width="93" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{totalDia}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="107" y="57" width="93" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{totalAno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="203" y="57" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{totalMes}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="307" y="57" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{dia}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="90">
+			<line>
+				<reportElement x="0" y="5" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="5" width="795" height="30" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Tempo de Contribuição]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="34" width="802" height="18" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="34" width="145" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EXERCÍCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="34" width="60" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ATÉ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="34" width="40" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="34" width="50" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MESES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="383" y="34" width="40" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="107" y="38" width="93" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="424" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDE. DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="501" y="34" width="300" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="53" width="802" height="18"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="listaFuncional">
+						<dataSourceExpression><![CDATA[$P{listaFuncional}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="18" width="802">
+						<rectangle>
+							<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="802" height="18" forecolor="#EFEFEF" backcolor="#EFEFEF">
+								<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+							</reportElement>
+						</rectangle>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="3" y="0" width="150" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{ocupacao}.getNomenclatura()]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="424" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{qtdeDias}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="501" y="0" width="300" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{descricaoNomeacao}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement x="224" y="0" width="60" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{saida}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="153" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{exercicio}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="288" y="0" width="40" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{anos}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="331" y="0" width="50" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{meses}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="383" y="0" width="40" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{dias}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+		<band height="90" splitType ="Prevent">
+			<printWhenExpression><![CDATA[$P{listaFerias}.getRecordCount() > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="5" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="5" width="390" height="30" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Férias em Dobro]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="34" width="802" height="18" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="34" width="100" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANO REFERÊNCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="34" width="113" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDE. DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="34" width="113" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVAÇÃO]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="53" width="802" height="18"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="listaFerias">
+						<dataSourceExpression><![CDATA[$P{listaFerias}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="18" width="802">
+						<rectangle>
+							<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="802" height="18" forecolor="#EFEFEF" backcolor="#EFEFEF">
+								<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+							</reportElement>
+						</rectangle>
+						<textField isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="0" y="0" width="100" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{anoReferencia}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="220" y="0" width="581" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="105" y="0" width="113" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{qtdeDias}*2]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+		<band height="90" splitType ="Prevent">
+			<printWhenExpression><![CDATA[$P{listaLicenca}.getRecordCount() > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="5" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="5" width="390" height="30" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Licença Especial em Dobro]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="34" width="802" height="18" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="34" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
+				<text><![CDATA[ANO INICIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="79" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANO FINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDE. DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="34" width="113" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="53" width="802" height="18"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="listaLicenca">
+						<dataSourceExpression><![CDATA[$P{listaLicenca}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="18" width="802">
+						<rectangle>
+							<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="802" height="18" forecolor="#EFEFEF" backcolor="#EFEFEF">
+								<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+							</reportElement>
+						</rectangle>
+						<textField isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="7" y="0" width="68" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{anoinicial}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="151" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{saldodias}*2]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="228" y="0" width="570" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="79" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{anofinal}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+		<band height="90" splitType ="Prevent">
+			<printWhenExpression><![CDATA[$P{listaAverbacao}.getRecordCount() > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="5" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="5" width="390" height="30" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Averbação de Tempo de Contribuição]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="34" width="802" height="18" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="34" width="74" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA INÍCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="83" y="34" width="60" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA FIM ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="34" width="40" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
 				<text><![CDATA[ANOS]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="3" y="57" width="93" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{TOTALDIA}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="107" y="57" width="93" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{TOTALANO}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="203" y="57" width="100" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{TOTALMES}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="307" y="57" width="100" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{DIA}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy">
-				<reportElement mode="Transparent" x="148" y="11" width="100" height="20" forecolor="#0000FF" backcolor="#FFFFFF"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
-					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+			<staticText>
+				<reportElement x="200" y="34" width="50" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$P{SAIDA}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[MESES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="34" width="40" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDE. DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="34" width="100" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="53" width="802" height="18"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="listaAverbacao">
+						<dataSourceExpression><![CDATA[$P{listaAverbacao}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="18" width="802">
+						<rectangle>
+							<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="802" height="18" forecolor="#EFEFEF" backcolor="#EFEFEF">
+								<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+							</reportElement>
+						</rectangle>
+						<textField isBlankWhenNull="true">
+							<reportElement x="300" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{qtdeDias}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="379" y="0" width="422" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement x="83" y="0" width="60" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{fim}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="3" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{inicio}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="156" y="0" width="40" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{anos}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="200" y="0" width="50" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{meses}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="254" y="0" width="40" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{dias}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 		</band>
-		<band height="5">
-			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0"/>
-				<subreportParameter name="BACK"/>
-				<subreportParameter name="LOGO"/>
-				<subreportParameter name="SAIDA">
-					<subreportParameterExpression><![CDATA[$P{SAIDA}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="LOGO_TCE"/>
-				<subreportParameter name="IDPESSOAL">
-					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{A}]]></subreportExpression>
-			</subreport>
+		<band height="90" splitType ="Prevent">
+			<printWhenExpression><![CDATA[$P{listaAcrescimo}.getRecordCount() > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="5" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="5" width="390" height="30" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Acréscimo de Tempo de Contribuição]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="34" width="802" height="18" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="5" y="34" width="74" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA INÍCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="83" y="34" width="60" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA FIM ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDE. DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="34" width="100" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="53" width="802" height="18"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="listaAcrescimo">
+						<dataSourceExpression><![CDATA[$P{listaAcrescimo}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="18" width="802">
+						<rectangle>
+							<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="802" height="18" forecolor="#EFEFEF" backcolor="#EFEFEF">
+								<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+							</reportElement>
+						</rectangle>
+						<textField isBlankWhenNull="true">
+							<reportElement x="151" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{qtdeDias}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="228" y="0" width="569" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement x="83" y="0" width="60" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{fim}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="5" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{inicio}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 		</band>
-		<band height="5">
-			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="200" height="0"/>
-				<subreportParameter name="BACK"/>
-				<subreportParameter name="LOGO"/>
-				<subreportParameter name="LOGO_TCE"/>
-				<subreportParameter name="IDPESSOAL">
-					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{B}]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="5">
-			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0"/>
-				<subreportParameter name="BACK"/>
-				<subreportParameter name="LOGO"/>
-				<subreportParameter name="LOGO_TCE"/>
-				<subreportParameter name="IDPESSOAL">
-					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{C}]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="5">
-			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0"/>
-				<subreportParameter name="BACK"/>
-				<subreportParameter name="LOGO"/>
-				<subreportParameter name="LOGO_TCE"/>
-				<subreportParameter name="IDPESSOAL">
-					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{D}]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="5">
-			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0"/>
-				<subreportParameter name="BACK"/>
-				<subreportParameter name="LOGO"/>
-				<subreportParameter name="LOGO_TCE"/>
-				<subreportParameter name="IDPESSOAL">
-					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{E}]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="5">
-			<subreport>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="200" height="0"/>
-				<subreportParameter name="BACK"/>
-				<subreportParameter name="LOGO"/>
-				<subreportParameter name="LOGO_TCE"/>
-				<subreportParameter name="IDPESSOAL">
-					<subreportParameterExpression><![CDATA[$P{IDPESSOAL}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{F}]]></subreportExpression>
-			</subreport>
+		<band height="90" splitType ="Prevent">
+			<printWhenExpression><![CDATA[$P{listaDeducao}.getRecordCount() > 0]]></printWhenExpression>
+			<line>
+				<reportElement x="0" y="5" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="5" width="390" height="30" forecolor="#0F2E52"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Deduções de Tempo de Contribuição]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="34" width="802" height="18" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="6" y="34" width="137" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA INÍCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="34" width="60" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA FIM ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="34" width="40" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="34" width="50" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MESES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="34" width="40" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="34" width="70" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[QTDE. DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="501" y="34" width="100" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="53" width="802" height="18"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="listaDeducao">
+						<dataSourceExpression><![CDATA[$P{listaDeducao}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="18" width="802">
+						<rectangle>
+							<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="802" height="18" forecolor="#EFEFEF" backcolor="#EFEFEF">
+								<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+							</reportElement>
+						</rectangle>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="3" y="0" width="140" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{descricaoCompleta}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="424" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{qtdeDias}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement x="501" y="0" width="300" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement x="220" y="0" width="60" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{fim}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement mode="Transparent" x="144" y="0" width="70" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{inicio}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="287" y="0" width="40" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{anos}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="330" y="0" width="50" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{meses}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="382" y="0" width="40" height="18"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$F{dias}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="20">
+			<staticText>
+				<reportElement x="1" y="3" width="802" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="2" width="802" height="1"/>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="4" y="3" width="100" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="720" y="3" width="57" height="16" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="777" y="3" width="25" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
 	<lastPageFooter>
 		<band height="20">
 			<staticText>
@@ -428,10 +997,10 @@ order by f.ID]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="720" y="3" width="57" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="719" y="3" width="57" height="16" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -439,12 +1008,12 @@ order by f.ID]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="776" y="3" width="25" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

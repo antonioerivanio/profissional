@@ -170,100 +170,6 @@ public class SRHUtils {
 	
 	
 	/**
-	 * Método para comparar duas datas e retornar o número de dias de diferença entre elas.
-	 * O cálculo foi tirado do SCP
-	 * 
-	 * @param qtdDias 	
-	 * 
-	 * @return int[]
-	 */
-	public static int dataDiffSCP(Date dataInicio, Date dataFim) {
-
-		GregorianCalendar inicio = new GregorianCalendar();
-		GregorianCalendar fim = new GregorianCalendar();
-
-		int totalDias = 0;
-
-		inicio.setTime(dataInicio);
-		fim.setTime(dataFim);
-
-		int anoInicio = inicio.get(Calendar.YEAR);
-		int anoFim = fim.get(Calendar.YEAR);
-		int mesInicio = inicio.get(Calendar.MONTH);
-		int mesFim = fim.get(Calendar.MONTH);
-		int diaInicio = inicio.get(Calendar.DAY_OF_MONTH);
-		int diaFim = fim.get(Calendar.DAY_OF_MONTH);
-
-		if (diaFim < diaInicio) {
-			diaFim += 30;
-			mesFim -= 1;
-		}
-
-		int dias = diaFim - diaInicio;
-
-		if (mesFim < mesInicio) {
-			mesFim += 12;
-			anoFim -= 1;
-		}
-
-		int meses = mesFim - mesInicio;
-
-		int anos = anoFim - anoInicio;
-
-		totalDias += anos * 365;
-		totalDias += meses * 30;
-		totalDias += dias;
-
-		return totalDias + 1;
-	}
-	
-	public static long[] anosMesesDiasEstatuto(long qtdDias) {
-
-		long anos, meses, dias;
-
-		anos = qtdDias / 365;
-		
-		meses = (qtdDias - (365 * anos)) / 30;
-		
-		dias =  (qtdDias - (365 * anos) - (30 * meses));						
-
-		long[] retorno = {anos, meses, dias};
-		
-		return retorno;
-	}
-
-	
-	/**
-	 * Método que compara duas datas e retorna o número de anos, meses e dias entre elas.
-	 * O cálculo foi tirado do SCP
-	 * 
-	 * @param qtdDias 	
-	 * 
-	 * @return long[]
-	 */
-	public static long[] anosMesesDias(long qtdDias) {
-
-		long anos, meses, dias, restante;
-
-		anos = qtdDias / 365;
-		restante = qtdDias % 365;
-
-		if (restante >= 360) {
-			anos++;
-			meses = 0;
-			dias = 0;
-		}else{
-			meses = restante / 30;
-			dias = restante % 30;	
-		}				
-
-		long[] retorno = {anos, meses, dias};
-		
-		return retorno;
-	}
-	
-	
-	/**
 	 * Método que compara duas datas e retorna o número de anos, meses e dias entre elas.
 	 * O cálculo feito no método produz um resultado próximo ao demonstrativo da simulação do
 	 * cálculo do tempo de contribuição do INSS
@@ -271,11 +177,11 @@ public class SRHUtils {
 	 * @param dataInicio 
 	 * @param dataFim
 	 * 
-	 * @return long[]
+	 * @return int[]
 	 */
-	public static long[] anosMesesDias(Date dataInicio, Date dataFim) {
+	public static int[] contagemDeTempoDeServico(Date dataInicio, Date dataFim) {
 
-		long anos = 0, meses = 0, dias = 0;
+		int anos = 0, meses = 0, dias = 0;
 		
 		GregorianCalendar inicio = new GregorianCalendar();
 		GregorianCalendar fim = new GregorianCalendar();		
@@ -284,39 +190,63 @@ public class SRHUtils {
 		fim.setTime(dataFim);
 
 		int anoInicio = inicio.get(Calendar.YEAR);
-		int anoFim = fim.get(Calendar.YEAR);
-		int mesInicio = inicio.get(Calendar.MONTH);
-		int mesFim = fim.get(Calendar.MONTH);
+		int mesInicio = inicio.get(Calendar.MONTH) + 1;
 		int diaInicio = inicio.get(Calendar.DAY_OF_MONTH);
-		int diaFim = fim.get(Calendar.DAY_OF_MONTH);
-		
+		int anoFim = fim.get(Calendar.YEAR);
+		int mesFim = fim.get(Calendar.MONTH) + 1;
+		int diaFim = fim.get(Calendar.DAY_OF_MONTH);		
 
+		// Caso Especial: Data final corresponde ao último dia de fevereiro e data inicial começa no dia 1º
+		if ( diaInicio == 1 && mesFim == 2 && diaFim >= 28){
+			diaFim = 30;
+		}	
+		
 		if (diaFim < diaInicio) {
 			diaFim += 30;
-			mesFim -= 1;
+			mesFim --;
 		}
 
 		dias = diaFim - diaInicio + 1;
 		
-		if( dias >= 30 || ( dias >= 28 && mesFim == 1 ) ){
+		if( dias >= 30 ){
 			dias = 0;
 			meses++;
 		}		
 		
 		if (mesFim < mesInicio) {
 			mesFim += 12;
-			anoFim -= 1;
+			anoFim --;
 		}
 
 		meses += mesFim - mesInicio;
 
 		if(meses == 12){
 			meses = 0;
-			anos++;
+			anos ++;
 		}
 		
 		anos += anoFim - anoInicio;	
 		
+
+		int[] retorno = {anos, meses, dias};
+		
+		return retorno;
+	}	
+	
+	public static int calculaQtdeDias ( int[] anosMesesDias) {
+		return 365*anosMesesDias[0] + 30*anosMesesDias[1] + anosMesesDias[2];		
+	}		
+	
+	
+	public static long[] anosMesesDias(long qtdDias) {
+
+		long anos, meses, dias;
+
+		anos = qtdDias / 365;
+		
+		meses = (qtdDias - (365 * anos)) / 30;
+		
+		dias =  (qtdDias - (365 * anos) - (30 * meses));						
 
 		long[] retorno = {anos, meses, dias};
 		

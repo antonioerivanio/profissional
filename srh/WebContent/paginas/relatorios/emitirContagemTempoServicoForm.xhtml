@@ -182,13 +182,13 @@
 	                    </h:column>
 	                    <h:column id="col2">
 	                        <f:facet name="header">
-	                          Ano
+	                          Anos
 	                        </f:facet>
 	                      <center><h:outputText id="item2" value="#{emitirContagemTempoServicoListBean.ano}" /></center>
 	                    </h:column>
 	                    <h:column id="col3">
 	                        <f:facet name="header">
-	                          Mês
+	                          Meses
 	                        </f:facet>
 	                      <center><h:outputText id="item3" value="#{emitirContagemTempoServicoListBean.mes}" /></center>
 	                    </h:column>
@@ -244,7 +244,27 @@
 	                        		<f:convertDateTime id="convFuncionalSaida" type="date" pattern="dd/MM/yyyy" />
 	                        	</h:outputText>
 	                        </center>
-	                        </h:column>
+	                    </h:column>
+	                    
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Anos
+	                        </f:facet>
+	                      	<center><h:outputText value="#{funcional.anos}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Meses
+	                        </f:facet>
+	                      	<center><h:outputText value="#{funcional.meses}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Dias
+	                        </f:facet>
+	                      	<center><h:outputText value="#{funcional.dias}" /></center>
+	                    </h:column>             
+	                    
 	                    <h:column id="col8">
 	                        <f:facet name="header">
 	                          Qtde. Dias
@@ -252,7 +272,8 @@
 	                        <center>
 								<h:outputText id="item8" value="#{funcional.qtdeDias}" />  
 	                        </center>
-	                    </h:column> 
+	                    </h:column>
+	                     
 	                    <h:column id="col9">
 	                        <f:facet name="header">
 	                          Descrição
@@ -404,6 +425,27 @@
 	                        	</h:outputText>
 	                        </center>
 	                    </h:column>
+	                    
+	                     <h:column>
+	                        <f:facet name="header">
+	                          Anos
+	                        </f:facet>
+	                      	<center><h:outputText value="#{averbacao.anos}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Meses
+	                        </f:facet>
+	                      	<center><h:outputText value="#{averbacao.meses}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Dias
+	                        </f:facet>
+	                      	<center><h:outputText value="#{averbacao.dias}" /></center>
+	                    </h:column>
+	                    
+	                    
 	                    <h:column id="col19">
 	                        <f:facet name="header">
 	                           Qtde. Dias
@@ -528,6 +570,29 @@
 	                        	</h:outputText>
 	                        </center>
 	                    </h:column>
+	                    
+	                    
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Anos
+	                        </f:facet>
+	                      	<center><h:outputText value="#{deducao.anos}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Meses
+	                        </f:facet>
+	                      	<center><h:outputText value="#{deducao.meses}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Dias
+	                        </f:facet>
+	                      	<center><h:outputText value="#{deducao.dias}" /></center>
+	                    </h:column>
+	                    
+	                    
+	                    
 	                    <h:column id="col29">
 	                        <f:facet name="header">
 	                           	Qtde. Dias

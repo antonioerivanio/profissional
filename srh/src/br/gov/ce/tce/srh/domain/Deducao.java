@@ -58,6 +58,15 @@ public class Deducao extends BasicEntity<Long> implements Serializable {
 
     @Column(name = "DESCRICAO", length=200)
     private String descricao;
+    
+    @Transient
+	private String anos;
+	
+	@Transient
+	private String meses;
+		
+	@Transient
+	private String dias;
 
     @Transient
     private String descricaoCompleta;
@@ -104,4 +113,13 @@ public class Deducao extends BasicEntity<Long> implements Serializable {
 	public void setDescricaoCompleta(String descricaoCompleta) {
 		this.descricaoCompleta = descricaoCompleta;
 	}
+	
+	public String getAnos() {return anos;}
+	public void setAnos(String anos) {this.anos = anos;}
+
+	public String getMeses() {return meses;}
+	public void setMeses(String meses) {this.meses = meses;}
+
+	public String getDias() {return dias;}
+	public void setDias(String dias) {this.dias = dias;}
 }
