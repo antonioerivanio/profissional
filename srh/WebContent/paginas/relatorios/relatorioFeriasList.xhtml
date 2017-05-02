@@ -9,13 +9,40 @@
  	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
 
 	<ui:define name="content">
+		
+		<style>
+			.formularios fieldset {
+				padding: 5px;
+				min-height: 30px;
+				margin-right: 20px;
+    			width: 407px;
+    			margin-bottom: 0;
+			}
+			.formularios legend {
+				font-weight: normal;
+			}
+			fieldset td {
+				float: left;
+				margin: 5px;
+				width: 100%;
+			}
+			fieldset td label{
+				vertical-align: top;	
+			}			
+		</style>
+		
+		
 		<div class="titulo-pagina">
 
-			<h2>Consulta Férias por Setor e Tipo</h2>
+			<h2>Relatório de Férias</h2>
 
 		</div>
+		
+			
 		<h:form id="form" styleClass="formularios box-border">
+			
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+			
 			<div id="div1" class="select-box box-38">
 				<h:outputLabel id="lblSetor" value="Setor"/>
 				<div id="div2" class="conteiner">
@@ -27,8 +54,6 @@
 					</h:selectOneMenu>
 				</div>
 			</div>
-			
-			
 			
 			<div class="input-box box-10">
 				<label for="">Data Inicio</label>
@@ -54,30 +79,42 @@
 				</div>
 			</div>
 			
-			<p> </p>
+			<div class="radios-group box-16">
+				<label for="">Formato</label>
+				<div class="conteiner" style="padding: 5px 6px;">
+					<div class="radio-box">
+						<h:selectOneRadio id="formato" value="#{relatorioFeriasListBean.formato}">
+							<f:selectItem itemLabel="PDF" itemValue="1" />
+							<f:selectItem itemLabel="XLS" itemValue="2" />									
+						</h:selectOneRadio>
+					</div>
+				</div>
+			</div>			
 			
-			<div class="select-box box-58">
-				<h:outputLabel value="Tipo"/>
+
+			<fieldset class="conteiner">
+
+				<legend>Tipo</legend>
+				
 				<div class="conteiner">
 					<h:selectManyCheckbox  value="#{relatorioFeriasListBean.tiposFerias}" >			
 						<f:selectItems id="siTipoFeroas" value="#{relatorioFeriasListBean.comboTipoFerias}"  
 							var="tipoFerias" itemValue="#{tipoFerias.id}" itemLabel="#{tipoFerias.descricao}"  />
 					</h:selectManyCheckbox >
 				</div>
-			</div>
-
-			<h:commandButton id="consultar"
-							 value="Consultar"
-							 action="#{relatorioFeriasListBean.consultar}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
-							 
-							
+				
+			</fieldset>			
+			
  			<h:commandButton id="Relatório"
  							 value="Relatório"
 							 action="#{relatorioFeriasListBean.relatorio}" 
- 							 styleClass="bt-padrao fl mg-top-18 mg-left-10"  
- 							 style="margin-left: 10px" />
+ 							 styleClass="bt-padrao fr mg-right-15" />
+ 							 
+ 			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{relatorioFeriasListBean.consultar}"
+							 styleClass="bt-padrao fr mg-right-10" 
+							 reRender="scroller,lista"/>				 
 					
 
 			<div class="tabela-dados">
@@ -87,11 +124,15 @@
 						<h:outputText id="nome" value="#{item.nomeCompleto}" styleClass="cel-25" />
 					</h:column>
 					<h:column id="col2" headerClass="cel-25">
-						<f:facet name="header">ANO REFERÊNCIA</f:facet>
-						<h:outputText id="ano" value="#{item.anoReferencia}" styleClass="cel-25" />
+						<f:facet name="header">ANO REF.</f:facet>
+						<center><h:outputText id="ano" value="#{item.anoReferencia}" styleClass="cel-25" /></center>
 					</h:column>
+					<h:column id="col31" headerClass="cel-25">
+                        <f:facet name="header">PERÍODO</f:facet>
+                        <center><h:outputText id="item31" value="#{item.periodo}" styleClass="cel-25" /></center>
+                    </h:column>
 					<h:column id="col3" headerClass="cel-25">
-						<f:facet name="header">INICIO</f:facet>
+						<f:facet name="header">INÍCIO</f:facet>
 						<center>
 	                        <h:outputText id="item3" value="#{item.inicio}" >
 	                        	<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
@@ -109,7 +150,7 @@
 					<h:column id="col5" headerClass="cel-25" >
 						<f:facet name="header">DIAS</f:facet>
                        <center>
-	                        <h:outputText id="item5" value="#{item.dias}" />
+	                        <h:outputText id="item5" value="#{item.qtdeDias}" />
                        </center>
 					</h:column>
 			   <h:column id="col6" headerClass="cel-25" >

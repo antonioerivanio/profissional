@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import br.gov.ce.tce.srh.dao.RelatorioFeriasDAO;
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("relatorioFeriasService")
 public class RelatorioFeriasServiceImpl implements RelatorioFeriasService {
@@ -21,23 +20,13 @@ public class RelatorioFeriasServiceImpl implements RelatorioFeriasService {
 	
 	
 	@Override
-	public int getCountFindByParameter(Setor setor,
-			List<String> tiposFerias, Date inicio, Date fim) {
+	public int getCountFindByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim) {
 		return dao.getCountFindByParameter(setor, tiposFerias, inicio, fim);
 	}
 
 	@Override
-	public List<RelatorioFerias> findByParameter(Setor setor,
-			List<String> tiposFerias, Date inicio, Date fim,
-			int firstResult, int maxResults) {
-		List<RelatorioFerias> relatorioFerias = dao.findByParameter(setor, tiposFerias, inicio, fim, firstResult, maxResults);
-		
-		for (RelatorioFerias rf: relatorioFerias) {
-			if(rf.getInicio() != null && rf.getFim()!= null)
-				rf.setDias(SRHUtils.dataDiff(rf.getInicio(), rf.getFim()));
-		}
-		
-		return relatorioFerias;
+	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, int firstResult, int maxResults) {
+		return dao.findByParameter(setor, tiposFerias, inicio, fim, firstResult, maxResults);		
 	}
 
 }

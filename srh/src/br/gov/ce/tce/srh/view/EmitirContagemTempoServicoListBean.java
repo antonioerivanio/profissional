@@ -301,7 +301,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			parametros.put("listaDeducao", new JRBeanCollectionDataSource(listaDeducao) );
 			
 
-			relatorioUtil.relatorioComEmptyDataSource("EmitirContagemTempoServico.jasper", parametros, "EmitirContagemTempoServico.pdf");
+			relatorioUtil.relatorioComEmptyDataSource("emitirContagemTempoServico.jasper", parametros, "contagemTempoServico.pdf");
 
 		} catch (SRHRuntimeException e) {			
 			FacesUtil.addErroMessage(e.getMessage());

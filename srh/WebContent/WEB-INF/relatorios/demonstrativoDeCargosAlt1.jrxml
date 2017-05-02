@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demonstrativoDeCargos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demonstrativoDeTodosOsCargos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -16,7 +16,9 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="MES" class="java.lang.Integer"/>
-	<parameter name="ORDEM" class="java.lang.String"/>
+	<parameter name="ORDEM" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT DISTINCT P.NOMECOMPLETO nomeCompleto,
                 F.MATRICULA matricula,
@@ -53,84 +55,6 @@ $P!{ORDEM}]]>
 	<field name="REFERENCIA" class="java.lang.String"/>
 	<field name="REPRESENTACAO" class="java.lang.String"/>
 	<field name="SIMBOLO" class="java.lang.String"/>
-	<group name="Cargo">
-		<groupExpression><![CDATA[$F{CARGO}]]></groupExpression>
-		<groupHeader>
-			<band height="46">
-				<rectangle>
-					<reportElement x="1" y="28" width="802" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
-				</rectangle>
-				<staticText>
-					<reportElement x="2" y="4" width="50" height="20" forecolor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<text><![CDATA[CARGO:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="3" y="28" width="293" height="18" forecolor="#FFFFFF"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[NOME]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="300" y="28" width="74" height="18" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[MATRÍCULA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="389" y="28" width="76" height="18" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[REFERÊNCIA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="484" y="28" width="242" height="18" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[REPRESENTAÇÃO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="726" y="28" width="77" height="18" forecolor="#FFFFFF"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[SÍMBOLO]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true">
-					<reportElement stretchType="RelativeToTallestObject" x="52" y="4" width="413" height="20"/>
-					<box leftPadding="0" rightPadding="2"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="11"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="28">
-				<textField>
-					<reportElement x="768" y="4" width="34" height="20"/>
-					<textElement verticalAlignment="Middle">
-						<font size="11"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{Cargo_COUNT}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="689" y="4" width="76" height="20" forecolor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<text><![CDATA[TOTAL:]]></text>
-				</staticText>
-			</band>
-		</groupFooter>
-	</group>
 	<title>
 		<band height="79">
 			<image>
@@ -154,6 +78,55 @@ $P!{ORDEM}]]>
 			</staticText>
 		</band>
 	</title>
+	<columnHeader>
+		<band height="19">
+			<rectangle>
+				<reportElement x="0" y="1" width="802" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="291" y="1" width="208" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="1" width="215" height="18" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="1" width="74" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MATRÍCULA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="499" y="1" width="76" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REFERÊNCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="575" y="1" width="150" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPRESENTAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="725" y="1" width="77" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SÍMBOLO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
@@ -162,18 +135,24 @@ $P!{ORDEM}]]>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="300" y="0" width="74" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="217" y="0" width="74" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{MATRICULA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="294" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="215" height="16"/>
 				<box leftPadding="2" rightPadding="5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="291" y="0" width="208" height="16"/>
+				<box leftPadding="10" rightPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="389" y="0" width="76" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="499" y="0" width="76" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
 			</textField>
@@ -183,7 +162,7 @@ $P!{ORDEM}]]>
 				<textFieldExpression><![CDATA[$F{SIMBOLO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="484" y="0" width="241" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="575" y="0" width="150" height="16"/>
 				<box leftPadding="2" rightPadding="5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{REPRESENTACAO}]]></textFieldExpression>
@@ -268,4 +247,22 @@ $P!{ORDEM}]]>
 			</line>
 		</band>
 	</lastPageFooter>
+	<summary>
+		<band height="38">
+			<textField>
+				<reportElement x="768" y="10" width="34" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="689" y="10" width="76" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+		</band>
+	</summary>
 </jasperReport>

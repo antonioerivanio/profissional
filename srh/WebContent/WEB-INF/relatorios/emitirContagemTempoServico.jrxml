@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emitirContagemTempoServico" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="425"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="listaFuncional">
 		<field name="ocupacao" class="br.gov.ce.tce.srh.domain.Ocupacao"/>
 		<field name="exercicio" class="java.util.Date"/>
@@ -50,7 +50,7 @@
 		<field name="descricao" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="BACK" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGO" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
@@ -78,9 +78,10 @@
 	</queryString>
 	<title>
 		<band height="249">
-			<rectangle>
-				<reportElement x="1" y="0" width="800" height="79" forecolor="#CCCCCC"/>
-			</rectangle>
+			<image>
+				<reportElement x="1" y="14" width="572" height="65"/>
+				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
+			</image>
 			<image>
 				<reportElement x="633" y="-11" width="168" height="54"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
@@ -93,11 +94,7 @@
 				<text><![CDATA[Contagem de Tempo de Contribuição]]></text>
 			</staticText>
 			<image>
-				<reportElement x="1" y="14" width="572" height="65"/>
-				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="5" y="25" width="161" height="36"/>
+				<reportElement x="5" y="23" width="161" height="36"/>
 				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
@@ -445,7 +442,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType ="Prevent">
+		<band height="90" splitType="Prevent">
 			<printWhenExpression><![CDATA[$P{listaFerias}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1"/>
@@ -515,7 +512,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType ="Prevent">
+		<band height="90" splitType="Prevent">
 			<printWhenExpression><![CDATA[$P{listaLicenca}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1"/>
@@ -598,7 +595,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType ="Prevent">
+		<band height="90" splitType="Prevent">
 			<printWhenExpression><![CDATA[$P{listaAverbacao}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1"/>
@@ -720,7 +717,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType ="Prevent">
+		<band height="90" splitType="Prevent">
 			<printWhenExpression><![CDATA[$P{listaAcrescimo}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1"/>
@@ -803,7 +800,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType ="Prevent">
+		<band height="90" splitType="Prevent">
 			<printWhenExpression><![CDATA[$P{listaDeducao}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1"/>

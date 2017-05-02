@@ -16,7 +16,6 @@ import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Repository
 public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
-
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -24,37 +23,33 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 	public void setEntityManager(EntityManager entityManager){
 		this.entityManager = entityManager;
 	}
-
 	
 	@Override
-	public int getCountFindByParameter(Setor setor,
-			List<String> tiposFerias, Date inicio, Date fim) {
+	public int getCountFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim) {
 		return count(getQueryFindByParameter(setor, tiposFerias, inicio, fim));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RelatorioFerias> findByParameter(Setor setor,
-			List<String> tiposFerias, Date inicio, Date fim,
-			int firstResult, int maxResults) {
-		
+	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, int firstResult, int maxResults) {		
 		Query query = entityManager.createNativeQuery(getQueryFindByParameter(setor, tiposFerias, inicio, fim), "RelatorioFerias"); 
 		query.setFirstResult(firstResult);
-		query.setMaxResults(maxResults);
-		
+		query.setMaxResults(maxResults);		
 		return query.getResultList();
 	}
 	
 
-	private String getQueryFindByParameter(Setor setor,
-			List<String> tiposFerias, Date inicio, Date fim) {
+	private String getQueryFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim) {
+		
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("SELECT DISTINCT rownum idnum, TB_PESSOAL.NOMECOMPLETO nomeCompleto, ");
 		sql.append("TB_FERIAS.ANOREFERENCIA anoReferencia, ");
 		sql.append("TB_FERIAS.INICIO inicio, ");
 		sql.append("TB_FERIAS.FIM fim, ");
-		sql.append("tb_tipoferias.DESCRICAO tipoFerias ");
+		sql.append("tb_tipoferias.DESCRICAO tipoFerias, ");
+		sql.append("TB_FERIAS.QTDEDIAS qtdeDias, ");
+		sql.append("TB_FERIAS.PERIODO periodo ");
 		sql.append("FROM SRH.TB_FERIAS ");
 		sql.append("INNER JOIN SRH.TB_FUNCIONAL ON TB_FERIAS.IDFUNCIONAL   = TB_FUNCIONAL.ID ");
 		sql.append("INNER JOIN SRH.TB_PESSOAL ON TB_FUNCIONAL.IDPESSOAL  = TB_PESSOAL.ID ");

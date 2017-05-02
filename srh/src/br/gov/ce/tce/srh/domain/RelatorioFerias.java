@@ -16,7 +16,9 @@ import javax.persistence.Transient;
 		@FieldResult(name = "anoReferencia", column = "ANOREFERENCIA"),
 		@FieldResult(name = "inicio", column = "INICIO"),
 		@FieldResult(name = "fim", column = "FIM"),
-		@FieldResult(name = "tipoFerias", column = "TIPOFERIAS"), }) })
+		@FieldResult(name = "tipoFerias", column = "TIPOFERIAS"),
+		@FieldResult(name = "qtdeDias", column = "QTDEDIAS"),
+		@FieldResult(name = "periodo", column = "PERIODO"),}) })
 @Entity
 public class RelatorioFerias implements Serializable {
 
@@ -37,6 +39,10 @@ public class RelatorioFerias implements Serializable {
 	private Date fim;
 
 	private String tipoFerias;
+	
+	private Long qtdeDias;
+	
+	private Long periodo;
 	
 	@Transient
 	private Integer dias;
@@ -79,8 +85,7 @@ public class RelatorioFerias implements Serializable {
 
 	public void setTipoFerias(String tipoFerias) {
 		this.tipoFerias = tipoFerias;
-	}
-	
+	}	
 
 	public long getId() {
 		return id;
@@ -97,5 +102,22 @@ public class RelatorioFerias implements Serializable {
 	public void setDias(Integer dias) {
 		this.dias = dias;
 	}
+
+	public Long getQtdeDias() {
+		return qtdeDias;
+	}
+
+	public void setQtdeDias(Long qtdeDias) {
+		this.qtdeDias = qtdeDias;
+	}
+
+	public Long getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(Long periodo) {
+		this.periodo = periodo;
+	}
+	
 
 }

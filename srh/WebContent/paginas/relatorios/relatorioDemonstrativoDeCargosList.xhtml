@@ -69,12 +69,22 @@
 						</div>
 					</div>					
 					
-					<div class="radios-group box-30" style="margin-top: 26px; margin-left: 20px;">						
+					<div class="radios-group box-30" style="margin-top: 26px; margin-left: 20px; margin-right: 20px;">						
 						<h:selectBooleanCheckbox id="ativoPortal" value="#{relatorioDemonstrativoCargoBean.ativoPortal}" style="float:left; margin-right: 5px;"/>
 						<label style="float:left;" for="form:ativoPortal">Somente servidores ativos no Portal da Transparência?</label>											
 					</div>
 					
-					
+					<div class="radios-group box-20">
+						<label for="">Ordenar por</label>
+						<div class="conteiner" style="padding: 5px 6px;">
+							<div class="radio-box">
+								<h:selectOneRadio id="ordem" value="#{relatorioDemonstrativoCargoBean.ordem}">
+									<f:selectItem itemLabel="Cargo" itemValue="1" />
+									<f:selectItem itemLabel="Nome" itemValue="2" />									
+								</h:selectOneRadio>
+							</div>
+						</div>
+					</div>
 		
 					<br /><br /><br /><br /><br />
 					

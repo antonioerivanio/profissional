@@ -62,6 +62,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	private Setor setor;
 	private Date inicio;
 	private Date fim;
+	private Integer formato = 1;
 
 	//entidades das telas
 	private List<RelatorioFerias> lista;
@@ -168,15 +169,19 @@ public class RelatorioFeriasListBean implements Serializable {
 			}			
 			
 			Map<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("PARAMWHERE", paramWhere.toString());			
 			parametros.put("IDSETORFILTRO", setor == null ? null : setor.getId());
-			parametros.put("SETORFILTRO", setor == null ? null : setor.getNome());
+			parametros.put("SETORFILTRO", setor == null ? "TODOS" : setor.getNome());
 			parametros.put("TIPOSFERIASFILTRO", tiposFerias.isEmpty() ? null : tiposFeriasAux);
-			parametros.put("INICIOFILTRO",  inicioAux);
-			parametros.put("FIMFILTRO", fimAux);
-			parametros.put("PARAMWHERE", paramWhere.toString());
-					
-
-			relatorioUtil.relatorio("feriasSetor.jasper", parametros, "feriasSetor.pdf");
+			parametros.put("INICIOFILTRO",  inicioAux == null ? "-" : inicioAux);
+			parametros.put("FIMFILTRO", fimAux == null ? "-" : fimAux);			
+			
+			
+			if (formato == 1) {
+				relatorioUtil.relatorio("feriasSetor.jasper", parametros, "feriasSetor.pdf");
+			} else {
+				relatorioUtil.relatorioXls("feriasSetorXLS.jasper", parametros, "feriasSetor.xls");
+			}			
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -194,6 +199,7 @@ public class RelatorioFeriasListBean implements Serializable {
 		setor = null;
 		inicio = null;
 		fim = null;
+		formato = 1;
 		lista = new ArrayList<RelatorioFerias>();
 		limparListas();
 		flagRegistroInicial = 0;
@@ -310,5 +316,14 @@ public class RelatorioFeriasListBean implements Serializable {
 	public void setComboTipoFerias(List<TipoFerias> comboTipoFerias) {
 		this.comboTipoFerias = comboTipoFerias;
 	}
+
+	public Integer getFormato() {
+		return formato;
+	}
+
+	public void setFormato(Integer formato) {
+		this.formato = formato;
+	}
+	
 
 }

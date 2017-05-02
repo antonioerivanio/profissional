@@ -116,9 +116,6 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 	</group>
 	<title>
 		<band height="86">
-			<rectangle>
-				<reportElement x="1" y="0" width="554" height="79" forecolor="#CCCCCC"/>
-			</rectangle>
 			<image>
 				<reportElement x="1" y="14" width="554" height="65"/>
 				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>

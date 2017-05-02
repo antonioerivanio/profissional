@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="feriasSetorXLS" pageWidth="1200" pageHeight="40" orientation="Landscape" columnWidth="1200" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IDSETORFILTRO" class="java.lang.Long" isForPrompting="false">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SETORFILTRO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TIPOSFERIASFILTRO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INICIOFILTRO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FIMFILTRO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BACK" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\diego\\work2\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\diego\\work2\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOGO_TCE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\diego\\work2\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PARAMWHERE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT rownum idnum,
+	TB_PESSOAL.NOMECOMPLETO nomeCompleto,
+	TB_FERIAS.ANOREFERENCIA anoReferencia,
+	TB_FERIAS.PERIODO periodo,
+	TB_FERIAS.INICIO inicio,
+	TB_FERIAS.FIM fim,
+	TB_FERIAS.QTDEDIAS qtdeDias,
+	tb_tipoferias.DESCRICAO tipoFerias
+	FROM SRH.TB_FERIAS
+	INNER JOIN SRH.TB_FUNCIONAL ON TB_FERIAS.IDFUNCIONAL   = TB_FUNCIONAL.ID
+	INNER JOIN SRH.TB_PESSOAL ON TB_FUNCIONAL.IDPESSOAL  = TB_PESSOAL.ID
+	INNER JOIN SRH.tb_tipoferias ON tb_tipoferias.ID = TB_FERIAS.TIPOFERIAS
+$P!{PARAMWHERE}
+ORDER BY TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC, TB_FERIAS.FIM DESC]]>
+	</queryString>
+	<field name="IDNUM" class="java.math.BigDecimal"/>
+	<field name="NOMECOMPLETO" class="java.lang.String"/>
+	<field name="ANOREFERENCIA" class="java.lang.Long"/>
+	<field name="INICIO" class="java.sql.Timestamp"/>
+	<field name="FIM" class="java.sql.Timestamp"/>
+	<field name="TIPOFERIAS" class="java.lang.String"/>
+	<field name="QTDEDIAS" class="java.lang.Long"/>
+	<field name="PERIODO" class="java.lang.Long"/>
+	<title>
+		<band height="20">
+			<staticText>
+				<reportElement x="400" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANO REF.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INÍCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="640" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="800" y="0" width="400" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="400" height="20" forecolor="#000000"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="720" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERÍODO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="400" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="800" y="0" width="400" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{TIPOFERIAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="640" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="400" height="20" forecolor="#000000"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="480" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PERIODO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="720" y="0" width="80" height="20" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
