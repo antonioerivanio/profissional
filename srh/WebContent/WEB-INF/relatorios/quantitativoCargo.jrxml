@@ -3,6 +3,9 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\java\\tomcat7067-srh\\webapps\\srh\\WEB-INF\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="BACK" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
 	</parameter>
@@ -15,10 +18,9 @@
 	<parameter name="FILTRO" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\java\\eclipse-MARS-2-x64-git-local\\srh\\srh\\WebContent\\WEB-INF\\relatorios\\"]]></defaultValueExpression>
-	</parameter>
 	<parameter name="DETALHAR" class="java.lang.Boolean"/>
+	<parameter name="CAMINHO_COMPLEMENTO" class="java.lang.String"/>
+	<parameter name="CAMINHO_DETALHE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT  TB_TIPOOCUPACAO.ID ID,
         TB_TIPOOCUPACAO.DESCRICAO TIPO_OCUPACAO,
@@ -60,7 +62,7 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 						<subreportParameterExpression><![CDATA[$P{FILTRO}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "quantitativoCargoDetalhe.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{CAMINHO_DETALHE}]]></subreportExpression>
 				</subreport>
 			</band>
 		</groupFooter>
@@ -109,7 +111,7 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 						<subreportParameterExpression><![CDATA[$P{FILTRO}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "quantitativoCargoComplemento.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{CAMINHO_COMPLEMENTO}]]></subreportExpression>
 				</subreport>
 			</band>
 		</groupFooter>

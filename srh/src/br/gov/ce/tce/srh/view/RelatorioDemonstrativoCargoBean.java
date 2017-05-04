@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.html.HtmlForm;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +112,12 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 						
 			parametros.put("FILTRO", filtro.toString());
 			parametros.put("DETALHAR", quantitativoDetalhado);
+			
+			
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+			parametros.put("CAMINHO_COMPLEMENTO", servletContext.getRealPath("//WEB-INF/relatorios/quantitativoCargoComplemento.jasper") );
+			parametros.put("CAMINHO_DETALHE",  servletContext.getRealPath("//WEB-INF/relatorios/quantitativoCargoDetalhe.jasper") );
 						
 			relatorioUtil.relatorio("quantitativoCargo.jasper", parametros, "quantitativoCargo"	+ ".pdf");
 		
