@@ -22,7 +22,7 @@
 	                     <a href="/srh/manual-srh/manual_SRH.pdf" target="_blank">Manual do Usuário</a>
 	</div> -->
 	
-	<ui:fragment rendered="#{fn:endsWith(app['database.url'], 'bddes')}">
+	<ui:fragment rendered="#{not fn:endsWith(app['database.url'], 'bdtce')}">
 		<div class="msg-dev-home">
 			<div class="msg-dev-div">
 				<h:outputText styleClass="msg-dev" value="Sistema em Desenvolvimento" />

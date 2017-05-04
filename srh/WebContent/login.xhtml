@@ -28,7 +28,7 @@
                       <h:commandButton value="Entrar" action="#{LoginBean.autenticar}" styleClass="bt-padrao" />
 				</div>
 				
-				<ui:fragment rendered="#{fn:endsWith(app['database.url'], 'bddes')}">					
+				<ui:fragment rendered="#{not fn:endsWith(app['database.url'], 'bdtce')}">					
 					<div class="clr msg-dev-div">
 						<h:outputText styleClass="msg-dev" value="Sistema em Desenvolvimento" />
 					</div>					
