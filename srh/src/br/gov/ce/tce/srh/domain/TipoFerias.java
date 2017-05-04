@@ -38,8 +38,7 @@ public class TipoFerias extends BasicEntity<Long> implements Serializable {
 		// Férias ressalvadas (id = 4)
 		// Férias contadas em dobro (id = 5)
 		// Férias indenizadas (id = 6)
-		// Abono pecuniário de férias (id = 7)
-		if(id.intValue() >= 4 && id.intValue() <= 7)
+		if(id.intValue() >= 4 && id.intValue() <= 6)
 			return true;
 		
 		return false;
