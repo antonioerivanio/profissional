@@ -191,6 +191,9 @@
 
         <intercept-url pattern="/paginas/funcional/deducaoList.faces" access="ROLE_DEDUCAO" />
         <intercept-url pattern="/paginas/funcional/deducaoForm.faces" access="ROLE_DEDUCAO" />
+        
+        <intercept-url pattern="/paginas/funcional/abonoPermanenciaList.faces" access="ROLE_ABONOPERMANENCIA" />
+        <intercept-url pattern="/paginas/funcional/abonoPermanenciaForm.faces" access="ROLE_ABONOPERMANENCIA" />
 
 		<intercept-url pattern="/paginas/funcional/*" access="ROLE_FUNCIONAL" />
 		
@@ -245,7 +248,7 @@
 	
 	<beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
         <beans:constructor-arg value="tce.ce.gov.br" />
-        <beans:constructor-arg value="ldap://tce.ce.gov.br:389/"/> 
+        <beans:constructor-arg value="ldap://svtcedc9.tce.ce.gov.br:389/"/> 
         <beans:property name="userDetailsContextMapper" ref="customUserDetailsMapper"/>
         <beans:property name="useAuthenticationRequestCredentials" value="true"/>   
         <beans:property name="convertSubErrorCodesToExceptions" value="true" />

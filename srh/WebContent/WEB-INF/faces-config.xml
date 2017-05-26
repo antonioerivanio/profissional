@@ -395,6 +395,18 @@
 			<to-view-id>/paginas/funcional/funcionalSetorForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Abono Permanencia -->
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/abonoPermanenciaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/abonoPermanenciaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/funcional/abonoPermanenciaForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Funcionário por Competência do Setor -->
 	<navigation-rule>
 		<from-view-id>/paginas/relatorios/funcionarioCompetenciaSetorList.xhtml</from-view-id>

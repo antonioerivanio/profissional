@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.dao;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -245,7 +246,27 @@ public class PessoalDAOImpl implements PessoalDAO {
 	@Override
 	public List<Pessoal> findAllComFuncional() {		
 		return entityManager.createQuery("SELECT DISTINCT p FROM Funcional f INNER JOIN f.pessoal p ORDER BY p.nome").getResultList();		
-	}	
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pessoal> findServidorEfetivoByNome(String nome) {		
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT DISTINCT p FROM Funcional f ");
+		sql.append("INNER JOIN f.pessoal p ");
+		sql.append("INNER JOIN f.ocupacao o ");
+		sql.append("INNER JOIN o.tipoOcupacao toc ");
+		sql.append("WHERE toc.id IN (:tipos) ");
+		sql.append("AND p.nomePesquisa LIKE :nome ");
+		sql.append("ORDER BY p.nomeCompleto");
+		
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
+		List<Long> ids = Arrays.asList(2L, 3L);
+		query.setParameter("tipos", ids);
+		
+		return query.getResultList();
+	}
 
 
 	@SuppressWarnings("unchecked")

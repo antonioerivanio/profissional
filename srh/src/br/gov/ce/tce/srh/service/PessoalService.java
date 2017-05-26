@@ -26,5 +26,7 @@ public interface PessoalService {
 	public List<Pessoal> findByCategoria(Long idCategoria);
 	
 	public List<Pessoal> findServidorByNome(String nome);
+	
+	public List<Pessoal> findServidorEfetivoByNome(String nome);
 
 }

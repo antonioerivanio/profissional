@@ -373,7 +373,9 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 
 	public Date getExercicio() {return exercicio;}
 	public void setExercicio(Date exercicio) {this.exercicio = exercicio;}
-
+	public String getExercicioComoString() {return SRHUtils.formataData(SRHUtils.FORMATO_DATA,exercicio);}
+	
+	
 	public Date getSaida() {return saida;}
 	public void setSaida(Date saida) {this.saida = saida;}
 

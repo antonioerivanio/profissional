@@ -669,6 +669,14 @@
 					</li>
 
 				</ui:fragment>
+				
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ABONOPERMANENCIA')}">
+					<li>
+						<a href="/srh/paginas/funcional/abonoPermanenciaList.faces">
+						Abono Permanência
+						</a>
+					</li>
+				</ui:fragment>
 
 		</ul>
 		</li>

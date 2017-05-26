@@ -234,5 +234,10 @@ public class PessoalServiceImpl implements PessoalService {
 	public List<Pessoal> findByCategoria(Long idCategoria) {
 		return dao.findByCategoria(idCategoria);
 	}
+	
+	@Override
+	public List<Pessoal> findServidorEfetivoByNome(String nome) {
+		return dao.findServidorEfetivoByNome(nome);
+	}
 
 }
