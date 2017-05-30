@@ -262,7 +262,7 @@ public class PessoalDAOImpl implements PessoalDAO {
 		
 		Query query = entityManager.createQuery(sql.toString());
 		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
-		List<Long> ids = Arrays.asList(2L, 3L);
+		List<Long> ids = Arrays.asList(1L, 2L, 3L);
 		query.setParameter("tipos", ids);
 		
 		return query.getResultList();
