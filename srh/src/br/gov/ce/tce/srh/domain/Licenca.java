@@ -65,7 +65,7 @@ public class Licenca extends BasicEntity<Long> implements Serializable {
     @Column(name = "NRPROCESSO", length=10)
     private String nrprocesso;
 
-    @Column(name = "OBS", length=100)
+    @Column(name = "OBS", length=2000)
     private String obs;
 
     @ManyToOne(fetch = FetchType.EAGER)

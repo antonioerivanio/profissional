@@ -296,8 +296,10 @@
 					<div class="conteiner">
 						<h:inputTextarea id="observacao"
 										 value="#{licencaFormBean.entidade.obs}"
-										 onkeyup="this.value = this.value.substring(0, 99);"
-										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}"/>
+										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}"										 
+										 validatorMessage="O campo Observação excedeu o tamanho máximo de 2000 caracteres">
+										 <f:validateLength maximum="2000" />
+						</h:inputTextarea>				 
 					</div>
 				</div>
 
