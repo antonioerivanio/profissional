@@ -9,7 +9,7 @@
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
-	
+		
 		<style type="text/css" >
 		    .formularios fieldset,
 		    .box-border {
@@ -52,7 +52,7 @@
 	
 		<h:form id="form" binding="#{relatorioServidorBean.form}" styleClass="formularios box-border">
 
-			<h:messages infoClass="infoMessage" errorClass="errorMessage" />			
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />			
 			
 			
 			<rich:tabPanel id="tabPanel" switchType="client">
@@ -179,6 +179,42 @@
  					
 				</rich:tab>
 			
+				<rich:tab id="tab4" label="Falecidos">
+					
+					<div class="input-box box-10" style="clear:both">
+						<label for="">Data Início</label>
+						<div class="conteiner">
+							<h:inputText id="dataInicio" 
+										 name="dataInicio"
+										 styleClass="maskData" 
+										 converter="dateConverter"
+										 value="#{relatorioServidorBean.inicio}" 
+										 maxlength="10" />
+						</div>
+					</div>
+		
+					<div class="input-box box-10">
+						<label for="">Data Fim</label>
+						<div class="conteiner">
+							<h:inputText id="dataFim" 
+										 name="dataFim" 
+										 styleClass="maskData"
+										 converter="dateConverter"
+										 value="#{relatorioServidorBean.fim}" 
+										 maxlength="10" />
+						</div>
+					</div>					
+		
+					<br /><br /><br /><br /><br />
+					
+					<h:commandButton value="Gerar relatório" 
+									 id="relatorioFalecidos"
+									 action="#{relatorioServidorBean.relatorioFalecidos}" 
+		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10">
+		 				<a4j:support event="onclick" reRender="messages" ajaxSingle="true"/>				 		 							 		 							 
+		 			</h:commandButton> 			
+ 					
+				</rich:tab>
 			
 			</rich:tabPanel>	
 			

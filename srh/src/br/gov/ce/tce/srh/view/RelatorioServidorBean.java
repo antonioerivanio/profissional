@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Component("relatorioServidorBean")
 @Scope("session")
@@ -47,6 +49,10 @@ public class RelatorioServidorBean  implements Serializable  {
 	//aniversariantes
 	private Integer mes;
 	private Integer ordemAniversariantes;
+	
+	//falecidos
+	private Date inicio;
+	private Date fim;
 			
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
@@ -59,6 +65,8 @@ public class RelatorioServidorBean  implements Serializable  {
 		agruparServidoresQueTemFilhos = false;
 		mes = 0;
 		ordemAniversariantes = 1;
+		inicio = null;
+		fim = null;
 		return form;
 	}	
 	
@@ -101,6 +109,7 @@ public class RelatorioServidorBean  implements Serializable  {
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 4){ // SERVIDORES INATIVOS
 				filtro.append("AND F.STATUS = 5 ");
+				filtro.append("AND P.DATAOBITO IS NULL ");
 				filtro.append("ORDER BY O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 5){ // OCUPANTES DE CARGO COMISSIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
@@ -224,6 +233,40 @@ public class RelatorioServidorBean  implements Serializable  {
 		return null;
 	}
 	
+	public String relatorioFalecidos() {
+
+		try {
+			
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			StringBuilder filtro = new StringBuilder();
+			
+			filtro.append(" WHERE 1 = 1 " );
+			
+			if ( inicio == null && fim == null ) {
+				filtro.append(" AND p.DATAOBITO IS NOT NULL " );
+			} else {			
+				if ( inicio != null )
+					filtro.append(" AND p.DATAOBITO >= '" + SRHUtils.formataData(SRHUtils.FORMATO_DATA, inicio) + "' " );
+				
+				if ( fim != null )
+					filtro.append(" AND p.DATAOBITO <= '" + SRHUtils.formataData(SRHUtils.FORMATO_DATA, fim) + "' " );			
+			}
+			
+			parametros.put("FILTRO", filtro.toString());						
+			
+			relatorioUtil.relatorio("servidoresFalecidos.jasper", parametros, "falecidos"	+ ".pdf");
+		
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
+	
 	public List<Setor> getComboSetor() {
 		try {
         	if ( this.comboSetor == null )
@@ -251,6 +294,9 @@ public class RelatorioServidorBean  implements Serializable  {
 	public void setVinculo(Integer vinculo) {this.vinculo = vinculo;}
 	public Boolean getAtivoPortal() {return ativoPortal;}
 	public void setAtivoPortal(Boolean ativoPortal) {this.ativoPortal = ativoPortal;}
-			
+	public Date getInicio() {return inicio;}
+	public void setInicio(Date inicio) {this.inicio = inicio;}
+	public Date getFim() {return fim;}
+	public void setFim(Date fim) {this.fim = fim;}			
 
 }

@@ -56,6 +56,13 @@ public class RelatorioUtil {
 
 		print = JasperFillManager.fillReport(pathRel, parametros, connection);
 		byte[] bytes = JasperExportManager.exportReportToPdf(print);
+		
+		if (bytes.length < 1024) {
+			FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+			logger.info("Nenhum registro foi encontrado.");
+			return null;		
+		}
+		
 		writeBytesAsAttachedTextFile(bytes, nomeArquivo);
 
 		connection.close();
