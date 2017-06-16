@@ -113,5 +113,46 @@ public class DependenteDAOImpl implements DependenteDAO{
 		
 		return query.getResultList();
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Dependente> find(Dependente dependente) {
+			
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT * ");
+		sql.append(" FROM TB_DEPENDENTE ");
+		sql.append(" WHERE 1 = 1 ");
+		
+		if (dependente != null) {
+			
+			if(dependente.getResponsavel() != null && dependente.getResponsavel().getId().intValue() != 0)
+				sql.append(" AND IDPESSOALRESP =  " + dependente.getResponsavel().getId().intValue());
+			
+			if(dependente.getTipoDependencia() != null && dependente.getTipoDependencia().getId().intValue() != 0)
+				sql.append(" AND IDTIPODEPENDENCIA =  " + dependente.getTipoDependencia().getId().intValue());
+				
+			if(dependente.isDepPrev())
+				sql.append(" AND DEPPREV = 1 ");
+			
+			
+			if(dependente.isDepIr())
+				sql.append(" AND DEPIR = 1 ");
+			
+			
+			if(dependente.isDepSf())
+				sql.append(" AND DEPSF = 1 ");
+			
+			
+			if(dependente.isFlUniversitario())
+				sql.append(" AND FLUNIVERSITARIO = 1 ");		
+					
+		}
+		
+		Query query = entityManager.createNativeQuery(sql.toString(), Dependente.class);		
+		
+		return query.getResultList();
+		
+	}
 
 }

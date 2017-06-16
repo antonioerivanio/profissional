@@ -730,7 +730,7 @@
 						 Curso por Servidor
 						</a>
 					</li>
-				</ui:fragment>			
+				</ui:fragment>							
 				
 		</ul>
 		</li>
@@ -794,6 +794,14 @@
 					<li>
 						<a href="/srh/paginas/relatorios/cursoPeriodoList.faces">
 						Curso por Período
+						</a>
+					</li>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE')}">
+					<li>
+						<a href="/srh/paginas/relatorios/relatorioDependente.faces">
+						 Dependentes
 						</a>
 					</li>
 				</ui:fragment>

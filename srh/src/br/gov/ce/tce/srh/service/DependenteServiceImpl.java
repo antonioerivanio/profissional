@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,5 +140,51 @@ public class DependenteServiceImpl implements DependenteService{
 		pessoalService.salvar(responsavel);
 		
 	}
+
+	@Override
+	public List<Dependente> find(Dependente dependente) {
+		return dependenteDAO.find(dependente);
+	}
+
+	@Override
+	public List<Dependente> listaParaDarBaixa(List<Dependente> dependentes) {
+		
+		List<Dependente> listaParaDarBaixa = new ArrayList<>();
+				
+		for (Dependente dependente : dependentes) {
+			
+			// Filho(a) não emancipado menor de 21 anos
+			if (dependente.getTipoDependencia().getId() == 3){				
+				if (dependente.getDependente().getIdade() >= 21)
+					listaParaDarBaixa.add(dependente);
+				
+			// Irmão não emancipado menor de 21 anos com dependência econômica
+			} else if (dependente.getTipoDependencia().getId() == 6){
+				if (dependente.getDependente().getIdade() >= 21)
+					listaParaDarBaixa.add(dependente);
+			
+			// Enteado não emancipado menor de 21 anos com dependência econômica
+			} else if (dependente.getTipoDependencia().getId() == 8){
+				if (dependente.getDependente().getIdade() >= 21)
+					listaParaDarBaixa.add(dependente);
+			
+			// Menor tutelado não emancipado menor de 21 anos com dependência econômica	
+			} else if (dependente.getTipoDependencia().getId() == 10){
+				if (dependente.getDependente().getIdade() >= 21)
+					listaParaDarBaixa.add(dependente);
+			
+			// Filho(a) ou enteado(a) cursando estab. de ensino superior ou escola técnica de 2º grau, até 24 anos	
+			} else if (dependente.getTipoDependencia().getId() == 12){
+				if (dependente.getDependente().getIdade() > 24)
+					listaParaDarBaixa.add(dependente);
+			
+			} 
+			
+			
+		}
+		
+		
+		return listaParaDarBaixa;
+	}	
 
 }

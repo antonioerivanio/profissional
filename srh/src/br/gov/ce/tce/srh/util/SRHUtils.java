@@ -539,6 +539,45 @@ public class SRHUtils {
 		} else {
 			return nrProcesso.substring(4, 9) + nrProcesso.substring(0, 4) + nrProcesso.substring(9, 10) ; 
 		}
+	}	
+	
+	public static int calculaIdade(Date nascimento, Date obito){
+		
+		int idade = -1;
+		
+		if (nascimento != null) {
+		
+			Calendar dataDeNascimento = new GregorianCalendar();		
+			dataDeNascimento.setTime(nascimento);
+					
+			Calendar dataFinal;
+			
+			if (obito != null){
+			
+				dataFinal = new GregorianCalendar();
+				dataDeNascimento.setTime(obito);
+				
+			} else {	
+				
+				// Cria um objeto calendar com a data atual
+				dataFinal = Calendar.getInstance();
+			
+			}		
+							
+			// Obtém a idade baseado no ano
+			idade = dataFinal.get(Calendar.YEAR) - dataDeNascimento.get(Calendar.YEAR);
+			
+			dataDeNascimento.add(Calendar.YEAR, idade);		 
+			
+			//se a data de hoje/obito é antes da data de Nascimento, então diminui 1(um)
+			if (dataFinal.before(dataDeNascimento)) {		
+				idade--;		
+			}
+		
+		}
+		
+		return idade;
+		
 	}
 
 }

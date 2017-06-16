@@ -15,6 +15,8 @@ import javax.persistence.TemporalType;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
+import br.gov.ce.tce.srh.util.SRHUtils;
+
 /**
  * Referente a tabela: TB_PESSOAL
  * 
@@ -247,6 +249,8 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	public Date getNascimento() {return nascimento;}
 	public void setNascimento(Date nascimento) {this.nascimento = nascimento;}
+	
+	public int getIdade(){return SRHUtils.calculaIdade(nascimento, obito);}
 
 	public Date getObito() {return obito;}
 	public void setObito(Date obito) {this.obito = obito;}
@@ -348,7 +352,7 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	public void setTelefone(String telefone) {this.telefone = telefone;}
 
 	public String getCelular() {return celular;}
-	public void setCelular(String celular) {this.celular = celular;}
+	public void setCelular(String celular) {this.celular = celular;}	
 
 	@Override
 	public Long getId() {return this.id;}

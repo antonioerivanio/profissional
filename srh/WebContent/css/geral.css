@@ -931,6 +931,6 @@ body {
 	border: 1px solid #113664;
 }
 
-.rich-mp-container{
+.rich-mp-container#modalRenovaSessaoCDiv, .rich-mp-container#modalRedirecionaLoginCDiv{
 	top: 40px !important;
 }

@@ -21,4 +21,6 @@ public interface DependenteDAO {
 	public Dependente findByResponsavelAndDependente(Long idResponsavel, Long idDependente);
 	
 	public List<Dependente> findByResponsavel(Long idResponsavel);
+	
+	public List<Dependente> find(Dependente Dependente);
 }
