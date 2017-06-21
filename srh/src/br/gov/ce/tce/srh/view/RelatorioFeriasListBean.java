@@ -18,11 +18,13 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
 import br.gov.ce.tce.srh.domain.TipoFerias;
+import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.service.RelatorioFeriasService;
 import br.gov.ce.tce.srh.service.TipoFeriasService;
+import br.gov.ce.tce.srh.service.TipoOcupacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -52,6 +54,9 @@ public class RelatorioFeriasListBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
+	
+	@Autowired
+	private TipoOcupacaoService tipoOcupacaoService;
 
 
 	//controle de acesso do formulário
@@ -59,6 +64,7 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	//parametos de tela de consulta
 	private List<String> tiposFerias;
+	private TipoOcupacao tipoOcupacao;
 	private Setor setor;
 	private Date inicio;
 	private Date fim;
@@ -70,6 +76,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	// combos
 	private List<Setor> comboSetor;
 	private List<TipoFerias> comboTipoFerias;
+	private List<TipoOcupacao> comboTipoOcupacao;
 	
 	
 	//paginação
@@ -90,7 +97,7 @@ public class RelatorioFeriasListBean implements Serializable {
 
 		try {
 			
-			count = relatorioFeriasService.getCountFindByParameter(setor, tiposFerias, inicio, fim);
+			count = relatorioFeriasService.getCountFindByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -166,7 +173,14 @@ public class RelatorioFeriasListBean implements Serializable {
 			
 			if (fim != null) {
 				paramWhere.append("and TB_FERIAS.INICIO <= to_date('" + fimAux +"', 'dd/MM/yyyy') ");					
-			}			
+			}
+			
+			if (tipoOcupacao != null) {
+				paramWhere.append("and TB_OCUPACAO.TIPOOCUPACAO = " + tipoOcupacao.getId());
+			}
+			
+			paramWhere.append(" ORDER BY TB_FERIAS.ANOREFERENCIA DESC, TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.PERIODO, TB_FERIAS.INICIO DESC, TB_FERIAS.FIM DESC ");
+						
 			
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("PARAMWHERE", paramWhere.toString());			
@@ -196,6 +210,7 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	public void limpaTela() {
 		tiposFerias = null;
+		tipoOcupacao = null;
 		setor = null;
 		inicio = null;
 		fim = null;
@@ -225,7 +240,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(relatorioFeriasService.findByParameter(setor, tiposFerias, inicio, fim, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(relatorioFeriasService.findByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -324,6 +339,27 @@ public class RelatorioFeriasListBean implements Serializable {
 	public void setFormato(Integer formato) {
 		this.formato = formato;
 	}
+	
+	public List<TipoOcupacao> getComboTipoOcupacao() {
+		try {
+        	if ( this.comboTipoOcupacao == null ) {
+        		this.comboTipoOcupacao = tipoOcupacaoService.findAll();
+        		// Exclui "Pessoal de Obras" da lista
+	        	for (TipoOcupacao tipoOcupacao : comboTipoOcupacao) {
+					if(tipoOcupacao.getId().intValue() == 7)
+						comboTipoOcupacao.remove(tipoOcupacao);
+				}
+        	}
+        	
+        } catch (Exception e) {
+        	FacesUtil.addErroMessage("Erro ao carregar o campo setor. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+        return this.comboTipoOcupacao;
+	}
+	
+	public TipoOcupacao getTipoOcupacao() {return tipoOcupacao;}
+	public void setTipoOcupacao(TipoOcupacao tipoOcupacao) {this.tipoOcupacao = tipoOcupacao;}
 	
 
 }

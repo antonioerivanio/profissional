@@ -16,7 +16,8 @@
 				min-height: 30px;
 				margin-right: 20px;
     			width: 407px;
-    			margin-bottom: 0;
+    			margin-bottom: 20px;
+    			float: left;
 			}
 			.formularios legend {
 				font-weight: normal;
@@ -103,19 +104,30 @@
 					</h:selectManyCheckbox >
 				</div>
 				
-			</fieldset>			
+			</fieldset>
 			
- 			<h:commandButton id="Relatório"
- 							 value="Relatório"
-							 action="#{relatorioFeriasListBean.relatorio}" 
- 							 styleClass="bt-padrao fr mg-right-15" />
- 							 
- 			<h:commandButton id="consultar"
-							 value="Consultar"
-							 action="#{relatorioFeriasListBean.consultar}"
-							 styleClass="bt-padrao fr mg-right-10" 
-							 reRender="scroller,lista"/>				 
-					
+			<div class="select-box box-30">
+				<label>Tipo Ocupação</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="cmbTipoOcupacao" value="#{relatorioFeriasListBean.tipoOcupacao}" converter="entityConverter">
+						<f:selectItem itemLabel="TODOS" />
+						<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}"  />
+					</h:selectOneMenu>
+				</div>
+			</div>			
+			
+			<div style="margin-top:230px;">
+	 			<h:commandButton id="Relatório"
+	 							 value="Relatório"
+								 action="#{relatorioFeriasListBean.relatorio}" 
+	 							 styleClass="bt-padrao fr mg-right-15" />
+	 							 
+	 			<h:commandButton id="consultar"
+								 value="Consultar"
+								 action="#{relatorioFeriasListBean.consultar}"
+								 styleClass="bt-padrao fr mg-right-10" 
+								 reRender="scroller,lista"/>				 
+			</div>	
 
 			<div class="tabela-dados">
 			<rich:dataTable id="lista" value="#{relatorioFeriasListBean.dataModel}" var="item" rows="10" binding="#{relatorioFeriasListBean.dataTable}">

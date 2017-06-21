@@ -120,8 +120,10 @@ public class DependenteDAOImpl implements DependenteDAO{
 	public List<Dependente> find(Dependente dependente) {
 			
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT * ");
-		sql.append(" FROM TB_DEPENDENTE ");
+		sql.append(" SELECT d.* ");
+		sql.append(" FROM TB_DEPENDENTE d ");
+		sql.append(" INNER JOIN TB_PESSOAL resp ON resp.ID = d.IDPESSOALRESP ");
+		sql.append(" INNER JOIN TB_PESSOAL dep ON dep.ID = d.IDPESSOALDEP ");
 		sql.append(" WHERE 1 = 1 ");
 		
 		if (dependente != null) {
@@ -148,6 +150,8 @@ public class DependenteDAOImpl implements DependenteDAO{
 				sql.append(" AND FLUNIVERSITARIO = 1 ");		
 					
 		}
+		
+		sql.append(" ORDER BY resp.NOMECOMPLETO, dep.NOMECOMPLETO ");
 		
 		Query query = entityManager.createNativeQuery(sql.toString(), Dependente.class);		
 		

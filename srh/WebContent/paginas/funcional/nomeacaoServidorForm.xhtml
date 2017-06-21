@@ -54,7 +54,7 @@
 
 			<br/>
 			<a4j:outputPanel ajaxRendered="true" >
-	            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+	            <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			</a4j:outputPanel>
             
             <div class="conteiner">
@@ -252,10 +252,12 @@
 			<div class="textarea-box box-100">
 					<label for="">Observação *</label>
 					<div class="conteiner">
-					<h:inputTextarea id="observacao" style="height: 33px;" required="true" requiredMessage="Observação é obrigatorio"
-						value="#{nomeacaoServidorFormBean.entidade.descricaoNomeacao}"
-						onkeyup="this.value = this.value.substring(0, 254);"
-						disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
+						<h:inputTextarea id="observacao" style="height: 33px;" required="true" requiredMessage="Observação é obrigatoria"
+							value="#{nomeacaoServidorFormBean.entidade.descricaoNomeacao}"
+							disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}" 
+							validatorMessage="O campo Observação excedeu o tamanho máximo de 2000 caracteres">
+								<f:validateLength maximum="2000" />
+						</h:inputTextarea>		
 					</div>
 			</div>
 

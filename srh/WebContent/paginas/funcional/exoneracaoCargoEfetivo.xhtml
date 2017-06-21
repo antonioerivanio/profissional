@@ -212,7 +212,9 @@
 					<div class="conteiner">
 						<h:inputTextarea id="observacaoSaida"
 										 value="#{exoneracaoFormBean.funcional.descricaoSaida}"
-										 onkeyup="this.value = this.value.substring(0, 199);" />
+										 validatorMessage="O campo Observação da Saída excedeu o tamanho máximo de 2000 caracteres" >
+							<f:validateLength maximum="2000" />
+						</h:inputTextarea>
 					</div>
 				</div>
 

@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
+import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Repository
@@ -25,21 +26,21 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 	}
 	
 	@Override
-	public int getCountFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim) {
-		return count(getQueryFindByParameter(setor, tiposFerias, inicio, fim));
+	public int getCountFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao) {
+		return count(getQueryFindByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, int firstResult, int maxResults) {		
-		Query query = entityManager.createNativeQuery(getQueryFindByParameter(setor, tiposFerias, inicio, fim), "RelatorioFerias"); 
+	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {		
+		Query query = entityManager.createNativeQuery(getQueryFindByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao), "RelatorioFerias"); 
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);		
 		return query.getResultList();
 	}
 	
 
-	private String getQueryFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim) {
+	private String getQueryFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao) {
 		
 		StringBuilder sql = new StringBuilder();
 
@@ -54,6 +55,7 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 		sql.append("INNER JOIN SRH.TB_FUNCIONAL ON TB_FERIAS.IDFUNCIONAL   = TB_FUNCIONAL.ID ");
 		sql.append("INNER JOIN SRH.TB_PESSOAL ON TB_FUNCIONAL.IDPESSOAL  = TB_PESSOAL.ID ");
 		sql.append("INNER JOIN SRH.tb_tipoferias ON tb_tipoferias.ID = TB_FERIAS.TIPOFERIAS ");
+		sql.append("INNER JOIN SRH.TB_OCUPACAO ON TB_OCUPACAO.ID = TB_FUNCIONAL.IDOCUPACAO ");
 		sql.append("WHERE 1=1 ");
 
 		if (setor!=null && setor.getId() != null && setor.getId() != 0L){
@@ -84,7 +86,11 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 			sql.append("and TB_FERIAS.INICIO <= to_date('" + dateToString(fim) +"', 'dd/MM/yyyy') ");					
 		}
 		
-		sql.append("ORDER BY TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC, TB_FERIAS.FIM DESC ");
+		if (tipoOcupacao != null) {
+			sql.append("and TB_OCUPACAO.TIPOOCUPACAO = " + tipoOcupacao.getId());
+		}
+		
+		sql.append(" ORDER BY TB_FERIAS.ANOREFERENCIA DESC, TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.PERIODO, TB_FERIAS.INICIO DESC, TB_FERIAS.FIM DESC ");
 
 						
 		return sql.toString();

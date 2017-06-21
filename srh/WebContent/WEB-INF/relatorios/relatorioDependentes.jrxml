@@ -200,7 +200,7 @@
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="2" width="800" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="800" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
 					<printWhenExpression><![CDATA[new Boolean(($V{RESPONSAVEL_GROUP_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
@@ -247,7 +247,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="531" y="0" width="52" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{dependente}.getIdade()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{dependente}.getIdade() > -1 ? $F{dependente}.getIdade(): "")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -262,19 +262,19 @@
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="777" y="3" width="25" height="16"/>
+				<reportElement key="textField-5" x="779" y="3" width="25" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="720" y="3" width="57" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="655" y="3" width="120" height="16" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
