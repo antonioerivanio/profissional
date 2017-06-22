@@ -239,9 +239,7 @@ public class RelatorioServidorBean  implements Serializable  {
 			
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			StringBuilder filtro = new StringBuilder();
-			
-			filtro.append(" WHERE 1 = 1 " );
-			
+						
 			if ( inicio == null && fim == null ) {
 				filtro.append(" AND p.DATAOBITO IS NOT NULL " );
 			} else {			

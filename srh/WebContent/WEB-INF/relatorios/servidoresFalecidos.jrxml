@@ -16,8 +16,10 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT p.NOMECOMPLETO, p.CPF, p.DATAOBITO
-FROM TB_PESSOAL p
+		<![CDATA[SELECT p.NOMECOMPLETO, p.DATAOBITO, f.MATRICULA
+FROM TB_FUNCIONAL f
+INNER JOIN TB_PESSOAL p ON f.IDPESSOAL = p.ID
+WHERE f.ID = (SELECT MAX(ID) FROM TB_FUNCIONAL WHERE IDPESSOAL = p.ID)
 
 $P!{FILTRO}
 
@@ -25,7 +27,7 @@ ORDER BY p.NOMECOMPLETO]]>
 	</queryString>
 	<field name="NOMECOMPLETO" class="java.lang.String"/>
 	<field name="DATAOBITO" class="java.util.Date"/>
-	<field name="CPF" class="java.lang.String"/>
+	<field name="MATRICULA" class="java.lang.String"/>
 	<title>
 		<band height="86">
 			<image>
@@ -73,7 +75,7 @@ ORDER BY p.NOMECOMPLETO]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[CPF]]></text>
+				<text><![CDATA[MATRÍCULA]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -99,7 +101,7 @@ ORDER BY p.NOMECOMPLETO]]>
 				<reportElement stretchType="RelativeToTallestObject" x="329" y="0" width="124" height="16"/>
 				<box leftPadding="2" rightPadding="5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[br.gov.ce.tce.srh.util.SRHUtils.formatarCPF($F{CPF})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MATRICULA}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

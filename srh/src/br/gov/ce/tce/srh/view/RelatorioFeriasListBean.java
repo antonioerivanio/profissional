@@ -179,8 +179,11 @@ public class RelatorioFeriasListBean implements Serializable {
 				paramWhere.append("and TB_OCUPACAO.TIPOOCUPACAO = " + tipoOcupacao.getId());
 			}
 			
-			paramWhere.append(" ORDER BY TB_FERIAS.ANOREFERENCIA DESC, TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.PERIODO, TB_FERIAS.INICIO DESC, TB_FERIAS.FIM DESC ");
-						
+			// Se for escolhido o tipo ocupação Membros
+			if (tipoOcupacao != null && tipoOcupacao.getId().intValue() == 1)			
+				paramWhere.append(" ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC ");
+			else
+				paramWhere.append(" ORDER BY TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC ");
 			
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("PARAMWHERE", paramWhere.toString());			

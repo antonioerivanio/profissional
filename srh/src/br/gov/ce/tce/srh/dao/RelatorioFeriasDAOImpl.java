@@ -50,7 +50,8 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 		sql.append("TB_FERIAS.FIM fim, ");
 		sql.append("tb_tipoferias.DESCRICAO tipoFerias, ");
 		sql.append("TB_FERIAS.QTDEDIAS qtdeDias, ");
-		sql.append("TB_FERIAS.PERIODO periodo ");
+		sql.append("TB_FERIAS.PERIODO periodo, ");
+		sql.append("TB_OCUPACAO.ORDEMOCUPACAO ");
 		sql.append("FROM SRH.TB_FERIAS ");
 		sql.append("INNER JOIN SRH.TB_FUNCIONAL ON TB_FERIAS.IDFUNCIONAL   = TB_FUNCIONAL.ID ");
 		sql.append("INNER JOIN SRH.TB_PESSOAL ON TB_FUNCIONAL.IDPESSOAL  = TB_PESSOAL.ID ");
@@ -90,7 +91,11 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 			sql.append("and TB_OCUPACAO.TIPOOCUPACAO = " + tipoOcupacao.getId());
 		}
 		
-		sql.append(" ORDER BY TB_FERIAS.ANOREFERENCIA DESC, TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.PERIODO, TB_FERIAS.INICIO DESC, TB_FERIAS.FIM DESC ");
+		// Se for escolhido o tipo ocupação Membros
+		if (tipoOcupacao != null && tipoOcupacao.getId().intValue() == 1)			
+			sql.append(" ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC ");
+		else
+			sql.append(" ORDER BY TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC ");
 
 						
 		return sql.toString();

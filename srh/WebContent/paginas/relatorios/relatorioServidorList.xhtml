@@ -14,7 +14,7 @@
 		    .formularios fieldset,
 		    .box-border {
 		        padding: 15px;
-		        min-height: 100px;	        
+		        min-height: 80px;	        
 		    }		    	    
 		    .rich-tab-header{
 				font-size: 14px;
@@ -181,30 +181,36 @@
 			
 				<rich:tab id="tab4" label="Falecidos">
 					
-					<div class="input-box box-10" style="clear:both">
-						<label for="">Data Início</label>
-						<div class="conteiner">
-							<h:inputText id="dataInicio" 
-										 name="dataInicio"
-										 styleClass="maskData" 
-										 converter="dateConverter"
-										 value="#{relatorioServidorBean.inicio}" 
-										 maxlength="10" />
+					<fieldset class="conteiner" style="width: 200px; float: left;">
+						
+						<legend>Período de óbito</legend>
+					
+						<div class="input-box box-50" style="clear:both">
+							<label for="">Início</label>
+							<div class="conteiner">
+								<h:inputText id="dataInicio" 
+											 name="dataInicio"
+											 styleClass="maskData" 
+											 converter="dateConverter"
+											 value="#{relatorioServidorBean.inicio}" 
+											 maxlength="10" />
+							</div>
 						</div>
-					</div>
+			
+						<div class="input-box box-50">
+							<label for="">Fim</label>
+							<div class="conteiner">
+								<h:inputText id="dataFim" 
+											 name="dataFim" 
+											 styleClass="maskData"
+											 converter="dateConverter"
+											 value="#{relatorioServidorBean.fim}" 
+											 maxlength="10" />
+							</div>
+						</div>					
 		
-					<div class="input-box box-10">
-						<label for="">Data Fim</label>
-						<div class="conteiner">
-							<h:inputText id="dataFim" 
-										 name="dataFim" 
-										 styleClass="maskData"
-										 converter="dateConverter"
-										 value="#{relatorioServidorBean.fim}" 
-										 maxlength="10" />
-						</div>
-					</div>					
-		
+					</fieldset>
+					
 					<br /><br /><br /><br /><br />
 					
 					<h:commandButton value="Gerar relatório" 
