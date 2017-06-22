@@ -14,16 +14,17 @@ public interface CursoServidorService {
 
 	public int count(Long area, String curso);
 	public int count(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim);
-	public int count(Date inicio,Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor);
-	public List<CursoProfissional> search(Long area, String curso, int first, int rows);
-
+	public int count(Date inicio,Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso);
+	
 	public void salvar(List<PessoalCursoProfissional> listaPessoaCurso, List<CompetenciaCurso> listaCompetencias, boolean alterar) throws SRHRuntimeException;
 	public void excluir(Long curso);
 
 	public List<PessoalCursoProfissional> findByCurso(Long cursoProfissional);
 	
+	public List<CursoProfissional> search(Long area, String curso, int first, int rows);
+	public List<CursoProfissional> search(String curso);
 	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim, int first, int rows) ;
-	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, int first, int rows) ;
+	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) ;
 
 	public List<PessoalCursoProfissional> getCursos(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim) ;
 	public List<PessoalCursoProfissional> getCursos(Date inicio,Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional) ;

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/popup.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:a4j="http://richfaces.org/a4j" >
+
+	<ui:define name="content">
+
+		<style>
+			body {min-width: 500px}
+		    .formularios fieldset,
+		    .box-border {
+		        border: 1px solid #c6c6c6;
+		        padding: 15px 15px 0px 15px;
+		        padding-right: 0;
+		        overflow: auto;
+		        margin-bottom: 10px;
+		        min-height: 100px;
+		    }
+		    .rich-table-cell {
+				position: relative;				
+		    }
+		    .rich-table-cell label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				display: block;
+		    }
+		    .rich-table-cell label:hover {
+		    	cursor: pointer;
+		    }
+		</style>
+
+		<script>
+		function retorno(component)
+		{
+			var mySplit = component.value.split(",");
+
+			if (window.opener.document.getElementById('form:idCurso') != null)
+				window.opener.document.getElementById('form:idCurso').value = mySplit[0];
+			if (window.opener.document.getElementById('form:curso') != null)
+				window.opener.document.getElementById('form:curso').value = mySplit[1]; 
+
+			window.close();
+		}
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Curso</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{cursoConsultaBean.form}" styleClass="formularios box-border">
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" value="#{cursoConsultaBean.lista}" var="item" >
+
+					<h:column id="col1">
+                        <f:facet name="header">
+                            Selecionar
+                        </f:facet>
+                        <label for="#{item.id}"></label>
+                        <center>
+                        	<input type="radio" id="#{item.id}" name="seleciona" value="#{item.id},#{item.descricao}" onclick="retorno(this)" />
+                        </center>
+                    </h:column>					
+					<h:column id="col2" headerClass="cel-50">
+                        <f:facet name="header">
+                            Descrição
+                        </f:facet>
+                        <label for="#{item.id}"></label>
+                        <h:outputText id="item2" value="#{item.descricao}" styleClass="cel-50" />
+                    </h:column>
+                    <h:column id="col3" headerClass="cel-25">
+                        <f:facet name="header">
+                            Início
+                        </f:facet>
+                        <label for="#{item.id}"></label>
+                        <center>
+                        	<h:outputText id="item3" value="#{item.inicio}" styleClass="cel-25" >
+                        		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                    <h:column id="col4" headerClass="cel-25">
+                        <f:facet name="header">
+                            Fim
+                        </f:facet>
+                        <label for="#{item.id}"></label>
+                        <center>
+                        	<h:outputText id="item4" value="#{item.fim}" styleClass="cel-25" >
+                        		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+
+				</rich:dataTable>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

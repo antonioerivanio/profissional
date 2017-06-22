@@ -102,6 +102,14 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		query.setMaxResults(rows);
 		return query.getResultList();
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<CursoProfissional> search(String curso) {
+		Query query = entityManager.createQuery("SELECT new CursoProfissional(c.id, c.area, c.descricao, c.inicio, c.fim) FROM CursoProfissional c WHERE upper(c.descricao) LIKE :curso ORDER BY c.inicio DESC, TRIM(c.descricao)");
+		query.setParameter("curso", "%" + curso.toUpperCase() + "%");
+		return query.getResultList();
+	}
 
 
 	@Override
@@ -202,11 +210,9 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	}
 
 	@Override
-	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor) {
+	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
 		
-		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");   
-		String inicioFormato = formatador.format(inicio); 
-		String fimFormato = formatador.format(fim);		
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");		
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -220,9 +226,13 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		sql.append("LEFT JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO ");
 		sql.append("LEFT JOIN SAPJAVA.SETOR ON DECODE(TB_FUNCIONAL.IDSETORDESIGNADO, NULL, TB_FUNCIONAL.IDSETOR, TB_FUNCIONAL.IDSETORDESIGNADO) = SAPJAVA.SETOR.IDSETOR ");
 
-		sql.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
-		sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
-		sql.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
+		sql.append(" WHERE TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
+		
+		if(inicio != null)
+			sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+formatador.format(inicio)+"','dd/mm/yyyy') " );
+		
+		if(fim != null)
+			sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+formatador.format(fim)+"','dd/mm/yyyy') ");
 		
 		if(areaAtuacao)
 			sql.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
@@ -236,21 +246,22 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 			sql.append(" AND TB_TIPOOCUPACAO.ID = " + tipoOcupacao.getId() );
 				
 		if (setor != null && setor.getId() != null)				
-			sql.append(" AND SAPJAVA.SETOR.IDSETOR = " + setor.getId() );		
+			sql.append(" AND SAPJAVA.SETOR.IDSETOR = " + setor.getId() );
+		
+		if (idCurso != null && idCurso.intValue() != 0)				
+			sql.append(" AND TB_CURSOPROFISSIONAL.ID = " + idCurso );
 		
 		Query query = entityManager.createNativeQuery(sql.toString());		
 		
 		return ((BigDecimal) query.getSingleResult()).intValue();
-	}
-	
+	}	
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, int first, int rows) {
+	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
 		
-		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");   
-		String inicioFormato = formatador.format(inicio); 
-		String fimFormato = formatador.format(fim);		
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");  
+				
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -264,9 +275,13 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		sql.append(" LEFT JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO ");
 		sql.append(" LEFT JOIN SAPJAVA.SETOR ON DECODE(TB_FUNCIONAL.IDSETORDESIGNADO, NULL, TB_FUNCIONAL.IDSETOR, TB_FUNCIONAL.IDSETORDESIGNADO) = SAPJAVA.SETOR.IDSETOR ");
 
-		sql.append(" WHERE To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+inicioFormato+"','dd/mm/yyyy') " );
-		sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+fimFormato+"','dd/mm/yyyy') ");
-		sql.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
+		sql.append(" WHERE TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
+		
+		if(inicio != null)
+			sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+formatador.format(inicio)+"','dd/mm/yyyy') " );
+		
+		if(fim != null)
+			sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') <= To_Date('"+formatador.format(fim)+"','dd/mm/yyyy') ");
 		
 		if(areaAtuacao)
 			sql.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
@@ -282,6 +297,9 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if (setor != null && setor.getId() != null)				
 			sql.append(" AND SAPJAVA.SETOR.IDSETOR = " + setor.getId() );	
 			
+		if (idCurso != null && idCurso.intValue() != 0)				
+			sql.append(" AND TB_CURSOPROFISSIONAL.ID = " + idCurso );
+		
 		sql.append(" ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESSOAL.NOMECOMPLETO");
 		
 		Query query = entityManager.createNativeQuery(sql.toString(), PessoalCursoProfissional.class);		

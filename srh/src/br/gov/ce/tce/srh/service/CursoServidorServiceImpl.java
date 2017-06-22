@@ -90,6 +90,10 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 		return dao.count(pessoal, areaAtuacao, posGraduacao, profissional, inicio,  fim);
 	}
 
+	@Override
+	public List<CursoProfissional> search(String curso) {
+		return dao.search(curso);
+	}
 
 	@Override
 	public List<CursoProfissional> search(Long area, String curso, int first, int rows) {
@@ -142,8 +146,8 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 
 
 	@Override
-	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor) {
-		return dao.count(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor);
+	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
+		return dao.count(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor, idCurso);
 	}
 
 
@@ -154,8 +158,8 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 
 
 	@Override
-	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, int first, int rows) {
-		return dao.search(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor, first, rows);
+	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
+		return dao.search(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor, idCurso, first, rows);
 	}
 
 }

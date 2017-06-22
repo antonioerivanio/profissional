@@ -11,13 +11,22 @@
 	<ui:define name="content">	
 			
 		<script>
-			function validaPosGraduacao(){
+			function openwindow() {
+				curso = document.getElementById('form:curso').value;
+				if (curso.length > 2) {
+					window.open("/srh/paginas/cadastros/cursoConsulta.faces?curso=" + curso,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
+			}
+			
+			function validaPosGraduacao() {
 				if (document.getElementById('form:profissional').checked == false){					
 					document.getElementById('form:posGraduacao').checked = true;
 				}
 			}
 			
-			function validaProfissional(){
+			function validaProfissional() {
 				if (document.getElementById('form:posGraduacao').checked == false){
 					document.getElementById('form:profissional').checked = true;
 				}
@@ -34,6 +43,24 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
+			<h:inputHidden id="idCurso" value="#{cursoPeriodoListBean.idCurso}" />
+			
+			<div class="input-box box-40">
+				<label for="">Curso</label>
+				<div class="conteiner">
+					<h:inputText id="curso"
+								 name="curso"
+								 value="#{cursoPeriodoListBean.curso}" />
+				</div>
+			</div>
+
+			<a id="form:Pesquisar" 
+			   href="#" 
+			   onclick="openwindow()" 
+			   class="bt-padrao fl mg-top-18">Pesquisar</a>
+			
+			
+			
 			<div id="div1" class="input-box box-10" style="clear:both">
 				<label id="lbl1" for="">Data Inicio</label>
 				<div id="div2" class="conteiner">
@@ -130,17 +157,19 @@
 				</div>
 			</div>
 		
-			<h:commandButton id="consultar"
-							 value="Consultar"
-							 action="#{cursoPeriodoListBean.consultar}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
-			<h:commandButton id="relatorio"
-							 value="Relatório"
-							 action="#{cursoPeriodoListBean.relatorio}" 
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 style="margin-left: 10px" />
-
+			<div style="float:right;">
+				<h:commandButton id="consultar"
+								 value="Consultar"
+								 action="#{cursoPeriodoListBean.consultar}"
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+								 reRender="scroller,lista"/>
+				<h:commandButton id="relatorio"
+								 value="Relatório"
+								 action="#{cursoPeriodoListBean.relatorio}" 
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10 mg-right-15" 
+								 style="margin-left: 10px" />
+			</div>
+			
 			<div id="div20" class="tabela-dados">
 
 				<rich:dataTable id="lista" 
