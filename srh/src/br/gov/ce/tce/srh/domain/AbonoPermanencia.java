@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -73,6 +74,14 @@ public class AbonoPermanencia extends BasicEntity<Long> implements Serializable{
 		return processo;
 	}
 	public void setProcesso(String processo) {this.processo = processo;}
+	public String getProcessoFormatado() {		
+		try {
+			processo = SRHUtils.formatarProcesso(processo);
+		} catch (ParseException e) {
+			return "";
+		}
+		return processo;
+	}
 	public String getObservacao() {
 		return observacao;
 	}

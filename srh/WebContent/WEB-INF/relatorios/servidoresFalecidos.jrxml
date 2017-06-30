@@ -61,7 +61,7 @@ ORDER BY p.NOMECOMPLETO]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DATA DE ÓBITO]]></text>
+				<text><![CDATA[DATA DO ÓBITO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="2" y="0" width="327" height="18" forecolor="#FFFFFF"/>

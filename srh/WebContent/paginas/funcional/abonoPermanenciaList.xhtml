@@ -127,6 +127,14 @@
 	                        </h:outputText>
                         </center>
                     </h:column>
+                    <h:column id="col10" headerClass="cel-25">
+                        <f:facet name="header">
+                            Processo
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item10" value="#{item.processoFormatado}" styleClass="cel-25" />
+                        </center>
+                    </h:column>
                 	<h:column id="col7" rendered="#{not LoginBean.anyGranted('ROLE_ABONOPERMANENCIA_ALTERAR')}">
                         <f:facet name="header">
                             DETALHAR

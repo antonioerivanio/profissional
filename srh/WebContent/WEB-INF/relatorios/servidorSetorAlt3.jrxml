@@ -18,7 +18,7 @@
 		<![CDATA[SELECT DISTINCT S.NMSETOR nomeSetor,
                 P.NOMECOMPLETO nomeCompleto,
                 O.NOMENCLATURA cargo,
-                decode(CR.REFERENCIA, null, ' ', 'REF' || CR.REFERENCIA) referencia,
+                decode(CR.REFERENCIA, null, ' ', 'REF-' || TRIM(TO_CHAR(CR.REFERENCIA,'00'))) referencia,
                 RC.NOMENCLATURA || decode(RF.TIPONOMEACAO, '1', ' - Titular', decode(RF.TIPONOMEACAO, '2', ' - Substituto', decode(RF.TIPONOMEACAO, '3', ' - Designado', ''))) representacao,
                 RC.SIMBOLO simbolo,
                 S.NRORDEMSETORFOLHA nrOrdemSetorFolha,
