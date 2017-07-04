@@ -244,10 +244,10 @@ public class RelatorioServidorBean  implements Serializable  {
 				filtro.append(" AND p.DATAOBITO IS NOT NULL " );
 			} else {			
 				if ( inicio != null )
-					filtro.append(" AND p.DATAOBITO >= '" + SRHUtils.formataData(SRHUtils.FORMATO_DATA, inicio) + "' " );
+					filtro.append(" AND p.DATAOBITO >= TO_DATE('" + SRHUtils.formataData(SRHUtils.FORMATO_DATA, inicio) + "', 'DD/MM/YYYY') " );
 				
 				if ( fim != null )
-					filtro.append(" AND p.DATAOBITO <= '" + SRHUtils.formataData(SRHUtils.FORMATO_DATA, fim) + "' " );			
+					filtro.append(" AND p.DATAOBITO <= TO_DATE('" + SRHUtils.formataData(SRHUtils.FORMATO_DATA, fim) + "', 'DD/MM/YYYY') " );			
 			}
 			
 			parametros.put("FILTRO", filtro.toString());						
@@ -260,6 +260,7 @@ public class RelatorioServidorBean  implements Serializable  {
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		return null;
