@@ -108,7 +108,7 @@ public class AbonoPermanenciaListBean implements Serializable {
 			
 			parametros.put("listaAbono", new JRBeanCollectionDataSource(listaAbono));
 						
-			relatorioUtil.relatorioComEmptyDataSource("abonoPermanencia.jasper", parametros, "abonoPermanencia.pdf");
+			relatorioUtil.relatorio("abonoPermanencia.jasper", parametros, "abonoPermanencia.pdf", null);
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
