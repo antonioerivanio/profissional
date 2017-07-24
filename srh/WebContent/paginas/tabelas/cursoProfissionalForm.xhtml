@@ -22,8 +22,7 @@
 
 			<div class="input-box box-10">
 				<label for="">ID</label>
-				<div class="conteiner">
-					<!-- <h:inputHidden value="#{cursoProfissionalBean.entidade.id}" /> -->
+				<div class="conteiner">					
 					<h:inputText disabled="true" value="#{cursoProfissionalBean.entidade.id}" />  
 				</div>
 			</div>
@@ -40,7 +39,7 @@
 			</div>
 
 			<div class="select-box box-50">
-				<label for="">Área</label>
+				<label for="">Área *</label>
 				<div class="conteiner">
 					<h:selectOneMenu id="area" 
 									 value="#{cursoProfissionalBean.entidade.area}"
@@ -58,7 +57,7 @@
 			</div>
 
 			<div class="select-box box-50">
-				<label for="">Instituição</label>
+				<label for="">Instituição *</label>
 				<div class="conteiner">
 					<h:selectOneMenu id="instituicao" 
 									 value="#{cursoProfissionalBean.entidade.instituicao}"
@@ -75,8 +74,25 @@
 				</div>
 			</div>
 
+			<div class="select-box box-50">
+				<label for="">Tipo do Curso *</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="tipoCurso" 
+									 value="#{cursoProfissionalBean.entidade.posGraduacao}"
+									 required="true"
+								 	 requiredMessage="O Tipo do Curso é obrigatório." >
+						<f:selectItem id="selecioneTitulacao" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboTitulacao" 
+					  					value="#{cursoProfissionalBean.comboTipoCurso}"
+					  					var="tipo"
+					  					itemValue="#{tipo}"
+					  					itemLabel="#{tipo.descricao}"/>
+					</h:selectOneMenu>    
+				</div>
+			</div>
+
 			<div class="input-box box-10">
-				<label for="">Período início *</label>
+				<label for="">Período início</label>
 				<div class="conteiner">
 					<h:inputText id="dataInicio" 
 								 name="dataInicio"
@@ -107,16 +123,7 @@
 								 maxlength="4"
 								 onkeyup="SoNumeros(this)" />
 				</div>
-			</div>
-
-			<div class="radios-group box-15">
-				<h3>Pós-Graduação</h3>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox value="#{cursoProfissionalBean.entidade.posGraduacao}" />
-					</div>
-				</div>
-			</div>
+			</div>			
 
 			<div class="radios-group box-25">
 				<h3>Treinamento realizado no TCE</h3>

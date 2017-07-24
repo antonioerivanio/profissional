@@ -2,9 +2,9 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.component.html.HtmlForm;
 
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.AreaProfissional;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.Instituicao;
+import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AreaProfissionalService;
 import br.gov.ce.tce.srh.service.CursoProfissionalService;
@@ -206,6 +207,11 @@ public class CursoProfissionalBean implements Serializable {
 
 		return this.comboInstituicao;
 	}
+	
+	
+	public List<EnumTipoCursoProfissional> getComboTipoCurso() {
+		return Arrays.asList(EnumTipoCursoProfissional.values());
+	}
 
 
 	/**
@@ -216,21 +222,22 @@ public class CursoProfissionalBean implements Serializable {
 	public String relatorio() {
 
 		try {
-
-			Map<String, Object> parametros = new HashMap<String, Object>();
-
-			StringBuffer filtro = new StringBuffer();
-			filtro.append(" WHERE 1 = 1 ");
-
-			if (this.area != null)
-				filtro.append(" AND IDAREAPROFISSIONAL = " + this.area.getId() );
-		
-			if (this.descricao != null && !this.descricao.equalsIgnoreCase(""))
-				filtro.append(" AND upper( descricao ) like '%" + this.descricao.toUpperCase() + "%' ");
-
-			parametros.put("FILTRO", filtro.toString());
-
-			relatorioUtil.relatorio("cursoprofissional.jasper", parametros, "cursoprofissional.pdf");
+			
+			List<CursoProfissional> cursos;
+			
+			if (this.area == null) {
+				cursos = cursoProfissionalService.search(this.descricao, -1, -1);
+			} else {
+				cursos = cursoProfissionalService.search(this.area.getId(), this.descricao, -1, -1);
+			}
+			
+			if (cursos == null || cursos.size() == 0){
+				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+				logger.info("Nenhum registro foi encontrado.");
+				return null;
+			}
+			
+			relatorioUtil.relatorio("cursoprofissional.jasper", new HashMap<String, Object>(), "cursoprofissional.pdf", cursos);
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");

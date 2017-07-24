@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -14,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
 
 /**
  * Referente a tabela: TB_CURSOPROFISSIONAL
@@ -60,8 +64,9 @@ public class CursoProfissional extends BasicEntity<Long> implements Serializable
 	@Column(name="AREAATUACAO", nullable=false)
 	private boolean areaAtuacao;
 
-	@Column(name="POSGRADUACAO", nullable=false)
-	private boolean posGraduacao;
+	@Column(name = "POSGRADUACAO")
+	@Enumerated(EnumType.ORDINAL)
+	private EnumTipoCursoProfissional posGraduacao;
 
 	@Column(name="PRESENCIAL", nullable=false)
 	private boolean presencial;
@@ -85,7 +90,6 @@ public class CursoProfissional extends BasicEntity<Long> implements Serializable
 		
 	}
 
-
 	public AreaProfissional getArea() {return area;}
 	public void setArea(AreaProfissional area) {this.area = area;}
 
@@ -107,8 +111,8 @@ public class CursoProfissional extends BasicEntity<Long> implements Serializable
 	public boolean isAreaAtuacao() {return areaAtuacao;}
 	public void setAreaAtuacao(boolean areaAtuacao) {this.areaAtuacao = areaAtuacao;}
 
-	public boolean isPosGraduacao() {return posGraduacao;}
-	public void setPosGraduacao(boolean posGraduacao) {this.posGraduacao = posGraduacao;}
+	public EnumTipoCursoProfissional getPosGraduacao() {return posGraduacao;}
+	public void setPosGraduacao(EnumTipoCursoProfissional posGraduacao) {this.posGraduacao = posGraduacao;}
 
 	public boolean isPresencial() {return presencial;}
 	public void setPresencial(boolean presencial) {this.presencial = presencial;}

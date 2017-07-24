@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="funcionalSetor" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="159"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -24,6 +24,7 @@
   TB_CURSOPROFISSIONAL.INICIO,
   TB_CURSOPROFISSIONAL.FIM,
   TB_CURSOPROFISSIONAL.CARGAHORARIA,
+  TB_CURSOPROFISSIONAL.POSGRADUACAO AS TIPOCURSO,
   PESSOALCURSOSGRADUACAO.CURSOSGRADUACAO,
   TB_OCUPACAO.NOMENCLATURA AS CARGOEFETIVO,
   TB_REPRESENTACAOCARGO.NOMENCLATURA AS CARGOCOMISSAO,
@@ -62,6 +63,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 	<field name="CARGOCOMISSAO" class="java.lang.String"/>
 	<field name="SIMBOLO" class="java.lang.String"/>
 	<field name="LOTACAO" class="java.lang.String"/>
+	<field name="TIPOCURSO" class="java.lang.Integer"/>
 	<variable name="TOTAL_CARGAHORARIA" class="java.lang.Number" calculation="Sum">
 		<variableExpression><![CDATA[$F{CARGAHORARIA}]]></variableExpression>
 	</variable>
@@ -73,20 +75,17 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 	</background>
 	<title>
 		<band height="166">
-			<rectangle>
-				<reportElement x="1" y="0" width="800" height="79" forecolor="#CCCCCC"/>
-			</rectangle>
 			<image>
 				<reportElement x="1" y="14" width="800" height="65"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
+				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="619" y="-11" width="168" height="54"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="5" y="25" width="161" height="36"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="42" width="802" height="20" forecolor="#0F2E52"/>
@@ -100,7 +99,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO} + ( $F{CARGOEFETIVO} == null ? "" : " - " + $F{CARGOEFETIVO} )
+				<textFieldExpression><![CDATA[$F{NOMECOMPLETO} + ( $F{CARGOEFETIVO} == null ? "" : " - " + $F{CARGOEFETIVO} )
 + ( $F{CARGOCOMISSAO} == null ? "" : " - " + $F{CARGOCOMISSAO} + ( $F{SIMBOLO} == null? "" : " " + $F{SIMBOLO} ) )]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -110,7 +109,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["MATRÍCULA: " + $F{MATRICULA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["MATRÍCULA: " + $F{MATRICULA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="6" y="124" width="796" height="18" isRemoveLineWhenBlank="true">
@@ -119,7 +118,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["LOTAÇÃO ATUAL: " + $F{LOTACAO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["LOTAÇÃO ATUAL: " + $F{LOTACAO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="6" y="142" width="796" height="18" isRemoveLineWhenBlank="true">
@@ -128,7 +127,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["CURSOS DE GRADUAÇÃO: " + $F{CURSOSGRADUACAO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["CURSOS DE GRADUAÇÃO: " + $F{CURSOSGRADUACAO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -138,39 +137,46 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 				<reportElement x="2" y="0" width="800" height="17" backcolor="#195297"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="525" y="0" width="75" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="479" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ INICIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="603" y="0" width="75" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="550" y="0" width="70" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FIM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="383" y="0" width="140" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="351" y="0" width="120" height="18" forecolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[AREA]]></text>
+				<text><![CDATA[ÁREA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="0" width="378" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="3" y="0" width="340" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CURSO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="680" y="0" width="118" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="621" y="0" width="42" height="18" forecolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[CARGA HORÁRIA]]></text>
+				<text><![CDATA[C. H.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="671" y="0" width="130" height="18" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -181,30 +187,35 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
-			<textField>
-				<reportElement x="3" y="1" width="378" height="16"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="3" y="1" width="340" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{CURSO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CURSO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="525" y="1" width="75" height="16"/>
+				<reportElement x="479" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{INICIO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="603" y="1" width="75" height="16"/>
+				<reportElement x="550" y="1" width="70" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FIM}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="383" y="1" width="140" height="16"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="351" y="1" width="120" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{AREA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{AREA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="true">
-				<reportElement x="722" y="1" width="30" height="16"/>
+				<reportElement x="621" y="1" width="42" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$F{CARGAHORARIA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{CARGAHORARIA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="671" y="0" width="130" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional.values()[$F{TIPOCURSO}].getDescricao()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -221,7 +232,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="773" y="3" width="30" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-4" x="674" y="3" width="95" height="16" forecolor="#000000"/>
@@ -232,7 +243,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
@@ -243,45 +254,45 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
 		<band height="64">
 			<staticText>
-				<reportElement x="565" y="19" width="143" height="18"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+				<reportElement x="608" y="19" width="143" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TOTAL CARGA HORÁRIA:]]></text>
 			</staticText>
 			<textField pattern="###0">
-				<reportElement x="711" y="1" width="90" height="18"/>
+				<reportElement x="756" y="1" width="45" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$V{TOTAL_CURSO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{TOTAL_CURSO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="711" y="19" width="90" height="18"/>
+				<reportElement x="756" y="19" width="45" height="18"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$V{TOTAL_CARGAHORARIA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{TOTAL_CARGAHORARIA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="558" y="1" width="153" height="18"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="598" y="1" width="153" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[QUANTIDADE DE CURSOS:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="198" y="47" width="361" height="16"/>
+				<reportElement x="0" y="47" width="803" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="773" y="47" width="30" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Number"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-4" x="674" y="47" width="95" height="16" forecolor="#000000"/>
@@ -292,7 +303,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="4" y="47" width="100" height="16" forecolor="#000000"/>
@@ -303,7 +314,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="2" y="46" width="800" height="1"/>

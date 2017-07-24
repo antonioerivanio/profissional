@@ -85,8 +85,12 @@ public class CursoProfissionalDAOImpl implements CursoProfissionalDAO {
 	public List<CursoProfissional> search(String descricao, int first, int rows) {
 		Query query = entityManager.createQuery("SELECT c FROM CursoProfissional c WHERE upper( c.descricao ) LIKE :descricao ORDER BY c.area.descricao, c.descricao ");
 		query.setParameter("descricao", "%" + descricao.toUpperCase() + "%");
-		query.setFirstResult(first);
-		query.setMaxResults(rows);
+		
+		if (first >= 0 && rows >= 0) {
+			query.setFirstResult(first);
+			query.setMaxResults(rows);
+		}
+			
 		return query.getResultList();
 	}
 
@@ -97,8 +101,12 @@ public class CursoProfissionalDAOImpl implements CursoProfissionalDAO {
 		Query query = entityManager.createQuery("SELECT c FROM CursoProfissional c WHERE c.area.id = :area AND upper( c.descricao ) LIKE :descricao ORDER BY c.descricao ");
 		query.setParameter("area", area);
 		query.setParameter("descricao", "%" + descricao.toUpperCase() + "%");
-		query.setFirstResult(first);
-		query.setMaxResults(rows);
+				
+		if (first >= 0 && rows >= 0) {
+			query.setFirstResult(first);
+			query.setMaxResults(rows);
+		}	
+		
 		return query.getResultList();
 	}
 

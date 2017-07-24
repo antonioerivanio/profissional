@@ -18,19 +18,7 @@
 				} else {
 					alert('Digite pelo menos 3 caracteres para a pesquisa');
 				}
-			}
-			
-			function validaPosGraduacao(){
-				if (document.getElementById('form:profissional').checked == false){					
-					document.getElementById('form:posGraduacao').checked = true;
-				}
-			}
-			
-			function validaProfissional(){
-				if (document.getElementById('form:posGraduacao').checked == false){
-					document.getElementById('form:profissional').checked = true;
-				}
-			}
+			}			
 			
 			function desmarcaSomenteCargaHoraria(){
 				document.getElementById('form:somenteCargaHoraria').checked = false;
@@ -123,7 +111,7 @@
 				   
 					<div class="radios-group box-15">
 						<rich:panel id="richpane1l">
-					        <label>Somente Carga Horária</label>
+					        <label for="form:somenteCargaHoraria">Somente Carga Horária</label>
 					        <rich:toolTip id="tooltip1" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
 						            <span style="white-space:nowrap">
 						                Marcar essa opção somente para relatório consolidado <br />
@@ -149,7 +137,7 @@
 					
 					<div class="radios-group box-15">
 						<rich:panel id="richpanel2">
-					        <label>Somente Curso Graduação</label>
+					        <label for="form:somenteCursoGraduacao">Somente Curso Graduação</label>
 					        <rich:toolTip id="toolti2" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
 						            <span style="white-space:nowrap">
 						                Marcar essa opção somente para relatório consolidado <br />
@@ -215,36 +203,49 @@
 						</h:selectBooleanCheckbox>
 					</div>
 				</div>
-			</div>
-			
-			<div class="radios-group box-10">
-				<label>Pós-Graduação</label>
+			</div>			
+						
+			<div class="select-box box-25">
+				<label for="">Tipo de Curso</label>
 				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox
-							id="posGraduacao"
-							value="#{cursoServidorListBean.posGraduacao}"
-							onchange="validaPosGraduacao()"
-							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
-						</h:selectBooleanCheckbox>
-					</div>
-				</div>
-			</div>
-			
-			<div class="radios-group box-10">
-				<label>Profissional</label>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox
-							id="profissional"
-							value="#{cursoServidorListBean.profissional}"
-							onchange="validaProfissional()"
-							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
-						</h:selectBooleanCheckbox>
-					</div>
+					<h:selectOneMenu id="tipoCurso" 
+									 value="#{cursoServidorListBean.tipoCurso}" >
+						<f:selectItem id="selecioneTitulacao" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboTitulacao" 
+					  					value="#{cursoServidorListBean.comboTipoCurso}"
+					  					var="tipo"
+					  					itemValue="#{tipo}"
+					  					itemLabel="#{tipo.descricao}"/>					
+						
+						<a4j:support id="tipoCursoChange" 
+											 event="onchange"
+											 action="#{cursoServidorListBean.tipoCursoAction}"
+											 ajaxSingle="true" 
+											 reRender="somentePosGraduacao, messages, lista, scroller" />
+						
+					</h:selectOneMenu>    
 				</div>
 			</div>			
-			
+						
+			<div class="radios-group box-16">
+				<label for="form:somentePosGraduacao">Somente Curso Pós-Graduação</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="somentePosGraduacao"
+							value="#{cursoServidorListBean.somentePosGraduacao}"
+							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
+							
+							<a4j:support id="somentePosGraduacaoClick" 
+											 event="onclick"
+											 action="#{cursoServidorListBean.somentePosGraduacaoAction}"
+											 ajaxSingle="true" 
+											 reRender="tipoCurso, messages, lista, scroller" />
+							
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
 			
 			<h:commandButton id="consultar"
 							 value="Consultar"

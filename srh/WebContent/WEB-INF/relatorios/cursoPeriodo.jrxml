@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cursoPeriodo" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="35"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="BACK" class="java.lang.String">
 		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
@@ -26,6 +26,7 @@
   TB_CURSOPROFISSIONAL.INICIO,
   TB_CURSOPROFISSIONAL.FIM,
   TB_CURSOPROFISSIONAL.CARGAHORARIA,
+  TB_CURSOPROFISSIONAL.POSGRADUACAO AS TIPOCURSO,
   PESSOALCURSOSGRADUACAO.CURSOSGRADUACAO,
   TB_OCUPACAO.NOMENCLATURA AS CARGOEFETIVO,
   TB_REPRESENTACAOCARGO.NOMENCLATURA AS CARGOCOMISSAO,
@@ -68,6 +69,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 	<field name="SIMBOLO" class="java.lang.String"/>
 	<field name="LOTACAO" class="java.lang.String"/>
 	<field name="IDCURSO" class="java.math.BigDecimal"/>
+	<field name="TIPOCURSO" class="java.lang.Integer"/>
 	<variable name="TOTAL_CARGAHORARIA" class="java.lang.Number" resetType="Group" resetGroup="Curso" calculation="Sum">
 		<variableExpression><![CDATA[$F{CARGAHORARIA}]]></variableExpression>
 	</variable>
@@ -80,37 +82,37 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 						<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["CURSO: " + $F{CURSO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["CURSO: " + $F{CURSO}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="3" y="23" width="797" height="18" isRemoveLineWhenBlank="true"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 						<font size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["ÁREA: " + $F{AREA}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["ÁREA: " + $F{AREA}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 					<reportElement x="40" y="41" width="60" height="18"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 						<font size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.util.Date"><![CDATA[$F{INICIO}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-					<reportElement x="138" y="41" width="60" height="18"/>
+					<reportElement x="137" y="41" width="60" height="18"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 						<font size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.util.Date"><![CDATA[$F{FIM}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="300" y="41" width="127" height="18">
+					<reportElement x="300" y="41" width="40" height="18">
 						<printWhenExpression><![CDATA[$F{CURSOSGRADUACAO} != null]]></printWhenExpression>
 					</reportElement>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 						<font size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CARGAHORARIA}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{CARGAHORARIA}]]></textFieldExpression>
 				</textField>
 				<rectangle>
 					<reportElement x="0" y="62" width="802" height="17" isRemoveLineWhenBlank="true" backcolor="#195297"/>
@@ -158,6 +160,20 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 					<textElement verticalAlignment="Middle"/>
 					<text><![CDATA[CARGA HORÁRIA:]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="346" y="41" width="41" height="18"/>
+					<textElement verticalAlignment="Middle"/>
+					<text><![CDATA[TIPO:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="377" y="41" width="423" height="18">
+						<printWhenExpression><![CDATA[$F{CURSOSGRADUACAO} != null]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional.values()[$F{TIPOCURSO}].getDescricao()]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -166,20 +182,17 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 	</group>
 	<title>
 		<band height="80">
-			<rectangle>
-				<reportElement x="1" y="0" width="800" height="79" forecolor="#CCCCCC"/>
-			</rectangle>
 			<image>
 				<reportElement x="1" y="14" width="554" height="65"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{BACK}]]></imageExpression>
+				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="619" y="-11" width="168" height="54"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="5" y="25" width="161" height="36"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{LOGO_TCE}]]></imageExpression>
+				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="41" width="802" height="20" forecolor="#0F2E52"/>
@@ -200,23 +213,23 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="321" y="0" width="279" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[( $F{CARGOEFETIVO} == null ? "" : $F{CARGOEFETIVO} )
+				<textFieldExpression><![CDATA[( $F{CARGOEFETIVO} == null ? "" : $F{CARGOEFETIVO} )
 + ( $F{CARGOCOMISSAO} == null ? "" : " - " + $F{CARGOCOMISSAO} + ( $F{SIMBOLO} == null? "" : " " + $F{SIMBOLO} ) )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="3" y="0" width="233" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="600" y="0" width="200" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{LOTACAO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{LOTACAO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="236" y="0" width="80" height="16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{MATRICULA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MATRICULA}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -233,7 +246,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="773" y="2" width="30" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-4" x="674" y="2" width="95" height="16" forecolor="#000000"/>
@@ -244,7 +257,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
@@ -255,7 +268,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

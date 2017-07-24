@@ -18,24 +18,12 @@
 				} else {
 					alert('Digite pelo menos 3 caracteres para a pesquisa');
 				}
-			}
-			
-			function validaPosGraduacao() {
-				if (document.getElementById('form:profissional').checked == false){					
-					document.getElementById('form:posGraduacao').checked = true;
-				}
-			}
-			
-			function validaProfissional() {
-				if (document.getElementById('form:posGraduacao').checked == false){
-					document.getElementById('form:profissional').checked = true;
-				}
-			}
+			}			
 		</script>
 
-		<div id="div0" class="titulo-pagina">
+		<div class="titulo-pagina">
 
-			<h2 id="h1" >Consulta de Cursos por Período</h2>
+			<h2>Consulta de Cursos por Período</h2>
 
 		</div>
 
@@ -61,9 +49,9 @@
 			
 			
 			
-			<div id="div1" class="input-box box-10" style="clear:both">
-				<label id="lbl1" for="">Data Inicio</label>
-				<div id="div2" class="conteiner">
+			<div class="input-box box-10" style="clear:both">
+				<label for="">Data Inicio</label>
+				<div class="conteiner">
 					<h:inputText id="dataInicio" 
 								 name="dataInicio"
 								 styleClass="maskData" 
@@ -73,9 +61,9 @@
 				</div>
 			</div>
 
-			<div id="div3" class="input-box box-10">
-				<label id="lbl2" for="">Data Fim</label>
-				<div id="div4" class="conteiner">
+			<div class="input-box box-10">
+				<label for="">Data Fim</label>
+				<div class="conteiner">
 					<h:inputText id="dataFim" 
 								 name="dataFim" 
 								 styleClass="maskData"
@@ -86,10 +74,10 @@
 			</div> 
 				
 			
-			<div id="div5" class="radios-group box-10">
-				<label id="lbl3">Area de atuação</label>
-				<div id="div6" class="conteiner" style="margin-top: 3px">
-					<div id="div7" class="radio-box">
+			<div class="radios-group box-10">
+				<label for="form:atuacao">Area de atuação</label>
+				<div class="conteiner" style="margin-top: 3px">
+					<div class="radio-box">
 						<h:selectBooleanCheckbox
 							id="atuacao"
 							value="#{cursoPeriodoListBean.areaAtuacao}">
@@ -98,52 +86,37 @@
 				</div>
 			</div>
 			
-			<div id="div8" class="radios-group box-10">
-				<label id="lbl4">Pós-Graduação</label>
-				<div id="div9" class="conteiner" style="margin-top: 3px">
-					<div id="div10" class="radio-box">
-						<h:selectBooleanCheckbox
-							id="posGraduacao"
-							value="#{cursoPeriodoListBean.posGraduacao}"
-							onchange="validaPosGraduacao()">
-						</h:selectBooleanCheckbox>
-					</div>
-				</div>
-			</div>
-
-			<div id="div11" class="radios-group box-10">
-				<label id="lbl5">Profissional</label>
-				<div id="div12" class="conteiner" style="margin-top: 3px">
-					<div id="div13" class="radio-box">
-						<h:selectBooleanCheckbox
-							id="profissional"
-							value="#{cursoPeriodoListBean.profissional}"
-							onchange="validaProfissional()">
-						</h:selectBooleanCheckbox>
-					</div>
-				</div>
-			</div>
-		
-			<div id="div14" class="select-box box-25">				
-				<label id="lbl6">Tipo Ocupação</label>
-				<div id="div15" class="conteiner">
-					<h:selectOneMenu id="tipoOcupacao" 
-									 converter="entityConverter"
-									 value="#{cursoPeriodoListBean.tipoOcupacao}" >					  	
-					  	<f:selectItem id="selecioneTipoOcupacao" itemLabel="Selecione..." itemValue="" />
-					  	<f:selectItems 	id="comboTipoOcupacao" 
-					  					value="#{cursoPeriodoListBean.comboTipoOcupacao}"
-					  					var="tipoOcupacao"
-					  					itemValue="#{tipoOcupacao}"
-					  					itemLabel="#{tipoOcupacao.descricao}"/>
-
-					</h:selectOneMenu>
+			<div class="select-box box-25">
+				<label for="">Tipo de Curso</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="tipoCurso" 
+									 value="#{cursoPeriodoListBean.tipoCurso}" >
+						<f:selectItem id="selecioneTitulacao" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboTitulacao" 
+					  					value="#{cursoProfissionalBean.comboTipoCurso}"
+					  					var="tipo"
+					  					itemValue="#{tipo}"
+					  					itemLabel="#{tipo.descricao}"/>
+					</h:selectOneMenu>    
 				</div>
 			</div>			
+			
+			<div class="radios-group box-18">
+				<label for="form:somentePosGraduacao">Somente Pós-Graduação</label>
+				<div class="conteiner" style="margin-top: 3px">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="somentePosGraduacao"
+							value="#{cursoPeriodoListBean.somentePosGraduacao}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+												
 
-			<div id="div16" class="select-box box-38" style="clear: both;">
-				<label id="lbl7">Setor</label>
-				<div id="div17" class="conteiner">
+			<div class="select-box box-38" style="clear: both;">
+				<label>Setor</label>
+				<div class="conteiner">
 					<h:selectOneMenu id="setor"
 									 converter="entityConverter" 
 							 		 value="#{cursoPeriodoListBean.setor}">
@@ -170,7 +143,7 @@
 								 style="margin-left: 10px" />
 			</div>
 			
-			<div id="div20" class="tabela-dados">
+			<div class="tabela-dados">
 
 				<rich:dataTable id="lista" 
 								value="#{cursoPeriodoListBean.dataModel}" 
@@ -178,31 +151,31 @@
 								rows="10" 
 								binding="#{cursoPeriodoListBean.dataTable}">
 
-                    <h:column id="col2">
-                        <f:facet id="f3" name="header">
+                    <h:column id="col1" rendered="#{cursoPeriodoListBean.idCurso eq null or cursoPeriodoListBean.idCurso eq 0}">
+                        <f:facet id="f1" name="header">
                            Curso
                         </f:facet>
-                        <h:outputText id="item2" value="#{item.cursoProfissional.descricao}" />
-                        <f:facet id="f4" name="footer"></f:facet>
+                        <h:outputText id="item1" value="#{item.cursoProfissional.descricao}" />
+                        <f:facet id="f1" name="footer"></f:facet>
                     </h:column>
-                    <h:column id="col1">
-                        <f:facet id="f1" name="header">
+                    <h:column id="col2">
+                        <f:facet id="f2" name="header">
                            Servidor
                         </f:facet>
-                        <h:outputText id="item1" value="#{item.pessoal.nome}" />
+                        <h:outputText id="item2" value="#{item.pessoal.nome}" />
                         <f:facet id="f2" name="footer"></f:facet>
                     </h:column>
                     <h:column id="col3">
-                        <f:facet id="f5" name="header">
+                        <f:facet id="f3" name="header">
                            Área
                         </f:facet>
                         <h:outputText id="item3" value="#{item.cursoProfissional.area.descricao}" />                       
                     </h:column>
                     <h:column id="col4">
-                        <f:facet id="f6" name="header">
+                        <f:facet id="f4" name="header">
                           Início
                         </f:facet>
-                        <center id="c1" >
+                        <center id="c4" >
                         	<h:outputText id="item4" value="#{item.cursoProfissional.inicio}">
                         		<f:convertDateTime id="convIni1" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
@@ -210,21 +183,29 @@
                        
                     </h:column>
                     <h:column id="col5">
-                        <f:facet id="f7" name="header">
+                        <f:facet id="f5" name="header">
                           Fim
                         </f:facet>
-                        <center id="c2">
+                        <center id="c5">
                         	<h:outputText id="item5" value="#{item.cursoProfissional.fim}">
                         		<f:convertDateTime id="convIni2" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>             
                     </h:column>
                     <h:column id="col6">
-                        <f:facet id="f8" name="header">
+                        <f:facet id="f6" name="header">
                            Carga Horária
                         </f:facet>
-                        <center id="c3" > 
+                        <center id="c6" > 
                        		<h:outputText id="item6" value="#{item.cursoProfissional.cargaHoraria}" />                       	
+                       	</center>                      
+                    </h:column>
+                    <h:column id="col7">
+                        <f:facet id="f7" name="header">
+                           Tipo de Curso
+                        </f:facet>
+                        <center id="c7" > 
+                       		<h:outputText id="item7" value="#{item.cursoProfissional.posGraduacao.descricao}" />                       	
                        	</center>                      
                     </h:column>
                  

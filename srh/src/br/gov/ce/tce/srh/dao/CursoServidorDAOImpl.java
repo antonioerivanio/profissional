@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
+import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 
@@ -52,44 +53,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		query.setParameter("area", area);
 		query.setParameter("curso", "%" + curso.toUpperCase() + "%");
 		return ((Long) query.getSingleResult()).intValue();
-	}
-	
-	@Override
-	public int count(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim) {
-		
-		StringBuilder sql = new StringBuilder();
-		sql.append("Select count(*) from PessoalCursoProfissional e, Funcional f where e.pk.pessoal = :pessoal ");
-		
-		sql.append("AND e.pessoal.id = f.pessoal.id ");
-		sql.append("AND f.saida IS NULL AND f.situacao.id = 1 ");
-		
-		if (areaAtuacao)
-			sql.append(" AND e.areaAtuacao = :areaAtuacao");
-		if ((posGraduacao && !profissional) || (!posGraduacao && profissional))
-			sql.append(" AND e.cursoProfissional.posGraduacao = :posGraduacao");
-		if (inicio != null ) 	
-			sql.append(" AND e.cursoProfissional.fim >= :inicio");		
-		if (fim != null) 
-			sql.append(" AND e.cursoProfissional.fim <= :fim ");
-		
-		sql.append(" ORDER BY e.cursoProfissional.inicio desc");
-		
-		Query query = entityManager.createQuery(sql.toString());
-		query.setParameter("pessoal", pessoal);
-		
-		if(areaAtuacao)
-			query.setParameter("areaAtuacao", areaAtuacao);		
-		if(posGraduacao && !profissional)
-			query.setParameter("posGraduacao", true);
-		else if(!posGraduacao && profissional)
-			query.setParameter("posGraduacao", false);
-		if (inicio != null ) 	
-			query.setParameter("inicio", inicio);		
-		if (fim != null) 
-			query.setParameter("fim", fim);		
-		
-		return ((Long) query.getSingleResult()).intValue();
-	}
+	}	
 	
 
 	@Override
@@ -134,18 +98,20 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim, int first, int rows) {
+	public int count(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim) {
+		
 		StringBuilder sql = new StringBuilder();
-		sql.append("Select e from PessoalCursoProfissional e, Funcional f where e.pk.pessoal = :pessoal ");
+		sql.append("Select count(*) from PessoalCursoProfissional e, Funcional f where e.pk.pessoal = :pessoal ");
 		
 		sql.append("AND e.pessoal.id = f.pessoal.id ");
 		sql.append("AND f.saida IS NULL AND f.situacao.id = 1 ");
 		
-		if(areaAtuacao)
-			sql.append(" AND e.areaAtuacao = :areaAtuacao");		
-		if ((posGraduacao && !profissional) || (!posGraduacao && profissional))
-			sql.append(" AND e.cursoProfissional.posGraduacao = :posGraduacao");		
+		if (areaAtuacao)
+			sql.append(" AND e.areaAtuacao = :areaAtuacao");
+		if (tipoCurso != null)
+			sql.append(" AND e.cursoProfissional.posGraduacao = :tipoCurso");		
+		if (somentePosGraduacao)
+			sql.append(" AND e.cursoProfissional.posGraduacao != :extensao");		
 		if (inicio != null ) 	
 			sql.append(" AND e.cursoProfissional.fim >= :inicio");		
 		if (fim != null) 
@@ -158,24 +124,22 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		
 		if(areaAtuacao)
 			query.setParameter("areaAtuacao", areaAtuacao);		
-		if(posGraduacao && !profissional)
-			query.setParameter("posGraduacao", true);
-		else if(!posGraduacao && profissional)
-			query.setParameter("posGraduacao", false);	
+		if(tipoCurso != null)
+			query.setParameter("tipoCurso", tipoCurso);
+		if(somentePosGraduacao)
+			query.setParameter("extensao", EnumTipoCursoProfissional.EXTENSAO);
 		if (inicio != null ) 	
 			query.setParameter("inicio", inicio);		
 		if (fim != null) 
-			query.setParameter("fim", fim);	
+			query.setParameter("fim", fim);		
 		
-		query.setFirstResult(first);
-		query.setMaxResults(rows);
-		return query.getResultList();
+		return ((Long) query.getSingleResult()).intValue();
 	}
-
- 
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> getCursos(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim) {
+	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim, int first, int rows) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("Select e from PessoalCursoProfissional e, Funcional f where e.pk.pessoal = :pessoal ");
 		
@@ -184,8 +148,10 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		
 		if(areaAtuacao)
 			sql.append(" AND e.areaAtuacao = :areaAtuacao");		
-		if ((posGraduacao && !profissional) || (!posGraduacao && profissional))
-			sql.append(" AND e.cursoProfissional.posGraduacao = :posGraduacao");		
+		if (tipoCurso != null)
+			sql.append(" AND e.cursoProfissional.posGraduacao = :tipoCurso");
+		if (somentePosGraduacao)
+			sql.append(" AND e.cursoProfissional.posGraduacao != :extensao");
 		if (inicio != null ) 	
 			sql.append(" AND e.cursoProfissional.fim >= :inicio");		
 		if (fim != null) 
@@ -198,19 +164,25 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		
 		if(areaAtuacao)
 			query.setParameter("areaAtuacao", areaAtuacao);		
-		if(posGraduacao && !profissional)
-			query.setParameter("posGraduacao", true);
-		else if(!posGraduacao && profissional)
-			query.setParameter("posGraduacao", false);		
+		if(tipoCurso != null)
+			query.setParameter("tipoCurso", tipoCurso);	
+		if(somentePosGraduacao)
+			query.setParameter("extensao", EnumTipoCursoProfissional.EXTENSAO);
 		if (inicio != null ) 	
 			query.setParameter("inicio", inicio);		
 		if (fim != null) 
 			query.setParameter("fim", fim);	
+		
+		if( first >= 0 && rows >= 0 ) {
+			query.setFirstResult(first);
+			query.setMaxResults(rows);
+		}
+		
 		return query.getResultList();
-	}
+	}	
 
 	@Override
-	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
+	public int count(Date inicio, Date fim, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
 		
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");		
 		
@@ -237,10 +209,11 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if(areaAtuacao)
 			sql.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
 		
-		if(posGraduacao && !profissional)
-			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 1 ");
-		else if(!posGraduacao && profissional)
-			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
+		if(tipoCurso != null)
+			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = " + tipoCurso.ordinal());
+		
+		if(somentePosGraduacao)
+			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO > 0" );
 		
 		if (tipoOcupacao != null && tipoOcupacao.getId() != null)				
 			sql.append(" AND TB_TIPOOCUPACAO.ID = " + tipoOcupacao.getId() );
@@ -258,10 +231,9 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
+	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
 		
-		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");  
-				
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");				
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -286,10 +258,11 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if(areaAtuacao)
 			sql.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
 		
-		if(posGraduacao && !profissional)
-			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 1 ");
-		else if(!posGraduacao && profissional)
-			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
+		if(tipoCurso != null)
+			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = " + tipoCurso.ordinal());
+		
+		if(somentePosGraduacao)
+			sql.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO > 0 ");
 		
 		if (tipoOcupacao != null && tipoOcupacao.getId() != null)				
 			sql.append(" AND TB_TIPOOCUPACAO.ID = " + tipoOcupacao.getId() );
@@ -313,15 +286,15 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim,boolean areaAtuacao, boolean posGraduacao, boolean profissional) {
+	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim,boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso) {
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append("Select e from PessoalCursoProfissional e where e.cursoProfissional.inicio >= :inicio AND e.cursoProfissional.fim <= :fim ");
 		
 		if(areaAtuacao)
 			sql.append(" AND e.areaAtuacao = :areaAtuacao");		
-		if ((posGraduacao && !profissional) || (!posGraduacao && profissional))
-			sql.append(" AND e.cursoProfissional.posGraduacao = :posGraduacao");
+		if (tipoCurso != null)
+			sql.append(" AND e.cursoProfissional.posGraduacao = :tipoCurso");
 
 		sql.append(" ORDER BY  e.pessoal.nome, e.cursoProfissional.inicio desc");
 		
@@ -331,10 +304,8 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		
 		if(areaAtuacao)
 			query.setParameter("areaAtuacao", areaAtuacao);		
-		if(posGraduacao && !profissional)
-			query.setParameter("posGraduacao", true);
-		else if(!posGraduacao && profissional)
-			query.setParameter("posGraduacao", false);
+		if(tipoCurso != null)
+			query.setParameter("tipoCurso", tipoCurso.ordinal());		
 		
 		return query.getResultList();
 	}

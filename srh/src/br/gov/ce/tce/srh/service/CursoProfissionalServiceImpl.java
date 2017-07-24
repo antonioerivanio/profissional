@@ -100,7 +100,7 @@ public class CursoProfissionalServiceImpl implements CursoProfissionalService {
 	private void verificandoSeEntidadeExiste(CursoProfissional entidade) throws SRHRuntimeException {
 
 		CursoProfissional entidadeJaExiste = dao.getByCursoAreaInstituicao( entidade.getDescricao(), entidade.getArea().getId(), entidade.getInstituicao().getId() );
-		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
+		if (entidadeJaExiste != null && !entidadeJaExiste.getId().equals(entidade.getId()))
 			throw new SRHRuntimeException("Curso de Formação Profissional já cadastrado. Operação cancelada.");
 		
 	}

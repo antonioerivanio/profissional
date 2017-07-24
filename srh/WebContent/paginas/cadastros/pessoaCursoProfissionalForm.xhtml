@@ -44,163 +44,161 @@
 
 			<fieldset>
 
-			<legend>Curso Profissional</legend>
-
-			<br/>
-
-            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
-
-			<!--  incluir -->
-			<h:panelGroup rendered="#{!pessoalCursoProfissionalFormBean.alterar}">
-
-				<div class="select-box box-50">
-					<label for="">Área *</label>
-					<div class="conteiner">
-						<h:selectOneMenu id="area"
-										 converter="entityConverter" 
-										 value="#{pessoalCursoProfissionalFormBean.area}"
-										 rendered="#{!pessoalCursoProfissionalFormBean.alterar}" >
-						  	<f:selectItem id="selecioneArea" itemLabel="Selecione..." itemValue="" />
-						  	<f:selectItems 	id="comboArea" 
-						  					value="#{pessoalCursoProfissionalFormBean.comboArea}"
-						  					var="area"
-						  					itemValue="#{area}"
-						  					itemLabel="#{area.descricao}"/>
-					  		<a4j:support id="carregaCurso" 
-					  					 event="onchange" 
-					  					 ajaxSingle="true"
-					  					 action="#{pessoalCursoProfissionalFormBean.carregaCurso}"
-					  				 	 reRender="curso"/>
-						</h:selectOneMenu>
-					</div>
-				</div>
+				<legend>Curso Profissional</legend>
 	
-				<div class="select-box box-50">
-					<label for="">Curso *</label>
-					<div class="conteiner">
-						<h:selectOneMenu id="curso"
-										 converter="entityConverter" 
-										 value="#{pessoalCursoProfissionalFormBean.curso}"
-										 rendered="#{!pessoalCursoProfissionalFormBean.alterar}"  >
-						  	<f:selectItem id="selecioneCurso" itemLabel="Selecione..." itemValue="" />
-						  	<f:selectItems 	id="comboCurso" 
-						  					value="#{pessoalCursoProfissionalFormBean.comboCurso}"
-						  					var="curso"
-						  					itemValue="#{curso}"
-						  					itemLabel="#{curso.descricao}"/>
-					  		<a4j:support id="carregaInstituicao" 
-					  					 event="onchange" 
-					  					 ajaxSingle="true"
-					  					 action="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
-					  				 	 reRender="instituicao, inicio, fim, cargaHoraria, posGraduacao, treinamento, presencial, listaCompetencias, listaServidores"/>
-						</h:selectOneMenu>
+				<br/>
+	
+	            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+	
+				<!--  incluir -->
+				<h:panelGroup rendered="#{!pessoalCursoProfissionalFormBean.alterar}">
+	
+					<div class="select-box box-50">
+						<label for="">Área *</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="area"
+											 converter="entityConverter" 
+											 value="#{pessoalCursoProfissionalFormBean.area}"
+											 rendered="#{!pessoalCursoProfissionalFormBean.alterar}" >
+							  	<f:selectItem id="selecioneArea" itemLabel="Selecione..." itemValue="" />
+							  	<f:selectItems 	id="comboArea" 
+							  					value="#{pessoalCursoProfissionalFormBean.comboArea}"
+							  					var="area"
+							  					itemValue="#{area}"
+							  					itemLabel="#{area.descricao}"/>
+						  		<a4j:support id="carregaCurso" 
+						  					 event="onchange" 
+						  					 ajaxSingle="true"
+						  					 action="#{pessoalCursoProfissionalFormBean.carregaCurso}"
+						  				 	 reRender="curso"/>
+							</h:selectOneMenu>
+						</div>
 					</div>
-				</div>
-
-			</h:panelGroup>
-
-			<!--  alterar -->
-			<h:panelGroup rendered="#{pessoalCursoProfissionalFormBean.alterar}">
-
+		
+					<div class="select-box box-50">
+						<label for="">Curso *</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="curso"
+											 converter="entityConverter" 
+											 value="#{pessoalCursoProfissionalFormBean.curso}"
+											 rendered="#{!pessoalCursoProfissionalFormBean.alterar}"  >
+							  	<f:selectItem id="selecioneCurso" itemLabel="Selecione..." itemValue="" />
+							  	<f:selectItems 	id="comboCurso" 
+							  					value="#{pessoalCursoProfissionalFormBean.comboCurso}"
+							  					var="curso"
+							  					itemValue="#{curso}"
+							  					itemLabel="#{curso.descricao}"/>
+						  		<a4j:support id="carregaInstituicao" 
+						  					 event="onchange" 
+						  					 ajaxSingle="true"
+						  					 action="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
+						  				 	 reRender="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
+							</h:selectOneMenu>
+						</div>
+					</div>
+	
+				</h:panelGroup>
+	
+				<!--  alterar -->
+				<h:panelGroup rendered="#{pessoalCursoProfissionalFormBean.alterar}">
+	
+					<div class="input-box box-50">
+						<label for="">Área *</label>
+						<div class="conteiner">
+							<h:inputText id="areaAlterar"
+										 name="areaAlterar"
+										 disabled="true"
+										 rendered="#{pessoalCursoProfissionalFormBean.alterar}" 
+										 value="#{pessoalCursoProfissionalFormBean.curso.area.descricao}" />
+						</div>
+					</div>
+		
+					<div class="input-box box-50">
+						<label for="">Curso *</label>
+						<div class="conteiner">			
+							<h:inputText id="cursoAlterar"
+										 name="cursoAlterar"
+										 disabled="true"
+										 rendered="#{pessoalCursoProfissionalFormBean.alterar}" 
+										 value="#{pessoalCursoProfissionalFormBean.curso.descricao}" />
+						</div>
+					</div>
+	
+				</h:panelGroup>
+	
 				<div class="input-box box-50">
-					<label for="">Área *</label>
+					<label for="">Instituição</label>
 					<div class="conteiner">
-						<h:inputText id="areaAlterar"
-									 name="areaAlterar"
+						<h:inputText id="instituicao"
 									 disabled="true"
-									 rendered="#{pessoalCursoProfissionalFormBean.alterar}" 
-									 value="#{pessoalCursoProfissionalFormBean.curso.area.descricao}" />
+									 value="#{pessoalCursoProfissionalFormBean.cursoAux.instituicao.descricao}" />
+					</div>
+				</div>
+	
+				<div class="input-box box-15">
+					<label for="">Período Inicio *</label>
+					<div class="conteiner">
+						<h:inputText id="inicio" 
+									 name="inicio"
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 disabled="true"
+									 value="#{pessoalCursoProfissionalFormBean.cursoAux.inicio}" />
+					</div>
+				</div>
+	
+				<div class="input-box box-15">
+					<label for="">Período Fim</label>
+					<div class="conteiner">
+						<h:inputText id="fim" 
+									 name="fim" 
+									 styleClass="maskData"
+									 converter="dateConverter"
+									 disabled="true"
+									 value="#{pessoalCursoProfissionalFormBean.cursoAux.fim}"  /> 
+					</div>
+				</div>
+	
+				<div class="input-box box-15">
+					<label for="">Carga Horária</label>
+					<div class="conteiner">
+						<h:inputText id="cargaHoraria" 
+									 disabled="true"
+									 value="#{pessoalCursoProfissionalFormBean.cursoAux.cargaHoraria}" />
 					</div>
 				</div>
 	
 				<div class="input-box box-50">
-					<label for="">Curso *</label>
+					<label for="">Tipo do Curso</label>
 					<div class="conteiner">			
-						<h:inputText id="cursoAlterar"
-									 name="cursoAlterar"
+						<h:inputText id="tipoCurso"
 									 disabled="true"
-									 rendered="#{pessoalCursoProfissionalFormBean.alterar}" 
-									 value="#{pessoalCursoProfissionalFormBean.curso.descricao}" />
+									 value="#{pessoalCursoProfissionalFormBean.cursoAux.posGraduacao.descricao}" />
 					</div>
 				</div>
-
-			</h:panelGroup>
-
-			<div class="input-box box-50">
-				<label for="">Instituição</label>
-				<div class="conteiner">
-					<h:inputText id="instituicao"
-								 disabled="true"
-								 value="#{pessoalCursoProfissionalFormBean.cursoAux.instituicao.descricao}" />
-				</div>
-			</div>
-
-			<div class="input-box box-15">
-				<label for="">Período Inicio *</label>
-				<div class="conteiner">
-					<h:inputText id="inicio" 
-								 name="inicio"
-								 styleClass="maskData" 
-								 converter="dateConverter"
-								 disabled="true"
-								 value="#{pessoalCursoProfissionalFormBean.cursoAux.inicio}" />
-				</div>
-			</div>
-
-			<div class="input-box box-15">
-				<label for="">Período Fim</label>
-				<div class="conteiner">
-					<h:inputText id="fim" 
-								 name="fim" 
-								 styleClass="maskData"
-								 converter="dateConverter"
-								 disabled="true"
-								 value="#{pessoalCursoProfissionalFormBean.cursoAux.fim}"  /> 
-				</div>
-			</div>
-
-			<div class="input-box box-15">
-				<label for="">Carga Horária</label>
-				<div class="conteiner">
-					<h:inputText id="cargaHoraria" 
-								 disabled="true"
-								 value="#{pessoalCursoProfissionalFormBean.cursoAux.cargaHoraria}" />
-				</div>
-			</div>
-
-
-			<div class="radios-group box-15">
-				<h3>Pós-Graduação</h3>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox id="posGraduacao"
-												 disabled="true"
-												 value="#{pessoalCursoProfissionalFormBean.cursoAux.posGraduacao}" />
+				
+	
+				<div class="radios-group box-25">
+					<h3>Treinamento realizado no TCE</h3>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectBooleanCheckbox id="treinamento"
+													 disabled="true"
+													 value="#{pessoalCursoProfissionalFormBean.cursoAux.treinamento}" />
+						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="radios-group box-25">
-				<h3>Treinamento realizado no TCE</h3>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox id="treinamento"
-												 disabled="true"
-												 value="#{pessoalCursoProfissionalFormBean.cursoAux.treinamento}" />
+	
+				<div class="radios-group box-15">
+					<h3>Presencial</h3>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectBooleanCheckbox id="presencial"
+													 disabled="true"
+													 value="#{pessoalCursoProfissionalFormBean.cursoAux.presencial}" />
+						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="radios-group box-15">
-				<h3>Presencial</h3>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox id="presencial"
-												 disabled="true"
-												 value="#{pessoalCursoProfissionalFormBean.cursoAux.presencial}" />
-					</div>
-				</div>
-			</div>
 
 			</fieldset>
 

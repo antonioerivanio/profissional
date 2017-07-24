@@ -62,19 +62,19 @@
                         </f:facet>
                         <center><h:outputText id="item1" value="#{item.id}" /></center>
                     </h:column>
-                    <h:column id="col2" headerClass="cel-50">
+                    <h:column id="col2">
                         <f:facet name="header">
                             Área
                         </f:facet>
-                        <h:outputText id="item2" value="#{item.area.descricao}" styleClass="cel-50" />
+                        <h:outputText id="item2" value="#{item.area.descricao}"  />
                     </h:column>
-                    <h:column id="col3" headerClass="cel-50">
+                    <h:column id="col3" >
                         <f:facet name="header">
                             Curso
                         </f:facet>
-                        <h:outputText id="item3" value="#{item.descricao}" styleClass="cel-50" />
+                        <h:outputText id="item3" value="#{item.descricao}" />
                     </h:column>
-<h:column id="col4">
+					<h:column id="col4">
                         <f:facet name="header">
                             Período início
                         </f:facet>
@@ -93,6 +93,13 @@
 	                        	<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
 	                        </h:outputText>
                         </center>
+                    </h:column>
+                    <h:column id="col8" >
+                        <f:facet id="f8" name="header">
+                           Tipo
+                        </f:facet>                       
+                       	<h:outputText id="item8" value="#{item.posGraduacao.descricao}" />                       	
+                                        
                     </h:column>
                 	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_PROFISSIONAL_CURSOS_ALTERAR')}">
                         <f:facet name="header">

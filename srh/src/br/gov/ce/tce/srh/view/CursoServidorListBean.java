@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
+import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CursoServidorService;
@@ -53,11 +55,11 @@ public class CursoServidorListBean implements Serializable {
 	private String cpf = new String();
 	private String nome = new String();
 
+	private EnumTipoCursoProfissional tipoCurso;
 	private boolean areaAtuacao;
-	private boolean posGraduacao = true;
-	private boolean profissional = true;
 	private boolean somenteCargaHoraria;
 	private boolean somenteCursoGraduacao;
+	private boolean somentePosGraduacao;
 
 	private Funcional entidade = new Funcional();
 	private CursoProfissional cursoProfissional = new CursoProfissional();
@@ -85,14 +87,14 @@ public class CursoServidorListBean implements Serializable {
 				throw new SRHRuntimeException("Para realizar uma consulta, selecione um funcionário.");		
 			
 			
-			count = cursoServidorService.count(getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio, fim);
+			count = cursoServidorService.count(getEntidade().getPessoal().getId(), areaAtuacao, tipoCurso, somentePosGraduacao, inicio, fim);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
 			}
 			
-			List<PessoalCursoProfissional> cursos = cursoServidorService.getCursos( getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio,fim);
+			List<PessoalCursoProfissional> cursos = cursoServidorService.search( getEntidade().getPessoal().getId(), areaAtuacao, tipoCurso, somentePosGraduacao, inicio, fim, -1, -1);
 			totalCargaHoraria = new Long(0);
 			for (PessoalCursoProfissional curso : cursos) {
 				if(curso!=null && curso.getCursoProfissional()!=null && curso.getCursoProfissional().getCargaHoraria()!=null)
@@ -152,10 +154,13 @@ public class CursoServidorListBean implements Serializable {
 				}
 				if(areaAtuacao)
 					filtro.append(" AND TB_PESSOALCURSOPROF.AREAATUACAO = 1 ");			
-				if(posGraduacao && !profissional)
-					filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 1 ");
-				else if(!posGraduacao && profissional)
-					filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = 0 ");
+				
+				if(tipoCurso != null)
+					filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO = " + tipoCurso.ordinal());
+				
+				if(somentePosGraduacao)
+					filtro.append(" AND TB_CURSOPROFISSIONAL.POSGRADUACAO > 0 ");
+				
 				
 				parametros.put("DATA_INICIO", inicioFormato);
 				parametros.put("DATA_FIM", fimFormato);
@@ -199,10 +204,10 @@ public class CursoServidorListBean implements Serializable {
 		totalCargaHoraria = null;
 		labelTotalCargaHoraria = "";
 		areaAtuacao = false;
-		posGraduacao = true;
-		profissional = true;
+		tipoCurso = null;
 		somenteCargaHoraria = false;
 		somenteCursoGraduacao = false;
+		somentePosGraduacao = false;
 		inicio = null;
 		fim = null;
 	}
@@ -262,14 +267,16 @@ public class CursoServidorListBean implements Serializable {
 
 		}
 	}
+	
+	public List<EnumTipoCursoProfissional> getComboTipoCurso() {
+		return Arrays.asList(EnumTipoCursoProfissional.values());
+	}
 
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
 
-
 	public Funcional getEntidade() {return entidade;}
 	public void setEntidade(Funcional entidade) {this.entidade = entidade;}	
-	
 
 	public CursoProfissional getCursoProfissional() {return cursoProfissional;}
 	public void setCursoProfissional(CursoProfissional cursoProfissional) {this.cursoProfissional = cursoProfissional;}
@@ -289,11 +296,8 @@ public class CursoServidorListBean implements Serializable {
 	public Date getFim() {return fim;}
 	public void setFim(Date fim) {this.fim = fim;}
 
-	public boolean isPosGraduacao() {return posGraduacao;}
-	public void setPosGraduacao(boolean posGraduacao) {	this.posGraduacao = posGraduacao;}
-	
-	public boolean isProfissional() {return profissional;}
-	public void setProfissional(boolean profissional) {	this.profissional = profissional;}
+	public EnumTipoCursoProfissional getTipoCurso() {return tipoCurso;}
+	public void setTipoCurso(EnumTipoCursoProfissional tipoCurso) {	this.tipoCurso = tipoCurso;}
 	
 	public boolean isSomenteCargaHoraria() {return this.somenteCargaHoraria;}
 	public void setSomenteCargaHoraria(boolean somenteCargaHoraria) {this.somenteCargaHoraria = somenteCargaHoraria;}
@@ -301,6 +305,9 @@ public class CursoServidorListBean implements Serializable {
 	public boolean isSomenteCursoGraduacao() {return this.somenteCursoGraduacao;}
 	public void setSomenteCursoGraduacao(boolean somenteCursoGraduacao) {this.somenteCursoGraduacao = somenteCursoGraduacao;}
 	
+	public boolean isSomentePosGraduacao() {return somentePosGraduacao;}
+	public void setSomentePosGraduacao(boolean somentePosGraduacao) {this.somentePosGraduacao = somentePosGraduacao;}
+		
 	public void somenteCargaHorariaAction() {	
 		this.matricula = null;
 		this.cpf = null;
@@ -324,7 +331,23 @@ public class CursoServidorListBean implements Serializable {
 		this.inicio = null;
 		this.fim = null;
 	}
-
+	
+	public void somentePosGraduacaoAction() {	
+		this.tipoCurso = null;
+		this.totalCargaHoraria = null;
+		this.labelTotalCargaHoraria = null;
+		limparListas();
+		flagRegistroInicial = 0;
+	}
+	
+	public void tipoCursoAction() {	
+		this.somentePosGraduacao = false;
+		this.totalCargaHoraria = null;
+		this.labelTotalCargaHoraria = null;
+		limparListas();
+		flagRegistroInicial = 0;
+	}
+	
 	
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
@@ -354,7 +377,7 @@ public class CursoServidorListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
 			flagRegistroInicial = getPrimeiroDaPagina();	
-			setPagedList(cursoServidorService.search( getEntidade().getPessoal().getId(), areaAtuacao, posGraduacao, profissional, inicio, fim, flagRegistroInicial, dataModel.getPageSize()));
+			setPagedList(cursoServidorService.search( getEntidade().getPessoal().getId(), areaAtuacao, tipoCurso, somentePosGraduacao, inicio, fim, flagRegistroInicial, dataModel.getPageSize()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

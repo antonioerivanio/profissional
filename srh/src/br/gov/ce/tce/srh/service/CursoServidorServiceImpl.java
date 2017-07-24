@@ -12,6 +12,7 @@ import br.gov.ce.tce.srh.domain.CompetenciaCurso;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
+import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
@@ -23,18 +24,10 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 
 	@Autowired
 	private CompetenciaCursoService competenciaCursoService;
-
-
-	/**
-	 * 
-	 * @param alterar: TRUE | FALSE
-	 *
-	 */
+	
 	@Override
 	@Transactional
-	public void salvar(List<PessoalCursoProfissional> listaPessoaCurso,
-			List<CompetenciaCurso> listaCompetencias,
-			boolean alterar) throws SRHRuntimeException {
+	public void salvar(List<PessoalCursoProfissional> listaPessoaCurso, List<CompetenciaCurso> listaCompetencias, boolean alterar) throws SRHRuntimeException {
 
 		// validando dados obrigatorios.
 		validarDados(listaPessoaCurso, listaCompetencias);
@@ -80,14 +73,14 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 
 	}
 
-
 	@Override
 	public int count(Long area, String curso) {
 		return dao.count(area, curso);
 	}
 	
-	public int count(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio, Date fim) {
-		return dao.count(pessoal, areaAtuacao, posGraduacao, profissional, inicio,  fim);
+	@Override
+	public int count(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim) {
+		return dao.count(pessoal, areaAtuacao, tipoCurso, somentePosGraduacao, inicio,  fim);
 	}
 
 	@Override
@@ -101,26 +94,14 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 	}
 	
 	@Override
-	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao,boolean posGraduacao, boolean profissional, Date inicio,Date fim, int first, int rows) {
-		return dao.search(pessoal, areaAtuacao, posGraduacao, profissional, inicio, fim, first, rows);
-	}
-
-//	@Override
-//	public List<PessoalCursoProfissional> getCursos(Long pessoal, boolean areaAtuacao) {
-//		return dao.getCursos(pessoal, areaAtuacao);
-//	}
-
-	@Override
-	public List<PessoalCursoProfissional> getCursos(Long pessoal, boolean areaAtuacao, boolean posGraduacao, boolean profissional, Date inicio,Date fim){
-		return dao.getCursos(pessoal, areaAtuacao, posGraduacao, profissional, inicio, fim);
-	}
-	 
+	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio,Date fim, int first, int rows) {
+		return dao.search(pessoal, areaAtuacao, tipoCurso, somentePosGraduacao, inicio, fim, first, rows);
+	}	 
 
 	@Override
 	public List<PessoalCursoProfissional> findByCurso(Long cursoProfissional) {
 		return dao.findByCurso(cursoProfissional);
 	}
-
 
 	/**
 	 * Validar:
@@ -138,28 +119,21 @@ public class CursoServidorServiceImpl implements CursoServidorService {
 		if (listaPessoaCurso == null || listaPessoaCurso.size() == 0)
 			throw new SRHRuntimeException("Nenhum servidor cadastrado, é obrigatório pelo menos um servidor.");
 
-	}
-
-
-	public void setDAO(CursoServidorDAO dao) {this.dao = dao;}
-	public void setCompetenciaCursoService(CompetenciaCursoService competenciaCursoService) {this.competenciaCursoService = competenciaCursoService;}
-
+	}	
 
 	@Override
-	public int count(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
-		return dao.count(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor, idCurso);
+	public int count(Date inicio, Date fim, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
+		return dao.count(inicio, fim, areaAtuacao, tipoCurso, somentePosGraduacao, tipoOcupacao, setor, idCurso);
 	}
 
-
 	@Override
-	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim,boolean areaAtuacao, boolean posGraduacao, boolean profissional) {
-		return dao.getCursos(inicio, fim, areaAtuacao, posGraduacao, profissional);
+	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso) {
+		return dao.getCursos(inicio, fim, areaAtuacao, tipoCurso);
 	}
 
-
 	@Override
-	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, boolean posGraduacao, boolean profissional, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
-		return dao.search(inicio, fim, areaAtuacao, posGraduacao, profissional, tipoOcupacao, setor, idCurso, first, rows);
+	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
+		return dao.search(inicio, fim, areaAtuacao, tipoCurso, somentePosGraduacao, tipoOcupacao, setor, idCurso, first, rows);
 	}
 
 }
