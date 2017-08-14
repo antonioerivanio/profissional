@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,28 +46,15 @@ public class CursoProfissionalServiceImpl implements CursoProfissionalService {
 		dao.excluir(entidade);
 	}
 
-
 	@Override
-	public int count(String descricao) {
-		return dao.count(descricao);
+	public int count(String descricao, Long idArea, Date inicio, Date fim) {
+		return dao.count(descricao, idArea, inicio, fim);
 	}
 
 
 	@Override
-	public int count(Long area, String descricao) {
-		return dao.count(area,  descricao);
-	}
-
-
-	@Override
-	public List<CursoProfissional> search(String descricao, int first, int rows) {
-		return dao.search(descricao, first, rows);
-	}
-
-
-	@Override
-	public List<CursoProfissional> search(Long area, String descricao, int first, int rows) {
-		return dao.search(area, descricao, first, rows);
+	public List<CursoProfissional> search(String descricao, Long idArea, Date inicio, Date fim, int first, int rows) {
+		return dao.search(descricao, idArea, inicio, fim, first, rows);
 	}
 
 

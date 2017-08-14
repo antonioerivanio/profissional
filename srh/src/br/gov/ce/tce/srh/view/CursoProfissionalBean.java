@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,6 +60,8 @@ public class CursoProfissionalBean implements Serializable {
 	// parametros da tela de consulta
 	private AreaProfissional area;
 	private String descricao = new String();
+	private Date inicio;
+	private Date fim;
 
 	// entidades das telas
 	private List<CursoProfissional> lista = new ArrayList<CursoProfissional>();
@@ -85,13 +88,9 @@ public class CursoProfissionalBean implements Serializable {
 	public String consultar() {
 
 		try {
-
-			if (this.area == null) {
-				count = cursoProfissionalService.count(this.descricao);
-			} else {
-				count = cursoProfissionalService.count(this.area.getId(), this.descricao);
-			}
-
+			
+			count = cursoProfissionalService.count(this.descricao, this.getIdArea(), this.inicio, this.fim);
+			
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
@@ -223,13 +222,7 @@ public class CursoProfissionalBean implements Serializable {
 
 		try {
 			
-			List<CursoProfissional> cursos;
-			
-			if (this.area == null) {
-				cursos = cursoProfissionalService.search(this.descricao, -1, -1);
-			} else {
-				cursos = cursoProfissionalService.search(this.area.getId(), this.descricao, -1, -1);
-			}
+			List<CursoProfissional> cursos = cursoProfissionalService.search(this.descricao, this.getIdArea(), this.inicio, this.fim, -1, -1);
 			
 			if (cursos == null || cursos.size() == 0){
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -250,6 +243,8 @@ public class CursoProfissionalBean implements Serializable {
 	public String limpaTela() {
 		setEntidade(new CursoProfissional());
 		setArea(new AreaProfissional());
+		this.inicio = null;
+		this.fim = null;
 		return "listar";
 	}
 
@@ -258,9 +253,23 @@ public class CursoProfissionalBean implements Serializable {
 	 */
 	public AreaProfissional getArea() {return area;}
 	public void setArea(AreaProfissional area) {this.area = area;}
+	private Long getIdArea(){
+		Long id = null;
+		
+		if(this.area != null)
+			id = area.getId();
+		
+		return id;
+	}
 
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
+	
+	public Date getInicio() {return inicio;}
+	public void setInicio(Date inicio) {this.inicio = inicio;}
+
+	public Date getFim() {return fim;}
+	public void setFim(Date fim) {this.fim = fim;}
 
 	public CursoProfissional getEntidade() {return entidade;}
 	public void setEntidade(CursoProfissional entidade) {this.entidade = entidade;}
@@ -274,6 +283,8 @@ public class CursoProfissionalBean implements Serializable {
 			this.area = null;
 			this.comboArea = null;
 			this.descricao = new String();
+			this.inicio = null;
+			this.fim = null;
 			this.lista = new ArrayList<CursoProfissional>();
 			limparListas();
 			flagRegistroInicial = 0;
@@ -295,11 +306,9 @@ public class CursoProfissionalBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			if (this.area == null) {
-				setPagedList(cursoProfissionalService.search(this.descricao, getDataTable().getFirst(), getDataTable().getRows()));
-			} else {
-				setPagedList(cursoProfissionalService.search(this.area.getId(), this.descricao, getDataTable().getFirst(), getDataTable().getRows()));
-			}
+			
+			setPagedList(cursoProfissionalService.search(this.descricao, this.getIdArea(), this.inicio, this.fim, getDataTable().getFirst(), getDataTable().getRows()));
+			
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

@@ -41,16 +41,42 @@
 				</div>
 			</div>
 
-			<h:commandButton id="consultar"
-							 value="Consultar"
-							 action="#{cursoProfissionalBean.consultar}"
-							 styleClass="bt-padrao fl mg-top-18" 
-							 reRender="scroller,lista"/>
+			<div class="input-box box-10" >
+				<label for="">Data Início</label>
+				<div class="conteiner">
+					<h:inputText id="dataInicio" 
+								 name="dataInicio"
+								 styleClass="maskData" 
+								 converter="dateConverter"
+								 value="#{cursoProfissionalBean.inicio}" 
+								 maxlength="10" />
+				</div>
+			</div>
+
+			<div class="input-box box-10">
+				<label for="">Data Fim</label>
+				<div class="conteiner">
+					<h:inputText id="dataFim" 
+								 name="dataFim" 
+								 styleClass="maskData"
+								 converter="dateConverter"
+								 value="#{cursoProfissionalBean.fim}" 
+								 maxlength="10" />
+				</div>
+			</div> 
+			
+			
 			<h:commandButton id="relatorio"
 							 value="Relatório"
 							 action="#{cursoProfissionalBean.relatorio}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 style="margin-left: 10px" />
+							 styleClass="bt-padrao fr mg-top-18 mg-left-10 mg-right-15" />
+			
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{cursoProfissionalBean.consultar}"
+							 styleClass="bt-padrao fr mg-top-18" 
+							 reRender="scroller,lista"/>
+			
 
 			<div class="tabela-dados">
 

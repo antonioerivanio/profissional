@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -44,8 +45,6 @@ public class CursoProfissionalDAOImpl implements CursoProfissionalDAO {
 
 	@Override
 	public CursoProfissional salvar(CursoProfissional entidade) {
-
-		//entidade.setPessoal(1l);
 		
 		if (entidade.getId() == null || entidade.getId().equals(0l)) {
 			entidade.setId(getMaxId());
@@ -64,43 +63,18 @@ public class CursoProfissionalDAOImpl implements CursoProfissionalDAO {
 
 
 	@Override
-	public int count(String descricao) {
-		Query query = entityManager.createQuery("SELECT count (c) FROM CursoProfissional c WHERE upper( c.descricao ) LIKE :descricao ");
-		query.setParameter("descricao", "%" + descricao.toUpperCase() + "%");
-		return ((Long) query.getSingleResult()).intValue();
-	}
-
-
-	@Override
-	public int count(Long area, String descricao) {
-		Query query = entityManager.createQuery("SELECT count (c) FROM CursoProfissional c WHERE c.area.id = :area AND upper( c.descricao ) LIKE :descricao ");
-		query.setParameter("area", area);
-		query.setParameter("descricao", "%" + descricao.toUpperCase() + "%");
-		return ((Long) query.getSingleResult()).intValue();
-	}
-
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<CursoProfissional> search(String descricao, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT c FROM CursoProfissional c WHERE upper( c.descricao ) LIKE :descricao ORDER BY c.area.descricao, c.descricao ");
-		query.setParameter("descricao", "%" + descricao.toUpperCase() + "%");
+	public int count(String descricao, Long idArea, Date inicio, Date fim) {
 		
-		if (first >= 0 && rows >= 0) {
-			query.setFirstResult(first);
-			query.setMaxResults(rows);
-		}
-			
-		return query.getResultList();
+		Query query = consultaDeCursos(descricao, idArea, inicio, fim, true);			
+		
+		return ((Long) query.getSingleResult()).intValue();
 	}
-
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<CursoProfissional> search(Long area, String descricao, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT c FROM CursoProfissional c WHERE c.area.id = :area AND upper( c.descricao ) LIKE :descricao ORDER BY c.descricao ");
-		query.setParameter("area", area);
-		query.setParameter("descricao", "%" + descricao.toUpperCase() + "%");
+	public List<CursoProfissional> search(String descricao, Long idArea, Date inicio, Date fim, int first, int rows) {
+		
+		Query query = consultaDeCursos(descricao, idArea, inicio, fim, false);
 				
 		if (first >= 0 && rows >= 0) {
 			query.setFirstResult(first);
@@ -110,6 +84,46 @@ public class CursoProfissionalDAOImpl implements CursoProfissionalDAO {
 		return query.getResultList();
 	}
 
+	
+	private Query consultaDeCursos(String descricao, Long idArea, Date inicio, Date fim, boolean somenteCount){
+		
+		
+		StringBuilder consulta = new StringBuilder();
+		
+		if(somenteCount)
+			consulta.append("SELECT count (c) ");
+		else
+			consulta.append("SELECT c ");
+			
+		consulta.append(" FROM CursoProfissional c WHERE TRIM(UPPER( c.descricao )) LIKE :descricao ");
+		
+		if(idArea != null)
+			consulta.append(" AND c.area.id = :idArea ");
+		if(inicio != null)
+			consulta.append(" AND c.inicio >= :inicio ");
+		if(fim != null)
+			consulta.append(" AND c.inicio <= :fim ");	
+		
+		if(!somenteCount)
+			consulta.append(" ORDER BY c.inicio DESC, c.descricao ");		
+		
+		
+		Query query = entityManager.createQuery(consulta.toString());
+		
+		query.setParameter("descricao", "%" + descricao.toUpperCase() + "%");		
+		
+		if(idArea != null)
+			query.setParameter("idArea", idArea);
+		if(inicio != null)
+			query.setParameter("inicio", inicio);
+		if(fim != null)
+			query.setParameter("fim", fim);
+		
+		return query;		
+		
+	}
+	
+	
 
 	@Override
 	public CursoProfissional getByCursoAreaInstituicao(String curso, Long area, Long instituicao) {

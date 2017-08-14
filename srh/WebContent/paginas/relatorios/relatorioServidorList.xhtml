@@ -63,8 +63,8 @@
 						<label>Setor</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="cmbSetor" value="#{relatorioServidorBean.setor}" converter="entityConverter">
-								<f:selectItem itemLabel="TODOS" />
-								<f:selectItems value="#{relatorioServidorBean.comboSetor}" var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
+								<f:selectItem id="cmbSetorTodos" itemLabel="TODOS" />
+								<f:selectItems id="cmbSetorList" value="#{relatorioServidorBean.comboSetor}" var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -73,16 +73,16 @@
 						<h:outputLabel id="lblVinculo" value="Vínculo"/>
 						<div class="conteiner">
 							<h:selectOneMenu id="cmbVinculo" value="#{relatorioServidorBean.vinculo}">							  
-								<f:selectItem itemLabel="TODOS" itemValue="0"/>
-								<f:selectItem itemLabel="Membros" itemValue="1"/>
-								<f:selectItem itemLabel="Servidores Ativos" itemValue="2"/>
-								<f:selectItem itemLabel="Servidores Efetivos" itemValue="3"/>
-								<f:selectItem itemLabel="Servidores Inativos" itemValue="4"/>
-								<f:selectItem itemLabel="Ocupantes de Cargo Comissionado" itemValue="5"/>
-								<f:selectItem itemLabel="Ocupantes Somente Cargo Comissionado" itemValue="6"/>						
-								<f:selectItem itemLabel="Estagiários Nível Superior" itemValue="7"/>
-								<f:selectItem itemLabel="Estagiários Nível Médio" itemValue="8"/>
-								<f:selectItem itemLabel="Cessão de Servidor Sem Nenhuma Remuneração" itemValue="9"/>											
+								<f:selectItem id="cmbVinculo0" itemLabel="TODOS" itemValue="0"/>
+								<f:selectItem id="cmbVinculo1" itemLabel="Membros" itemValue="1"/>
+								<f:selectItem id="cmbVinculo2" itemLabel="Servidores Ativos" itemValue="2"/>
+								<f:selectItem id="cmbVinculo3" itemLabel="Servidores Efetivos" itemValue="3"/>
+								<f:selectItem id="cmbVinculo4" itemLabel="Servidores Inativos" itemValue="4"/>
+								<f:selectItem id="cmbVinculo5" itemLabel="Ocupantes de Cargo Comissionado" itemValue="5"/>
+								<f:selectItem id="cmbVinculo6" itemLabel="Ocupantes Somente Cargo Comissionado" itemValue="6"/>						
+								<f:selectItem id="cmbVinculo7" itemLabel="Estagiários Nível Superior" itemValue="7"/>
+								<f:selectItem id="cmbVinculo8" itemLabel="Estagiários Nível Médio" itemValue="8"/>
+								<f:selectItem id="cmbVinculo9" itemLabel="Cessão de Servidor Sem Nenhuma Remuneração" itemValue="9"/>											
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -108,9 +108,9 @@
 						<label for="sexo">Sexo</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="sexo" value="#{relatorioServidorBean.sexo}">							  
-								<f:selectItem itemLabel="Selecione..." itemValue="0"/>
-								<f:selectItem itemLabel="Masculino" itemValue="1"/>
-								<f:selectItem itemLabel="Feminino" itemValue="2" />																	
+								<f:selectItem id="sexo0" itemLabel="Selecione..." itemValue="0"/>
+								<f:selectItem id="sexo1" itemLabel="Masculino" itemValue="1"/>
+								<f:selectItem id="sexo2" itemLabel="Feminino" itemValue="2" />																	
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -139,19 +139,19 @@
 						<label for="mes">Mês</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="mes" value="#{relatorioServidorBean.mes}">							  
-								<f:selectItem itemLabel="Selecione..." itemValue="0"/>
-								<f:selectItem itemLabel="Janeiro" itemValue="1"/>
-								<f:selectItem itemLabel="Fevereiro" itemValue="2" />
-								<f:selectItem itemLabel="Março" itemValue="3"/>
-								<f:selectItem itemLabel="Abril" itemValue="4" />
-								<f:selectItem itemLabel="Maio" itemValue="5"/>
-								<f:selectItem itemLabel="Junho" itemValue="6" />
-								<f:selectItem itemLabel="Julho" itemValue="7"/>
-								<f:selectItem itemLabel="Agosto" itemValue="8" />
-								<f:selectItem itemLabel="Setembro" itemValue="9"/>
-								<f:selectItem itemLabel="Outubro" itemValue="10" />
-								<f:selectItem itemLabel="Novembro" itemValue="11"/>
-								<f:selectItem itemLabel="Dezembro" itemValue="12" />																	
+								<f:selectItem id="mes0" itemLabel="Selecione..." itemValue="0"/>
+								<f:selectItem id="mes1" itemLabel="Janeiro" itemValue="1"/>
+								<f:selectItem id="mes2" itemLabel="Fevereiro" itemValue="2" />
+								<f:selectItem id="mes3" itemLabel="Março" itemValue="3"/>
+								<f:selectItem id="mes4" itemLabel="Abril" itemValue="4" />
+								<f:selectItem id="mes5" itemLabel="Maio" itemValue="5"/>
+								<f:selectItem id="mes6" itemLabel="Junho" itemValue="6" />
+								<f:selectItem id="mes7" itemLabel="Julho" itemValue="7"/>
+								<f:selectItem id="mes8" itemLabel="Agosto" itemValue="8" />
+								<f:selectItem id="mes9" itemLabel="Setembro" itemValue="9"/>
+								<f:selectItem id="mes10" itemLabel="Outubro" itemValue="10" />
+								<f:selectItem id="mes11" itemLabel="Novembro" itemValue="11"/>
+								<f:selectItem id="mes12" itemLabel="Dezembro" itemValue="12" />																	
 							</h:selectOneMenu>
 						</div>
 					</div>					
@@ -162,8 +162,8 @@
 						<div class="conteiner" style="padding: 5px 6px;">
 							<div class="radio-box">
 								<h:selectOneRadio id="ordem" value="#{relatorioServidorBean.ordemAniversariantes}">
-									<f:selectItem itemLabel="Dia" itemValue="1" />
-									<f:selectItem itemLabel="Nome" itemValue="2" />									
+									<f:selectItem id="ordem1" itemLabel="Dia" itemValue="1" />
+									<f:selectItem id="ordem2" itemLabel="Nome" itemValue="2" />									
 								</h:selectOneRadio>
 							</div>
 						</div>
@@ -217,7 +217,7 @@
 									 id="relatorioFalecidos"
 									 action="#{relatorioServidorBean.relatorioFalecidos}" 
 		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10">
-		 				<a4j:support event="onclick" reRender="messages" ajaxSingle="true"/>				 		 							 		 							 
+		 				<a4j:support id="relatorioFalecidosClick" event="onclick" reRender="messages" ajaxSingle="true"/>				 		 							 		 							 
 		 			</h:commandButton> 			
  					
 				</rich:tab>
