@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -63,11 +62,10 @@ public class DeducaoListBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Deducao> pagedList = new ArrayList<Deducao>();
-	private int flagRegistroInicial = 0;
-
+	private int registroInicial = 0;
+	private Integer pagina = 1;
 
 
 	/**
@@ -78,6 +76,8 @@ public class DeducaoListBean implements Serializable {
 	public String consultar() {
 
 		try {
+			
+			limparListas();
 
 			//valida consulta pessoa
 			if( getEntidade().getPessoal() == null )
@@ -90,7 +90,7 @@ public class DeducaoListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			flagRegistroInicial = -1;
+			registroInicial = -1;
 			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
@@ -232,7 +232,7 @@ public class DeducaoListBean implements Serializable {
 			cpf = new String();
 			lista = new ArrayList<Deducao>();
 			limparListas();
-			flagRegistroInicial = 0;
+			registroInicial = 0;
 		}
 		passouConsultar = false;
 		return form;
@@ -249,18 +249,16 @@ public class DeducaoListBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<Deducao>(); 
+		pagedList = new ArrayList<Deducao>();
+		pagina = 1;
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(deducaoService.search(getEntidade().getPessoal().getId(), getDataTable().getFirst(), getDataTable().getRows()));
+		if( registroInicial != getPrimeiroDaPagina() ) {
+			registroInicial = getPrimeiroDaPagina();
+			List<Deducao> search = deducaoService.search(getEntidade().getPessoal().getId(), registroInicial, dataModel.getPageSize());
+			setPagedList(search);
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -272,13 +270,17 @@ public class DeducaoListBean implements Serializable {
 
 	public List<Deducao> getPagedList() {return pagedList;}
 	public void setPagedList(List<Deducao> pagedList) {this.pagedList = pagedList;}
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
+	
 	//FIM PAGINAÇÃO
-
 
 	public boolean isPassouConsultar() {
 		return passouConsultar;
 	}
-
 
 	public void setPassouConsultar(boolean passouConsultar) {
 		this.passouConsultar = passouConsultar;
