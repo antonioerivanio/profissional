@@ -35,6 +35,9 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
+	
+	@Autowired
+	private OcupacaoService ocupacaoService;
 		
 	@Override
 	@Transactional
@@ -91,7 +94,20 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 				funcionalSetor.setObservacao(novaObservacao);
 			
 			funcionalSetorService.salvar(funcionalSetor);
-		}			
+		}
+		
+		
+		// Decrementar a coluna QUANTIDADE da tabela TB_OCUPACAO quando for lançada uma exoneração de cargo extinto ao vagar
+		if(entidade.getOcupacao().getSituacao().intValue() == 2) {
+			
+			int quantidade = entidade.getOcupacao().getQuantidade().intValue();
+			
+			if (quantidade > 0) {
+				entidade.getOcupacao().setQuantidade(Long.valueOf(--quantidade));
+				ocupacaoService.salvar(entidade.getOcupacao());
+			}
+		}
+		
 		
 		// persistindo
 		funcionalService.salvar(entidade);

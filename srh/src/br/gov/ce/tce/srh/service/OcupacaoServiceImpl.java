@@ -29,6 +29,10 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 	@Autowired
 	private EspecialidadeCargoService especialidadeCargoService;
 
+	@Override
+	public Ocupacao salvar(Ocupacao entidade) {
+		return dao.salvar(entidade);
+	}	
 
 	@Override
 	@Transactional

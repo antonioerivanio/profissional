@@ -15,6 +15,7 @@ public interface OcupacaoService {
 	public List<Ocupacao> search(String nomenclatura, int first, int rows);
 	public List<Ocupacao> search(String nomenclatura, Long situacao, int first, int rows);
 
+	public Ocupacao salvar(Ocupacao entidade);
 	public void salvar(Ocupacao entidade, List<EspecialidadeCargo> listaEspecialidade, List<Simbolo> simbologias) throws SRHRuntimeException;
 	public void excluir(Ocupacao entidade);
 
