@@ -25,7 +25,7 @@
 	<ui:fragment rendered="#{not fn:endsWith(app['database.url'], 'bdtce')}">
 		<div class="msg-dev-home">
 			<div class="msg-dev-div">
-				<h:outputText styleClass="msg-dev" value="Sistema em Desenvolvimento" />
+				<h:outputText id="label-sistema-em-desenv" styleClass="msg-dev" value="Sistema em Desenvolvimento" />
 			</div>
 		</div>
 	</ui:fragment>
@@ -37,18 +37,18 @@
 			<h2 class="dn">Login</h2>
 	
 			<p>
-				Olá, <span class="user"><h:outputText value="#{LoginBean.usuarioLogado}" /></span>
+				Olá, <span class="user"><h:outputText id="nomeDoUsuario" value="#{LoginBean.usuarioLogado}" /></span>
 			</p>			
 				
 			<span id="relogio">
-				<h:graphicImage url="/img/icon-time.png" title="Tempo para a sessão expirar"></h:graphicImage>
+				<h:graphicImage id="relogioIcon" url="/img/icon-time.png" title="Tempo para a sessão expirar"></h:graphicImage>
 				<span id="min"></span>
 				<span>:</span>
 				<span id="sec"></span>				
 			</span>
 	
 			<h:commandLink title="Sair" action="#{LoginBean.logout}" id="sair">
-				<h:outputText value="Sair" />
+				<span>Sair</span>
 			</h:commandLink>
 				
 			

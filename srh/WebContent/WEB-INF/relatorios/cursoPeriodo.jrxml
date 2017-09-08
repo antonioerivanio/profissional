@@ -15,6 +15,7 @@
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
+	<parameter name="ORDEM" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT
   TB_PESSOAL.ID IDPESSOAL,
@@ -53,7 +54,7 @@ FROM TB_FUNCIONAL
 
 $P!{FILTRO}
 
-ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESSOAL.NOMECOMPLETO]]>
+$P!{ORDEM}]]>
 	</queryString>
 	<field name="IDPESSOAL" class="java.math.BigDecimal"/>
 	<field name="NOMECOMPLETO" class="java.lang.String"/>
@@ -106,9 +107,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 					<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="300" y="41" width="40" height="18">
-						<printWhenExpression><![CDATA[$F{CURSOSGRADUACAO} != null]]></printWhenExpression>
-					</reportElement>
+					<reportElement x="300" y="41" width="40" height="18"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 						<font size="10" isBold="false"/>
 					</textElement>
@@ -166,9 +165,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESS
 					<text><![CDATA[TIPO:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="377" y="41" width="423" height="18">
-						<printWhenExpression><![CDATA[$F{CURSOSGRADUACAO} != null]]></printWhenExpression>
-					</reportElement>
+					<reportElement x="377" y="41" width="423" height="18"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
 						<font size="10" isBold="false"/>
 					</textElement>

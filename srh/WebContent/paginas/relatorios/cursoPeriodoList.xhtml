@@ -146,10 +146,10 @@
 			<div class="tabela-dados">
 
 				<rich:dataTable id="lista" 
-								value="#{cursoPeriodoListBean.dataModel}" 
 								var="item" 
-								rows="10" 
-								binding="#{cursoPeriodoListBean.dataTable}">
+								rows="#{cursoPeriodoListBean.dataModel.pageSize}"
+								value="#{cursoPeriodoListBean.dataModel}" 
+								>
 
                     <h:column id="col1" rendered="#{cursoPeriodoListBean.idCurso eq null or cursoPeriodoListBean.idCurso eq 0}">
                         <f:facet id="f1" name="header">
@@ -212,9 +212,9 @@
 				</rich:dataTable>
 				<rich:datascroller 	id="scroller" 
 									for="lista" 
-									stepControls="hide" 
-									align="center" 
-									rendered="#{cursoPeriodoListBean.pagedList.size() > 0}"/>
+									stepControls="hide"
+									renderIfSinglePage="false"
+									page="#{cursoPeriodoListBean.pagina}"/>
 			</div>
 	
 			<h:commandButton id="limpaTela"

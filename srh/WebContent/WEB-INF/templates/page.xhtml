@@ -47,92 +47,94 @@
 		</style>      
         
     </head>
+    
     <body>
 
     	<f:view>
 
-        <div class="geral">
-
-            <div class="conteiner-geral">
-
-                <div class="topo">
-
-					<ui:include src="topo.xhtml"/>
-				
-                </div>
-
-                <div class="menu-principal">
-
-					<ui:include src="menu.xhtml"/>
-
-                </div>
-
-                <div class="corpo">
-
-                    <div class="corpo-conteiner">
-                    
-                    	<rich:modalPanel id="modalRenovaSessao" resizeable="false" height="220" width="620">
-				            
-				            <f:facet name="header" class="header">
-				                <h:outputText value="Renovação de sessão" />
-				            </f:facet>
+	        <div class="geral">
+	
+	            <div class="conteiner-geral">
+	
+	                <div class="topo">
+	
+						<ui:include src="topo.xhtml"/>
+					
+	                </div>
+	
+	                <div class="menu-principal">
+	
+						<ui:include src="menu.xhtml"/>
+	
+	                </div>
+	
+	                <div class="corpo">
+	
+	                    <div class="corpo-conteiner">
+	                    
+	                    	<rich:modalPanel id="modalRenovaSessao" resizeable="false" height="220" width="620">
+					            
+					            <f:facet name="header" class="header">
+					                <span>Renovação de sessão</span>
+					            </f:facet>
+								
+								<div class="sessao-expirada-msg">
+									<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão irá expirar em alguns instantes. Clique em OK para renová-la.</span>				
+								</div>
+								
+								<div class="modal-actions">						
+									<a href="#" onclick="dontKeepSession();" class="bt-padrao bt-dialog-sessao">Cancelar</a>
+									<a href="#" onclick="keepSession();" class="bt-padrao bt-dialog-sessao">OK</a>
+								</div>							
+								
+							</rich:modalPanel>
 							
-							<div class="sessao-expirada-msg">
-								<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão irá expirar em alguns instantes. Clique em OK para renová-la.</span>				
-							</div>
-							
-							<div class="modal-actions">						
-								<a href="#" onclick="dontKeepSession();" class="bt-padrao bt-dialog-sessao">Cancelar</a>
-								<a href="#" onclick="keepSession();" class="bt-padrao bt-dialog-sessao">OK</a>
-							</div>							
-							
-						</rich:modalPanel>
-						
-						<rich:modalPanel id="modalRedirecionaLogin" resizeable="false" height="220" width="620">
-				            
-				            <f:facet name="header" class="header">
-				                <h:outputText value="Fazer novo login" />
-				            </f:facet>
-													
-							<div class="sessao-expirada-msg">
-								<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão expirou. Clique em OK para fazer um novo login.</span>				
-							</div>
-							
-							
-							<div class="modal-actions">													
-								<a href="#{request.contextPath}/login.faces" class="bt-padrao bt-dialog-sessao">OK</a>
-							</div>							
-							
-						</rich:modalPanel>
-
-	          			<ui:insert name="content">
-							conteudo da pagina!!!
-						</ui:insert>
-
-                    </div>
-
-                </div>
-
-                <div class="rodape">
-                    <div class="rodape-box">
-                        <p>© Copyright 2012 - Secretaria de Tecnologia da Informação</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-		<!-- Modal Loading -->
-		<rich:modalPanel id="panel_loading" autosized="true" >
-			<h:graphicImage id="icone-aguarde" url="/img/loading.gif" style="border:0px; vertical-align: middle;" />
-			<rich:spacer id="icone-aguarde-spacer" width="20" />
-			<center><h:outputText value="Aguarde..." /></center>
-		</rich:modalPanel>
-
-		<a4j:status id="loading" onstart="Richfaces.showModalPanel('panel_loading')" onstop="Richfaces.hideModalPanel('panel_loading')" />
+							<rich:modalPanel id="modalRedirecionaLogin" resizeable="false" height="220" width="620">
+					            
+					            <f:facet name="header" class="header">
+					                <span>Fazer novo login</span>
+					            </f:facet>
+														
+								<div class="sessao-expirada-msg">
+									<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão expirou. Clique em OK para fazer um novo login.</span>				
+								</div>
+								
+								
+								<div class="modal-actions">													
+									<a href="#{request.contextPath}/login.faces" class="bt-padrao bt-dialog-sessao">OK</a>
+								</div>							
+								
+							</rich:modalPanel>
+	
+		          			<ui:insert name="content">
+								conteudo da pagina!!!
+							</ui:insert>
+	
+	                    </div>
+	
+	                </div>
+	
+	                <div class="rodape">
+	                    <div class="rodape-box">
+	                        <p>© Copyright 2012 - Secretaria de Tecnologia da Informação</p>
+	                    </div>
+	                </div>
+	
+	            </div>
+	
+	        </div>
+	
+			<!-- Modal Loading -->
+			<rich:modalPanel id="panel_loading" autosized="true" >
+				<h:graphicImage id="icone-aguarde" url="/img/loading.gif" style="border:0px; vertical-align: middle;" />
+				<rich:spacer id="icone-aguarde-spacer" width="20" />
+				<center><h:outputText value="Aguarde..." /></center>
+			</rich:modalPanel>
+	
+			<a4j:status id="loading" onstart="Richfaces.showModalPanel('panel_loading')" onstop="Richfaces.hideModalPanel('panel_loading')" />
 
     	</f:view>
 
     </body>
+    
 </html>    

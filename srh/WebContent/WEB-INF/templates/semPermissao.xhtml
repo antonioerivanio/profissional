@@ -26,81 +26,83 @@
         </script>        
         
     </head>
+    
     <body>
 
-	<f:view>
-
-        <div class="geral">
-
-            <div class="conteiner-geral">
-
-                <div class="topo">
-
-                    <h1>
-                        <a href="#" title="">
-                            SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceara
-                        </a>
-                    </h1>
-
-                    <h2 class="logo-tce">
-                        Tribunal de Contas do Estado  do CearÃ¡
-                    </h2>
-
-                    <div class="login-box">
-
-                    	<h:form>
-                        <h2 class="dn">Login</h2>
-
-                        <p>Olá, <span class="user"><h:outputText value="#{LoginBean.usuarioLogado}" /></span></p>
-
-                        <h:outputLink title="Sair" 
-                        	value="#{facesContext.externalContext.requestContextPath}/logout.jsp">
-							<h:outputText value="Sair"/>
-						</h:outputLink>
-						</h:form>
-                    </div>
-
-                </div>
-
-                <div class="menu-principal">
-
-                	<ui:include src="menu.xhtml"/>
-
-                </div>
-
-                <div class="corpo">
-
-                    <div class="corpo-conteiner" >
-
-                        <div class="titulo-pagina center">
-
-                            <h2>Você não tem Permissão de Acesso!</h2>
-
-                        </div>
-
-                        <div class="box-border">
-
-                            <div class="welcome-col">
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="rodape">
-                    <div class="rodape-box">
-                        <p>@Copyright - Secretaria de Tecnologia da Informação</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-	</f:view>
+		<f:view>
+	
+	        <div class="geral">
+	
+	            <div class="conteiner-geral">
+	
+	                <div class="topo">
+	
+	                    <h1>
+	                        <a href="#" title="">
+	                            SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceara
+	                        </a>
+	                    </h1>
+	
+	                    <h2 class="logo-tce">
+	                        Tribunal de Contas do Estado  do CearÃ¡
+	                    </h2>
+	
+	                    <div class="login-box">
+	
+	                    	<h:form id="form-sem-permissao">
+		                        <h2 class="dn">Login</h2>
+		
+		                        <p>Olá, <span class="user"><h:outputText id="nomeDoUsuarioLogado" value="#{LoginBean.usuarioLogado}" /></span></p>
+		
+		                        <h:outputLink id="linkSair" title="Sair" value="#{facesContext.externalContext.requestContextPath}/logout.jsp">
+									<label>Sair</label>
+								</h:outputLink>
+							</h:form>
+							
+	                    </div>
+	
+	                </div>
+	
+	                <div class="menu-principal">
+	
+	                	<ui:include src="menu.xhtml"/>
+	
+	                </div>
+	
+	                <div class="corpo">
+	
+	                    <div class="corpo-conteiner" >
+	
+	                        <div class="titulo-pagina center">
+	
+	                            <h2>Você não tem Permissão de Acesso!</h2>
+	
+	                        </div>
+	
+	                        <div class="box-border">
+	
+	                            <div class="welcome-col">
+	
+	                            </div>
+	
+	                        </div>
+	
+	                    </div>
+	
+	                </div>
+	
+	                <div class="rodape">
+	                    <div class="rodape-box">
+	                        <p>@Copyright - Secretaria de Tecnologia da Informação</p>
+	                    </div>
+	                </div>
+	
+	            </div>
+	
+	        </div>
+	
+		</f:view>
 
     </body>
+    
 </html>

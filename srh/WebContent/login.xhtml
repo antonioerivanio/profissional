@@ -8,21 +8,21 @@
 
 	<ui:define name="content">
 
-		<h:form styleClass="formularios" >
+		<h:form id="form-login" styleClass="formularios" >
 
 			<div class="box-inputs">
 
 				<div class="fl mg-bottom-10">
-					<label for="">Login</label>
+					<label for="form-login:login">Login</label>
 					<h:inputText id="login" value="#{LoginBean.login}" styleClass="input-text" />
 				</div>
 
 				<div class="fl mg-bottom-10">
-					<label for="">Senha</label>
+					<label for="form-login:senha">Senha</label>
                     <h:inputSecret id="senha" value="#{LoginBean.senha}" styleClass="input-text mg-zero" />
 				</div>
 
-				<h:outputText value="#{LoginBean.mensagem}" styleClass="infoMessage" />
+				<h:outputText id="message" value="#{LoginBean.mensagem}" styleClass="infoMessage" />
 
 				<div class="fr">
                       <h:commandButton value="Entrar" action="#{LoginBean.autenticar}" styleClass="bt-padrao" />
@@ -30,7 +30,7 @@
 				
 				<ui:fragment rendered="#{not fn:endsWith(app['database.url'], 'bdtce')}">					
 					<div class="clr msg-dev-div">
-						<h:outputText styleClass="msg-dev" value="Sistema em Desenvolvimento" />
+						<span class="msg-dev">Sistema em Desenvolvimento</span>
 					</div>					
 				</ui:fragment>
 				

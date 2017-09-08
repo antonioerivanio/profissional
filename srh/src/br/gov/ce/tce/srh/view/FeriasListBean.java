@@ -50,39 +50,29 @@ public class FeriasListBean implements Serializable {
 	private AuthenticationService authenticationService;
 
 
-	//controle de acesso do formulário
 	private HtmlForm form;
 	private boolean passouConsultar = false;
 
-	//parametos de tela de consulta
 	private String matricula = new String();
 	private String cpf = new String();
 	private String nome = new String();
 
-	//entidades das telas
 	private List<Ferias> lista;
 	private Ferias entidade = new Ferias();
 	
-	//paginação
 	private int count;
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Ferias> pagedList = new ArrayList<Ferias>();
-	private int flagRegistroInicial = 0;
+	private int registroInicial = 0;
 	private Integer pagina = 1;
 
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
 	public String consultar() {
 
 		try {
 			
 			limparListas();
 
-			//valida consulta pessoa
 			if( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
@@ -93,7 +83,7 @@ public class FeriasListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			flagRegistroInicial = -1;
+			registroInicial = -1;
 			
 			passouConsultar = true;
 
@@ -110,12 +100,7 @@ public class FeriasListBean implements Serializable {
 		return "listar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
+	
 	public String excluir() {
 
 		try {
@@ -140,16 +125,10 @@ public class FeriasListBean implements Serializable {
 	}
 
 
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
 	public String relatorio() {
 
 		try {
 
-			//valida consulta pessoa
 			if( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
@@ -173,10 +152,7 @@ public class FeriasListBean implements Serializable {
 		setEntidade(new Ferias());
 		return "listar";
 	}
-
-	/**
-	 * Gets and Sets
-	 */
+	
 	public String getMatricula() {return matricula;	}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -232,7 +208,7 @@ public class FeriasListBean implements Serializable {
 				setCpf(authenticationService.getUsuarioLogado().getCpf());				
 				count = feriasService.count( getEntidade().getFuncional().getPessoal().getId() );
 				limparListas();
-				flagRegistroInicial = -1;				
+				registroInicial = -1;				
 				
 			} catch (Exception e) {
 				limparListas();
@@ -247,7 +223,7 @@ public class FeriasListBean implements Serializable {
 			cpf = new String();
 			lista = new ArrayList<Ferias>();
 			limparListas();
-			flagRegistroInicial = 0;
+			registroInicial = 0;
 		}
 		passouConsultar = false;
 		return form;
@@ -270,9 +246,9 @@ public class FeriasListBean implements Serializable {
 	}
 
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
-			flagRegistroInicial = getPrimeiroDaPagina();
-			setPagedList(feriasService.search(getEntidade().getFuncional().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize()));
+		if( registroInicial != getPrimeiroDaPagina() ) {
+			registroInicial = getPrimeiroDaPagina();
+			setPagedList(feriasService.search(getEntidade().getFuncional().getPessoal().getId(), registroInicial, dataModel.getPageSize()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

@@ -273,7 +273,12 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if (idCurso != null && idCurso.intValue() != 0)				
 			sql.append(" AND TB_CURSOPROFISSIONAL.ID = " + idCurso );
 		
-		sql.append(" ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESSOAL.NOMECOMPLETO");
+		if(somentePosGraduacao) {
+			sql.append(" ORDER BY TB_PESSOAL.NOMECOMPLETO, TB_CURSOPROFISSIONAL.POSGRADUACAO, TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC");			
+		} else {
+			sql.append(" ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESSOAL.NOMECOMPLETO");
+		}
+		
 		
 		Query query = entityManager.createNativeQuery(sql.toString(), PessoalCursoProfissional.class);		
 		

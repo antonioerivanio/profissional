@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -51,11 +50,9 @@ public class CursoPeriodoListBean implements Serializable {
 	private SetorService setorService;
 
 
-	// controle de acesso do formulario
 	private HtmlForm form;
 	private boolean passouConsultar = false;
 
-	// parametros da tela de consulta
 	private Date inicio;
 	private Date fim;
 	private boolean areaAtuacao;
@@ -72,30 +69,23 @@ public class CursoPeriodoListBean implements Serializable {
 	
 	private CursoProfissional cursoProfissional = new CursoProfissional();
 
-	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<PessoalCursoProfissional> pagedList = new ArrayList<PessoalCursoProfissional>();
-	private int flagRegistroInicial = 0;
+	private int registroInicial = 0;
+	private Integer pagina = 1;
 
-	//componente
 	private Long totalCargaHoraria;
 	private String labelTotalCargaHoraria;
 	
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
+	
 	public String consultar() {
 
 		try {
 			
-			// validando campos da entidade
-			if ( (idCurso == null || idCurso == 0) && (inicio == null || fim == null) )
-				throw new SRHRuntimeException("Informe o período ou pesquise um curso");
+			limparListas();
+			
+			validaCamposObrigatorios();			
 			
 			count = cursoServidorService.count(inicio, fim, areaAtuacao, tipoCurso, somentePosGraduacao, tipoOcupacao, setor, idCurso);
 
@@ -106,7 +96,7 @@ public class CursoPeriodoListBean implements Serializable {
 			
 			totalCargaHoraria = 0L;
 
-			flagRegistroInicial = -1;
+			registroInicial = -1;
 			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
@@ -121,20 +111,13 @@ public class CursoPeriodoListBean implements Serializable {
 
 		return "listar";
 	}
+	
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */	
 	public String relatorio() {
 
 		try {
 
-			// validando campos da entidade
-			if ( (idCurso == null || idCurso == 0) && (inicio == null || fim == null) )
-				throw new SRHRuntimeException("Informe o período ou pesquise um curso");
+			validaCamposObrigatorios();
 			   
 			SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");			 
 
@@ -172,7 +155,13 @@ public class CursoPeriodoListBean implements Serializable {
 				
 			parametros.put("FILTRO", filtro.toString());
 			
-			System.out.println(filtro.toString());
+			
+			if(somentePosGraduacao) {
+				parametros.put( "ORDEM", " ORDER BY TB_PESSOAL.NOMECOMPLETO, TB_CURSOPROFISSIONAL.POSGRADUACAO, TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC ");			
+			} else {
+				parametros.put( "ORDEM", " ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC, TB_CURSOPROFISSIONAL.ID DESC, TB_PESSOAL.NOMECOMPLETO ");
+			}
+			
 			
 			relatorioUtil.relatorio("cursoPeriodo.jasper", parametros, "cursoPeriodo.pdf");			
 
@@ -186,11 +175,19 @@ public class CursoPeriodoListBean implements Serializable {
 
 		return null;
 	}
+	
+	
+	private void validaCamposObrigatorios(){
+		if ( (idCurso == null || idCurso == 0) && (inicio == null || fim == null) && !somentePosGraduacao )
+			throw new SRHRuntimeException("Informe o período, pesquise um curso ou marque Somente Pós-Graduação");
+	}
+	
 
 	public String limpaTela() {
 		limparVariaveis();
 		return "listar";
 	}
+	
 	
 	public void limparVariaveis() {
 		setCursoProfissional( new CursoProfissional() );
@@ -211,10 +208,7 @@ public class CursoPeriodoListBean implements Serializable {
 		comboSetor = null;
 	}
 	
-	/**
-	 * Combo Tipo Ocupação
-	 * @return
-	 */
+	
 	public List<TipoOcupacao> getComboTipoOcupacao() {
 
         try {
@@ -230,6 +224,7 @@ public class CursoPeriodoListBean implements Serializable {
         return this.comboTipoOcupacao;
 	}
 	
+	
 	public List<Setor> getComboSetor() {
 		try {
         	if ( this.comboSetor == null )
@@ -241,9 +236,11 @@ public class CursoPeriodoListBean implements Serializable {
         return this.comboSetor;
 	}
 	
+	
 	public List<EnumTipoCursoProfissional> getComboTipoCurso() {
 		return Arrays.asList(EnumTipoCursoProfissional.values());
 	}
+	
 		
 	public Date getInicio() {return inicio;}
 	public void setInicio(Date inicio) {this.inicio = inicio;}
@@ -286,26 +283,25 @@ public class CursoPeriodoListBean implements Serializable {
 		if (!passouConsultar) {
 			limparVariaveis();
 			limparListas();
-			flagRegistroInicial = 0;			
+			registroInicial = 0;			
 		}
 		passouConsultar = false;
 		return form;
 	}
 	
+	
 	//PAGINAÇÃO
+	
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<PessoalCursoProfissional>(); 
-	}
-
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+		pagedList = new ArrayList<PessoalCursoProfissional>();
+		pagina = 1;
+	}	
 
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();	
-			setPagedList(cursoServidorService.search( inicio, fim, areaAtuacao, tipoCurso, somentePosGraduacao, tipoOcupacao, setor, idCurso, getDataTable().getFirst(), getDataTable().getRows()));
+		if( registroInicial != getPrimeiroDaPagina() ) {
+			registroInicial = getPrimeiroDaPagina();	
+			setPagedList(cursoServidorService.search( inicio, fim, areaAtuacao, tipoCurso, somentePosGraduacao, tipoOcupacao, setor, idCurso, registroInicial, dataModel.getPageSize()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -318,6 +314,12 @@ public class CursoPeriodoListBean implements Serializable {
 
 	public List<PessoalCursoProfissional> getPagedList() {return pagedList;}
 	public void setPagedList(List<PessoalCursoProfissional> pagedList) {this.pagedList = pagedList;}
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
+	
 	//FIM PAGINAÇÃO
 
 }
