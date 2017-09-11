@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.CursoProfissionalDAO;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
+import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
  * 
@@ -35,8 +37,57 @@ public class CursoProfissionalServiceImpl implements CursoProfissionalService {
 		 */
 		verificandoSeEntidadeExiste(entidade);
 		
-		// persistindo
+		
+		validarCurso(entidade);
+		
+		
 		dao.salvar(entidade);
+	}
+
+
+	private void validarCurso(CursoProfissional entidade) {
+		
+		if (entidade.getInicio() != null ){
+		
+			
+			if ( entidade.getFim() != null ){
+			
+				if ( entidade.getInicio().after(entidade.getFim() ) )
+					throw new SRHRuntimeException("O período início deve ser menor que o período fim.");			
+			
+				
+				int qtdeDias = SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim());
+				
+				
+				if( entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.ESPECIALIZACAO) && qtdeDias < 90 ) {
+					
+					throw new SRHRuntimeException("O período deve ter no mínimo 90 dias para cursos de especialização.");
+				
+				} else if ( (entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.MESTRADO)
+								|| entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.DOUTORADO)) 
+						&& qtdeDias < 365){
+					
+					throw new SRHRuntimeException("O período deve ter no mínimo 365 dias para cursos de mestrado e doutorado.");
+					
+				}				
+			
+			}
+			
+			
+			if ( ! entidade.getInicio().after(SRHUtils.inicioTCE()) ) {
+				throw new SRHRuntimeException("O período início deve ser maior que 05/10/1935.");
+			}
+		
+		}
+		
+		
+		if ( !entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.EXTENSAO) && entidade.getCargaHoraria() < 360 ){
+			throw new SRHRuntimeException("A carga horária mínima para cursos de pós-graduação é de 360 horas.");
+		}
+		
+		
+		
+		
 	}
 
 
