@@ -85,7 +85,7 @@ html {
 
 body {
     background: url(../img/textura.png) 0 0 repeat;
-    height: 100%;
+    min-height: 100%;
     min-width: 940px;    
 }
 
@@ -929,6 +929,10 @@ body {
 	font-weight: normal;
 	background: #195297;
 	border: 1px solid #113664;
+}
+
+.rich-mpnl-text span{
+	font-size: 16px;	
 }
 
 .rich-mp-container#modalRenovaSessaoCDiv, .rich-mp-container#modalRedirecionaLoginCDiv{

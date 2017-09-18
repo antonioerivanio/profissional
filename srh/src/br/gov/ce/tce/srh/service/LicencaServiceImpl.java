@@ -49,91 +49,105 @@ public class LicencaServiceImpl implements LicencaService {
 
 	@Override
 	@Transactional
-	public void salvar(Licenca entidade) throws SRHRuntimeException {
+	public String salvar(Licenca entidade) throws SRHRuntimeException {
 
-		// setando o tipo de licenca
+		
+		String mensagemRetorno = null;
+		
+		
 		if ( entidade.getTipoLicenca() != null)
 			entidade.setTipoLicenca( tipoLicencaService.getById( entidade.getTipoLicenca().getId() ) );
 
-		// validando dados obrigatorios.
+		
+		if ( entidade.getContarDiasEmDobro() > 0 ){
+			entidade.setInicio(entidade.getDoe());
+			entidade.setFim(entidade.getDoe());
+		}	
+		
+		
 		validarDados(entidade);
 
 
-		/*
-		 * Regra
-		 * Validar conforme o sexo
-		 * 
-		 */
-		validarConformeSexo(entidade);
-		
-		
-		/*
-		 * Regra:
-		 * Verificar a quantidade maxima de dias permitida
-		 * 
-		 */
-		validarMaxDiasTipoLicenca(entidade);		
-
-
-		/*
-		 * Regra: 
-		 * Verificar licenças antigas
-		 * 
-		 */	
-		verificarLicencasAntigas(entidade);
-
-
-		/*
-		 * Regra: 
-		 * Criando o numero do processo
-		 * 
-		 */	
-		if (entidade.getNrprocessoPuro() != null && !entidade.getNrprocessoPuro().equals(""))
-			entidade.setNrprocesso(entidade.getNrprocessoPuro().substring(6,10)+entidade.getNrprocessoPuro().substring(0,5)+entidade.getNrprocessoPuro().substring(11,12));
-
-
-		/*
-		 * Regra:
-		 * Validar se o periodo esta dentro da licenca especial
-		 * 
-		 */
-		validarPeriodoInicioLicencaEspecial(entidade);
-		
-		
-		/*
-		 * Regra:
-		 * Ajustar saldo quando for licenca especial 
-		 */
-		if (entidade.getId() == null || entidade.getId().equals(0l)) 
-		{
-			 		
-			if( entidade.getTipoLicenca().isEspecial() )
-				licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "REMOVER", 
-						SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()) );
-		}
-		else{
+		if ( entidade.getContarDiasEmDobro() == null || entidade.getContarDiasEmDobro().intValue() == 0 ) {
 			
-			if( entidade.getTipoLicenca().isEspecial() )
-			{
-				//remove
-				Licenca licencaEspecialBD = dao.getById(entidade.getId());
 				
-				if ( licencaEspecialBD.getLicencaEspecial() != null )
-					licencaEspecialService.ajustarSaldo( licencaEspecialBD.getLicencaEspecial().getId(), "INSERIR", 
-							SRHUtils.dataDiff(licencaEspecialBD.getInicio(), licencaEspecialBD.getFim()) );
-				
-				//adicona
-				licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "REMOVER", 
-						SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()) );
-			} 
-		}
+			validarConformeSexo(entidade);		
 		
+			validarMaxDiasPermitidoPorTipoLicenca(entidade);
+			
+			verificarDatasDeLicencasAntigas(entidade);
+
+			
+			if (entidade.getNrprocessoPuro() != null && !entidade.getNrprocessoPuro().equals(""))
+				entidade.setNrprocesso(entidade.getNrprocessoPuro().substring(6,10)+entidade.getNrprocessoPuro().substring(0,5)+entidade.getNrprocessoPuro().substring(11,12));
+
+		
+			validarPeriodoInicioLicencaEspecial(entidade);
+		
+			ajustarSaldoLicencaEspecial(entidade);		
+			
+			alterarFuncional(entidade);		
+			
+			
+		} else {			
+				
+			mensagemRetorno = tratarContagemDeDiasEmDobro(entidade);	
+			
+		}		
+		
+		dao.salvar(entidade);
+		
+		return mensagemRetorno;
+			
+	}
+
+
+	private String tratarContagemDeDiasEmDobro(Licenca entidade) {
+		
+		
+		if (entidade.getId() == null || entidade.getId().equals(0l)) {
+		
+			
+			if ( entidade.getTipoLicenca().isEspecial() ) {		
+				
+				LicencaEspecial licencaEspecial = licencaEspecialService.getById(entidade.getLicencaEspecial().getId());
+					
+				if (licencaEspecial.getSaldodias() < entidade.getContarDiasEmDobro()) {
+					
+					throw new SRHRuntimeException("O valor informado para Contar Dias em Dobro é maior que o saldo da Licença Especial.");
+				
+				} else if ( licencaEspecial.getSaldodias() == entidade.getContarDiasEmDobro() ){
+					
+					licencaEspecial.setContaremdobro(true);
+					licencaEspecialService.salvar(licencaEspecial);
+					
+					return "O registro da Licença Especial foi alterado para considerar o saldo em dobro.";						
+					
+				} else {
+					
+					licencaEspecialService.ajustarSaldo( licencaEspecial.getId() , "REMOVER",	entidade.getContarDiasEmDobro().intValue() );		
+					
+				}
+			
+			} else {
+			
+				throw new SRHRuntimeException("Não foi possível concluir a operação.");
+			}
+			
+			
+		}		
+		
+		return null;
+	}
+
+
+	private void alterarFuncional(Licenca entidade) {
 		
 		//finalLicenca é utilizado para saber se a licença cadastrada já terminou
 		Calendar finalLicenca = Calendar.getInstance();
 		finalLicenca.setTime(entidade.getFim());
 		finalLicenca.add(Calendar.DATE, 1);
-		
+
 		/*
 		 * Regra:
 		 * Alterar, se a licença não tiver terminado, Situacao e ativoFp do Funcional quando TipoLicenca for Suspensão de Vínculo ou Interesse Particular
@@ -157,8 +171,39 @@ public class LicencaServiceImpl implements LicencaService {
 			
 		}
 		
-		// persistindo
-		dao.salvar(entidade);
+	}
+
+
+	private void ajustarSaldoLicencaEspecial(Licenca entidade) {
+		/*
+		 * Regra:
+		 * Ajustar saldo quando for licenca especial 
+		 */
+		
+		
+		if (entidade.getId() == null || entidade.getId().equals(0l)) 
+		{
+			 		
+			if( entidade.getTipoLicenca().isEspecial() )
+				licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "REMOVER",	SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()) );
+		}
+		else{
+			
+			if( entidade.getTipoLicenca().isEspecial() )
+			{
+				//remove
+				Licenca licencaEspecialBD = dao.getById(entidade.getId());
+				
+				if ( licencaEspecialBD.getLicencaEspecial() != null )
+					licencaEspecialService.ajustarSaldo( licencaEspecialBD.getLicencaEspecial().getId(), "INSERIR", 
+							SRHUtils.dataDiff(licencaEspecialBD.getInicio(), licencaEspecialBD.getFim()) );
+				
+				//adicona
+				licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "REMOVER", 
+						SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()) );
+			} 
+		}
+		
 	}
 
 
@@ -170,16 +215,28 @@ public class LicencaServiceImpl implements LicencaService {
 		 * Regra:
 		 * Ajustar saldo quando for licenca especial 
 		 */
-		if( entidade.getTipoLicenca().getId() == 5 )
-			licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "INSERIR", 
-					SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()) );
-
+		if( entidade.getTipoLicenca().getId() == 5 ) {
+			
+			if ( entidade.getContarDiasEmDobro() > 0 ) {
+				
+				licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "INSERIR", entidade.getContarDiasEmDobro().intValue() );
+				
+			} else {
+				
+				licencaEspecialService.ajustarSaldo( entidade.getLicencaEspecial().getId(), "INSERIR", SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()) );
+				
+			}			
+		}
+		
+		
+		
 		/*
 		 * Regra:
 		 * Alterar Situacao e ativoFp do Funcional quando TipoLicenca for Suspensão de Vínculo ou Interesse Particular
 		 */
 		Funcional funcional = funcionalDAO.getByPessoaAtivo(entidade.getPessoal().getId());
 		Situacao situacao;
+		
 		if (entidade.getTipoLicenca().getId() == 1 || entidade.getTipoLicenca().getId() == 2) // Suspensão de Vínculo
 		{
 			situacao = situacaoDAO.getById(new Long(1));
@@ -188,8 +245,12 @@ public class LicencaServiceImpl implements LicencaService {
 		}
 		funcionalDAO.salvar(funcional);
 		
+		
+		
 		// removendo
-		dao.excluir(entidade);
+		dao.excluir(entidade);	
+	
+	
 	}
 	
 	
@@ -315,32 +376,36 @@ public class LicencaServiceImpl implements LicencaService {
 		if (entidade.getTipoLicenca().isEspecial() && entidade.getLicencaEspecial() == null )
 			throw new SRHRuntimeException("Quando o Tipo de Licença for 'Licença Especial', é obrigatório selecionar uma Licença Especial.");
 
-		// validando periodo inical
-		if (entidade.getInicio() == null)
-			throw new SRHRuntimeException("A Data Inicial é obrigatório.");
+		if ( ! (entidade.getContarDiasEmDobro() > 0) ){
+		
+			// validando periodo inical
+			if (entidade.getInicio() == null)
+				throw new SRHRuntimeException("A Data Inicial é obrigatória.");
+	
+			// validando periodo final
+			if (entidade.getFim() == null)
+				throw new SRHRuntimeException("A Data Final é obrigatória.");
+	
+			// validando se o periodo inical é menor que o periodo final
+			if (entidade.getInicio().after(entidade.getFim()))
+				throw new SRHRuntimeException("A Data Inicial não pode ser maior que a Data Final.");
 
-		// validando periodo final
-		if (entidade.getFim() == null)
-			throw new SRHRuntimeException("A Data Final é obrigatório.");
-
-		// validando se o periodo inical é menor que o periodo final
-		if (entidade.getInicio().after(entidade.getFim()))
-			throw new SRHRuntimeException("A Data Inicial não pode ser maior que a Data Final.");
-
+		}
+		
 		// validando caso a data de publicacao seja preenchida, a mesma deve ser menor que o periodo inicial
 		if (entidade.getDoe() != null) {
 			if (entidade.getDoe().before(SRHUtils.inicioTCE()) ) {
-				throw new SRHRuntimeException("Data Publicação não deve ser anterior a " + SRHUtils.inicioTCE().toString());
+				throw new SRHRuntimeException("Data Publicação não deve ser anterior a " + SRHUtils.inicioTCE().toString() + ".");
 			}
 			if (entidade.getDoe().after(new Date())) {
-				throw new SRHRuntimeException("Data Publicação não pode ser maior que a data atual");
+				throw new SRHRuntimeException("Data Publicação não pode ser maior que a data atual.");
 			}
 		}
 
 		// validando tipo de publicacao
 		if (entidade.getTipoPublicacao() == null ) {
 			if ( entidade.getDoe() != null ) {
-				throw new SRHRuntimeException("Quando a Data de Publicação for informado, é necessário informar o Tipo de Publicação.");
+				throw new SRHRuntimeException("Quando a Data de Publicação for informada, é necessário informar o Tipo de Publicação.");
 			}
 		}
 
@@ -349,6 +414,9 @@ public class LicencaServiceImpl implements LicencaService {
 			if (entidade.getTipoPublicacao() != null ) {
 				throw new SRHRuntimeException("Quando o Tipo de Publicação for informado, é necessário informar a Data de Publicação.");
 			}
+			if(entidade.getContarDiasEmDobro() != null && entidade.getContarDiasEmDobro().intValue() > 0){
+				throw new SRHRuntimeException("Quando \"Contar Dias em Dobro\" for maior que zero, é necessário informar a Data de Publicação.");
+			}
 		}
 
 		// validando o nr do processo
@@ -356,8 +424,10 @@ public class LicencaServiceImpl implements LicencaService {
 			if (!SRHUtils.validarProcesso(entidade.getNrprocessoPuro().substring(6,10) + entidade.getNrprocessoPuro().substring(0,5) + entidade.getNrprocessoPuro().substring(11,12))){
 				throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 			}
-		}
+		}		
+		
 
+		
 	}
 
 
@@ -396,12 +466,12 @@ public class LicencaServiceImpl implements LicencaService {
 	 * @throws SRHRuntimeException
 	 * 
 	 */
-	private void validarMaxDiasTipoLicenca(Licenca entidade) {
+	private void validarMaxDiasPermitidoPorTipoLicenca(Licenca entidade) {
 
 		int qtdDias = SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim());
 		
 		if ( qtdDias > entidade.getTipoLicenca().getQtdeMaximoDias() )
-			throw new SRHRuntimeException("Quantidade de dias maior que o máximo permitido para esse tipo de licença");
+			throw new SRHRuntimeException("Quantidade de dias maior que o máximo permitido para esse tipo de licença.");
 
 	}
 
@@ -446,7 +516,7 @@ public class LicencaServiceImpl implements LicencaService {
 	 * @throws SRHRuntimeException
 	 * 
 	 */
-	private void verificarLicencasAntigas(Licenca entidade) throws SRHRuntimeException {
+	private void verificarDatasDeLicencasAntigas(Licenca entidade) throws SRHRuntimeException {
 
 		List<Licenca> licencas = dao.findByPessoa(entidade.getPessoal().getId());
 
@@ -458,19 +528,19 @@ public class LicencaServiceImpl implements LicencaService {
 				// validando periodo inicial
 				if( (licencaAntigas.getInicio().after(entidade.getInicio()) || licencaAntigas.getInicio().equals(entidade.getInicio())) 
 						&& ( licencaAntigas.getInicio().before(entidade.getFim()) || licencaAntigas.getInicio().equals(entidade.getFim()))){
-					throw new SRHRuntimeException("Já existe uma licença com esse período");
+					throw new SRHRuntimeException("Já existe uma licença com esse período.");
 				}
 
 				// validando periodo final
 				if( (licencaAntigas.getFim().after(entidade.getInicio()) || licencaAntigas.getFim().equals(entidade.getInicio())) 
 						&& ( licencaAntigas.getFim().before(entidade.getFim()) || licencaAntigas.getFim().equals(entidade.getFim()))){
-					throw new SRHRuntimeException("Já existe uma licença com esse período");
+					throw new SRHRuntimeException("Já existe uma licença com esse período.");
 				}
 
 				// validando periodo no meio
 				if( licencaAntigas.getInicio().before( entidade.getInicio() )
 						&& licencaAntigas.getFim().after( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("Já existe uma licença com esse período");
+					throw new SRHRuntimeException("Já existe uma licença com esse período.");
 				}
 			}
 		}

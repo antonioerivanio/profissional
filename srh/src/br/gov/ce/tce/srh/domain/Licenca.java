@@ -75,6 +75,9 @@ public class Licenca extends BasicEntity<Long> implements Serializable {
     @Column(name = "DOE")
     @Temporal(TemporalType.DATE)
     private Date doe;
+    
+    @Column(name = "CONTARDIASEMDOBRO")
+    private Long contarDiasEmDobro;
 
 	@Transient
 	private Integer dias;
@@ -125,6 +128,9 @@ public class Licenca extends BasicEntity<Long> implements Serializable {
 	public Date getDoe() {return doe;}
 	public void setDoe(Date doe) {this.doe = doe;}
 
+	public Long getContarDiasEmDobro() {return contarDiasEmDobro;}
+	public void setContarDiasEmDobro(Long contarDiasEmDobro) {this.contarDiasEmDobro = contarDiasEmDobro;}
+	
 	public Integer getDias() {
 		Date dfim = (getFim()==null?new Date():getFim());		
 		Date dini = getInicio();

@@ -60,7 +60,7 @@
 								 maxlength="6"
 								 styleClass="maskMatricula"
 								 value="#{licencaFormBean.matricula}"
-								 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" >
+								 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }" >
 						<a4j:support event="onblur"
 									 focus="processo"
 									 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
@@ -75,11 +75,11 @@
 					<h:inputText id="nomeCompletoPessoa"
 								 name="nomeCompletoPessoa"
 								 value="#{licencaFormBean.nome}"
-								 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" />
+								 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }" />
 				</div>
 			</div>
 			
-			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR') or licencaFormBean.alterar }">
 				<a id="form:Pesquisar" 
 				   href="#" 
 				   onclick="openwindow()" 
@@ -157,7 +157,7 @@
 									 styleClass="maskProcesso" 
 									 maxlength="10"
 									 value="#{licencaFormBean.nrProcesso}"
-									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" >
+									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >
 						<a4j:support event="onchange" focus="tipoLicenca" reRender="messages" ajaxSingle="true" />
 						</h:inputText>
 					</div>
@@ -167,12 +167,10 @@
 					<label for="">Tipo de Licença *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoLicenca"
-										 value="#{licencaFormBean.entidade.tipoLicenca}"
-										 required="true"
-										 requiredMessage="O tipo de licença é obrigatório."
+										 value="#{licencaFormBean.entidade.tipoLicenca}"										 
 										 converter="entityConverter"
 										 onmousemove="validarPessoa()"
-										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" >
+										 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.entidade.contarDiasEmDobro > 0 }" >
 						  	<f:selectItem id="selecioneTipoLicenca" itemLabel="Selecione..." itemValue="" />
 						  	<f:selectItems 	id="comboTipoLicenca" 
 						  					value="#{licencaFormBean.comboTipoLicenca}"
@@ -197,13 +195,14 @@
 							<h:selectOneMenu id="licencaEspecial"
 											 converter="entityConverter"
 									 		 value="#{licencaFormBean.entidade.licencaEspecial}"
-									 		 disabled="#{(not licencaFormBean.exibirComboLicencaEspecial) or (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR'))}">
+									 		 disabled="#{(not licencaFormBean.exibirComboLicencaEspecial) or (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.entidade.contarDiasEmDobro > 0 }">
 							  	<f:selectItem id="selecionelicencaEspecial" itemLabel="Selecione..." itemValue="" />
 							  	<f:selectItems 	id="combolicencaEspecial" 
 							  					value="#{licencaFormBean.comboLicencaEspecial}"
 							  					var="licencaEspecial"
 							  					itemValue="#{licencaEspecial}"
-							  					itemLabel="Período: #{licencaEspecial.anoinicial} / #{licencaEspecial.anofinal}  - Saldo em Dias: #{licencaEspecial.saldodias}"/>
+							  					itemLabel="Período: #{licencaEspecial.anoinicial} / #{licencaEspecial.anofinal}  - Saldo em Dias: #{licencaEspecial.saldodias}" />
+								<a4j:support id="licencaEspecialChange" event="onchange" reRender="contarDiasEmDobroFragment" ajaxSingle="true" />
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -217,12 +216,10 @@
 					<div class="conteiner">
 						<h:inputText id="periodoInicial" 
 									 styleClass="maskData" 
-									 converter="dateConverter"
-									 required="true"
-									 requiredMessage="O período inicial é obrigatório."
+									 converter="dateConverter"									 
 									 value="#{licencaFormBean.entidade.inicio}"
 									 maxlength="10"
-									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" /> 
+									 disabled="#{(not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.entidade.contarDiasEmDobro > 0 }" /> 
 					</div>
 				</div>
 
@@ -231,22 +228,20 @@
 					<div class="conteiner">
 						<h:inputText id="periodoFinal" 
 									 styleClass="maskData"
-									 converter="dateConverter"
-									 required="true"
-									 requiredMessage="O período final é obrigatório."
+									 converter="dateConverter"									 
 									 value="#{licencaFormBean.entidade.fim}"
 									 maxlength="10"
-									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" /> 
+									 disabled="#{(not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.entidade.contarDiasEmDobro > 0 }" /> 
 					</div>
 				</div>
-
+				
 				<div class="select-box box-15">
 					<label for="">Tipo de Publicação </label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoPublicacao"
 										 converter="entityConverter" 
 										 value="#{licencaFormBean.entidade.tipoPublicacao}"
-										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
+										 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }">
 							<f:selectItem id="selecioneTipoPublicacao" itemLabel="Selecione..." itemValue="" />
 						   	<f:selectItems 	id="comboTipoPublicacao" 
 						   					value="#{licencaFormBean.comboTipoPublicacao}"
@@ -265,7 +260,14 @@
 									 converter="dateConverter"
 									 value="#{licencaFormBean.entidade.doe}"
 									 maxlength="10"
-									 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" /> 
+									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >							
+							<a4j:support id="publicacaoEvent" 
+											 event="onblur"
+											 actionListener="#{licencaFormBean.atualizarCampos()}" 
+											 ajaxSingle="true" 
+											 reRender="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
+											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"  />
+						</h:inputText> 
 					</div>
 				</div>
 				
@@ -275,7 +277,7 @@
 						<div class="radio-box">
 							<h:selectBooleanCheckbox id="delTempoServico"
 													 value="#{licencaFormBean.entidade.excluitemposerv}"
-													 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" />
+													 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.entidade.contarDiasEmDobro > 0 }" />
 						</div>
 					</div>
 				</div>
@@ -286,24 +288,45 @@
 						<div class="radio-box">
 							<h:selectBooleanCheckbox id="delRetribuicaoFin"
 													 value="#{licencaFormBean.entidade.excluifinanceiro}"
-													 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}" />
+													 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.entidade.contarDiasEmDobro > 0 }" />
 						</div>
 					</div>
 				</div>
+						
+				<h:panelGroup styleClass="#{licencaFormBean.exibirContarDiasEmDobro() ? '' : 'dn'}" id="contarDiasEmDobroFragment" >
+					<div class="input-box box-15" >
+						<label for="">Contar Dias em Dobro</label>
+						<div class="conteiner">
+							<h:inputText id="contarDiasEmDobro" 
+										 value="#{licencaFormBean.entidade.contarDiasEmDobro}"
+										 maxlength="2"										 
+										 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }">
+							
+								<a4j:support id="contarDiasEmDobroEvent" 
+											 event="onblur"
+											 actionListener="#{licencaFormBean.atualizarCampos()}" 
+											 ajaxSingle="true" 
+											 reRender="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
+											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"  />
+							
+							</h:inputText>  
+						</div>
+					</div>
+				</h:panelGroup>
+				
+			</fieldset>
 
 				<div class="textarea-box box-100">
 					<label for="">Observação</label>
 					<div class="conteiner">
 						<h:inputTextarea id="observacao"
 										 value="#{licencaFormBean.entidade.obs}"
-										 disabled="#{not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}"										 
+										 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }"										 
 										 validatorMessage="O campo Observação excedeu o tamanho máximo de 2000 caracteres">
 										 <f:validateLength maximum="2000" />
 						</h:inputTextarea>				 
 					</div>
-				</div>
-
-			</fieldset>
+				</div>				
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
 				<h:commandButton action="#{licencaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarLicenca()" />						

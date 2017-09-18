@@ -17,7 +17,7 @@ public interface LicencaService {
 	public List<Licenca> search(String nome, int first, int rows);
 	public List<Licenca> search(String nome, TipoLicenca tipoLicenca, int first, int rows);
 
-	public void salvar(Licenca entidade) throws SRHRuntimeException;
+	public String salvar(Licenca entidade) throws SRHRuntimeException;
 	public void excluir(Licenca entidade) throws SRHRuntimeException;
 	public void finalizar(Licenca entidade) throws SRHRuntimeException;
 	

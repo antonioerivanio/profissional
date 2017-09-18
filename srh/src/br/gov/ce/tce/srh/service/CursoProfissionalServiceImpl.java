@@ -81,7 +81,7 @@ public class CursoProfissionalServiceImpl implements CursoProfissionalService {
 		}
 		
 		
-		if ( !entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.EXTENSAO) && entidade.getCargaHoraria() < 360 ){
+		if ( entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.ESPECIALIZACAO) && entidade.getCargaHoraria() < 360 ){
 			throw new SRHRuntimeException("A carga horária mínima para cursos de pós-graduação é de 360 horas.");
 		}
 		

@@ -62,29 +62,19 @@ public class LicencaFormBean implements Serializable {
 	private Boolean excluirTempoServico = false;
 	private Boolean excluirRetribuicaoFinanceira = false;
 	private Boolean exibirComboLicencaEspecial = false;
+	private Boolean alterar = false;
 
 	// combos
 	private List<TipoLicenca> comboTipoLicenca;
 	private List<TipoPublicacao> comboTipoPublicacao;
 
 
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
 	public String prepareIncluir() {
 		limpar();
 		return "incluirAlterar";
 	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
+	
+	
 	public String prepareAlterar() {
 
 		try {
@@ -95,6 +85,9 @@ public class LicencaFormBean implements Serializable {
 			Funcional funcional = funcionalService.getByPessoaAtivo( entidade.getPessoal().getId() );			
 			if (funcional != null)
 				this.matricula = funcional.getMatricula();
+			
+			alterar = true;
+			
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -104,22 +97,28 @@ public class LicencaFormBean implements Serializable {
 		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
+	
 	public String salvar() {
 
 		try {
 
 			this.entidade.setNrprocesso(this.nrProcesso);
-			licencaService.salvar(entidade);
+			
+			String mensagem = licencaService.salvar(entidade);
+			
+			
 			limpar();
 
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
+			if (mensagem == null){
+				
+				FacesUtil.addInfoMessage("Operação realizada com sucesso.");
+				logger.info("Operação realizada com sucesso.");					
+				
+			} else {
+				
+				FacesUtil.addInfoMessage(mensagem);
+				logger.info(mensagem);
+			}			
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -132,12 +131,7 @@ public class LicencaFormBean implements Serializable {
 		return null; 
 	}
 
-
-	/**
-	 * Combo Tipo Licenca
-	 * 
-	 * @return
-	 */
+	
 	public List<TipoLicenca> getComboTipoLicenca() {
 
 		try {
@@ -154,13 +148,11 @@ public class LicencaFormBean implements Serializable {
 	}
 
 
-	/**
-	 * Combo Licenca Especial
-	 */
 	public void carregaLicencaEspecial() {
 		getComboLicencaEspecial();
 	}
 
+	
 	public List<LicencaEspecial> getComboLicencaEspecial() {
 
 		List<LicencaEspecial> toReturn = new ArrayList<LicencaEspecial>();
@@ -194,12 +186,7 @@ public class LicencaFormBean implements Serializable {
 		return toReturn;
 	}
 	
-
-	/**
-	 * Combo Tipo Publicacao
-	 * 
-	 * @return
-	 */
+	
 	public List<TipoPublicacao> getComboTipoPublicacao() {
         
         try {
@@ -215,10 +202,7 @@ public class LicencaFormBean implements Serializable {
         return this.comboTipoPublicacao;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
+	
 	private void limpar() {
 
 		setEntidade(new Licenca());
@@ -227,16 +211,17 @@ public class LicencaFormBean implements Serializable {
 		this.matricula = new String();
 		this.nome = new String();
 
+		this.excluirTempoServico = false;
+		this.excluirRetribuicaoFinanceira = false;
 		this.exibirComboLicencaEspecial = false;
+		this.alterar = false;
 
 		this.comboTipoLicenca = null;
 		this.comboTipoPublicacao = null;
+		
 	}
 
 
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -265,13 +250,19 @@ public class LicencaFormBean implements Serializable {
 
 	public String getNrProcesso() {return nrProcesso;}
 	public void setNrProcesso(String nrProcesso) {
+		
 		if ( !nrProcesso.equals(this.nrProcesso) ) {
+			
 			this.nrProcesso = nrProcesso;
 
 			try {
 
-				if (!SRHUtils.validarProcesso( this.nrProcesso.substring(6,10) + this.nrProcesso.substring(0,5) + this.nrProcesso.substring(11,12) ) ) {
-					throw new SRHRuntimeException("O Número do Processo informado é inválido.");
+				if (this.nrProcesso != null && ! this.nrProcesso.equals("")) {
+				
+					if (!SRHUtils.validarProcesso( this.nrProcesso.substring(6,10) + this.nrProcesso.substring(0,5) + this.nrProcesso.substring(11,12) ) ) {
+						throw new SRHRuntimeException("O Número do Processo informado é inválido.");
+					}
+				
 				}
 
 			} catch (SRHRuntimeException e) {
@@ -297,5 +288,28 @@ public class LicencaFormBean implements Serializable {
 
 	public Boolean getExibirComboLicencaEspecial() {return exibirComboLicencaEspecial;}
 	public void setExibirComboLicencaEspecial(Boolean exibirComboLicencaEspecial) {this.exibirComboLicencaEspecial = exibirComboLicencaEspecial;}
+	
+	public Boolean getAlterar() { return alterar; }
+	public void setAlterar(Boolean alterar) { this.alterar = alterar; }
+
+
+	public Boolean exibirContarDiasEmDobro() {
+		if (entidade.getLicencaEspecial() != null)
+			return true;
+		
+		return false;
+	}
+	
+	
+	public void atualizarCampos() {
+		
+		if (entidade.getContarDiasEmDobro() > 0){
+			this.entidade.setInicio(this.entidade.getDoe());
+			this.entidade.setFim(this.entidade.getDoe());
+			this.setExcluirRetribuicaoFinanceira(false);
+			this.setExcluirTempoServico(false);
+		} 
+		
+	}
 
 }
