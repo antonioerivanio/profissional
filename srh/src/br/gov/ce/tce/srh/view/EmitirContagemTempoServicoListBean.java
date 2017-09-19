@@ -85,7 +85,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	
 	private List<Funcional> listaFuncional = new ArrayList<Funcional>();
 	private List<Ferias> listaFerias = new ArrayList<Ferias>();
-	private List<Licenca> listaLicenca = new ArrayList<Licenca>();
 	private List<LicencaEspecial> listaLicencaEspecial = new ArrayList<LicencaEspecial>();
 	private List<Licenca> listaLicencaExcluir = new ArrayList<Licenca>();
 	private List<Averbacao> listaAverbacao = new ArrayList<Averbacao>();
@@ -159,6 +158,23 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			for (LicencaEspecial licencaEspecial : listaLicencaEspecial) {
 				if ( licencaEspecial.isContaremdobro() )
 					totalDia += licencaEspecial.getSaldodias()*2;
+			}
+			
+			
+			List<Licenca> licencas = licencaService.findByPessoa(entidade.getPessoal().getId());
+			
+			for (Licenca licenca : licencas) {
+				
+				if(licenca.getContarDiasEmDobro() > 0 && licenca.getLicencaEspecial() != null) {
+					LicencaEspecial licencaEspecial = licenca.getLicencaEspecial();
+					licencaEspecial.setDescricao(licenca.getObs());
+					licencaEspecial.setSaldodias(licenca.getContarDiasEmDobro());
+					
+					this.listaLicencaEspecial.add(licencaEspecial);
+					
+					totalDia += licenca.getContarDiasEmDobro()*2;
+				}
+				
 			}			
 
 			
@@ -295,7 +311,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			
 			parametros.put("listaFuncional", new JRBeanCollectionDataSource(listaFuncional) );
 			parametros.put("listaFerias", new JRBeanCollectionDataSource(listaFerias) );
-			parametros.put("listaLicenca", new JRBeanCollectionDataSource(listaLicenca) );
+			parametros.put("listaLicencaEspecial", new JRBeanCollectionDataSource(listaLicencaEspecial) );
 			parametros.put("listaAverbacao", new JRBeanCollectionDataSource(listaAverbacao) );
 			parametros.put("listaAcrescimo", new JRBeanCollectionDataSource(listaAcrescimo) );
 			parametros.put("listaDeducao", new JRBeanCollectionDataSource(listaDeducao) );
@@ -374,7 +390,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 	public List<Funcional> getListaFuncional() {return listaFuncional;}
 	public List<Ferias> getListaFerias() {return listaFerias;}
-	public List<Licenca> getListaLicenca() {return listaLicenca;}
 	public List<LicencaEspecial> getListaLicencaEspecial() {return listaLicencaEspecial;}
 	public List<Averbacao> getListaAverbacao() {return listaAverbacao;}
 	public List<Acrescimo> getListaAcrescimo() {return listaAcrescimo;}
@@ -387,9 +402,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	
 	public boolean isPassouConsultar() {return passouConsultar;}
 	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
-
-	public List<Licenca> getListaLicencaExcluir() {return listaLicencaExcluir;}
-	public void setListaLicencaExcluir(List<Licenca> listaLicencaExcluir) {this.listaLicencaExcluir = listaLicencaExcluir;}
 
 
 }

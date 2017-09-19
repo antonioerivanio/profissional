@@ -18,7 +18,7 @@
 		<field name="qtdeDias" class="java.lang.Long"/>
 		<field name="observacao" class="java.lang.String"/>
 	</subDataset>
-	<subDataset name="listaLicenca">
+	<subDataset name="listaLicencaEspecial">
 		<field name="anoinicial" class="java.lang.Long"/>
 		<field name="anofinal" class="java.lang.Long"/>
 		<field name="saldodias" class="java.lang.Long"/>
@@ -69,7 +69,7 @@
 	<parameter name="saida" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="listaFuncional" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="listaFerias" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
-	<parameter name="listaLicenca" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+	<parameter name="listaLicencaEspecial" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="listaAverbacao" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="listaAcrescimo" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
 	<parameter name="listaDeducao" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
@@ -513,7 +513,7 @@
 			</componentElement>
 		</band>
 		<band height="90" splitType="Prevent">
-			<printWhenExpression><![CDATA[$P{listaLicenca}.getRecordCount() > 0]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$P{listaLicencaEspecial}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1"/>
 			</line>
@@ -558,8 +558,8 @@
 			<componentElement>
 				<reportElement x="0" y="53" width="802" height="18"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="listaLicenca">
-						<dataSourceExpression><![CDATA[$P{listaLicenca}]]></dataSourceExpression>
+					<datasetRun subDataset="listaLicencaEspecial">
+						<dataSourceExpression><![CDATA[$P{listaLicencaEspecial}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="18" width="802">
 						<rectangle>

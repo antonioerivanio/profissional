@@ -88,6 +88,7 @@ public class LicencaServiceImpl implements LicencaService {
 			
 			alterarFuncional(entidade);		
 			
+			dao.salvar(entidade);
 			
 		} else {			
 				
@@ -95,7 +96,6 @@ public class LicencaServiceImpl implements LicencaService {
 			
 		}		
 		
-		dao.salvar(entidade);
 		
 		return mensagemRetorno;
 			
@@ -105,6 +105,7 @@ public class LicencaServiceImpl implements LicencaService {
 	private String tratarContagemDeDiasEmDobro(Licenca entidade) {
 		
 		
+		// Inclusão
 		if (entidade.getId() == null || entidade.getId().equals(0l)) {
 		
 			
@@ -125,7 +126,8 @@ public class LicencaServiceImpl implements LicencaService {
 					
 				} else {
 					
-					licencaEspecialService.ajustarSaldo( licencaEspecial.getId() , "REMOVER",	entidade.getContarDiasEmDobro().intValue() );		
+					licencaEspecialService.ajustarSaldo( licencaEspecial.getId() , "REMOVER",	entidade.getContarDiasEmDobro().intValue() );
+					dao.salvar(entidade);
 					
 				}
 			
@@ -134,8 +136,12 @@ public class LicencaServiceImpl implements LicencaService {
 				throw new SRHRuntimeException("Não foi possível concluir a operação.");
 			}
 			
+		// Alteração	
+		} else {
 			
-		}		
+			dao.salvar(entidade);
+			
+		}
 		
 		return null;
 	}
