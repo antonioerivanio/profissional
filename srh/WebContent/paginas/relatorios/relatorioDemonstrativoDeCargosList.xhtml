@@ -63,8 +63,8 @@
 						<label>Tipo Ocupação</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="cmbTipoOcupacao" value="#{relatorioDemonstrativoCargoBean.tipoOcupacao}" converter="entityConverter">
-								<f:selectItem itemLabel="TODOS" />
-								<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}"  />
+								<f:selectItem itemLabel="TODOS" id="tipoOcupacaoTodos" />
+								<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}" id="tipoOcupacao#{tipoOcupacao.id}" />
 							</h:selectOneMenu>
 						</div>
 					</div>					
@@ -79,8 +79,8 @@
 						<div class="conteiner" style="padding: 5px 6px;">
 							<div class="radio-box">
 								<h:selectOneRadio id="ordem" value="#{relatorioDemonstrativoCargoBean.ordem}">
-									<f:selectItem itemLabel="Cargo" itemValue="1" />
-									<f:selectItem itemLabel="Nome" itemValue="2" />									
+									<f:selectItem itemLabel="Cargo" itemValue="1" id="radioCargo" />
+									<f:selectItem itemLabel="Nome" itemValue="2" id="radioNome" />									
 								</h:selectOneRadio>
 							</div>
 						</div>
