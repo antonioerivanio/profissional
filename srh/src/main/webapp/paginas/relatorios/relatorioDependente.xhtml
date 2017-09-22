@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
+
+	<ui:define name="content">
+
+		<script>
+			function openwindowServidor()
+			{
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
+			}
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Relatório de Dependentes</h2>
+
+		</div>
+
+         <h:form id="form" binding="#{relatorioDependenteBean.form}" styleClass="formularios">
+
+			<br/>
+
+            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="input-box box-12">
+				<label for="">CPF</label>
+				<div class="conteiner">
+					<h:inputText id="cpf" 
+								 name="cpf"
+								 maxlength="14"
+								 styleClass="maskCpf"
+								 converter="cpfConverter"
+								 value="#{relatorioDependenteBean.cpf}"	>
+						<a4j:support id="cpfChange" event="onblur" reRender="nomeCompletoPessoa,tipoDependencia,prev,ir,sf,univ" ajaxSingle="true" />
+					</h:inputText>
+				</div>
+			</div>
+
+			<div class="input-box box-55">
+				<label for="">Servidor</label>
+				<div class="conteiner">
+					<h:inputText id="nomeCompletoPessoa"
+								 name="nomeCompletoPessoa"							
+								 value="#{relatorioDependenteBean.nomeResponsavel}" />
+				</div>
+			</div>
+
+			<a id="form:PesquisarServidor" 
+			   href="#" 
+			   onclick="openwindowServidor()" 
+			   class="bt-padrao fl mg-top-18">Pesquisar</a>			
+	
+				
+			<div class="select-box box-55">
+				<label for="">Tipo Dependência</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="tipoDependencia"
+									 converter="entityConverter" 
+									 value="#{relatorioDependenteBean.dependente.tipoDependencia}" 
+									 disabled="#{relatorioDependenteBean.pessoaSelecionada}">
+					  	<f:selectItem id="selecioneTipoDependencia" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboTipoDependencia"
+					  					value="#{relatorioDependenteBean.comboTipoDependencia}"
+					  					var="tipoDependencia"
+					  					itemValue="#{tipoDependencia}"
+					  					itemLabel="#{tipoDependencia.descricao}"/>					  	
+					</h:selectOneMenu>
+				</div>
+			</div>	
+						
+			
+			<div class="radios-group box-8">
+				<label>Dep Prev?</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="prev"
+							value="#{relatorioDependenteBean.dependente.depPrev}"
+							disabled="#{relatorioDependenteBean.pessoaSelecionada}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="radios-group box-8">
+				<label>Dep IR?</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="ir"
+							value="#{relatorioDependenteBean.dependente.depIr}"
+							disabled="#{relatorioDependenteBean.pessoaSelecionada}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="radios-group box-8">
+				<label>Dep SF?</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="sf"
+							value="#{relatorioDependenteBean.dependente.depSf}"
+							disabled="#{relatorioDependenteBean.pessoaSelecionada}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+			
+			<div class="radios-group box-8">
+				<label>Universitário?</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="univ"
+							value="#{relatorioDependenteBean.dependente.flUniversitario}"
+							disabled="#{relatorioDependenteBean.pessoaSelecionada}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+			
+			<div class="radios-group box-18">
+				<label>Dependentes para dar baixa?</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="darBaixa"
+							value="#{relatorioDependenteBean.darBaixa}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>			
+			
+			<br /><br /><br /><br /><br />
+					
+			<a href="/srh/paginas/relatorios/relatorioDependente.faces" class="bt-voltar fr mg-top-25 mg-right-10">Limpar</a>
+			
+			<h:commandButton value="Gerar relatório" 
+							 id="relatorioFalecidos"
+							 action="#{relatorioDependenteBean.relatorio}" 
+							 styleClass="bt-padrao fr mg-top-25 mg-right-10">								 		 							 		 							 
+			</h:commandButton>
+			
+			
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-
-	<TB_RUBRICA ID="1" CODIGO="100" ORDEM="1" TIPO="V" DESCRICAO="RUBRICA 1" EMPRESTIMO="0" CONSIGNACAO="0" SUPSEC="0" IRRF="0" VERBA_EXTRA="0" VERIFICATETO="0" />
-
-	<!-- EXCLUINDO -->
-	<ITENSPAGTO />
-
-</dataset>

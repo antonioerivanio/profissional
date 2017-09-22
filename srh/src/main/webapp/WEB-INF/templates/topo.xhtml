@@ -1,0 +1,59 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<script type="text/javascript">
+		window.onload = function() {calcOffset();};
+	</script>
+
+	<h1>
+		<a href="#" title=""> SRH - Sistema de Recursos Humanos do Tribunal	de Contas do Ceara </a>
+	</h1>
+	
+	
+	<h2 class="logo-tce">Tribunal de Contas do Estado do CearÃ¡</h2>
+	
+	
+	<!-- <div class="manual-srh" style="margin-top: -10px; cursor:pointer;float:right;margin-right:191px;margin-top:-102px;">
+	                     <a href="/srh/manual-srh/manual_SRH.pdf" target="_blank">Manual do Usuário</a>
+	</div> -->
+	
+	<ui:fragment rendered="#{not fn:endsWith(app['database.url'], 'bdtce')}">
+		<div class="msg-dev-home">
+			<div class="msg-dev-div">
+				<h:outputText id="label-sistema-em-desenv" styleClass="msg-dev" value="Sistema em Desenvolvimento" />
+			</div>
+		</div>
+	</ui:fragment>
+	
+		
+	<div class="login-box">
+		<h:form id="login-form">
+			
+			<h2 class="dn">Login</h2>
+	
+			<p>
+				Olá, <span class="user"><h:outputText id="nomeDoUsuario" value="#{LoginBean.usuarioLogado}" /></span>
+			</p>			
+				
+			<span id="relogio">
+				<h:graphicImage id="relogioIcon" url="/img/icon-time.png" title="Tempo para a sessão expirar"></h:graphicImage>
+				<span id="min"></span>
+				<span>:</span>
+				<span id="sec"></span>				
+			</span>
+	
+			<h:commandLink title="Sair" action="#{LoginBean.logout}" id="sair">
+				<span>Sair</span>
+			</h:commandLink>
+				
+			
+		</h:form>
+	</div>
+
+
+</html>

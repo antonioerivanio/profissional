@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:a4j="http://richfaces.org/a4j" >
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Competência do Setor</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{areaSetorCompetenciaListBean.form}" styleClass="formularios box-border">
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="select-box box-25">
+				<label for="">Setor</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="setor"
+									 value="#{areaSetorCompetenciaListBean.setor}"
+									 converter="entityConverter">
+						<f:selectItem id="selecioneSetor" itemLabel="Selecione..." itemValue="" />
+					  	<f:selectItems 	id="comboSetor" 
+					  					value="#{areaSetorCompetenciaListBean.comboSetor}"
+					  					var="setor"
+					  					itemValue="#{setor}"
+					  					itemLabel="#{setor.nome}"/>
+					  	<a4j:support id="carregaArea" 
+					  				 event="onchange" 
+					  				 ajaxSingle="true"
+					  				 action="#{areaSetorCompetenciaListBean.carregaArea}"
+					  				 reRender="area,competencia,lista"/>
+					</h:selectOneMenu>
+				</div>
+			</div>
+
+			<div class="select-box box-25">
+				<label for="">Área</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="area"
+									 value="#{areaSetorCompetenciaListBean.areaSetor}"
+									 converter="entityConverter" >
+						<f:selectItem id="selecioneArea" itemLabel="Selecione..." itemValue="" />
+					  	<f:selectItems 	id="comboArea" 
+					  					value="#{areaSetorCompetenciaListBean.comboArea}"
+					  					var="area"
+					  					itemValue="#{area}"
+					  					itemLabel="#{area.descricao}"/>
+					  	<a4j:support id="carregaCompetencia"
+					  				 event="onchange" 
+					  				 ajaxSingle="true"	
+					  				 action="#{areaSetorCompetenciaListBean.carregaCompetencia}" 
+					  				 reRender="competencia,lista"/>
+					</h:selectOneMenu>
+				</div>
+			</div>
+
+			<div class="select-box box-25">
+				<label for="">Competência</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="competencia"
+									 value="#{areaSetorCompetenciaListBean.competencia}"
+									 converter="entityConverter">
+						<f:selectItem id="selecioneCompetencia" itemLabel="Selecione..." itemValue="" />
+					  	<f:selectItems 	id="comboCompetencia" 
+					  					value="#{areaSetorCompetenciaListBean.comboCompetencia}"
+					  					var="competencia"
+					  					itemValue="#{competencia}"
+					  					itemLabel="#{competencia.descricao}"/>
+					</h:selectOneMenu>
+				</div>
+			</div>
+
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{areaSetorCompetenciaListBean.consultar}"
+							 styleClass="bt-padrao fl mg-top-18" 
+							 reRender="scroller,lista"/>
+			<h:commandButton id="relatorio"
+							 value="Relatório"
+							 action="#{areaSetorCompetenciaListBean.relatorio}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 style="margin-left: 10px" />
+
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" value="#{areaSetorCompetenciaListBean.dataModel}" var="item" rows="10" binding="#{areaSetorCompetenciaListBean.dataTable}">
+
+					<h:column id="col1">
+                        <f:facet name="header">
+                            ID
+                        </f:facet>
+                        <center><h:outputText id="item1" value="#{item.id}" /></center>
+                    </h:column>
+                    <h:column id="col2" headerClass="cel-50">
+                        <f:facet name="header">
+                            Competência
+                        </f:facet>
+                        <h:outputText id="item2" value="#{item.competencia.descricao}" />
+                    </h:column>                    
+                    <h:column id="col3" headerClass="cel-50">
+                        <f:facet name="header">
+                            Motivo Inicio
+                        </f:facet>
+                        <h:outputText id="item3" value="#{item.motivoInicio}" />
+                    </h:column>
+                    <h:column id="col4">
+                        <f:facet name="header">
+                            Data Inicio
+                        </f:facet>
+                        <center>
+	                        <h:outputText id="item4" value="#{item.dataInicio}" >
+	                        	<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+                    </h:column>
+                    <h:column id="col5">
+                        <f:facet name="header">
+                            Data Fim
+                        </f:facet>
+                        <center>
+	                        <h:outputText id="item5" value="#{item.dataFim}" >
+	                        	<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+                    </h:column>
+                	<h:column id="col6">
+                        <f:facet name="header" rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR_ALTERAR')}">
+                            EDITAR
+                        </f:facet>
+                       <h:commandLink id="editar"
+                       				  value="Editar" 
+                       				  action="#{areaSetorCompetenciaFormBean.prepareAlterar}"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{areaSetorCompetenciaFormBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+                	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR_EXCLUIR')}">
+                        <f:facet name="header">
+                            EXCLUIR
+                        </f:facet>
+                        <h:commandLink id="excluir"
+                        			   value="Excluir"
+                        			   action="#{areaSetorCompetenciaListBean.excluir}" 
+                        			   styleClass="ico-delete" 
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                            <f:setPropertyActionListener target="#{areaSetorCompetenciaListBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+
+				</rich:dataTable>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{areaSetorCompetenciaListBean.pagedList.size() > 0}"/>
+
+			</div>
+
+			<h:commandButton id="incluir"
+							 value="Incluir"
+							 action="#{areaSetorCompetenciaFormBean.prepareIncluir}"
+							 styleClass="bt-padrao fr mg-right-15"
+							 rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR_INSERIR')}"/>
+							 
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{areaSetorCompetenciaListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15" 
+							 />				 
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

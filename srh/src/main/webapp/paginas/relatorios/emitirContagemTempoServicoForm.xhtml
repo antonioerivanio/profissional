@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<style>
+		.formularios fieldset,.box-border {
+			border: 1px solid #c6c6c6;
+			padding: 15px 15px 0px 15px;
+			padding-right: 0;
+			overflow: auto;
+			margin-bottom: 10px;
+			min-height: 100px;
+		}
+		</style>
+
+		<div class="titulo-pagina">
+			<h2>Contagem de Tempo de Contribuição</h2>
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+
+			<fieldset>
+
+				<legend>Dados Pessoais</legend>
+
+				<br/>
+
+				<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+				<div class="input-box box-100">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa" 
+									 name="nomeCompletoPessoa"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.pessoal.nomeCompleto}" />
+					</div>
+				</div>
+
+				<div class="input-box box-100">
+					<label for="">Mãe</label>
+					<div class="conteiner">
+						<h:inputText id="mae" 
+									 name="mae"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.pessoal.nomeMae}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 maxlength="14" 
+									 styleClass="maskCpf"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.pessoal.cpf}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">RG</label>
+					<div class="conteiner">
+						<h:inputText id="rg"
+									 maxlength="15"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.pessoal.rg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">Emissor</label>
+					<div class="conteiner">
+						<h:inputText id="rgEmissor"
+									 maxlength="10"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.pessoal.emissorRg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">UF</label>
+					<div class="conteiner">
+						<h:inputText id="rgUf"
+									 maxlength="2"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.pessoal.ufEmissorRg.id}" />
+					</div>
+				</div>
+
+			</fieldset>
+
+
+			
+			<!-- Situacao Atual -->
+			<fieldset>
+
+				<legend>Situação Atual</legend>
+
+				<br/>
+
+				<div class="input-box box-10" style="float: left;">
+					<label for="">Matrícula</label>
+					<div class="conteiner">
+						<h:inputText id="matriculaFuncional" 
+									 styleClass="maskMatricula"
+									 maxlength="5"
+									 disabled="true" 
+									 value="#{emitirContagemTempoServicoListBean.matricula}" >
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-45">
+					<label for="">Cargo</label>
+					<div class="conteiner">
+						<h:inputText id="cargo" 
+									 name="cargo"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.ocupacao.nomenclatura}" />
+					</div>
+				</div>
+				
+				<div class="input-box box-10">
+					<label for="">Data Início</label>
+					<div class="conteiner">
+						<h:inputText id="dataInicio" 
+									 name="dataInicio"
+									 disabled="true"
+									 converter="dateConverter"
+									 value="#{emitirContagemTempoServicoListBean.entidade.exercicio}" />
+					</div>
+				</div>
+				
+				<br />
+				
+				<div class="input-box box-45">
+					<label for="">Setor</label>
+					<div class="conteiner">
+						<h:inputText id="setor" 
+									 name="setor"
+									 disabled="true"
+									 value="#{emitirContagemTempoServicoListBean.entidade.setor.nome}" />
+					</div>
+				</div>
+
+			</fieldset>
+
+
+
+			<!-- Contagem do Tempo -->
+
+			<fieldset>
+
+				<legend>
+					Contagem do Tempo até
+					<h:outputText style="color:blue; padding-left:4px" id="item33" value="#{emitirContagemTempoServicoListBean.dataFim}" >
+	                 <f:convertDateTime id="convDataFim" type="date" pattern="dd/MM/yyyy" />
+	                 </h:outputText>  
+	                        	
+	              </legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+					
+					<rich:dataTable id="tempo" value="#{emitirContagemTempoServicoListBean.entidade}" var="entidade" >
+
+						<h:column id="col1">
+	                        <f:facet name="header">
+	                          Total de Dias
+	                        </f:facet>
+	                      <center><h:outputText id="item1" value="#{emitirContagemTempoServicoListBean.totalDia}" /></center>
+	                    </h:column>
+	                    <h:column id="col2">
+	                        <f:facet name="header">
+	                          Anos
+	                        </f:facet>
+	                      <center><h:outputText id="item2" value="#{emitirContagemTempoServicoListBean.ano}" /></center>
+	                    </h:column>
+	                    <h:column id="col3">
+	                        <f:facet name="header">
+	                          Meses
+	                        </f:facet>
+	                      <center><h:outputText id="item3" value="#{emitirContagemTempoServicoListBean.mes}" /></center>
+	                    </h:column>
+	                    <h:column id="col4">
+	                        <f:facet name="header">
+	                          Dias
+	                        </f:facet>
+	                      <center><h:outputText id="item4" value="#{emitirContagemTempoServicoListBean.dia}" /></center>
+	                    </h:column>
+					</rich:dataTable>
+
+				</div>
+
+			</fieldset>
+
+
+
+
+			<!-- Tempo de Contribuição -->
+
+			<fieldset>
+
+				<legend>Tempo de Contribuição</legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+	
+					<rich:dataTable id="listaFuncional" value="#{emitirContagemTempoServicoListBean.listaFuncional}" var="funcional" >
+
+	                    <h:column id="col5">
+	                        <f:facet name="header">
+	                           Cargo
+	                        </f:facet>
+	                        <h:outputText id="item5" value="#{funcional.ocupacao.nomenclatura}" />
+	                    </h:column>
+	                    <h:column id="col6">
+	                        <f:facet name="header">
+	                           Exercício
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item6" value="#{funcional.exercicio}" >
+	                        		<f:convertDateTime id="convFuncionalExercicio" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+	                    <h:column id="col7">
+	                        <f:facet name="header">
+	                           Até
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item7" value="#{funcional.saida}" >
+	                        		<f:convertDateTime id="convFuncionalSaida" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+	                    
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Anos
+	                        </f:facet>
+	                      	<center><h:outputText value="#{funcional.anos}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Meses
+	                        </f:facet>
+	                      	<center><h:outputText value="#{funcional.meses}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Dias
+	                        </f:facet>
+	                      	<center><h:outputText value="#{funcional.dias}" /></center>
+	                    </h:column>             
+	                    
+	                    <h:column id="col8">
+	                        <f:facet name="header">
+	                          Qtde. Dias
+	                        </f:facet>
+	                        <center>
+								<h:outputText id="item8" value="#{funcional.qtdeDias}" />  
+	                        </center>
+	                    </h:column>
+	                     
+	                    <h:column id="col9">
+	                        <f:facet name="header">
+	                          Descrição
+	                        </f:facet>
+							<h:outputText id="item9" value="#{funcional.descricaoNomeacao}" />
+						</h:column>
+					</rich:dataTable>
+
+				</div>
+
+			</fieldset>
+
+
+
+			<!-- Ferias em Dobro -->					
+
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaFerias.size() > 0}">
+
+			<fieldset>
+
+				<legend>Férias em Dobro</legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+
+					<rich:dataTable id="listaFerias" value="#{emitirContagemTempoServicoListBean.listaFerias}" var="ferias" >
+	
+	                    <h:column id="col10">
+	                        <f:facet name="header">
+	                          Ano referência
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item10" value="#{ferias.anoReferencia}" />
+	                        </center>
+	                    </h:column>
+	                    <h:column id="col11">
+	                        <f:facet name="header">
+	                           Qtde. Dias
+	                        </f:facet>
+	                      	<center>
+	                      		<h:outputText id="item11" value="#{ferias.qtdeDias*2}" />
+	                      	</center>
+	                    </h:column>
+	                    <h:column id="col12">
+							<f:facet name="header">
+	                          Observação
+	                        </f:facet>
+							<h:outputText id="item12" value="#{ferias.observacao}" />
+						</h:column>
+
+					</rich:dataTable>
+
+				</div>
+
+			</fieldset>
+
+			</h:panelGroup>
+
+
+
+			<!-- Licenca em Dobro -->					
+
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaLicencaEspecial.size() > 0}">
+
+			<fieldset>
+
+				<legend>Licença Especial em Dobro</legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+
+					<rich:dataTable id="listaLicencaEspecial" value="#{emitirContagemTempoServicoListBean.listaLicencaEspecial}" var="licenca" >
+
+	                    <h:column id="col13">
+	                        <f:facet name="header">
+	                         	Ano Inicial
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item13" value="#{licenca.anoinicial}" />
+	                        </center>
+	                    </h:column>
+
+						<h:column id="col14">
+							<f:facet name="header">
+								Ano Final
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item14" value="#{licenca.anofinal}" />
+	                        </center>
+	                    </h:column>
+	                    <h:column id="col15">
+	                        <f:facet name="header">
+	                           Qtde. Dias
+	                        </f:facet>
+	                      	<center>
+	                      		<h:outputText id="item15" value="#{licenca.saldodias*2}" />
+	                      	</center>
+	                    </h:column>	                    
+	                    <h:column id="col16">
+	                        <f:facet name="header">
+	                        	Descrição
+	                        </f:facet>
+                        	<h:outputText id="item16" value="#{licenca.descricao}" />
+						</h:column>
+
+					</rich:dataTable>
+
+				</div>
+					
+			</fieldset>
+
+			</h:panelGroup>
+					
+
+
+			<!-- Averbacao -->
+
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaAverbacao.size() > 0}">
+
+				<fieldset>
+
+				<legend>Averbação de Tempo de Contribuição</legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+
+					<rich:dataTable id="listaAverbacao" value="#{emitirContagemTempoServicoListBean.listaAverbacao}" var="averbacao" >
+
+						<h:column id="col17">
+							<f:facet name="header">
+	                        	Data Início
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item17" value="#{averbacao.inicio}" >
+	                        		<f:convertDateTime id="convAverbacaoInicio" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+						<h:column id="col18">
+	                        <f:facet name="header">
+	                        	Data Fim
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item18" value="#{averbacao.fim}" >
+	                        		<f:convertDateTime id="convAverbacaoFim" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+	                    
+	                     <h:column>
+	                        <f:facet name="header">
+	                          Anos
+	                        </f:facet>
+	                      	<center><h:outputText value="#{averbacao.anos}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Meses
+	                        </f:facet>
+	                      	<center><h:outputText value="#{averbacao.meses}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Dias
+	                        </f:facet>
+	                      	<center><h:outputText value="#{averbacao.dias}" /></center>
+	                    </h:column>
+	                    
+	                    
+	                    <h:column id="col19">
+	                        <f:facet name="header">
+	                           Qtde. Dias
+	                        </f:facet>
+	                      	<center>
+	                      		<h:outputText id="item19" value="#{averbacao.qtdeDias}" />
+	                      	</center>
+	                    </h:column>
+	                    <h:column id="col20">
+	                        <f:facet name="header">
+	                         	Descrição
+	                        </f:facet>
+                        	<h:outputText id="item20" value="#{averbacao.descricao}" />
+						</h:column>
+
+					</rich:dataTable>
+					
+				</div>
+					
+			</fieldset>
+
+			</h:panelGroup>
+					
+
+
+			<!-- Acrescimo -->
+					
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaAcrescimo.size() > 0}">
+
+				<fieldset>
+
+				<legend>Acréscimos de Tempo de Contribuição</legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+
+					<rich:dataTable id="listaAcrescimo" value="#{emitirContagemTempoServicoListBean.listaAcrescimo}" var="acrescimo" >
+
+						<h:column id="col21">
+							<f:facet name="header">
+	                        	Data Início
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item21" value="#{acrescimo.inicio}" >
+	                        		<f:convertDateTime id="convAcrescimoInicio" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+	                    <h:column id="col22">
+	                        <f:facet name="header">
+	                        	Data Fim
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item22" value="#{acrescimo.fim}" >
+	                        		<f:convertDateTime id="convAcescimoFim" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+	                    <h:column id="col23">
+	                        <f:facet name="header">
+	                           Qtde. Dias
+	                        </f:facet>
+	                      	<center>
+	                      		<h:outputText id="item23" value="#{acrescimo.qtdeDias}" />
+	                      	</center>
+	                    </h:column>
+	                    <h:column id="col24">
+	                        <f:facet name="header">
+	                        	Descrição
+	                        </f:facet>
+                        	<h:outputText id="item24" value="#{acrescimo.descricao}" />
+						</h:column>
+
+					</rich:dataTable>
+					
+				</div>
+					
+			</fieldset>
+
+			</h:panelGroup>
+					
+
+
+			<!-- Deducao -->
+
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaDeducao.size() > 0}">
+
+			<fieldset>
+
+				<legend>Dedução de Tempo de Contribuição</legend>
+
+				<br/>
+
+				<div class="tabela-dados">
+
+					<rich:dataTable id="listaDeducao" value="#{emitirContagemTempoServicoListBean.listaDeducao}" var="deducao" >
+				
+						<h:column id="col25">
+	                        <f:facet name="header">
+	                        	Tipo
+	                        </f:facet>
+                      		<h:outputText id="item25" value="#{deducao.descricaoCompleta}" />
+	                    </h:column>
+	                    <h:column id="col27">
+	                        <f:facet name="header">
+	                         	Data Início
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item27" value="#{deducao.inicio}" >
+	                        		<f:convertDateTime id="convDeducaoInicio" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+	                    <h:column id="col28">
+	                        <f:facet name="header">
+	                         	Data Fim
+	                        </f:facet>
+	                        <center>
+	                        	<h:outputText id="item28" value="#{deducao.fim}" >
+	                        		<f:convertDateTime id="convDeducaoFim" type="date" pattern="dd/MM/yyyy" />
+	                        	</h:outputText>
+	                        </center>
+	                    </h:column>
+	                    
+	                    
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Anos
+	                        </f:facet>
+	                      	<center><h:outputText value="#{deducao.anos}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Meses
+	                        </f:facet>
+	                      	<center><h:outputText value="#{deducao.meses}" /></center>
+	                    </h:column>
+	                    <h:column>
+	                        <f:facet name="header">
+	                          Dias
+	                        </f:facet>
+	                      	<center><h:outputText value="#{deducao.dias}" /></center>
+	                    </h:column>
+	                    
+	                    
+	                    
+	                    <h:column id="col29">
+	                        <f:facet name="header">
+	                           	Qtde. Dias
+	                        </f:facet>
+	                      	<center>
+	                      		<h:outputText id="item29" value="#{deducao.qtdeDias}" />
+	                      	</center>
+	                    </h:column>
+	                    <h:column id="col30">
+	                        <f:facet name="header">
+	                          	Descrição
+	                        </f:facet>
+                        	<h:outputText id="item30" value="#{deducao.descricao}" />
+						</h:column>
+
+					</rich:dataTable>
+					
+				</div>
+					
+			</fieldset>
+
+			</h:panelGroup>
+					
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-bottom-10" action="/paginas/relatorios/emitirContagemTempoServicoList.faces" immediate="true">
+				<f:setPropertyActionListener target="#{emitirContagemTempoServicoListBean.passouConsultar}" value="true"/>
+			</h:commandButton>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

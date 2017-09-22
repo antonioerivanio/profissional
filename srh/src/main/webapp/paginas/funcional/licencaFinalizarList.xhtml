@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Licença</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{licencaFinalizarListBean.form}" styleClass="formularios box-border">
+
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="input-box box-50">
+				<label for="">Nome</label>
+				<div class="conteiner">
+					<h:inputText id="nome"
+								 name="nome"
+								 value="#{licencaFinalizarListBean.nome}" />
+				</div>
+			</div>
+
+			<div class="select-box box-20 mg-left-10 ">
+				<label for="">Tipo de Licença</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="tipoLicenca"
+									 value="#{licencaFinalizarListBean.tipoLicenca}"
+									 converter="entityConverter" >
+					  	<f:selectItem id="selecioneTipoLicenca" itemLabel="Todos" itemValue="" />
+					  	<f:selectItems 	id="comboTipoLicenca" 
+					  					value="#{licencaFinalizarListBean.comboTipoLicenca}"
+					  					var="tipoLicenca"
+					  					itemValue="#{tipoLicenca}"
+					  					itemLabel="#{tipoLicenca.descricao}" />
+					</h:selectOneMenu>
+				</div>
+			</div>
+
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{licencaFinalizarListBean.consultar}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10"
+							 reRender="scroller,lista"/>
+			
+			<div class="tabela-dados">
+				<rich:dataTable id="lista" value="#{licencaFinalizarListBean.dataModel}" var="item" rows="10" binding="#{licencaFinalizarListBean.dataTable}">
+					 <h:column id="col1" headerClass="cel-10">
+                        <f:facet id="header1" name="header">
+                            ID
+                        </f:facet>
+                        <center><h:outputText id="item1" value="#{item.id}" styleClass="cel-10" /></center>
+                    </h:column>
+                    <h:column id="col2" headerClass="width: 40%;">
+                        <f:facet id="header2" name="header">
+                            NOME
+                        </f:facet>
+                        <h:outputText id="item2" value="#{item.pessoal.nome}" styleClass="width: 40%;" />
+                    </h:column>
+                    <h:column id="col3" rendered="#{licencaFinalizarListBean.tipoLicenca == null}">
+                        <f:facet id="header3" name="header">
+                            Tipo de Licença
+                        </f:facet>
+                        <center><h:outputText id="item3" value="#{item.tipoLicenca.descricao}" /></center>
+                    </h:column>
+                    <h:column id="col4" headerClass="cel-10">
+                        <f:facet id="header4" name="header">
+                            Início
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item4" value="#{item.inicio}" styleClass="cel-10" >
+                        		<f:convertDateTime id="convInicio1" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                     <h:column id="col5" headerClass="cel-10">
+                        <f:facet id="header5" name="header">
+                            Final
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item5" value="#{item.fim}" styleClass="cel-10" >
+                        		<f:convertDateTime id="convInicio2" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                    <h:column id="col6" headerClass="cel-10">
+                        <f:facet id="header6" name="header">
+                            Dias
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item6" value="#{item.dias}" styleClass="cel-10" />
+                        </center>
+                    </h:column>
+                	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ALTERAR')}">
+                        <f:facet id="header7" name="header">
+                            FINALIZAR
+                        </f:facet>
+                       <h:commandLink id="finalizar"
+                       				  value="Finalizar"
+                       				  action="#{licencaFinalizarListBean.finalizar}"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{licencaFinalizarListBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+				</rich:dataTable>
+			<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{licencaFinalizarListBean.pagedList.size() > 0}"/>
+
+
+			</div>
+
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{licencaFinalizarListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15" 
+							 />								 
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

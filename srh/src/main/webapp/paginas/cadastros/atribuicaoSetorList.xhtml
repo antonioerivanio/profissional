@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Atribuições Setoriais</h2>
+
+		</div>
+		<h:form id="form" binding="#{atribuicaoSetorListBean.form}" styleClass="formularios box-border">
+			
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+			
+			<div id="div1" class="select-box box-38">
+				<h:outputLabel id="lblSetor" value="Setor *">
+					<div class="radio-box mg-left-10 " style="display: inline-block;">
+					 Exibir somente setores ativos	
+					 <h:selectBooleanCheckbox value="#{atribuicaoSetorListBean.setoresAtivos}" id="setoresAtivos" >
+					 	<a4j:support id="atualizaSetores" 
+									 event="onclick"
+									 ajaxSingle="true" 
+									 reRender="cmbSetor" />									
+					 </h:selectBooleanCheckbox>
+					</div>
+				</h:outputLabel>
+				<div id="div2" class="conteiner">
+					<h:selectOneMenu id="cmbSetor" value="#{atribuicaoSetorListBean.entidade.setor}" converter="entityConverter">
+						<f:selectItem id="siSelecione1" itemLabel="Selecione..." />
+						<f:selectItems id="siSetor" value="#{atribuicaoSetorListBean.comboSetor}" 
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
+					</h:selectOneMenu>
+				</div>				
+			</div>					
+			
+			
+			<div id="div3" class="select-box box-25">
+				<h:outputLabel id="lblAtiva" value="Atribuições"/>
+				<div id="div4" class="conteiner">
+					<h:selectOneMenu id="cmbAtiva" value="#{atribuicaoSetorListBean.opcaoAtiva}" >
+						<f:selectItem id="si1" itemLabel="Todas" itemValue="0" />
+						<f:selectItem id="si2" itemLabel="Somente Ativas" itemValue="1" />
+						<f:selectItem id="si3" itemLabel="Somente Inativas" itemValue="2" />
+					</h:selectOneMenu>
+				</div>				
+			</div>
+			
+			
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{atribuicaoSetorListBean.consultar}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-30" 
+							 reRender="scroller,lista"/>
+			<h:commandButton id="relatorio"
+							 value="Relatório" 
+							 action="#{atribuicaoSetorListBean.relatorio}" 
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 style="margin-left: 10px" />
+			
+			<div  id="div5" class="tabela-dados">
+				
+				<rich:dataTable id="lista" 
+								var="item"
+								rows="#{atribuicaoSetorListBean.dataModel.pageSize}"
+								value="#{atribuicaoSetorListBean.dataModel}">				
+					
+					<rich:column id="clmTipo" >
+						<f:facet id="lblTipo" name="header">TIPO</f:facet>
+						<center>
+							<h:outputText id="tipo1" value="Geral" styleClass="cel-75" rendered="#{item.tipo eq 1}" />
+							<h:outputText id="tipo2" value="Específica" styleClass="cel-75" rendered="#{item.tipo eq 2}" />
+						</center>
+					</rich:column>	
+													
+					<h:column id="clmDescricao" headerClass="cel-50">
+                        <f:facet id="lblDescricao" name="header">DESCRIÇÃO</f:facet>
+                        <h:outputText id="descricao" value="#{item.descricao}" styleClass="cel-50" />
+                    </h:column>
+					
+					<rich:column id="clmInicio" >
+						<f:facet id="lblInicio" name="header">INICIO</f:facet>
+						<center>
+	                        <h:outputText id="item2" value="#{item.inicio}" >
+	                        	<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+					</rich:column>
+					<rich:column id="clmFim" >
+						<f:facet id="lblFim" name="header">FIM</f:facet>
+						<center>
+	                        <h:outputText id="item3" value="#{item.fim}" >
+	                        	<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+					</rich:column>					
+					
+					<rich:column id="clmEditar" >
+						<f:facet id="lblEditar" name="header">EDITAR</f:facet>
+						<h:commandLink id="editar" value="Editar"
+							action="#{atribuicaoSetorFormBean.prepareAlterar}"
+							styleClass="ico-editar">
+							<f:setPropertyActionListener target="#{atribuicaoSetorFormBean.entidade}" value="#{item}" />
+						</h:commandLink>
+					</rich:column>
+					
+					<rich:column id="clmExcluir" >
+						<f:facet id="lblExcluir" name="header">EXCLUIR</f:facet>
+						<h:commandLink id="excluir"
+                        			   value="Excluir"
+                        			   action="#{atribuicaoSetorListBean.excluir}" 
+                        			   styleClass="ico-delete" 
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                            <f:setPropertyActionListener target="#{atribuicaoSetorListBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+					</rich:column>
+				</rich:dataTable>
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide" 
+									renderIfSinglePage="false" 
+									page="#{atribuicaoSetorListBean.pagina}"/>
+			</div>
+			
+			<h:commandButton id="incluir"
+							 value="Incluir"
+							 action="#{atribuicaoSetorFormBean.prepareIncluir}"
+							 styleClass="bt-padrao fr mg-right-15"  />
+							 
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{atribuicaoSetorListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15" 	/>	
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

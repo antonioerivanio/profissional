@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Cursos por Área</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{cursoProfissionalBean.form}" styleClass="formularios box-border">
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="select-box box-38">
+				<label for="">Área</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="area" value="#{cursoProfissionalBean.area}"	converter="entityConverter">
+						<f:selectItem id="selecioneArea" itemLabel="Selecione..." itemValue="" />
+					   	<f:selectItems 	id="comboArea" 
+					   					value="#{cursoProfissionalBean.comboArea}"
+					   					var="area"
+					   					itemValue="#{area}"
+					   					itemLabel="#{area.descricao}"/>
+					</h:selectOneMenu>
+				</div>
+			</div>
+
+			<div class="input-box box-38">
+				<label for="">Curso</label>
+				<div class="conteiner">
+					<h:inputText id="curso" value="#{cursoProfissionalBean.descricao}" />
+				</div>
+			</div>
+
+			<div class="input-box box-10" >
+				<label for="">Data Início</label>
+				<div class="conteiner">
+					<h:inputText id="dataInicio" 
+								 name="dataInicio"
+								 styleClass="maskData" 
+								 converter="dateConverter"
+								 value="#{cursoProfissionalBean.inicio}" 
+								 maxlength="10" />
+				</div>
+			</div>
+
+			<div class="input-box box-10">
+				<label for="">Data Fim</label>
+				<div class="conteiner">
+					<h:inputText id="dataFim" 
+								 name="dataFim" 
+								 styleClass="maskData"
+								 converter="dateConverter"
+								 value="#{cursoProfissionalBean.fim}" 
+								 maxlength="10" />
+				</div>
+			</div> 
+			
+			
+			<h:commandButton id="relatorio"
+							 value="Relatório"
+							 action="#{cursoProfissionalBean.relatorio}"
+							 styleClass="bt-padrao fr mg-top-18 mg-left-10 mg-right-15" />
+			
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{cursoProfissionalBean.consultar}"
+							 styleClass="bt-padrao fr mg-top-18" 
+							 reRender="scroller,lista"/>
+			
+
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" value="#{cursoProfissionalBean.dataModel}" var="item" rows="10" binding="#{cursoProfissionalBean.dataTable}">
+
+					<h:column id="col1">
+                        <f:facet name="header">
+                            ID
+                        </f:facet>
+                        <center><h:outputText id="item1" value="#{item.id}" /></center>
+                    </h:column>
+                    <h:column id="col2">
+                        <f:facet name="header">
+                            Área
+                        </f:facet>
+                        <h:outputText id="item2" value="#{item.area.descricao}"  />
+                    </h:column>
+                    <h:column id="col3" >
+                        <f:facet name="header">
+                            Curso
+                        </f:facet>
+                        <h:outputText id="item3" value="#{item.descricao}" />
+                    </h:column>
+					<h:column id="col4">
+                        <f:facet name="header">
+                            Período início
+                        </f:facet>
+                        <center>
+	                        <h:outputText id="item4" value="#{item.inicio}" >
+	                        	<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+                    </h:column>
+                    <h:column id="col5">
+                        <f:facet name="header">
+                            Período Fim
+                        </f:facet>
+                        <center>
+	                        <h:outputText id="item5" value="#{item.fim}" >
+	                        	<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+                        </center>
+                    </h:column>
+                    <h:column id="col8" >
+                        <f:facet id="f8" name="header">
+                           Tipo
+                        </f:facet>                       
+                       	<h:outputText id="item8" value="#{item.posGraduacao.descricao}" />                       	
+                                        
+                    </h:column>
+                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_PROFISSIONAL_CURSOS_ALTERAR')}">
+                        <f:facet name="header">
+                            EDITAR
+                        </f:facet>
+                       <h:commandLink id="editar"
+                       				  value="Editar"
+                       				  action="incluirAlterar"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{cursoProfissionalBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+                	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_PROFISSIONAL_CURSOS_EXCLUIR')}">
+                        <f:facet name="header">
+                            EXCLUIR
+                        </f:facet>
+                        <h:commandLink id="excluir"
+                        			   value="Excluir"
+                        			   action="#{cursoProfissionalBean.excluir}"
+                        			   styleClass="ico-delete"
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                            <f:setPropertyActionListener target="#{cursoProfissionalBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+
+				</rich:dataTable>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{cursoProfissionalBean.pagedList.size() > 0}"/>
+				
+			</div>
+
+			<h:commandButton id="incluir"
+							 value="Incluir"
+							 action="incluirAlterar"
+							 styleClass="bt-padrao fr mg-right-15" 
+							 rendered="#{LoginBean.anyGranted('ROLE_FORMACAO_PROFISSIONAL_CURSOS_INSERIR')}"/>
+							 
+			<h:commandButton id="limpaTela"
+										 value="Limpar"
+										 action="#{cursoProfissionalBean.limpaTela}"
+										 styleClass="bt-padrao fr mg-right-15" 
+										 />
+		</h:form>
+
+	</ui:define>
+</ui:composition>

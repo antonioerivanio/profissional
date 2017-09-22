@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+<persistence-unit name="maindatabase" transaction-type="RESOURCE_LOCAL">
+
+	<!-- srh -->
+	<class>br.gov.ce.tce.srh.domain.Acrescimo</class>
+	<class> br.gov.ce.tce.srh.domain.RelatorioFerias</class>	
+	<class>br.gov.ce.tce.srh.domain.AreaAcademica</class>
+	<class>br.gov.ce.tce.srh.domain.AreaProfissional</class>
+	<class>br.gov.ce.tce.srh.domain.AreaSetor</class>
+	<class>br.gov.ce.tce.srh.domain.AreaSetorCompetencia</class>
+	<class>br.gov.ce.tce.srh.domain.AtestoPessoa</class>
+	<class>br.gov.ce.tce.srh.domain.AtribuicaoSetor</class>
+	<class>br.gov.ce.tce.srh.domain.Averbacao</class>
+	<class>br.gov.ce.tce.srh.domain.CategoriaFuncional</class>
+	<class>br.gov.ce.tce.srh.domain.Cbo</class>
+	<class>br.gov.ce.tce.srh.domain.ClasseReferencia</class>
+	<class>br.gov.ce.tce.srh.domain.Competencia</class>
+	<class>br.gov.ce.tce.srh.domain.CompetenciaCurso</class>
+	<class>br.gov.ce.tce.srh.domain.CompetenciaGraduacao</class>
+	<class>br.gov.ce.tce.srh.domain.CompetenciaOrganizacional</class>
+	<class>br.gov.ce.tce.srh.domain.CompetenciaSetorial</class>
+	<class>br.gov.ce.tce.srh.domain.CompetenciaOrganizacional</class>
+	<class>br.gov.ce.tce.srh.domain.CursoAcademica</class>
+	<class>br.gov.ce.tce.srh.domain.CursoProfissional</class>
+	<class>br.gov.ce.tce.srh.domain.Deducao</class>
+	<class>br.gov.ce.tce.srh.domain.Escolaridade</class>
+	<class>br.gov.ce.tce.srh.domain.Especialidade</class>
+	<class>br.gov.ce.tce.srh.domain.EspecialidadeCargo</class>
+	<class>br.gov.ce.tce.srh.domain.EstadoCivil</class>
+	<class>br.gov.ce.tce.srh.domain.Ferias</class>
+	<class>br.gov.ce.tce.srh.domain.Folha</class>
+	<class>br.gov.ce.tce.srh.domain.Funcional</class>
+	<class>br.gov.ce.tce.srh.domain.FuncionalAnotacao</class>
+	<class>br.gov.ce.tce.srh.domain.FuncionalAreaSetor</class>
+	<class>br.gov.ce.tce.srh.domain.FuncionalSetor</class>
+	<class>br.gov.ce.tce.srh.domain.Instituicao</class>
+	<class>br.gov.ce.tce.srh.domain.Licenca</class>
+	<class>br.gov.ce.tce.srh.domain.LicencaEspecial</class>
+	<class>br.gov.ce.tce.srh.domain.MotivoDependencia</class>
+	<class>br.gov.ce.tce.srh.domain.Municipio</class>
+	<class>br.gov.ce.tce.srh.domain.Ocupacao</class>
+	<class>br.gov.ce.tce.srh.domain.Parametro</class>
+	<class>br.gov.ce.tce.srh.domain.Pessoal</class>
+	<class>br.gov.ce.tce.srh.domain.PessoalCategoria</class>
+	<class>br.gov.ce.tce.srh.domain.PessoalCursoAcademica</class>
+	<class>br.gov.ce.tce.srh.domain.PessoalCursoProfissional</class>
+	<class>br.gov.ce.tce.srh.domain.Publicacao</class>
+	<class>br.gov.ce.tce.srh.domain.Raca</class>
+	<class>br.gov.ce.tce.srh.domain.RepresentacaoCargo</class>
+	<class>br.gov.ce.tce.srh.domain.RepresentacaoFuncional</class>
+	<class>br.gov.ce.tce.srh.domain.RepresentacaoSetor</class>
+	<class>br.gov.ce.tce.srh.domain.RepresentacaoValor</class>
+	<class>br.gov.ce.tce.srh.domain.Rubrica</class>
+	<class>br.gov.ce.tce.srh.domain.Simbolo</class>
+	<class>br.gov.ce.tce.srh.domain.Situacao</class>
+	<class>br.gov.ce.tce.srh.domain.TipoBeneficio</class>
+	<class>br.gov.ce.tce.srh.domain.TipoDependencia</class>
+	<class>br.gov.ce.tce.srh.domain.TipoDocumento</class>
+	<class>br.gov.ce.tce.srh.domain.TipoFerias</class>
+	<class>br.gov.ce.tce.srh.domain.TipoLicenca</class>
+	<class>br.gov.ce.tce.srh.domain.TipoMovimento</class>
+	<class>br.gov.ce.tce.srh.domain.TipoOcupacao</class>
+	<class>br.gov.ce.tce.srh.domain.TipoPublicacao</class>
+	<class>br.gov.ce.tce.srh.domain.Uf</class>
+	<class>br.gov.ce.tce.srh.domain.Vinculo</class>
+	<class>br.gov.ce.tce.srh.domain.CategoriaSetorPessoal</class>	
+	<class>br.gov.ce.tce.srh.domain.CategoriaFuncionalSetor</class>
+	<class>br.gov.ce.tce.srh.domain.CategoriaFuncionalSetorResponsabilidade</class>
+
+	<!-- sapjava -->
+	<class>br.gov.ce.tce.srh.sapjava.domain.Entidade</class>
+	<class>br.gov.ce.tce.srh.sapjava.domain.Setor</class>
+
+	<!-- sac -->
+	<class>br.gov.ce.tce.srh.sca.domain.Secao</class>
+	<class>br.gov.ce.tce.srh.sca.domain.Sistema</class>
+	<class>br.gov.ce.tce.srh.sca.domain.Permissao</class>
+	<class>br.gov.ce.tce.srh.sca.domain.Grupo</class>
+	<class>br.gov.ce.tce.srh.sca.domain.GrupoUsuario</class>
+	<class>br.gov.ce.tce.srh.sca.domain.Usuario</class>
+	
+	<!-- envers -->
+	<properties>
+		
+		<property name="hibernate.ejb.event.post-insert" value="org.hibernate.envers.event.AuditEventListener" />
+		<property name="hibernate.ejb.event.post-update" value="org.hibernate.envers.event.AuditEventListener" />
+		<property name="hibernate.ejb.event.post-delete" value="org.hibernate.envers.event.AuditEventListener" />
+		<property name="hibernate.ejb.event.pre-collection-update" value="org.hibernate.envers.event.AuditEventListener" />
+		<property name="hibernate.ejb.event.pre-collection-remove" value="org.hibernate.envers.event.AuditEventListener" />
+		<property name="hibernate.ejb.event.post-collection-recreate" value="org.hibernate.envers.event.AuditEventListener" />		
+			
+		<property name="org.hibernate.envers.audit_table_prefix" value=""/>		
+		<property name="org.hibernate.envers.audit_table_suffix" value="_AUD"/>		
+		<property name="org.hibernate.envers.revision_field_name" value="CD_REVISAO"/>		
+		<property name="org.hibernate.envers.revision_type_field_name" value="TIPO_REVISAO"/>		
+		<property name="org.hibernate.envers.revision_on_collection_change" value="true"/>	
+		<property name="org.hibernate.envers.do_not_audit_optimistic_locking_field" value="true"/>		
+		<property name="org.hibernate.envers.store_data_at_delete" value="true"/>			
+		<property name="org.hibernate.envers.default_schema" value="SRH"/>
+		
+	</properties>
+
+</persistence-unit>
+
+</persistence>

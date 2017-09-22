@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-	<SECAO ID="1" SISTEMA="1" NOME="COMPETENCIA_FUNCIONAL" 
-		   LINK="/srh/paginas/tabelas/competenciaFuncionalList.faces" 
-		   SECAOPAI="1" ORDEM="1" MENU="1" NIVEL="0" />
-
-	<PERMISSAO />
-</dataset>

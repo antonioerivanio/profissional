@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<script>
+		function openwindow()
+		{
+			nome = document.getElementById('form:nomeCompletoPessoa').value;
+			if (nome.length > 2) {
+				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","menubar=0,resizable=0,width=800,height=300");
+			} else {
+				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			}
+		}
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Emitir Tempo de Representação</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{tempoRepresentacaoFuncionalListBean.form}" styleClass="formularios box-border">
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			
+				<div class="input-box box-10">
+					<label for="">Matricula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 styleClass="maskMatricula"
+									 value="#{tempoRepresentacaoFuncionalListBean.matricula}" >
+	            			<a4j:support id="matriculaChange" event="onchange" reRender="cpf, nomeCompletoPessoa, matricula, cargo" ajaxSingle="true" />
+	        			</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 value="#{tempoRepresentacaoFuncionalListBean.cpf}" >
+							<a4j:support id="cpfChange" event="onchange" reRender="matricula, nomeCompletoPessoa, cpf, cargo" ajaxSingle="true" />
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{tempoRepresentacaoFuncionalListBean.nome}" />
+					</div>
+				</div>
+				
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18 mg-right-15">Pesquisar</a>	
+
+			</ui:fragment>
+
+			<div class="select-box box-20">
+				<label for="">Cargo</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="cargo"
+									 converter="entityConverter"
+							 		 value="#{tempoRepresentacaoFuncionalListBean.cargo}">
+					  	<f:selectItem id="selecioneCargo" itemLabel="Todos" itemValue="" />
+					  	<f:selectItems 	id="comboCargo" 
+					  					value="#{tempoRepresentacaoFuncionalListBean.cargos}"
+					  					var="c"
+					  					itemValue="#{c}"
+					  					itemLabel="#{c.nomenclatura}"/>
+					</h:selectOneMenu>
+				</div>
+			</div>						   
+			
+			<h:commandButton id="consultar"
+							 name="consultar"
+							 action="#{tempoRepresentacaoFuncionalListBean.consultar}"
+							 value="Consultar"
+							 styleClass="bt-padrao fl mg-top-18 mg-right-15" />
+							 
+			<h:commandButton id="relatorio"
+							 name="relatorio"
+							 action="#{tempoRepresentacaoFuncionalListBean.visualizarFicha}"
+							 value="Relatório"
+							 styleClass="bt-padrao fl mg-top-18 " />
+
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" value="#{tempoRepresentacaoFuncionalListBean.lista}" var="item" >
+                    <h:column id="col1">
+                        <f:facet name="header">
+                           ID
+                        </f:facet>
+                        <center><h:outputText id="item1" value="#{item.id}" /></center>
+                    </h:column>
+                    <h:column id="col2">
+                        <f:facet name="header">
+                           SETOR
+                        </f:facet>
+                        <h:outputText id="item2" value="#{item.setor.nome}" />
+                    </h:column>
+                    <h:column id="col3">
+                        <f:facet name="header">
+                           REPRESENTAÇÃO
+                        </f:facet>
+						<h:outputText id="item3" value="#{item.representacaoCargo.nomenclatura}" />
+                    </h:column>
+                    <h:column id="col4" headerClass="cel-15" >
+                        <f:facet name="header">
+                           INICIO
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item4" value="#{item.inicio}" styleClass="cel-15" >
+                        		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                     <h:column id="col5" headerClass="cel-15" >
+                        <f:facet name="header">
+                          ATÉ
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item5" value="#{item.fim}" styleClass="cel-15" >
+                        		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                     <h:column id="col6" headerClass="cel-15" style="text-align: right;">
+                        <f:facet name="header">
+                          DIAS
+                        </f:facet>
+                       	<h:outputText id="item6" value="#{item.dias}" styleClass="cel-15" />
+                    </h:column>
+				</rich:dataTable>
+
+			</div>			
+			
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{tempoRepresentacaoFuncionalListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+							 />			
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

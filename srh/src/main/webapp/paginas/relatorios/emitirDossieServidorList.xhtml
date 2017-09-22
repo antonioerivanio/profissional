@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<script>			
+			// Alteração para incluir os servidores inativos na consulta
+			function openwindow()
+			{
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				findAll = "OK";
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?parametro=" + nome+ ";" + findAll,"mywindow","findAll=OK,scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}			
+			}
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Relatório Histórico do Servidor</h2>
+
+		</div>
+		<h:form id="form" binding="#{emitirDossieServidorListBean.form}" styleClass="formularios box-border">
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+			
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			
+				<div class="input-box box-10">
+					<label for="">Matricula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 styleClass="maskMatricula"
+									 value="#{emitirDossieServidorListBean.matricula}" >
+	            			<a4j:support id="matriculaChange" event="onchange" reRender="cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+	        			</h:inputText>
+					</div>
+				</div>			
+	
+				<div class="input-box box-15">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 value="#{emitirDossieServidorListBean.cpf}" >
+							<a4j:support id="cpfChange" event="onchange" reRender="matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+						</h:inputText>
+					</div>
+				</div>
+	
+				<div class="input-box box-38">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{emitirDossieServidorListBean.nome}" />
+					</div>
+				</div>
+	
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+			
+			</ui:fragment>
+			   			
+			<div class="radios-group box-100" style="width: inherit;">
+				<h3>Opções</h3>
+				<div class="conteiner" style="display: inline-block; float: left; margin-right: 0px; border-right: 0px;">
+					<div style="margin: 1px 3px 0px">
+						<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.marcaTodos}" id="marcaTodos">
+							<a4j:support id="marcaTodosEvento" 
+									 event="onclick"
+									 ajaxSingle="true" 
+									 reRender="historicoLotacao, historicoLicenca, historicoFerias, progracaoFuncional, representacaoFuncional, anotacaoServidor" />
+						</h:selectBooleanCheckbox>						
+					</div>
+				</div>
+				<div class="conteiner">					
+					<div class="radio-box" style="margin-left: 4px;">
+					 Histórico de Lotação<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.historicoLotacao}" id="historicoLotacao"/>
+					</div>
+					 <div class="radio-box">
+					 Histórico de Licença<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.historicoLicenca}" id="historicoLicenca"/>
+					</div>
+					 <div class="radio-box">
+					 Histórico de Férias<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.historicoFerias}" id="historicoFerias"/>
+					</div>
+					<div class="radio-box">
+					 Progressão Funcional<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.progracaoFuncional}" id="progracaoFuncional"/>
+				    </div>
+				    <div class="radio-box">
+					 Representação Funcional<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.representacaoFuncional}" id="representacaoFuncional"/>
+				    </div>
+				    <div class="radio-box">
+					 Anotação Servidor<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.anotacaoServidor}" id="anotacaoServidor"/>
+				    </div>
+				</div>
+			</div>
+			
+			<h:commandButton id="relatorio"
+							 name="relatorio"
+							 action="#{emitirDossieServidorListBean.relatorio}" 
+							 value="Relatório" 
+							 styleClass="bt-padrao fr mg-top-15 mg-left-10 mg-right-15" 
+							 style="margin-left: 10px; clear: both;" />
+			
+			<h:commandButton id="consultar"
+							 name="consultar"
+							 action="#{emitirDossieServidorListBean.consultar}"
+							 value="Consultar"
+							 styleClass="bt-padrao fr mg-top-15 mg-left-10"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
+			
+
+			<div class="tabela-dados">
+				<rich:dataTable id="lista" value="#{emitirDossieServidorListBean.lista}" var="item" >
+					<h:column id="col1">
+						<f:facet name="header">
+						ID
+						</f:facet>
+						<center><h:outputText id="item1" value="#{item.id}" /></center>
+					</h:column>
+	                <h:column id="col2">
+						<f:facet name="header">
+						Matricula
+						</f:facet>
+						<center>
+							<h:outputText id="item2" value="#{item.matricula}">
+								<f:converter converterId="matriculaConverter"/>
+							</h:outputText>
+						</center>
+					</h:column>
+					<h:column id="col3">
+						<f:facet name="header">
+						Nome
+						</f:facet>
+						<center><h:outputText id="item3" value="#{item.nomeCompleto}" /></center>
+					</h:column>
+					<h:column id="col4">
+						<f:facet name="header">
+						Setor
+						</f:facet>
+						<center><h:outputText id="item4" value="#{item.setor.nome}" /></center>
+					</h:column>
+					<h:column id="col5">
+						<f:facet name="header">
+						VISUALIZAR
+						</f:facet>
+						<h:commandLink id="editar"
+									   value="Editar"
+									   action="#{emitirDossieServidorFormBean.visualizar}"
+									   styleClass="ico-editar" >
+							<f:setPropertyActionListener target="#{emitirDossieServidorFormBean.entidade}" value="#{item}" />
+						</h:commandLink>
+					</h:column>
+				</rich:dataTable>
+			</div>
+			
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{emitirDossieServidorListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+							 />	
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

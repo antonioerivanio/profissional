@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<script>
+			function openwindow(){
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
+			}			
+			
+			function desmarcaSomenteCargaHoraria(){
+				document.getElementById('form:somenteCargaHoraria').checked = false;
+				document.getElementById('form:somenteCursoGraduacao').checked = false;
+			}			
+		</script>
+		
+		<style>
+	        .tooltip {
+	            background-color: rgb(243, 242, 242);
+			    border-width: 1px;
+			    padding: 10px;
+			    border-radius: 5px;
+			    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.51);
+	        }
+	        .rich-panel-body {
+	        	padding: 0px; 
+	        }
+	        .rich-panel {
+	        	border-style: none;
+    			padding: 0px;
+    			background-color:#ffffff;
+	        }
+	        .rich-tool-tip{
+	        	border-color: #195297;
+	        }
+    	</style>
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Cursos por Servidor</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{cursoServidorListBean.form}" styleClass="formularios box-border">
+
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+		
+				<div style="display: flex;">
+					<div class="input-box box-6">
+						<label for="">Matricula</label>
+						<div class="conteiner">
+							<h:inputText id="matricula"
+										 name="matricula"
+										 maxlength="6" 
+										 styleClass="maskMatricula"
+										 value="#{cursoServidorListBean.matricula}"
+										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
+		            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" ajaxSingle="true" />
+		        			</h:inputText>
+						</div>
+					</div>
+		
+					<div class="input-box box-12">
+						<label for="">CPF</label>
+						<div class="conteiner">
+							<h:inputText id="cpf" 
+										 name="cpf"
+										 maxlength="14"
+										 styleClass="maskCpf"
+										 converter="cpfConverter"
+										 value="#{cursoServidorListBean.cpf}"
+										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
+								<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" ajaxSingle="true" />
+							</h:inputText>
+						</div>
+					</div>
+		
+					<div class="input-box box-38">
+						<label for="">Nome</label>
+						<div class="conteiner">
+							<h:inputText id="nomeCompletoPessoa"
+										 name="nomeCompletoPessoa"
+										 value="#{cursoServidorListBean.nome}"									
+										 onchange="desmarcaSomenteCargaHoraria()"
+										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" />
+						</div>
+					</div>
+									
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()" 
+					   class="bt-padrao fl mg-top-18 cl">Pesquisar</a>
+				
+				</div>	   
+				   
+				<div>  
+				   
+					<div class="radios-group box-15">
+						<rich:panel id="richpane1l">
+					        <label for="form:somenteCargaHoraria">Somente Carga Horária</label>
+					        <rich:toolTip id="tooltip1" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+						            <span style="white-space:nowrap">
+						                Marcar essa opção somente para relatório consolidado <br />
+						                com cargas horárias atingidas por cada servidor do TCE. 
+						            </span>
+					      	</rich:toolTip>
+					      	<div class="conteiner">
+						      	<div class="radio-box">
+									<h:selectBooleanCheckbox
+										id="somenteCargaHoraria"
+										value="#{cursoServidorListBean.somenteCargaHoraria}"
+										disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
+											<a4j:support id="somenteCargaHorariaClick" 
+											 event="onclick"
+											 action="#{cursoServidorListBean.somenteCargaHorariaAction}"
+											 ajaxSingle="true" 
+											 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCursoGraduacao, consultar" />
+									</h:selectBooleanCheckbox>
+								</div>
+							</div>
+					    </rich:panel>
+					</div>
+					
+					<div class="radios-group box-15">
+						<rich:panel id="richpanel2">
+					        <label for="form:somenteCursoGraduacao">Somente Curso Graduação</label>
+					        <rich:toolTip id="toolti2" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+						            <span style="white-space:nowrap">
+						                Marcar essa opção somente para relatório consolidado <br />
+						                com cursos de graduação de cada servidor do TCE. 
+						            </span>
+					      	</rich:toolTip>
+					      	<div class="conteiner">
+						      	<div class="radio-box">
+									<h:selectBooleanCheckbox
+										id="somenteCursoGraduacao"
+										value="#{cursoServidorListBean.somenteCursoGraduacao}"
+										disabled="#{cursoServidorListBean.somenteCargaHoraria}">
+											<a4j:support id="somenteCursoGraduacaoClick" 
+											 event="onclick"
+											 action="#{cursoServidorListBean.somenteCursoGraduacaoAction}"
+											 ajaxSingle="true" 
+											 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCargaHoraria, dataInicio, dataFim, atuacao, posGraduacao, profissional, consultar"
+											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />
+									</h:selectBooleanCheckbox>
+								</div>
+							</div>
+					    </rich:panel>
+					</div>
+				
+				</div>
+			
+			</ui:fragment>
+			   
+			<div class="input-box box-10" style="clear:both">
+				<label for="">Data Início</label>
+				<div class="conteiner">
+					<h:inputText id="dataInicio" 
+								 name="dataInicio"
+								 styleClass="maskData" 
+								 converter="dateConverter"
+								 value="#{cursoServidorListBean.inicio}" 
+								 maxlength="10"
+								 disabled="#{cursoServidorListBean.somenteCursoGraduacao}" />
+				</div>
+			</div>
+
+			<div class="input-box box-10">
+				<label for="">Data Fim</label>
+				<div class="conteiner">
+					<h:inputText id="dataFim" 
+								 name="dataFim" 
+								 styleClass="maskData"
+								 converter="dateConverter"
+								 value="#{cursoServidorListBean.fim}" 
+								 maxlength="10"
+								 disabled="#{cursoServidorListBean.somenteCursoGraduacao}" />
+				</div>
+			</div> 
+			
+			<div class="radios-group box-10">
+				<h3>Area de atuação</h3>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="atuacao"
+							value="#{cursoServidorListBean.areaAtuacao}"
+							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>			
+						
+			<div class="select-box box-25">
+				<label for="">Tipo de Curso</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="tipoCurso" 
+									 value="#{cursoServidorListBean.tipoCurso}" >
+						<f:selectItem id="selecioneTitulacao" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboTitulacao" 
+					  					value="#{cursoServidorListBean.comboTipoCurso}"
+					  					var="tipo"
+					  					itemValue="#{tipo}"
+					  					itemLabel="#{tipo.descricao}"/>					
+						
+						<a4j:support id="tipoCursoChange" 
+											 event="onchange"
+											 action="#{cursoServidorListBean.tipoCursoAction}"
+											 ajaxSingle="true" 
+											 reRender="somentePosGraduacao, messages, lista, scroller" />
+						
+					</h:selectOneMenu>    
+				</div>
+			</div>			
+						
+			<div class="radios-group box-16">
+				<label for="form:somentePosGraduacao">Somente Curso Pós-Graduação</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="somentePosGraduacao"
+							value="#{cursoServidorListBean.somentePosGraduacao}"
+							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
+							
+							<a4j:support id="somentePosGraduacaoClick" 
+											 event="onclick"
+											 action="#{cursoServidorListBean.somentePosGraduacaoAction}"
+											 ajaxSingle="true" 
+											 reRender="tipoCurso, messages, lista, scroller" />
+							
+						</h:selectBooleanCheckbox>
+					</div>
+				</div>
+			</div>
+			
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{cursoServidorListBean.consultar}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 reRender="scroller,lista"
+							 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}"/>
+			
+			<h:commandButton id="relatorio"
+							 value="Relatório"
+							 action="#{cursoServidorListBean.relatorio}" 
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 style="margin-left: 10px" />
+							 
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{cursoServidorListBean.limpaTela}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+							 />
+			
+			<h:commandButton id="limparListas"
+							 value="Limpar"
+							 action="#{cursoServidorListBean.limpaTelaServidor}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10"
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
+							 />				 
+
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista"								
+								var="item" 								
+								rows="#{cursoServidorListBean.dataModel.pageSize}" 
+								value="#{cursoServidorListBean.dataModel}"
+								>
+
+                    <h:column id="col2">
+                        <f:facet id="f1" name="header">
+                           Curso
+                        </f:facet>
+                        <h:outputText id="item2" value="#{item.cursoProfissional.descricao}" />
+                        <f:facet id="f2" name="footer"></f:facet>
+                    </h:column>
+                    <h:column id="col3">
+                        <f:facet id="f3" name="header">
+                           Área
+                        </f:facet>
+                        <h:outputText id="item3" value="#{item.cursoProfissional.area.descricao}" />
+                       
+                    </h:column>
+                    <h:column id="col4">
+                        <f:facet id="f4" name="header">
+                          Início
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item4" value="#{item.cursoProfissional.inicio}">
+                        		<f:convertDateTime id="convIni" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>                       
+                    </h:column>
+                    <h:column id="col5">
+                        <f:facet id="f5" name="header">
+                          Fim
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item5" value="#{item.cursoProfissional.fim}">
+                        		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                         <f:facet id="f6" style="text-aling:center;" name="footer"><h:outputText id="item7" value="#{cursoServidorListBean.labelTotalCargaHoraria}" /></f:facet>
+                    </h:column>
+                    <h:column id="col6">
+                        <f:facet id="f7" name="header">
+                           Carga Horária
+                        </f:facet>
+                       <center> <h:outputText id="item6" value="#{item.cursoProfissional.cargaHoraria}" /></center>
+                       <f:facet id="f8" style="text-aling:center;" name="footer"><h:outputText  id="item8" value="#{cursoServidorListBean.totalCargaHoraria}" /></f:facet>
+                    </h:column>              
+
+				</rich:dataTable>
+				
+				<rich:datascroller  id="scroller" 
+									for="lista" 
+									stepControls="hide" 
+									renderIfSinglePage="false" 
+									page="#{cursoServidorListBean.pagina}"/>
+			
+			</div>						 
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

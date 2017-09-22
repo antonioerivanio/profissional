@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<script>
+		function openwindow()
+		{
+			nome = document.getElementById('form:nomeCompletoPessoa').value;
+			if (nome.length > 2) {
+				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+			} else {
+				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			}
+		}
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Consultar Acréscimos do Servidor</h2>
+		</div>
+
+		<h:form id="form" binding="#{acrescimoListBean.form}" styleClass="formularios box-border">
+
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+			
+			<div class="input-box box-10">
+				<label for="">Matrícula</label>
+				<div class="conteiner">
+					<h:inputText id="matricula"
+								 name="matricula"
+								 maxlength="6"
+								 styleClass="maskMatricula"
+								 value="#{acrescimoListBean.matricula}" >
+            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa" ajaxSingle="true" />
+        			</h:inputText>
+				</div>
+			</div>
+
+			<div class="input-box box-15">
+				<label for="">CPF</label>
+				<div class="conteiner">
+					<h:inputText id="cpf" 
+								 name="cpf"
+								 maxlength="14"
+								 styleClass="maskCpf"
+								 converter="cpfConverter"
+								 value="#{acrescimoListBean.cpf}" >
+						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa" ajaxSingle="true" />
+					</h:inputText>
+				</div>
+			</div>
+
+			<div class="input-box box-38">
+				<label for="">Nome</label>
+				<div class="conteiner">
+					<h:inputText id="nomeCompletoPessoa"
+								 name="nomeCompletoPessoa"
+								 value="#{acrescimoListBean.nome}" />
+				</div>
+			</div>
+
+			<a id="form:Pesquisar" 
+			   href="#" 
+			   onclick="openwindow()" 
+			   class="bt-padrao fl mg-top-18">Pesquisar</a>
+
+			<h:commandButton id="consultar"
+							 value="Consultar"
+							 action="#{acrescimoListBean.consultar}"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 reRender="scroller,lista"/>
+			<h:commandButton id="Relatório"
+							 value="Relatório"
+							 action="#{acrescimoListBean.relatorio}" 
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 style="margin-left: 10px" />
+							 
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" value="#{acrescimoListBean.dataModel}" var="item" rows="10" binding="#{acrescimoListBean.dataTable}">
+
+					<h:column id="col1">
+                        <f:facet name="header">
+                            ID
+                        </f:facet>
+                        <center><h:outputText id="item1" value="#{item.id}" /></center>
+                    </h:column>	
+               		<h:column id="col2" headerClass="cel-25">
+                        <f:facet name="header">
+                            Início
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item2" value="#{item.inicio}" styleClass="cel-25" >
+                        		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                	<h:column id="col3" headerClass="cel-25">
+                        <f:facet name="header">
+                            Final
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item3" value="#{item.fim}" styleClass="cel-25" >
+                        		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                	<h:column id="col4" headerClass="cel-25">
+                        <f:facet name="header">
+                            Dias
+                        </f:facet>
+                        <center><h:outputText id="item4" value="#{item.qtdeDias}" styleClass="cel-25" /></center>
+                    </h:column>      
+               		<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_ACRESCIMO_ALTERAR')}">
+                        <f:facet name="header">
+                            EDITAR
+                        </f:facet>
+                       <h:commandLink id="editar"
+                       				  value="Editar"
+                       				  action="#{acrescimoFormBean.prepareAlterar}"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{acrescimoFormBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_ACRESCIMO_EXCLUIR')}">
+                        <f:facet name="header">
+                            EXCLUIR
+                        </f:facet>
+                        <h:commandLink id="excluir"
+                        			   value="Excluir"
+                        			   action="#{acrescimoListBean.excluir}" 
+                        			   styleClass="ico-delete" 
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                            <f:setPropertyActionListener target="#{acrescimoListBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+
+				</rich:dataTable>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{acrescimoListBean.pagedList.size() > 0}"/>
+			</div>
+
+			<h:commandButton id="incluir" 
+							 value="Incluir"
+							 action="#{acrescimoFormBean.prepareIncluir}"
+							 styleClass="bt-padrao fr mg-right-15" 
+							 rendered="#{LoginBean.anyGranted('ROLE_ACRESCIMO_INSERIR')}"/>
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{acrescimoListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15" 
+							 />					 
+
+		</h:form>
+		
+	</ui:define>
+</ui:composition>

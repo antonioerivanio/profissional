@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<dataset>
-
-	<TB_PARAMETRO ID="1" NOME="pathImageSRH" DESCRICAO="diretorio no servidor das imagens do SRH" VALOR="C:\TEMP\" />
-	<TB_PARAMETRO ID="2" NOME="CAMARQPUB" DESCRICAO="diretorio no servidor dos documentos do SRH" VALOR="C:\TEMP\" />
-
-</dataset>

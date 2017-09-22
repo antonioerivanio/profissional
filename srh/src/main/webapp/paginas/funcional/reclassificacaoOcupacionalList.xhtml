@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+
+	<ui:define name="content">
+
+		<script>
+		function openwindow()
+		{
+			nome = document.getElementById('form:nomeCompletoPessoa').value;
+			if (nome.length > 2) {
+				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","menubar=0,resizable=0,width=800,height=300");
+			} else {
+				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			}
+		}
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Reclassificação Ocupacional do Servidor</h2>
+
+		</div>
+
+		<h:form id="form" binding="#{reclassificacaoOcupacionalListBean.form}" styleClass="formularios box-border">
+
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="input-box box-10">
+				<label for="">Matricula</label>
+				<div class="conteiner">
+					<h:inputText id="matricula"
+								 name="matricula"
+								 maxlength="6"
+								 styleClass="maskMatricula"
+								 value="#{reclassificacaoOcupacionalListBean.matricula}" >
+            			<a4j:support id="matriculaChange" event="onchange" reRender="messages, cpf, nomeCompletoPessoa" ajaxSingle="true" />
+        			</h:inputText>
+				</div>
+			</div>
+
+			<div class="input-box box-15">
+				<label for="">CPF</label>
+				<div class="conteiner">
+					<h:inputText id="cpf" 
+								 name="cpf"
+								 maxlength="14"
+								 styleClass="maskCpf"
+								 converter="cpfConverter"
+								 value="#{reclassificacaoOcupacionalListBean.cpf}" >
+						<a4j:support id="cpfChange" event="onchange" reRender="messages, matricula, nomeCompletoPessoa" ajaxSingle="true" />
+					</h:inputText>
+				</div>
+			</div>
+
+			<div class="input-box box-38">
+				<label for="">Nome</label>
+				<div class="conteiner">
+					<h:inputText id="nomeCompletoPessoa"
+								 name="nomeCompletoPessoa"
+								 value="#{reclassificacaoOcupacionalListBean.nome}" />
+				</div>
+			</div>
+
+			<a id="form:Pesquisar" 
+			   href="#" 
+			   onclick="openwindow()" 
+			   class="bt-padrao fl mg-top-18">Pesquisar</a>
+
+			<h:commandButton id="consultar"
+							 name="consultar"
+							 action="#{reclassificacaoOcupacionalListBean.consultar}"
+							 value="Consultar"
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 reRender="scroller,lista"/>
+
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" value="#{reclassificacaoOcupacionalListBean.dataModel}" var="item" rows="10" binding="#{reclassificacaoOcupacionalListBean.dataTable}">
+
+                    <h:column id="col1" headerClass="cel-15" >
+                        <f:facet name="header">
+                           ID
+                        </f:facet>
+                        <center><h:outputText id="item1" value="#{item.id}" /></center>
+                    </h:column>
+                    <h:column id="col2" headerClass="cel-25" >
+                        <f:facet name="header">
+                            Tipo Entrada
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item2" value="#{item.tipoMovimentoEntrada.descricao}" styleClass="cel-25" />
+                        </center>
+                    </h:column>
+                    <h:column id="col3" headerClass="cel-25" >
+                        <f:facet name="header">
+                           Cargo
+                        </f:facet>
+                        <center><h:outputText id="item3" value="#{item.ocupacao.nomenclatura}" styleClass="cel-25" /></center>
+                    </h:column>
+                    <h:column id="col4" headerClass="cel-15" >
+                         <f:facet name="header">
+                           Início
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item4" value="#{item.posse}" styleClass="cel-15" >
+	                        	<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+	                    </center>
+                    </h:column>
+                    <h:column id="col5" headerClass="cel-15" >
+                        <f:facet name="header">
+                           Fim
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item5" value="#{item.saida}" styleClass="cel-15" >
+	                        	<f:convertDateTime id="convSaida" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
+	                    </center>
+                    </h:column>
+                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_RECLASSIFICACAO_RECLASSIFICAR')}" >
+                        <f:facet name="header">
+                            RECLASSIFICAR
+                        </f:facet>
+                       <h:commandLink id="editar"
+                       				  value="Editar"
+                       				  action="#{reclassificacaoOcupacionalFormBean.prepareAlterar}"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{reclassificacaoOcupacionalFormBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+
+				</rich:dataTable>
+				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{reclassificacaoOcupacionalListBean.pagedList.size() > 0}"/>
+			</div>
+			
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="#{reclassificacaoOcupacionalListBean.limpaTela}"
+							 styleClass="bt-padrao fr mg-right-15" 
+							 />
+			
+		</h:form>
+
+	</ui:define>
+</ui:composition>
