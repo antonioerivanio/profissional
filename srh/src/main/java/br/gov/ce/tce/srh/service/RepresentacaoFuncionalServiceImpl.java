@@ -334,23 +334,29 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	 */
 	private void validarLimitePessoas(RepresentacaoFuncional entidade) {
 
-		// verificando data de inicio da vigencia
-		Calendar calendarInicio = new GregorianCalendar();
-		calendarInicio.setTime( entidade.getInicio() );
+		RepresentacaoFuncional representacaoBD = entidade.getId() != null ? this.dao.getById(entidade.getId()): null;
+		
+		// crítica deve ser excutada em caso de inclusão ou alteração de tipo de nomeacao
+		if (representacaoBD == null || representacaoBD.getTipoNomeacao().intValue() != entidade.getTipoNomeacao().intValue()){
+			
+			// verificando data de inicio da vigencia
+			Calendar calendarInicio = new GregorianCalendar();
+			calendarInicio.setTime( entidade.getInicio() );
 
-		if( calendarInicio.get( GregorianCalendar.YEAR ) > 2011 ) {
+			if( calendarInicio.get( GregorianCalendar.YEAR ) > 2011 ) {
 
-			// pegando a qtde de representacoes ativas, por tipo de nomeacao / cargo / setor
-			List<RepresentacaoFuncional> representacoesAtivas = dao.findByTipoNomeacaoCargoSetor( entidade.getTipoNomeacao(), 
-					entidade.getRepresentacaoCargo().getId(), entidade.getSetor().getId() );
+				// pegando a qtde de representacoes ativas, por tipo de nomeacao / cargo / setor
+				List<RepresentacaoFuncional> representacoesAtivas = dao.findByTipoNomeacaoCargoSetor( entidade.getTipoNomeacao(), 
+						entidade.getRepresentacaoCargo().getId(), entidade.getSetor().getId() );
 
-			// validando com a quantidade maxima permitida
-			RepresentacaoSetor representacaoSetor = representacaoSetorService.getByCargoSetor( entidade.getRepresentacaoCargo().getId(), 
-					entidade.getSetor().getId() );
+				// validando com a quantidade maxima permitida
+				RepresentacaoSetor representacaoSetor = representacaoSetorService.getByCargoSetor( entidade.getRepresentacaoCargo().getId(), 
+						entidade.getSetor().getId() );
 
-			if ( representacoesAtivas.size() >= representacaoSetor.getQuantidade() )
-				throw new SRHRuntimeException("Quantidade de funcionários neste cargo/setor/tipo nomeação excedeu o limite permitido.");
-
+				if ( representacoesAtivas.size() >= representacaoSetor.getQuantidade() )
+					throw new SRHRuntimeException("Quantidade de funcionários neste cargo/setor/tipo nomeação excedeu o limite permitido.");
+		
+			}
 		}
 
 	}
