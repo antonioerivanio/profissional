@@ -89,9 +89,8 @@
 					  					itemLabel="#{tipoDependencia.descricao}"/>
 					  	<a4j:support event="onchange" 
 					  	             action="#{dependenteFormBean.tipoDependenciaSelecionado}"
-					  	             reRender="tipoDuracao" 
-					  	             ajaxSingle="true" 
-					  	             rendered="#{!dependenteFormBean.alterar}" />
+					  	             reRender="tipoDuracao, universitario" 
+					  	             ajaxSingle="true" />
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -221,20 +220,19 @@
 			</div>
 			
 			
-			<h:panelGroup rendered="#{(not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')) or dependenteFormBean.alterar }">
-				<div class="radios-group box-15" >
-					<label>Universitário?</label>
-					<div class="conteiner">
-						<div class="radio-box">
-							<h:selectBooleanCheckbox
-								id="universitario"
-								value="#{dependenteFormBean.entidade.flUniversitario}"
-								disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
-							</h:selectBooleanCheckbox>
-						</div>
+			
+			<div class="radios-group box-15" >
+				<label>Universitário?</label>
+				<div class="conteiner">
+					<div class="radio-box">
+						<h:selectBooleanCheckbox
+							id="universitario"
+							value="#{dependenteFormBean.entidade.flUniversitario}"
+							disabled="#{not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
+						</h:selectBooleanCheckbox>
 					</div>
 				</div>
-			</h:panelGroup>
+			</div>
 			
 			
 			<div class="textarea-box box-100">

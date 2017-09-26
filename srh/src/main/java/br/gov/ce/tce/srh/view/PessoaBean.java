@@ -181,8 +181,7 @@ public class PessoaBean implements Serializable {
 	 */
 	public String salvar() {
 
-		try {
-			entidade.setNomeCompleto(entidade.getNomeCompleto().replaceAll(" +", " "));
+		try {			
 			pessoalService.salvar(entidade);
 			limpar();
 

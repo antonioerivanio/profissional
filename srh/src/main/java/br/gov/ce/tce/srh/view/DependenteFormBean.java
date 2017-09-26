@@ -49,6 +49,7 @@ public class DependenteFormBean implements Serializable{
 	private boolean alterar = false;
 
 	private Dependente entidade = new Dependente();
+	private Dependente registroBD = null;
 	
 //	combos
 	private List<Pessoal> comboDependente;
@@ -71,7 +72,8 @@ public class DependenteFormBean implements Serializable{
 		try {
 			
 			idResponsavel = entidade.getResponsavel().getId();
-			nomeResponsavel = entidade.getResponsavel().getNomeCompleto();				
+			nomeResponsavel = entidade.getResponsavel().getNomeCompleto();
+			registroBD = dependenteService.getById(entidade.getId());
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. Operação cancelada.");
@@ -175,14 +177,36 @@ public class DependenteFormBean implements Serializable{
 	
 	
 	public void tipoDependenciaSelecionado() {
-		if (entidade.getTipoDependencia() != null){
-			if (entidade.getTipoDependencia().getId() == 1)
-				entidade.setTipoDuracao(1L);
-			else
-				entidade.setTipoDuracao(0L);		
-		}else{
-			entidade.setTipoDuracao(0L);
+				
+		if (!alterar) {
+			if (entidade.getTipoDependencia() != null){
+				Long tipoDependencia = entidade.getTipoDependencia().getId(); 
+				
+				// Conjuge || Companheiro(a) || Filho(a) inválido(a)
+				if (tipoDependencia == 1 || tipoDependencia == 2 || tipoDependencia == 4)
+					entidade.setTipoDuracao(1L);
+				else
+					entidade.setTipoDuracao(0L);		
+						
+			}else{
+				entidade.setTipoDuracao(0L);
+			}
 		}
+		
+		
+		if (entidade.getTipoDependencia() != null) {
+		// Filho(a) ou enteado(a) cursando estab. de ensino superior ou escola técnica de 2º grau, até 24 anos
+			if (entidade.getTipoDependencia().getId() == 12) {
+				entidade.setFlUniversitario(true);
+			} else {
+				if (registroBD != null)
+					entidade.setFlUniversitario(registroBD.isFlUniversitario());
+				else
+					entidade.setFlUniversitario(false);
+			}		
+		}
+		
+		
 	}
 	
 	
@@ -190,6 +214,7 @@ public class DependenteFormBean implements Serializable{
 		if (entidade.getMotivoInicio() != null){
 			Long idMotivo = entidade.getMotivoInicio().getId();
 			
+			// Invalidez || Casamento || União Estável
 			if(idMotivo == 6 || idMotivo == 7 || idMotivo == 8)
 				entidade.setTipoDuracao(1L);
 			else
@@ -208,6 +233,7 @@ public class DependenteFormBean implements Serializable{
 		idDependente = 0L;
 		
 		entidade = new Dependente();
+		registroBD = null;
 		
 		// combos
 		comboDependente = null;

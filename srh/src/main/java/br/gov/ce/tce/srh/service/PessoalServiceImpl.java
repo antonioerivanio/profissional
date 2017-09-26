@@ -29,10 +29,8 @@ public class PessoalServiceImpl implements PessoalService {
 	public Pessoal salvar(Pessoal entidade) throws SRHRuntimeException {
 
 		// validar dados
-		validarDados(entidade);
-
-		entidade.setNomePesquisa(entidade.getNomeCompleto());
-
+		validarDados(entidade);		
+		
 		/*
 		 * Regra:
 		 * 
@@ -47,7 +45,36 @@ public class PessoalServiceImpl implements PessoalService {
 		 * 
 		 */
 		verificandoPASEPExiste( entidade );
+		
+		
+		//Remove espaços
+		entidade.setNome(entidade.getNome().replaceAll(" +", " ").trim());		
+		entidade.setNomeCompleto(entidade.getNomeCompleto().replaceAll(" +", " ").trim());
+		entidade.setAbreviatura(entidade.getAbreviatura().replaceAll(" +", " ").trim());
+		
+		entidade.setNomePesquisa(entidade.getNomeCompleto());
+		
+		
+		//Remover acentos e caixa baixa para nome pesquisa
+		entidade.setNome(entidade.getNome().toUpperCase());
+		entidade.setNomeCompleto( SRHUtils.removerAcentos(entidade.getNomeCompleto().toUpperCase()) );
+		entidade.setNomePesquisa( SRHUtils.removerAcentos(entidade.getNomePesquisa().toLowerCase()) );
 
+		//Remover mascaras. Exceto RG e Documento Militar
+		entidade.setCpf(SRHUtils.removerMascara(entidade.getCpf()));
+		entidade.setPasep(SRHUtils.removerMascara(entidade.getPasep()));
+		entidade.setAgenciaBbd(SRHUtils.removerMascara(entidade.getAgenciaBbd()));
+		entidade.setContaBbd(SRHUtils.removerMascara(entidade.getContaBbd()));
+		entidade.setCep(SRHUtils.removerMascara(entidade.getCep()));
+		entidade.setTelefone(SRHUtils.removerMascara(entidade.getTelefone()));
+		entidade.setCelular(SRHUtils.removerMascara(entidade.getCelular()));
+		
+		
+		
+		if (dao.verificarNomeExistente(entidade.getId(), entidade.getNomeCompleto()) && (entidade.getCpf() == null || entidade.getCpf().isEmpty()))
+			throw new SRHRuntimeException("Nome já cadastrado sem CPF. Operação cancelada.");		
+		
+		
 		// persistindo
 		return dao.salvar(entidade);
 	}

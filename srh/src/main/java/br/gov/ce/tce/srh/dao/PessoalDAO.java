@@ -28,5 +28,7 @@ public interface PessoalDAO {
 	public List<Pessoal> findServidorByNome(String nome);
 	
 	public List<Pessoal> findServidorEfetivoByNome(String nome);
+	
+	public Boolean verificarNomeExistente(Long id, String nome);
 
 }
