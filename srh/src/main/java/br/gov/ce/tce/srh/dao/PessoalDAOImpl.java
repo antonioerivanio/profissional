@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Pessoal;
-import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -50,34 +49,28 @@ public class PessoalDAOImpl implements PessoalDAO {
 
 		if (entidade.getId() == null || entidade.getId().equals(0l)) {
 			entidade.setId(getMaxId());
-		}
-
-		if (verificarNomeExistente(entidade.getId(), entidade.getNomeCompleto()) > 0 )
-			throw new SRHRuntimeException("Nome já cadastrado. Operação cancelada.");
-		
-		//Remover acentos e caixa baixa para nome pesquisa
-		entidade.setNome(entidade.getNome().toUpperCase());
-		entidade.setNomeCompleto( SRHUtils.removerAcentos(entidade.getNomeCompleto().toUpperCase()) );
-		entidade.setNomePesquisa( SRHUtils.removerAcentos(entidade.getNomePesquisa().toLowerCase()) );
-
-		//Remover mascaras. Exceto RG e Documento Militar
-		entidade.setCpf(SRHUtils.removerMascara(entidade.getCpf()));
-		entidade.setPasep(SRHUtils.removerMascara(entidade.getPasep()));
-		entidade.setAgenciaBbd(SRHUtils.removerMascara(entidade.getAgenciaBbd()));
-		entidade.setContaBbd(SRHUtils.removerMascara(entidade.getContaBbd()));
-		entidade.setCep(SRHUtils.removerMascara(entidade.getCep()));
-		entidade.setTelefone(SRHUtils.removerMascara(entidade.getTelefone()));
-		entidade.setCelular(SRHUtils.removerMascara(entidade.getCelular()));
+		}		
 		
 		return entityManager.merge(entidade);
 	}
 
 
-	public Long verificarNomeExistente(Long id, String nome) {
-		Query query = entityManager.createQuery("Select count (e) from Pessoal e where upper( e.nomeCompleto ) = :nome AND e.id <> :id ");
+	public Boolean verificarNomeExistente(Long id, String nome) {
+		
+		String select = "Select count (e) from Pessoal e where upper( e.nomeCompleto ) = :nome ";
+		
+		if(id != null)
+			select += "AND e.id <> :id";
+		
+		Query query = entityManager.createQuery(select);
 		query.setParameter("nome", nome.toUpperCase() );
-		query.setParameter("id", id);
-		return (Long) query.getSingleResult();
+		
+		if(id != null)
+			query.setParameter("id", id);
+		
+		Long count = (Long) query.getSingleResult();
+		
+		return count > 0;
 	}
 
 
