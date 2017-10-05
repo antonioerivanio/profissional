@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.sca.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,7 +14,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="GRUPO", schema="SCA")
-public class Grupo {
+public class Grupo implements Serializable {
+
+	private static final long serialVersionUID = 937394715296920532L;
 
 	@Id
 	private Long id;

@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.sca.service;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,8 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 @Component
-public class AuthenticationService {
+public class AuthenticationService implements Serializable{
 
+	private static final long serialVersionUID = 9035974727707754521L;
+	
 	@Autowired
 	@Qualifier("authenticationManager")
 	private AuthenticationManager authenticationManager;

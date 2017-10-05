@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.CategoriaFuncional;
 import br.gov.ce.tce.srh.domain.CategoriaFuncionalSetor;
-import br.gov.ce.tce.srh.domain.CompetenciaSetorial;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
@@ -191,7 +190,7 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 	}
 
 	public boolean isAtiva() {
-		if(entidade != null && !entidade.equals(new CompetenciaSetorial())){
+		if(entidade != null && !entidade.equals(new CategoriaFuncionalSetor())){
 			if(entidade.getAtiva() == null){
 				ativa = true;
 			}else{

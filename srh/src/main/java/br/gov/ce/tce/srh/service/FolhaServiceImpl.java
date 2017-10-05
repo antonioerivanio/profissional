@@ -62,7 +62,11 @@ public class FolhaServiceImpl implements FolhaService {
 	public List<Folha> findByAtivo(Boolean ativo) {
 		return dao.findByAtivo(ativo);
 	}
-
+	
+	@Override
+	public Folha getByCodigo(String codigo) {
+		return dao.getByCodigo(codigo);
+	}
 
 
 	/**
@@ -89,5 +93,6 @@ public class FolhaServiceImpl implements FolhaService {
 
 
 	public void setDAO(FolhaDAO folhaDAO) {this.dao = folhaDAO;}
+	
 
 }
