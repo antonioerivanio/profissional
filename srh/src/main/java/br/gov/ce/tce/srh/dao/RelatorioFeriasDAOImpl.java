@@ -26,21 +26,21 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 	}
 	
 	@Override
-	public int getCountFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao) {
-		return count(getQueryFindByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao));
+	public int getCountFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
+		return count(getQueryFindByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {		
-		Query query = entityManager.createNativeQuery(getQueryFindByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao), "RelatorioFerias"); 
+	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {		
+		Query query = entityManager.createNativeQuery(getQueryFindByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao), "RelatorioFerias"); 
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);		
 		return query.getResultList();
 	}
 	
 
-	private String getQueryFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao) {
+	private String getQueryFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
 		
 		StringBuilder sql = new StringBuilder();
 
@@ -85,6 +85,10 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 		
 		if (fim != null) {
 			sql.append("and TB_FERIAS.INICIO <= to_date('" + dateToString(fim) +"', 'dd/MM/yyyy') ");					
+		}
+		
+		if (anoReferencia != null && anoReferencia > 0) {
+			sql.append("and TB_FERIAS.ANOREFERENCIA = " + anoReferencia +" ");					
 		}
 		
 		if (tipoOcupacao != null) {
