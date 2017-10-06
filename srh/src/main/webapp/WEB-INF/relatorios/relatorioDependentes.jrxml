@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pessoalCursoGraduacao" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
+<!-- 2017-10-06T11:52:38 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pessoalCursoGraduacao" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d384f6ed-40d1-496d-8dad-26c019fd03c9">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -43,129 +45,156 @@
 	<group name="RESPONSAVEL_GROUP">
 		<groupExpression><![CDATA[$F{responsavel}]]></groupExpression>
 		<groupHeader>
-			<band height="51">
+			<band height="48">
 				<rectangle>
-					<reportElement x="1" y="30" width="800" height="18" backcolor="#195297"/>
+					<reportElement x="1" y="30" width="800" height="18" backcolor="#195297" uuid="ef78e1ec-9836-498a-8bc7-eb8944a9b72e"/>
 				</rectangle>
 				<staticText>
-					<reportElement x="3" y="6" width="65" height="18"/>
+					<reportElement x="3" y="6" width="65" height="18" uuid="9c661e91-e287-4de7-89c9-7e0caadb8b0b"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[SERVIDOR:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="70" y="6" width="495" height="18"/>
+					<reportElement x="70" y="6" width="495" height="18" uuid="587a77dc-21e2-49f6-8481-2cd969904601"/>
 					<textElement verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{responsavel}.getNomeCompleto()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="2" y="30" width="190" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="2" y="30" width="190" height="18" forecolor="#FFFFFF" uuid="0ceeaadc-f0d2-4613-93c1-87b2f3a8047b"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[DEPENDENTE]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="194" y="30" width="170" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="194" y="30" width="170" height="18" forecolor="#FFFFFF" uuid="de6c6975-efbf-4416-89a8-6ebfbaacb89c"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[TIPO DEPENDÊNCIA]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="366" y="30" width="80" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="366" y="30" width="70" height="18" forecolor="#FFFFFF" uuid="dacbc960-7a51-47dc-a0ae-1cc29ccfa669">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[DATA INÍCIO]]></text>
+					<text><![CDATA[INÍCIO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="447" y="30" width="80" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="439" y="30" width="70" height="18" forecolor="#FFFFFF" uuid="68fa5beb-3619-4e44-b77a-f328fb186daa">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[DATA FIM]]></text>
+					<text><![CDATA[FIM]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="587" y="30" width="65" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="637" y="30" width="40" height="18" forecolor="#FFFFFF" uuid="0d80cc31-a4d0-4aa1-85b1-eaed9c22c328">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[DEP PREV]]></text>
+					<text><![CDATA[PREV]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="655" y="30" width="50" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="679" y="30" width="40" height="18" forecolor="#FFFFFF" uuid="44d4225d-c27f-4cd3-aa31-58b3c6cd0fc9">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[DEP IR]]></text>
+					<text><![CDATA[IR]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="708" y="30" width="50" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="720" y="30" width="40" height="18" forecolor="#FFFFFF" uuid="619da29e-b34b-4608-9f94-34230b09760b">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[DEP SF]]></text>
+					<text><![CDATA[SF]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="762" y="30" width="40" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="762" y="30" width="40" height="18" forecolor="#FFFFFF" uuid="9a36be8b-1724-4796-9164-dc5bdf3edd3e"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[UNIV]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="531" y="30" width="52" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="583" y="30" width="52" height="18" forecolor="#FFFFFF" uuid="13a184a0-f164-45d0-8823-a578e118cc5a"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[IDADE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="511" y="30" width="70" height="18" forecolor="#FFFFFF" uuid="ba65286b-6e46-40f9-a828-5a6cd2eb95dd">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[NASC.]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
 			<band height="39">
 				<line>
-					<reportElement x="0" y="2" width="802" height="1" forecolor="#CCCCCC"/>
+					<reportElement x="0" y="2" width="802" height="1" forecolor="#CCCCCC" uuid="5a26e327-cb71-4862-be2a-a1d41bfa16e7"/>
 				</line>
 				<textField>
-					<reportElement x="46" y="3" width="100" height="18"/>
+					<reportElement x="46" y="3" width="100" height="18" uuid="a8d71852-7053-4f04-8dcd-52f9e387aa16"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{RESPONSAVEL_GROUP_COUNT}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="587" y="3" width="65" height="18"/>
+					<reportElement x="637" y="3" width="40" height="18" uuid="15fae1d5-391a-48e1-acf9-90190943d4c9">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{TOTAL_DEPPREV}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="655" y="3" width="50" height="18"/>
+					<reportElement x="679" y="3" width="40" height="18" uuid="41fc1ac6-b7d1-49ce-8968-f7cfccd60f8d">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{TOTAL_DEPIR}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="708" y="3" width="50" height="18"/>
+					<reportElement x="720" y="3" width="40" height="18" uuid="1d1072b6-34ef-4186-81ef-63df4a5680ef">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{TOTAL_DEPSF}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="761" y="3" width="40" height="18"/>
+					<reportElement x="761" y="3" width="40" height="18" uuid="c4a27303-2462-492b-94f5-d401bc790983"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{TOTAL_FLUNIVERSITARIO}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="2" y="3" width="44" height="18"/>
+					<reportElement x="2" y="3" width="44" height="18" uuid="3fb3d3f8-b3e9-468f-943c-e718c37b5153"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
@@ -177,97 +206,115 @@
 	<title>
 		<band height="80">
 			<image>
-				<reportElement x="633" y="-11" width="168" height="54"/>
+				<reportElement x="633" y="-11" width="168" height="54" uuid="589d4d1c-a371-473b-acb5-0d3dde0e0ce3"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="1" y="14" width="572" height="65"/>
+				<reportElement x="1" y="14" width="572" height="65" uuid="b9aa3ce2-a153-4c14-ab5d-81f9c8545219"/>
 				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="5" y="42" width="797" height="20" forecolor="#0F2E52"/>
+				<reportElement x="5" y="42" width="797" height="20" forecolor="#0F2E52" uuid="3863fae1-2ef9-46f9-be57-e74a4898078c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Relatório de Dependentes" + ($P{darBaixa}? " Para Dar Baixa": "")]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="5" y="25" width="161" height="36"/>
+				<reportElement x="5" y="25" width="161" height="36" uuid="cd3530d0-ff7b-46ca-a573-52d2f04d800d"/>
 				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 		</band>
 	</title>
 	<detail>
-		<band height="18" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="800" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="800" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF" uuid="3de5789b-c0ec-448b-93bf-45f5a8f4e089">
 					<printWhenExpression><![CDATA[new Boolean(($V{RESPONSAVEL_GROUP_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="194" y="0" width="170" height="16"/>
+				<reportElement x="194" y="0" width="170" height="16" uuid="cde5acdf-0a8a-4275-9ac1-d01ed1be3fa6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{tipoDependencia}.getDescricao()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="447" y="0" width="80" height="16"/>
+				<reportElement x="439" y="0" width="70" height="16" uuid="da29622e-5ce6-4fac-9686-f865d39e4b8d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{dataFim}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="762" y="0" width="40" height="16"/>
+				<reportElement x="762" y="0" width="40" height="16" uuid="9911e9a9-46ab-48d9-84ee-ccbabb8ccb4c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{flUniversitario}?"SIM":"NÃO")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="2" y="0" width="190" height="16"/>
+				<reportElement x="2" y="0" width="190" height="16" uuid="2fad4ee6-c297-4ad4-bb15-393342265348"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{dependente}.getNomeCompleto()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="587" y="0" width="65" height="16"/>
+				<reportElement x="637" y="0" width="40" height="16" uuid="44c2123b-b1e4-46c4-a56f-421fa8d63aa5">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{depPrev}?"SIM":"NÃO")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="655" y="0" width="50" height="16"/>
+				<reportElement x="679" y="0" width="40" height="16" uuid="a2c24766-e218-4ffd-9ef4-2c690d0d0a28">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{depIr}?"SIM":"NÃO")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="708" y="0" width="50" height="16"/>
+				<reportElement x="720" y="0" width="40" height="16" uuid="f8f55eee-2686-4a70-8a13-cc492d24ca2a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{depSf}?"SIM":"NÃO")]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="366" y="0" width="80" height="16"/>
+				<reportElement x="366" y="0" width="70" height="16" uuid="32145ec2-3b16-4614-a736-3a645e7804a6">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{dataInicio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="531" y="0" width="52" height="16"/>
+				<reportElement x="583" y="0" width="52" height="16" uuid="43ba28d1-4f18-4d94-8948-3e1f42cb65b9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[($F{dependente}.getIdade() > -1 ? $F{dependente}.getIdade(): "")]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="511" y="0" width="70" height="16" uuid="e0e0689a-7757-4f38-9b37-f8ac3027b2e4">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dependente}.getNascimento()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="2" width="802" height="1"/>
+				<reportElement x="0" y="2" width="802" height="1" uuid="f0f355ec-a800-4e94-8599-990b8c22ea29"/>
 			</line>
 			<staticText>
-				<reportElement x="105" y="3" width="613" height="16"/>
+				<reportElement x="105" y="3" width="613" height="16" uuid="cf56fdb3-cf40-4fd5-9c65-ddabba38359a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="779" y="3" width="25" height="16"/>
+				<reportElement key="textField-5" x="779" y="3" width="25" height="16" uuid="0776eff8-a619-4ad7-859d-e01edca72423"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="655" y="3" width="120" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="655" y="3" width="120" height="16" forecolor="#000000" uuid="160140a1-948a-4382-8809-8aa6826f2aea"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -278,7 +325,7 @@
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
+				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000" uuid="f2c69e37-cb2a-4293-b97f-bd19d582847d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

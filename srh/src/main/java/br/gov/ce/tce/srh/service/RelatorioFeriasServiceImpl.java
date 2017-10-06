@@ -21,13 +21,13 @@ public class RelatorioFeriasServiceImpl implements RelatorioFeriasService {
 	
 	
 	@Override
-	public int getCountFindByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao) {
-		return dao.getCountFindByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao);
+	public int getCountFindByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
+		return dao.getCountFindByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao);
 	}
 
 	@Override
-	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {
-		return dao.findByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao, firstResult, maxResults);		
+	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {
+		return dao.findByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, firstResult, maxResults);		
 	}
 
 }

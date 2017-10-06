@@ -68,6 +68,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	private Setor setor;
 	private Date inicio;
 	private Date fim;
+	private Long anoReferencia;
 	private Integer formato = 1;
 
 	//entidades das telas
@@ -97,7 +98,7 @@ public class RelatorioFeriasListBean implements Serializable {
 
 		try {
 			
-			count = relatorioFeriasService.getCountFindByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao);
+			count = relatorioFeriasService.getCountFindByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -175,6 +176,10 @@ public class RelatorioFeriasListBean implements Serializable {
 				paramWhere.append("and TB_FERIAS.INICIO <= to_date('" + fimAux +"', 'dd/MM/yyyy') ");					
 			}
 			
+			if (anoReferencia != null && anoReferencia > 0) {
+				paramWhere.append("and TB_FERIAS.ANOREFERENCIA = " + anoReferencia +" ");					
+			}
+			
 			if (tipoOcupacao != null) {
 				paramWhere.append("and TB_OCUPACAO.TIPOOCUPACAO = " + tipoOcupacao.getId());
 			}
@@ -217,6 +222,7 @@ public class RelatorioFeriasListBean implements Serializable {
 		setor = null;
 		inicio = null;
 		fim = null;
+		anoReferencia = null;
 		formato = 1;
 		lista = new ArrayList<RelatorioFerias>();
 		limparListas();
@@ -243,7 +249,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(relatorioFeriasService.findByParameter(setor, tiposFerias, inicio, fim, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(relatorioFeriasService.findByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -363,6 +369,9 @@ public class RelatorioFeriasListBean implements Serializable {
 	
 	public TipoOcupacao getTipoOcupacao() {return tipoOcupacao;}
 	public void setTipoOcupacao(TipoOcupacao tipoOcupacao) {this.tipoOcupacao = tipoOcupacao;}
-	
+
+	public Long getAnoReferencia() {return anoReferencia;}
+
+	public void setAnoReferencia(Long anoReferencia) {this.anoReferencia = anoReferencia;}	
 
 }
