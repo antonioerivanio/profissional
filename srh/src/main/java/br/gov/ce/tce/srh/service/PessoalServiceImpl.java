@@ -50,7 +50,8 @@ public class PessoalServiceImpl implements PessoalService {
 		//Remove espaços
 		entidade.setNome(entidade.getNome().replaceAll(" +", " ").trim());		
 		entidade.setNomeCompleto(entidade.getNomeCompleto().replaceAll(" +", " ").trim());
-		entidade.setAbreviatura(entidade.getAbreviatura().replaceAll(" +", " ").trim());
+		if (entidade.getAbreviatura() != null)
+			entidade.setAbreviatura(entidade.getAbreviatura().replaceAll(" +", " ").trim());
 		
 		entidade.setNomePesquisa(entidade.getNomeCompleto());
 		

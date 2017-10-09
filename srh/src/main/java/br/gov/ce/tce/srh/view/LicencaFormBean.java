@@ -303,7 +303,7 @@ public class LicencaFormBean implements Serializable {
 	
 	public void atualizarCampos() {
 		
-		if (entidade.getContarDiasEmDobro() > 0){
+		if (entidade.getContarDiasEmDobro() != null && entidade.getContarDiasEmDobro() > 0){
 			this.entidade.setInicio(this.entidade.getDoe());
 			this.entidade.setFim(this.entidade.getDoe());
 			this.setExcluirRetribuicaoFinanceira(false);
