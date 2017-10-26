@@ -69,19 +69,17 @@ public class AbonoPermanencia extends BasicEntity<Long> implements Serializable{
 	public void setDataImplantacao(Date dataImplantacao) {
 		this.dataImplantacao = dataImplantacao;
 	}
-	public String getProcesso() {
-		processo = SRHUtils.removerMascara(processo);
-		return processo;
-	}
+	public String getProcesso() { return processo;	}
 	public void setProcesso(String processo) {this.processo = processo;}
-	public String getProcessoFormatado() {		
+	
+	public String getProcessoFormatoTela() {
 		try {
-			processo = SRHUtils.formatarProcesso(processo);
+			return SRHUtils.formatarProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(processo, -1));
 		} catch (ParseException e) {
 			return "";
-		}
-		return processo;
+		}	
 	}
+	
 	public String getObservacao() {
 		return observacao;
 	}

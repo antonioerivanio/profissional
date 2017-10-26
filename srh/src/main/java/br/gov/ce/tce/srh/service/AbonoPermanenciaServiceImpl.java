@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.AbonoPermanenciaDAO;
 import br.gov.ce.tce.srh.domain.AbonoPermanencia;
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -16,13 +17,32 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 
 	@Autowired
-	private AbonoPermanenciaDAO abonoPermanenciaDAO;	
+	private AbonoPermanenciaDAO abonoPermanenciaDAO;
+	
+	@Autowired
+	private FuncionalService funcionalService;
 	
 	@Override
 	@Transactional	
 	public void salvar(AbonoPermanencia entidade, boolean alterar) throws SRHRuntimeException {
-		validarDados(entidade, alterar);				
+		validarDados(entidade, alterar);
+		
+		corrigeNumeroProcesso(entidade);
+		
+		atualizarFuncional(entidade);		
+		
 		abonoPermanenciaDAO.salvar(entidade);		
+	}
+
+	private void corrigeNumeroProcesso(AbonoPermanencia entidade) {
+		entidade.setProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(SRHUtils.removerMascara(entidade.getProcesso()), 0));
+	}
+
+	private void atualizarFuncional(AbonoPermanencia entidade) {
+		Funcional funcional = funcionalService.getById(entidade.getFuncional().getId());
+		funcional.setAbonoPrevidenciario(true);
+		
+		funcionalService.salvar(funcional);
 	}
 
 	@Override
@@ -65,7 +85,7 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 			throw new SRHRuntimeException("O Processo é obrigatório.");
 		}
 		
-		if (!SRHUtils.validarProcesso( SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(entidade.getProcesso(), 0) ) ) {
+		if (!SRHUtils.validarProcesso( SRHUtils.removerMascara(entidade.getProcesso()) ) ) {
 			throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 		}
 		

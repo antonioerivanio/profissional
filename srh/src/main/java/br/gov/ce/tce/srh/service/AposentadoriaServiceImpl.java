@@ -17,6 +17,7 @@ import br.gov.ce.tce.srh.domain.FuncionalSetor;
 import br.gov.ce.tce.srh.enums.EnumStatusFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("aposentadoriaService")
 public class AposentadoriaServiceImpl implements AposentadoriaService {
@@ -53,7 +54,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 		
 		entidade = dao.salvar(entidade);		
 		
-		atualizaFuncional(entidade, false);
+		atualizaOutrasEntidades(entidade, false);
 		
 	    
 		return entidade;
@@ -64,7 +65,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 	@Transactional
 	public void excluir(Aposentadoria entidade) {
 		
-		atualizaFuncional(entidade, true);		
+		atualizaOutrasEntidades(entidade, true);		
 		
 		dao.excluir(entidade);		
 	}
@@ -143,7 +144,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 	}
 	
 	
-	private void atualizaFuncional(Aposentadoria entidade, boolean excluirAposentadoria) {
+	private void atualizaOutrasEntidades(Aposentadoria entidade, boolean excluirAposentadoria) {
 
 		Funcional funcional = entidade.getFuncional();
 		
@@ -154,23 +155,11 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 			if (funcional.getOcupacao().getTipoOcupacao().getId() != 1L) // Diferente de membros
 				funcional.setPonto(true);
 			
-			AbonoPermanencia abono = abonoPermanenciaService.getByPessoalId(entidade.getFuncional().getPessoal().getId());
-			if (abono != null && abono.getFuncional().getId().intValue() == entidade.getFuncional().getId().intValue())
-				funcional.setAbonoPrevidenciario(true);			
-						
+			reverterAlteracaoAbono(entidade, funcional);					
 			
-			if (funcional.getOcupacao().getTipoOcupacao().getId() == 1L) { // Membros
-				
-				funcional.setFolha(folhaService.getByCodigo("01"));	// Conselheiros Ativos
+			reverterAlteracaoFolha(entidade, funcional);
 			
-			} else { 
-				
-				if (representacaoFuncionalService.temAtivaByPessoal(entidade.getFuncional().getPessoal().getId()))
-					funcional.setFolha(folhaService.getByCodigo("02")); // Chefes(cargo comissionado)
-				else
-					funcional.setFolha(folhaService.getByCodigo("03")); // Pessoal Ativo
-			
-			}			
+			reverterAlteracaoLotacao(funcional);
 			
 			funcional.setAposentadoria(null);
 		
@@ -182,30 +171,79 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 			
 			funcional.setAbonoPrevidenciario(false);			
 			
-			if (funcional.getOcupacao().getTipoOcupacao().getId() == 1L) // Membros
-				funcional.setFolha(folhaService.getByCodigo("06"));	// Conselheiros Aposentados
-			else 
-				funcional.setFolha(folhaService.getByCodigo("07")); // Servidores Aposentados
-			
-						
-			FuncionalSetor lotacao = funcionalSetorService.getAtivoByFuncional(funcional.getId());			
-			
-			if(lotacao != null) {
-				if (entidade.getDataUltimaContagem().before(lotacao.getDataInicio()))
-					throw new SRHRuntimeException("A Data Última Contagem é anterior a Data Início da lotação ativa do servidor.");
-				
-				lotacao.setDataFim(entidade.getDataUltimaContagem());
-				funcionalSetorService.salvar(lotacao);
-			}		
-			
-			funcional.setSetor(setorService.getById(113L));		
-			
+			atualizaFolha(funcional);
+									
+			atualizaLotacao(entidade, funcional);			
 			
 			funcional.setAposentadoria(entidade);			
 			
 		}		
 		
 		funcionalService.salvar(funcional);
+	}
+
+
+	private void atualizaLotacao(Aposentadoria entidade, Funcional funcional) {
+		
+		FuncionalSetor lotacao = funcionalSetorService.getAtivoByFuncional(funcional.getId());			
+		
+		if(lotacao != null) {
+			
+			Date dataFim = SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getDataInicioBeneficio(), -1);
+			
+			if (dataFim.before(lotacao.getDataInicio()))
+				throw new SRHRuntimeException("A Data Início Benefício deve ser posterior a Data Início da lotação ativa do servidor.");
+			
+			lotacao.setDataFim(dataFim);
+			funcionalSetorService.salvar(lotacao);
+		}		
+		
+		funcional.setSetor(setorService.getById(113L));
+	}
+
+	private void reverterAlteracaoLotacao(Funcional funcional) {
+		
+		List<FuncionalSetor> lotacoes = funcionalSetorService.findByPessoal(funcional.getPessoal().getId());
+		if (lotacoes != null && lotacoes.size() > 0) {
+			
+			FuncionalSetor ultimaLotacao = lotacoes.get(0);
+			ultimaLotacao.setDataFim(null);
+			funcionalSetorService.salvar(ultimaLotacao);
+			
+			funcional.setSetor(ultimaLotacao.getSetor());
+			
+		}
+	}
+	
+	
+	private void atualizaFolha(Funcional funcional) {
+		
+		if (funcional.getOcupacao().getTipoOcupacao().getId() == 1L) // Membros
+			funcional.setFolha(folhaService.getByCodigo("06"));	// Conselheiros Aposentados
+		else 
+			funcional.setFolha(folhaService.getByCodigo("07")); // Servidores Aposentados
+	}
+	
+	private void reverterAlteracaoFolha(Aposentadoria entidade, Funcional funcional) {
+		if (funcional.getOcupacao().getTipoOcupacao().getId() == 1L) { // Membros
+			
+			funcional.setFolha(folhaService.getByCodigo("01"));	// Conselheiros Ativos
+		
+		} else { 
+			
+			if (representacaoFuncionalService.temAtivaByPessoal(entidade.getFuncional().getPessoal().getId()))
+				funcional.setFolha(folhaService.getByCodigo("02")); // Chefes(cargo comissionado)
+			else
+				funcional.setFolha(folhaService.getByCodigo("03")); // Pessoal Ativo
+		
+		}
+	}
+
+
+	private void reverterAlteracaoAbono(Aposentadoria entidade, Funcional funcional) {
+		AbonoPermanencia abono = abonoPermanenciaService.getByPessoalId(entidade.getFuncional().getPessoal().getId());
+		if (abono != null && abono.getFuncional().getId().intValue() == entidade.getFuncional().getId().intValue())
+			funcional.setAbonoPrevidenciario(true);
 	}
 	
 	
