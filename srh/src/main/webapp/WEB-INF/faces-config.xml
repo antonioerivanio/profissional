@@ -371,6 +371,18 @@
 			<to-view-id>/paginas/funcional/exoneracaoRepresentacao.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Aposentadoria -->
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/aposentadoriaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/aposentadoriaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/funcional/aposentadoriaForm.xhtml</to-view-id>
+		</navigation-case>		
+	</navigation-rule>
 	<!-- Ferias -->
 	<navigation-rule>
 		<from-view-id>/paginas/funcional/feriasList.xhtml</from-view-id>

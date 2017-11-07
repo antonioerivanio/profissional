@@ -14,5 +14,7 @@ public interface FolhaService {
 	public void excluir(Folha entidade);
 
 	public List<Folha> findByAtivo(Boolean ativo);
+	
+	public Folha getByCodigo(String codigo);
 
 }

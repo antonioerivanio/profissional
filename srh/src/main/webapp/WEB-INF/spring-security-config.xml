@@ -166,6 +166,9 @@
 
         <intercept-url pattern="/paginas/funcional/exoneracaoList.faces" access="ROLE_EXONERACAO" />
         <intercept-url pattern="/paginas/funcional/exoneracaoForm.faces" access="ROLE_EXONERACAO" />
+        
+        <intercept-url pattern="/paginas/funcional/aposentadoriaList.faces" access="ROLE_APOSENTADORIA" />
+        <intercept-url pattern="/paginas/funcional/aposentadoriaForm.faces" access="ROLE_APOSENTADORIA" />
 
         <intercept-url pattern="/paginas/funcional/funcionalAreaSetorList.faces" access="ROLE_FUNCIONAL_AREA_SETOR" />
         <intercept-url pattern="/paginas/funcional/funcionalAreaSetorForm.faces" access="ROLE_FUNCIONAL_AREA_SETOR" />

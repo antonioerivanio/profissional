@@ -563,6 +563,14 @@
 										</a>
 									</li>
 								</ui:fragment>
+								
+								<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_APOSENTADORIA')}">
+									<li>
+										<a href="/srh/paginas/funcional/aposentadoriaList.faces">
+										Aposentadoria
+										</a>
+									</li>
+								</ui:fragment>
 		
 							</ul>
 						</li>

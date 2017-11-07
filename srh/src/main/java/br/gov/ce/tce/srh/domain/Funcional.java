@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -215,6 +216,11 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 		
 	@Transient
 	private int dias;
+	
+	@NotAudited
+	@OneToOne
+	@JoinColumn(name = "IDAPOSENTADORIA")	
+	private Aposentadoria aposentadoria;
 
 	public Funcional() {
 		//seguindo padrao Java Beans...
@@ -422,7 +428,9 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	public void setMeses(int meses) {this.meses = meses;}
 
 	public int getDias() {return dias;}
-	public void setDias(int dias) {this.dias = dias;}	
-	
+	public void setDias(int dias) {this.dias = dias;}
+
+	public Aposentadoria getAposentadoria() {return aposentadoria;}
+	public void setAposentadoria(Aposentadoria aposentadoria) {this.aposentadoria = aposentadoria;}	
 	
 }

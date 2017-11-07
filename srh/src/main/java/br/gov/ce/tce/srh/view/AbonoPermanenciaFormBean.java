@@ -62,7 +62,7 @@ public class AbonoPermanenciaFormBean implements Serializable{
 			
 			nome = entidade.getFuncional().getPessoal().getNomeCompleto();
 			setCpf(entidade.getFuncional().getPessoal().getCpf());
-			nrProcesso = entidade.getProcesso();
+			nrProcesso = entidade.getProcessoFormatoTela();
 			funcional = entidade.getFuncional();			
 			
 		} catch (Exception e) {
@@ -142,7 +142,7 @@ public class AbonoPermanenciaFormBean implements Serializable{
 
 			try {
 
-				if (!SRHUtils.validarProcesso( SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(nrProcesso, 0) ) ) {
+				if (!SRHUtils.validarProcesso( SRHUtils.removerMascara(nrProcesso) ) ) {
 					throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 				}
 

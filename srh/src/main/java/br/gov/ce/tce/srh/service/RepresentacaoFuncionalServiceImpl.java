@@ -216,6 +216,19 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	public List<RepresentacaoFuncional> findByPessoal(Long idPessoa) {
 		return dao.findByPessoal(idPessoa);
 	}
+	
+	@Override
+	public boolean temAtivaByPessoal(Long idPessoa) {
+		
+		List<RepresentacaoFuncional> representacaoList = this.findByFuncional(idPessoa);
+		for (RepresentacaoFuncional representacaoFuncional : representacaoList) {
+			if(representacaoFuncional.getFim() == null) {
+				return true;
+			}					
+		}
+		
+		return false;
+	}
 
 
 	@Override
@@ -425,5 +438,6 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		return false;
 
 	}
+	
 
 }

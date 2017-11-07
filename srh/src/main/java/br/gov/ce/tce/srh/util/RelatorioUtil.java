@@ -20,7 +20,9 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsReportConfiguration;
 
 
 public class RelatorioUtil {
@@ -107,13 +109,18 @@ public class RelatorioUtil {
 		ByteArrayOutputStream outputByteArray = new ByteArrayOutputStream();
 		
 		JRXlsExporter exporterXLS = new JRXlsExporter();
-		exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
-		exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, outputByteArray);
-		exporterXLS.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
-		exporterXLS.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
-		exporterXLS.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
-		exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
-		exporterXLS.exportReport(); 
+		exporterXLS.setExporterInput(new SimpleExporterInput(print));
+		exporterXLS.setExporterOutput(new SimpleOutputStreamExporterOutput(outputByteArray));
+		
+		SimpleXlsReportConfiguration configuration = new SimpleXlsReportConfiguration();
+		configuration.setOnePagePerSheet(false);
+		configuration.setDetectCellType(true);
+		configuration.setWhitePageBackground(false);
+		configuration.setRemoveEmptySpaceBetweenRows(true);
+		
+		exporterXLS.setConfiguration(configuration);
+		
+		exporterXLS.exportReport();		 
 				
 		byte[] bytes = outputByteArray.toByteArray();		
 		
