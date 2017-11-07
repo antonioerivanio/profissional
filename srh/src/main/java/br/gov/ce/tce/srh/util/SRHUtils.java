@@ -514,22 +514,12 @@ public class SRHUtils {
 		return mf.valueToString(texto);  		
 	}
 	
-	public static String formatarProcesso(String texto) throws ParseException {
+	public static String formatarProcesso(String processo) throws ParseException {
 		MaskFormatter mf = new MaskFormatter("#####/####-##");
 		mf.setValueContainsLiteralCharacters(false);
-		return mf.valueToString(texto);  		
+		return mf.valueToString(processo);  		
 	}
-	
-	/**
-	 * Obtém o usuário logado na sessão
-	 * @return
-	 */
-	public static Usuario getUsuarioLogado() {
-		if (SecurityContextHolder.getContext().getAuthentication() == null) {
-			return null;
-		}
-		return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	}
+		
 
 	//Codigo 0 - Formatar padrão SAP, caso contrário, Retira do padrao SAP e joga no Padrão exibido ao usuário
 	public static String formatatarDesformatarNrProcessoPadraoSAP(String nrProcesso, int codigoAcao) {
@@ -578,6 +568,13 @@ public class SRHUtils {
 		
 		return idade;
 		
+	}
+	
+	public static Usuario getUsuarioLogado() {
+		if (SecurityContextHolder.getContext().getAuthentication() == null) {
+			return null;
+		}
+		return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 
 }

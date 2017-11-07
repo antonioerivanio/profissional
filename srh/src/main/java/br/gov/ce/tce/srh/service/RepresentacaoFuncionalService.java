@@ -23,6 +23,7 @@ public interface RepresentacaoFuncionalService {
 	public List<RepresentacaoFuncional> findByNome(String nome);
 	public List<RepresentacaoFuncional> findByNomeSetor(String nome, Long idSetor);
 	public List<RepresentacaoFuncional> findByPessoal(Long idPessoa);
+	public boolean temAtivaByPessoal(Long idPessoa);
 	public List<RepresentacaoFuncional> findByFuncional(Long idFuncional);
 	public List<RepresentacaoFuncional> findByUsuarioLogadoSetor(Usuario usuarioLogado, Long idSetor);
 	public List<RepresentacaoFuncional> findByUsuarioLogado(Usuario usuarioLogado);

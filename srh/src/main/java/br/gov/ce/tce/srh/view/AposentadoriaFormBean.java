@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Aposentadoria;
+import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.enums.EnumTipoBeneficio;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AposentadoriaService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -34,13 +36,19 @@ public class AposentadoriaFormBean implements Serializable {
 	@Autowired
 	private TipoPublicacaoService tipoPublicacaoService;
 	
+	@Autowired
+	private RepresentacaoFuncionalService representacaoFuncionalService;	
+	
+	
 	private Aposentadoria entidade = new Aposentadoria();
 
 	private String matricula = new String();
 	private String nome = new String();
 
 	private boolean alterar = false;
+	private String mensagemRepresentacao;
 
+	
 	private List<TipoPublicacao> comboTipoPublicacao;
 
 	public String prepareIncluir() {
@@ -55,7 +63,9 @@ public class AposentadoriaFormBean implements Serializable {
 		try {
 			
 			this.matricula = entidade.getFuncional().getMatricula();
-			this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();			
+			this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
+			
+			atualizaMensagemRepresentacao();
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -115,6 +125,8 @@ public class AposentadoriaFormBean implements Serializable {
 		this.nome = new String();
 		
 		this.comboTipoPublicacao = null;
+		
+		this.mensagemRepresentacao = null;
 	}
 	
 	public Aposentadoria getEntidade() { return entidade; }
@@ -130,6 +142,7 @@ public class AposentadoriaFormBean implements Serializable {
 				getEntidade().setFuncional( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
+					atualizaMensagemRepresentacao();
 				} else {
 					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
 				}
@@ -141,11 +154,39 @@ public class AposentadoriaFormBean implements Serializable {
 
 		}
 	}
+	
+	private void atualizaMensagemRepresentacao() {
+		
+		this.mensagemRepresentacao = null;
+		
+		List<RepresentacaoFuncional> representacaList = representacaoFuncionalService.findByPessoal(entidade.getFuncional().getPessoal().getId());
+		String cargos = "";
+		
+		for (RepresentacaoFuncional representacaoFuncional : representacaList) {
+			if(representacaoFuncional.getFim() == null) {
+				cargos += representacaoFuncional.getRepresentacaoCargo().getNomenclatura() + ", ";
+			}
+		}
+		
+		if(!cargos.isEmpty()) {
+		
+			cargos = cargos.substring(0, cargos.length() - 2);
+			
+			this.mensagemRepresentacao = "Você está aposentando " + entidade.getFuncional().getNomeCompleto() 
+					+ " e verificamos que o(a) mesmo(a) ainda está cadastrado como ocupante do cargo comissionado " 
+					+ cargos + ". Caso o(a) servidor(a) continue no cargo comissionado, favor desconsiderar essa mensagem, "
+					+ "do contrário, favor gerar a exoneração do cargo comissionado do(a) mesmo(a).";
+		
+		}
+	}
 
 	public String getNome() { return nome; }
 	public void setNome(String nome) { this.nome = nome; }
 
 	public boolean isAlterar() {return alterar;}
-	public void setAlterar(boolean alterar) {this.alterar = alterar;}	
+	public void setAlterar(boolean alterar) {this.alterar = alterar;}
+	
+	public String getMensagemRepresentacao() {return mensagemRepresentacao;}
+	public void setMensagemRepresentacao(String mensagemRepresentacao) {this.mensagemRepresentacao = mensagemRepresentacao;}
 	
 }

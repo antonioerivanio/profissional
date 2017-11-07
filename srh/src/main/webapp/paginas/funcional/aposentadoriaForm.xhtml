@@ -36,6 +36,14 @@
 			document.getElementById('countChar').innerHTML = 'Quantidade de caracteres: ' + (document.getElementById('form:observacao').value.length);
 		}
 		
+		function verificaRepresentacao(){
+			var mensagemRepresentacao = document.getElementById("form:mensagemRepresentacao").value;			
+			
+			if (mensagemRepresentacao.length > 0){
+				alert(mensagemRepresentacao);	
+			}
+		}
+		
 		 jQuery(document).ready(function($) {
 			 contarCaracteres();
 		 });
@@ -59,6 +67,8 @@
             	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
 				<h:inputHidden id="alterar" disabled="true" value="#{aposentadoriaFormBean.alterar}" />
+				
+				<h:inputHidden id="mensagemRepresentacao" disabled="true" value="#{aposentadoriaFormBean.mensagemRepresentacao}" />
 
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
@@ -69,8 +79,8 @@
 									 styleClass="maskMatricula"									 
 									 disabled="#{aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR'))}"
 									 value="#{aposentadoriaFormBean.matricula}">
-							<a4j:support event="onchange"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+							<a4j:support event="onblur"
+										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, mensagemRepresentacao"
 										 ajaxSingle="true" />
 						</h:inputText>
 					</div>
@@ -221,7 +231,7 @@
 				</div>
 
 				<div class="input-box box-15">
-					<label for="">Data Início Benefício</label>
+					<label for="">Data Início Benefício *</label>
 					<div class="conteiner">
 						<h:inputText id="dataInicioBeneficio" 
 									 name="dataInicioBeneficio"
@@ -234,7 +244,7 @@
 				</div>
 
 				<div class="select-box box-15">
-					<label for="">Tipo Publicação</label>
+					<label for="">Tipo Publicação *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoPublicacao"
 										 converter="entityConverter" 
@@ -251,7 +261,7 @@
 				</div>
 
 				<div class="input-box box-15">
-					<label for="">Data Publicação</label>
+					<label for="">Data Publicação *</label>
 					<div class="conteiner">
 						<h:inputText id="dataPublicacao" 
 									 name="dataPublicacao"
@@ -280,8 +290,15 @@
 			</fieldset>
 
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
-				<h:commandButton action="#{aposentadoriaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick=""  />						
+				
+				<h:commandButton 
+					value="Salvar" 
+					action="#{aposentadoriaFormBean.salvar}" 
+					styleClass="bt-padrao fr" 
+					onclick="verificaRepresentacao();"  />						
+				
 				<a href="/srh/paginas/funcional/aposentadoriaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			
 			</ui:fragment>
 			
 			<a href="/srh/paginas/funcional/aposentadoriaList.faces" class="bt-voltar fr mg-right-10">Voltar</a>

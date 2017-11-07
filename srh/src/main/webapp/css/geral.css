@@ -652,6 +652,16 @@ body {
             width: 50%;
         }
         
+        .tabela-dados th.cel-30,
+        .tabela-dados td.cel-30 {
+            width: 30%;
+        }
+        
+        .tabela-dados th.cel-15,
+        .tabela-dados td.cel-15 {
+            width: 15%;
+        }
+        
         .tabela-dados th.cel-10,
         .tabela-dados td.cel-10 {
             width: 10%;

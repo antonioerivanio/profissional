@@ -42,6 +42,11 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	@Override
 	@Transactional
 	public void exonerar(Funcional entidade) throws SRHRuntimeException {
+		
+		//Verifica se tem aposentadoria cadastrada.
+		if(entidade.getAposentadoria() != null)
+			throw new SRHRuntimeException("Exoneração não permitida. O funcionário possui aposentadoria cadastrada.");
+		
 
 		// Verifica a existência de Representação ativa
 		List<RepresentacaoFuncional> representacaoFuncionalList = representacaoFuncionalService.findByFuncional(entidade.getId());
