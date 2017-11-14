@@ -416,7 +416,15 @@
 										Dependentes
 									</a>
 								</li>
-							</ui:fragment>
+							</ui:fragment>						
+											
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL')}">
+								<li>
+									<a href="/srh/paginas/cadastros/carreiraPessoalList.faces">
+										Carreira
+									</a>
+								</li>
+							</ui:fragment>							
 		
 						</ul>
 					</li>
