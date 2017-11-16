@@ -26,13 +26,38 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 
 		validarDadosObrigatorios(entidade);
 		
-		List<CarreiraPessoal> carreiras = dao.findByPessoal(entidade.getPessoal().getId());
-		if(!carreiras.isEmpty() && carreiras.get(0).getFimCarreira() == null)
+		List<CarreiraPessoal> carreiras = dao.search(entidade.getPessoal().getId(), null, null);
+		if(!carreiras.isEmpty() && carreiras.get(0).getFimCarreira() == null && carreiras.get(0).getId() != entidade.getId())
 			throw new SRHRuntimeException("O último registro de Carreira do Servidor não foi finalizado.");
 		
 		
-		List<Funcional> funcionais = funcionalService.findByPessoal(entidade.getPessoal().getId(), "ASC");
+		for (CarreiraPessoal carreira: carreiras) {
+			
+			if ( entidade.getId() == null || entidade.getId().intValue() != carreira.getId().intValue() ) {
+
+				if( !entidade.getInicioCarreira().before(carreira.getInicioCarreira()) 
+						&&  !entidade.getInicioCarreira().after(carreira.getFimCarreira()) ){
+					throw new SRHRuntimeException("Existe uma carreira neste período.");
+				}
+				
+				if (entidade.getFimCarreira() != null) {
+					
+					if( !entidade.getFimCarreira().before(carreira.getInicioCarreira()) 
+							&&  !carreira.getFimCarreira().after(carreira.getFimCarreira()) ){
+						throw new SRHRuntimeException("Existe uma carreira neste período.");
+					}				
+
+					if( entidade.getInicioCarreira().before( carreira.getInicioCarreira() )
+							&& entidade.getFimCarreira().after( carreira.getFimCarreira() ) ) {
+						throw new SRHRuntimeException("Existe uma carreira neste período.");
+					}
+				
+				}				
+			}
+		}		
 		
+		
+		List<Funcional> funcionais = funcionalService.findByPessoal(entidade.getPessoal().getId(), "ASC");
 		if(entidade.getInicioCarreira().before(funcionais.get(0).getExercicio()))
 			throw new SRHRuntimeException("O início da carreira não pode ser anterior ao Exercício da primeira nomeação do Servidor.");		
 		
@@ -55,14 +80,8 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 
 
 	@Override
-	public List<CarreiraPessoal> search(Long pessoal, int first, int rows) {
+	public List<CarreiraPessoal> search(Long pessoal, Integer first, Integer rows) {
 		return dao.search(pessoal, first, rows);
-	}
-
-
-	@Override
-	public List<CarreiraPessoal> findByPessoal(Long idPessoa){
-		return dao.findByPessoal(idPessoa);
 	}
 
 	
@@ -76,6 +95,9 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 		
 		if (entidade.getInicioCarreira() == null)
 			throw new SRHRuntimeException("A Data Início Carreira é obrigatória.");
+		
+		if (entidade.getFimCarreira() != null && entidade.getInicioCarreira().after(entidade.getFimCarreira()))
+			throw new SRHRuntimeException("A Data Fim Carreira não pode ser anterior a A Data Início Carreira.");
 
 		if (entidade.getOcupacao() == null)
 			throw new SRHRuntimeException("A Ocupação é obrigatória.");

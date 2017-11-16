@@ -50,29 +50,46 @@ public class CarreiraPessoalDAOImpl implements CarreiraPessoalDAO {
 
 	@Override
 	public int count(Long pessoal) {
-		Query query = entityManager.createQuery("Select count(c) from CarreiraPessoal c where c.pessoal.id = :pessoal");
-		query.setParameter("pessoal", pessoal);
+		
+		String consulta = " Select count(c) from CarreiraPessoal c ";
+		
+		if (pessoal != null)
+			consulta += " where c.pessoal.id = :pessoal ";		
+		
+		Query query = entityManager.createQuery(consulta);
+		
+		if (pessoal != null)
+			query.setParameter("pessoal", pessoal);
+		
+		
 		return ((Long) query.getSingleResult()).intValue();
 	}
 
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<CarreiraPessoal> search(Long pessoal, int first, int rows) {
-		Query query = entityManager.createQuery("Select c from CarreiraPessoal c where c.pessoal.id = :pessoal ORDER BY c.inicioCarreira DESC");
-		query.setParameter("pessoal", pessoal);
-		query.setFirstResult(first);
-		query.setMaxResults(rows);
+	public List<CarreiraPessoal> search(Long pessoal, Integer first, Integer rows) {
+		
+		String consulta = " Select c from CarreiraPessoal c ";
+		
+		if(pessoal != null)
+			consulta += " where c.pessoal.id = :pessoal ";
+		
+		consulta += " ORDER BY c.pessoal.nomeCompleto, c.inicioCarreira DESC ";
+		
+		Query query = entityManager.createQuery(consulta);
+		
+		if (pessoal != null)		
+			query.setParameter("pessoal", pessoal);
+		
+		if(first != null)
+			query.setFirstResult(first);
+		
+		if(rows != null)
+			query.setMaxResults(rows);
+		
 		return query.getResultList();
 	}
-
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<CarreiraPessoal> findByPessoal(Long idPessoa) {
-		Query query = entityManager.createQuery("Select c from CarreiraPessoal c where c.pessoal.id = :pessoal ORDER BY c.inicioCarreira DESC");
-		query.setParameter("pessoal", idPessoa);
-		return query.getResultList();
-	}
+	
 
 }

@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.faces.component.html.HtmlForm;
@@ -56,7 +57,6 @@ public class CarreiraPessoalBean implements Serializable {
 
 	private boolean alterar = false;
 
-	private List<CarreiraPessoal> lista;
 	private CarreiraPessoal entidade = new CarreiraPessoal();
 	
 	private int count;	
@@ -71,6 +71,8 @@ public class CarreiraPessoalBean implements Serializable {
 	}
 
 	public String prepareAlterar() {
+		this.nome = entidade.getPessoal().getNomeCompleto();
+		this.cpf = entidade.getPessoal().getCpf();
 		this.alterar = true;
 		return "incluirAlterar";
 	}
@@ -81,10 +83,10 @@ public class CarreiraPessoalBean implements Serializable {
 
 			limparListas();			
 			
-			if ( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione uma pessoa.");
-
-			count =  carreiraPessoalService.count( getEntidade().getPessoal().getId() );
+			if (entidade.getPessoal() == null)			
+				count = carreiraPessoalService.count( null );
+			else
+				count = carreiraPessoalService.count( getEntidade().getPessoal().getId() );
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -155,15 +157,17 @@ public class CarreiraPessoalBean implements Serializable {
 	public String relatorio() {
 
 		try {
-
-			if ( getEntidade().getPessoal() == null )
-				throw new SRHRuntimeException("Selecione uma Pessoa.");			
+			
+			if (pagedList == null || pagedList.size() == 0)
+				throw new SRHRuntimeException("Faça uma consulta antes de gerar o relatório.");
+			
+			relatorioUtil.relatorio("carreiraPessoal.jasper", new HashMap<String, Object>(), "carreiraPessoal.pdf", pagedList);				
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
+			FacesUtil.addErroMessage("Erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
@@ -186,8 +190,7 @@ public class CarreiraPessoalBean implements Serializable {
 		setEntidade( new CarreiraPessoal() );
 		this.alterar = false;
 		this.cpf = new String();
-		this.nome = new String();
-		this.lista = new ArrayList<CarreiraPessoal>();		
+		this.nome = new String();	
 	}
 
 
@@ -218,8 +221,6 @@ public class CarreiraPessoalBean implements Serializable {
 
 	public CarreiraPessoal getEntidade() {return entidade;}
 	public void setEntidade(CarreiraPessoal entidade) {this.entidade = entidade;}
-
-	public List<CarreiraPessoal> getLista(){return lista;}
 
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
@@ -270,11 +271,14 @@ public class CarreiraPessoalBean implements Serializable {
 		
 		if( flagRegistroInicial != getPrimeiroDaPagina()) {
 			
-			flagRegistroInicial = getPrimeiroDaPagina();						
-				
-			setPagedList(carreiraPessoalService.search(getEntidade().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize()));
+			flagRegistroInicial = getPrimeiroDaPagina();
+						
+			if (entidade.getPessoal() == null)
+				setPagedList(carreiraPessoalService.search(null, null, null));
+			else
+				setPagedList(carreiraPessoalService.search(getEntidade().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize()));
 			
-			if(count != 0){
+			if(count != 0){				
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
 				limparListas();
