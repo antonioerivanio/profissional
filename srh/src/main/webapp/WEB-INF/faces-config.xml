@@ -572,14 +572,14 @@
 	</navigation-rule>
 	<!-- Carreira Pessoal -->
 	<navigation-rule>
-		<from-view-id>/paginas/cadastros/carreiraPessoalList.xhtml</from-view-id>
+		<from-view-id>/paginas/funcional/carreiraPessoalList.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>listar</from-outcome>
-			<to-view-id>/paginas/cadastros/carreiraPessoalList.xhtml</to-view-id>
+			<to-view-id>/paginas/funcional/carreiraPessoalList.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>incluirAlterar</from-outcome>
-			<to-view-id>/paginas/cadastros/carreiraPessoalForm.xhtml</to-view-id>
+			<to-view-id>/paginas/funcional/carreiraPessoalForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<!-- Pessoal Curso Academica -->

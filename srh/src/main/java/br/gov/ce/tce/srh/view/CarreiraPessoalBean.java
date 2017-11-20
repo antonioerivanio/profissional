@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.component.html.HtmlForm;
 
@@ -58,12 +60,14 @@ public class CarreiraPessoalBean implements Serializable {
 	private boolean alterar = false;
 
 	private CarreiraPessoal entidade = new CarreiraPessoal();
+	private List<Funcional> funcionais = new ArrayList<>();
+	private List<Ocupacao> cargos = new ArrayList<>();
 	
 	private int count;	
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<CarreiraPessoal> pagedList = new ArrayList<CarreiraPessoal>();
 	private int flagRegistroInicial;
-	private Integer pagina = 1;
+	private Integer pagina = 1;	
 
 	public String prepareIncluir() {
 		limpar();
@@ -73,6 +77,7 @@ public class CarreiraPessoalBean implements Serializable {
 	public String prepareAlterar() {
 		this.nome = entidade.getPessoal().getNomeCompleto();
 		this.cpf = entidade.getPessoal().getCpf();
+		atualizaFuncionais();
 		this.alterar = true;
 		return "incluirAlterar";
 	}
@@ -81,6 +86,7 @@ public class CarreiraPessoalBean implements Serializable {
 
 		try {
 
+						
 			limparListas();			
 			
 			if (entidade.getPessoal() == null)			
@@ -182,15 +188,19 @@ public class CarreiraPessoalBean implements Serializable {
 	
 	public String limpaForm() {
 		limpar();
-		return "pessoaAnotacaoForm";
+		return "carreiraPessoalForm";
 	}
 
 	
 	private void limpar() {
-		setEntidade( new CarreiraPessoal() );
+		
+		this.entidade = new CarreiraPessoal();
+		this.funcionais = new ArrayList<>();
+		this.cargos = new ArrayList<>();
 		this.alterar = false;
 		this.cpf = new String();
-		this.nome = new String();	
+		this.nome = new String();
+		
 	}
 
 
@@ -201,12 +211,19 @@ public class CarreiraPessoalBean implements Serializable {
 
 			try {
 
-				getEntidade().setPessoal( pessoalService.getByCpf( this.cpf ));
-				if ( getEntidade().getPessoal() != null ) {
+				this.entidade.setPessoal( pessoalService.getByCpf( this.cpf ));
+								
+				if ( this.entidade.getPessoal() != null ) {
 					this.nome = getEntidade().getPessoal().getNomeCompleto();					
+				
+					atualizaFuncionais();
+					
+					this.entidade.setInicioCarreira(funcionais.get(funcionais.size() - 1).getExercicio());					
+				
 				} else {
 					FacesUtil.addInfoMessage("CPF não encontrado.");
-				}
+				}	
+				
 
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
@@ -299,25 +316,51 @@ public class CarreiraPessoalBean implements Serializable {
 	
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 	
-	public List<EnumCarreira> getComboCarreira(){
-		return Arrays.asList(EnumCarreira.values());
-	}
-
-	public List<Ocupacao> getComboOcupacao() {
+	public List<EnumCarreira> getComboCarreira(){ return Arrays.asList(EnumCarreira.values()); }
+	
+	public List<Funcional> getFuncionais(){	return this.funcionais;	}
 		
-		List<Ocupacao> cargos = new ArrayList<>();
-		
-		if (entidade != null && entidade.getPessoal() != null) {
-		
-			List<Funcional> funcionais = funcionalService.findByPessoal(getEntidade().getPessoal().getId(), "DESC");
-			
-			for( Funcional funcional: funcionais ) {
-				cargos.add(funcional.getOcupacao());
-			}
+	private void atualizaFuncionais() {
+				
+		if (entidade != null && entidade.getPessoal() != null) {		
+			this.funcionais = funcionalService.findByPessoal(getEntidade().getPessoal().getId(), "DESC");			
 		}
 		
-		return cargos;
-				
+		atualizaCargos();		
+		
+	}
+
+	private void atualizaCargos() {
+		Set<Ocupacao> cargos = new LinkedHashSet<>();
+		
+		for (Funcional funcional : funcionais) {
+			cargos.add(funcional.getOcupacao());
+		}		
+		
+		this.cargos = new ArrayList<>(); 
+		this.cargos.addAll(cargos);
 	}	
+	
+	public List<Ocupacao> getCargos() {
+		return cargos;
+	}
+
+	public void atualizaInicioCargo() {
+				
+		if(!alterar) {
+		
+			int index = 0;
+			
+			for (int i = 0; i < funcionais.size(); i++) {
+				
+				Funcional funcional = funcionais.get(i);
+				
+				if(funcional.getOcupacao().getId().intValue() == entidade.getOcupacao().getId().intValue())
+					index = i;				
+			}
+			
+			entidade.setInicioCargoAtual(funcionais.get(index).getExercicio());
+		}
+	}
 
 }

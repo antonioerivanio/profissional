@@ -59,7 +59,7 @@
 									 converter="cpfConverter"
 									 disabled="#{carreiraPessoalBean.alterar or ( not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') ) }"
 									 value="#{carreiraPessoalBean.cpf}" >
-							<a4j:support id="cpfChange" event="onblur" focus="nomeCompletoPessoa" reRender="nomeCompletoPessoa, messages, ocupacao" ajaxSingle="true" />
+							<a4j:support id="cpfChange" event="onblur" focus="nomeCompletoPessoa" reRender="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " ajaxSingle="true" />
 						</h:inputText>
 					</div>
 				</div>
@@ -139,10 +139,16 @@
 										 disabled="#{not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR')}" > 
 							<f:selectItem id="selecioneOcupacao" itemLabel="Selecione..." itemValue="" />
 					  		<f:selectItems 	id="comboOcupacao" 
-					  						value="#{carreiraPessoalBean.comboOcupacao}"
+					  						value="#{carreiraPessoalBean.cargos}"
 					  						var="ocupacao"
 					  						itemValue="#{ocupacao}"
 					  						itemLabel="#{ocupacao.nomenclatura}"/>
+					  		<a4j:support id="atualizaInicioCargo"
+					  				 event="onchange" 
+					  				 ajaxSingle="true"	
+					  				 action="#{carreiraPessoalBean.atualizaInicioCargo}"
+					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
+					  				 reRender="dataInicioCargoAtual" />
 						</h:selectOneMenu>    
 					</div>
 				</div>
@@ -181,7 +187,7 @@
 					<h:commandButton action="#{carreiraPessoalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
 					<h:commandButton id="limpaTela" value="Limpar" action="#{carreiraPessoalBean.limpaForm}" styleClass="bt-padrao fr mg-right-10" />
 				</ui:fragment>				 
-				<a href="/srh/paginas/cadastros/carreiraPessoalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+				<a href="/srh/paginas/funcional/carreiraPessoalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 			
 

@@ -25,7 +25,15 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 	public CarreiraPessoal salvar(CarreiraPessoal entidade) throws SRHRuntimeException {
 
 		validarDadosObrigatorios(entidade);
+				
+		List<Funcional> funcionais = funcionalService.findByPessoal(entidade.getPessoal().getId(), "ASC");
+		if(entidade.getInicioCarreira().before(funcionais.get(0).getExercicio()))
+			throw new SRHRuntimeException("A Data Início Carreira não pode ser anterior ao Exercício da primeira nomeação do Servidor.");
 		
+		if(entidade.getInicioCargoAtual().before(funcionais.get(0).getExercicio()))
+			throw new SRHRuntimeException("A Data Início Cargo Atual não pode ser anterior ao Exercício da primeira nomeação do Servidor.");
+		
+								
 		List<CarreiraPessoal> carreiras = dao.search(entidade.getPessoal().getId(), null, null);
 		if(!carreiras.isEmpty() && carreiras.get(0).getFimCarreira() == null && carreiras.get(0).getId() != entidade.getId())
 			throw new SRHRuntimeException("O último registro de Carreira do Servidor não foi finalizado.");
@@ -55,12 +63,6 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 				}				
 			}
 		}		
-		
-		
-		List<Funcional> funcionais = funcionalService.findByPessoal(entidade.getPessoal().getId(), "ASC");
-		if(entidade.getInicioCarreira().before(funcionais.get(0).getExercicio()))
-			throw new SRHRuntimeException("O início da carreira não pode ser anterior ao Exercício da primeira nomeação do Servidor.");		
-		
 		
 		return dao.salvar(entidade);
 	}
@@ -103,7 +105,10 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 			throw new SRHRuntimeException("A Ocupação é obrigatória.");
 		
 		if (entidade.getInicioCargoAtual() == null)
-			throw new SRHRuntimeException("A Data Início Cargo Atual é obrigatória.");		
+			throw new SRHRuntimeException("A Data Início Cargo Atual é obrigatória.");
+		
+		if (entidade.getFimCargoAtual() != null && entidade.getInicioCargoAtual().after(entidade.getFimCargoAtual()))
+			throw new SRHRuntimeException("A Data Fim Cargo Atual não pode ser anterior a A Data Início Cargo Atual.");
 
 	}
 
