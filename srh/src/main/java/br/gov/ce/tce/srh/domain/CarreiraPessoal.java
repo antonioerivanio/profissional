@@ -5,8 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,8 +28,7 @@ public class CarreiraPessoal extends BasicEntity<Long> implements Serializable {
 	private Pessoal pessoal;
 	
 	@Column(name = "IDCARREIRA")
-    @Enumerated(EnumType.ORDINAL)
-    private EnumCarreira carreira;
+    private Integer idCarreira;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="DTINICIOCARREIRA")
@@ -61,8 +58,12 @@ public class CarreiraPessoal extends BasicEntity<Long> implements Serializable {
 	public Pessoal getPessoal() {return pessoal;}
 	public void setPessoal(Pessoal pessoal) {this.pessoal = pessoal;}
 	
-	public EnumCarreira getCarreira() {return carreira;}
-	public void setCarreira(EnumCarreira carreira) {this.carreira = carreira;}
+	public EnumCarreira getCarreira() {
+		return EnumCarreira.getEnumCarreira(idCarreira);
+	}
+	public void setCarreira(EnumCarreira enumCarreira) {
+		this.idCarreira = enumCarreira.getId();
+	}
 	
 	public Date getInicioCarreira() {return inicioCarreira;}
 	public void setInicioCarreira(Date inicioCarreira) {this.inicioCarreira = inicioCarreira;}

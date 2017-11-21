@@ -35,7 +35,7 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 		
 								
 		List<CarreiraPessoal> carreiras = dao.search(entidade.getPessoal().getId(), null, null);
-		if(!carreiras.isEmpty() && carreiras.get(0).getFimCarreira() == null && carreiras.get(0).getId() != entidade.getId())
+		if(!carreiras.isEmpty() && carreiras.get(0).getFimCarreira() == null && carreiras.get(0).getId().intValue() != entidade.getId().intValue())
 			throw new SRHRuntimeException("O último registro de Carreira do Servidor não foi finalizado.");
 		
 		
