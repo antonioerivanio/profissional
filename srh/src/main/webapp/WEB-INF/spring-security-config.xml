@@ -144,6 +144,9 @@
         <intercept-url pattern="/paginas/cadastros/pessoaAnotacaoList.faces" access="ROLE_ANOTACAO_SERVIDOR" />
         <intercept-url pattern="/paginas/cadastros/pessoaAnotacaoForm.faces" access="ROLE_ANOTACAO_SERVIDOR" />
         
+        <intercept-url pattern="/paginas/cadastros/carreiraPessoalList.faces" access="ROLE_CARREIRA_PESSOAL" />
+        <intercept-url pattern="/paginas/cadastros/carreiraPessoalForm.faces" access="ROLE_CARREIRA_PESSOAL" />
+        
         <intercept-url pattern="/paginas/cadastros/publicacaoList.faces" access="ROLE_PUBLICACAO" />
         <intercept-url pattern="/paginas/cadastros/publicacaoForm.faces" access="ROLE_PUBLICACAO" />        
 

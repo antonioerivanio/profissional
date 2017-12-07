@@ -1,20 +1,22 @@
 package br.gov.ce.tce.srh.enums;
 
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+
 public enum EnumTipoBeneficio {
 	
-	VOLUNTARIA(1L, "Voluntária"),
-	PROPORCIONAL(2L, "Proporcional"),
-	INVALIDEZ(3L, "Invalidez");
+	VOLUNTARIA(1, "Voluntária"),
+	PROPORCIONAL(2, "Proporcional"),
+	INVALIDEZ(3, "Invalidez");
 	
-	private Long id;
+	private Integer id;
 	private String descricao;
 	
-	private EnumTipoBeneficio (Long id, String descricao) {
+	private EnumTipoBeneficio (Integer id, String descricao) {
 		this.id = id;
 		this.descricao = descricao;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -22,5 +24,17 @@ public enum EnumTipoBeneficio {
 		return descricao;
 	}	
 	
+	public static EnumTipoBeneficio getEnumTipoBeneficio(Integer idTipoBeneficio) {
+		
+		if(idTipoBeneficio == null)
+			return null;
+		
+		for (EnumTipoBeneficio enumTipoBeneficio: EnumTipoBeneficio.values()) {
+			if(enumTipoBeneficio.getId() == idTipoBeneficio)
+				return enumTipoBeneficio;
+		}
+		
+		throw new SRHRuntimeException("Tipo Benefício inválido.");
+	}
 
 }

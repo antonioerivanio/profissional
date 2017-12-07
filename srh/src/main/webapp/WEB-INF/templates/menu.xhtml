@@ -416,7 +416,7 @@
 										Dependentes
 									</a>
 								</li>
-							</ui:fragment>
+							</ui:fragment>														
 		
 						</ul>
 					</li>
@@ -528,6 +528,14 @@
 									<li>
 										<a href="/srh/paginas/funcional/nomeacaoServidorList.faces">
 										Nomeação
+										</a>
+									</li>
+								</ui:fragment>
+								
+								<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL')}">
+									<li>
+										<a href="/srh/paginas/funcional/carreiraPessoalList.faces">
+											Carreira
 										</a>
 									</li>
 								</ui:fragment>

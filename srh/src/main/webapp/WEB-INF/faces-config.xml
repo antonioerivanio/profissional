@@ -570,6 +570,18 @@
 			<to-view-id>/paginas/cadastros/pessoaAnotacaoForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Carreira Pessoal -->
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/carreiraPessoalList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/carreiraPessoalList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/funcional/carreiraPessoalForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Pessoal Curso Academica -->
 	<navigation-rule>
 		<from-view-id>/paginas/cadastros/pessoaCursoGraduacaoList.xhtml</from-view-id>
