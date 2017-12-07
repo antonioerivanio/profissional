@@ -1,39 +1,18 @@
 package br.gov.ce.tce.srh.enums;
 
-import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-
 public enum EnumCarreira {
 
-	CONTROLE_EXTERNO(1, "Controle Externo"),
-	ADMINISTRACAO(2, "Administração");
+	NAO_SE_APLICA("Não se aplica"),
+	CONTROLE_EXTERNO("Controle Externo");
 	
-	private Integer id;
 	private String descricao;
 	
-	private EnumCarreira( Integer id, String descricao ) {
-		this.id = id;
+	private EnumCarreira( String descricao ) {
 		this.descricao = descricao;
-	}
-
-	public Integer getId() {
-		return id;
-	}
+	}	
 	
 	public String getDescricao() {
 		return descricao;
-	}
-
-	public static EnumCarreira getEnumCarreira(Integer idCarreira) {
-		
-		if(idCarreira == null)
-			return null;
-		
-		for (EnumCarreira enumCarreira: EnumCarreira.values()) {
-			if(enumCarreira.getId() == idCarreira)
-				return enumCarreira;
-		}
-		
-		throw new SRHRuntimeException("Carreira inválida.");
-	}	
+	}		
 	
 }
