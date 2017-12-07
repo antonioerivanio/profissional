@@ -186,7 +186,7 @@ body {
     
     .login-corpo .box-inputs {
         width: 338px;
-        overflow: auto;
+        /*overflow: auto;*/
         min-height: 10px;
         margin: 0 auto;
     }

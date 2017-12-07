@@ -5,8 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -35,8 +33,7 @@ public class Aposentadoria extends BasicEntity<Long> implements Serializable {
     private Funcional funcional;
 
     @Column(name = "IDTIPOBENEFICIO")
-    @Enumerated(EnumType.ORDINAL)
-    private EnumTipoBeneficio tipoBeneficio;
+    private Integer idTipoBeneficio;
     
     @Temporal(TemporalType.DATE)
     @Column(name = "DATAATO")
@@ -83,11 +80,11 @@ public class Aposentadoria extends BasicEntity<Long> implements Serializable {
 	}
 
 	public EnumTipoBeneficio getTipoBeneficio() {
-		return tipoBeneficio;
+		return EnumTipoBeneficio.getEnumTipoBeneficio(idTipoBeneficio);
 	}
 
 	public void setTipoBeneficio(EnumTipoBeneficio tipoBeneficio) {
-		this.tipoBeneficio = tipoBeneficio;
+		this.idTipoBeneficio = tipoBeneficio.getId();
 	}
 
 	public Date getDataAto() {
