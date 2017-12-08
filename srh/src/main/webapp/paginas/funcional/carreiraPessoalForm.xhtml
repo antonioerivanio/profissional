@@ -97,13 +97,19 @@
 											var="carreira"
 											itemValue="#{carreira}"
 											itemLabel="#{carreira.descricao}"/>
+							<a4j:support id="atualizaInicioCarreira"
+					  				 event="onchange" 
+					  				 ajaxSingle="true"	
+					  				 action="#{carreiraPessoalBean.atualizaDatasCarreira}"
+					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
+					  				 reRender="dataInicioCarreira, dataFimCarreira" />
 						</h:selectOneMenu>
 					</div>
 				</div>
 				
 				
 				<div class="input-box box-12">
-					<label for="">Data Início Carreira *</label>
+					<label for="">Data Início Carreira</label>
 					<div class="conteiner">
 						<h:inputText id="dataInicioCarreira" 
 									 name="dataInicioCarreira"
@@ -111,7 +117,8 @@
 									 styleClass="maskData"
 									 value="#{carreiraPessoalBean.entidade.inicioCarreira}" 
 									 maxlength="10"
-									 disabled="#{not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR')}" />
+									 disabled="#{not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR')
+									 	or carreiraPessoalBean.desabilitaDatasCarreira }" />
 					</div>
 				</div>
 				
@@ -125,7 +132,8 @@
 									 styleClass="maskData"
 									 value="#{carreiraPessoalBean.entidade.fimCarreira}" 
 									 maxlength="10"
-									 disabled="#{not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR')}" />
+									 disabled="#{not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR')
+									 	or carreiraPessoalBean.desabilitaDatasCarreira }" />
 					</div>
 				</div>
 				
@@ -181,15 +189,21 @@
 			
 			</fieldset>
 			
-			
-			
-				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') }">	
-					<h:commandButton action="#{carreiraPessoalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
+						
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') }">	
+				<h:commandButton action="#{carreiraPessoalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
+				
+				<ui:fragment rendered="#{!carreiraPessoalBean.alterar}">
 					<h:commandButton id="limpaTela" value="Limpar" action="#{carreiraPessoalBean.limpaForm}" styleClass="bt-padrao fr mg-right-10" />
-				</ui:fragment>				 
-				<a href="/srh/paginas/funcional/carreiraPessoalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
-
-			
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{carreiraPessoalBean.alterar}">
+					<a href="/srh/paginas/funcional/carreiraPessoalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>				
+				</ui:fragment>				
+			</ui:fragment>
+							 
+			<a href="/srh/paginas/funcional/carreiraPessoalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+							
 
 		</h:form>
 
