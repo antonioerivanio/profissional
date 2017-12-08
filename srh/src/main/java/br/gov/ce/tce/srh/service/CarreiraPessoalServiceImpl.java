@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.CarreiraPessoalDAO;
 import br.gov.ce.tce.srh.domain.CarreiraPessoal;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.enums.EnumCarreira;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("carreiraPessoalService")
@@ -27,7 +28,7 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 		validarDadosObrigatorios(entidade);
 				
 		List<Funcional> funcionais = funcionalService.findByPessoal(entidade.getPessoal().getId(), "ASC");
-		if(entidade.getInicioCarreira().before(funcionais.get(0).getExercicio()))
+		if(entidade.getInicioCarreira() != null && entidade.getInicioCarreira().before(funcionais.get(0).getExercicio()))
 			throw new SRHRuntimeException("A Data Início Carreira não pode ser anterior ao Exercício da primeira nomeação do Servidor.");
 		
 		if(entidade.getInicioCargoAtual().before(funcionais.get(0).getExercicio()))
@@ -43,7 +44,7 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 			
 			if ( entidade.getId() == null || entidade.getId().intValue() != carreira.getId().intValue() ) {
 
-				if( !entidade.getInicioCarreira().before(carreira.getInicioCarreira()) 
+				if( entidade.getInicioCarreira() != null && !entidade.getInicioCarreira().before(carreira.getInicioCarreira()) 
 						&&  !entidade.getInicioCarreira().after(carreira.getFimCarreira()) ){
 					throw new SRHRuntimeException("Existe uma carreira neste período.");
 				}
@@ -95,7 +96,7 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 		if (entidade.getCarreira() == null)
 			throw new SRHRuntimeException("A Carreira é obrigatória.");
 		
-		if (entidade.getInicioCarreira() == null)
+		if (entidade.getInicioCarreira() == null && entidade.getCarreira() != EnumCarreira.NAO_SE_APLICA)
 			throw new SRHRuntimeException("A Data Início Carreira é obrigatória.");
 		
 		if (entidade.getFimCarreira() != null && entidade.getInicioCarreira().after(entidade.getFimCarreira()))
