@@ -362,5 +362,21 @@ public class CarreiraPessoalBean implements Serializable {
 			entidade.setInicioCargoAtual(funcionais.get(index).getExercicio());
 		}
 	}
+	
+	public void atualizaDatasCarreira() {
+		
+		this.entidade.setInicioCarreira(null);
+		this.entidade.setFimCarreira(null);
+		
+		if(this.entidade.getCarreira() != EnumCarreira.NAO_SE_APLICA && !this.funcionais.isEmpty())
+			this.entidade.setInicioCarreira(funcionais.get(funcionais.size() - 1).getExercicio());
+		
+	}
+	
+	public boolean isDesabilitaDatasCarreira() {
+		if(this.entidade.getCarreira() == EnumCarreira.NAO_SE_APLICA)
+			return true;
+		return false;
+	}
 
 }
