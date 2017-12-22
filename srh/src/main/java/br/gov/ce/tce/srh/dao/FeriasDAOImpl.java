@@ -3,6 +3,7 @@
  */
 package br.gov.ce.tce.srh.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -51,13 +52,9 @@ public class FeriasDAOImpl implements FeriasDAO {
 
 	@Override
 	public void excluir(Ferias entidade) {
-//		Query query = entityManager.createQuery("DELETE FROM Ferias f WHERE f.id = :id ");
-//		query.setParameter("id", entidade.getId());
-//		query.executeUpdate();
 		
 		entidade = entityManager.merge(entidade);
-		entityManager.remove(entidade);
-		
+		entityManager.remove(entidade);		
 	}
 
 
@@ -131,6 +128,34 @@ public class FeriasDAOImpl implements FeriasDAO {
 		Query query = entityManager.createQuery("SELECT f FROM Ferias f WHERE f.funcional.pessoal.id = :pessoal AND f.tipoFerias.id = :tipo");
 		query.setParameter("pessoal", idPessoal);
 		query.setParameter("tipo", tipo);
+		return query.getResultList();
+	}
+
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Ferias> findByInicioETipo(Date inicio, List<Long> tiposId) {
+		
+		String consulta = "SELECT f FROM Ferias f WHERE f.inicio = :inicio AND f.tipoFerias.id in :tiposId ";
+		
+		Query query = entityManager.createQuery(consulta);
+		query.setParameter("inicio", inicio);
+		query.setParameter("tiposId", tiposId);		
+		
+		return query.getResultList();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Ferias> findByInicioETipo(Date inicio, Date fim, List<Long> tiposId) {
+		
+		String consulta = "SELECT f FROM Ferias f WHERE f.inicio >= :inicio AND f.inicio <= :fim AND f.tipoFerias.id in :tiposId ORDER BY f.inicio";
+		
+		Query query = entityManager.createQuery(consulta);
+		query.setParameter("inicio", inicio);
+		query.setParameter("fim", fim);
+		query.setParameter("tiposId", tiposId);		
+		
 		return query.getResultList();
 	}
 

@@ -3,6 +3,7 @@
  */
 package br.gov.ce.tce.srh.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.Ferias;
@@ -26,5 +27,8 @@ public interface FeriasDAO {
 	public List<Ferias> findByPessoalPeriodoReferencia(Long idPessoal, Long periodo, Long anoReferencia, Long tipo);
 	public List<Ferias> findByPessoalPeriodoReferencia(Long idPessoal, Long periodo, Long anoReferencia);
 	public Ferias findMaisRecenteByPessoal(Long idPessoal);
+		
+	public List<Ferias> findByInicioETipo(Date inicio, List<Long> tiposId);
+	public List<Ferias> findByInicioETipo(Date inicio, Date Fim, List<Long> tiposId);
 
 }
