@@ -1,7 +1,5 @@
 package br.gov.ce.tce.srh.alerta;
 
-import java.util.ArrayList;
-
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
@@ -10,8 +8,7 @@ public class EmissorDeEmail {
 	private String smtp = "webmail.tce.ce.gov.br";
 	private String fromEmail = "srh@tce.ce.gov.br";
 
-	private String email;
-	private ArrayList<String> emails;
+	private String email;	
 	private String assunto;
 	private String mensagem;
 	
@@ -24,7 +21,10 @@ public class EmissorDeEmail {
 		try {
 			
 			email.setFrom(this.fromEmail);
+			
 			email.addTo(this.email);
+			email.addBcc("felipe.augusto@tce.ce.gov.br");			
+			
 			email.setHtmlMsg(mensagem);
 			email.send();
 		
@@ -41,13 +41,7 @@ public class EmissorDeEmail {
 	}	
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public ArrayList<String> getEmails() {
-		return emails;
-	}
-	public void setEmails(ArrayList<String> emails) {
-		this.emails = emails;
-	}
+	}	
 	public String getAssunto() {
 		return assunto;
 	}

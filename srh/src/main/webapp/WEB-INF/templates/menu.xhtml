@@ -769,6 +769,13 @@
 							Consultar Auditoria
 							</a>
 						</li>
+						<li>
+							<h:commandLink
+								id="emissorDeAlertaId"
+								action="#{emissorDeAlerta.alertarFerias}"
+								value="Emitir alerta de Férias"
+							/>							
+						</li>
 					</ui:fragment>
 					
 					<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNC_COMPETENCIA_SETOR')}">					

@@ -7,15 +7,17 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Ferias;
 import br.gov.ce.tce.srh.service.FeriadoServiceImpl;
 import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-@Service
+@Component("emissorDeAlerta")
+@Scope("session")
 public class EmissorDeAlerta {
 	
 	@Autowired
@@ -25,7 +27,7 @@ public class EmissorDeAlerta {
 	private FeriadoServiceImpl feriadoService;
 	
 	
-	@Scheduled(cron="0 33 17 * * ?")
+	@Scheduled(cron="0 0 7 * * ?")
 	public void alertarFerias() {		
 	
 		alertaDeFerias20DiasAntes();
@@ -52,7 +54,7 @@ public class EmissorDeAlerta {
 	
 	public void alertaDeFerias1diaUtilAntes() {
 		
-		Date hoje = new Date();
+		Date hoje = SRHUtils.removeHorasDaData(new Date());
 		
 		if (feriadoService.isDiaUtil(hoje)) {			
 
@@ -79,7 +81,7 @@ public class EmissorDeAlerta {
 	private void emitirAlertaServidor(Ferias ferias) {		
 		
 		EmissorDeEmail emissorDeEmail = new EmissorDeEmail();
-		emissorDeEmail.setEmail("felipeaugustomf@gmail.com");
+		emissorDeEmail.setEmail("marcos@tce.ce.gov.br");
 		emissorDeEmail.setAssunto("Alerta de início de férias");
 		
 		emissorDeEmail.setMensagem(
