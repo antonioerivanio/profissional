@@ -7,17 +7,15 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import br.gov.ce.tce.srh.domain.Ferias;
 import br.gov.ce.tce.srh.service.FeriadoServiceImpl;
 import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-@Component("emissorDeAlerta")
-@Scope("session")
+@Service
 public class EmissorDeAlerta {
 	
 	@Autowired
