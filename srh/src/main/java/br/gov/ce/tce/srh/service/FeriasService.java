@@ -1,8 +1,6 @@
-/**
- * 
- */
 package br.gov.ce.tce.srh.service;
 
+import java.util.Date;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.Ferias;
@@ -20,5 +18,8 @@ public interface FeriasService {
 	public List<Ferias> findByPessoalTipo(Long idPessoal, Long tipo);
 	
 	public Ferias findMaisRecenteByPessoal(Long idPessoal);
+	
+	public List<Ferias> findByInicioETipo(Date inicio, List<Long> tiposId);
+	public List<Ferias> findByInicioETipo(Date inicio, Date fim, List<Long> tiposId);
 	
 }

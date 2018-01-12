@@ -419,4 +419,14 @@ public class FeriasServiceImpl implements FeriasService {
 
 	public void setDAO(FeriasDAO dao){this.dao = dao;}
 
+	@Override
+	public List<Ferias> findByInicioETipo(Date inicio, List<Long> tiposId) {
+		return dao.findByInicioETipo(inicio, tiposId);
+	}
+	
+	@Override
+	public List<Ferias> findByInicioETipo(Date inicio, Date fim, List<Long> tiposId) {
+		return dao.findByInicioETipo(inicio, fim, tiposId);
+	}
+
 }

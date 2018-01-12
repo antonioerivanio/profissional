@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx.xsd 
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+						http://www.springframework.org/schema/task 
+  						http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
 	<!--  Arquivo de parametros -->
 	<context:property-placeholder location="classpath:application.properties"/>
@@ -11,12 +19,10 @@
 	<!-- Habilitando annotations -->
 	<context:annotation-config />
 	<context:component-scan base-package="br.gov.ce.tce.srh" />
-
-	<!--  -->
+	
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
-	<!--  -->
 	<bean id="emf"  
 	      class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">  
          <property name="persistenceUnitName" value="maindatabase"/>  
@@ -30,19 +36,11 @@
          </property>  
     </bean>
 
-	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-        <property name="driverClassName" value="${database.driver}"/>
-        <property name="url" value="${database.url}"/>
-        <property name="username" value="${database.username}"/>
-        <property name="password" value="${database.password}"/>
-    </bean> -->
-
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="${database.driver}" />
 		<property name="jdbcUrl" value="${database.url}" />
 		<property name="user" value="${database.username}" />
-		<property name="password" value="${database.password}" />
-		
+		<property name="password" value="${database.password}" />		
         <property name="acquireIncrement" value="${database.acquireIncrement}" />
 		<property name="initialPoolSize" value="${database.initialPoolSize}" />
 		<property name="minPoolSize" value="${database.minPoolSize}" />
@@ -60,18 +58,9 @@
 	</bean>
 
 	<bean id="facesUtil" class="br.gov.ce.tce.srh.util.FacesUtil" />
-	<bean id="relatorioUtil" class="br.gov.ce.tce.srh.util.RelatorioUtil" />
-
-    <!-- View scope -->
-    <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
-        <property name="scopes">
-            <map>
-                <entry key="view">
-                    <bean class="br.gov.ce.tce.srh.util.ViewScope"/>
-                </entry>
-            </map>
-        </property>
-    </bean>
+	<bean id="relatorioUtil" class="br.gov.ce.tce.srh.util.RelatorioUtil" /> 
+		
+	<!-- Agendamento de tarefas -->
+	<task:annotation-driven />	
 	
-
 </beans>
