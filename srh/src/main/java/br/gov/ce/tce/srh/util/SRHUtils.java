@@ -265,6 +265,16 @@ public class SRHUtils {
 		 SimpleDateFormat sdf = new SimpleDateFormat(formato);		 
 		 return sdf.format(data);		 
 	 }
+	 
+	 public static Date removeHorasDaData(Date data) {		 
+		 SimpleDateFormat sdf = new SimpleDateFormat(SRHUtils.FORMATO_DATA);
+		 try {
+			return sdf.parse(sdf.format(data));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}		 
+	 }
 	
 	/** 
 	 * Metodo que valida CPF.
