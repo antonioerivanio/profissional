@@ -79,7 +79,7 @@ public class EmissorDeAlerta {
 	private void emitirAlertaServidor(Ferias ferias) {		
 		
 		EmissorDeEmail emissorDeEmail = new EmissorDeEmail();
-		emissorDeEmail.setEmail("marcos@tce.ce.gov.br");
+		emissorDeEmail.setEmail("felipe.augusto@tce.ce.gov.br");
 		emissorDeEmail.setAssunto("Alerta de início de férias");
 		
 		emissorDeEmail.setMensagem(

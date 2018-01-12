@@ -23,13 +23,14 @@ public class EmissorDeEmail {
 			email.setFrom(this.fromEmail);
 			
 			email.addTo(this.email);
-			email.addBcc("felipe.augusto@tce.ce.gov.br");			
+			email.addBcc("marcos@tce.ce.gov.br");
+			email.addBcc("elane@tce.ce.gov.br");
+			email.addBcc("silvania@tce.ce.gov.br");
 			
 			email.setHtmlMsg(mensagem);
 			email.send();
 		
-		} catch (EmailException e) {
-			// TODO Auto-generated catch block
+		} catch (EmailException e) {			
 			e.printStackTrace();
 		}
 	
