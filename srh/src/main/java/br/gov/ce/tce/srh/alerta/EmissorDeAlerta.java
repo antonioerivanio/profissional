@@ -41,8 +41,9 @@ public class EmissorDeAlerta {
 		
 		for (Ferias ferias : feriasList) {
 			
-			// Se não for férias de membros
-			if(ferias.getFuncional().getOcupacao().getTipoOcupacao().getId() != 1L) {
+			// Se não for férias de exonerados nem de membros
+			if( ferias.getFuncional().getSaida() == null
+				&& ferias.getFuncional().getOcupacao().getTipoOcupacao().getId() != 1L) {
 				this.emitirAlertaServidor(ferias);
 			}
 		
@@ -87,7 +88,7 @@ public class EmissorDeAlerta {
 				+ ", verificamos que existe um período férias cadastrado no Sistema de Recursos Humanos que se iniciará em " + SRHUtils.formataData("dd/MM/yyyy", ferias.getInicio())
 				+ ". Lembramos que conforme Resolução Administrativa 08/2017 o prazo para solicitações de alterações de férias por parte do servidor,"
 				+ " será de até 10 dias antes do início das férias, portanto "  + SRHUtils.formataData("dd/MM/yyyy", this.addDias(ferias.getInicio(), -10)) 
-				+ " <br><br><br>\"Email gerado automaticamente, favor não responder. Para quaisquer esclarecimentos entre em contato com a Gerência de Atos Funcionais.\"" );
+				+ ". <br><br><br>\"Email gerado automaticamente, favor não responder. Para quaisquer esclarecimentos entre em contato com a Gerência de Atos Funcionais.\"" );
 		
 		emissorDeEmail.enviarEmail();
 		
