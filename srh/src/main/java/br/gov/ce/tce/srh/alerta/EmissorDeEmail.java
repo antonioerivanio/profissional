@@ -25,7 +25,6 @@ public class EmissorDeEmail {
 			email.addTo(this.email);
 			email.addBcc("marcos@tce.ce.gov.br");
 			email.addBcc("elane@tce.ce.gov.br");
-			email.addBcc("silvania@tce.ce.gov.br");
 			
 			email.setHtmlMsg(mensagem);
 			email.send();
