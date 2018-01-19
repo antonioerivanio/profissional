@@ -1,0 +1,22 @@
+<html>
+	
+	<br />
+	
+	Atenção, ${nomePessoal}.<br /><br />
+	
+	Verificamos que existe um período férias cadastrado no Sistema de Recursos Humanos 
+	que se iniciará em <b>${inicioFerias}</b>. 
+	
+	Lembramos que conforme Resolução Administrativa 08/2017 o prazo para solicitações 
+	de alterações de férias por parte do servidor será de até 10 dias antes do início das férias, 
+	portanto <b>${ultimoDiaAlteracao}</b>. 
+	
+	<br /><br /><br />
+	
+	"Email gerado automaticamente, favor não responder. 
+	Para quaisquer esclarecimentos entre em contato com a 
+	Diretoria Administrativa e Financeira - Remuneração e Benefícios."
+	
+	<br /><br />	
+
+</html>

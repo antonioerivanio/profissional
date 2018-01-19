@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -79,18 +81,23 @@ public class EmissorDeAlerta {
 	
 	private void emitirAlertaServidor(Ferias ferias) {		
 		
-		EmissorDeEmail emissorDeEmail = new EmissorDeEmail();
-		emissorDeEmail.setEmail("felipe.augusto@tce.ce.gov.br");
-		emissorDeEmail.setAssunto("Alerta de início de férias");
+		String email = ferias.getFuncional().getPessoal().getEmail(); 
 		
-		emissorDeEmail.setMensagem(
-				"Atenção " + ferias.getFuncional().getPessoal().getNomeCompleto()
-				+ ", verificamos que existe um período férias cadastrado no Sistema de Recursos Humanos que se iniciará em " + SRHUtils.formataData("dd/MM/yyyy", ferias.getInicio())
-				+ ". Lembramos que conforme Resolução Administrativa 08/2017 o prazo para solicitações de alterações de férias por parte do servidor,"
-				+ " será de até 10 dias antes do início das férias, portanto "  + SRHUtils.formataData("dd/MM/yyyy", this.addDias(ferias.getInicio(), -10)) 
-				+ ". <br><br><br>\"Email gerado automaticamente, favor não responder. Para quaisquer esclarecimentos entre em contato com a Gerência de Atos Funcionais.\"" );
-		
-		emissorDeEmail.enviarEmail();
+		if (email != null && !email.isEmpty()) {
+			
+			Map<String, String> parametrosTemplate = new HashMap<String, String>();
+			parametrosTemplate.put("nomePessoal", ferias.getFuncional().getPessoal().getNomeCompleto());
+			parametrosTemplate.put("inicioFerias", SRHUtils.formataData("dd/MM/yyyy", ferias.getInicio()));
+			parametrosTemplate.put("ultimoDiaAlteracao", SRHUtils.formataData("dd/MM/yyyy", this.addDias(ferias.getInicio(), -10)));			
+							
+			EmissorDeEmail emissorDeEmail = new EmissorDeEmail();
+			emissorDeEmail.setEmail(email);
+			emissorDeEmail.setAssunto("Alerta de início de férias");
+			
+			emissorDeEmail.preencherTemplateEmail("alerta-ferias.txt", parametrosTemplate);
+			
+			emissorDeEmail.enviarEmail();
+		}
 		
 	}	
 	
