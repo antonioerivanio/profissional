@@ -26,9 +26,7 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 	@Transactional	
 	public void salvar(AbonoPermanencia entidade, boolean alterar) throws SRHRuntimeException {
 		validarDados(entidade, alterar);
-		
-		corrigeNumeroProcesso(entidade);
-		
+				
 		atualizarFuncional(entidade);		
 		
 		abonoPermanenciaDAO.salvar(entidade);		
@@ -85,7 +83,9 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 			throw new SRHRuntimeException("O Processo é obrigatório.");
 		}
 		
-		if (!SRHUtils.validarProcesso( SRHUtils.removerMascara(entidade.getProcesso()) ) ) {
+		corrigeNumeroProcesso(entidade);
+		
+		if (!SRHUtils.validarProcesso( entidade.getProcesso() ) ) {
 			throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 		}
 		
