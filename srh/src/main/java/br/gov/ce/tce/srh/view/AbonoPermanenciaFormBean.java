@@ -142,7 +142,7 @@ public class AbonoPermanenciaFormBean implements Serializable{
 
 			try {
 
-				if (!SRHUtils.validarProcesso( SRHUtils.removerMascara(nrProcesso) ) ) {
+				if (!SRHUtils.validarProcesso( SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(nrProcesso, 0) ) ) {
 					throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 				}
 
