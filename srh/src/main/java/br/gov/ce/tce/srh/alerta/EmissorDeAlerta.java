@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Service
 public class EmissorDeAlerta {
 	
+	static Logger logger = Logger.getLogger(EmissorDeAlerta.class);
+	
 	@Autowired
 	private FeriasService feriasService;
 	
@@ -27,9 +30,13 @@ public class EmissorDeAlerta {
 	private FeriadoServiceImpl feriadoService;
 	
 	
-	@Scheduled(cron="0 0 7 * * ?")
-	public void alertarFerias() {		
 	
+	
+	@Scheduled(cron="0 0 7 * * ?")
+	public void alertarFerias() {
+		
+		logger.info("Rotina de alerta de férias executada às " + SRHUtils.formataData("dd/MM/yyyy HH:mm:ss", new Date()));	
+		
 		alertaDeFerias20DiasAntes();
 		alertaDeFerias1diaUtilAntes();
 		
