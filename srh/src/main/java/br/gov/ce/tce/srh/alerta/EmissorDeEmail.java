@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -16,7 +18,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 public class EmissorDeEmail {
 
-	private static final String CAMINHO_TEMPLATES_EMAIL = "/WEB-INF/templates/email/";
+	private static final String CAMINHO_TEMPLATES_EMAIL = "//WEB-INF/templates/email/";
 	
 	private String smtp = "webmail.tce.ce.gov.br";
 	private String fromEmail = "srh@tce.ce.gov.br";
@@ -69,13 +71,18 @@ public class EmissorDeEmail {
 	
 	private String getTemplateEmail(String nomeArquivoTemplate){
 		
-		InputStream arquivoIS = FacesUtil.getServletContext().getResourceAsStream(CAMINHO_TEMPLATES_EMAIL + nomeArquivoTemplate);
+		ServletContext servletContext = FacesUtil.getServletContext();
+		String path = CAMINHO_TEMPLATES_EMAIL + nomeArquivoTemplate;
+				
+		InputStream arquivoIS = servletContext.getResourceAsStream(path);		
 		StringWriter writer = new StringWriter();
+		
 		try {
-			IOUtils.copy(arquivoIS, writer);
+			IOUtils.copy(arquivoIS, writer, "UTF-8");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		
 		return writer.toString();
 	}
 	

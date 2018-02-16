@@ -36,7 +36,7 @@
          </property>  
     </bean>
 
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="driverClass" value="${database.driver}" />
 		<property name="jdbcUrl" value="${database.url}" />
 		<property name="user" value="${database.username}" />

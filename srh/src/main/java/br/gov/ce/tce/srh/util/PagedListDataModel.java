@@ -1,10 +1,14 @@
 package br.gov.ce.tce.srh.util;
 
+import java.io.Serializable;
 import java.util.List;
+
 import javax.faces.model.DataModel;
 
 @SuppressWarnings("rawtypes")
-public class PagedListDataModel extends DataModel {
+public class PagedListDataModel extends DataModel implements Serializable {
+
+	private static final long serialVersionUID = -6661053520289463045L;
 
 	private int rowIndex = -1;
 
