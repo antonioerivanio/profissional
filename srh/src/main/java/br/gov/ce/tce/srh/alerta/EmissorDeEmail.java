@@ -1,6 +1,5 @@
 package br.gov.ce.tce.srh.alerta;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -8,18 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
-import br.gov.ce.tce.srh.util.FacesUtil;
-
 public class EmissorDeEmail {
 
-	private static final String CAMINHO_TEMPLATES_EMAIL = "//WEB-INF/templates/email/";
-	
 	private String smtp = "webmail.tce.ce.gov.br";
 	private String fromEmail = "srh@tce.ce.gov.br";
 
@@ -38,9 +31,9 @@ public class EmissorDeEmail {
 			email.setFrom(this.fromEmail);
 			
 			email.addTo(this.email);
-			email.addBcc("felipe.augusto@tce.ce.gov.br");			
-			
-			URL url = new URL("file:///"+ FacesUtil.getServerRootUrl() + "img" + File.separator + "logo-srh.png");
+			email.addBcc("felipe.augusto@tce.ce.gov.br");
+						
+			URL url = new URL("file://"+ this.getClass().getResource("logo-srh.png").getPath());
 			String cid = email.embed(url, "logoSRH");
 			mensagem += "<img src=\"cid:"+ cid +"\" alt=\"SRH - Sistema de Recursos Humanos\" "
 					+ " style=\"position: relative; left: -20px; max-width: 70%;\" >";			
@@ -71,10 +64,7 @@ public class EmissorDeEmail {
 	
 	private String getTemplateEmail(String nomeArquivoTemplate){
 		
-		ServletContext servletContext = FacesUtil.getServletContext();
-		String path = CAMINHO_TEMPLATES_EMAIL + nomeArquivoTemplate;
-				
-		InputStream arquivoIS = servletContext.getResourceAsStream(path);		
+		InputStream arquivoIS = this.getClass().getResourceAsStream(nomeArquivoTemplate);		
 		StringWriter writer = new StringWriter();
 		
 		try {

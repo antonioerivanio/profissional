@@ -30,8 +30,6 @@ public class EmissorDeAlerta {
 	private FeriadoServiceImpl feriadoService;
 	
 	
-	
-	
 	@Scheduled(cron="0 0 7 * * ?")
 	public void alertarFerias() {
 		
