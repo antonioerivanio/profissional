@@ -20,6 +20,21 @@
 		        margin-bottom: 10px;
 		        min-height: 50px;
 		    }
+		    .fichaAntigaLink{
+		    	font-size: 12px;
+			    font-weight: bold;
+			    color: #505050;
+			   	margin-left: 10px;
+			    text-decoration: none;
+		    }
+		    input[type='file']{
+		    	border: 1px solid #c6c6c6;
+    			padding: 4px 5px;
+    			margin-bottom: 10px;
+    			max-width: 100%;
+				box-sizing: border-box;
+				background: white;
+		    }
 		</style>
 
 		<script>
@@ -38,192 +53,193 @@
 
          <h:form id="form" styleClass="formularios" enctype="multipart/form-data">
 
-			<fieldset>
+			<fieldset style="position:relative;">
 
-			<legend>Dados Pessoais</legend>
-			
-			<br/>
-
-            <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
-
-			<div class="input-box box-60">
-				<label for="">Nome *</label>
-				<div class="conteiner">
-					<h:inputText id="nome"
-								 value="#{pessoaBean.entidade.nome}"
-								 maxlength="200"
-								 onblur="sugerirNomeCompleto()"
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>    
-				</div>
-			</div>
-
-			<div class="input-box box-15">
-				<label for="">Abreviatura</label>
-				<div class="conteiner">
-					<h:inputText id="abreviatura"
-								 value="#{pessoaBean.entidade.abreviatura}"
-								 maxlength="25" 
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
-				</div>
-			</div>
-
-			<div class="input-box box-75">
-				<label for="">Nome Completo *</label>
-				<div class="conteiner">
-					<h:inputText id="nomeCompleto"
-								 value="#{pessoaBean.entidade.nomeCompleto}"
-								 maxlength="60" 
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>    
-				</div>
-			</div>
-
-			<div class="select-box box-25" style="clear: both">
-				<label for="">Estado Civil</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="estadoCivil" 
-									 converter="entityConverter"
-									 value="#{pessoaBean.entidade.estadoCivil}"
-									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
-					  	<f:selectItem id="selecioneEstadoCivil" itemLabel="Selecione..."/>
-					  	<f:selectItems 	id="comboEstadoCivil" 
-					  					value="#{pessoaBean.comboEstadoCivil}"
-					  					var="estadoCivil"
-					  					itemValue="#{estadoCivil}"
-					  					itemLabel="#{estadoCivil.descricao}"/>
-					</h:selectOneMenu>
-				</div>
-			</div>
-
-			<div class="select-box box-25">
-				<label for="">Escolaridade</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="escolaridade"
-									 converter="entityConverter"
-									 value="#{pessoaBean.entidade.escolaridade}"
-									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
-					  	<f:selectItem id="selecioneEscolaridade" itemLabel="Selecione..."/>
-					  	<f:selectItems 	id="comboEscolaridade" 
-					  					value="#{pessoaBean.comboEscolaridade}"
-					  					var="escolaridade"
-					  					itemValue="#{escolaridade}"
-					  					itemLabel="#{escolaridade.descricao}"/>
-					</h:selectOneMenu>
-				</div>
-			</div>
-
-			<div class="radios-group box-25">
-				<h3>Sexo *</h3>
-				<div class="conteiner">
-					<div class="radio-box">
-					<h:selectOneRadio id="sexo" 
-									  value="#{pessoaBean.entidade.sexo}" 
-									  disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
-						<f:selectItem id="M" itemLabel="Masculino" itemValue="M" />
-						<f:selectItem id="F" itemLabel="Feminino" itemValue="F" />
-					</h:selectOneRadio>
+				<legend>Dados Pessoais</legend>
+				
+				<br/>
+	
+	            <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+	
+				<div class="input-box box-55">
+					<label for="">Nome *</label>
+					<div class="conteiner">
+						<h:inputText id="nome"
+									 value="#{pessoaBean.entidade.nome}"
+									 maxlength="200"
+									 onblur="sugerirNomeCompleto()"
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>    
 					</div>
 				</div>
-			</div>
-
-			<div style="float: right; width: 265px; padding-bottom: 0.6px; margin-top: -56px; margin-right: 20px;">
-				<a4j:mediaOutput element="img" cacheable="false" session="false"
-                 				 createContent="#{pessoaBean.geraFoto}" mimeType="image/jpeg"  
-                 				 id="imagem1" style="height: 150px; width: 112.5px;" />
-				<br/>
-				<t:inputFileUpload id="arquivo"		
-	            	      		   value="#{pessoaBean.arquivo}"
-	                	  		   storage="file" size="20"
-	                  			   valueChangeListener="#{pessoaBean.uploadFoto}"
-	                  			   onchange="submit()" 
-	                  			   disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
-			</div>
-
-
-			<div class="input-box box-37">
-				<label for="">Nome Mãe</label>
-				<div class="conteiner">
-					<h:inputText id="nomeMae"
-								 maxlength="60"
-								 value="#{pessoaBean.entidade.nomeMae}" 
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+	
+				<div class="input-box box-15">
+					<label for="">Abreviatura</label>
+					<div class="conteiner">
+						<h:inputText id="abreviatura"
+									 value="#{pessoaBean.entidade.abreviatura}"
+									 maxlength="25" 
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-38">
-				<label for="">Nome Pai</label>
-				<div class="conteiner">
-					<h:inputText id="nomePai"
-								 maxlength="60"
-								 value="#{pessoaBean.entidade.nomePai}" 
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+	
+				<div class="input-box box-70">
+					<label for="">Nome Completo *</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompleto"
+									 value="#{pessoaBean.entidade.nomeCompleto}"
+									 maxlength="60" 
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>    
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-37">
-				<label for="">Naturalidade</label>
-				<div class="conteiner">
-					<h:inputText id="naturalidade"
-								 maxlength="30"
-								 value="#{pessoaBean.entidade.naturalidade}" 
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+	
+				<div class="select-box box-25" style="clear: both">
+					<label for="">Estado Civil</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="estadoCivil" 
+										 converter="entityConverter"
+										 value="#{pessoaBean.entidade.estadoCivil}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
+						  	<f:selectItem id="selecioneEstadoCivil" itemLabel="Selecione..."/>
+						  	<f:selectItems 	id="comboEstadoCivil" 
+						  					value="#{pessoaBean.comboEstadoCivil}"
+						  					var="estadoCivil"
+						  					itemValue="#{estadoCivil}"
+						  					itemLabel="#{estadoCivil.descricao}"/>
+						</h:selectOneMenu>
+					</div>
 				</div>
-			</div>
-
-			<div class="select-box box-10">
-				<label for="">UF</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="uf"
-									 converter="entityConverter" 
-									 value="#{pessoaBean.entidade.uf}"
-									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
-					  	<f:selectItem id="selecioneUf"  itemLabel="Selecione..."/>
-					  	<f:selectItems 	id="comboUf" 
-					  					value="#{pessoaBean.comboUf}"
-					  					var="uf"
-					  					itemValue="#{uf}"
-					  					itemLabel="#{uf.id}"/>
-					</h:selectOneMenu>
+	
+				<div class="select-box box-25">
+					<label for="">Escolaridade</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="escolaridade"
+										 converter="entityConverter"
+										 value="#{pessoaBean.entidade.escolaridade}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
+						  	<f:selectItem id="selecioneEscolaridade" itemLabel="Selecione..."/>
+						  	<f:selectItems 	id="comboEscolaridade" 
+						  					value="#{pessoaBean.comboEscolaridade}"
+						  					var="escolaridade"
+						  					itemValue="#{escolaridade}"
+						  					itemLabel="#{escolaridade.descricao}"/>
+						</h:selectOneMenu>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-14">
-				<label for="">Data Nascimento</label>
-				<div class="conteiner">
-					<h:inputText id="dataNascimento" 
-								 styleClass="maskData" 
-								 converter="dateConverter"
-								 value="#{pessoaBean.entidade.nascimento}" 
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+	
+				<div class="radios-group box-20">
+					<h3>Sexo *</h3>
+					<div class="conteiner">
+						<div class="radio-box">
+						<h:selectOneRadio id="sexo" 
+										  value="#{pessoaBean.entidade.sexo}" 
+										  disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
+							<f:selectItem id="M" itemLabel="Masculino" itemValue="M" />
+							<f:selectItem id="F" itemLabel="Feminino" itemValue="F" />
+						</h:selectOneRadio>
+						</div>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-14">
-				<label for="">Data Óbito</label>
-				<div class="conteiner">
-					<h:inputText id="dataObito" 
-								 styleClass="maskData"
-								 converter="dateConverter"
-								 value="#{pessoaBean.entidade.obito}"  
-								 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+				
+				<div style=" position: absolute; right: 3%; top: 17%;" class="box-25">
+					<a4j:mediaOutput element="img" cacheable="false" session="false"
+	                 				 createContent="#{pessoaBean.geraFoto}" mimeType="image/jpeg"  
+	                 				 id="imagem1" style="height: 150px; width: 107px; margin-bottom: 10px;" />
+					<br />
+					<t:inputFileUpload id="arquivo"		
+		            	      		   value="#{pessoaBean.arquivo}"
+		                	  		   storage="file"
+		                  			   valueChangeListener="#{pessoaBean.uploadFoto}"
+		                  			   onchange="submit()" 
+		                  			   disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"
+		                  			   label="teste"/>
 				</div>
-			</div>
-
-			<div class="select-box box-20">
-				<label for="">Categoria</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="categoria"
-									 converter="entityConverter" 
-									 value="#{pessoaBean.entidade.categoria}"
-									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
-					  	<f:selectItem id="selecioneCategoria" itemLabel="Selecione..."/>
-					  	<f:selectItems 	id="comboCategoria"
-					  					value="#{pessoaBean.comboCategoria}"
-					  					var="categoria"
-					  					itemValue="#{categoria}"
-					  					itemLabel="#{categoria.nome}"/>
-					</h:selectOneMenu>
+	
+	
+				<div class="input-box box-35">
+					<label for="">Nome Mãe</label>
+					<div class="conteiner">
+						<h:inputText id="nomeMae"
+									 maxlength="60"
+									 value="#{pessoaBean.entidade.nomeMae}" 
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+					</div>
 				</div>
-			</div>
+	
+				<div class="input-box box-35">
+					<label for="">Nome Pai</label>
+					<div class="conteiner">
+						<h:inputText id="nomePai"
+									 maxlength="60"
+									 value="#{pessoaBean.entidade.nomePai}" 
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+					</div>
+				</div>
+	
+				<div class="input-box box-35">
+					<label for="">Naturalidade</label>
+					<div class="conteiner">
+						<h:inputText id="naturalidade"
+									 maxlength="30"
+									 value="#{pessoaBean.entidade.naturalidade}" 
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+					</div>
+				</div>
+	
+				<div class="select-box box-15">
+					<label for="">UF</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="uf"
+										 converter="entityConverter" 
+										 value="#{pessoaBean.entidade.uf}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
+						  	<f:selectItem id="selecioneUf"  itemLabel="Selecione..."/>
+						  	<f:selectItems 	id="comboUf" 
+						  					value="#{pessoaBean.comboUf}"
+						  					var="uf"
+						  					itemValue="#{uf}"
+						  					itemLabel="#{uf.id}"/>
+						</h:selectOneMenu>
+					</div>
+				</div>
+	
+				<div class="input-box box-14">
+					<label for="">Data Nascimento</label>
+					<div class="conteiner">
+						<h:inputText id="dataNascimento" 
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{pessoaBean.entidade.nascimento}" 
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+					</div>
+				</div>
+	
+				<div class="input-box box-14">
+					<label for="">Data Óbito</label>
+					<div class="conteiner">
+						<h:inputText id="dataObito" 
+									 styleClass="maskData"
+									 converter="dateConverter"
+									 value="#{pessoaBean.entidade.obito}"  
+									 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+					</div>
+				</div>
+	
+				<div class="select-box box-20">
+					<label for="">Categoria</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="categoria"
+										 converter="entityConverter" 
+										 value="#{pessoaBean.entidade.categoria}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
+						  	<f:selectItem id="selecioneCategoria" itemLabel="Selecione..."/>
+						  	<f:selectItems 	id="comboCategoria"
+						  					value="#{pessoaBean.comboCategoria}"
+						  					var="categoria"
+						  					itemValue="#{categoria}"
+						  					itemLabel="#{categoria.nome}"/>
+						</h:selectOneMenu>
+					</div>
+				</div>
 
 			</fieldset>
 
@@ -623,22 +639,23 @@
 
 			</fieldset>
 
-
-
 			<fieldset>
 
-			<legend>Ficha Antiga</legend>
-
-			<br/>
-
-			<div style="width: 265px; padding-bottom: 0.6px;">
-				<t:inputFileUpload id="ficha"		
+				<legend>Ficha Antiga</legend>
+					
+				<t:inputFileUpload id="ficha"								   						
 	            	      		   value="#{pessoaBean.ficha}"
 	                	  		   storage="file" size="20"
 	                  			   valueChangeListener="#{pessoaBean.uploadFicha}"
-	                  			   disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"
-	                  			   />
-			</div>
+	                  			   disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}" />
+	                  			   
+				<h:commandLink 	id="fichaAntiga"
+								styleClass="fichaAntigaLink"
+               				  	value="Arquivo atualmente salvo"
+               				  	action="#{pessoaBean.fichaAntiga}"
+               				  	target="_blank"
+               				  	rendered="#{pessoaBean.entidade.ficha != null}" />	                  			   
+	                  			   				
 
 			</fieldset>
 

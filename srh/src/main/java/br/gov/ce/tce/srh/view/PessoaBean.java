@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -388,7 +389,7 @@ public class PessoaBean implements Serializable {
 	        Parametro parametro = parametroService.getByNome("pathImageSRH");
 
 	       	if (parametro == null)
-				throw new SRHRuntimeException("Parametro do caminho da imagem nao encontrado na tabela SAPJAVA.FWPARAMETER");
+				throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
 
 	        // setando o nome da foto
 			setArquivo((UploadedFile) event.getNewValue());
@@ -432,7 +433,7 @@ public class PessoaBean implements Serializable {
 	        Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
 
 	       	if (parametro == null)
-				throw new SRHRuntimeException("Parametro do caminho da imagem nao encontrado na tabela SRH.TB_PARAMETRO");
+				throw new SRHRuntimeException("Parâmetro do caminho da ficha não encontrado na tabela SRH.TB_PARAMETRO");
 
 	        // setando o nome da ficha
 			setFicha((UploadedFile) event.getNewValue());
@@ -518,6 +519,34 @@ public class PessoaBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
+	}
+	
+	
+	public String fichaAntiga() {
+
+		try {			
+
+			try {
+				
+				Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
+				String fichaAntiga = parametro.getValor() + entidade.getFicha();
+				InputStream in = new FileInputStream( fichaAntiga );
+				byte[] fichaAntigaBytes = IOUtils.toByteArray(in);
+				relatorioUtil.openPdf(fichaAntigaBytes, fichaAntiga);
+
+			} catch (FileNotFoundException e) {
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}			
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu algum erro na geração do arquivo. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
 	}
 
 	
