@@ -240,7 +240,9 @@
 	                        <f:facet name="header">
 	                          Data Publicação
 	                        </f:facet>
-	                        <h:outputText id="item3" value="#{item3.doe}" />
+	                        <h:outputText id="item3" value="#{item3.doe}">
+	                        	<f:convertDateTime id="convDtPublicacaoLicenca" type="date" pattern="dd/MM/yyyy" />
+	                        </h:outputText>
 	                    </h:column>
 	                    <h:column>
 	                        <f:facet name="header">
