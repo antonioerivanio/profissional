@@ -62,12 +62,7 @@ public class FacesUtil {
 
 	public static void addErroMessage(String message) {
 		getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR, message, message));
-	}
-
-	public static String getTipoArquivo(String arquivo){
-		int ponto = arquivo.lastIndexOf(".");
-		return arquivo.substring(ponto);
-	}
+	}	
 		
 	public static String getServerRootUrl () {		
 		ServletContext servletContext = getServletContext();		

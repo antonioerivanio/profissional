@@ -586,5 +586,15 @@ public class SRHUtils {
 		}
 		return (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
+	
+	public static String getTipoArquivo(String arquivo){
+		int ponto = arquivo.lastIndexOf(".");
+		return arquivo.substring(ponto);
+	}
+	
+	public static String getNomeArquivo(String arquivo){
+		int ponto = arquivo.lastIndexOf(".");
+		return arquivo.substring(0, ponto);
+	}
 
 }

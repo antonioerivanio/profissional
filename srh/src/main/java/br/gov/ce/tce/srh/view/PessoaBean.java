@@ -103,7 +103,7 @@ public class PessoaBean implements Serializable {
 	private Pessoal entidade = new Pessoal();
 
 	// imagem
-	private UploadedFile arquivo;
+	private UploadedFile foto;
 	private UploadedFile ficha;
 
 	// combos
@@ -381,7 +381,7 @@ public class PessoaBean implements Serializable {
 
 		// criando nome da foto
 		SimpleDateFormat formato = new SimpleDateFormat("yyyyMMddHHMMss");
-		String data = formato.format(new Date());
+		String nomeDoArquivo = formato.format(new Date());
 
 		try {
 
@@ -392,15 +392,16 @@ public class PessoaBean implements Serializable {
 				throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
 
 	        // setando o nome da foto
-			setArquivo((UploadedFile) event.getNewValue());
-			getEntidade().setFoto( data + FacesUtil.getTipoArquivo( arquivo.getName() ) );
+			setFoto((UploadedFile) event.getNewValue());			
+			nomeDoArquivo = SRHUtils.getNomeArquivo(foto.getName()) + "-" + nomeDoArquivo + SRHUtils.getTipoArquivo(foto.getName());
+			getEntidade().setFoto( nomeDoArquivo );
 
 			// gravando em disco
 			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFoto());
 			FileOutputStream fop;
 
 			fop = new FileOutputStream(file);
-			fop.write(arquivo.getBytes());
+			fop.write(foto.getBytes());
 			fop.flush();
 			fop.close();
 
@@ -418,50 +419,6 @@ public class PessoaBean implements Serializable {
 	}
 	
 	
-	
-	/**
-	 * Upload da ficha
-	 * 
-	 * @throws IOException 
-	 * 
-	 */
-	public void uploadFicha(ValueChangeEvent event) {
-
-		try {
-
-	        // pegando o caminho do arquivo no servidor
-	        Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
-
-	       	if (parametro == null)
-				throw new SRHRuntimeException("Parâmetro do caminho da ficha não encontrado na tabela SRH.TB_PARAMETRO");
-
-	        // setando o nome da ficha
-			setFicha((UploadedFile) event.getNewValue());
-			getEntidade().setFicha( new File(ficha.getName()).getName() );
-
-			// gravando em disco
-			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFicha());
-			FileOutputStream fop;
-
-			fop = new FileOutputStream(file);
-			fop.write(ficha.getBytes());
-			fop.flush();
-			fop.close();
-
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage("Erro na gravação da ficha do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na gravação da ficha do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na gravação da ficha do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-	}
-
-
 	/** 
 	* Evento para gerar a Foto 
 	* 
@@ -522,6 +479,49 @@ public class PessoaBean implements Serializable {
 	}
 	
 	
+	
+	/**
+	 * Upload da ficha
+	 * 
+	 * @throws IOException 
+	 * 
+	 */
+	public void uploadFicha(ValueChangeEvent event) {
+
+		try {
+
+	        // pegando o caminho do arquivo no servidor
+	        Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
+
+	       	if (parametro == null)
+				throw new SRHRuntimeException("Parâmetro do caminho da ficha não encontrado na tabela SRH.TB_PARAMETRO");
+
+	        // setando o nome da ficha
+			setFicha((UploadedFile) event.getNewValue());
+			getEntidade().setFicha( new File(ficha.getName()).getName() );
+
+			// gravando em disco
+			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFicha());
+			FileOutputStream fop;
+
+			fop = new FileOutputStream(file);
+			fop.write(ficha.getBytes());
+			fop.flush();
+			fop.close();
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage("Erro na gravação da ficha do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (FileNotFoundException e) {
+			FacesUtil.addErroMessage("Erro na gravação da ficha do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (IOException e) {
+			FacesUtil.addErroMessage("Erro na gravação da ficha do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+	}	
+	
 	public String fichaAntiga() {
 
 		try {			
@@ -559,6 +559,9 @@ public class PessoaBean implements Serializable {
 		this.nome = new String();
 		this.cpf = new String();
 		this.lista = new ArrayList<Pessoal>();
+		
+		this.foto = null;
+		this.ficha = null;
 
 		this.comboEstadoCivil = null;
 		this.comboEscolaridade = null;
@@ -612,8 +615,8 @@ public class PessoaBean implements Serializable {
 		return form;
 	}
 
-	public UploadedFile getArquivo() {return arquivo;}
-	public void setArquivo(UploadedFile arquivo) {this.arquivo = arquivo;}
+	public UploadedFile getFoto() {return foto;}
+	public void setFoto(UploadedFile arquivo) {this.foto = arquivo;}
 	
 	public UploadedFile getFicha() {return ficha;}
 	public void setFicha(UploadedFile ficha) {this.ficha = ficha;}

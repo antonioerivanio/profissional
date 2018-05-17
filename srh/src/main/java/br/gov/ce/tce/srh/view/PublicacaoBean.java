@@ -36,6 +36,7 @@ import br.gov.ce.tce.srh.service.TipoDocumentoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
 * Use case : SRH_UC029_Manter Documento Publicação
@@ -279,11 +280,11 @@ public class PublicacaoBean implements Serializable {
 
 	        // setando o do arquivo
 			if ( getEntidade().getTipoPublicacao() == 1 )
-				getEntidade().setArquivo( "DOE" + data + FacesUtil.getTipoArquivo( arquivo.getName() ) );
+				getEntidade().setArquivo( "DOE" + data + SRHUtils.getTipoArquivo( arquivo.getName() ) );
 			if ( getEntidade().getTipoPublicacao() == 2 )
-				getEntidade().setArquivo( "DOTCE" + data + FacesUtil.getTipoArquivo( arquivo.getName() ) );
+				getEntidade().setArquivo( "DOTCE" + data + SRHUtils.getTipoArquivo( arquivo.getName() ) );
 			if ( getEntidade().getTipoPublicacao() == 3 )
-				getEntidade().setArquivo( "DOU" + data + FacesUtil.getTipoArquivo( arquivo.getName() ) );
+				getEntidade().setArquivo( "DOU" + data + SRHUtils.getTipoArquivo( arquivo.getName() ) );
 
 			// gravando em disco
 			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getArquivo());
