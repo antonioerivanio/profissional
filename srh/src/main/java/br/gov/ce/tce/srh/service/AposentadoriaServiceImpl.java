@@ -98,18 +98,18 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 		else if (!entidade.getDataAto().after(entidade.getFuncional().getExercicio()))
 			throw new SRHRuntimeException("A Data Ato deve ser posterior a data de Exercício Funcional.");
 		
-		if (entidade.getNumeroResolucao() == null || entidade.getNumeroResolucao().intValue() <= 0)
-			throw new SRHRuntimeException("O Número Resolução é obrigatório.");
-		
-		if (entidade.getAnoResolucao() == null || entidade.getAnoResolucao().intValue() <= 0)
-			throw new SRHRuntimeException("O Ano Resolução é obrigatório.");
-		else if (anoAnterior(entidade.getDataAto(), entidade.getAnoResolucao()))
-			throw new SRHRuntimeException("Ano Resolução tem que ser maior ou igual ao ano da Data Ato.");		
+//		if (entidade.getNumeroResolucao() == null || entidade.getNumeroResolucao().intValue() <= 0)
+//			throw new SRHRuntimeException("O Número Resolução é obrigatório.");
+//		
+//		if (entidade.getAnoResolucao() == null || entidade.getAnoResolucao().intValue() <= 0)
+//			throw new SRHRuntimeException("O Ano Resolução é obrigatório.");
+//		else if (anoAnterior(entidade.getDataAto(), entidade.getAnoResolucao()))
+//			throw new SRHRuntimeException("Ano Resolução tem que ser maior ou igual ao ano da Data Ato.");		
 		
 		if ( entidade.getDataUltimaContagem() == null )
 			throw new SRHRuntimeException("A Data Última Contagem é obrigatória.");
-		else if (!entidade.getDataUltimaContagem().after(entidade.getFuncional().getExercicio()))
-			throw new SRHRuntimeException("A Data Última Contagem deve ser posterior a data de Exercício Funcional.");
+//		else if (!entidade.getDataUltimaContagem().after(entidade.getFuncional().getExercicio()))
+//			throw new SRHRuntimeException("A Data Última Contagem deve ser posterior a data de Exercício Funcional.");
 		
 		if ( entidade.getDataInicioBeneficio() == null )
 			throw new SRHRuntimeException("A Data Início Benefício é obrigatória.");
