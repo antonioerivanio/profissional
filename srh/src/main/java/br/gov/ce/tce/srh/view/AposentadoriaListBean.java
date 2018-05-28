@@ -144,7 +144,7 @@ public class AposentadoriaListBean implements Serializable {
 
 			try {
 
-				getEntidade().setFuncional( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
+				getEntidade().setFuncional( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getPessoal().getNomeCompleto();
 					this.cpf = getEntidade().getFuncional().getPessoal().getCpf();	
@@ -167,7 +167,7 @@ public class AposentadoriaListBean implements Serializable {
 
 			try {
 
-				getEntidade().setFuncional( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
+				getEntidade().setFuncional( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getPessoal().getNomeCompleto();
 					this.matricula = getEntidade().getFuncional().getMatricula();
