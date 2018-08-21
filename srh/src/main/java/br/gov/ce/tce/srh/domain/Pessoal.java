@@ -2,12 +2,16 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -185,6 +189,9 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	@Column(name="CELULAR")
 	private String celular;
+	
+	@OneToMany(mappedBy = "responsavel", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+	private List<Dependente> dependentes;
 
 	
 	public Pessoal(){
@@ -352,8 +359,11 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	public void setTelefone(String telefone) {this.telefone = telefone;}
 
 	public String getCelular() {return celular;}
-	public void setCelular(String celular) {this.celular = celular;}	
-
+	public void setCelular(String celular) {this.celular = celular;}
+	
+	public List<Dependente> getDependentes() { return dependentes; }
+	public void setDependentes(List<Dependente> dependentes) { this.dependentes = dependentes; }	
+	
 	@Override
 	public Long getId() {return this.id;}
 	

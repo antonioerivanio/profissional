@@ -23,15 +23,14 @@
 		</style>
 
 		<script>
-		function openwindow()
-		{
-			nome = document.getElementById('form:nomeCompletoPessoa').value;
-			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","menubar=0,resizable=0,width=800,height=300");
-			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			function openwindow() {
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
 			}
-		}
 		</script>
 
 		<div class="titulo-pagina">
@@ -149,9 +148,7 @@
 					<div class="conteiner">
 						<h:inputText disabled="true" value="#{licencaEspecialFormBean.entidade.id}" />  
 					</div>
-				</div>
-
-				<br/><br/><br/><br/><br/>
+				</div>				
 	
 				<div class="input-box box-10">
 					<label for="">Ano Inicial *</label>

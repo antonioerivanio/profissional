@@ -11,8 +11,8 @@
 	<ui:define name="content">
 	
 		<script>
-			function openwindow()
-			{
+			function openwindow() {
+				
 				var nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
 					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
@@ -21,8 +21,7 @@
 				}
 			}			
 
-			function sugerirDataExercicio()
-			{
+			function sugerirDataExercicio()	{
 				document.getElementById('form:exercicio').value = document.getElementById('form:posse').value;
 				document.getElementById('form:exercicio').focus();
 			}
@@ -30,40 +29,10 @@
 
 		<style type="text/css" >
 		    .formularios fieldset,
-		    .box-border {
-		        border: 1px solid #c6c6c6;
-		        padding: 15px 15px 0px 15px;
-		        padding-right: 0;
-		        overflow: auto;
-		        margin-bottom: 10px;
+		    .box-border {		        
 		        min-height: 100px;
-		        min-width: 1118px;		        
-		    }		    	    
-		    .rich-tab-header{
-				font-size: 14px;
-				padding: 8px 10px;
-				font-weight: bold;				
-			}
-			.rich-tab-active{
-		    	background-image: none;
-				background-color: white;
-				color: #1c5ba7;
-				border-bottom-width: 1px;				
-			}
-			.rich-tab-inactive{
-				background-image: none;
-				background-color: #EFEFEF;
-				color: #505050;
-				cursor: pointer;				
-			}			
-			.rich-tab-inactive:hover {
-				color: #1c5ba7;
-			}
-			.rich-tabpanel-content{
-				background-color: white;
-				padding: 12px;
-			}
-			
+		        min-width: 100%;		        
+		    }			
 		</style>
 
 
@@ -74,6 +43,7 @@
 		</div>
 
 		<br/>
+		
 		<a4j:outputPanel ajaxRendered="true" >
             <h:messages infoClass="infoMessage" errorClass="errorMessage" />
 		</a4j:outputPanel>
@@ -82,7 +52,7 @@
 
 			<rich:tabPanel switchType="client">
 			
-				 <rich:tab label="Admissão">				
+				<rich:tab label="Admissão">				
 	
 					
 		            

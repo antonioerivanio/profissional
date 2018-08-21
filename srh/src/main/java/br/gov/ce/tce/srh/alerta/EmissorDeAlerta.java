@@ -30,7 +30,7 @@ public class EmissorDeAlerta {
 	private FeriadoServiceImpl feriadoService;
 	
 	
-	@Scheduled(cron="0 0 7 * * ?")
+//	@Scheduled(cron="0 0 7 * * ?")
 	public void alertarFerias() {
 		
 		logger.info("Rotina de alerta de férias executada às " + SRHUtils.formataData("dd/MM/yyyy HH:mm:ss", new Date()));	

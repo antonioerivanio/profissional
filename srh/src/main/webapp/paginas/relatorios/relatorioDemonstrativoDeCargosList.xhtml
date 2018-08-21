@@ -10,47 +10,11 @@
 
 	<ui:define name="content">
 	
-		<style type="text/css" >
-		    .formularios fieldset,
-		    .box-border {
-		        padding: 15px;
-		        min-height: 100px;	        
-		    }		    	    
-		    .rich-tab-header{
-				font-size: 14px;
-				padding: 8px 10px;
-				font-weight: bold;				
-			}
-			.rich-tab-active{
-		    	background-image: none;
-				background-color: white;
-				color: #1c5ba7;
-				border-bottom-width: 1px;				
-			}
-			.rich-tab-inactive{
-				background-image: none;
-				background-color: #EFEFEF;
-				color: #505050;
-				cursor: pointer;				
-			}			
-			.rich-tab-inactive:hover {
-				color: #1c5ba7;
-			}
-			.rich-tabpanel-content{
-				background-color: white;
-				padding: 20px;
-			}
-			
-			.conteiner {
-				margin-right: 30px;
-			}
-			
-		</style>
-		
 		<div class="titulo-pagina"><h2>Relatório de Demonstrativo de Cargos</h2></div>
 
+		<br />
 	
-		<h:form id="form" binding="#{relatorioDemonstrativoCargoBean.form}" styleClass="formularios box-border">
+		<h:form id="form" binding="#{relatorioDemonstrativoCargoBean.form}" styleClass="formularios">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />			
 			
@@ -67,16 +31,11 @@
 								<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}" id="tipoOcupacao#{tipoOcupacao.id}" />
 							</h:selectOneMenu>
 						</div>
-					</div>					
-					
-					<div class="radios-group box-30" style="margin-top: 26px; margin-left: 20px; margin-right: 20px;">						
-						<h:selectBooleanCheckbox id="ativoPortal" value="#{relatorioDemonstrativoCargoBean.ativoPortal}" style="float:left; margin-right: 5px;"/>
-						<label style="float:left;" for="form:ativoPortal">Somente servidores ativos no Portal da Transparência?</label>											
 					</div>
 					
 					<div class="radios-group box-20">
 						<label for="">Ordenar por</label>
-						<div class="conteiner" style="padding: 5px 6px;">
+						<div class="conteiner">
 							<div class="radio-box">
 								<h:selectOneRadio id="ordem" value="#{relatorioDemonstrativoCargoBean.ordem}">
 									<f:selectItem itemLabel="Cargo" itemValue="1" id="radioCargo" />
@@ -84,7 +43,12 @@
 								</h:selectOneRadio>
 							</div>
 						</div>
-					</div>
+					</div>					
+					
+					<div class="radios-group box-40 clr">						
+						<h:selectBooleanCheckbox id="ativoPortal" value="#{relatorioDemonstrativoCargoBean.ativoPortal}" style="float:left; margin-right: 5px;"/>
+						<label style="float:left;" for="form:ativoPortal">Somente servidores ativos no Portal da Transparência?</label>											
+					</div>					
 		
 					<br /><br /><br /><br /><br />
 					
@@ -97,12 +61,12 @@
 				
 				<rich:tab id="tab2" label="Quantitativo">
 					
-					<div class="radios-group box-20" style="margin-top: 26px;">						
+					<div class="radios-group box-20" >						
 						<h:selectBooleanCheckbox id="quantitativoDetalhado" value="#{relatorioDemonstrativoCargoBean.quantitativoDetalhado}" style="float:left; margin-right: 5px;"/>
 						<label style="float:left;" for="form:quantitativoDetalhado">Detalhar funcionais por cargo?</label>											
 					</div>
 					
-					<div class="radios-group box-30" style="margin-top: 26px;">						
+					<div class="radios-group box-35" >						
 						<h:selectBooleanCheckbox id="ativoPortalAbaQuantitativo" value="#{relatorioDemonstrativoCargoBean.ativoPortalAbaQuantitativo}" style="float:left; margin-right: 5px;"/>
 						<label style="float:left;" for="form:ativoPortalAbaQuantitativo">Somente servidores ativos no Portal da Transparência?</label>											
 					</div> 
@@ -120,6 +84,8 @@
 			
 		</h:form>
 
+		<br />
+	
 	</ui:define>
 	
 	
