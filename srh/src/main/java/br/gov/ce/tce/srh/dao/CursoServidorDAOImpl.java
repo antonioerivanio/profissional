@@ -301,7 +301,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if (tipoCurso != null)
 			sql.append(" AND e.cursoProfissional.posGraduacao = :tipoCurso");
 
-		sql.append(" ORDER BY  e.pessoal.nome, e.cursoProfissional.inicio desc");
+		sql.append(" ORDER BY  e.pessoal.nomeCompleto, e.cursoProfissional.inicio desc");
 		
 		Query query = entityManager.createQuery(sql.toString());
 		query.setParameter("inicio", inicio);

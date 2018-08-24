@@ -575,17 +575,64 @@
 							</div>
 						</div>						
 						
-						<div class="input-box box-15">
-							<label for="">Categoria</label>
+						<div class="select-box box-15">
+							<label for="">Categoria</label>							
 							<div class="conteiner">
-								<h:inputText id="categoriaCnh" 
-											 maxlength="2" 
-											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+								<h:selectOneMenu id="categoriaCnh"
+												 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
+								  	<f:selectItem id="selecioneCategoriaCnh" itemLabel="Selecione..."/>	
+								  	<f:selectItems 	id="comboCategoriaCnh" 
+								  					value="#{pessoaBean.comboCategoriaCNH}"
+								  					var="categoria"
+								  					itemLabel="#{categoria}"
+								  					itemValue="#{categoria}"/>							  	
+								</h:selectOneMenu>
 							</div>
 						</div>
 								
 					</fieldset>
 					
+					<fieldset class="clr">
+					
+						<legend>Registro em Órgão de Classe</legend>
+		 
+						<div class="input-box box-15">
+							<label for="">Número da inscrição</label>
+							<div class="conteiner">
+								<h:inputText id="nrOc" 
+											 maxlength="14"
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">Órgão e UF de emissão</label>
+							<div class="conteiner">
+								<h:inputText id="orgaoEmissor" 
+											 maxlength="20"
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">Data da expedição</label>
+							<div class="conteiner">
+								<h:inputText id="dtExpedOC" 
+											 styleClass="maskData"
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>						
+			
+						<div class="input-box box-15">
+							<label for="">Data de validade</label>
+							<div class="conteiner">
+								<h:inputText id="dtValidOC" 
+											 styleClass="maskData"
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>					
+								
+					</fieldset>
 				
 				</rich:tab>
 	
@@ -721,26 +768,74 @@
 						</div>
 					</div>					
 				
-					<fieldset>
+					<fieldset class="clr">
 						
-						<legend>Endereço no Exterior</legend>
+						<legend>Endereço no Exterior</legend>						
 						
+						<div class="select-box box-25">
+							<label for="">País</label>
+							<div class="conteiner">
+								<h:selectOneMenu id="paisResid"											 
+												 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
+								  	<f:selectItem id="selecionepaisResid"  itemLabel="Selecione..."/>
+								  	
+								</h:selectOneMenu>
+							</div>
+						</div>	
 						
-						<div class="select-box box-15">
-						<label for="">País</label>
-						<div class="conteiner">
-							<h:selectOneMenu id="paisResid"											 
-											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}">
-							  	<f:selectItem id="selecionepaisResid"  itemLabel="Selecione..."/>
-							  	
-							</h:selectOneMenu>
+						<div class="input-box box-75">
+							<label for="">Descrição Logradouro</label>
+							<div class="conteiner">
+								<h:inputText id="enderecoExterior" 
+											 maxlength="40" 
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
 						</div>
-					</div>
+			
+						<div class="input-box box-25">
+							<label for="">Número</label>
+							<div class="conteiner">
+								<h:inputText id="numeroExterior" 
+											 maxlength="10" 
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>
+			
+						<div class="input-box box-75">
+							<label for="">Complemento</label>
+							<div class="conteiner">
+								<h:inputText id="complementoExterior" 
+											 maxlength="30"
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}" />
+							</div>
+						</div>
+			
+						<div class="input-box box-50">
+							<label for="">Bairro</label>
+							<div class="conteiner">
+								<h:inputText id="bairroExterior" 
+											 maxlength="60" 
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>
 						
-						
-						
-						
-						
+						<div class="input-box box-50">
+							<label for="">Cidade</label>
+							<div class="conteiner">
+								<h:inputText id="cidadeExterior" 
+											 maxlength="50" 
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>
+			
+						<div class="input-box box-25">
+							<label for="">Código Postal</label>
+							<div class="conteiner">
+								<h:inputText id="codPostal" 
+											 maxlength="12" 
+											 disabled="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR,ROLE_PESSOA_ALTERAR')}"/>
+							</div>
+						</div>
 						
 					</fieldset>
 				

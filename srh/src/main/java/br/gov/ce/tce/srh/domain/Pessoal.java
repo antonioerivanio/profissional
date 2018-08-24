@@ -361,8 +361,7 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	public String getCelular() {return celular;}
 	public void setCelular(String celular) {this.celular = celular;}
 	
-	public List<Dependente> getDependentes() { return dependentes; }
-	public void setDependentes(List<Dependente> dependentes) { this.dependentes = dependentes; }	
+	public List<Dependente> getDependentes() { return dependentes; }		
 	
 	@Override
 	public Long getId() {return this.id;}
