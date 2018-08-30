@@ -48,8 +48,8 @@ jQuery(document).ready(function($) {
     $(".maskPasep").mask("999.99999.99/9",{placeholder:" "});  // PASEP
     $(".maskAgencia").mask("9999-9",{placeholder:" "});  // AGENCIA
     $(".maskConta").mask("9999999-9",{placeholder:" "});  // CONTA
-    $(".maskCep").mask("99999-999",{placeholder:" "});  // CEP
-    $(".maskTelefone").mask("(99)9999-9999",{placeholder:" "});  // TELEFONE
+    $(".maskCep").mask("99999-999",{placeholder:" "});  // CEP    
+	$(".maskTelefone").mask("(99)99999999?9",{placeholder:" "}); // TELEFONE    
     $(".maskCelular").mask("(99)99999-9999",{placeholder:" "});  // CELULAR
     $(".maskMatricula").mask("9999-9",{placeholder:" "});  // MATRICULA
     $(".maskMotorVeiculo").mask("9.9",{placeholder:" "});  // MOTOR VEICULO

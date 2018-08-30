@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -70,11 +71,41 @@ public class LoginBean implements Serializable {
 		return "/login.faces?faces-redirect=true";
 	}
 
-	public String getUsuarioLogado() {
+	public String getLoginUsuarioLogado() {
 
 		try {
 
 			return authenticationService.getUsuarioLogado().getUsername();
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na identificação do usuario logado. Favor efetuar novo login.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
+	
+	public Usuario getUsuarioLogado() {
+
+		try {
+
+			return authenticationService.getUsuarioLogado();
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na identificação do usuario logado. Favor efetuar novo login.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
+	
+	
+	
+	public String getCPFUsuarioLogado() {
+
+		try {
+
+			return authenticationService.getUsuarioLogado().getCpf();
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro na identificação do usuario logado. Favor efetuar novo login.");

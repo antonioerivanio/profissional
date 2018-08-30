@@ -22,7 +22,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @SuppressWarnings("serial")
 @Table(name="TB_DEPENDENTE", schema="SRH")
 @NamedQueries({
-	@NamedQuery(name = "Dependente.findAll", query = "SELECT d FROM Dependente d ORDER BY d.responsavel.nome")
+	@NamedQuery(name = "Dependente.findAll", query = "SELECT d FROM Dependente d ORDER BY d.responsavel.nomeCompleto")
 })
 public class Dependente extends BasicEntity<Long> implements Serializable{
 

@@ -77,15 +77,7 @@ public class LicencaDAOImpl implements LicencaDAO {
 		query.setParameter("pessoal", idPessoa);
 		query.setParameter("tipo", tipoLicenca);
 		return ((Long) query.getSingleResult()).intValue();
-	}
-	
-	@Override
-	public int count(String nome, TipoLicenca tipoLicenca) {
-		Query query = entityManager.createQuery("SELECT count (l) as total FROM Licenca l WHERE l.pessoal.nome LIKE :nome AND l.tipoLicenca.id = :tipo  order by l.inicio desc ");
-		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
-		query.setParameter("tipo", tipoLicenca.getId());
-		return ((Long) query.getSingleResult()).intValue();
-	}
+	}	
 
 
 	@Override
@@ -113,8 +105,8 @@ public class LicencaDAOImpl implements LicencaDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Licenca> search(String nome, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT l FROM Licenca l WHERE l.pessoal.nome LIKE :nome AND (l.tipoLicenca.id = 1 OR l.tipoLicenca.id = 2) ORDER BY l.pessoal.nome, l.inicio desc ");
-		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		Query query = entityManager.createQuery("SELECT l FROM Licenca l WHERE l.pessoal.nomePesquisa LIKE :nome AND (l.tipoLicenca.id = 1 OR l.tipoLicenca.id = 2) ORDER BY l.pessoal.nome, l.inicio desc ");
+		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
 		query.setFirstResult(first);
 		query.setMaxResults(rows);
 		return query.getResultList();
@@ -123,8 +115,8 @@ public class LicencaDAOImpl implements LicencaDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Licenca> search(String nome, TipoLicenca tipoLicenca, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT l FROM Licenca l WHERE l.pessoal.nome LIKE :nome AND l.tipoLicenca.id = :tipo ORDER BY l.pessoal.nome, l.inicio desc ");
-		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		Query query = entityManager.createQuery("SELECT l FROM Licenca l WHERE l.pessoal.nomePesquisa LIKE :nome AND l.tipoLicenca.id = :tipo ORDER BY l.pessoal.nome, l.inicio desc ");
+		query.setParameter("nome", "%" + nome.toLowerCase() + "%");
 		query.setParameter("tipo", tipoLicenca.getId());
 		query.setFirstResult(first);
 		query.setMaxResults(rows);

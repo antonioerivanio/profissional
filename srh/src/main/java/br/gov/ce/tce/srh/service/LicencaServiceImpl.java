@@ -286,12 +286,7 @@ public class LicencaServiceImpl implements LicencaService {
 	@Override
 	public int count(Long idPessoa, Long tipoLicenca) {
 		return dao.count(idPessoa, tipoLicenca);
-	}
-	
-	@Override
-	public int count(String nome, TipoLicenca tipoLicenca) {
-		return dao.count(nome, tipoLicenca);
-	}
+	}	
 
 	@Override
 	public List<Licenca> search(Long idPessoa, int first, int rows) {

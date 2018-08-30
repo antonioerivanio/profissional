@@ -9,7 +9,6 @@ public interface LicencaDAO {
 
 	public int count(Long idPessoa);
 	public int count(Long idPessoa, Long tipoLicenca);
-	public int count(String nome, TipoLicenca tipoLicenca);
 
 	public List<Licenca> search(Long idPessoa, int first, int rows);
 	public List<Licenca> search(Long idPessoa, Long tipoLicenca, int first, int rows);

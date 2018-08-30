@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -19,6 +21,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
+import br.gov.ce.tce.srh.enums.EnumCategoriaCNH;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
@@ -60,7 +63,10 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	private String nomeCompleto;	
 
 	@Column(name="NOMEPESQUISA")
-	private String nomePesquisa;	
+	private String nomePesquisa;
+	
+	@Column(name="NOMESOCIAL")
+	private String nomeSocial;
 
 	@Column(name="ABREVIATURA")
 	private String abreviatura;	
@@ -73,6 +79,9 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	@Column(name="EMAIL")
 	private String email;
+	
+	@Column(name="EMAILALTERNATIVO")
+	private String emailAlternativo;
 
 	@Column(name="SEXO")
 	private String sexo;
@@ -90,7 +99,30 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	@Column(name="FATORRH")
 	private String fatorRH;
+	
+	@ManyToOne
+	@JoinColumn(name = "PAISNASCIMENTO")		
+	private Pais paisNascimento;
+	
+	@ManyToOne
+	@JoinColumn(name = "PAISNACIONALIDADE")	
+	private Pais paisNacionalidade;
+ 
+	@ManyToOne
+	@JoinColumn(name="UF")	
+	private Uf uf;
+	
+	@ManyToOne
+	@JoinColumn(name="MUNICIPIONATURALIDADE")	
+	private Municipio municipioNaturalidade;
+	
+	@Column(name="NATURALIDADE")
+	private String naturalidade;
 
+	@ManyToOne
+	@JoinColumn(name="TIPOLOGRADOURO")	
+	private TipoLogradouro tipoLogradouro;
+	
 	@Column(name="ENDERECO")
 	private String endereco;
 
@@ -106,19 +138,16 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	@Column(name="CEP")
 	private String cep;
 		 
+	@ManyToOne
+	@JoinColumn(name="MUNICIPIOENDERECO")	
+	private Municipio municipioEndereco;
+	
 	@Column(name="MUNICIPIO")
-	private String municipio;
- 
+	private String municipio;	
+	
 	@ManyToOne
 	@JoinColumn(name = "UFENDERECO")	
-	private Uf ufEndereco;
- 
-	@Column(name="NATURALIDADE")
-	private String naturalidade;
- 
-	@ManyToOne
-	@JoinColumn(name="UF")	
-	private Uf uf;
+	private Uf ufEndereco;	
 
 	@Column(name="PASEP")
 	private String pasep;
@@ -151,6 +180,47 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	@Column(name="DOCUMENTOMILITAR")
 	private String documentoMilitar;
+		
+	@Column(name="NRORGAOCLASSE")
+	private String nrOrgaoClasse;
+	
+	@Column(name="EMISSORORGAOCLASSE")
+	private String emissorOrgaoClasse;
+		
+	@ManyToOne
+	@JoinColumn(name = "UFORGAOCLASSE")
+	private Uf ufOrgaoClasse;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="DATAEXPEDORGAOCLASSE")
+	private Date dataExpedicaoOrgaoClasse;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="DATAVALIDORGAOCLASSE")
+	private Date dataValidadeOrgaoClasse;
+		
+	@Column(name="NRCNH")
+	private String nrCNH;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="DATAEXPEDCNH")
+	private Date dataExpedicaoCNH;
+	
+	@ManyToOne
+	@JoinColumn(name = "UFCNH")
+	private Uf ufCNH;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="DATAVALIDCNH")
+	private Date dataValidadeCNH;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="DATAPRIMEIRACNH")
+	private Date dataPrimeiraCNH;
+	
+	@Column(name="CATEGORIACNH")
+	@Enumerated(EnumType.STRING)
+	private EnumCategoriaCNH categoriaCNH;	
 
 	@Column(name="TIPOCONTABBD")
 	private Long tipoContaBbd;
@@ -190,9 +260,12 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	@Column(name="CELULAR")
 	private String celular;
 	
+	@Column(name="TELEFONEALTERNATIVO")
+	private String telefoneAlternativo;		
+	
 	@OneToMany(mappedBy = "responsavel", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
 	private List<Dependente> dependentes;
-
+	
 	
 	public Pessoal(){
 		//seguindo padrao Java Beans...
@@ -361,8 +434,65 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	public String getCelular() {return celular;}
 	public void setCelular(String celular) {this.celular = celular;}
 	
-	public List<Dependente> getDependentes() { return dependentes; }		
+	public List<Dependente> getDependentes() { return dependentes; }	
 	
+	public String getNomeSocial() { return nomeSocial; }
+	public void setNomeSocial(String nomeSocial) { this.nomeSocial = nomeSocial; }
+
+	public String getEmailAlternativo() { return emailAlternativo; }
+	public void setEmailAlternativo(String emailAlternativo) { this.emailAlternativo = emailAlternativo; }
+
+	public Pais getPaisNascimento() { return paisNascimento; }
+	public void setPaisNascimento(Pais paisNascimento) { this.paisNascimento = paisNascimento; }
+
+	public Pais getPaisNacionalidade() { return paisNacionalidade; }
+	public void setPaisNacionalidade(Pais paisNacionalidade) { this.paisNacionalidade = paisNacionalidade; }
+
+	public Municipio getMunicipioNaturalidade() { return municipioNaturalidade; }
+	public void setMunicipioNaturalidade(Municipio municipioNaturalidade) { this.municipioNaturalidade = municipioNaturalidade; }
+
+	public TipoLogradouro getTipoLogradouro() { return tipoLogradouro; }
+	public void setTipoLogradouro(TipoLogradouro tipoLogradouro) { this.tipoLogradouro = tipoLogradouro; }
+
+	public Municipio getMunicipioEndereco() { return municipioEndereco; }
+	public void setMunicipioEndereco(Municipio municipioEndereco) {	this.municipioEndereco = municipioEndereco; }
+
+	public String getNrOrgaoClasse() { return nrOrgaoClasse; }
+	public void setNrOrgaoClasse(String nrOrgaoClasse) { this.nrOrgaoClasse = nrOrgaoClasse; }
+
+	public String getEmissorOrgaoClasse() { return emissorOrgaoClasse; }
+	public void setEmissorOrgaoClasse(String emissorOrgaoClasse) { this.emissorOrgaoClasse = emissorOrgaoClasse; }
+
+	public Uf getUfOrgaoClasse() { return ufOrgaoClasse; }
+	public void setUfOrgaoClasse(Uf ufOrgaoClasse) { this.ufOrgaoClasse = ufOrgaoClasse; }
+
+	public Date getDataExpedicaoOrgaoClasse() { return dataExpedicaoOrgaoClasse; }
+	public void setDataExpedicaoOrgaoClasse(Date dataExpedicaoOrgaoClasse) { this.dataExpedicaoOrgaoClasse = dataExpedicaoOrgaoClasse; }
+
+	public Date getDataValidadeOrgaoClasse() { return dataValidadeOrgaoClasse; }
+	public void setDataValidadeOrgaoClasse(Date dataValidadeOrgaoClasse) { this.dataValidadeOrgaoClasse = dataValidadeOrgaoClasse; }
+
+	public String getNrCNH() { return nrCNH; }
+	public void setNrCNH(String nrCNH) { this.nrCNH = nrCNH; }
+
+	public Date getDataExpedicaoCNH() { return dataExpedicaoCNH; }
+	public void setDataExpedicaoCNH(Date dataExpedicaoCNH) { this.dataExpedicaoCNH = dataExpedicaoCNH; }
+
+	public Uf getUfCNH() { return ufCNH; }
+	public void setUfCNH(Uf ufCNH) { this.ufCNH = ufCNH; }
+
+	public Date getDataValidadeCNH() { return dataValidadeCNH; }
+	public void setDataValidadeCNH(Date dataValidadeCNH) { this.dataValidadeCNH = dataValidadeCNH; }
+ 
+	public Date getDataPrimeiraCNH() { return dataPrimeiraCNH; }
+	public void setDataPrimeiraCNH(Date dataPrimeiraCNH) { this.dataPrimeiraCNH = dataPrimeiraCNH; }
+
+	public EnumCategoriaCNH getCategoriaCNH() { return categoriaCNH; }
+	public void setCategoriaCNH(EnumCategoriaCNH categoriaCNH) { this.categoriaCNH = categoriaCNH; }
+
+	public String getTelefoneAlternativo() { return telefoneAlternativo; }
+	public void setTelefoneAlternativo(String telefoneAlternativo) { this.telefoneAlternativo = telefoneAlternativo; }
+
 	@Override
 	public Long getId() {return this.id;}
 	

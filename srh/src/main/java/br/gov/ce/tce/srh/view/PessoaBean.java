@@ -31,20 +31,25 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Escolaridade;
 import br.gov.ce.tce.srh.domain.EstadoCivil;
+import br.gov.ce.tce.srh.domain.Municipio;
+import br.gov.ce.tce.srh.domain.Pais;
 import br.gov.ce.tce.srh.domain.Parametro;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.PessoalCategoria;
 import br.gov.ce.tce.srh.domain.Raca;
+import br.gov.ce.tce.srh.domain.TipoLogradouro;
 import br.gov.ce.tce.srh.domain.Uf;
 import br.gov.ce.tce.srh.enums.EnumCategoriaCNH;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.EscolaridadeService;
 import br.gov.ce.tce.srh.service.EstadoCivilService;
+import br.gov.ce.tce.srh.service.MunicipioService;
+import br.gov.ce.tce.srh.service.PaisService;
 import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.service.PessoalCategoriaService;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.service.RacaService;
+import br.gov.ce.tce.srh.service.TipoLogradouroService;
 import br.gov.ce.tce.srh.service.UfService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -75,45 +80,55 @@ public class PessoaBean implements Serializable {
 
 	@Autowired
 	private UfService ufService;
+	
+	@Autowired
+	private MunicipioService municipioService; 
 
 	@Autowired
 	private RacaService racaService;
+	
+	@Autowired
+	private PaisService paisService;
+	
+	@Autowired 
+	private TipoLogradouroService tipoLogradouroService;
 
 	@Autowired
 	private ParametroService parametroService;
 
 	@Autowired
 	private PessoalCategoriaService pessoalCategoriaService;
+	
+	@Autowired
+	private LoginBean loginBean;
 
 	@Autowired
-	private RelatorioUtil relatorioUtil;
+	private RelatorioUtil relatorioUtil;	
 
-	@Autowired
-	private AuthenticationService authenticationService;
-
-	// controle de acesso do formulario
 	private HtmlForm form;
 	private boolean passouConsultar = false;
+	private Boolean podeAlterar = null;
+	private Boolean ehServidor = null;
 
-	// parametro da tela de consulta
 	private String nome = new String();
 	private String cpf = new String();
 
-	// entidades das telas
 	private List<Pessoal> lista;
 	private Pessoal entidade = new Pessoal();
 
-	// imagem
 	private UploadedFile foto;
 	private UploadedFile ficha;
 
-	// combos
 	private List<EstadoCivil> comboEstadoCivil;
 	private List<Escolaridade> comboEscolaridade;
 	private List<Uf> comboUf;
 	private List<PessoalCategoria> comboCategoria;
 	private List<Raca> comboRaca;
-
+	private List<Pais> comboPais;
+	private List<TipoLogradouro> comboTipoLogradouro;
+	private List<Municipio> comboMunicipioNaturalidade;
+	private List<Municipio> comboMunicipioEndereco;
+	
 	// paginação
 	private int count;
 	private PagedListDataModel dataModel = new PagedListDataModel();
@@ -121,16 +136,12 @@ public class PessoaBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
+	
 	public String prepareAlterar() {
 
 		try {
-			if (authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")) {
-				this.entidade = pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf());
+			if (ehServidor()) {
+				this.entidade = pessoalService.getByCpf(loginBean.getCPFUsuarioLogado());
 			} else {
 				this.entidade = pessoalService.getById(this.entidade.getId());
 			}
@@ -144,11 +155,7 @@ public class PessoaBean implements Serializable {
 
 	}
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
+	
 	public String consultar() {
 
 		try {
@@ -175,17 +182,30 @@ public class PessoaBean implements Serializable {
 		return "listar";
 	}
 
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
+	public Boolean podeAlterar() {		
+		if (podeAlterar == null)
+			podeAlterar = loginBean.anyGranted("ROLE_PESSOA_INSERIR, ROLE_PESSOA_ALTERAR");
+		
+		return podeAlterar;
+	}
+	
+	public Boolean ehServidor() {
+		if(ehServidor == null)
+			ehServidor = loginBean.anyGranted("ROLE_PESSOA_SERVIDOR");
+		return ehServidor;
+	}
+	
+	public Boolean habilitadoParaRecadastramento() {		
+		return podeAlterar() || ehServidor() || loginBean.getCPFUsuarioLogado().equals(entidade.getCpf());		
+	}	
+	
 	public String salvar() {
 
 		try {
+			
 			entidade = pessoalService.salvar(entidade);
 
-//	    limpar();
+//			limpar();
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -201,11 +221,7 @@ public class PessoaBean implements Serializable {
 		return null;
 	}
 
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
+	
 	public String excluir() {
 
 		try {
@@ -228,11 +244,7 @@ public class PessoaBean implements Serializable {
 		return consultar();
 	}
 
-	/**
-	 * Combo Estado Civil
-	 * 
-	 * @return
-	 */
+	
 	public List<EstadoCivil> getComboEstadoCivil() {
 
 		try {
@@ -248,11 +260,7 @@ public class PessoaBean implements Serializable {
 		return this.comboEstadoCivil;
 	}
 
-	/**
-	 * Combo Escolaridade
-	 * 
-	 * @return
-	 */
+	
 	public List<Escolaridade> getComboEscolaridade() {
 
 		try {
@@ -268,11 +276,7 @@ public class PessoaBean implements Serializable {
 		return this.comboEscolaridade;
 	}
 
-	/**
-	 * Combo UF
-	 * 
-	 * @return
-	 */
+	
 	public List<Uf> getComboUf() {
 
 		try {
@@ -288,11 +292,7 @@ public class PessoaBean implements Serializable {
 		return this.comboUf;
 	}
 
-	/**
-	 * Combo Categoria
-	 * 
-	 * @return
-	 */
+	
 	public List<PessoalCategoria> getComboCategoria() {
 
 		try {
@@ -308,11 +308,7 @@ public class PessoaBean implements Serializable {
 		return this.comboCategoria;
 	}
 
-	/**
-	 * Combo Raca
-	 * 
-	 * @return
-	 */
+	
 	public List<Raca> getComboRaca() {
 
 		try {
@@ -331,12 +327,66 @@ public class PessoaBean implements Serializable {
 	public List<EnumCategoriaCNH> getComboCategoriaCNH(){
 		return Arrays.asList(EnumCategoriaCNH.values());
 	}
+	
+	public List<Pais> getComboPais() {
 
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
+		try {
+
+			if (this.comboPais == null)
+				this.comboPais = paisService.findAll();
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar o campo biotipo. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return this.comboPais;
+	}
+	
+	public List<TipoLogradouro> getComboTipoLogradouro() {
+
+		try {
+
+			if (this.comboTipoLogradouro == null)
+				this.comboTipoLogradouro = tipoLogradouroService.findAll();
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar o campo Raça / Cor. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return this.comboTipoLogradouro;
+	}
+	
+	public List<Municipio> getComboMunicipioEndereco(){
+		try {
+			
+			if (this.comboMunicipioEndereco == null ||
+					!this.comboMunicipioEndereco.get(0).getUf().equals(this.entidade.getUfEndereco()))		
+				this.comboMunicipioEndereco =  municipioService.findByUF(entidade.getUfEndereco().getId());
+		
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar os municípios. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		return comboMunicipioEndereco;	
+	}
+	
+	public List<Municipio> getComboMunicipioNaturalidade(){
+		try {
+			
+			if (this.comboMunicipioNaturalidade == null ||
+					!this.comboMunicipioNaturalidade.get(0).getUf().equals(this.entidade.getUf()))		
+				this.comboMunicipioNaturalidade =  municipioService.findByUF(entidade.getUf().getId());
+		
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar os municípios. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		return comboMunicipioNaturalidade;
+	}	
+
+	
 	public String relatorio() {
 
 		try {
@@ -346,9 +396,9 @@ public class PessoaBean implements Serializable {
 			StringBuffer filtro = new StringBuffer();
 			filtro.append(" WHERE 1 = 1 ");
 
-			if (authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")) {
+			if (ehServidor()) {
 				filtro.append(" AND upper( cpf ) like '%"
-						+ SRHUtils.removerMascara(authenticationService.getUsuarioLogado().getCpf()) + "%' ");
+						+ loginBean.getCPFUsuarioLogado() + "%' ");
 			} else {
 				if (this.cpf != null && !this.cpf.equalsIgnoreCase(""))
 					cpf = SRHUtils.removerMascara(cpf);
@@ -369,12 +419,7 @@ public class PessoaBean implements Serializable {
 		return null;
 	}
 
-	/**
-	 * Upload da foto
-	 * 
-	 * @throws IOException
-	 * 
-	 */
+	
 	public void uploadFoto(ValueChangeEvent event) {
 
 		// criando nome da foto
@@ -418,11 +463,7 @@ public class PessoaBean implements Serializable {
 
 	}
 
-	/**
-	 * Evento para gerar a Foto
-	 * 
-	 * @return String
-	 */
+	
 	public void geraFoto(OutputStream out, Object data) {
 
 		try {
@@ -478,12 +519,7 @@ public class PessoaBean implements Serializable {
 
 	}
 
-	/**
-	 * Upload da ficha
-	 * 
-	 * @throws IOException
-	 * 
-	 */
+	
 	public void uploadFicha(ValueChangeEvent event) {
 
 		try {
@@ -492,8 +528,7 @@ public class PessoaBean implements Serializable {
 			Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
 
 			if (parametro == null)
-				throw new SRHRuntimeException(
-						"Parâmetro do caminho da ficha não encontrado na tabela SRH.TB_PARAMETRO");
+				throw new SRHRuntimeException("Parâmetro do caminho da ficha não encontrado na tabela SRH.TB_PARAMETRO");
 
 			// setando o nome da ficha
 			setFicha((UploadedFile) event.getNewValue());
@@ -521,6 +556,7 @@ public class PessoaBean implements Serializable {
 
 	}
 
+	
 	public String fichaAntiga() {
 
 		try {
@@ -547,10 +583,28 @@ public class PessoaBean implements Serializable {
 
 		return null;
 	}
+	
+	public String formularioDependentes() {
 
-	/**
-	 * Limpar form
-	 */
+		try {			
+						
+			HashMap<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("pessoa", entidade);
+			parametros.put("temDependente", entidade.getDependentes().size() > 0);
+			relatorioUtil.relatorio("dependentesFormulario.jasper", parametros, "dependentesFormulario.pdf", entidade.getDependentes());				
+				
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na geração do formulário. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return null;
+	}
+
+	
 	private void limpar() {
 		setEntidade(new Pessoal());
 
@@ -573,9 +627,7 @@ public class PessoaBean implements Serializable {
 		return "listar";
 	}
 
-	/**
-	 * Gets and Sets
-	 */
+	
 	public String getNome() {
 		return nome;
 	}
@@ -610,10 +662,10 @@ public class PessoaBean implements Serializable {
 
 	public HtmlForm getForm() {
 
-		if (authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")) {
+		if (ehServidor()) {
 
 			try {
-				count = pessoalService.count(authenticationService.getUsuarioLogado());
+				count = pessoalService.count(loginBean.getUsuarioLogado());
 				limparListas();
 				flagRegistroInicial = -1;
 
@@ -667,8 +719,8 @@ public class PessoaBean implements Serializable {
 		if (flagRegistroInicial != getPrimeiroDaPagina()) {
 			flagRegistroInicial = getPrimeiroDaPagina();
 
-			if (authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")) {
-				setPagedList(pessoalService.search(authenticationService.getUsuarioLogado(), flagRegistroInicial,
+			if (ehServidor()) {
+				setPagedList(pessoalService.search(loginBean.getUsuarioLogado(), flagRegistroInicial,
 						dataModel.getPageSize()));
 			} else {
 				setPagedList(pessoalService.search(nome, cpf, flagRegistroInicial, dataModel.getPageSize()));
