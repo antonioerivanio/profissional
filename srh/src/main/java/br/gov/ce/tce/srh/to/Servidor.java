@@ -1,4 +1,4 @@
-package br.gov.ce.tce.srh.domain;
+package br.gov.ce.tce.srh.to;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

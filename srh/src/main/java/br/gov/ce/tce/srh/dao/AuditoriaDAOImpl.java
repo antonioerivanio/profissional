@@ -37,7 +37,7 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.Revisao;
 import br.gov.ce.tce.srh.domain.Revisao.Restricao;
-import br.gov.ce.tce.srh.domain.TipoRevisao;
+import br.gov.ce.tce.srh.enums.TipoRevisao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 

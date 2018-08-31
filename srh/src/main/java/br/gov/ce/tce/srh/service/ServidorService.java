@@ -2,8 +2,8 @@ package br.gov.ce.tce.srh.service;
 
 import java.util.List;
 
-import br.gov.ce.tce.srh.domain.Servidor;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.to.Servidor;
 
 public interface ServidorService {
 

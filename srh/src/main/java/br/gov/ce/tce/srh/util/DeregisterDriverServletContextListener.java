@@ -1,4 +1,5 @@
 package br.gov.ce.tce.srh.util;
+import java.io.Serializable;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,7 +8,9 @@ import java.util.Enumeration;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-public class DeregisterDriverServletContextListener implements ServletContextListener {
+
+@SuppressWarnings("serial")
+public class DeregisterDriverServletContextListener implements ServletContextListener, Serializable {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {

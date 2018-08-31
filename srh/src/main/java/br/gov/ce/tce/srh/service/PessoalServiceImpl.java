@@ -153,13 +153,9 @@ public class PessoalServiceImpl implements PessoalService {
 	 */
 	private void validarDados(Pessoal entidade) {
 
-		// validando o nome
-		if ( entidade.getNome() == null || entidade.getNome().equalsIgnoreCase("") )
-			throw new SRHRuntimeException("O nome é obrigatório.");
-
 		// validando o nome completo
 		if ( entidade.getNomeCompleto() == null || entidade.getNomeCompleto().equalsIgnoreCase("") )
-			throw new SRHRuntimeException("O nome completo é obrigatório.");
+			throw new SRHRuntimeException("O nome é obrigatório.");
 
 		// validando o sexo
 		if ( entidade.getSexo() == null || entidade.getSexo().equalsIgnoreCase("") )

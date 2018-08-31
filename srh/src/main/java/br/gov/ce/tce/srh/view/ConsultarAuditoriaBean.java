@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.Revisao;
-import br.gov.ce.tce.srh.domain.TipoRevisao;
+import br.gov.ce.tce.srh.enums.TipoRevisao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.UsuarioService;

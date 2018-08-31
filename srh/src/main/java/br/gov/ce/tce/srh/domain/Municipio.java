@@ -30,6 +30,9 @@ public class Municipio extends BasicEntity<Long> implements Serializable {
 	
 	@Column(name="NOME", length=200, nullable=false)
 	private String nome;
+	
+	@Column(name="COD_MUNICIPIO")
+	private String codigoIBGE;
 
 
 	public Uf getUf() {return uf;}
@@ -37,7 +40,10 @@ public class Municipio extends BasicEntity<Long> implements Serializable {
 
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
-
+	
+	public String getCodigoIBGE() {	return codigoIBGE; }
+	public void setCodigoIBGE(String codigoIBGE) { this.codigoIBGE = codigoIBGE; }
+	
 	@Override
 	public Long getId() {return this.id;}
 	

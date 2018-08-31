@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.ServidorDAO;
-import br.gov.ce.tce.srh.domain.Servidor;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.to.Servidor;
 
 @Service("servidorService")
 public class ServidorServiceImpl implements ServidorService {

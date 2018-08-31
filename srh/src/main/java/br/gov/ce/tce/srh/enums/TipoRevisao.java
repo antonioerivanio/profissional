@@ -1,4 +1,4 @@
-package br.gov.ce.tce.srh.domain;
+package br.gov.ce.tce.srh.enums;
 
 public enum TipoRevisao {
 	INCLUSAO(0L,"Inclusão"), ALTERACAO(1L,"Alteração"), EXCLUSAO(2L,"Exclusão");

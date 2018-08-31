@@ -1,4 +1,4 @@
-package br.gov.ce.tce.srh.domain;
+package br.gov.ce.tce.srh.enums;
 
 import java.util.ArrayList;
 import java.util.List;

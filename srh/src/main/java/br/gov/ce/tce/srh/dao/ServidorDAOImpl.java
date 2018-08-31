@@ -12,8 +12,8 @@ import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
-import br.gov.ce.tce.srh.domain.Servidor;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
+import br.gov.ce.tce.srh.to.Servidor;
 
 /**
 *

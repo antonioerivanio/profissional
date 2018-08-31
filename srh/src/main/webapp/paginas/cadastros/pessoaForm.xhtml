@@ -75,15 +75,15 @@
 						<a4j:mediaOutput element="img" cacheable="false" session="false"
 		                 				 createContent="#{pessoaBean.geraFoto}" mimeType="image/jpeg"  
 		                 				 id="imagem1" style="height: 150px; width: 107px; margin-bottom: 10px;" />
-						<br />
+						<br />						
 						
-						<ui:fragment rendered="#{pessoaBean.podeAlterar()}">
-							<t:inputFileUpload id="foto"		
-				            	      		   value="#{pessoaBean.foto}"
-				                	  		   storage="file"
-				                  			   valueChangeListener="#{pessoaBean.uploadFoto}"
-				                  			   onchange="submit()"/>			                  			   
-			            </ui:fragment>      			   
+						<t:inputFileUpload id="foto"		
+			            	      		   value="#{pessoaBean.foto}"
+			                	  		   storage="file"
+			                  			   valueChangeListener="#{pessoaBean.uploadFoto}"
+			                  			   onchange="submit()"
+			                  			   rendered="#{pessoaBean.podeAlterar()}" />			                  			   
+			                  			   
 					</div>					
 		
 					
@@ -364,6 +364,22 @@
 				
 				<rich:tab label="Endereço">
 				
+					<div class="input-box box-10">
+						<label for="">CEP</label>
+						<div class="conteiner">
+							<h:inputText id="cep" 
+										 maxlength="9"
+										 styleClass="maskCep"
+										 value="#{pessoaBean.entidade.cep}" 
+										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+								<a4j:support id="cepAction" 
+							  	             event="onblur"
+							  	             action="#{pessoaBean.buscarCep()}"
+							  	             reRender="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
+							</h:inputText>			 
+						</div>
+					</div>
+					
 					<div class="select-box box-15">
 						<label for="">Tipo Logradouro</label>
 						<div class="conteiner">
@@ -402,7 +418,7 @@
 						</div>
 					</div>
 		
-					<div class="input-box box-20">
+					<div class="input-box box-20 clr">
 						<label for="">Complemento</label>
 						<div class="conteiner">
 							<h:inputText id="complemento" 
@@ -420,18 +436,7 @@
 										 value="#{pessoaBean.entidade.bairro}" 
 										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
 						</div>
-					</div>
-		
-					<div class="input-box box-10">
-						<label for="">CEP</label>
-						<div class="conteiner">
-							<h:inputText id="cep" 
-										 maxlength="9"
-										 styleClass="maskCep"
-										 value="#{pessoaBean.entidade.cep}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-						</div>
-					</div>
+					</div>					
 		 
 					<div class="select-box box-15">
 						<label for="">Estado</label>
@@ -453,7 +458,7 @@
 						</div>
 					</div>							
 					
-					<div class="select-box box-16">
+					<div class="select-box box-25">
 						<label for="">Município</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="municipioEndereco"
@@ -836,7 +841,7 @@
 				</rich:tab>				
 			
 			
-				<rich:tab label="Dependentes">
+				<rich:tab label="Dependentes" rendered="#{pessoaBean.ehAlteracao()}">
 				
 					<div class="input-box box-25">
 						<label for="">Previdência</label>
@@ -876,7 +881,8 @@
 					
 						<rich:dataTable id="listaDependentes"
 										var="dependente"
-										value="#{pessoaBean.entidade.dependentes}">
+										value="#{pessoaBean.entidade.dependentes}"
+										rendered="#{pessoaBean.entidade.dependentes.size() > 0}">
 										
 							<h:column id="col1">
 								<f:facet name="header">
@@ -928,8 +934,7 @@
 						<h:commandButton id="formularioDependentes"
 							 value="Formulário de Dependentes"
 							 action="#{pessoaBean.formularioDependentes}" 
-							 styleClass="bt-padrao fr mg-top-18 " 
-							 />
+							 styleClass="bt-padrao fr mg-top-18 " />
 					
 					</div>
 	
