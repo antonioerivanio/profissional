@@ -54,7 +54,7 @@
 				
 					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
 						<div class="select-box box-20">
-							<label for="">Categoria</label>
+							<label for="">Categoria *</label>
 							<div class="conteiner">
 								<h:selectOneMenu id="categoria"
 												 converter="entityConverter" 
@@ -129,12 +129,12 @@
 					</div>									
 		
 					<div class="select-box box-10 clr">
-						<label for="sexo">Sexo</label>
+						<label for="sexo">Sexo *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="sexo" 
 											 value="#{pessoaBean.entidade.sexo}"
 											 disabled="#{not pessoaBean.podeAlterar()}">							  
-								<f:selectItem id="sexo0" itemLabel="Selecione..." itemValue="0"/>
+								<f:selectItem id="sexo0" itemLabel="Selecione..." itemValue=""/>
 								<f:selectItem id="sexo1" itemLabel="Masculino" itemValue="M"/>
 								<f:selectItem id="sexo2" itemLabel="Feminino" itemValue="F" />																	
 							</h:selectOneMenu>
@@ -143,7 +143,7 @@
 					
 					
 					<div class="input-box box-10">
-						<label for="">Data Nasc.</label>
+						<label for="">Data Nasc. *</label>
 						<div class="conteiner">
 							<h:inputText id="dataNascimento" 
 										 styleClass="maskData" 
@@ -154,7 +154,7 @@
 					</div>										
 					
 					<div class="select-box box-14">
-						<label for="">País Nascimento</label>
+						<label for="">País Nascimento *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="paisNascto"
 											 converter="entityConverter"
@@ -171,7 +171,7 @@
 					</div>					
 					
 					<div class="select-box box-14">
-						<label for="">País Nacionalidade</label>
+						<label for="">País Nacionalidade *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="paisNac"
 											 converter="entityConverter"
@@ -189,7 +189,7 @@
 					</div>		
 		
 					<div class="select-box box-10">
-						<label for="">UF</label>
+						<label for="">UF *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="uf"
 											 converter="entityConverter" 
@@ -209,7 +209,7 @@
 					</div>
 					
 					<div class="select-box box-16">
-						<label for="">Naturalidade</label>
+						<label for="">Naturalidade *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="municipioNaturalidade"
 											 converter="entityConverter" 
@@ -244,7 +244,7 @@
 					</div>
 		
 					<div class="select-box box-24">
-						<label for="">Escolaridade</label>
+						<label for="">Escolaridade *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="escolaridade"
 											 converter="entityConverter"
@@ -313,7 +313,7 @@
 				<rich:tab label="Característica">
 					
 					<div class="select-box box-22">
-						<label for="">Raça / Cor</label>
+						<label for="">Raça/Cor *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="biotipo"
 											 converter="entityConverter" 
@@ -365,7 +365,7 @@
 				<rich:tab label="Endereço">
 				
 					<div class="input-box box-10">
-						<label for="">CEP</label>
+						<label for="">CEP *</label>
 						<div class="conteiner">
 							<h:inputText id="cep" 
 										 maxlength="9"
@@ -381,7 +381,7 @@
 					</div>
 					
 					<div class="select-box box-15">
-						<label for="">Tipo Logradouro</label>
+						<label for="">Tipo Logradouro *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="tpLograd"
 											 converter="entityConverter"
@@ -399,7 +399,7 @@
 					
 					
 					<div class="input-box box-50">
-						<label for="">Descrição Logradouro</label>
+						<label for="">Descrição Logradouro *</label>
 						<div class="conteiner">
 							<h:inputText id="endereco" 
 										 maxlength="80"
@@ -409,7 +409,7 @@
 					</div>
 		
 					<div class="input-box box-10">
-						<label for="">Número</label>
+						<label for="">Número *</label>
 						<div class="conteiner">
 							<h:inputText id="numero" 
 										 maxlength="10"
@@ -439,7 +439,7 @@
 					</div>					
 		 
 					<div class="select-box box-15">
-						<label for="">Estado</label>
+						<label for="">Estado *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="ufEndereco"
 											 converter="entityConverter" 
@@ -459,7 +459,7 @@
 					</div>							
 					
 					<div class="select-box box-25">
-						<label for="">Município</label>
+						<label for="">Município *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="municipioEndereco"
 											 converter="entityConverter" 
@@ -538,7 +538,7 @@
 					</div>
 					
 					<div class="input-box box-25">
-						<label for="">PASEP</label>
+						<label for="">PIS/PASEP *</label>
 						<div class="conteiner">
 							<h:inputText id="pasep" 
 										 maxlength="15"
@@ -701,7 +701,7 @@
 							<div class="conteiner">
 								<h:inputText id="dtValid" 
 											 styleClass="maskData"
-											 value="#{pessoaBean.entidade.dataExpedicaoCNH}"
+											 value="#{pessoaBean.entidade.dataValidadeCNH}"
 											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
 							</div>
 						</div>
@@ -931,10 +931,21 @@
 												
 						</rich:dataTable>
 						
-						<h:commandButton id="formularioDependentes"
-							 value="Formulário de Dependentes"
-							 action="#{pessoaBean.formularioDependentes}" 
-							 styleClass="bt-padrao fr mg-top-18 " />
+						<br />
+						
+						<div class="box-100 mg-top-15">
+						
+							<div class="box-75 fl">
+								<p style="font-size: 1.2em; font-style: italic; line-height: 1.3em; color: #555;"><b style="font-size: inherit;">Importante</b>: caso haja divergências nas informações acima, preendecher o "Formulário de Dependentes", 
+								constante no link ao lado, e entregar na Gerência de Atos Funcionais, devidamente preenchido, 
+								anexando a documentação de identificação do (s) Dependentes (s), informando também, o TIPO DE DEPENDÊNCIA.</p>
+							</div>
+						
+							<h:commandButton id="formularioDependentes"
+								 value="Formulário de Dependentes"
+								 action="#{pessoaBean.formularioDependentes}" 
+								 styleClass="bt-padrao fr mg-top-5" />
+						</div>		 
 					
 					</div>
 	
@@ -943,14 +954,35 @@
 			
 			</rich:tabPanel>	
 			
-			<div class="bt-conteiner">
+			<div class="bt-conteiner">				
+				
 				<ui:fragment rendered="#{pessoaBean.habilitadoParaRecadastramento()}">				
-					<h:commandButton id="salvar" action="#{pessoaBean.salvar}" value="Salvar" styleClass="bt-padrao fr"  />				
-					<a href="/srh/paginas/cadastros/pessoaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>			
+					<a onclick="Richfaces.showModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr">Finalizar</a>			
+					<h:commandButton id="salvar" action="#{pessoaBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10"  />				
+					<a href="/srh/paginas/cadastros/pessoaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 				</ui:fragment>
 				
 				<a href="/srh/paginas/cadastros/pessoaList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+				
 			</div>
+			
+			<rich:modalPanel id="finalizaRecadastramento" resizeable="false" height="220" width="620">
+					            
+	            <f:facet name="header" class="header">
+	            	<span>Finalizar o Cadastro</span>
+	            </f:facet>
+										
+				<div class="sessao-expirada-msg">
+					<span class="sessao-expirada-text">Li e concordo com as informações constantes no Formulário de Cadastro.</span>				
+				</div>
+				
+				
+				<div class="modal-actions">													
+					<h:commandButton id="confirmar" action="#{pessoaBean.salvar}" onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" value="Confirmar" styleClass="bt-padrao fr"  />
+					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-right-10">Cancelar</a>
+				</div>							
+				
+			</rich:modalPanel>
 			
 		</h:form>
 

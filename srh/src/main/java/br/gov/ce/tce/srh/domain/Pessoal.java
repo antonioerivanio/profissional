@@ -232,13 +232,13 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	private String contaBbd;
 
 	@Column(name="QTDDEPSF")
-	private Long qtdDepsf;
+	private Long qtdDepsf = 0L;
 		
 	@Column(name="QTDDEPIR")
-	private Long qtdDepir;
+	private Long qtdDepir = 0L;
  
 	@Column(name="QTDDEPPREV")
-	private Long qtdDepprev;
+	private Long qtdDepprev = 0L;
  
 	@Column(name="FOTO")
 	private String foto;

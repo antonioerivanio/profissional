@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.text.MaskFormatter;
 
@@ -22,6 +24,10 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
 public class SRHUtils {
 	
 	public static final String FORMATO_DATA = "dd/MM/yyyy"; 
+	
+	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
+	private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 	
 	/**
 	 * Método responsável por adicionar ou remover número de dias de uma data
@@ -596,5 +602,12 @@ public class SRHUtils {
 		int ponto = arquivo.lastIndexOf(".");
 		return arquivo.substring(0, ponto);
 	}
+	
+	public static boolean validarEmail(String email){
+	    Matcher matcher = pattern.matcher(email);
+	    return matcher.matches();
+	}
+	
+	
 
 }
