@@ -59,7 +59,7 @@
 								<h:selectOneMenu id="categoria"
 												 converter="entityConverter" 
 												 value="#{pessoaBean.entidade.categoria}"
-												 disabled="#{not pessoaBean.podeAlterar()}">
+												 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
 								  	<f:selectItem id="selecioneCategoria" itemLabel="Selecione..."/>
 								  	<f:selectItems 	id="comboCategoria"
 								  					value="#{pessoaBean.comboCategoria}"
@@ -82,7 +82,7 @@
 			                	  		   storage="file"
 			                  			   valueChangeListener="#{pessoaBean.uploadFoto}"
 			                  			   onchange="submit()"
-			                  			   rendered="#{pessoaBean.podeAlterar()}" />			                  			   
+			                  			   rendered="#{pessoaBean.temPermisssaoParaAlterar()}" />			                  			   
 			                  			   
 					</div>					
 		
@@ -93,7 +93,7 @@
 							<h:inputText id="nomeCompleto"
 										 value="#{pessoaBean.entidade.nomeCompleto}"
 										 maxlength="70" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>    
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>    
 						</div>
 					</div>
 					
@@ -104,7 +104,7 @@
 							<h:inputText id="abreviatura"
 										 value="#{pessoaBean.entidade.abreviatura}"
 										 maxlength="25" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>
 		
@@ -114,7 +114,7 @@
 							<h:inputText id="nomeMae"
 										 maxlength="60"
 										 value="#{pessoaBean.entidade.nomeMae}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>
 		
@@ -124,7 +124,7 @@
 							<h:inputText id="nomePai"
 										 maxlength="60"
 										 value="#{pessoaBean.entidade.nomePai}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>									
 		
@@ -133,7 +133,7 @@
 						<div class="conteiner">
 							<h:selectOneMenu id="sexo" 
 											 value="#{pessoaBean.entidade.sexo}"
-											 disabled="#{not pessoaBean.podeAlterar()}">							  
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">							  
 								<f:selectItem id="sexo0" itemLabel="Selecione..." itemValue=""/>
 								<f:selectItem id="sexo1" itemLabel="Masculino" itemValue="M"/>
 								<f:selectItem id="sexo2" itemLabel="Feminino" itemValue="F" />																	
@@ -149,7 +149,7 @@
 										 styleClass="maskData" 
 										 converter="dateConverter"
 										 value="#{pessoaBean.entidade.nascimento}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>										
 					
@@ -159,7 +159,7 @@
 							<h:selectOneMenu id="paisNascto"
 											 converter="entityConverter"
 											 value="#{pessoaBean.entidade.paisNascimento}"
-											 disabled="#{not pessoaBean.podeAlterar()}">
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
 							  	<f:selectItem id="selecionePaisNascto"  itemLabel="Selecione..."/>
 							  	<f:selectItems id="comboPaisNascimento"
 							  				   value="#{pessoaBean.comboPais}"
@@ -176,7 +176,7 @@
 							<h:selectOneMenu id="paisNac"
 											 converter="entityConverter"
 											 value="#{pessoaBean.entidade.paisNacionalidade}"											 
-											 disabled="#{not pessoaBean.podeAlterar()}">
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
 							  	<f:selectItem id="selecionePaisNac"  itemLabel="Selecione..."/>
 							  	<f:selectItems id="comboPaisNacionalidade"
 							  				   value="#{pessoaBean.comboPais}"
@@ -194,7 +194,7 @@
 							<h:selectOneMenu id="uf"
 											 converter="entityConverter" 
 											 value="#{pessoaBean.entidade.uf}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+											 disabled="#{not pessoaBean.podeAlterar()}">
 							  	<f:selectItem id="selecioneUf"  itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboUf" 
 							  					value="#{pessoaBean.comboUf}"
@@ -214,7 +214,7 @@
 							<h:selectOneMenu id="municipioNaturalidade"
 											 converter="entityConverter" 
 											 value="#{pessoaBean.entidade.municipioNaturalidade}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+											 disabled="#{not pessoaBean.podeAlterar()}">
 							  	<f:selectItem id="selecioneMunicipioNaturalidade"  itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboMunicipioNaturalidade" 
 							  					value="#{pessoaBean.comboMunicipioNaturalidade}"
@@ -232,7 +232,7 @@
 							<h:selectOneMenu id="estadoCivil" 
 											 converter="entityConverter"
 											 value="#{pessoaBean.entidade.estadoCivil}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+											 disabled="#{not pessoaBean.podeAlterar()}">
 							  	<f:selectItem id="selecioneEstadoCivil" itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboEstadoCivil" 
 							  					value="#{pessoaBean.comboEstadoCivil}"
@@ -249,7 +249,7 @@
 							<h:selectOneMenu id="escolaridade"
 											 converter="entityConverter"
 											 value="#{pessoaBean.entidade.escolaridade}"
-											 disabled="#{not pessoaBean.podeAlterar()}">
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
 							  	<f:selectItem id="selecioneEscolaridade" itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboEscolaridade" 
 							  					value="#{pessoaBean.comboEscolaridade}"
@@ -268,7 +268,7 @@
 								<h:inputText id="nomeSocial"
 											 value="#{pessoaBean.entidade.nomeSocial}"
 											 maxlength="70" 
-											 disabled="#{not pessoaBean.podeAlterar()}"/>    
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>    
 							</div>
 						</div>
 						
@@ -279,7 +279,7 @@
 											 styleClass="maskData"
 											 converter="dateConverter"
 											 value="#{pessoaBean.entidade.obito}"  
-											 disabled="#{not pessoaBean.podeAlterar()}"/>
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 							</div>
 						</div>										
 			
@@ -287,12 +287,12 @@
 		
 							<legend>Ficha Antiga</legend>
 							
-							<ui:fragment rendered="#{pessoaBean.podeAlterar()}">	
+							<ui:fragment rendered="#{pessoaBean.temPermisssaoParaAlterar()}">	
 								<t:inputFileUpload id="ficha"								   						
 					            	      		   value="#{pessoaBean.ficha}"
 					                	  		   storage="file" size="20"
 					                  			   valueChangeListener="#{pessoaBean.uploadFicha}"
-					                  			   disabled="#{not pessoaBean.podeAlterar()}" />
+					                  			   disabled="#{not pessoaBean.temPermisssaoParaAlterar()}" />
 				            </ui:fragment>      			   
 				                  			   
 							<h:commandLink 	id="fichaAntiga"
@@ -318,7 +318,7 @@
 							<h:selectOneMenu id="biotipo"
 											 converter="entityConverter" 
 											 value="#{pessoaBean.entidade.raca}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+											 disabled="#{not pessoaBean.podeAlterar()}">
 							  	<f:selectItem id="selecioneRaca"  itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboRaca" 
 							  					value="#{pessoaBean.comboRaca}"
@@ -335,7 +335,7 @@
 							<div class="radio-box">
 							<h:selectOneRadio 	id="tipoSangue" 
 												value="#{pessoaBean.entidade.tipoSangue}" 
-												disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+												disabled="#{not pessoaBean.podeAlterar()}">
 								<f:selectItem id="A" itemLabel="A" itemValue="A" />
 								<f:selectItem id="B" itemLabel="B" itemValue="B" />
 								<f:selectItem id="AB" itemLabel="AB" itemValue="AB" />
@@ -351,7 +351,7 @@
 							<div class="radio-box">
 							<h:selectOneRadio 	id="fatorRH" 
 												value="#{pessoaBean.entidade.fatorRH}" 
-												disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+												disabled="#{not pessoaBean.podeAlterar()}">
 								<f:selectItem id="positivo" itemLabel="+" itemValue="+" />
 								<f:selectItem id="negativo" itemLabel="-" itemValue="-" />
 							</h:selectOneRadio>
@@ -371,7 +371,7 @@
 										 maxlength="9"
 										 styleClass="maskCep"
 										 value="#{pessoaBean.entidade.cep}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+										 disabled="#{not pessoaBean.podeAlterar()}">
 								<a4j:support id="cepAction" 
 							  	             event="onblur"
 							  	             action="#{pessoaBean.buscarCep()}"
@@ -386,7 +386,7 @@
 							<h:selectOneMenu id="tpLograd"
 											 converter="entityConverter"
 											 value="#{pessoaBean.entidade.tipoLogradouro}"											 
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+											 disabled="#{not pessoaBean.podeAlterar()}">
 							  	<f:selectItem id="selecionetpLograd" itemLabel="Selecione..."/>
 							  	<f:selectItems id="comboTipoLogradouro" 
 							  				   value="#{pessoaBean.comboTipoLogradouro}"
@@ -404,7 +404,7 @@
 							<h:inputText id="endereco" 
 										 maxlength="80"
 										 value="#{pessoaBean.entidade.endereco}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
 						</div>
 					</div>
 		
@@ -414,7 +414,7 @@
 							<h:inputText id="numero" 
 										 maxlength="10"
 										 value="#{pessoaBean.entidade.numero}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
 						</div>
 					</div>
 		
@@ -424,7 +424,7 @@
 							<h:inputText id="complemento" 
 										 maxlength="30"
 										 value="#{pessoaBean.entidade.complemento}"
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}" />
+										 disabled="#{not pessoaBean.podeAlterar()}" />
 						</div>
 					</div>
 		
@@ -434,7 +434,7 @@
 							<h:inputText id="bairro" 
 										 maxlength="60"
 										 value="#{pessoaBean.entidade.bairro}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
 						</div>
 					</div>					
 		 
@@ -444,7 +444,7 @@
 							<h:selectOneMenu id="ufEndereco"
 											 converter="entityConverter" 
 											 value="#{pessoaBean.entidade.ufEndereco}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+											 disabled="#{not pessoaBean.podeAlterar()}">
 							  	<f:selectItem id="selecioneUfEndereco" itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboUfEndereco"
 							  					value="#{pessoaBean.comboUf}"
@@ -464,7 +464,7 @@
 							<h:selectOneMenu id="municipioEndereco"
 											 converter="entityConverter" 
 											 value="#{pessoaBean.entidade.municipioEndereco}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+											 disabled="#{not pessoaBean.podeAlterar()}">
 							  	<f:selectItem id="selecioneMunicipioEndereco"  itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboMunicipioEndereco" 
 							  					value="#{pessoaBean.comboMunicipioEndereco}"
@@ -486,7 +486,7 @@
 										 maxlength="15"
 										 styleClass="maskTelefone"
 										 value="#{pessoaBean.entidade.telefone}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
 						</div>
 					</div>
 		
@@ -497,7 +497,7 @@
 										 maxlength="15"
 										 styleClass="maskTelefone" 
 										 value="#{pessoaBean.entidade.telefoneAlternativo}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
 						</div>
 					</div>
 		
@@ -507,7 +507,7 @@
 							<h:inputText id="email" 
 										 maxlength="60"
 										 value="#{pessoaBean.entidade.email}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
 						</div>
 					</div>
 					
@@ -517,7 +517,7 @@
 							<h:inputText id="emailAlternativo" 
 										 maxlength="60" 
 										 value="#{pessoaBean.entidade.emailAlternativo}" 
-										 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
 						</div>
 					</div>
 				
@@ -533,7 +533,7 @@
 										 maxlength="14"
 										 styleClass="maskCpf"
 										 value="#{pessoaBean.entidade.cpf}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>
 					
@@ -544,7 +544,7 @@
 										 maxlength="15"
 										 styleClass="maskPasep"
 										 value="#{pessoaBean.entidade.pasep}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>
 		
@@ -555,7 +555,7 @@
 										 maxlength="30"
 										 onkeyup="mantemSomenteNumeros(this)"
 										 value="#{pessoaBean.entidade.documentoMilitar}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>
 		
@@ -571,7 +571,7 @@
 											 maxlength="15"
 											 onkeyup="mantemSomenteNumeros(this)"
 											 value="#{pessoaBean.entidade.rg}" 
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
 						</div>
 			
@@ -581,7 +581,7 @@
 								<h:inputText id="emissor" 
 											 maxlength="17"
 											 value="#{pessoaBean.entidade.emissorRg}" 
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
 						</div>
 			
@@ -591,7 +591,7 @@
 								<h:selectOneMenu id="ufEmissor"
 												 converter="entityConverter" 
 												 value="#{pessoaBean.entidade.ufEmissorRg}"
-												 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+												 disabled="#{not pessoaBean.podeAlterar()}">
 								  	<f:selectItem id="selecioneUfEmissor" itemLabel="Selecione..."/>
 								  	<f:selectItems 	id="comboUfEmissor"
 								  					value="#{pessoaBean.comboUf}"
@@ -609,129 +609,10 @@
 											 styleClass="maskData"
 											 converter="dateConverter"
 											 value="#{pessoaBean.entidade.dataEmissaoRg}"  
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-							</div>
-						</div>
-		
-					</fieldset>
-					
-					<fieldset class="clr">
-					
-						<legend>Título de Eleitor</legend>
-		 
-						<div class="input-box box-25">
-							<label for="">Título</label>
-							<div class="conteiner">
-								<h:inputText id="titulo" 
-											 maxlength="12"
-											 onkeyup="mantemSomenteNumeros(this)"
-											 value="#{pessoaBean.entidade.tituloEleitoral}" 
 											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
 						</div>
-			
-						<div class="input-box box-25">
-							<label for="">Zona</label>
-							<div class="conteiner">
-								<h:inputText id="zona" 
-											 maxlength="4"
-											 onkeyup="mantemSomenteNumeros(this)"
-											 value="#{pessoaBean.entidade.zonaEleitoral}" 
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-							</div>
-						</div>
-			
-						<div class="input-box box-25">
-							<label for="">Seção</label>
-							<div class="conteiner">
-								<h:inputText id="secao" 
-											 maxlength="4"
-											 onkeyup="mantemSomenteNumeros(this)"
-											 value="#{pessoaBean.entidade.secaoEleitoral}" 
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-							</div>
-						</div>
-								
-					</fieldset>					
-					
-					<fieldset class="clr">
-					
-						<legend>Carteira Nacional de Habilitação</legend>
-		 
-						<div class="input-box box-15">
-							<label for="">Número Registro</label>
-							<div class="conteiner">
-								<h:inputText id="nrRegCnh" 
-											 maxlength="12"
-											 onkeyup="mantemSomenteNumeros(this)"
-											 value="#{pessoaBean.entidade.nrCNH}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-							</div>
-						</div>
-						
-						<div class="input-box box-15">
-							<label for="">Data Expedição</label>
-							<div class="conteiner">
-								<h:inputText id="dtExped" 
-											 styleClass="maskData"
-											 value="#{pessoaBean.entidade.dataExpedicaoCNH}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-							</div>
-						</div>
-						
-						<div class="select-box box-15">
-							<label for="">UF</label>
-							<div class="conteiner">
-								<h:selectOneMenu id="ufCnh"
-												 converter="entityConverter" 
-												 value="#{pessoaBean.entidade.ufCNH}"
-												 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
-								  	<f:selectItem id="selecioneUfCnh" itemLabel="Selecione..."/>
-								  	<f:selectItems 	id="comboUfCnh"
-								  					value="#{pessoaBean.comboUf}"
-								  					var="ufEmissor"
-								  					itemValue="#{ufEmissor}"
-								  					itemLabel="#{ufEmissor.id}"/>
-								</h:selectOneMenu>
-							</div>
-						</div>
-			
-						<div class="input-box box-15">
-							<label for="">Data Validade</label>
-							<div class="conteiner">
-								<h:inputText id="dtValid" 
-											 styleClass="maskData"
-											 value="#{pessoaBean.entidade.dataValidadeCNH}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-							</div>
-						</div>
-						
-						<div class="input-box box-15">
-							<label for="">Data 1ª Habilitação</label>
-							<div class="conteiner">
-								<h:inputText id="dtPriHab" 
-											 styleClass="maskData"
-											 value="#{pessoaBean.entidade.dataPrimeiraCNH}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
-							</div>
-						</div>						
-						
-						<div class="select-box box-15">
-							<label for="">Categoria</label>							
-							<div class="conteiner">
-								<h:selectOneMenu id="categoriaCnh"
-												 value="#{pessoaBean.entidade.categoriaCNH}"
-												 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
-								  	<f:selectItem id="selecioneCategoriaCnh" itemLabel="Selecione..."/>	
-								  	<f:selectItems 	id="comboCategoriaCnh" 
-								  					value="#{pessoaBean.comboCategoriaCNH}"
-								  					var="categoria"
-								  					itemLabel="#{categoria}"
-								  					itemValue="#{categoria}"/>							  	
-								</h:selectOneMenu>
-							</div>
-						</div>
-								
+		
 					</fieldset>
 					
 					<fieldset class="clr">
@@ -745,7 +626,7 @@
 											 maxlength="14"
 											 onkeyup="mantemSomenteNumeros(this)"
 											 value="#{pessoaBean.entidade.nrOrgaoClasse}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
 						</div>
 						
@@ -755,7 +636,7 @@
 								<h:inputText id="orgaoEmissor" 
 											 maxlength="17"
 											 value="#{pessoaBean.entidade.emissorOrgaoClasse}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
 						</div>
 						
@@ -765,7 +646,7 @@
 								<h:selectOneMenu id="ufOrgaoClasse"
 												 converter="entityConverter" 
 												 value="#{pessoaBean.entidade.ufOrgaoClasse}"
-												 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}">
+												 disabled="#{not pessoaBean.podeAlterar()}">
 								  	<f:selectItem id="selecioneUfOrgaoClasse" itemLabel="Selecione..."/>
 								  	<f:selectItems 	id="comboUfOrgaoClasse"
 								  					value="#{pessoaBean.comboUf}"
@@ -782,7 +663,7 @@
 								<h:inputText id="dtExpedOC" 
 											 styleClass="maskData"
 											 value="#{pessoaBean.entidade.dataExpedicaoOrgaoClasse}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
 						</div>						
 			
@@ -792,11 +673,176 @@
 								<h:inputText id="dtValidOC" 
 											 styleClass="maskData"
 											 value="#{pessoaBean.entidade.dataValidadeOrgaoClasse}"
-											 disabled="#{not pessoaBean.habilitadoParaRecadastramento()}"/>
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
 						</div>					
 								
 					</fieldset>
+					
+					<fieldset class="clr">
+					
+						<legend>Título de Eleitor</legend>
+		 
+						<div class="input-box box-25">
+							<label for="">Título</label>
+							<div class="conteiner">
+								<h:inputText id="titulo" 
+											 maxlength="12"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.tituloEleitoral}" 
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
+							</div>
+						</div>
+			
+						<div class="input-box box-25">
+							<label for="">Zona</label>
+							<div class="conteiner">
+								<h:inputText id="zona" 
+											 maxlength="4"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.zonaEleitoral}" 
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>
+			
+						<div class="input-box box-25">
+							<label for="">Seção</label>
+							<div class="conteiner">
+								<h:inputText id="secao" 
+											 maxlength="4"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.secaoEleitoral}" 
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>
+								
+					</fieldset>
+					
+					<fieldset class="clr">
+					
+						<legend>Carteira de Trabalho e Previdência Social</legend>
+		 
+						<div class="input-box box-15">
+							<label for="">Número</label>
+							<div class="conteiner">
+								<h:inputText id="nrCtps" 
+											 maxlength="11"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.nrCTPS}"
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">Série</label>
+							<div class="conteiner">
+								<h:inputText id="serieCtps" 
+											 maxlength="5"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.serieCTPS}"
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>
+						
+						<div class="select-box box-15">
+							<label for="">UF</label>
+							<div class="conteiner">
+								<h:selectOneMenu id="ufCtps"
+												 converter="entityConverter" 
+												 value="#{pessoaBean.entidade.ufCTPS}"
+												 disabled="#{not pessoaBean.podeAlterar()}">
+								  	<f:selectItem id="selecioneUfCtps" itemLabel="Selecione..."/>
+								  	<f:selectItems 	id="comboUfCtps"
+								  					value="#{pessoaBean.comboUf}"
+								  					var="UfCtps"
+								  					itemValue="#{UfCtps}"
+								  					itemLabel="#{UfCtps.id}"/>
+								</h:selectOneMenu>
+							</div>
+						</div>		
+						
+								
+					</fieldset>					
+					
+					<fieldset class="clr">
+					
+						<legend>Carteira Nacional de Habilitação</legend>
+		 
+						<div class="input-box box-15">
+							<label for="">Número Registro</label>
+							<div class="conteiner">
+								<h:inputText id="nrRegCnh" 
+											 maxlength="12"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.nrCNH}"
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">Data Expedição</label>
+							<div class="conteiner">
+								<h:inputText id="dtExped" 
+											 styleClass="maskData"
+											 value="#{pessoaBean.entidade.dataExpedicaoCNH}"
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>
+						
+						<div class="select-box box-15">
+							<label for="">UF</label>
+							<div class="conteiner">
+								<h:selectOneMenu id="ufCnh"
+												 converter="entityConverter" 
+												 value="#{pessoaBean.entidade.ufCNH}"
+												 disabled="#{not pessoaBean.podeAlterar()}">
+								  	<f:selectItem id="selecioneUfCnh" itemLabel="Selecione..."/>
+								  	<f:selectItems 	id="comboUfCnh"
+								  					value="#{pessoaBean.comboUf}"
+								  					var="ufEmissor"
+								  					itemValue="#{ufEmissor}"
+								  					itemLabel="#{ufEmissor.id}"/>
+								</h:selectOneMenu>
+							</div>
+						</div>
+			
+						<div class="input-box box-15">
+							<label for="">Data Validade</label>
+							<div class="conteiner">
+								<h:inputText id="dtValid" 
+											 styleClass="maskData"
+											 value="#{pessoaBean.entidade.dataValidadeCNH}"
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">Data 1ª Habilitação</label>
+							<div class="conteiner">
+								<h:inputText id="dtPriHab" 
+											 styleClass="maskData"
+											 value="#{pessoaBean.entidade.dataPrimeiraCNH}"
+											 disabled="#{not pessoaBean.podeAlterar()}"/>
+							</div>
+						</div>						
+						
+						<div class="select-box box-15">
+							<label for="">Categoria</label>							
+							<div class="conteiner">
+								<h:selectOneMenu id="categoriaCnh"
+												 value="#{pessoaBean.entidade.categoriaCNH}"
+												 disabled="#{not pessoaBean.podeAlterar()}">
+								  	<f:selectItem id="selecioneCategoriaCnh" itemLabel="Selecione..."/>	
+								  	<f:selectItems 	id="comboCategoriaCnh" 
+								  					value="#{pessoaBean.comboCategoriaCNH}"
+								  					var="categoria"
+								  					itemLabel="#{categoria}"
+								  					itemValue="#{categoria}"/>							  	
+								</h:selectOneMenu>
+							</div>
+						</div>
+								
+					</fieldset>					
 				
 				</rich:tab>
 	
@@ -808,7 +854,7 @@
 							<div class="radio-box">
 							<h:selectOneRadio 	id="tipoContaBbd" 
 												value="#{pessoaBean.entidade.tipoContaBbd}" 
-												disabled="#{not pessoaBean.podeAlterar()}">
+												disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
 								<f:selectItem id="corrente" itemLabel="Conta Corrente" itemValue="1" />
 								<f:selectItem id="poupanca" itemLabel="Poupança" itemValue="2" />
 							</h:selectOneRadio>
@@ -823,7 +869,7 @@
 										 maxlength="6"
 										 styleClass="maskAgencia"
 										 value="#{pessoaBean.entidade.agenciaBbd}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>
 		
@@ -834,7 +880,7 @@
 										 maxlength="9"
 										 styleClass="maskConta"
 										 value="#{pessoaBean.entidade.contaBbd}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 						</div>
 					</div>
 							
@@ -936,9 +982,8 @@
 						<div class="box-100 mg-top-15">
 						
 							<div class="box-75 fl">
-								<p style="font-size: 1.2em; font-style: italic; line-height: 1.3em; color: #555;"><b style="font-size: inherit;">Importante</b>: caso haja divergências nas informações acima, preendecher o "Formulário de Dependentes", 
-								constante no link ao lado, e entregar na Gerência de Atos Funcionais, devidamente preenchido, 
-								anexando a documentação de identificação do (s) Dependentes (s), informando também, o TIPO DE DEPENDÊNCIA.</p>
+								<p style="font-size: 1.2em; font-style: italic; line-height: 1.3em; color: #555;"><b style="font-size: inherit;">Importante</b>: caso haja divergências nas informações acima, preencher o "Formulário de Dependentes", 
+								constante no link ao lado, e entregar na Gerência de Atos Funcionais anexando a documentação de identificação do(s) Dependente(s), informando também, o TIPO DE DEPENDÊNCIA.</p>
 							</div>
 						
 							<h:commandButton id="formularioDependentes"
@@ -956,9 +1001,12 @@
 			
 			<div class="bt-conteiner">				
 				
-				<ui:fragment rendered="#{pessoaBean.habilitadoParaRecadastramento()}">				
-					<a onclick="Richfaces.showModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr">Finalizar</a>			
-					<h:commandButton id="salvar" action="#{pessoaBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10"  />				
+				<ui:fragment rendered="#{pessoaBean.cadastroAindaNaoFinalizado()}">
+					<a onclick="Richfaces.showModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr">Finalizar</a>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{pessoaBean.podeAlterar()}">								
+					<h:commandButton id="salvar" action="#{pessoaBean.salvar(false)}" value="Salvar" styleClass="bt-padrao fr mg-right-10"  />				
 					<a href="/srh/paginas/cadastros/pessoaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 				</ui:fragment>
 				
@@ -966,19 +1014,28 @@
 				
 			</div>
 			
-			<rich:modalPanel id="finalizaRecadastramento" resizeable="false" height="220" width="620">
+			<rich:modalPanel id="finalizaRecadastramento" resizeable="false" height="280" width="620">
 					            
 	            <f:facet name="header" class="header">
 	            	<span>Finalizar o Cadastro</span>
 	            </f:facet>
 										
 				<div class="sessao-expirada-msg">
-					<span class="sessao-expirada-text">Li e concordo com as informações constantes no Formulário de Cadastro.</span>				
+					<span class="sessao-expirada-text"><b>DECLARO</b> serem verdadeiras as informações constantes do presente 
+					formulário, comprometendo-me a comunicar ao Tribunal de Contas do Estado Ceará qualquer alteração ocorrida 
+					após a finalização do recadastramento e apresentar documentos complementares solicitados 
+					pela Gerência de Atos Funcionais.</span>				
 				</div>
 				
 				
 				<div class="modal-actions">													
-					<h:commandButton id="confirmar" action="#{pessoaBean.salvar}" onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" value="Confirmar" styleClass="bt-padrao fr"  />
+					<h:commandButton id="confirmar" 
+						action="#{pessoaBean.salvar(true)}"						
+						onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" 
+						value="Confirmar" 
+						styleClass="bt-padrao fr">
+						
+					</h:commandButton>
 					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-right-10">Cancelar</a>
 				</div>							
 				

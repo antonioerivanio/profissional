@@ -36,7 +36,9 @@ import br.gov.ce.tce.srh.domain.Pais;
 import br.gov.ce.tce.srh.domain.Parametro;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.PessoalCategoria;
+import br.gov.ce.tce.srh.domain.PessoalRecadastramento;
 import br.gov.ce.tce.srh.domain.Raca;
+import br.gov.ce.tce.srh.domain.Recadastramento;
 import br.gov.ce.tce.srh.domain.TipoLogradouro;
 import br.gov.ce.tce.srh.domain.Uf;
 import br.gov.ce.tce.srh.enums.EnumCategoriaCNH;
@@ -48,8 +50,10 @@ import br.gov.ce.tce.srh.service.MunicipioService;
 import br.gov.ce.tce.srh.service.PaisService;
 import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.service.PessoalCategoriaService;
+import br.gov.ce.tce.srh.service.PessoalRecadastramentoService;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.service.RacaService;
+import br.gov.ce.tce.srh.service.RecadastramentoService;
 import br.gov.ce.tce.srh.service.TipoLogradouroService;
 import br.gov.ce.tce.srh.service.UfService;
 import br.gov.ce.tce.srh.to.CEP;
@@ -106,6 +110,12 @@ public class PessoaBean implements Serializable {
 
 	@Autowired
 	private CEPService cepService;
+	
+	@Autowired
+	private RecadastramentoService recadastramentoService;
+	
+	@Autowired
+	private PessoalRecadastramentoService pessoalRecadastramentoService;
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
@@ -114,12 +124,15 @@ public class PessoaBean implements Serializable {
 	private boolean passouConsultar = false;
 	private Boolean podeAlterar = null;
 	private Boolean ehServidor = null;
+	private boolean recadastramentoAtivo;
 
 	private String nome = new String();
 	private String cpf = new String();
 
 	private List<Pessoal> lista;
 	private Pessoal entidade = new Pessoal();
+	private PessoalRecadastramento pessoalRecadastramento;
+	private Recadastramento recadastramento;
 
 	private UploadedFile foto;
 	private UploadedFile ficha;
@@ -148,7 +161,10 @@ public class PessoaBean implements Serializable {
 				this.entidade = pessoalService.getByCpf(loginBean.getCPFUsuarioLogado());
 			} else {
 				this.entidade = pessoalService.getById(this.entidade.getId());
-			}
+			}			
+			
+			if (ehServidor() || ehProprioCadastro())
+				verificaRecadastramento();			
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -157,7 +173,7 @@ public class PessoaBean implements Serializable {
 
 		return "incluirAlterar";
 
-	}
+	}	
 
 	public String consultar() {
 
@@ -183,36 +199,22 @@ public class PessoaBean implements Serializable {
 		}
 
 		return "listar";
-	}
+	}	
 
-	public boolean podeAlterar() {
-		if (podeAlterar == null)
-			podeAlterar = loginBean.anyGranted("ROLE_PESSOA_INSERIR, ROLE_PESSOA_ALTERAR");
-
-		return podeAlterar;
-	}
-
-	public boolean ehServidor() {
-		if (ehServidor == null)
-			ehServidor = loginBean.anyGranted("ROLE_PESSOA_SERVIDOR");
-		return ehServidor;
-	}
-	
-	public boolean ehAlteracao() {
-		return entidade.getId() != null;
-	}
-
-	public boolean habilitadoParaRecadastramento() {
-		return podeAlterar() || ehServidor() || loginBean.getCPFUsuarioLogado().equals(entidade.getCpf());
-	}
-
-	public String salvar() {
+	public String salvar(boolean finalizar) {
 
 		try {
 
 			entidade = pessoalService.salvar(entidade);
 
-//			limpar();
+//			limpar();			
+			
+			if(finalizar) {
+				getPessoalRecadastramento().setStatus(1);
+				recadastramentoAtivo = false;				
+			}
+			
+			atualizaRecadastramento();			
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -226,7 +228,7 @@ public class PessoaBean implements Serializable {
 		}
 
 		return null;
-	}
+	}	
 
 	public String excluir() {
 
@@ -248,6 +250,69 @@ public class PessoaBean implements Serializable {
 
 		setEntidade(new Pessoal());
 		return consultar();
+	}
+	
+	private void verificaRecadastramento() {
+		
+		recadastramentoAtivo = false;
+		
+		recadastramento = recadastramentoService.findMaisRecente();
+		
+		if (recadastramento != null) {
+			
+			Date hoje = SRHUtils.getHoje();
+			
+			if(!hoje.before(recadastramento.getInicio()) && !hoje.after(recadastramento.getFim())) {
+				
+				recadastramentoAtivo = true;
+				
+				setPessoalRecadastramento(pessoalRecadastramentoService.findByPessoalAndRecadastramento(entidade.getId(), recadastramento.getId()));
+			
+				if(getPessoalRecadastramento().getStatus().equals(1)) {
+					recadastramentoAtivo = false;
+				}					
+								
+			}				
+		}
+	}
+	
+	private void atualizaRecadastramento() {
+			
+		if ( ehAlteracao() && recadastramento != null ) {
+			
+			getPessoalRecadastramento().setDataAtualizacao(new Date());			
+			pessoalRecadastramentoService.salvar(pessoalRecadastramento);
+		
+		}
+	}
+
+	public boolean temPermisssaoParaAlterar() {
+		if (podeAlterar == null)
+			podeAlterar = loginBean.anyGranted("ROLE_PESSOA_INSERIR, ROLE_PESSOA_ALTERAR");
+
+		return podeAlterar;
+	}
+
+	public boolean ehServidor() {
+		if (ehServidor == null)
+			ehServidor = loginBean.anyGranted("ROLE_PESSOA_SERVIDOR");
+		return ehServidor;
+	}
+	
+	public boolean ehAlteracao() {
+		return entidade.getId() != null;
+	}
+
+	public boolean podeAlterar() {
+		return temPermisssaoParaAlterar() || cadastroAindaNaoFinalizado();
+	}
+	
+	public boolean ehProprioCadastro() {
+		return loginBean.getCPFUsuarioLogado().equals(entidade.getCpf());
+	}	
+	
+	public boolean cadastroAindaNaoFinalizado() {
+		return (ehServidor() || ehProprioCadastro()) && recadastramentoAtivo;
 	}
 
 	public List<EstadoCivil> getComboEstadoCivil() {
@@ -681,6 +746,20 @@ public class PessoaBean implements Serializable {
 
 	public void setEntidade(Pessoal entidade) {
 		this.entidade = entidade;
+	}	
+	
+	public PessoalRecadastramento getPessoalRecadastramento() {
+		if ( pessoalRecadastramento == null ) {
+			pessoalRecadastramento = new PessoalRecadastramento();
+			pessoalRecadastramento.setRecadastramento(recadastramento);
+			pessoalRecadastramento.setPessoal(entidade);
+			pessoalRecadastramento.setStatus(0);				
+		}
+		return pessoalRecadastramento;
+	}
+	
+	public void setPessoalRecadastramento(PessoalRecadastramento pessoalRecadastramento) {
+		this.pessoalRecadastramento = pessoalRecadastramento;
 	}
 
 	public List<Pessoal> getLista() {
@@ -690,7 +769,7 @@ public class PessoaBean implements Serializable {
 	public void setForm(HtmlForm form) {
 		this.form = form;
 	}
-
+	
 	public HtmlForm getForm() {
 
 		if (ehServidor()) {

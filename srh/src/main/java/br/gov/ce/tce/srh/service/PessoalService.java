@@ -191,10 +191,11 @@ public class PessoalService {
 			
 			validarRG(entidade);
 			
-			validarCNH(entidade);
-			
 			validarRegistroEmOrdemDeClasse(entidade);
 			
+			validarCTPS(entidade);
+			
+			validarCNH(entidade);			
 			
 			if( entidade.getAgenciaBbd() != null && !entidade.getAgenciaBbd().isEmpty() ) {
 				if( !SRHUtils.validarDVAgenciaBradesco( entidade.getAgenciaBbd() ) ) {
@@ -210,6 +211,17 @@ public class PessoalService {
 			
 		}		
 
+	}
+
+
+	private void validarCTPS(Pessoal entidade) {
+		if ( ( (entidade.getNrCTPS() != null && !entidade.getNrCTPS().isEmpty()) 
+				|| (entidade.getSerieCTPS() != null && !entidade.getSerieCTPS().isEmpty()) 					
+				|| entidade.getUfCTPS() != null)
+			&& (entidade.getNrCTPS() == null || entidade.getNrCTPS().isEmpty()
+				|| entidade.getSerieCTPS() == null || entidade.getSerieCTPS().isEmpty()
+				|| entidade.getUfCTPS() == null ) )
+			throw new SRHRuntimeException("Caso sejam prenchidas Informações da Carteira de Trabalho e Previdência Social, todos os campos relacionados passam a ser obrigatórios.");
 	}
 
 

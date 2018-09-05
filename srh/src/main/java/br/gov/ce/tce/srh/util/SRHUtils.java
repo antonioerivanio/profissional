@@ -281,6 +281,14 @@ public class SRHUtils {
 			return null;
 		}		 
 	 }
+	 
+	 public static Date getHoje() {
+		 return removeHorasDaData(new Date());
+	 }
+	 
+	 public static Date getAgora() {
+		 return new Date();
+	 }
 	
 	/** 
 	 * Metodo que valida CPF.

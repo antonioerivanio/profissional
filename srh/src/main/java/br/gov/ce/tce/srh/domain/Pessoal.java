@@ -222,6 +222,16 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private EnumCategoriaCNH categoriaCNH;	
 
+	@Column(name="NRCTPS")
+	private String nrCTPS;
+	
+	@Column(name="SERIECTPS")
+	private String serieCTPS;
+	
+	@ManyToOne
+	@JoinColumn(name = "UFCTPS")
+	private Uf ufCTPS;	
+	
 	@Column(name="TIPOCONTABBD")
 	private Long tipoContaBbd;
 
@@ -492,6 +502,15 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	public String getTelefoneAlternativo() { return telefoneAlternativo; }
 	public void setTelefoneAlternativo(String telefoneAlternativo) { this.telefoneAlternativo = telefoneAlternativo; }
+	
+	public String getNrCTPS() {	return nrCTPS; }
+	public void setNrCTPS(String nrCTPS) { this.nrCTPS = nrCTPS; }
+
+	public String getSerieCTPS() { return serieCTPS; }
+	public void setSerieCTPS(String serieCTPS) { this.serieCTPS = serieCTPS; }
+
+	public Uf getUfCTPS() { return ufCTPS; }
+	public void setUfCTPS(Uf ufCTPS) { this.ufCTPS = ufCTPS; }
 
 	@Override
 	public Long getId() {return this.id;}
