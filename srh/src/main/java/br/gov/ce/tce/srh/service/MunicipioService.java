@@ -20,6 +20,10 @@ public class MunicipioService {
 		return dao.findByUF(uf);
 	}
 	
+	public Municipio findByNome(String uf, String nome) {
+		return dao.findByNome(uf, nome);
+	}
+	
 	public Municipio findByCodigoIBGE(String codigoIBGE) {
 		return dao.findByCodigoIBGE(codigoIBGE);
 	}

@@ -31,6 +31,14 @@ public class MunicipioDAO {
 	}
 	
 	
+	public Municipio findByNome(String uf, String nome) {
+		Query query = entityManager.createQuery("Select e from Municipio e where e.uf.id = :uf and lower(e.nome) = lower(:nome) ");
+		query.setParameter("uf", uf);
+		query.setParameter("nome", nome);
+		return (Municipio) query.getSingleResult();
+	}
+	
+	
 	public Municipio findByCodigoIBGE(String codigoIBGE) {
 		Query query = entityManager.createQuery("Select e from Municipio e where e.codigoIBGE = :codigoIBGE ");
 		query.setParameter("codigoIBGE", codigoIBGE);

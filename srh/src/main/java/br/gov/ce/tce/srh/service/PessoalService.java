@@ -21,6 +21,8 @@ public class PessoalService {
 
 	@Transactional
 	public Pessoal salvar(Pessoal entidade) throws SRHRuntimeException {
+		
+		SRHUtils.trimReflective(entidade);
 
 		validarDados(entidade);		
 		
@@ -29,17 +31,17 @@ public class PessoalService {
 		verificandoPASEPExiste( entidade );
 		
 		//Remove espaços
-		entidade.setNomeCompleto(entidade.getNomeCompleto().replaceAll(" +", " ").trim());
+		entidade.setNomeCompleto(entidade.getNomeCompleto().replaceAll(" +", " "));
 		entidade.setNome(entidade.getNomeCompleto());
 		if (entidade.getAbreviatura() != null)
-			entidade.setAbreviatura(entidade.getAbreviatura().replaceAll(" +", " ").trim());
+			entidade.setAbreviatura(entidade.getAbreviatura().replaceAll(" +", " "));
 		
 		entidade.setNomePesquisa(entidade.getNomeCompleto());
 				
 		//Remover acentos e caixa baixa para nome pesquisa
 		entidade.setNome(entidade.getNome().toUpperCase());
-		entidade.setNomeCompleto( SRHUtils.removerAcentos(entidade.getNomeCompleto().toUpperCase()) );
-		entidade.setNomePesquisa( SRHUtils.removerAcentos(entidade.getNomePesquisa().toLowerCase()) );
+		entidade.setNomeCompleto( SRHUtils.removerAcentos(entidade.getNomeCompleto().toUpperCase()));
+		entidade.setNomePesquisa( SRHUtils.removerAcentos(entidade.getNomePesquisa().toLowerCase()));
 
 		//Remover mascaras. Exceto RG e Documento Militar
 		entidade.setCpf(SRHUtils.removerMascara(entidade.getCpf()));
@@ -164,11 +166,23 @@ public class PessoalService {
 			if ( entidade.getMunicipioEndereco() == null )
 				throw new SRHRuntimeException("O Município do endereço é obrigatório.");			
 			
-			if (entidade.getEmail() != null && !entidade.getEmail().isEmpty() && !SRHUtils.validarEmail(entidade.getEmail()))
+			if ( entidade.getTelefone() != null && !entidade.getTelefone().isEmpty()
+					&& entidade.getTelefoneAlternativo() != null && !entidade.getTelefoneAlternativo().isEmpty()
+					&& entidade.getTelefone().equals(entidade.getTelefoneAlternativo())) {
+				throw new SRHRuntimeException("Telefone deve ser diferente do Telefone Alternativo.");
+			}
+			
+			if ( entidade.getEmail() != null && !entidade.getEmail().isEmpty() && !SRHUtils.validarEmail(entidade.getEmail()))
 				throw new SRHRuntimeException("E-mail com formato inválido.");
 			
-			if (entidade.getEmailAlternativo() != null && !entidade.getEmailAlternativo().isEmpty() && !SRHUtils.validarEmail(entidade.getEmailAlternativo()))
-				throw new SRHRuntimeException("E-mail Alternativo com formato inválido.");			
+			if ( entidade.getEmailAlternativo() != null && !entidade.getEmailAlternativo().isEmpty() && !SRHUtils.validarEmail(entidade.getEmailAlternativo()))
+				throw new SRHRuntimeException("E-mail Alternativo com formato inválido.");
+			
+			if ( entidade.getEmail() != null && !entidade.getEmail().isEmpty()
+					&& entidade.getEmailAlternativo() != null && !entidade.getEmailAlternativo().isEmpty()
+					&& entidade.getEmail().equals(entidade.getEmailAlternativo())) {
+				throw new SRHRuntimeException("E-mail deve ser diferente do E-mail Alternativo.");
+			}
 			
 			if( entidade.getCpf() == null || entidade.getCpf().isEmpty() )
 				throw new SRHRuntimeException("O CPF é obrigatório.");

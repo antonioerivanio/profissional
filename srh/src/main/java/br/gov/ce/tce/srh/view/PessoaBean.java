@@ -125,6 +125,7 @@ public class PessoaBean implements Serializable {
 	private Boolean podeAlterar = null;
 	private Boolean ehServidor = null;
 	private boolean recadastramentoAtivo;
+	private boolean cepValido;
 
 	private String nome = new String();
 	private String cpf = new String();
@@ -164,7 +165,12 @@ public class PessoaBean implements Serializable {
 			}			
 			
 			if (ehServidor() || ehProprioCadastro())
-				verificaRecadastramento();			
+				verificaRecadastramento();
+			
+			atualizaNaturalidade();						
+			
+			buscarCep();			
+			
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -173,7 +179,7 @@ public class PessoaBean implements Serializable {
 
 		return "incluirAlterar";
 
-	}	
+	}		
 
 	public String consultar() {
 
@@ -264,7 +270,7 @@ public class PessoaBean implements Serializable {
 			
 			if(!hoje.before(recadastramento.getInicio()) && !hoje.after(recadastramento.getFim())) {
 				
-				recadastramentoAtivo = true;
+				recadastramentoAtivo = true;				
 				
 				setPessoalRecadastramento(pessoalRecadastramentoService.findByPessoalAndRecadastramento(entidade.getId(), recadastramento.getId()));
 			
@@ -313,6 +319,10 @@ public class PessoaBean implements Serializable {
 	
 	public boolean cadastroAindaNaoFinalizado() {
 		return (ehServidor() || ehProprioCadastro()) && recadastramentoAtivo;
+	}
+	
+	public boolean getCepValido() {
+		return this.cepValido;
 	}
 
 	public List<EstadoCivil> getComboEstadoCivil() {
@@ -665,10 +675,27 @@ public class PessoaBean implements Serializable {
 
 		return null;
 	}
+	
+	private void atualizaNaturalidade() {
+		
+		try {
+			if(entidade.getMunicipioNaturalidade() == null
+					&& entidade.getNaturalidade() != null
+					&& !entidade.getNaturalidade().isEmpty()
+					&& entidade.getUf() != null) {
+				entidade.setMunicipioNaturalidade(municipioService.findByNome(entidade.getUf().getId(), entidade.getNaturalidade()));
+			}
+		} catch (Exception e) {
+			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		
+	}
 
 	public String buscarCep() {
 
 		try {
+			
+			this.cepValido = false;
 
 			if (entidade.getCep().length() >= 8) {
 
@@ -688,15 +715,15 @@ public class PessoaBean implements Serializable {
 				
 				if(entidade.getMunicipioEndereco() != null)
 					entidade.setUfEndereco(entidade.getMunicipioEndereco().getUf());
+				
+				this.cepValido = true;
 
 			}
 
 		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro na busca do CEP. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
 		return null;

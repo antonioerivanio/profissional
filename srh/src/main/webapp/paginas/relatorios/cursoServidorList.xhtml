@@ -59,55 +59,55 @@
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 		
-				<div style="display: flex;">
-					<div class="input-box box-6">
-						<label for="">Matricula</label>
-						<div class="conteiner">
-							<h:inputText id="matricula"
-										 name="matricula"
-										 maxlength="6" 
-										 styleClass="maskMatricula"
-										 value="#{cursoServidorListBean.matricula}"
-										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-		            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" ajaxSingle="true" />
-		        			</h:inputText>
-						</div>
-					</div>
-		
-					<div class="input-box box-12">
-						<label for="">CPF</label>
-						<div class="conteiner">
-							<h:inputText id="cpf" 
-										 name="cpf"
-										 maxlength="14"
-										 styleClass="maskCpf"
-										 converter="cpfConverter"
-										 value="#{cursoServidorListBean.cpf}"
-										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-								<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" ajaxSingle="true" />
-							</h:inputText>
-						</div>
-					</div>
-		
-					<div class="input-box box-38">
-						<label for="">Nome</label>
-						<div class="conteiner">
-							<h:inputText id="nomeCompletoPessoa"
-										 name="nomeCompletoPessoa"
-										 value="#{cursoServidorListBean.nome}"									
-										 onchange="desmarcaSomenteCargaHoraria()"
-										 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" />
-						</div>
-					</div>
-									
-					<a id="form:Pesquisar" 
-					   href="#" 
-					   onclick="openwindow()" 
-					   class="bt-padrao fl mg-top-18 cl">Pesquisar</a>
 				
-				</div>	   
+				<div class="input-box box-6">
+					<label for="">Matricula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 maxlength="6" 
+									 styleClass="maskMatricula"
+									 value="#{cursoServidorListBean.matricula}"
+									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
+	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" ajaxSingle="true" />
+	        			</h:inputText>
+					</div>
+				</div>
+	
+				<div class="input-box box-12">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 value="#{cursoServidorListBean.cpf}"
+									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
+							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" ajaxSingle="true" />
+						</h:inputText>
+					</div>
+				</div>
+	
+				<div class="input-box box-38">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{cursoServidorListBean.nome}"									
+									 onchange="desmarcaSomenteCargaHoraria()"
+									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" />
+					</div>
+				</div>
+								
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				
 				   
-				<div>  
+				   
+				<div class="clr">  
 				   
 					<div class="radios-group box-15">
 						<rich:panel id="richpane1l">

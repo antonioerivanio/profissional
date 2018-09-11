@@ -43,8 +43,11 @@ public class PessoalRecadastramentoDAO {
 		
 		try {
 			
-			Query query = entityManager.createQuery("SELECT r FROM PessoalRecadastramento r join fetch r.pessoal WHERE r.pessoal.id = :idPessoal "
-					+ " and r.id = :idRecadastramento");
+			Query query = entityManager.createQuery("SELECT r FROM PessoalRecadastramento r "
+					+ " left join fetch r.pessoal p "
+					+ " left join fetch r.recadastramento rec "
+					+ " WHERE p.id = :idPessoal "
+					+ " and rec.id = :idRecadastramento");
 			query.setParameter("idPessoal", idPessoal);
 			query.setParameter("idRecadastramento", idRecadastramento);
 			return (PessoalRecadastramento) query.getSingleResult();
@@ -52,9 +55,7 @@ public class PessoalRecadastramentoDAO {
 		} catch (Exception e) {
 			return null;
 		}	
-	}
-	
-	
+	}	
 	
 
 }

@@ -1,5 +1,8 @@
 package br.gov.ce.tce.srh.util;
 
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.Normalizer;
@@ -15,6 +18,7 @@ import javax.swing.text.MaskFormatter;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 /**
@@ -616,6 +620,44 @@ public class SRHUtils {
 	    return matcher.matches();
 	}
 	
+	/**
+	 * Retirado da seguinte implementação https://github.com/popofibo/TrimObjectGraph/blob/master/src/com/popofibo/utils/SpaceUtil.java
+	 * 
+	 */
+	public static Object trimReflective(Object object) {
+		if (object == null)
+			return null;
+
+		Class<? extends Object> c = object.getClass();
+		try {
+			
+			// Introspector usage to pick the getters conveniently thereby excluding the Object getters
+			for (PropertyDescriptor propertyDescriptor : Introspector.getBeanInfo(c, Object.class).getPropertyDescriptors()) {
+				
+				Method method = propertyDescriptor.getReadMethod();
+				String name = method.getName();
+
+				// If the current level of Property is of type String
+				if (method.getReturnType().equals(String.class)) {
+					
+					String property = (String) method.invoke(object);
+					if (property != null) {
+						
+						Method setter = c.getMethod("set" + name.substring(3), new Class<?>[] { String.class });
+						if (setter != null)
+							// Setter to trim and set the trimmed String value
+							setter.invoke(object, property.trim());
+					}
+				}				
+			}
+
+		} catch (Exception e) {
+			throw new SRHRuntimeException("Erro ao remover espaços em branco.");
+		}
+
+		return object;
+
+	}
 	
 
 }

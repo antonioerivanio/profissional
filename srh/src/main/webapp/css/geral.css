@@ -50,6 +50,10 @@ textarea:disabled, input:not ([type] ):disabled, input[type="color" i]:disabled,
 }
 
 /* INICIO MARGENS UTEIS */
+.mg-zero {
+	margin: 0 !important;
+}
+
 .mg-left-10 {
 	margin-left: 10px !important;
 }
@@ -89,11 +93,6 @@ textarea:disabled, input:not ([type] ):disabled, input[type="color" i]:disabled,
 .mg-bottom-15 {
 	margin-bottom: 15px !important;
 }
-
-.mg-zero {
-	margin: 0 !important;
-}
-
 /* FIM MARGENS UTEIS */
 
 /* FIM CLASSES UTEIS */
@@ -574,8 +573,9 @@ body {
 	border: 1px solid #c5c5c5;
 }
 
-.formularios .select-box select:disabled {
-	background-color: rgb(235, 235, 228);
+.formularios .select-box select:disabled, 
+.formularios .input-box input:disabled {
+	background-color: #efefef;
 }
 
 .formularios .select-box option {

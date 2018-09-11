@@ -39,7 +39,9 @@
 			<h2>Dados Cadastrais</h2>
 
 		</div>
-		
+				
+		<span class="fr mg-right-10" style="color: #555;"><i>* Campos Obrigatórios</i></span>
+				
 		<br />
 		
 		<a4j:outputPanel ajaxRendered="true" >
@@ -50,8 +52,8 @@
 
 			<rich:tabPanel switchType="client">
 			
-				<rich:tab label="Dados Pessoais">
-				
+				<rich:tab label="Dados Pessoais">					
+								
 					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
 						<div class="select-box box-20">
 							<label for="">Categoria *</label>
@@ -386,7 +388,7 @@
 							<h:selectOneMenu id="tpLograd"
 											 converter="entityConverter"
 											 value="#{pessoaBean.entidade.tipoLogradouro}"											 
-											 disabled="#{not pessoaBean.podeAlterar()}">
+											 disabled="#{not pessoaBean.podeAlterar() or pessoaBean.cepValido}">
 							  	<f:selectItem id="selecionetpLograd" itemLabel="Selecione..."/>
 							  	<f:selectItems id="comboTipoLogradouro" 
 							  				   value="#{pessoaBean.comboTipoLogradouro}"
@@ -404,7 +406,7 @@
 							<h:inputText id="endereco" 
 										 maxlength="80"
 										 value="#{pessoaBean.entidade.endereco}" 
-										 disabled="#{not pessoaBean.podeAlterar()}"/>
+										 disabled="#{not pessoaBean.podeAlterar() or pessoaBean.cepValido}"/>
 						</div>
 					</div>
 		
@@ -444,7 +446,7 @@
 							<h:selectOneMenu id="ufEndereco"
 											 converter="entityConverter" 
 											 value="#{pessoaBean.entidade.ufEndereco}"
-											 disabled="#{not pessoaBean.podeAlterar()}">
+											 disabled="#{not pessoaBean.podeAlterar() or pessoaBean.cepValido}">
 							  	<f:selectItem id="selecioneUfEndereco" itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboUfEndereco"
 							  					value="#{pessoaBean.comboUf}"
@@ -464,7 +466,7 @@
 							<h:selectOneMenu id="municipioEndereco"
 											 converter="entityConverter" 
 											 value="#{pessoaBean.entidade.municipioEndereco}"
-											 disabled="#{not pessoaBean.podeAlterar()}">
+											 disabled="#{not pessoaBean.podeAlterar() or pessoaBean.cepValido}">
 							  	<f:selectItem id="selecioneMunicipioEndereco"  itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboMunicipioEndereco" 
 							  					value="#{pessoaBean.comboMunicipioEndereco}"
@@ -889,39 +891,42 @@
 			
 				<rich:tab label="Dependentes" rendered="#{pessoaBean.ehAlteracao()}">
 				
-					<div class="input-box box-25">
-						<label for="">Previdência</label>
-						<div class="conteiner">
-							<h:inputText id="previdencia" 
-										 maxlength="2" required="true" requiredMessage="Previdência é obrigatório"
-										 onkeyup="mantemSomenteNumeros(this)"
-										 value="#{pessoaBean.entidade.qtdDepprev}" 
-										 disabled="true"/>
+					<ui:fragment rendered="#{pessoaBean.temPermisssaoParaAlterar()}">
+						<div class="input-box box-25">
+							<label for="">Previdência</label>
+							<div class="conteiner">
+								<h:inputText id="previdencia" 
+											 maxlength="2" required="true" requiredMessage="Previdência é obrigatório"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.qtdDepprev}" 
+											 disabled="true"/>
+							</div>
 						</div>
-					</div>
-				
-					<div class="input-box box-25">
-						<label for="">Imposto de Renda</label>
-						<div class="conteiner">
-							<h:inputText id="impostoRenda" 
-										 maxlength="2" required="true" requiredMessage="Imposto de Renda é obrigatório"
-										 onkeyup="mantemSomenteNumeros(this)"
-										 value="#{pessoaBean.entidade.qtdDepir}" 
-										 disabled="true"/>
-						</div>
-					</div>
 					
-					
-					<div class="input-box box-25">
-						<label for="">Salário Família</label>
-						<div class="conteiner">
-							<h:inputText id="salarioFamilia" 
-										 maxlength="2" required="true" requiredMessage="Salário Família é obrigatório"
-										 onkeyup="mantemSomenteNumeros(this)"
-										 value="#{pessoaBean.entidade.qtdDepsf}" 
-										 disabled="true"/>
+						<div class="input-box box-25">
+							<label for="">Imposto de Renda</label>
+							<div class="conteiner">
+								<h:inputText id="impostoRenda" 
+											 maxlength="2" required="true" requiredMessage="Imposto de Renda é obrigatório"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.qtdDepir}" 
+											 disabled="true"/>
+							</div>
 						</div>
-					</div>					
+						
+						
+						<div class="input-box box-25">
+							<label for="">Salário Família</label>
+							<div class="conteiner">
+								<h:inputText id="salarioFamilia" 
+											 maxlength="2" required="true" requiredMessage="Salário Família é obrigatório"
+											 onkeyup="mantemSomenteNumeros(this)"
+											 value="#{pessoaBean.entidade.qtdDepsf}" 
+											 disabled="true"/>
+							</div>
+						</div>
+					</ui:fragment>
+										
 					
 					<div class="tabela-dados">
 					
@@ -942,7 +947,27 @@
 								</f:facet>
 								<h:outputText id="tipoDep" value="#{dependente.tipoDependencia.descricao}" />							
 							</h:column>
-							<h:column id="col3" class="center" >
+							<h:column id="col3">
+								<f:facet name="header">
+									Dt. Nasc.
+								</f:facet>
+								<center>									
+									<h:outputText id="item3" value="#{dependente.dependente.nascimento}" styleClass="cel-15" >
+			                        	<f:convertDateTime id="dtNascDep" type="date" pattern="dd/MM/yyyy" />
+			                        </h:outputText>
+								</center>							
+							</h:column>
+							<h:column id="col4">
+								<f:facet name="header">
+									Dt. Saída
+								</f:facet>
+								<center>
+									<h:outputText id="item4" value="#{dependente.dataFim}" styleClass="cel-15" >
+			                        	<f:convertDateTime id="dtFimDep" type="date" pattern="dd/MM/yyyy" />
+			                        </h:outputText>
+								</center>							
+							</h:column>	
+							<h:column id="col5" class="center" >
 								<f:facet name="header">
 									Dep Prev?
 								</f:facet>
@@ -950,31 +975,14 @@
 									<h:selectBooleanCheckbox id="depPrev" value="#{dependente.depPrev}" disabled="true" />
 								</center>								
 							</h:column>
-							<h:column id="col4" styleClass="center">
+							<h:column id="col6" styleClass="center">
 								<f:facet name="header">
 									Dep IR?
 								</f:facet>
 								<center>
 									<h:selectBooleanCheckbox id="depIR" value="#{dependente.depIr}" disabled="true" />
 								</center>							
-							</h:column>
-							<h:column id="col5">
-								<f:facet name="header">
-									Dep SF?
-								</f:facet>
-								<center>
-									<h:selectBooleanCheckbox id="depSF" value="#{dependente.depSf}" disabled="true" />
-								</center>							
-							</h:column>
-							<h:column id="col6">
-								<f:facet name="header">
-									Universitário?
-								</f:facet>
-								<center>
-									<h:selectBooleanCheckbox id="depUniversitario" value="#{dependente.flUniversitario}" disabled="true" />
-								</center>							
-							</h:column>	
-												
+							</h:column>												
 						</rich:dataTable>
 						
 						<br />
@@ -1033,10 +1041,8 @@
 						action="#{pessoaBean.salvar(true)}"						
 						onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" 
 						value="Confirmar" 
-						styleClass="bt-padrao fr">
-						
-					</h:commandButton>
-					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-right-10">Cancelar</a>
+						styleClass="bt-padrao fr mg-zero" />
+					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-zero mg-right-10">Cancelar</a>
 				</div>							
 				
 			</rich:modalPanel>
