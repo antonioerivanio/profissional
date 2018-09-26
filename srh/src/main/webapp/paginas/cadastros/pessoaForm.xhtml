@@ -664,6 +664,7 @@
 							<div class="conteiner">
 								<h:inputText id="dtExpedOC" 
 											 styleClass="maskData"
+											 converter="dateConverter"
 											 value="#{pessoaBean.entidade.dataExpedicaoOrgaoClasse}"
 											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
@@ -674,6 +675,7 @@
 							<div class="conteiner">
 								<h:inputText id="dtValidOC" 
 											 styleClass="maskData"
+											 converter="dateConverter"
 											 value="#{pessoaBean.entidade.dataValidadeOrgaoClasse}"
 											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
@@ -786,6 +788,7 @@
 							<div class="conteiner">
 								<h:inputText id="dtExped" 
 											 styleClass="maskData"
+											 converter="dateConverter"
 											 value="#{pessoaBean.entidade.dataExpedicaoCNH}"
 											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
@@ -813,6 +816,7 @@
 							<div class="conteiner">
 								<h:inputText id="dtValid" 
 											 styleClass="maskData"
+											 converter="dateConverter"
 											 value="#{pessoaBean.entidade.dataValidadeCNH}"
 											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
@@ -823,6 +827,7 @@
 							<div class="conteiner">
 								<h:inputText id="dtPriHab" 
 											 styleClass="maskData"
+											 converter="dateConverter"
 											 value="#{pessoaBean.entidade.dataPrimeiraCNH}"
 											 disabled="#{not pessoaBean.podeAlterar()}"/>
 							</div>
