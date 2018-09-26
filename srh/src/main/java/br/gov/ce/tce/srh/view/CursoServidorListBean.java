@@ -135,12 +135,12 @@ public class CursoServidorListBean implements Serializable {
 			String fimFormato="";
 						
 			StringBuilder filtro = new StringBuilder();
-			filtro.append(" WHERE  1 = 1 ");
+			filtro.append(" WHERE TB_FUNCIONAL.ID = (SELECT MAX(ID) FROM TB_FUNCIONAL WHERE TB_FUNCIONAL.IDPESSOAL = TB_PESSOAL.ID ) ");
 			
 			if(!somenteCargaHoraria && !somenteCursoGraduacao )
 				filtro.append(" AND TB_PESSOAL.id = "+getEntidade().getPessoal().getId());
 			
-			filtro.append(" AND TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
+			filtro.append("  " );
 			
 			if(!somenteCursoGraduacao ) {
 				
@@ -222,7 +222,7 @@ public class CursoServidorListBean implements Serializable {
 
 			try {
 				
-				setEntidade( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
+				setEntidade( funcionalService.getCpfAndNomeByMatricula( this.matricula ));
 				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();
@@ -248,7 +248,7 @@ public class CursoServidorListBean implements Serializable {
 
 			try {
 				
-				setEntidade( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
+				setEntidade( funcionalService.getMatriculaAndNomeByCpf( this.cpf ));
 								
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getNomeCompleto();

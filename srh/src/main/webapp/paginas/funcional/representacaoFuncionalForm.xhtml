@@ -22,11 +22,10 @@
 		</style>
 
 		<script>
-		function openwindow()
-		{
+		function openwindow() {
 			nome = document.getElementById('form:nomeCompletoPessoa').value;
 			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","menubar=0,resizable=0,width=800,height=300");
+				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
 				alert('Digite pelo menos 3 caracteres para a pesquisa');
 			}
@@ -150,11 +149,9 @@
 				<div class="conteiner">
 					<h:inputText disabled="true" value="#{representacaoFuncionalFormBean.entidade.id}" />  
 				</div>
-			</div>
+			</div>			
 
-			<br/><br/><br/><br/><br/>
-
-			<div class="select-box box-50">
+			<div class="select-box box-50 clr">
 				<label for="">Tipo Documento *</label>
 				<div class="conteiner">
 						<h:selectOneMenu id="tipoDocumento" converter="entityConverter"
@@ -195,9 +192,7 @@
 				</div>
 			</div>
 
-			<br/><br/><br/><br/><br/>
-
-			<div class="input-box box-20">
+			<div class="input-box box-20 clr">
 				<label for="">Nº Documento</label>
 				<div class="conteiner">
 					<h:inputText id="noDocumento" 
@@ -236,9 +231,7 @@
 				</div>
 			</div>
 
-			<br/><br/><br/><br/><br/>
-
-			<div class="input-box box-15">
+			<div class="input-box box-15 clr">
 				<label for="">Início da Vigência *</label>
 				<div class="conteiner">
 					<h:inputText id="inicioVigencia" 

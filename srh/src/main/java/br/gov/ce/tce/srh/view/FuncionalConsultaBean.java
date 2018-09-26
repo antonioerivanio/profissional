@@ -53,32 +53,20 @@ public class FuncionalConsultaBean implements Serializable {
 
 		try {
 
-			// pegando o parametro
-			String nome = null;
-			String findAll = null;
 			FacesContext facesContext = FacesContext.getCurrentInstance();  
-			nome = facesContext.getExternalContext().getRequestParameterMap().get("nome");
+			String nome = facesContext.getExternalContext().getRequestParameterMap().get("nome");
+			String find = facesContext.getExternalContext().getRequestParameterMap().get("find");
 		
-			
-			if(nome==null || nome.equals(""))
-			{
-
-				String parametro = facesContext.getExternalContext().getRequestParameterMap().get("parametro");
-				String[] listaParametro = parametro.split(";");
-	
-				
-				if (listaParametro.length > 0)
-					nome = listaParametro[0];
-	
-				if (listaParametro.length > 1)
-					findAll = listaParametro[1];
-			}
-			
 			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+				
 				lista = funcionalService.findByUsuariologado(authenticationService.getUsuarioLogado());
-			} else if (findAll!=null && findAll.equals("OK")){
+			
+			} else if (find!=null && find.equals("all")){
+				
 				lista = funcionalService.findAllByNome(nome);
-			} else{
+			
+			} else {
+				
 				lista = funcionalService.findByNome(nome);
 			}		
 			

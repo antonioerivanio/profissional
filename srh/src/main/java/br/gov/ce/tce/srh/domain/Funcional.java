@@ -410,7 +410,7 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	public void setId(Long id) {this.id = id;}
 
 	public Long getQtdeDias() {return qtdeDias;}
-	public void setQtdeDias(Long qtdeDias) {this.qtdeDias = qtdeDias;}
+	public void setQtdeDias(Long qtdeDias) { if (qtdeDias >= 0) this.qtdeDias = qtdeDias;}
 
 	public Long getIdRepresentacaoCargo() {return idRepresentacaoCargo;}
 	public void setIdRepresentacaoCargo(Long idRepresentacaoCargo) {this.idRepresentacaoCargo = idRepresentacaoCargo;}
@@ -422,13 +422,13 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	public void setAtivoPortal(boolean ativoPortal) {this.ativoPortal = ativoPortal;}
 
 	public int getAnos() {return anos;}
-	public void setAnos(int anos) {this.anos = anos;}
+	public void setAnos(int anos) { if (anos >= 0) this.anos = anos;}
 
 	public int getMeses() {return meses;}
-	public void setMeses(int meses) {this.meses = meses;}
+	public void setMeses(int meses) { if (meses >= 0) this.meses = meses;}
 
 	public int getDias() {return dias;}
-	public void setDias(int dias) {this.dias = dias;}
+	public void setDias(int dias) { if (dias >= 0) this.dias = dias;}
 
 	public Aposentadoria getAposentadoria() {return aposentadoria;}
 	public void setAposentadoria(Aposentadoria aposentadoria) {this.aposentadoria = aposentadoria;}	

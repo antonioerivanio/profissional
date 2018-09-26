@@ -22,31 +22,30 @@
 		</style>
 
 		<script>
-		function openwindow()
-		{
-			nome = document.getElementById('form:nomeCompletoPessoa').value;
-			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
-			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			function openwindow() {
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
 			}
-		}
-		
-		function contarCaracteres(){
-			document.getElementById('countChar').innerHTML = 'Quantidade de caracteres: ' + (document.getElementById('form:observacao').value.length);
-		}
-		
-		function verificaRepresentacao(){
-			var mensagemRepresentacao = document.getElementById("form:mensagemRepresentacao").value;			
 			
-			if (mensagemRepresentacao.length > 0){
-				alert(mensagemRepresentacao);	
+			function contarCaracteres(){
+				document.getElementById('countChar').innerHTML = 'Quantidade de caracteres: ' + (document.getElementById('form:observacao').value.length);
 			}
-		}
-		
-		 jQuery(document).ready(function($) {
-			 contarCaracteres();
-		 });
+			
+			function verificaRepresentacao(){
+				var mensagemRepresentacao = document.getElementById("form:mensagemRepresentacao").value;			
+				
+				if (mensagemRepresentacao.length > 0){
+					alert(mensagemRepresentacao);	
+				}
+			}
+			
+			 jQuery(document).ready(function($) {
+				 contarCaracteres();
+			 });
 				
 		</script>
 

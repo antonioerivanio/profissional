@@ -101,10 +101,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	public int count(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim) {
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("Select count(*) from PessoalCursoProfissional e, Funcional f where e.pk.pessoal = :pessoal ");
-		
-		sql.append("AND e.pessoal.id = f.pessoal.id ");
-		sql.append("AND f.saida IS NULL AND f.situacao.id = 1 ");
+		sql.append("Select count(*) from PessoalCursoProfissional e where e.pk.pessoal = :pessoal ");		
 		
 		if (areaAtuacao)
 			sql.append(" AND e.areaAtuacao = :areaAtuacao");
@@ -141,10 +138,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	@SuppressWarnings("unchecked")
 	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim, int first, int rows) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("Select e from PessoalCursoProfissional e, Funcional f where e.pk.pessoal = :pessoal ");
-		
-		sql.append("AND e.pessoal.id = f.pessoal.id ");
-		sql.append("AND f.saida IS NULL AND f.situacao.id = 1 ");
+		sql.append("Select e from PessoalCursoProfissional e where e.pk.pessoal = :pessoal ");		
 		
 		if(areaAtuacao)
 			sql.append(" AND e.areaAtuacao = :areaAtuacao");		
@@ -247,7 +241,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		sql.append(" LEFT JOIN TB_TIPOOCUPACAO ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO ");
 		sql.append(" LEFT JOIN SAPJAVA.SETOR ON DECODE(TB_FUNCIONAL.IDSETORDESIGNADO, NULL, TB_FUNCIONAL.IDSETOR, TB_FUNCIONAL.IDSETORDESIGNADO) = SAPJAVA.SETOR.IDSETOR ");
 
-		sql.append(" WHERE TB_FUNCIONAL.DATASAIDA IS NULL AND TB_FUNCIONAL.IDSITUACAO = 1 " );
+		sql.append(" WHERE 1 = 1 " );
 		
 		if(inicio != null)
 			sql.append(" AND To_Date(To_Char(TB_CURSOPROFISSIONAL.FIM,'dd/mm/yyyy'),'dd/mm/yyyy') >= To_Date('"+formatador.format(inicio)+"','dd/mm/yyyy') " );

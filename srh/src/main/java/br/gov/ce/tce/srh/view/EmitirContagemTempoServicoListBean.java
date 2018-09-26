@@ -119,16 +119,18 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 				if ( dataFim != null ) {
 					
 					if ( funcional.getExercicio().after(dataFim) )
-						throw new SRHRuntimeException("A data informada é anterior a data de Exercício do Cargo atual.");
+						throw new SRHRuntimeException("A data informada é anterior a data de Exercício do Cargo atual.");											
 
-					if ( funcional.getSaida() == null )
-						funcional.setSaida(dataFim);
-
+				
+				} else {					
+					dataFim = new Date();
+				}
+				
+				if (funcional.getAposentadoria() != null) {
+					funcional.setSaida(funcional.getAposentadoria().getDataUltimaContagem());						
 				} else if ( funcional.getSaida() == null ){
-					
-					funcional.setSaida( new Date() );
-					dataFim = funcional.getSaida();
-				}				
+					funcional.setSaida(dataFim);
+				}
 				
 				int [] anosMesesDias = SRHUtils.contagemDeTempoDeServico( funcional.getExercicio(), funcional.getSaida() );
 				

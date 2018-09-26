@@ -19,19 +19,7 @@
 			margin-bottom: 10px;
 			min-height: 100px;
 		}
-		</style>
-
-		<script>
-		function openwindow()
-		{
-			nome = document.getElementById('form:nomeCompletoPessoa').value;
-			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
-			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
-			}
-		}
-		</script>
+		</style>		
 
 		<div class="titulo-pagina">
 
@@ -61,7 +49,7 @@
 					</div>
 				</div>
 
-				<div class="input-box box-75">
+				<div class="input-box box-90">
 					<label for="">Nome</label>
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa" 
@@ -69,12 +57,7 @@
 									 disabled="true"
 									 value="#{exoneracaoFormBean.representacao.funcional.nomeCompleto}" />
 					</div>
-				</div>
-
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindow()"
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</div>				
 
 				<div class="input-box box-100">
 					<label for="">Mãe</label>
