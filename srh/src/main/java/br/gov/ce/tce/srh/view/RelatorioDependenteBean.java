@@ -21,6 +21,7 @@ import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.service.TipoDependenciaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Component("relatorioDependenteBean")
 @Scope("session")
@@ -114,21 +115,24 @@ public class RelatorioDependenteBean  implements Serializable  {
 	
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
-		if ( !cpf.equals("") && !cpf.equals(this.cpf) ) {
-			this.cpf = cpf;
+		this.cpf = SRHUtils.removerMascara(cpf);
+		if ( !this.cpf.isEmpty() ) {
+			
 
 			try {
 				
-				Pessoal responsavel = pessoalService.getByCpf(this.cpf);
-												
-				if ( responsavel != null ) {
+				List<Pessoal> list = pessoalService.findServidorByNomeOuCpf(null, this.cpf);
+				
+				if (list.isEmpty()) {
+					this.cpf = new String();
+					FacesUtil.addInfoMessage("CPF não encontrado.");
+				} else {
+					Pessoal responsavel = list.get(0);
 					this.nomeResponsavel = responsavel.getNomeCompleto();
 					this.dependente = new Dependente();
 					this.dependente.setResponsavel(responsavel);
 					this.pessoaSelecionada = true;
-				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
-				}
+				} 
 
 				
 			} catch (Exception e) {

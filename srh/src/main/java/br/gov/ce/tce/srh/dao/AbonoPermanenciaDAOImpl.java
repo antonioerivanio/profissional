@@ -69,7 +69,7 @@ public class AbonoPermanenciaDAOImpl implements AbonoPermanenciaDAO{
 	@Override
 	public List<AbonoPermanencia> search( String cpf,int first, int rows) {		
 		Query query;
-		if( cpf != null && !cpf.equals("") ) {
+		if( cpf != null && !cpf.isEmpty() ) {
 			query = entityManager.createQuery("SELECT a FROM AbonoPermanencia a JOIN FETCH a.funcional f JOIN FETCH f.pessoal p WHERE p.cpf = :cpf");
 			query.setParameter("cpf", cpf);
 		} else {

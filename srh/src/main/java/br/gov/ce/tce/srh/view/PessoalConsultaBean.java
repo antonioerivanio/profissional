@@ -48,10 +48,13 @@ public class PessoalConsultaBean implements Serializable {
 			String flServidor = facesContext.getExternalContext().getRequestParameterMap().get("flServidor");
 			
 			if(flServidor != null && flServidor.equals("1")){
-				lista = pessoalService.findServidorByNome(nome);
+				lista = pessoalService.findServidorByNomeOuCpf(nome, null);
 			
 			} else if(flServidor != null && flServidor.equals("2")){
-				lista = pessoalService.findServidorEfetivoByNome(nome);
+				lista = pessoalService.findServidorEfetivoByNomeOuCpf(nome, null, false);
+			
+			} else if(flServidor != null && flServidor.equals("3")){
+				lista = pessoalService.findServidorEfetivoByNomeOuCpf(nome, null, true);
 			
 			} else if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 				lista = new ArrayList<Pessoal>();

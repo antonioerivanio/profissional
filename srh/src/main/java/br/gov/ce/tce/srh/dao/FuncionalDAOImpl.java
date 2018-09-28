@@ -334,10 +334,12 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	@Override	
 	public List<Funcional> findByNome(String nome) {
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.setor) "
-																+ "FROM Funcional r "
-																+ "WHERE upper( r.nomePesquisa ) like :nome AND r.saida IS NULL "
-																+ "ORDER BY r.id desc");
+		Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.setor) "
+																+ "FROM Funcional f "
+																+ "WHERE upper( f.nomePesquisa ) like :nome "
+																+ "AND f.saida IS NULL "
+																+ "AND f.status != 5 "
+																+ "ORDER BY f.id desc");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		
 		return query.getResultList();

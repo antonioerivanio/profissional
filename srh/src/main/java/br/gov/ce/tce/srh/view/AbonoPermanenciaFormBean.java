@@ -163,17 +163,20 @@ public class AbonoPermanenciaFormBean implements Serializable{
 	
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
-		
-		if ( !this.cpf.equals(cpf) && !SRHUtils.removerMascara(cpf).isEmpty() ) {
-			this.cpf = cpf;
-
+		this.cpf = SRHUtils.removerMascara(cpf);
+		if ( !this.cpf.isEmpty() ) {			
 			try {
+				
+				List<Pessoal> list = pessoalService.findServidorEfetivoByNomeOuCpf(null, this.cpf, true);
+				
 				this.pessoal = pessoalService.getByCpf(this.cpf);
 				
-				if (this.pessoal != null) {
-					this.nome = pessoal.getNomeCompleto();					
-				} else {
+				if (list.isEmpty()) {
+					this.cpf = new String();
 					FacesUtil.addInfoMessage("CPF não encontrado.");
+				} else {
+					this.pessoal = list.get(0);
+					this.nome = this.pessoal.getNomeCompleto();
 				}
 
 			} catch (Exception e) {

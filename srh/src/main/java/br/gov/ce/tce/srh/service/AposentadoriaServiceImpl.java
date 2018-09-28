@@ -48,7 +48,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 	@Transactional
 	public Aposentadoria salvar(Aposentadoria entidade) throws SRHRuntimeException {
 		
-		validaDadosObrigatorios(entidade);
+		validaDados(entidade);
 		
 		verificaAposentadoriaCadastrada(entidade);		
 		
@@ -83,7 +83,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 	}
 	
 
-	private void validaDadosObrigatorios(Aposentadoria entidade) throws SRHRuntimeException {
+	private void validaDados(Aposentadoria entidade) throws SRHRuntimeException {
 		
 		if (entidade.getFuncional() == null)
 			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
@@ -93,25 +93,26 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 		if (entidade.getTipoBeneficio() == null)
 			throw new SRHRuntimeException("O Tipo Benefício é obrigatório.");
 		
-		if ( entidade.getDataAto() == null )
+		if (entidade.getDataAto() == null)
 			throw new SRHRuntimeException("A Data Ato é obrigatória.");
-		else if (!entidade.getDataAto().after(entidade.getFuncional().getExercicio()))
+		// Exige que a dataAto seja posterior a de exercício, exceto para Servidores provenientes do TCM
+		else if (!entidade.getDataAto().after(entidade.getFuncional().getExercicio())
+				&& !entidade.getFuncional().getTipoMovimentoEntrada().getId().equals(43L))
 			throw new SRHRuntimeException("A Data Ato deve ser posterior a data de Exercício Funcional.");
 		
-//		if (entidade.getNumeroResolucao() == null || entidade.getNumeroResolucao().intValue() <= 0)
-//			throw new SRHRuntimeException("O Número Resolução é obrigatório.");
-//		
-//		if (entidade.getAnoResolucao() == null || entidade.getAnoResolucao().intValue() <= 0)
-//			throw new SRHRuntimeException("O Ano Resolução é obrigatório.");
-//		else if (anoAnterior(entidade.getDataAto(), entidade.getAnoResolucao()))
-//			throw new SRHRuntimeException("Ano Resolução tem que ser maior ou igual ao ano da Data Ato.");		
+		if (entidade.getNumeroResolucao() == null || entidade.getNumeroResolucao().intValue() <= 0)
+			entidade.setNumeroResolucao(null);
 		
-		if ( entidade.getDataUltimaContagem() == null )
+		if (entidade.getAnoResolucao() == null || entidade.getAnoResolucao().intValue() <= 0)
+			entidade.setAnoResolucao(null);		
+		
+		if (entidade.getDataUltimaContagem() == null)
 			throw new SRHRuntimeException("A Data Última Contagem é obrigatória.");
-//		else if (!entidade.getDataUltimaContagem().after(entidade.getFuncional().getExercicio()))
-//			throw new SRHRuntimeException("A Data Última Contagem deve ser posterior a data de Exercício Funcional.");
+		else if ( ! ( entidade.getDataUltimaContagem().after(entidade.getDataAto())
+					 || entidade.getDataUltimaContagem().equals(entidade.getDataAto()) ) )
+			throw new SRHRuntimeException("A Data Última Contagem deve ser maior ou igual a Data do Ato.");
 		
-		if ( entidade.getDataInicioBeneficio() == null )
+		if (entidade.getDataInicioBeneficio() == null)
 			throw new SRHRuntimeException("A Data Início Benefício é obrigatória.");
 		else if (!entidade.getDataInicioBeneficio().after(entidade.getDataUltimaContagem()))
 			throw new SRHRuntimeException("A Data Início Benefício deve ser posterior a Data Última Contagem.");
@@ -119,13 +120,15 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 		if (entidade.getTipoPublicacao() == null)
 			throw new SRHRuntimeException("O Tipo Publicação é obrigatório.");
 		
-		if ( entidade.getDataPublicacao() == null )
+		if (entidade.getDataPublicacao() == null)
 			throw new SRHRuntimeException("A Data Publicação é obrigatória.");
 		else if (entidade.getDataPublicacao().before(entidade.getDataAto()))
-			throw new SRHRuntimeException("A Data Publicação não pode ser anterior a Data Ato.");		
+			throw new SRHRuntimeException("A Data Publicação não pode ser anterior a Data Ato.");
 		
 	}	
 	
+	
+	@SuppressWarnings("unused")
 	private boolean anoAnterior(Date data, Long ano) {
 		
 		Calendar dataCalendar = new GregorianCalendar();
@@ -137,6 +140,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 	
 	
 	private void verificaTipoOcupacao(Funcional funcional) {
+		
 		Long idTipoOcupacao = funcional.getOcupacao().getTipoOcupacao().getId();
 		
 		if (idTipoOcupacao > 3)

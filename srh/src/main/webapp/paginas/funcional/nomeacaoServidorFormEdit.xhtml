@@ -64,22 +64,15 @@
 						</h:inputHidden>
 					</div>
 		
-					<div class="input-box box-75">
+					<div class="input-box box-100">
 						<label for="">Nome *</label>
 						<div class="conteiner">
 							<h:inputText id="nomeCompletoPessoa" required="true" 
 										 name="nomeCompletoPessoa" requiredMessage="Nome é obrigatorio"
 										 value="#{nomeacaoServidorFormBean.nome}" 
-										 disabled="#{(not nomeacaoServidorFormBean.exibirTodosOsCampos) or (not LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR'))}" />
+										 disabled="#{true}" />
 						</div>
-					</div>
-		
-					<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
-						<a id="form:Pesquisar" 
-						   href="#" 
-						   onclick="openwindow()" 
-						   class="bt-padrao fl mg-top-18">Pesquisar</a>
-					</ui:fragment>
+					</div>					
 		
 					<div class="input-box box-100">
 						<label for="">Mãe</label>

@@ -15,7 +15,7 @@
 			{
 				nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
-					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=2&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=3&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
 					alert('Digite pelo menos 3 caracteres para a pesquisa');
 				}
@@ -123,7 +123,7 @@
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ABONOPERMANENCIA_INSERIR,ROLE_ABONOPERMANENCIA_ALTERAR')}">
 				<h:commandButton action="#{abonoPermanenciaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />			
-				<a href="/srh/paginas/cadastros/abonoPermanenciaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+				<a href="/srh/paginas/funcional/abonoPermanenciaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 			</ui:fragment>	
 			
 			<a href="/srh/paginas/funcional/abonoPermanenciaList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>

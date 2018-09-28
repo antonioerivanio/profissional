@@ -104,8 +104,8 @@ public class PessoalService {
 	}
 
 	
-	public List<Pessoal> findServidorByNome(String nome) {
-		return dao.findServidorByNome(nome);
+	public List<Pessoal> findServidorByNomeOuCpf(String nome, String cpf) {
+		return dao.findServidorByNomeOuCpf(nome, cpf);
 	}
 
 
@@ -357,8 +357,8 @@ public class PessoalService {
 		return dao.findByCategoria(idCategoria);
 	}
 	
-	public List<Pessoal> findServidorEfetivoByNome(String nome) {
-		return dao.findServidorEfetivoByNome(nome);
+	public List<Pessoal> findServidorEfetivoByNomeOuCpf(String nome, String cpf, boolean somenteAtivos) {
+		return dao.findServidorEfetivoByNomeOuCpf(nome, cpf, somenteAtivos);
 	}
 
 }

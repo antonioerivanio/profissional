@@ -84,7 +84,11 @@ public class Aposentadoria extends BasicEntity<Long> implements Serializable {
 	}
 
 	public void setTipoBeneficio(EnumTipoBeneficio tipoBeneficio) {
-		this.idTipoBeneficio = tipoBeneficio.getId();
+		if(tipoBeneficio != null)
+			this.idTipoBeneficio = tipoBeneficio.getId();
+		else
+			this.idTipoBeneficio = null;
+	
 	}
 
 	public Date getDataAto() {

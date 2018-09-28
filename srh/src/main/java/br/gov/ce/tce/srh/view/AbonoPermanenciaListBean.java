@@ -23,6 +23,7 @@ import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @SuppressWarnings("serial")
@@ -150,17 +151,19 @@ public class AbonoPermanenciaListBean implements Serializable {
 		
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
-		if ( !this.cpf.equals(cpf) ) {
-			this.cpf = cpf;
-
+		this.cpf = SRHUtils.removerMascara(cpf);
+		if ( !this.cpf.isEmpty() ) {
 			try {
-				this.pessoal = pessoalService.getByCpf(this.cpf);
 				
-				if (this.pessoal != null) {
-					this.nome = pessoal.getNomeCompleto();					
-				} else {
+				List<Pessoal> list = pessoalService.findServidorEfetivoByNomeOuCpf(null, this.cpf, false);
+				
+				if (list.isEmpty()) {
+					this.cpf = new String();
 					FacesUtil.addInfoMessage("CPF não encontrado.");
-				}
+				} else {
+					this.pessoal = list.get(0);
+					this.nome = this.pessoal.getNomeCompleto();
+				}				
 
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");

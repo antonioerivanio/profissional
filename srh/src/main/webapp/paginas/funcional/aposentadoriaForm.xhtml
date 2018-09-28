@@ -95,11 +95,13 @@
 					</div>
 				</div>
 
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindow()"
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
-	
+				<ui:fragment rendered="#{not (aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')))}">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()"
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</ui:fragment>
+				
 				<div class="input-box box-100">
 					<label for="">Mãe</label>
 					<div class="conteiner">
@@ -197,7 +199,7 @@
 									 name="numeroResolucao"
 									 value="#{aposentadoriaFormBean.entidade.numeroResolucao}" 
 									 maxlength="5"
-									 onkeyup="SoNumeros(this)"
+									 onkeyup="mantemSomenteNumeros(this)"									 
 									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
 						</h:inputText>
 					</div>
@@ -210,7 +212,7 @@
 									 name="anoResolucao"
 									 value="#{aposentadoriaFormBean.entidade.anoResolucao}" 
 									 maxlength="4"
-									 onkeyup="SoNumeros(this)"
+									 onkeyup="mantemSomenteNumeros(this)"
 									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
 						</h:inputText>
 					</div>

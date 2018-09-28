@@ -32,7 +32,7 @@
 
 			<br/>
 
-            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+            <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
 			<div class="input-box box-12">
 				<label for="">CPF</label>
@@ -43,7 +43,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{relatorioDependenteBean.cpf}"	>
-						<a4j:support id="cpfChange" event="onblur" reRender="nomeCompletoPessoa,tipoDependencia,prev,ir,sf,univ" ajaxSingle="true" />
+						<a4j:support id="cpfChange" event="onblur" reRender="messages,cpf,nomeCompletoPessoa,tipoDependencia,prev,ir,sf,univ" ajaxSingle="true" />
 					</h:inputText>
 				</div>
 			</div>

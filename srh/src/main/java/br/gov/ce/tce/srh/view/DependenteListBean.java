@@ -15,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Dependente;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.DependenteService;
@@ -22,6 +23,7 @@ import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("dependenteListBean")
@@ -155,16 +157,18 @@ public class DependenteListBean implements Serializable {
 		
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
-		if ( !this.cpf.equals(cpf) ) {
-			this.cpf = cpf;
+		this.cpf = SRHUtils.removerMascara(cpf);		
+		if ( !this.cpf.isEmpty() ) {			
 
 			try {
-				getEntidade().setResponsavel(pessoalService.getByCpf(this.cpf));
+				List<Pessoal> list = pessoalService.findServidorByNomeOuCpf(null, this.cpf);
 				
-				if (getEntidade().getResponsavel() != null) {
-					this.nome = getEntidade().getResponsavel().getNomeCompleto();					
-				} else {
+				if (list.isEmpty()) {
+					this.cpf = new String();
 					FacesUtil.addInfoMessage("CPF não encontrado.");
+				} else {					
+					getEntidade().setResponsavel(list.get(0));
+					this.nome = getEntidade().getResponsavel().getNomeCompleto();
 				}
 
 			} catch (Exception e) {

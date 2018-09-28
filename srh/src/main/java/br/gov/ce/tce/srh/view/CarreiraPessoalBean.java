@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.CarreiraPessoal;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Ocupacao;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.EnumCarreira;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
@@ -28,6 +29,7 @@ import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("carreiraPessoalBean")
@@ -206,24 +208,28 @@ public class CarreiraPessoalBean implements Serializable {
 
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
+		this.cpf = SRHUtils.removerMascara(cpf);	
 		if ( !this.cpf.equals(cpf) ) {
-			this.cpf = cpf;
-
+			
 			try {
-
-				this.entidade.setPessoal( pessoalService.getByCpf( this.cpf ));
-								
-				if ( this.entidade.getPessoal() != null ) {
-					this.nome = getEntidade().getPessoal().getNomeCompleto();					
 				
-					atualizaFuncionais();
+				List<Pessoal> list = pessoalService.findServidorByNomeOuCpf(null, this.cpf);
+				
+				if (list.isEmpty()) {
 					
-					this.entidade.setInicioCarreira(funcionais.get(funcionais.size() - 1).getExercicio());					
+					this.cpf = new String();
+					FacesUtil.addInfoMessage("CPF não encontrado.");
 				
 				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado.");
-				}	
-				
+					
+					this.entidade.setPessoal( list.get(0) );
+					
+					this.nome = getEntidade().getPessoal().getNomeCompleto();
+					
+					atualizaFuncionais();
+					
+					this.entidade.setInicioCarreira(funcionais.get(funcionais.size() - 1).getExercicio());
+				}				
 
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
