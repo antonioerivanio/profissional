@@ -185,7 +185,9 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 				
 				if(representacaoFuncionais.size() > 0){
 					setEntidade(representacaoFuncionais.get(representacaoFuncionais.size()-1));
-				}								
+				} else {
+					FacesUtil.addErroMessage("Não foi encontrada Representação.");
+				}
 				
 				if ( getEntidade() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
@@ -211,6 +213,8 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 				
 				if(representacaoFuncionais.size() > 0){
 					setEntidade(representacaoFuncionais.get(representacaoFuncionais.size()-1));
+				} else {
+					FacesUtil.addErroMessage("Não foi encontrada Representação.");
 				}
 				
 				if ( getEntidade() != null ) {

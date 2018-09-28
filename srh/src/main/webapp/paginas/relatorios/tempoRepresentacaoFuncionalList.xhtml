@@ -29,7 +29,7 @@
 
 		<h:form id="form" binding="#{tempoRepresentacaoFuncionalListBean.form}" styleClass="formularios box-border">
 
-			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+			<h:messages id="message" infoClass="infoMessage" errorClass="errorMessage" />
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 			
@@ -40,7 +40,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{tempoRepresentacaoFuncionalListBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" reRender="cpf, nomeCompletoPessoa, matricula, cargo" ajaxSingle="true" />
+	            			<a4j:support id="matriculaChange" event="onchange" reRender="message, cpf, nomeCompletoPessoa, matricula, cargo" ajaxSingle="true" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 value="#{tempoRepresentacaoFuncionalListBean.cpf}" >
-							<a4j:support id="cpfChange" event="onchange" reRender="matricula, nomeCompletoPessoa, cpf, cargo" ajaxSingle="true" />
+							<a4j:support id="cpfChange" event="onchange" reRender="message, matricula, nomeCompletoPessoa, cpf, cargo" ajaxSingle="true" />
 						</h:inputText>
 					</div>
 				</div>

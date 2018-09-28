@@ -77,19 +77,11 @@ public class PessoalDAO {
 	@SuppressWarnings("unchecked")
 	public Pessoal getByCPf(String cpf) {
 
-		// com mascara
 		Query query = entityManager.createQuery("Select p from Pessoal p where p.cpf = :cpf ");
-		query.setParameter("cpf",  cpf );
+		query.setParameter("cpf",  SRHUtils.removerMascara( cpf ) );
 		List<Pessoal> lista = query.getResultList();
 		if (lista.size() > 0)
-			return lista.get(0);
-
-		// sem mascara
-		query = entityManager.createQuery("Select p from Pessoal p where p.cpf = :cpf ");
-		query.setParameter("cpf", SRHUtils.removerMascara( cpf ) );
-		lista = query.getResultList();
-		if (lista.size() > 0)
-			return lista.get(0);
+			return lista.get(0);		
 
 		return null;
 	}
@@ -98,19 +90,11 @@ public class PessoalDAO {
 	@SuppressWarnings("unchecked")
 	public Pessoal getByPasep(String pasep) {
 
-		// com mascara
 		Query query = entityManager.createQuery("Select p from Pessoal p where p.pasep = :pasep ");
-		query.setParameter("pasep", pasep );
+		query.setParameter("pasep", SRHUtils.removerMascara( pasep ) );
 		List<Pessoal> lista = query.getResultList();
 		if (lista.size() > 0)
-			return lista.get(0);
-
-		// sem mascara
-		query = entityManager.createQuery("Select p from Pessoal p where p.pasep = :pasep ");
-		query.setParameter("pasep", SRHUtils.removerMascara( pasep ) );
-		lista = query.getResultList();
-		if (lista.size() > 0)
-			return lista.get(0);
+			return lista.get(0);		
 
 		return null;
 	}

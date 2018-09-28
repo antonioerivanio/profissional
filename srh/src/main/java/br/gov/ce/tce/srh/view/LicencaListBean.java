@@ -73,7 +73,7 @@ public class LicencaListBean implements Serializable {
 	private int count;
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Licenca> pagedList = new ArrayList<Licenca>(); 
-	private int flagRegistroInicial = 0;
+	private int registroInicial = 0;
 	private Integer pagina = 1;
 
 	// combo
@@ -92,7 +92,6 @@ public class LicencaListBean implements Serializable {
 			
 			limparListas();
 
-			// validando campos da entidade
 			if ( getEntidade().getPessoal() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
@@ -107,7 +106,7 @@ public class LicencaListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			flagRegistroInicial = -1;
+			registroInicial = -1;
 			
 			passouConsultar = true;
 
@@ -222,8 +221,7 @@ public class LicencaListBean implements Serializable {
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
-			this.matricula = matricula;
-			this.flagRegistroInicial = -1;
+			this.matricula = matricula;		
 
 			try {
 
@@ -234,7 +232,6 @@ public class LicencaListBean implements Serializable {
 					this.cpf = getEntidade().getPessoal().getCpf();
 				} else {
 					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
-					limparListas();
 				}
 
 			} catch (Exception e) {
@@ -249,7 +246,6 @@ public class LicencaListBean implements Serializable {
 	public void setCpf(String cpf) {
 		if ( !this.cpf.equals(cpf) ) {
 			this.cpf = cpf;
-			this.flagRegistroInicial = -1;
 
 			try {
 
@@ -260,7 +256,6 @@ public class LicencaListBean implements Serializable {
 					this.matricula = funcional.getMatricula();
 				} else {
 					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
-					limparListas();
 				}
 
 			} catch (Exception e) {
@@ -301,7 +296,7 @@ public class LicencaListBean implements Serializable {
 				setCpf(authenticationService.getUsuarioLogado().getCpf());								
 				count = licencaService.count(getEntidade().getPessoal().getId());
 				limparListas();
-				flagRegistroInicial = -1;				
+				registroInicial = -1;				
 				
 			} catch (Exception e) {
 				limparListas();
@@ -317,7 +312,7 @@ public class LicencaListBean implements Serializable {
 			this.nome = new String();
 			this.lista = new ArrayList<Licenca>();
 			limparListas();
-			flagRegistroInicial = 0;
+			registroInicial = 0;
 		}
 		passouConsultar = false;
 		return form;
@@ -332,13 +327,13 @@ public class LicencaListBean implements Serializable {
 	}
 	
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
-			flagRegistroInicial = getPrimeiroDaPagina();
+		if( registroInicial != getPrimeiroDaPagina() ) {
+			registroInicial = getPrimeiroDaPagina();
 			
 			if ( this.tipoLicenca != null) {
-				setPagedList( licencaService.search( getEntidade().getPessoal().getId(), this.tipoLicenca.getId(), flagRegistroInicial, dataModel.getPageSize()) );
+				setPagedList(licencaService.search( getEntidade().getPessoal().getId(), this.tipoLicenca.getId(), registroInicial, dataModel.getPageSize()));
 			} else { 
-				setPagedList(licencaService.search( getEntidade().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize() ));
+				setPagedList(licencaService.search( getEntidade().getPessoal().getId(), registroInicial, dataModel.getPageSize()));
 			}
 
 			if ( count != 0 ) {

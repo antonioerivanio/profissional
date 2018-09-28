@@ -206,7 +206,7 @@ public class DeducaoListBean implements Serializable {
 
 			try {
 
-				Funcional funcional = funcionalService.getMatriculaAndNomeByCpf( this.cpf );
+				Funcional funcional = funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf );
 				if ( funcional != null ) {
 					getEntidade().setPessoal( funcional.getPessoal() );
 					this.nome = getEntidade().getPessoal().getNomeCompleto();

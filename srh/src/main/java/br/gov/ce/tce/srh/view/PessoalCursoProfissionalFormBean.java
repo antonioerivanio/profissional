@@ -24,7 +24,6 @@ import br.gov.ce.tce.srh.service.CompetenciaService;
 import br.gov.ce.tce.srh.service.CursoProfissionalService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoalCursoProfissionalService;
-import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -56,9 +55,6 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 	@Autowired
 	private CompetenciaService competenciaService;
 
-	@Autowired
-	private PessoalService pessoalService;
-	
 	@Autowired
 	private AuthenticationService authenticationService;
 	
@@ -496,17 +492,21 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 	
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
-		if ( !this.cpf.equals(cpf) ) {
-			this.cpf = cpf;
+		this.cpf = SRHUtils.removerMascara(cpf);		
+		if ( !this.cpf.isEmpty() ) {			
 
 			try {
+				Funcional funcional = funcionalService.getMatriculaAndNomeByCpfAtiva(this.cpf);
 
-				getEntidade().setPessoal( pessoalService.getByCpf(cpf) );
-				if (getEntidade().getPessoal() != null) {
-					this.nome = getEntidade().getPessoal().getNomeCompleto();
-				} else {
+				if (funcional == null) {
+					this.matricula = new String();
+					this.cpf = new String();
+					this.nome = new String();
 					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
-				}
+				} else {
+					getEntidade().setPessoal( funcional.getPessoal() );
+					this.nome = getEntidade().getPessoal().getNomeCompleto();
+				}				
 
 			} catch (Exception e) {
 	        	FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");

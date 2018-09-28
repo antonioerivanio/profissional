@@ -19,11 +19,6 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
- *
- * @author robstown
- * 
- */
 @Repository
 public class FuncionalDAOImpl implements FuncionalDAO {
 
@@ -63,7 +58,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	public String getMaxMatricula() {
 
-		Query query = entityManager.createQuery("Select max(l.matricula) from Funcional l ");
+		Query query = entityManager.createQuery("Select max(f.matricula) from Funcional f ");
 		String matricula = (String) query.getSingleResult();
 
 		if (matricula != null) {
@@ -113,10 +108,10 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 
 	@Override
 	public int count(Long pessoal, String orderBy) {
-		Query query = entityManager.createQuery("SELECT count (r) "
-												+ "FROM Funcional r "
-												+ "WHERE r.pessoal.id = :idPessoal "
-												+ "ORDER BY r.id " + orderBy);
+		Query query = entityManager.createQuery("SELECT count (f) "
+												+ "FROM Funcional f "
+												+ "WHERE f.pessoal.id = :idPessoal "
+												+ "ORDER BY f.id " + orderBy);
 		query.setParameter("idPessoal", pessoal);
 		return ((Long) query.getSingleResult()).intValue();
 	}
@@ -125,10 +120,10 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Funcional> search(Long pessoal, String orderBy, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.tipoMovimentoEntrada, r.ocupacao, r.exercicio, r.saida) "
-												+ "FROM Funcional r "
-												+ "WHERE r.pessoal.id = :idPessoal "
-												+ "ORDER BY r.id " + orderBy);
+		Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.tipoMovimentoEntrada, f.ocupacao, f.exercicio, f.saida) "
+												+ "FROM Funcional f "
+												+ "WHERE f.pessoal.id = :idPessoal "
+												+ "ORDER BY f.id " + orderBy);
 		query.setParameter("idPessoal", pessoal);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);
@@ -138,10 +133,10 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Funcional> searchForReclassificacao(Long pessoal, String orderBy, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.tipoMovimentoEntrada, r.ocupacao, r.exercicio, r.saida, r.posse) "
-												+ "FROM Funcional r "
-												+ "WHERE r.pessoal.id = :idPessoal "
-												+ "ORDER BY r.id " + orderBy);
+		Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.tipoMovimentoEntrada, f.ocupacao, f.exercicio, f.saida, f.posse) "
+												+ "FROM Funcional f "
+												+ "WHERE f.pessoal.id = :idPessoal "
+												+ "ORDER BY f.id " + orderBy);
 		query.setParameter("idPessoal", pessoal);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);
@@ -153,19 +148,19 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	public Funcional getByPessoaAtivo(Long idPessoa) {
 		try {
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT r FROM Funcional r ");
-			sql.append("    left join fetch     r.setor ");
-			sql.append("    left join fetch     r.classeReferencia ");
-			sql.append("    left join fetch     r.especialidadeCargo ");
-			sql.append("    left join fetch     r.tipoMovimentoEntrada ");
-			sql.append("    left join fetch     r.tipoMovimentoSaida ");
-			sql.append("    left join fetch     r.cbo ");
-			sql.append("    left join fetch     r.folha ");
-			sql.append("    left join fetch     r.tipoPublicacaoNomeacao ");
-			sql.append("    left join fetch     r.tipoPublicacaoSaida ");
-			sql.append("    left join fetch     r.situacao ");
-			sql.append("    left join fetch     r.vinculo ");
-			sql.append("    WHERE r.pessoal.id = :id AND r.saida IS NULL ");
+			sql.append("SELECT f FROM Funcional f ");
+			sql.append("    left join fetch     f.setor ");
+			sql.append("    left join fetch     f.classeReferencia ");
+			sql.append("    left join fetch     f.especialidadeCargo ");
+			sql.append("    left join fetch     f.tipoMovimentoEntrada ");
+			sql.append("    left join fetch     f.tipoMovimentoSaida ");
+			sql.append("    left join fetch     f.cbo ");
+			sql.append("    left join fetch     f.folha ");
+			sql.append("    left join fetch     f.tipoPublicacaoNomeacao ");
+			sql.append("    left join fetch     f.tipoPublicacaoSaida ");
+			sql.append("    left join fetch     f.situacao ");
+			sql.append("    left join fetch     f.vinculo ");
+			sql.append("    WHERE f.pessoal.id = :id AND f.saida IS NULL AND f.status != 5 ");
 			Query query = entityManager.createQuery(sql.toString());
 			query.setParameter("id", idPessoa);
 			return (Funcional) query.getSingleResult();
@@ -178,10 +173,14 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	public Funcional getByPessoaAtivoFp(Long idPessoal) {
 		try {
-			Query query = entityManager.createQuery("SELECT r "
-													+ "FROM Funcional r "
-													+ "WHERE r.pessoal.id = :idPessoal AND r.saida is null AND r.atipoFp = 0 AND (r.situacao.id = 5 OR r.situacao.id = 7) "
-													+ "ORDER BY r.id");
+			Query query = entityManager.createQuery("SELECT f "
+													+ "FROM Funcional f "
+													+ "WHERE f.pessoal.id = :idPessoal "
+													+ "AND f.saida is null "
+													+ "AND f.status != 5 "
+													+ "AND f.atipoFp = 0 "
+													+ "AND (f.situacao.id = 5 OR f.situacao.id = 7) "
+													+ "ORDER BY f.id");
 			query.setParameter("idPessoal", idPessoal);
 			return (Funcional) query.getSingleResult();
 		} catch (NoResultException e) {
@@ -193,9 +192,11 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	public Funcional getByMatriculaAtivo(String matricula) {
 		try {
-			Query query = entityManager.createQuery("SELECT r "
-													+ "FROM Funcional r "
-													+ "WHERE upper( r.matricula ) = :matricula AND r.saida IS NULL ");
+			Query query = entityManager.createQuery("SELECT f "
+													+ "FROM Funcional f "
+													+ "WHERE upper( f.matricula ) = :matricula "
+													+ "AND f.saida IS NULL "
+													+ "AND f.status != 5 ");
 			query.setParameter("matricula", matricula);
 			return (Funcional) query.getSingleResult();
 		} catch (NoResultException e) {
@@ -208,24 +209,15 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	public Funcional getMatriculaAndNomeByCpf(String cpf) {
 
-		// com mascara
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-												+ "FROM Funcional r "
-												+ "WHERE r.pessoal.cpf = :cpf "
-												+ "ORDER BY r.id desc");
-		query.setParameter("cpf", cpf);
+		Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nomeCompleto, f.setor, f.ocupacao, f.exercicio) "
+												+ "FROM Funcional f "
+												+ "WHERE f.pessoal.cpf = :cpf "
+												+ "ORDER BY f.id desc");
+		query.setParameter("cpf", SRHUtils.removerMascara( cpf ));
 		List<Funcional> lista = query.getResultList(); 
 		if (lista.size() > 0)
 			return lista.get(0);
-
-		// sem mascara
-		query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-											+ "FROM Funcional r "
-											+ "WHERE r.pessoal.cpf = '" + SRHUtils.removerMascara( cpf ) + "' "
-											+ "ORDER BY r.id desc");
-		lista = query.getResultList(); 
-		if (lista.size() > 0)
-			return lista.get(0);
+		
 
 		return null;
 	}
@@ -235,12 +227,11 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	public List<Funcional> getMatriculaAndNomeByCpfList(String cpf) {
 
-		// com mascara
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-												+ "FROM Funcional r "
-												+ "WHERE r.pessoal.cpf = :cpf "
-												+ "ORDER BY r.id desc");
-		query.setParameter("cpf", cpf);
+		Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nomeCompleto, f.setor, f.ocupacao, f.exercicio) "
+												+ "FROM Funcional f "
+												+ "WHERE f.pessoal.cpf = :cpf "
+												+ "ORDER BY f.id desc");
+		query.setParameter("cpf", SRHUtils.removerMascara( cpf ));
 		
 		List<Funcional> resultList = query.getResultList();
 		
@@ -249,19 +240,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 		for (Funcional funcional : resultList) {
 			if(!returnMap.containsKey(funcional.getMatricula()))
 				returnMap.put(funcional.getMatricula(), funcional);
-		}
-		
-		// sem mascara
-		query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-											+ "FROM Funcional r "
-											+ "WHERE r.pessoal.cpf = '" + SRHUtils.removerMascara( cpf ) + "' "
-											+ "ORDER BY r.id desc");
-		resultList = query.getResultList();
-		
-		for (Funcional funcional : resultList) {
-			if(!returnMap.containsKey(funcional.getMatricula()))
-				returnMap.put(funcional.getMatricula(), funcional);
-		}
+		}		
 		
 		return new ArrayList<Funcional>(returnMap.values());
 		
@@ -272,25 +251,17 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	public Funcional getMatriculaAndNomeByCpfAtiva(String cpf) {
 
-		// com mascara
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-												+ "FROM Funcional r "
-												+ "WHERE r.pessoal.cpf LIKE :cpf AND r.saida IS NULL "
-												+ "ORDER BY r.id desc");
-		query.setParameter("cpf", "%" + cpf + "%");
+		Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nomeCompleto, f.setor, f.ocupacao, f.exercicio) "
+												+ "FROM Funcional f "
+												+ "WHERE f.pessoal.cpf = :cpf "
+												+ "AND f.saida IS NULL "
+												+ "AND f.status != 5 "
+												+ "ORDER BY f.id desc");
+		query.setParameter("cpf", SRHUtils.removerMascara( cpf ) );
 		List<Funcional> lista = query.getResultList(); 
 		if (lista.size() > 0)
 			return lista.get(0);
-
-		// sem mascara
-		query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-											+ "FROM Funcional r "
-											+ "WHERE r.pessoal.cpf LIKE :cpf AND r.saida IS NULL "
-											+ "ORDER BY r.id desc");
-		query.setParameter("cpf", "%"+ SRHUtils.removerMascara( cpf ) + "%");
-		lista = query.getResultList(); 
-		if (lista.size() > 0)
-			return lista.get(0);
+		
 
 		return null;
 	}
@@ -300,10 +271,10 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	public Funcional getCpfAndNomeByMatricula(String matricula) {
 		try {
-			Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-													+ "FROM Funcional r "
-													+ "WHERE upper( r.matricula ) = :matricula "
-													+ "ORDER BY r.id desc");
+			Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nomeCompleto, f.setor, f.ocupacao, f.exercicio) "
+													+ "FROM Funcional f "
+													+ "WHERE upper( f.matricula ) = :matricula "
+													+ "ORDER BY f.id desc");
 			query.setParameter("matricula", matricula);
 			List<Funcional> lista = query.getResultList(); 
 			if (lista.size() > 0)
@@ -319,10 +290,12 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	public Funcional getCpfAndNomeByMatriculaAtiva(String matricula) {
 		try {
-			Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.nomeCompleto, r.setor, r.ocupacao, r.exercicio) "
-													+ "FROM Funcional r "
-													+ "WHERE upper( r.matricula ) = :matricula AND r.saida IS NULL "
-													+ "ORDER BY r.id desc");
+			Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nomeCompleto, f.setor, f.ocupacao, f.exercicio) "
+													+ "FROM Funcional f "
+													+ "WHERE upper( f.matricula ) = :matricula "
+													+ "AND f.saida IS NULL "
+													+ "AND f.status != 5 "
+													+ "ORDER BY f.id desc");
 			query.setParameter("matricula", matricula);
 			return (Funcional) query.getSingleResult();
 		} catch (NoResultException e) {
@@ -349,10 +322,10 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	@Override	
 	public List<Funcional> findAllByNome(String nome) {
-		Query query = entityManager.createQuery("SELECT new Funcional(r.id, r.matricula, r.pessoal, r.setor) "
-																+ "FROM Funcional r "
-																+ "WHERE upper( r.nomePesquisa ) like :nome "
-																+ "ORDER BY r.id desc");
+		Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.setor) "
+																+ "FROM Funcional f "
+																+ "WHERE upper( f.nomePesquisa ) like :nome "
+																+ "ORDER BY f.id desc");
 		query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 
 		List<Funcional> resultList = query.getResultList();
@@ -377,7 +350,7 @@ public class FuncionalDAOImpl implements FuncionalDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Funcional> findByPessoal(Long idPessoal, String orderBy) {
-		Query query = entityManager.createQuery("SELECT r FROM Funcional r WHERE r.pessoal.id = :idPessoal order by r.id " + orderBy);
+		Query query = entityManager.createQuery("SELECT f FROM Funcional f WHERE f.pessoal.id = :idPessoal order by f.id " + orderBy);
 		query.setParameter("idPessoal", idPessoal);
 		return query.getResultList();
 	}

@@ -217,7 +217,7 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 			try {
 
 				Funcional funcional = funcionalService
-						.getMatriculaAndNomeByCpf(this.cpf);
+						.getMatriculaAndNomeByCpfAtiva(this.cpf);
 				if (funcional != null) {
 					getEntidade().setPessoal(funcional.getPessoal());
 					this.nome = getEntidade().getPessoal().getNomeCompleto();
