@@ -71,6 +71,7 @@ public class AverbacaoFormBean implements Serializable {
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
 	private boolean periodoValido = false;
+	private boolean somenteDias = false;
 
 	// combos
 	private List<Uf> comboUf;
@@ -108,6 +109,12 @@ public class AverbacaoFormBean implements Serializable {
 
 			this.inicio = entidade.getInicio();
 			this.fim = entidade.getFim();
+			
+			if (this.inicio == null 
+					&& this.fim == null
+					&& entidade.getQtdeDias() != null
+					&& entidade.getQtdeDias() > 0)
+				this.somenteDias = true;
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -251,6 +258,8 @@ public class AverbacaoFormBean implements Serializable {
 		this.inicio = null;
 		this.fim = null;
 		this.bloquearDatas = false;
+		this.somenteDias = false;
+		
 		
 		this.comboUf = null;
 		this.comboMunicipio = null;
@@ -299,8 +308,12 @@ public class AverbacaoFormBean implements Serializable {
 
 		try {
 
-			if ( this.inicio != null && this.fim != null)
-				entidade.setQtdeDias( (long) SRHUtils.dataDiffAverbacao( this.inicio, this.fim ));
+			if (this.inicio == null) {
+				entidade.setQtdeDias(null);
+			} else if ( this.fim != null) {
+				entidade.setQtdeDias( (long) SRHUtils.dataDiffAverbacao( this.inicio, this.fim ) );
+			}
+			
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -319,8 +332,11 @@ public class AverbacaoFormBean implements Serializable {
 
 		try {
 
-			if (this.inicio != null && this.fim != null )
+			if (this.fim == null) {
+				entidade.setQtdeDias(null);
+			} else if (this.inicio != null) {
 				entidade.setQtdeDias( (long) SRHUtils.dataDiffAverbacao( this.inicio, this.fim ) );
+			}	
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -336,5 +352,18 @@ public class AverbacaoFormBean implements Serializable {
 	public boolean isBloquearDatas() {return bloquearDatas;}
 	public boolean isAlterar() {return alterar;}
 	public boolean isPeriodoValido() {return periodoValido;}
+	public boolean isSomenteDias() { return somenteDias; }
+	public void setSomenteDias(boolean somenteDias) { this.somenteDias = somenteDias; }
+	
+	public void atualizaDatasEQtdeDias() {
+		if (somenteDias) {
+			this.inicio = null;
+			this.fim = null;
+		} else {
+			this.entidade.setQtdeDias(null);
+			this.setInicio(this.entidade.getInicio());
+			this.setFim(this.entidade.getFim());
+		}		
+	}
 	
 }

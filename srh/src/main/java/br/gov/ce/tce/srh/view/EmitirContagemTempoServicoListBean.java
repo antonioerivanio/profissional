@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +36,6 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-/**
-* @since   : Dez 19, 2011, 17:09:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("emitirContagemTempoServicoListBean")
 @Scope("session")
@@ -114,14 +111,13 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			
 			this.listaFuncional = funcionalService.findByPessoal(entidade.getPessoal().getId(), "desc");
 
-			for (Funcional funcional : listaFuncional) {
+			for ( Iterator<Funcional> iterator = listaFuncional.iterator(); iterator.hasNext(); ) {
 
-				if ( dataFim != null ) {
-					
-					if ( funcional.getExercicio().after(dataFim) )
-						throw new SRHRuntimeException("A data informada é anterior a data de Exercício do Cargo atual.");											
-
+				Funcional funcional = iterator.next();
 				
+				if ( dataFim != null ) {					
+					if ( funcional.getExercicio().after(dataFim) )
+						throw new SRHRuntimeException("A data informada é anterior a data de Exercício do Cargo atual.");				
 				} else {					
 					dataFim = new Date();
 				}
@@ -132,15 +128,22 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 					funcional.setSaida(dataFim);
 				}
 				
-				int [] anosMesesDias = SRHUtils.contagemDeTempoDeServico( funcional.getExercicio(), funcional.getSaida() );
+				if (funcional.getSaida().before(funcional.getExercicio())) {
+					
+					iterator.remove();
 				
-				funcional.setAnos(anosMesesDias[0]);
-				funcional.setMeses(anosMesesDias[1]);
-				funcional.setDias(anosMesesDias[2]);
-								
-				funcional.setQtdeDias(((long) SRHUtils.calculaQtdeDias(anosMesesDias)));
+				} else {
 				
-				totalDia += funcional.getQtdeDias();
+					int [] anosMesesDias = SRHUtils.contagemDeTempoDeServico( funcional.getExercicio(), funcional.getSaida() );
+					
+					funcional.setAnos(anosMesesDias[0]);
+					funcional.setMeses(anosMesesDias[1]);
+					funcional.setDias(anosMesesDias[2]);
+					funcional.setQtdeDias(((long) SRHUtils.calculaQtdeDias(anosMesesDias)));
+					
+					totalDia += funcional.getQtdeDias();					
+					
+				}
 
 			}
 			

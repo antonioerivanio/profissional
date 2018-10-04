@@ -63,15 +63,14 @@ function update() {
 	}
 }
 
-function isSessaoValida(){
+function isSessaoValida() {
 	if ( getTempoRestanteDaSessao() >= 1000 ){
 		return true;
 	}
 	return false;
 }
 
-function handleTimeout ()
-{		
+function handleTimeout () {		
 	if( isSessaoValida() ) {
 		timeout = setTimeout("handleTimeout()", 1000);
 	} else {
@@ -82,10 +81,12 @@ function handleTimeout ()
 }
 
 function keepSession() {
+	console.log("Clicou para manter sessao");
 	/* Faz uma requisiçao no servidor para renovar a sessao */	
 	jQuery.ajax({
 		url:'#{request.contextPath}/ping.html'			
 	}).done(function(){
+		console.log("Concluiu a requisicao para manter sessao");
 		Richfaces.hideModalPanel('modalRenovaSessao');
 	});
 }

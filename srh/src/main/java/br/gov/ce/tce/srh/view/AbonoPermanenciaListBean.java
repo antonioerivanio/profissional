@@ -71,8 +71,8 @@ public class AbonoPermanenciaListBean implements Serializable {
 			limparListas();
 
 			if (count() == 0) {
-				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-				logger.info("Nenhum registro foi encontrado.");
+				FacesUtil.addInfoMessage("O servidor selecionado não possui abono de permanência cadastrado.");
+				logger.info("O servidor selecionado não possui abono de permanência cadastrado.");
 			}
 			
 			flagRegistroInicial = -1;
@@ -100,8 +100,8 @@ public class AbonoPermanenciaListBean implements Serializable {
 			List<AbonoPermanencia> listaAbono = getAbonoList();	
 			
 			if (listaAbono.size() == 0){
-				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-				logger.info("Nenhum registro foi encontrado.");
+				FacesUtil.addInfoMessage("O servidor selecionado não possui abono de permanência cadastrado.");
+				logger.info("O servidor selecionado não possui abono de permanência cadastrado.");
 				return null;
 			}
 

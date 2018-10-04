@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.AverbacaoDAO;
 import br.gov.ce.tce.srh.domain.Averbacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
 *
@@ -25,28 +24,15 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 	
 	@Override
 	@Transactional
-	public void salvar(Averbacao entidade,boolean periodoValido) throws SRHRuntimeException {
+	public void salvar(Averbacao entidade, boolean periodoValido) throws SRHRuntimeException {
 		
-		//validando dados obrigatorios
-		validaDados(entidade);
+		validarDados(entidade);
 
-		// calculado quantidade de dias -- ORIGINAL
-		//entidade.setQtdeDias((long) SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim()));
-		
-		// calculado quantidade de dias -- NOVA CONTAGEM
-		entidade.setQtdeDias((long) SRHUtils.dataDiffAverbacao(entidade.getInicio(), entidade.getFim()));
-		
-		/*
-		 * Regra:
-		 * 
-		 * Validando Averbacoes existentes.
-		 * 
-		 */
 		if(!periodoValido)
 			verificandoAverbacaoExistentes(entidade);
 
-	    // persistindo
 		dao.salvar(entidade);
+	
 	}
 
 
@@ -76,49 +62,26 @@ public class AverbacaoServiceImpl implements AverbacaoService {
 
 
 
-	/**
-	 * Validar:
-	 * 
-	 *  Deve ser setado a pessoa (servidor).
-	 *  Deve ser setada a data inicial.
-	 *  Deve ser setada a data final.
-	 *  Deve ser setado a qtde dias.
-	 *  Deve ser setada a descricao.
-	 * 
-	 * @param entidade
-	 * 
-	 * @throws SRHRuntimeException 
-	 *  
-	 */
-	private void validaDados(Averbacao entidade) throws SRHRuntimeException {
-		
-		// validando o servidor
+	private void validarDados(Averbacao entidade) throws SRHRuntimeException {
+
 		if (entidade.getPessoal() == null)
 			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
 
-		// validando estado
 		if (entidade.getUf() == null )
 			throw new SRHRuntimeException("O estado é obrigatório.");
 
-		// validando municipio
 		if (entidade.getMunicipio() == null )
 			throw new SRHRuntimeException("O município é obrigatório.");
 
-		// validando entidade
+		
 		if (entidade.getEntidade() == null || entidade.getEntidade().equals("") )
 			throw new SRHRuntimeException("A entidade é obrigatório.");
-
-		// validar data inicio
-		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("A Data Inicial é obrigatório.");
-
-		// validando data final
-		if ( entidade.getFim() == null )
-			throw new SRHRuntimeException("A Data Final é obrigatório.");
-
-		// validando se o período inicial é menor que o final
-		if ( entidade.getInicio().after(entidade.getFim() ) )
-			throw new SRHRuntimeException("A Data Inicial deve ser menor que a Data Final.");
+		
+		if ( entidade.getQtdeDias() == null || entidade.getQtdeDias() <= 0 )
+			throw new SRHRuntimeException("A quantidade de dias calculada ou informada é inválida.");	
+		
+		if ( entidade.getQtdeDias() > 14600 )
+			throw new SRHRuntimeException("A quantidade de dias não pode exceder 14.600 dias (40 anos).");
 
 		// validando esfera
 		if (entidade.getEsfera() == null || entidade.getEsfera() == 0l )

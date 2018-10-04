@@ -53,7 +53,17 @@ public class SRHUtils {
 	public static Date inicioTCE() {
 		Calendar dtInicio = new GregorianCalendar();
 		dtInicio.set(1935, 9, 5);
-		return dtInicio.getTime();
+		return removeHorasDaData(dtInicio.getTime());
+	}
+	
+	/**
+	 * Método responsável por retornar a data de extinção do TCM 21/08/2017
+	 * @return data extinção TCM
+	 */
+	public static Date extincaoTCM() {
+		Calendar dtInicio = new GregorianCalendar();
+		dtInicio.set(2017, 7, 21);
+		return removeHorasDaData(dtInicio.getTime());
 	}
 
 	/**

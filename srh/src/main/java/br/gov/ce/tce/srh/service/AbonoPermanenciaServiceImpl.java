@@ -1,6 +1,8 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +74,7 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 	private void validarDados(AbonoPermanencia entidade, boolean alterar) throws SRHRuntimeException{
 		
 		if(entidade.getFuncional() == null || entidade.getFuncional().getId() == 0L)
-			throw new SRHRuntimeException("O Funcional é obrigatório. Digite o nome do Servidor, efetue a pesquisa e selecione o registro Funcional.");		
+			throw new SRHRuntimeException("O Funcional é obrigatório. Digite o nome do Servidor, efetue a pesquisa e selecione o registro funcional.");		
 				
 		if (!alterar){
 			if(abonoPermanenciaDAO.getByPessoalId(entidade.getFuncional().getPessoal().getId()) != null)
@@ -80,23 +82,46 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 		}
 		
 		if(entidade.getProcesso() == null || entidade.getProcesso().isEmpty()) {
-			throw new SRHRuntimeException("O Processo é obrigatório.");
+			throw new SRHRuntimeException("O processo é obrigatório.");
 		}
 		
 		corrigeNumeroProcesso(entidade);
 		
 		if (!SRHUtils.validarProcesso( entidade.getProcesso() ) ) {
-			throw new SRHRuntimeException("O Número do Processo informado é inválido.");
+			throw new SRHRuntimeException("O número do processo informado é inválido.");
 		}
 		
 		if(entidade.getDataImplantacao() == null) {
-			throw new SRHRuntimeException("A Data de implantação é obrigatório.");
+			throw new SRHRuntimeException("A data de implantação é obrigatório.");
 		}
 		
-		if(entidade.getDataImplantacao().before(entidade.getFuncional().getExercicio()) || entidade.getDataImplantacao().after(new Date())) {
-			throw new SRHRuntimeException("A Data de implantação não pode ser menor do que a data de exercício nem maior do que a data atual.");		
+		if(entidade.getDataImplantacao().before(entidade.getFuncional().getExercicio())
+				&& !entidade.getFuncional().isProvenienteDoTCM()) {
+			throw new SRHRuntimeException("A data de implantação não pode ser menor do que a data de exercício do funcional selecionado.");		
 		}
 		
-	}	
+		if(entidade.getFuncional().getSaida() != null && entidade.getDataImplantacao().after(entidade.getFuncional().getSaida())) {
+			throw new SRHRuntimeException("A data de implantação não pode ser maior do que a data do último dia trabalhado do funcional selecionado.");		
+		}
+		
+		if(entidade.getDataImplantacao().after(new Date())) {
+			throw new SRHRuntimeException("A data de implantação não pode ser maior do que a data atual.");		
+		}		
+		
+		if(entidade.getDataImplantacao().before(inicioMinimoAbonoPermanencia())) {
+			throw new SRHRuntimeException("A data de implantação do abono de permanência nunca poderá ser inferior a 31/12/2003 (EC 41/2003).");		
+		}
+		
+	}
+	
+	/**
+	 * A data de implantação do abono de permanência nunca poderá ser inferior a 31/12/2003 (EC 41/2003)
+	 */
+	private Date inicioMinimoAbonoPermanencia() {
+		Calendar dtInicio = new GregorianCalendar();
+		dtInicio.set(2003, 11, 31, 0, 0, 0);
+		Date time = dtInicio.getTime();
+		return SRHUtils.removeHorasDaData(time);
+	}
 
 }

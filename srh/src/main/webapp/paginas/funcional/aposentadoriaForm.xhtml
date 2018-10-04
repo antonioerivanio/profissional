@@ -35,17 +35,36 @@
 				document.getElementById('countChar').innerHTML = 'Quantidade de caracteres: ' + (document.getElementById('form:observacao').value.length);
 			}
 			
+			function verificaLotacao(){
+				var mensagemLotacao = document.getElementById("form:mensagemLotacao").value;			
+				
+				if (mensagemLotacao.length > 0){
+					return confirm(mensagemLotacao);	
+				}
+			}
+			
 			function verificaRepresentacao(){
 				var mensagemRepresentacao = document.getElementById("form:mensagemRepresentacao").value;			
 				
 				if (mensagemRepresentacao.length > 0){
-					alert(mensagemRepresentacao);	
+					return confirm(mensagemRepresentacao);	
 				}
 			}
 			
-			 jQuery(document).ready(function($) {
-				 contarCaracteres();
-			 });
+			function confirmaAposentadoria() {
+				var confirmado = false;
+				
+				confirmado = verificaLotacao();				
+				
+				if (confirmado)				
+					confirmado = verificaRepresentacao();	
+				
+				return confirmado;
+			}
+			
+			jQuery(document).ready(function($) {
+				contarCaracteres();
+			});
 				
 		</script>
 
@@ -65,9 +84,9 @@
 
             	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
-				<h:inputHidden id="alterar" disabled="true" value="#{aposentadoriaFormBean.alterar}" />
-				
+				<h:inputHidden id="alterar" disabled="true" value="#{aposentadoriaFormBean.alterar}" />				
 				<h:inputHidden id="mensagemRepresentacao" disabled="true" value="#{aposentadoriaFormBean.mensagemRepresentacao}" />
+				<h:inputHidden id="mensagemLotacao" disabled="true" value="#{aposentadoriaFormBean.mensagemLotacao}" />
 
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
@@ -240,7 +259,14 @@
 									 styleClass="maskData"
 									 value="#{aposentadoriaFormBean.entidade.dataInicioBeneficio}" 
 									 maxlength="10"
-									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" />
+									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
+							<a4j:support rendered = "#{not aposentadoriaFormBean.alterar}"
+										 id="dataInicioBeneficioChange" 
+										 event="onchange" 
+										 action="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
+										 reRender="mensagemLotacao" 
+										 ajaxSingle="true" />			 
+						</h:inputText>
 					</div>
 				</div>
 
@@ -296,7 +322,7 @@
 					value="Salvar" 
 					action="#{aposentadoriaFormBean.salvar}" 
 					styleClass="bt-padrao fr" 
-					onclick="verificaRepresentacao();"  />						
+					onclick="return confirmaAposentadoria();"  />						
 				
 				<a href="/srh/paginas/funcional/aposentadoriaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 			

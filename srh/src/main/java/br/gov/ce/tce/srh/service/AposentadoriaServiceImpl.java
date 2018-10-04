@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.AposentadoriaDAO;
+import br.gov.ce.tce.srh.dao.FuncionalSetorDAO;
 import br.gov.ce.tce.srh.domain.AbonoPermanencia;
 import br.gov.ce.tce.srh.domain.Aposentadoria;
 import br.gov.ce.tce.srh.domain.Funcional;
@@ -35,27 +36,29 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 	private FuncionalSetorService funcionalSetorService;
 	
 	@Autowired
+	private FuncionalSetorDAO funcionalSetorDAO;
+	
+	@Autowired
 	private SetorService setorService;
 	
 	@Autowired
 	private AbonoPermanenciaService abonoPermanenciaService;
 	
 	@Autowired
-	private RepresentacaoFuncionalService representacaoFuncionalService;
+	private RepresentacaoFuncionalService representacaoFuncionalService;	
 	
 		
 	@Override
 	@Transactional
 	public Aposentadoria salvar(Aposentadoria entidade) throws SRHRuntimeException {
 		
-		validaDados(entidade);
+		validarDados(entidade);
 		
 		verificaAposentadoriaCadastrada(entidade);		
 		
 		entidade = dao.salvar(entidade);		
 		
-		atualizaOutrasEntidades(entidade, false);
-		
+		atualizaOutrasEntidades(entidade, false);		
 	    
 		return entidade;
 	}
@@ -83,48 +86,92 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 	}
 	
 
-	private void validaDados(Aposentadoria entidade) throws SRHRuntimeException {
+	private void validarDados(Aposentadoria entidade) throws SRHRuntimeException {
+		
+		if (entidade.getNumeroResolucao().intValue() <= 0)
+			entidade.setNumeroResolucao(null);
+		
+		if (entidade.getAnoResolucao().intValue() <= 0)
+			entidade.setAnoResolucao(null);
 		
 		if (entidade.getFuncional() == null)
 			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
 		
-		verificaTipoOcupacao(entidade.getFuncional());
+		Funcional funcional = funcionalService.getById(entidade.getFuncional().getId());
+		
+		verificaTipoOcupacao(funcional);
 
 		if (entidade.getTipoBeneficio() == null)
 			throw new SRHRuntimeException("O Tipo Benefício é obrigatório.");
 		
-		if (entidade.getDataAto() == null)
-			throw new SRHRuntimeException("A Data Ato é obrigatória.");
-		// Exige que a dataAto seja posterior a de exercício, exceto para Servidores provenientes do TCM
-		else if (!entidade.getDataAto().after(entidade.getFuncional().getExercicio())
-				&& !entidade.getFuncional().getTipoMovimentoEntrada().getId().equals(43L))
-			throw new SRHRuntimeException("A Data Ato deve ser posterior a data de Exercício Funcional.");
 		
-		if (entidade.getNumeroResolucao() == null || entidade.getNumeroResolucao().intValue() <= 0)
-			entidade.setNumeroResolucao(null);
+		validarDataAto(entidade, funcional);				
+				
+		validarDataUltimaContagem(entidade);
 		
-		if (entidade.getAnoResolucao() == null || entidade.getAnoResolucao().intValue() <= 0)
-			entidade.setAnoResolucao(null);		
-		
-		if (entidade.getDataUltimaContagem() == null)
-			throw new SRHRuntimeException("A Data Última Contagem é obrigatória.");
-		else if ( ! ( entidade.getDataUltimaContagem().after(entidade.getDataAto())
-					 || entidade.getDataUltimaContagem().equals(entidade.getDataAto()) ) )
-			throw new SRHRuntimeException("A Data Última Contagem deve ser maior ou igual a Data do Ato.");
-		
-		if (entidade.getDataInicioBeneficio() == null)
-			throw new SRHRuntimeException("A Data Início Benefício é obrigatória.");
-		else if (!entidade.getDataInicioBeneficio().after(entidade.getDataUltimaContagem()))
-			throw new SRHRuntimeException("A Data Início Benefício deve ser posterior a Data Última Contagem.");
+		validarDataInicioBeneficio(entidade);
 
 		if (entidade.getTipoPublicacao() == null)
 			throw new SRHRuntimeException("O Tipo Publicação é obrigatório.");
 		
+		validarDataPublicacao(entidade);
+		
+		
+	}
+
+
+	private void validarDataPublicacao(Aposentadoria entidade) {
+		
 		if (entidade.getDataPublicacao() == null)
 			throw new SRHRuntimeException("A Data Publicação é obrigatória.");
-		else if (entidade.getDataPublicacao().before(entidade.getDataAto()))
-			throw new SRHRuntimeException("A Data Publicação não pode ser anterior a Data Ato.");
 		
+		if (entidade.getDataPublicacao().after(new Date()))
+			throw new SRHRuntimeException("A Data Publicação não pode ser maior do que a data atual.");
+		
+		if (entidade.getDataPublicacao().before(entidade.getDataAto()))
+			throw new SRHRuntimeException("A Data Publicação não pode ser anterior a Data Ato.");
+	}
+
+
+	private void validarDataInicioBeneficio(Aposentadoria entidade) {
+		
+		if (entidade.getDataInicioBeneficio() == null)
+			throw new SRHRuntimeException("A Data Início Benefício é obrigatória.");
+		
+		if (entidade.getDataInicioBeneficio().after(new Date()))
+			throw new SRHRuntimeException("A Data Início Benefício não pode ser maior do que a data atual.");
+				
+		if (!entidade.getDataInicioBeneficio().after(entidade.getDataUltimaContagem()))
+			throw new SRHRuntimeException("A Data Início Benefício deve ser posterior a Data Última Contagem.");
+	}
+
+
+	private void validarDataUltimaContagem(Aposentadoria entidade) {
+		
+		if (entidade.getDataUltimaContagem() == null)
+			throw new SRHRuntimeException("A Data Última Contagem é obrigatória.");
+		
+		if (entidade.getDataUltimaContagem().after(new Date()))
+			throw new SRHRuntimeException("A Data Última Contagem não pode ser maior do que a data atual.");
+		
+		if ( entidade.getDataUltimaContagem().after(entidade.getDataAto()) )
+			throw new SRHRuntimeException("A Data Última Contagem deve ser menor ou igual a Data Ato.");
+	}
+
+
+	private void validarDataAto(Aposentadoria entidade, Funcional funcional) {
+		
+		if (entidade.getDataAto() == null)
+			throw new SRHRuntimeException("A Data Ato é obrigatória.");
+		
+		if (entidade.getDataAto().after(new Date()))
+			throw new SRHRuntimeException("A Data Ato não pode ser maior do que a data atual.");				
+		
+		// Exige que a dataAto seja posterior a de exercício, exceto para Servidores provenientes do TCM
+		if (!entidade.getDataAto().after(entidade.getFuncional().getExercicio())
+				&& !funcional.isProvenienteDoTCM())
+			throw new SRHRuntimeException("A Data Ato deve ser posterior a data de Exercício Funcional atual ("
+				+ funcional.getOcupacao().getNomenclatura() + " - " + SRHUtils.formataData(SRHUtils.FORMATO_DATA, funcional.getExercicio()) +").");
 	}	
 	
 	
@@ -189,20 +236,51 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 
 	private void atualizaLotacao(Aposentadoria entidade, Funcional funcional) {
 		
-		FuncionalSetor lotacao = funcionalSetorService.getAtivoByFuncional(funcional.getId());			
+		List<FuncionalSetor> lotacoes = funcionalSetorService.findByPessoal(funcional.getPessoal().getId());
+		FuncionalSetor ultimaLotacao = null;
 		
-		if(lotacao != null) {
+		if (lotacoes != null && lotacoes.size() > 0)
+			ultimaLotacao = lotacoes.get(0);
+				
+		if(ultimaLotacao != null) {						
 			
-			Date dataFim = SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getDataInicioBeneficio(), -1);
+			if (funcional.isProvenienteDoTCM()) {
+				
+				if ( entidade.getDataInicioBeneficio().before(SRHUtils.extincaoTCM())
+						|| entidade.getDataInicioBeneficio().equals(SRHUtils.extincaoTCM()) ) {
+					
+					for (FuncionalSetor funcionalSetor : lotacoes) {
+						funcionalSetorDAO.excluir(funcionalSetor);
+					}
+					
+				
+				} else {
+					atualizaLotacaoRotinaPadrao(entidade, ultimaLotacao);
+				}				
+				
+			} else {				
+				atualizaLotacaoRotinaPadrao(entidade, ultimaLotacao);			
+				
+			}			
 			
-			if (dataFim.before(lotacao.getDataInicio()))
-				throw new SRHRuntimeException("A Data Início Benefício deve ser posterior a Data Início da lotação ativa do servidor.");
-			
-			lotacao.setDataFim(dataFim);
-			funcionalSetorService.salvar(lotacao);
 		}		
 		
+		
 		funcional.setSetor(setorService.getById(113L));
+	}
+
+
+	private void atualizaLotacaoRotinaPadrao(Aposentadoria entidade, FuncionalSetor ultimaLotacao) {
+		
+		Date dataFimLotacao = SRHUtils.adiconarSubtrairDiasDeUmaData(entidade.getDataInicioBeneficio(), -1);
+		
+		if (dataFimLotacao.before(ultimaLotacao.getDataInicio()))
+			throw new SRHRuntimeException("A Data Início Benefício deve ser posterior a Data Início da lotação ativa do servidor.");
+		
+		ultimaLotacao.setDataFim(dataFimLotacao);
+		
+		funcionalSetorService.salvar(ultimaLotacao);
+		
 	}
 
 	private void reverterAlteracaoLotacao(Funcional funcional) {

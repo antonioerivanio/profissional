@@ -23,15 +23,14 @@
 		</style>
 
 		<script type="text/javascript" charset="ISO-8859-1">
-		function openwindow()
-		{	
-			nome = document.getElementById('form:nomeCompletoPessoa').value;
-			if (nome.length > 2) {
-				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
-			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+			function openwindow() {	
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
 			}
-		}
 		</script>
 
 		<div class="titulo-pagina">
@@ -193,30 +192,31 @@
 									 maxlength="200" />
 					</div>
 				</div>
-
-				<br/><br/><br/><br/><br/>
+				
 				
 				<div class="input-box box-12">
-					<label for="">Data Inicial *</label>
+					<label for="">Data Inicial</label>
 					<div class="conteiner">
 						<h:inputText id="inicio" 
 									 styleClass="maskData" 
 									 converter="dateConverter"
 									 value="#{averbacaoFormBean.inicio}"
-									 maxlength="10" >
+									 maxlength="10"
+									 disabled="#{averbacaoFormBean.somenteDias}" >
 							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
 						</h:inputText>
 					</div>
 				</div>
 
 				<div class="input-box box-12">
-					<label for="">Data Final *</label>
+					<label for="">Data Final</label>
 					<div class="conteiner">
 						<h:inputText id="fim" 
 									 styleClass="maskData"
 									 converter="dateConverter"
 									 value="#{averbacaoFormBean.fim}"
-									 maxlength="10" >
+									 maxlength="10"
+									 disabled="#{averbacaoFormBean.somenteDias}" >
 							<a4j:support event="onchange" focus="esfera" reRender="qtdeDias, messages" ajaxSingle="true"/>
 						</h:inputText>
 					</div>
@@ -225,11 +225,32 @@
 				<div class="input-box box-6">
 					<label for="">Dias</label>
 					<div class="conteiner">
-						<h:inputText id="qtdeDias" disabled="true" value="#{averbacaoFormBean.entidade.qtdeDias}" />  
+						<h:inputText id="qtdeDias" 
+									 disabled="#{!averbacaoFormBean.somenteDias}" 
+									 value="#{averbacaoFormBean.entidade.qtdeDias}"
+									 maxlength="5"
+									 onkeyup="mantemSomenteNumeros(this)"
+									 />  
 					</div>
 				</div>				
+													
+				<div class="radios-group box-35">
+					<label for="form:somenteDias">Lançamento de Averbação baseado na quantidade de dias</label>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectBooleanCheckbox value="#{averbacaoFormBean.somenteDias}" id="somenteDias" >
+							 	<a4j:support id="atualizaSomenteDias" 
+											 event="onclick"
+											 action="#{averbacaoFormBean.atualizaDatasEQtdeDias()}"
+											 ajaxSingle="true" 
+											 reRender="inicio, fim, qtdeDias"
+											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />									
+					 		</h:selectBooleanCheckbox>
+						</div>
+					</div>
+				</div>
 				
-				<div class="select-box box-35">
+				<div class="select-box box-25 clr">
 					<label for="">Esfera *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="esfera"
@@ -252,7 +273,7 @@
 					</div>
 				</div>
 				
-				<div class="select-box box-35">
+				<div class="select-box box-25">
 					<label for="">Subtipo</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="subtipo"
@@ -268,7 +289,7 @@
 					</div>			
 				</div>
 
-				<div class="radios-group box-50 clr">
+				<div class="radios-group box-40">
 					<h3>Previdência *</h3>
 					<div class="conteiner">
 						<div class="radio-box">
@@ -286,7 +307,7 @@
 					<div class="conteiner">
 						<h:inputTextarea id="descricao"
 										 value="#{averbacaoFormBean.entidade.descricao}"
-										 onkeyup="this.value = this.value.substring(0, 199);" />
+										 onkeyup="this.value = this.value.substring(0, 1999);" />
 					</div>
 				</div>
 

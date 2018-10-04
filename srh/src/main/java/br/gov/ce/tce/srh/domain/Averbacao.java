@@ -61,7 +61,7 @@ public class Averbacao extends BasicEntity<Long> implements Serializable {
     @Column(name = "PREVIDENCIA", nullable=false)
     private Long previdencia;
 
-    @Column(name = "DESCRICAO", length=200)
+    @Column(name = "DESCRICAO", length=2000)
     private String descricao;
     
     @Transient

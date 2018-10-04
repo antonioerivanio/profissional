@@ -10,15 +10,18 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Aposentadoria;
+import br.gov.ce.tce.srh.domain.FuncionalSetor;
 import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.enums.EnumTipoBeneficio;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AposentadoriaService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.FuncionalSetorService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("aposentadoriaFormBean")
@@ -37,7 +40,10 @@ public class AposentadoriaFormBean implements Serializable {
 	private TipoPublicacaoService tipoPublicacaoService;
 	
 	@Autowired
-	private RepresentacaoFuncionalService representacaoFuncionalService;	
+	private RepresentacaoFuncionalService representacaoFuncionalService;
+	
+	@Autowired
+	private FuncionalSetorService funcionalSetorService;
 	
 	
 	private Aposentadoria entidade = new Aposentadoria();
@@ -47,6 +53,7 @@ public class AposentadoriaFormBean implements Serializable {
 
 	private boolean alterar = false;
 	private String mensagemRepresentacao;
+	private String mensagemLotacao;
 
 	
 	private List<TipoPublicacao> comboTipoPublicacao;
@@ -127,6 +134,7 @@ public class AposentadoriaFormBean implements Serializable {
 		this.comboTipoPublicacao = null;
 		
 		this.mensagemRepresentacao = null;
+		this.mensagemLotacao = null;
 	}
 	
 	public Aposentadoria getEntidade() { return entidade; }
@@ -139,7 +147,7 @@ public class AposentadoriaFormBean implements Serializable {
 
 			try {
 
-				getEntidade().setFuncional( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
+				getEntidade().setFuncional( funcionalService.getByMatriculaAtivo( this.matricula ));
 				if ( getEntidade().getFuncional() != null ) {
 					this.nome = getEntidade().getFuncional().getNomeCompleto();
 					atualizaMensagemRepresentacao();
@@ -179,6 +187,27 @@ public class AposentadoriaFormBean implements Serializable {
 		
 		}
 	}
+	
+	public void atualizaMensagemLotacao() {
+		
+		this.mensagemLotacao = null;
+		
+		if (entidade.getFuncional().isProvenienteDoTCM()
+				&& entidade.getDataInicioBeneficio() != null 
+				&& (entidade.getDataInicioBeneficio().before(SRHUtils.extincaoTCM()) 
+						|| entidade.getDataInicioBeneficio().equals(SRHUtils.extincaoTCM())) ) {
+		
+			List<FuncionalSetor> lotacaoList = funcionalSetorService.findByPessoal(entidade.getFuncional().getPessoal().getId());
+			
+			if(!lotacaoList.isEmpty()) {
+			
+				this.mensagemLotacao = "Você está aposentando " + entidade.getFuncional().getNomeCompleto() 
+						+ " com Data Início Benefício menor ou igual a 21/08/2017."
+						+ " Esta ação irá excluir permanentemente o histórico de lotação do Servidor.";
+			
+			}
+		}
+	}
 
 	public String getNome() { return nome; }
 	public void setNome(String nome) { this.nome = nome; }
@@ -188,5 +217,8 @@ public class AposentadoriaFormBean implements Serializable {
 	
 	public String getMensagemRepresentacao() {return mensagemRepresentacao;}
 	public void setMensagemRepresentacao(String mensagemRepresentacao) {this.mensagemRepresentacao = mensagemRepresentacao;}
+	
+	public String getMensagemLotacao() {return mensagemLotacao;}
+	public void setMensagemLotacao(String mensagemLotacao) {this.mensagemLotacao = mensagemLotacao;}
 	
 }

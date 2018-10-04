@@ -431,6 +431,12 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	public void setDias(int dias) { if (dias >= 0) this.dias = dias;}
 
 	public Aposentadoria getAposentadoria() {return aposentadoria;}
-	public void setAposentadoria(Aposentadoria aposentadoria) {this.aposentadoria = aposentadoria;}	
+	public void setAposentadoria(Aposentadoria aposentadoria) {this.aposentadoria = aposentadoria;}
+	
+	public boolean isProvenienteDoTCM() {
+		if (this.tipoMovimentoEntrada != null && this.tipoMovimentoEntrada.getId().longValue() == 43L)
+			return true;
+		return false;			
+	}
 	
 }

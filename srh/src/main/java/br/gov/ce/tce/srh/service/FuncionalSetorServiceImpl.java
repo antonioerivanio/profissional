@@ -28,34 +28,18 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 
 	@Override
 	@Transactional
-	public FuncionalSetor salvar(FuncionalSetor entidade)throws SRHRuntimeException {
-
-		// validando dados obrigatorios.
+	public FuncionalSetor salvar(FuncionalSetor entidade) throws SRHRuntimeException {
+		
 		validarDados(entidade);
-
-		/*
-		 * Regra: 
-		 * Verificar lotacao ativa
-		 * 
-		 */	
+		
 		verificarLotacaoAtiva(entidade);
-
-		/*
-		 * Regra:
-		 * Validar data de inicio
-		 *
-		 */
+		
 		validarDataInicio(entidade);
 
-		/*
-		 * Regra
-		 * Atualizar o setor atual na funcional ativa
-		 * 
-		 */
 		atualizandoFuncional(entidade);
 
-		// persistindo
 		return dao.salvar(entidade);
+		
 	}
 
 
@@ -64,7 +48,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 	public void excluir(FuncionalSetor entidade) throws SRHRuntimeException {
 
 		if (entidade.getDataFim() != null) {
-			throw new SRHRuntimeException("Não pode ser excluída, data fim preenchida. Operação cancelada.");
+			throw new SRHRuntimeException("Lotação não pode ser excluída, data fim preenchida. Operação cancelada.");
 		}
 		
 		dao.excluir(entidade);
@@ -121,12 +105,12 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 
 		// validando a data de inicio
 		if (entidade.getDataInicio() == null)
-			throw new SRHRuntimeException("A data de inicio é obrigatória.");
+			throw new SRHRuntimeException("A data de início é obrigatória.");
 
 		// validando a data fim
 		if (entidade.getDataFim() != null) {
 			if (entidade.getDataInicio().after(entidade.getDataFim())) {
-				throw new SRHRuntimeException("A data fim da lotação deve ser posterior a data início.");
+				throw new SRHRuntimeException("A data fim da lotação deve ser posterior a data início da lotação.");
 			}
 		}
 
@@ -182,7 +166,7 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 			if (entidade.getId() == null || !entidade.getId().equals( ultima.getId())) {
 
 				if (entidade.getDataInicio().before( ultima.getDataFim() )) {
-					throw new SRHRuntimeException("A data inicio deve ser maior que a ultima data fim.");
+					throw new SRHRuntimeException("A data início da lotação deve ser maior que a data fim da última lotação.");
 				}
 
 			}
@@ -203,13 +187,11 @@ public class FuncionalSetorServiceImpl implements FuncionalSetorService {
 	 * 
 	 */
 	private void atualizandoFuncional(FuncionalSetor entidade) {
-
-		Funcional funcional = funcionalService.getByMatriculaAtivo( entidade.getFuncional().getMatricula() );
-		if ( funcional == null )
-			throw new SRHRuntimeException("Dados Funcionais do servidor não encontrado.");
-
-		// atualizando
+		
+		Funcional funcional = funcionalService.getById( entidade.getFuncional().getId());
+		
 		funcional.setSetor( entidade.getSetor() );
+		
 		funcionalService.salvar(funcional);
 
 	}
