@@ -202,7 +202,7 @@
 		<dependency>
 		    <groupId>net.sf.jasperreports</groupId>
 		    <artifactId>jasperreports</artifactId>
-			<version>6.6.0</version>
+			<version>6.5.1</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>itext</artifactId>
