@@ -2,6 +2,8 @@ package br.gov.ce.tce.srh.util;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,10 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
-/**
- * @author robson.castro
- *
- */
 public class SRHUtils {
 	
 	public static final String FORMATO_DATA = "dd/MM/yyyy"; 
@@ -669,5 +668,24 @@ public class SRHUtils {
 
 	}
 	
+	public static boolean sistemaApontandoParaProducao() {
+		
+		Properties properties = new Properties();
+		
+		try {
+			InputStream resourceAsStream = SRHUtils.class.getResourceAsStream("/application.properties");
+			properties.load(resourceAsStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String databaseUrl = properties.getProperty("database.url");
+		
+		if(databaseUrl.contains("bdtce"))
+			return true;
+		
+		return false;
+		
+	}	
 
 }

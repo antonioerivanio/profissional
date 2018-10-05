@@ -60,6 +60,28 @@
 	<bean id="facesUtil" class="br.gov.ce.tce.srh.util.FacesUtil" />
 	<bean id="relatorioUtil" class="br.gov.ce.tce.srh.util.RelatorioUtil" /> 
 		
+	
+	<bean id="emissorDeAlertaQuartz" class="br.gov.ce.tce.srh.alerta.EmissorDeAlerta"/>
+	
+	<bean id="alertarFeriasJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="emissorDeAlertaQuartz"/>
+        <property name="targetMethod" value="alertarFerias"/>
+	</bean>
+	
+	<bean id="alertarFeriasTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="alertarFeriasJob" />         
+        <property name="cronExpression" value="0 0 7 * * ?" />
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">       
+		<property name="triggers">
+		    <list>
+		        <ref bean="alertarFeriasTrigger"/>
+		    </list>
+		</property>
+    </bean>
+		
+		
 	<!-- Agendamento de tarefas -->
 	<task:annotation-driven />	
 	

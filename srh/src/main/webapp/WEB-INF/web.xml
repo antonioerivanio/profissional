@@ -89,10 +89,7 @@
 	</listener>
 	<listener>
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-	</listener>
-	<listener>
-    	<listener-class>br.gov.ce.tce.srh.util.DeregisterDriverServletContextListener</listener-class>
-  	</listener>
+	</listener>	
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
