@@ -25,13 +25,6 @@ import br.gov.ce.tce.srh.service.UfService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
- * Use case : SRH_UC047_Manter Averbações do Servidor
- * 
- * @since   : Apr 17, 2012, 15:20:22 PM
- * @author  : robstownholanda@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("averbacaoFormBean")
 @Scope("session")
@@ -58,8 +51,6 @@ public class AverbacaoFormBean implements Serializable {
 	private SubtipoTempoServicoService subtipoTempoServicoService;	
 	
 	
-
-	//endidade das telas
 	private Averbacao entidade = new Averbacao();
 
 	private String matricula = new String();
@@ -70,33 +61,21 @@ public class AverbacaoFormBean implements Serializable {
 
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
-	private boolean periodoValido = false;
 	private boolean somenteDias = false;
 
-	// combos
+	
 	private List<Uf> comboUf;
 	private List<Municipio> comboMunicipio;
 	private List<TipoTempoServico> comboEsfera;
 	private List<SubtipoTempoServico> comboSubtipo;
 
 
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
 	public String prepareIncluir() {
 		limpar();
 		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
+	
 	public String prepareAlterar() {
 
 		this.alterar = true;
@@ -124,12 +103,7 @@ public class AverbacaoFormBean implements Serializable {
 		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
+	
 	public String salvar() {
 		
 		try {
@@ -137,15 +111,13 @@ public class AverbacaoFormBean implements Serializable {
 			this.entidade.setInicio(this.inicio);
 			this.entidade.setFim(this.fim);
 
-			averbacaoService.salvar(entidade,periodoValido);
+			averbacaoService.salvar(entidade);
 			limpar();
-			periodoValido = false;
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
 			
 		} catch (SRHRuntimeException e) {
-			periodoValido = true;
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
@@ -155,13 +127,8 @@ public class AverbacaoFormBean implements Serializable {
 		
 		return null;
 	}
+	
 
-
-	/**
-	 * Combo UF
-	 * 
-	 * @return
-	 */
 	public List<Uf> getComboUf() {
 
 		try {
@@ -176,15 +143,13 @@ public class AverbacaoFormBean implements Serializable {
 
 		return this.comboUf;
 	}
-
-
-	/**
-	 * Combo Municipio
-	 */
+	
+	
 	public void carregaMunicipio() {
 		this.comboMunicipio = null;
 		getComboMunicipio();
 	}
+	
 
 	public List<Municipio> getComboMunicipio() {
 
@@ -243,12 +208,8 @@ public class AverbacaoFormBean implements Serializable {
 		return this.comboSubtipo;
 	}
 	
-	/**
-	 * Limpar form
-	 */
-	private void limpar() {
-
-		this.alterar = false;
+	
+	private void limpar() {		
 
 		setEntidade(new Averbacao());
 
@@ -258,8 +219,8 @@ public class AverbacaoFormBean implements Serializable {
 		this.inicio = null;
 		this.fim = null;
 		this.bloquearDatas = false;
+		this.alterar = false;
 		this.somenteDias = false;
-		
 		
 		this.comboUf = null;
 		this.comboMunicipio = null;
@@ -269,9 +230,6 @@ public class AverbacaoFormBean implements Serializable {
 	}
 
 
-	/**
-	 * Gets and Sets
-	 */
 	public Averbacao getEntidade() { return entidade; }
 	public void setEntidade(Averbacao entidade) { this.entidade = entidade; }
 
@@ -350,8 +308,7 @@ public class AverbacaoFormBean implements Serializable {
 
 	
 	public boolean isBloquearDatas() {return bloquearDatas;}
-	public boolean isAlterar() {return alterar;}
-	public boolean isPeriodoValido() {return periodoValido;}
+	public boolean isAlterar() {return alterar;}	
 	public boolean isSomenteDias() { return somenteDias; }
 	public void setSomenteDias(boolean somenteDias) { this.somenteDias = somenteDias; }
 	
