@@ -391,8 +391,19 @@ body {
 	padding-bottom: 15px;
 }
 
+.welcome-col * {
+	font-size: 14px;
+}
+
 .welcome-col p {
-	
+    line-height: 20px;
+    color: #004085;
+    background-color: #e4f1ff;
+    border-color: #b8daff;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
 }
 
 /* FIM TELA INICIAL */
