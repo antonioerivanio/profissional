@@ -108,23 +108,27 @@ public class AverbacaoService {
 			if (entidade.getId() != null && entidade.getId().equals(averbacaoExistente.getId()) ) {
 				continue;
 			}
+			
+			if (averbacaoExistente.getInicio() != null && averbacaoExistente.getFim() != null) {
 
-			// validando periodo de averbacao inicial 
-			if( averbacaoExistente.getInicio().after( entidade.getInicio() )
-					&& averbacaoExistente.getInicio().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
-			}
-
-			// validando periodo de averbacao final
-			if( averbacaoExistente.getFim().after( entidade.getInicio() )
-					&& averbacaoExistente.getFim().before( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
-			}
-
-			// validando periodo de averbacao no meio
-			if( averbacaoExistente.getInicio().before( entidade.getInicio() )
-					&& averbacaoExistente.getFim().after( entidade.getFim() ) ) {
-				throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+				// validando periodo de averbacao inicial 
+				if( averbacaoExistente.getInicio().after( entidade.getInicio() )
+						&& averbacaoExistente.getInicio().before( entidade.getFim() ) ) {
+					throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+				}
+	
+				// validando periodo de averbacao final
+				if( averbacaoExistente.getFim().after( entidade.getInicio() )
+						&& averbacaoExistente.getFim().before( entidade.getFim() ) ) {
+					throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+				}
+	
+				// validando periodo de averbacao no meio
+				if( averbacaoExistente.getInicio().before( entidade.getInicio() )
+						&& averbacaoExistente.getFim().after( entidade.getFim() ) ) {
+					throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+				}
+			
 			}
 
 		}
