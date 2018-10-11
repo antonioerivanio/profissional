@@ -388,9 +388,13 @@ body {
 
 /* INICIO TELA INICIAL */
 .welcome-col {
-	padding-bottom: 15px;
+	padding: 20px;
+	background-color: #e4f1ff; 
+    margin-bottom: 1rem;
+    border: 1px solid #b8daff;
+    border-radius: .25rem;
+    color: #004085;
 }
-
 .welcome-col * {
 	font-size: 14px;
 }
@@ -398,12 +402,11 @@ body {
 .welcome-col p {
     line-height: 20px;
     color: #004085;
-    background-color: #e4f1ff;
-    border-color: #b8daff;
-    padding: .75rem 1.25rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: .25rem;
+   
+}
+
+.welcome-col h2 {
+	font-size: 18px;
 }
 
 /* FIM TELA INICIAL */

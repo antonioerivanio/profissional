@@ -139,8 +139,18 @@ public class PessoalService {
 				throw new SRHRuntimeException("A Naturalidade é obrigatória.");
 		}
 		
-		// Se for diferente de dependente
-		if ( !entidade.getCategoria().getId().equals(4L) ) {
+		// CPF é obrigatório para todos exceto para Dependente menor de 8 anos		
+		if ( ! ( entidade.getCategoria().getId().equals(4L) && entidade.getIdade() < 8 ) ) {
+			if( entidade.getCpf() == null || entidade.getCpf().isEmpty() )
+				throw new SRHRuntimeException("O CPF é obrigatório.");
+			
+			if( !SRHUtils.validarCPF( entidade.getCpf() ) )
+				throw new SRHRuntimeException("CPF inválido.");		
+		}
+		
+		// Se for diferente de dependente e de Beneficiário pensão alimentícia
+		if ( !entidade.getCategoria().getId().equals(4L)
+				&& !entidade.getCategoria().getId().equals(5L) ) {
 			
 			if( entidade.getEscolaridade() == null )
 				throw new SRHRuntimeException("A Escolaridade é obrigatória.");
@@ -182,13 +192,7 @@ public class PessoalService {
 					&& entidade.getEmailAlternativo() != null && !entidade.getEmailAlternativo().isEmpty()
 					&& entidade.getEmail().equals(entidade.getEmailAlternativo())) {
 				throw new SRHRuntimeException("E-mail deve ser diferente do E-mail Alternativo.");
-			}
-			
-			if( entidade.getCpf() == null || entidade.getCpf().isEmpty() )
-				throw new SRHRuntimeException("O CPF é obrigatório.");
-			
-			if( !SRHUtils.validarCPF( entidade.getCpf() ) )
-				throw new SRHRuntimeException("CPF inválido.");
+			}			
 			
 			// Se for Servidor Público
 			if ( entidade.getCategoria().getId().equals(1L) ) {

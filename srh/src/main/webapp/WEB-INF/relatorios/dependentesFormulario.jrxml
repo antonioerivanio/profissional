@@ -101,25 +101,25 @@
 					<text><![CDATA[Inclusão de Dependentes*]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="54" width="335" height="15" uuid="899757ba-cefd-4c0c-b96c-8f3c81d2cf0d"/>
+					<reportElement x="0" y="54" width="330" height="15" uuid="899757ba-cefd-4c0c-b96c-8f3c81d2cf0d"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Nome:______________________________________________________]]></text>
+					<text><![CDATA[Nome:_____________________________________________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="340" y="54" width="95" height="15" uuid="98407c6b-6cb2-472e-b045-a0f3b2cb2a08"/>
+					<reportElement x="330" y="54" width="115" height="15" uuid="98407c6b-6cb2-472e-b045-a0f3b2cb2a08"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[CPF:____________]]></text>
+					<text><![CDATA[CPF:________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="439" y="54" width="120" height="15" uuid="ad7423a9-7148-4ee3-9140-98ab1b0d4b6a"/>
+					<reportElement x="449" y="54" width="120" height="15" uuid="ad7423a9-7148-4ee3-9140-98ab1b0d4b6a"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Dt. Nasc.:___/___/______]]></text>
+					<text><![CDATA[Dt. Nasc.:___/___/____]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement x="0" y="254" width="555" height="18" backcolor="#195297" uuid="2270d9d5-cabe-44d6-a259-1febe6bb2630">
@@ -275,25 +275,25 @@
 					</reportElement>
 				</line>
 				<staticText>
-					<reportElement x="0" y="92" width="335" height="15" uuid="f4746a20-2a52-4e8f-b73f-f17bbdc80665"/>
+					<reportElement x="0" y="92" width="330" height="15" uuid="f4746a20-2a52-4e8f-b73f-f17bbdc80665"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Nome:______________________________________________________]]></text>
+					<text><![CDATA[Nome:_____________________________________________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="340" y="92" width="95" height="15" uuid="a74e0d85-365a-487f-9f40-feeacb057316"/>
+					<reportElement x="330" y="92" width="115" height="15" uuid="a74e0d85-365a-487f-9f40-feeacb057316"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[CPF:____________]]></text>
+					<text><![CDATA[CPF:________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="439" y="92" width="120" height="15" uuid="873273d5-0ac7-451b-b3be-fe87162d3e1c"/>
+					<reportElement x="449" y="92" width="120" height="15" uuid="873273d5-0ac7-451b-b3be-fe87162d3e1c"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Dt. Nasc.:___/___/______]]></text>
+					<text><![CDATA[Dt. Nasc.:___/___/____]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement x="406" y="113" width="7" height="7" forecolor="#474747" uuid="ed1bdcf9-b3f2-4cb5-a39f-a4a16f3e17d1"/>
@@ -401,25 +401,25 @@
 					<text><![CDATA[Dependente:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="131" width="335" height="15" uuid="d8d55856-5483-420b-900a-a9cdbd135f18"/>
+					<reportElement x="0" y="131" width="330" height="15" uuid="d8d55856-5483-420b-900a-a9cdbd135f18"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Nome:______________________________________________________]]></text>
+					<text><![CDATA[Nome:_____________________________________________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="340" y="131" width="95" height="15" uuid="0c97bc20-a025-4f19-8eab-4fb7d10d8b15"/>
+					<reportElement x="330" y="131" width="115" height="15" uuid="0c97bc20-a025-4f19-8eab-4fb7d10d8b15"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[CPF:____________]]></text>
+					<text><![CDATA[CPF:________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="439" y="131" width="120" height="15" uuid="713d1c14-8e41-4a36-9e82-2eb54deb5630"/>
+					<reportElement x="449" y="131" width="120" height="15" uuid="713d1c14-8e41-4a36-9e82-2eb54deb5630"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Dt. Nasc.:___/___/______]]></text>
+					<text><![CDATA[Dt. Nasc.:___/___/____]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement x="406" y="152" width="7" height="7" forecolor="#474747" uuid="4b6b5cd2-d740-45fb-aab0-eed9b98a407e"/>
@@ -527,25 +527,25 @@
 					<text><![CDATA[Dependente:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="169" width="335" height="15" uuid="17085194-d86a-4bdf-b5b1-aa2e92bfec3c"/>
+					<reportElement x="0" y="169" width="330" height="15" uuid="17085194-d86a-4bdf-b5b1-aa2e92bfec3c"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Nome:______________________________________________________]]></text>
+					<text><![CDATA[Nome:_____________________________________________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="340" y="169" width="95" height="15" uuid="1bf4c6dc-2c2f-42ba-bea6-359f5536aa99"/>
+					<reportElement x="330" y="169" width="115" height="15" uuid="1bf4c6dc-2c2f-42ba-bea6-359f5536aa99"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[CPF:____________]]></text>
+					<text><![CDATA[CPF:________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="439" y="169" width="120" height="15" uuid="763350f6-9c2d-4fd2-a0ff-79a6fc9bdb9e"/>
+					<reportElement x="449" y="169" width="120" height="15" uuid="763350f6-9c2d-4fd2-a0ff-79a6fc9bdb9e"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Dt. Nasc.:___/___/______]]></text>
+					<text><![CDATA[Dt. Nasc.:___/___/____]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement x="406" y="190" width="7" height="7" forecolor="#474747" uuid="a7d1cc12-9216-4bd6-8e3c-607482d34845"/>
@@ -653,25 +653,25 @@
 					<text><![CDATA[Dependente:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="208" width="335" height="15" uuid="1e29a905-961c-4fc1-808c-c2279f6264ef"/>
+					<reportElement x="0" y="208" width="330" height="15" uuid="1e29a905-961c-4fc1-808c-c2279f6264ef"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Nome:______________________________________________________]]></text>
+					<text><![CDATA[Nome:_____________________________________________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="340" y="208" width="95" height="15" uuid="5495a794-013d-4673-8d55-3fb453ae3874"/>
+					<reportElement x="330" y="208" width="115" height="15" uuid="5495a794-013d-4673-8d55-3fb453ae3874"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[CPF:____________]]></text>
+					<text><![CDATA[CPF:________________]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="439" y="208" width="120" height="15" uuid="701a6b8b-d93f-46d0-910e-a35682400eeb"/>
+					<reportElement x="449" y="208" width="120" height="15" uuid="701a6b8b-d93f-46d0-910e-a35682400eeb"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="CustomSans" size="10" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Dt. Nasc.:___/___/______]]></text>
+					<text><![CDATA[Dt. Nasc.:___/___/____]]></text>
 				</staticText>
 				<rectangle>
 					<reportElement x="406" y="229" width="7" height="7" forecolor="#474747" uuid="cc83d053-0103-4bdc-b814-d097c0378edf"/>
@@ -967,7 +967,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font fontName="CustomSans" size="8" isItalic="true"/>
 				</textElement>
-				<text><![CDATA[* Para os casos de inclusão/exlusão/alteração de dependentes, o servidor(a) deverá preencher o formulário e anexar a comprovação da dependência informada (certidão de nascimento, certidão de casamento, cópia do Registro Geral, etc).]]></text>
+				<text><![CDATA[* Para os casos de inclusão/exclusão/alteração de dependentes, o servidor(a) deverá preencher o formulário e anexar a comprovação da dependência informada (certidão de nascimento, certidão de casamento, cópia do Registro Geral, etc).]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
