@@ -25,8 +25,9 @@ public class TipoLogradouroService{
 		
 		for(TipoLogradouro tipo: tipoLogradouroList){
 			
-			if(logradouro.contains(tipo.getDescricao()))
-				tipoLogradouro = tipo;			
+			if(logradouro.indexOf(tipo.getDescricao()) == 0)
+				tipoLogradouro = tipo;
+			
 		}	
 		
 		return tipoLogradouro;
