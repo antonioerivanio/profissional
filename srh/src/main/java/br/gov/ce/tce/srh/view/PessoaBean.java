@@ -314,7 +314,12 @@ public class PessoaBean implements Serializable {
 	}
 	
 	public boolean ehProprioCadastro() {
-		return loginBean.getCPFUsuarioLogado().equals(entidade.getCpf());
+		try {
+			return loginBean.getCPFUsuarioLogado().equals(entidade.getCpf());
+		} catch (Exception e) {
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}		
+		return false;
 	}	
 	
 	public boolean cadastroAindaNaoFinalizado() {

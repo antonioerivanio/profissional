@@ -268,7 +268,7 @@ public class PessoalService {
 			throw new SRHRuntimeException("Caso sejam prenchidas Informações do número de registro em Órgão de Classe, "
 					+ "os campos Número Inscrição, Órgão Emissor e UF passam a ser obrigatórios.");
 		
-		if ( entidade.getDataExpedicaoOrgaoClasse() != null )
+		if ( entidade.getDataExpedicaoOrgaoClasse() != null && entidade.getDataValidadeOrgaoClasse() != null )
 			if ( !entidade.getDataExpedicaoOrgaoClasse().before(entidade.getDataValidadeOrgaoClasse()) )
 				throw new SRHRuntimeException("A Data Validade do Registro em Órgão de Classe deve ser posterior a Data Expedição.");
 		
