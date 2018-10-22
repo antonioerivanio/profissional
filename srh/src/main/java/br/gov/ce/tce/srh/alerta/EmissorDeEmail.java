@@ -1,5 +1,7 @@
 package br.gov.ce.tce.srh.alerta;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -10,9 +12,17 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.util.ServletContextUtil;
+
+@Component
 public class EmissorDeEmail {
-
+	
+	@Autowired
+	private ServletContextUtil context;
+	
 	private String smtp = "webmail.tce.ce.gov.br";
 	private String fromEmail = "srh@tce.ce.gov.br";
 
@@ -31,9 +41,9 @@ public class EmissorDeEmail {
 			email.setFrom(this.fromEmail);
 			
 			email.addTo(this.email);
-//			email.addBcc("felipe.augusto@tce.ce.gov.br");
+			email.addBcc("felipe.augusto@tce.ce.gov.br");
 						
-			URL url = new URL("file://"+ this.getClass().getResource("logo-srh.png").getPath());
+			URL url = new URL("file:///"+ context.getServerRootUrl() + "img" + File.separator + "logo-srh.png");
 			String cid = email.embed(url, "logoSRH");
 			mensagem += "<img src=\"cid:"+ cid +"\" alt=\"SRH - Sistema de Recursos Humanos\" "
 					+ " style=\"position: relative; left: -20px; max-width: 70%;\" >";			
@@ -64,14 +74,14 @@ public class EmissorDeEmail {
 	
 	private String getTemplateEmail(String nomeArquivoTemplate){
 		
-		InputStream arquivoIS = this.getClass().getResourceAsStream(nomeArquivoTemplate);		
 		StringWriter writer = new StringWriter();
 		
 		try {
-			IOUtils.copy(arquivoIS, writer, "UTF-8");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+			InputStream template = new FileInputStream(context.getServerRootUrl() + "alerta-ferias" + File.separator + nomeArquivoTemplate);			
+			IOUtils.copy(template, writer, "UTF-8");
+		} catch (IOException e) {		
+			e.printStackTrace();
+		}		 
 		
 		return writer.toString();
 	}

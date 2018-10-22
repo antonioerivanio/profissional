@@ -61,10 +61,8 @@
 	<bean id="relatorioUtil" class="br.gov.ce.tce.srh.util.RelatorioUtil" /> 
 		
 	
-	<bean id="emissorDeAlertaQuartz" class="br.gov.ce.tce.srh.alerta.EmissorDeAlerta"/>
-	
 	<bean id="alertarFeriasJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="emissorDeAlertaQuartz"/>
+        <property name="targetObject" ref="emissorDeAlerta"/>
         <property name="targetMethod" value="alertarFerias"/>
 	</bean>
 	

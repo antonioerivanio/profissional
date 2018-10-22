@@ -7,7 +7,6 @@ import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 
 import org.springframework.web.context.WebApplicationContext;
 
@@ -62,16 +61,6 @@ public class FacesUtil {
 
 	public static void addErroMessage(String message) {
 		getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR, message, message));
-	}	
-		
-	public static String getServerRootUrl () {		
-		ServletContext servletContext = getServletContext();		
-		return servletContext.getRealPath("/");		
-	}
-	
-	public static ServletContext getServletContext() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();  
-		return (ServletContext) facesContext.getExternalContext().getContext();		
 	}
 
 }
