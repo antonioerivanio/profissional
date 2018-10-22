@@ -40,9 +40,13 @@
 
 		</div>
 				
-		<span class="fr mg-right-10" style="color: #555;"><i>* Campos Obrigatórios</i></span>
-				
-		<br />
+		<span class="label-campos-obrigarotios"><i>* Campos Obrigatórios</i></span>
+		
+		<ui:fragment rendered="#{pessoaBean.ehServidor()}" >
+			<div class="mensagem-alerta">
+				<p><b>Importante!</b> Caso verifique alguma discrepância nos dados cadastrais não editáveis, favor entrar em contato com a Gerência de Atos Funcionais.</p>
+			</div>				
+		</ui:fragment>
 		
 		<a4j:outputPanel ajaxRendered="true" >
             <h:messages infoClass="infoMessage" errorClass="errorMessage" />
@@ -995,7 +999,7 @@
 						<div class="box-100 mg-top-15">
 						
 							<div class="box-75 fl">
-								<p style="font-size: 1.2em; font-style: italic; line-height: 1.3em; color: #555;"><b style="font-size: inherit;">Importante</b>: caso haja divergências nas informações acima, preencher o "Formulário de Dependentes", 
+								<p style="font-size: 1.2em; font-style: italic; line-height: 1.3em; color: #555;"><b style="font-size: inherit;">Importante!</b> Caso haja divergências nas informações acima, preencher o "Formulário de Dependentes", 
 								constante no link ao lado, e entregar na Gerência de Atos Funcionais anexando a documentação de identificação do(s) Dependente(s), informando também, o TIPO DE DEPENDÊNCIA.</p>
 							</div>
 						
