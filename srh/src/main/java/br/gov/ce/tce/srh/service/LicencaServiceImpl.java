@@ -67,20 +67,18 @@ public class LicencaServiceImpl implements LicencaService {
 		
 		validarDados(entidade);
 
+		
+		if (entidade.getNrprocessoPuro() != null && !entidade.getNrprocessoPuro().equals(""))
+			entidade.setNrprocesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(entidade.getNrprocessoPuro(), 0));
+		
 
-		if ( entidade.getContarDiasEmDobro() == null || entidade.getContarDiasEmDobro().intValue() == 0 ) {
-			
+		if ( entidade.getContarDiasEmDobro() == null || entidade.getContarDiasEmDobro().intValue() == 0 ) {			
 				
 			validarConformeSexo(entidade);		
 		
 			validarMaxDiasPermitidoPorTipoLicenca(entidade);
 			
 			verificarDatasDeLicencasAntigas(entidade);
-
-			
-			if (entidade.getNrprocessoPuro() != null && !entidade.getNrprocessoPuro().equals(""))
-				entidade.setNrprocesso(entidade.getNrprocessoPuro().substring(6,10)+entidade.getNrprocessoPuro().substring(0,5)+entidade.getNrprocessoPuro().substring(11,12));
-
 		
 			validarPeriodoInicioLicencaEspecial(entidade);
 		
@@ -422,7 +420,7 @@ public class LicencaServiceImpl implements LicencaService {
 
 		// validando o nr do processo
 		if (entidade.getNrprocesso() != null && !entidade.getNrprocesso().equals("")) {
-			if (!SRHUtils.validarProcesso(entidade.getNrprocessoPuro().substring(6,10) + entidade.getNrprocessoPuro().substring(0,5) + entidade.getNrprocessoPuro().substring(11,12))){
+			if (!SRHUtils.validarProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(entidade.getNrprocessoPuro(), 0))){
 				throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 			}
 		}		
