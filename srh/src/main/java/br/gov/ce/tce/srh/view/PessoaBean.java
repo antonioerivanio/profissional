@@ -706,26 +706,25 @@ public class PessoaBean implements Serializable {
 
 				CEP cep = cepService.buscarCep(SRHUtils.removerMascara(entidade.getCep()));				
 				
-				entidade.setTipoLogradouro(tipoLogradouroService.getTipoLogradouroInString(getComboTipoLogradouro(), cep.getLogradouro()));
-
-				if (entidade.getTipoLogradouro() != null)
-					entidade.setEndereco(cep.getLogradouro().substring(entidade.getTipoLogradouro().getDescricao().length(), cep.getLogradouro().length()).trim());
-				else
-					entidade.setEndereco(cep.getLogradouro());
+				if (!cep.getLogradouro().isEmpty()) {
+					
+					entidade.setTipoLogradouro(tipoLogradouroService.getTipoLogradouroInString(getComboTipoLogradouro(), cep.getLogradouro()));
+					if (entidade.getTipoLogradouro() != null)
+						entidade.setEndereco(cep.getLogradouro().substring(entidade.getTipoLogradouro().getDescricao().length(), cep.getLogradouro().length()).trim());
+					else
+						entidade.setEndereco(cep.getLogradouro());					
+				}
 				
-				entidade.setBairro(cep.getBairro());
+				if (entidade.getBairro() == null || entidade.getBairro().isEmpty())
+					entidade.setBairro(cep.getBairro());				
+				
 				entidade.setMunicipioEndereco(municipioService.findByCodigoIBGE(cep.getIbge()));
 				
 				if(entidade.getMunicipioEndereco() != null)
 					entidade.setUfEndereco(entidade.getMunicipioEndereco().getUf());
 				
-				
-				if (entidade.getTipoLogradouro() != null
-						&& entidade.getEndereco() != null && !entidade.getEndereco().isEmpty()
-						&& entidade.getUfEndereco() != null
-						&& entidade.getMunicipioEndereco() != null) {
-					this.cepValido = true;
-				}
+				if ( !cep.getLogradouro().isEmpty() && !cep.getIbge().isEmpty() )
+					this.cepValido = true;				
 
 			}
 
