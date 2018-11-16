@@ -41,7 +41,7 @@ public class EmissorDeEmail {
 			email.setFrom(this.fromEmail);
 			
 			email.addTo(this.email);
-			email.addBcc("felipe.augusto@tce.ce.gov.br");
+//			email.addBcc("felipe.augusto@tce.ce.gov.br");
 						
 			URL url = new URL("file:///"+ context.getServerRootUrl() + "img" + File.separator + "logo-srh.png");
 			String cid = email.embed(url, "logoSRH");
