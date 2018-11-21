@@ -4,9 +4,11 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 public enum EnumTipoBeneficio {
 	
-	VOLUNTARIA(1, "Voluntária"),
-	PROPORCIONAL(2, "Proporcional"),
-	INVALIDEZ(3, "Invalidez");
+	INVALIDEZ(1, "Por Invalidez"),
+	COMPULSORIA(2, "Compulsória"),
+	TEMPO(3, "Por Tempo de Contribuição"),
+	IDADE(4, "Por Idade"),
+	ESPECIAL(5, "Especial");
 	
 	private Integer id;
 	private String descricao;
