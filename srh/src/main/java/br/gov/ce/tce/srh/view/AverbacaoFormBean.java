@@ -15,6 +15,7 @@ import br.gov.ce.tce.srh.domain.Municipio;
 import br.gov.ce.tce.srh.domain.SubtipoTempoServico;
 import br.gov.ce.tce.srh.domain.TipoTempoServico;
 import br.gov.ce.tce.srh.domain.Uf;
+import br.gov.ce.tce.srh.exception.PeriodoConcomitanteException;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AverbacaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -62,6 +63,7 @@ public class AverbacaoFormBean implements Serializable {
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
 	private boolean somenteDias = false;
+	private boolean verificaAverbacaoExistente = true;
 
 	
 	private List<Uf> comboUf;
@@ -111,13 +113,18 @@ public class AverbacaoFormBean implements Serializable {
 			this.entidade.setInicio(this.inicio);
 			this.entidade.setFim(this.fim);
 
-			averbacaoService.salvar(entidade);
+			averbacaoService.salvar(entidade, verificaAverbacaoExistente);
 			limpar();
+			verificaAverbacaoExistente = true;
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
 			
-		} catch (SRHRuntimeException e) {
+		} catch (SRHRuntimeException e) {			
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (PeriodoConcomitanteException e) {
+			verificaAverbacaoExistente = false;
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
