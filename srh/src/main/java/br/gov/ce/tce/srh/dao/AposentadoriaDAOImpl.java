@@ -75,8 +75,10 @@ public class AposentadoriaDAOImpl implements AposentadoriaDAO {
 			query.setParameter("idPessoal", idPessoal);
 		}	
 		
-		query.setFirstResult(first);
-		query.setMaxResults(rows);
+		if (first >= 0)
+			query.setFirstResult(first);
+		if (rows > 0)
+			query.setMaxResults(rows);
 		
 		return query.getResultList();
 	}		

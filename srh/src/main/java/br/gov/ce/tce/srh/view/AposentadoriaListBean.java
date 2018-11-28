@@ -47,6 +47,7 @@ public class AposentadoriaListBean implements Serializable {
 	
 	private Aposentadoria entidade = new Aposentadoria();
 	
+	private List<Aposentadoria> aposentadoriaList = new ArrayList<Aposentadoria>();
 	private int count;
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Aposentadoria> pagedList = new ArrayList<Aposentadoria>();
@@ -59,12 +60,14 @@ public class AposentadoriaListBean implements Serializable {
 		try {
 			
 			limparListas();
-
-			if( getEntidade().getFuncional() == null )
-				count = aposentadoriaService.count();
+						
+			if( getEntidade().getFuncional() == null ) 
+				aposentadoriaList = aposentadoriaService.search(null, -1, 0);
 			else
-				count = aposentadoriaService.search(getEntidade().getFuncional().getPessoal().getId(), 0, 1).size();
+				aposentadoriaList = aposentadoriaService.search(getEntidade().getFuncional().getPessoal().getId(), -1, 0);
 
+			count = aposentadoriaList.size();
+			
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
@@ -116,10 +119,10 @@ public class AposentadoriaListBean implements Serializable {
 
 		try {
 			
-			if (pagedList == null || pagedList.size() == 0)
+			if (aposentadoriaList == null || aposentadoriaList.size() == 0)
 				throw new SRHRuntimeException("Faça uma consulta antes de gerar o relatório.");
 			
-			relatorioUtil.relatorio("aposentadoria.jasper", new HashMap<String, Object>(), "aposentadoria.pdf", pagedList);				
+			relatorioUtil.relatorio("aposentadoria.jasper", new HashMap<String, Object>(), "aposentadoria.pdf", aposentadoriaList);				
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -211,6 +214,7 @@ public class AposentadoriaListBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
+		aposentadoriaList = new ArrayList<Aposentadoria>();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Aposentadoria>();
 		pagina = 1;
