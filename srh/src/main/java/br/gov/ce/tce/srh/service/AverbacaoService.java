@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.AverbacaoDAO;
 import br.gov.ce.tce.srh.domain.Averbacao;
+import br.gov.ce.tce.srh.exception.PeriodoConcomitanteException;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service
@@ -17,11 +18,11 @@ public class AverbacaoService {
 	private AverbacaoDAO dao;
 	
 	@Transactional
-	public void salvar(Averbacao entidade) throws SRHRuntimeException {
+	public void salvar(Averbacao entidade, boolean verificaAverbacaoExistente) throws SRHRuntimeException {
 		
 		validarDados(entidade);
 
-		if(entidade.getInicio() != null && entidade.getFim() != null)
+		if(entidade.getInicio() != null && entidade.getFim() != null && verificaAverbacaoExistente )
 			verificandoAverbacaoExistentes(entidade);
 
 		dao.salvar(entidade);
@@ -97,7 +98,7 @@ public class AverbacaoService {
 	 * @throws SRHRuntimeException
 	 * 
 	 */
-	private void verificandoAverbacaoExistentes(Averbacao entidade) throws SRHRuntimeException {
+	private void verificandoAverbacaoExistentes(Averbacao entidade) throws PeriodoConcomitanteException {
 
 		List<Averbacao> averbacoes = dao.findByPessoal( entidade.getPessoal().getId() );
 			
@@ -114,19 +115,19 @@ public class AverbacaoService {
 				// validando periodo de averbacao inicial 
 				if( averbacaoExistente.getInicio().after( entidade.getInicio() )
 						&& averbacaoExistente.getInicio().before( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+					throw new PeriodoConcomitanteException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
 				}
 	
 				// validando periodo de averbacao final
 				if( averbacaoExistente.getFim().after( entidade.getInicio() )
 						&& averbacaoExistente.getFim().before( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+					throw new PeriodoConcomitanteException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
 				}
 	
 				// validando periodo de averbacao no meio
 				if( averbacaoExistente.getInicio().before( entidade.getInicio() )
 						&& averbacaoExistente.getFim().after( entidade.getFim() ) ) {
-					throw new SRHRuntimeException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
+					throw new PeriodoConcomitanteException("Esta averbação tem um período concomitante com outra anteriormente cadastrada. Se você tem certeza sobre o período, clique novamente no botão salvar.");
 				}
 			
 			}
