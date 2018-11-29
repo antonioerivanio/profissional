@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Escolaridade;
 import br.gov.ce.tce.srh.domain.EstadoCivil;
 import br.gov.ce.tce.srh.domain.Municipio;
@@ -44,6 +45,7 @@ import br.gov.ce.tce.srh.domain.Uf;
 import br.gov.ce.tce.srh.enums.EnumCategoriaCNH;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CEPService;
+import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.EscolaridadeService;
 import br.gov.ce.tce.srh.service.EstadoCivilService;
 import br.gov.ce.tce.srh.service.MunicipioService;
@@ -116,6 +118,9 @@ public class PessoaBean implements Serializable {
 	
 	@Autowired
 	private PessoalRecadastramentoService pessoalRecadastramentoService;
+	
+	@Autowired
+	private DependenteService dependenteService;
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
@@ -132,6 +137,7 @@ public class PessoaBean implements Serializable {
 
 	private List<Pessoal> lista;
 	private Pessoal entidade = new Pessoal();
+	private List<Dependente> dependentes = new ArrayList<Dependente>();
 	private PessoalRecadastramento pessoalRecadastramento;
 	private Recadastramento recadastramento;
 
@@ -169,7 +175,9 @@ public class PessoaBean implements Serializable {
 			
 			atualizaNaturalidade();						
 			
-			buscarCep();			
+			buscarCep();
+			
+			dependentes = dependenteService.findByResponsavel(entidade.getId());
 			
 
 		} catch (Exception e) {
@@ -666,9 +674,8 @@ public class PessoaBean implements Serializable {
 
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("pessoa", entidade);
-			parametros.put("temDependente", entidade.getDependentes().size() > 0);
-			relatorioUtil.relatorio("dependentesFormulario.jasper", parametros, "dependentesFormulario.pdf",
-					entidade.getDependentes());
+			parametros.put("temDependente", dependentes.size() > 0);
+			relatorioUtil.relatorio("dependentesFormulario.jasper", parametros, "dependentesFormulario.pdf", dependentes);
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -739,11 +746,12 @@ public class PessoaBean implements Serializable {
 
 	private void limpar() {
 		setEntidade(new Pessoal());
-
+			
 		this.nome = new String();
 		this.cpf = new String();
 		this.lista = new ArrayList<Pessoal>();
-
+		this.dependentes = new ArrayList<Dependente>();
+		
 		this.foto = null;
 		this.ficha = null;
 
@@ -799,6 +807,10 @@ public class PessoaBean implements Serializable {
 
 	public List<Pessoal> getLista() {
 		return lista;
+	}
+	
+	public List<Dependente> getDependentes() {
+		return dependentes;
 	}
 
 	public void setForm(HtmlForm form) {

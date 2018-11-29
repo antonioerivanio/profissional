@@ -2,18 +2,14 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -272,10 +268,7 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Column(name="TELEFONEALTERNATIVO")
 	private String telefoneAlternativo;		
-	
-	@OneToMany(mappedBy = "responsavel", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
-	private List<Dependente> dependentes;
-	
+		
 	
 	public Pessoal(){
 		//seguindo padrao Java Beans...
@@ -443,8 +436,6 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	public String getCelular() {return celular;}
 	public void setCelular(String celular) {this.celular = celular;}
-	
-	public List<Dependente> getDependentes() { return dependentes; }	
 	
 	public String getNomeSocial() { return nomeSocial; }
 	public void setNomeSocial(String nomeSocial) { this.nomeSocial = nomeSocial; }

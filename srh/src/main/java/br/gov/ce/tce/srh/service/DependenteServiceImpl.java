@@ -222,6 +222,11 @@ public class DependenteServiceImpl implements DependenteService{
 		
 		
 		return listaParaDarBaixa;
+	}
+
+	@Override
+	public List<Dependente> findByResponsavel(Long idResponsavel) {
+		return dependenteDAO.findByResponsavel(idResponsavel);
 	}	
 
 }
