@@ -7,7 +7,7 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 public interface DependenteService {
 
-	public void salvar (Dependente entidade, boolean alterar) throws SRHRuntimeException;
+	public void salvar(Dependente entidade, boolean alterar) throws SRHRuntimeException;
 	
 	public void excluir(Dependente entidade);
 	
@@ -22,5 +22,7 @@ public interface DependenteService {
 	public List<Dependente> find(Dependente dependente);
 	
 	public List<Dependente> listaParaDarBaixa(List<Dependente> dependentes);
+	
+	public List<Dependente> findByResponsavel(Long idResponsavel);
 	
 }
