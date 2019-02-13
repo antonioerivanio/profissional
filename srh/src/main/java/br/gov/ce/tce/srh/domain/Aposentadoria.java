@@ -16,8 +16,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import br.gov.ce.tce.srh.enums.EnumTipoBeneficio;
-
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
@@ -32,8 +30,9 @@ public class Aposentadoria extends BasicEntity<Long> implements Serializable {
     @JoinColumn(name = "IDFUNCIONAL")
     private Funcional funcional;
 
-    @Column(name = "IDTIPOBENEFICIO")
-    private Integer idTipoBeneficio;
+    @ManyToOne
+    @JoinColumn(name = "IDTIPOBENEFICIO")
+    private TipoBeneficio tipoBeneficio;
     
     @Temporal(TemporalType.DATE)
     @Column(name = "DATAATO")
@@ -77,18 +76,14 @@ public class Aposentadoria extends BasicEntity<Long> implements Serializable {
 
 	public void setFuncional(Funcional funcional) {
 		this.funcional = funcional;
+	}	
+
+	public TipoBeneficio getTipoBeneficio() {
+		return tipoBeneficio;
 	}
 
-	public EnumTipoBeneficio getTipoBeneficio() {
-		return EnumTipoBeneficio.getEnumTipoBeneficio(idTipoBeneficio);
-	}
-
-	public void setTipoBeneficio(EnumTipoBeneficio tipoBeneficio) {
-		if(tipoBeneficio != null)
-			this.idTipoBeneficio = tipoBeneficio.getId();
-		else
-			this.idTipoBeneficio = null;
-	
+	public void setTipoBeneficio(TipoBeneficio tipoBeneficio) {
+		this.tipoBeneficio = tipoBeneficio;
 	}
 
 	public Date getDataAto() {
