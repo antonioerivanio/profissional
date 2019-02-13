@@ -52,7 +52,13 @@ public class TipoBeneficioDAOImpl implements TipoBeneficioDAO {
 		entityManager.createQuery("DELETE FROM TipoBeneficio t WHERE t.id=:id").setParameter("id", entidade.getId()).executeUpdate();
 	}
 
-
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TipoBeneficio> findAll() {
+		return entityManager.createQuery("SELECT t FROM TipoBeneficio t ORDER BY t.id").getResultList();
+	}
+	
+	
 	@Override
 	public int count(String descricao) {
 		Query query = entityManager.createQuery("Select count (t) from TipoBeneficio t where upper( t.descricao ) LIKE :descricao ORDER BY t.id");
@@ -81,6 +87,6 @@ public class TipoBeneficioDAOImpl implements TipoBeneficioDAO {
 		} catch (NoResultException e) {
 			return null;
 		}
-	}
+	}	
 
 }

@@ -180,12 +180,13 @@
 
 				<legend>Dados da Aposentadoria</legend>
 
-				<br />
+				<br />				
 
-				<div class="select-box box-15">
+				<div class="select-box box-30">
 					<label for="">Tipo Benefício *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoBeneficio"
+										 converter="entityConverter"
 										 value="#{aposentadoriaFormBean.entidade.tipoBeneficio}"
 										 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" >
 							<f:selectItem id="selecioneTipoBeneficio" itemLabel="Selecione..." itemValue="" />

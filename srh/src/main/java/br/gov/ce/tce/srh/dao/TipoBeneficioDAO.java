@@ -5,7 +5,9 @@ import java.util.List;
 import br.gov.ce.tce.srh.domain.TipoBeneficio;
 
 public interface TipoBeneficioDAO {
-
+	
+	public List<TipoBeneficio> findAll();
+	
 	public int count(String descricao);
 	public List<TipoBeneficio> search(String descricao, int first, int rows);
 

@@ -20,8 +20,7 @@ public class TipoBeneficioServiceImpl implements TipoBeneficioService {
 
 	@Autowired
 	private TipoBeneficioDAO dao;
-
-
+	
 	@Override
 	@Transactional
 	public void salvar(TipoBeneficio entidade) throws SRHRuntimeException {
@@ -38,25 +37,26 @@ public class TipoBeneficioServiceImpl implements TipoBeneficioService {
 		dao.salvar(entidade);
 	}
 
-
 	@Override
 	@Transactional
 	public void excluir(TipoBeneficio entidade) {
 		dao.excluir(entidade);
+	}	
+	
+	@Override
+	public List<TipoBeneficio> findAll() {
+		return dao.findAll();
 	}
-
-
+	
 	@Override
 	public int count(String descricao) {
 		return dao.count(descricao);
 	}
 
-
 	@Override
 	public List<TipoBeneficio> search(String descricao, int first, int rows) {
 		return dao.search(descricao, first, rows);
 	}
-
 
 
 	/**
@@ -75,7 +75,6 @@ public class TipoBeneficioServiceImpl implements TipoBeneficioService {
 		
 	}
 
-
-	public void setDAO(TipoBeneficioDAO tipoBeneficioDAO) {this.dao = tipoBeneficioDAO;}
+	public void setDAO(TipoBeneficioDAO tipoBeneficioDAO) {this.dao = tipoBeneficioDAO;}	
 
 }

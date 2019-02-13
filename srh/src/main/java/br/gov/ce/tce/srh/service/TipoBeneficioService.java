@@ -7,6 +7,8 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 public interface TipoBeneficioService {
 
+	public List<TipoBeneficio> findAll();
+	
 	public int count(String descricao);
 	public List<TipoBeneficio> search(String descricao, int first, int rows);
 
