@@ -9,6 +9,18 @@
  	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
 
 	<ui:define name="content">
+	
+		<script>
+			function openwindow() {
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				findAll = "OK";
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome + "&amp;find=all","mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}			
+			}
+		</script>
 		
 		<style>
 			.formularios fieldset {
@@ -42,17 +54,71 @@
 			
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<div id="div1" class="select-box box-38">
-				<h:outputLabel id="lblSetor" value="Setor"/>
-				<div id="div2" class="conteiner">
-					<h:selectOneMenu id="cmbSetor" 
-							 value="#{relatorioFeriasListBean.setor}" converter="entityConverter">
-						<f:selectItem id="siSelecione1" itemLabel="Todos..." />
-						<f:selectItems id="siSetor" value="#{relatorioFeriasListBean.comboSetor}" 
-							var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
-					</h:selectOneMenu>
+			<div class="input-box box-10">
+				<label for="">Matrícula</label>
+				<div class="conteiner">
+					<h:inputText id="matricula"
+								 name="matricula"
+								 styleClass="maskMatricula"
+								 value="#{relatorioFeriasListBean.matricula}" >
+            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+        			</h:inputText>
 				</div>
 			</div>
+
+			<div class="input-box box-15">
+				<label for="">CPF</label>
+				<div class="conteiner">
+					<h:inputText id="cpf" 
+								 name="cpf"
+								 maxlength="14"
+								 styleClass="maskCpf"
+								 converter="cpfConverter"
+								 value="#{relatorioFeriasListBean.cpf}" >
+						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+					</h:inputText>
+				</div>
+			</div>
+
+			<div class="input-box box-38">
+				<label for="">Nome</label>
+				<div class="conteiner">
+					<h:inputText id="nomeCompletoPessoa"
+								 name="nomeCompletoPessoa"
+								 value="#{relatorioFeriasListBean.nome}" />
+				</div>
+			</div>
+
+			<a id="form:Pesquisar" 
+			   href="#" 
+			   onclick="openwindow()" 
+			   class="bt-padrao fl mg-top-18">Pesquisar</a>
+			
+			
+			<fieldset class="conteiner">
+
+				<legend>Tipo</legend>
+				
+				<div class="conteiner">
+					<h:selectManyCheckbox  value="#{relatorioFeriasListBean.tiposFerias}" >			
+						<f:selectItems id="siTipoFeroas" value="#{relatorioFeriasListBean.comboTipoFerias}"  
+							var="tipoFerias" itemValue="#{tipoFerias.id}" itemLabel="#{tipoFerias.descricao}"  />
+					</h:selectManyCheckbox >
+				</div>
+				
+			</fieldset>
+			
+			<div class="input-box box-10">
+				<label for="">Ano Referência</label>
+				<div class="conteiner">
+					<h:inputText id="anoReferencia" 
+								 name="anoReferencia"
+								 value="#{relatorioFeriasListBean.anoReferencia}" 
+								 maxlength="4"
+								 onkeyup="SoNumeros(this)">
+					</h:inputText>
+				</div>
+			</div>			
 			
 			<div class="input-box box-10">
 				<label for="">Data Início</label>
@@ -78,19 +144,27 @@
 				</div>
 			</div>
 			
-			
-			<div class="input-box box-10">
-					<label for="">Ano Referência</label>
-					<div class="conteiner">
-						<h:inputText id="anoReferencia" 
-									 name="anoReferencia"
-									 value="#{relatorioFeriasListBean.anoReferencia}" 
-									 maxlength="4"
-									 onkeyup="SoNumeros(this)">
-						</h:inputText>
-					</div>
+			<div class="select-box box-30">
+				<label>Tipo Ocupação</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="cmbTipoOcupacao" value="#{relatorioFeriasListBean.tipoOcupacao}" converter="entityConverter">
+						<f:selectItem itemLabel="TODOS" />
+						<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}"  />
+					</h:selectOneMenu>
 				</div>
+			</div>			
 			
+			<div id="div1" class="select-box box-42">
+				<h:outputLabel id="lblSetor" value="Setor"/>
+				<div id="div2" class="conteiner">
+					<h:selectOneMenu id="cmbSetor" 
+							 value="#{relatorioFeriasListBean.setor}" converter="entityConverter">
+						<f:selectItem id="siSelecione1" itemLabel="Todos..." />
+						<f:selectItems id="siSetor" value="#{relatorioFeriasListBean.comboSetor}" 
+							var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
+					</h:selectOneMenu>
+				</div>
+			</div>			
 			
 			<div class="radios-group box-16">
 				<label for="">Formato</label>
@@ -101,30 +175,6 @@
 							<f:selectItem itemLabel="XLS" itemValue="2" />									
 						</h:selectOneRadio>
 					</div>
-				</div>
-			</div>			
-			
-
-			<fieldset class="conteiner">
-
-				<legend>Tipo</legend>
-				
-				<div class="conteiner">
-					<h:selectManyCheckbox  value="#{relatorioFeriasListBean.tiposFerias}" >			
-						<f:selectItems id="siTipoFeroas" value="#{relatorioFeriasListBean.comboTipoFerias}"  
-							var="tipoFerias" itemValue="#{tipoFerias.id}" itemLabel="#{tipoFerias.descricao}"  />
-					</h:selectManyCheckbox >
-				</div>
-				
-			</fieldset>
-			
-			<div class="select-box box-30">
-				<label>Tipo Ocupação</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="cmbTipoOcupacao" value="#{relatorioFeriasListBean.tipoOcupacao}" converter="entityConverter">
-						<f:selectItem itemLabel="TODOS" />
-						<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}"  />
-					</h:selectOneMenu>
 				</div>
 			</div>			
 			
