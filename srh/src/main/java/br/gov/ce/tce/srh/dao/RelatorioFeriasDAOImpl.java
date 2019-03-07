@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
@@ -26,21 +27,21 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 	}
 	
 	@Override
-	public int getCountFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
-		return count(getQueryFindByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao));
+	public int getCountFindByParameter(Funcional funcional, Setor setor,	List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
+		return count(getQueryFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RelatorioFerias> findByParameter(Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {		
-		Query query = entityManager.createNativeQuery(getQueryFindByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao), "RelatorioFerias"); 
+	public List<RelatorioFerias> findByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {		
+		Query query = entityManager.createNativeQuery(getQueryFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao), "RelatorioFerias"); 
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);		
 		return query.getResultList();
 	}
 	
 
-	private String getQueryFindByParameter(Setor setor,	List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
+	private String getQueryFindByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
 		
 		StringBuilder sql = new StringBuilder();
 
@@ -59,6 +60,10 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 		sql.append("INNER JOIN SRH.TB_OCUPACAO ON TB_OCUPACAO.ID = TB_FUNCIONAL.IDOCUPACAO ");
 		sql.append("WHERE 1=1 ");
 
+		if (funcional!=null && funcional.getId() != null && funcional.getId() != 0L){
+			sql.append("and tb_funcional.idpessoal = '" + funcional.getPessoal().getId() + "' " );
+		}
+		
 		if (setor!=null && setor.getId() != null && setor.getId() != 0L){
 			sql.append("and tb_funcional.idsetor = '" + setor.getId() + "' " );
 		}

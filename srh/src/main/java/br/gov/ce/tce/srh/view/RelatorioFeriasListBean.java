@@ -16,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.RelatorioFerias;
 import br.gov.ce.tce.srh.domain.TipoFerias;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
+import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.RelatorioFeriasService;
 import br.gov.ce.tce.srh.service.TipoFeriasService;
 import br.gov.ce.tce.srh.service.TipoOcupacaoService;
@@ -57,6 +59,9 @@ public class RelatorioFeriasListBean implements Serializable {
 	
 	@Autowired
 	private TipoOcupacaoService tipoOcupacaoService;
+	
+	@Autowired
+	private FuncionalService funcionalService;
 
 
 	//controle de acesso do formulário
@@ -70,6 +75,10 @@ public class RelatorioFeriasListBean implements Serializable {
 	private Date fim;
 	private Long anoReferencia;
 	private Integer formato = 1;
+	private String matricula = new String();
+	private String cpf = new String();
+	private String nome = new String();
+	private Funcional funcional;
 
 	//entidades das telas
 	private List<RelatorioFerias> lista;
@@ -88,17 +97,11 @@ public class RelatorioFeriasListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
 	public String consultar() {
 
 		try {
 			
-			count = relatorioFeriasService.getCountFindByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao);
+			count = relatorioFeriasService.getCountFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -119,19 +122,10 @@ public class RelatorioFeriasListBean implements Serializable {
 
 		return null;
 	}
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
+	
 	public String relatorio() {
 
-		try {
-
-			//valida consulta pessoa
-			if( count == 0 )
-				throw new SRHRuntimeException("Realize uma consulta primeiro.");
+		try {		
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			String inicioAux = null;
@@ -148,6 +142,10 @@ public class RelatorioFeriasListBean implements Serializable {
 			
 			StringBuilder paramWhere = new StringBuilder("WHERE 1=1 "); 
 
+			if (funcional!=null && funcional.getId() != null && funcional.getId() != 0L){
+				paramWhere.append("and tb_funcional.idpessoal = '" + funcional.getPessoal().getId() + "' " );
+			}
+			
 			if (setor!=null && setor.getId() != null && setor.getId() != 0L){
 				paramWhere.append("and tb_funcional.idsetor = '" + setor.getId() + "' " );
 			}
@@ -194,13 +192,17 @@ public class RelatorioFeriasListBean implements Serializable {
 			parametros.put("PARAMWHERE", paramWhere.toString());			
 			parametros.put("IDSETORFILTRO", setor == null ? null : setor.getId());
 			parametros.put("SETORFILTRO", setor == null ? "TODOS" : setor.getNome());
+			parametros.put("NOMEFILTRO", funcional != null ? funcional.getPessoal().getNomeCompleto() : null);
 			parametros.put("TIPOSFERIASFILTRO", tiposFerias.isEmpty() ? null : tiposFeriasAux);
-			parametros.put("INICIOFILTRO",  inicioAux == null ? "-" : inicioAux);
-			parametros.put("FIMFILTRO", fimAux == null ? "-" : fimAux);			
+			parametros.put("INICIOFILTRO",  inicioAux);
+			parametros.put("FIMFILTRO", fimAux);			
 			
 			
 			if (formato == 1) {
-				relatorioUtil.relatorio("feriasSetor.jasper", parametros, "feriasSetor.pdf");
+				if (funcional != null)
+					relatorioUtil.relatorio("feriasServidor.jasper", parametros, "feriasServidor.pdf");
+				else	
+					relatorioUtil.relatorio("feriasSetor.jasper", parametros, "feriasSetor.pdf");
 			} else {
 				relatorioUtil.relatorioXls("feriasSetorXLS.jasper", parametros, "feriasSetor.xls");
 			}			
@@ -227,6 +229,10 @@ public class RelatorioFeriasListBean implements Serializable {
 		lista = new ArrayList<RelatorioFerias>();
 		limparListas();
 		flagRegistroInicial = 0;
+		matricula = new String();
+		cpf = new String();
+		nome = new String();
+		funcional = null; 
 
 	}
 
@@ -249,7 +255,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(relatorioFeriasService.findByParameter(setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(relatorioFeriasService.findByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -372,6 +378,56 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	public Long getAnoReferencia() {return anoReferencia;}
 
-	public void setAnoReferencia(Long anoReferencia) {this.anoReferencia = anoReferencia;}	
+	public void setAnoReferencia(Long anoReferencia) {this.anoReferencia = anoReferencia;}
+	
+	public String getMatricula() {return matricula;}
+	public void setMatricula(String matricula) {
+		if ( !this.matricula.equals(matricula) ) {
+			this.matricula = matricula;
+
+			try {
+				funcional =  funcionalService.getCpfAndNomeByMatricula( this.matricula );
+				if (funcional != null ) {
+					this.nome = funcional.getNomeCompleto();
+					this.cpf = funcional.getPessoal().getCpf();	
+				} else {
+					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+				}
+
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matricula. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
+
+		}
+	}
+
+	public String getCpf() {return cpf;}
+	public void setCpf(String cpf) {
+		if ( !this.cpf.equals(cpf) ) {
+			this.cpf = cpf;
+
+			try {			
+				List<Funcional> funcionalList = funcionalService.getMatriculaAndNomeByCpfList( this.cpf );				
+				if ( funcionalList != null && funcionalList.size() > 0 ) {
+					funcional = funcionalList.get(0);
+					this.nome = funcional.getNomeCompleto();
+					this.matricula = funcional.getMatricula();	
+				} else {
+					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
+				}
+				
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
+
+		}
+	}
+
+	public String getNome() {return nome;}
+	public void setNome(String nome) {this.nome = nome;}
+	
+	
 
 }
