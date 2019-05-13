@@ -169,7 +169,8 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 		
 		// Exige que a dataAto seja posterior a de exercício, exceto para Servidores provenientes do TCM
 		if (!entidade.getDataAto().after(entidade.getFuncional().getExercicio())
-				&& !funcional.isProvenienteDoTCM())
+				&& !funcional.isProvenienteDoTCM()
+				&& !funcional.isEnquadramento())
 			throw new SRHRuntimeException("A Data Ato deve ser posterior a data de Exercício Funcional atual ("
 				+ funcional.getOcupacao().getNomenclatura() + " - " + SRHUtils.formataData(SRHUtils.FORMATO_DATA, funcional.getExercicio()) +").");
 	}	
@@ -258,10 +259,9 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 					atualizaLotacaoRotinaPadrao(entidade, ultimaLotacao);
 				}				
 				
-			} else {				
-				atualizaLotacaoRotinaPadrao(entidade, ultimaLotacao);			
-				
-			}			
+			} else if (ultimaLotacao.getDataFim() == null) {				
+				atualizaLotacaoRotinaPadrao(entidade, ultimaLotacao);				
+			} 			
 			
 		}		
 		

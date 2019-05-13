@@ -439,4 +439,10 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 		return false;			
 	}
 	
+	public boolean isEnquadramento() {
+		if (this.tipoMovimentoEntrada != null && this.tipoMovimentoEntrada.getId().longValue() == 11L)
+			return true;
+		return false;			
+	}
+	
 }
