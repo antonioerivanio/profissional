@@ -55,13 +55,6 @@ public class AverbacaoService {
 
 		if (entidade.getPessoal() == null)
 			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
-
-		if (entidade.getUf() == null )
-			throw new SRHRuntimeException("O estado é obrigatório.");
-
-		if (entidade.getMunicipio() == null )
-			throw new SRHRuntimeException("O município é obrigatório.");
-
 		
 		if (entidade.getEntidade() == null || entidade.getEntidade().equals("") )
 			throw new SRHRuntimeException("A entidade é obrigatório.");
@@ -80,6 +73,16 @@ public class AverbacaoService {
 		if (entidade.getPrevidencia() == null || entidade.getPrevidencia() == 0l )
 			throw new SRHRuntimeException("A previdência é obrigatória.");
 
+		// Não há necessidade de se exigir a UF e o município dos casos em que a averbação for referente 
+		// a tempo de contribuição do Regime Geral de Previdência Social (RGPS)
+		if( entidade.getPrevidencia() != 2l) {
+			if (entidade.getUf() == null )
+				throw new SRHRuntimeException("O estado é obrigatório.");
+
+			if (entidade.getMunicipio() == null )
+				throw new SRHRuntimeException("O município é obrigatório.");
+		}
+		
 		// validando descricao
 		if ( entidade.getDescricao() == null || entidade.getDescricao().equals("") ) 
 			throw new SRHRuntimeException("A descrição é obrigatória.");

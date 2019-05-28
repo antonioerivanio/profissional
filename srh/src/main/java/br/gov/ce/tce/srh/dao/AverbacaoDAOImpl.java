@@ -68,7 +68,7 @@ public class AverbacaoDAOImpl implements AverbacaoDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Averbacao> search(Long idPessoal, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT e FROM Averbacao e join fetch e.municipio WHERE e.pessoal.id = :pessoal order by e.inicio desc ");
+		Query query = entityManager.createQuery("SELECT e FROM Averbacao e left join fetch e.municipio WHERE e.pessoal.id = :pessoal order by e.inicio desc ");
 		query.setParameter("pessoal", idPessoal);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);
@@ -79,7 +79,7 @@ public class AverbacaoDAOImpl implements AverbacaoDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Averbacao> findByPessoal(Long idPessoal) {
-		Query query = entityManager.createQuery("SELECT e FROM Averbacao e join fetch e.municipio WHERE e.pessoal.id = :pessoal order by e.inicio desc ");
+		Query query = entityManager.createQuery("SELECT e FROM Averbacao e left join fetch e.municipio WHERE e.pessoal.id = :pessoal order by e.inicio desc ");
 		query.setParameter("pessoal", idPessoal);
 		return query.getResultList();
 	}
