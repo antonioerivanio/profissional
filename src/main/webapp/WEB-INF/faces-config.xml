@@ -173,6 +173,18 @@
 			<to-view-id>/paginas/tabelas/cargoForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Carreira -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/carreiraList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/carreiraList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/carreiraForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Cargo Comissionado -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/cargoComissionadoList.xhtml</from-view-id>

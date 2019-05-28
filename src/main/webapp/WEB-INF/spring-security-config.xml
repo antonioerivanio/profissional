@@ -21,6 +21,9 @@
 		       
         <intercept-url pattern="/paginas/tabelas/cargoList.faces" access="ROLE_CARGO" />
         <intercept-url pattern="/paginas/tabelas/cargoForm.faces" access="ROLE_CARGO" />
+        
+        <intercept-url pattern="/paginas/tabelas/carreiraList.faces" access="ROLE_CARGO" />
+        <intercept-url pattern="/paginas/tabelas/carreiraForm.faces" access="ROLE_CARGO" />
 		
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoList.faces" access="ROLE_ESPECIALIDADE_CARGO" />
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoForm.faces" access="ROLE_ESPECIALIDADE_CARGO" />

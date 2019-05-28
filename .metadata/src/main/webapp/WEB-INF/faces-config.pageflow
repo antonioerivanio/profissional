@@ -20,8 +20,8 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/atestoPessoaForm.xhtml" x="338" y="3634" id="pf150661974890536" referenceLink="//@navigationRule.8/@navigationCase.1/@toViewId|" inlinks="pf150661974890535" path="/paginas/cadastros/atestoPessoaForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/averbacaoList.xhtml" x="122" y="4018" id="pf150661974890537" referenceLink="//@navigationRule.9/@fromViewId|" outlinks="pf150661974890538 pf150661974890539" inlinks="pf150661974890538" path="/paginas/funcional/averbacaoList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/averbacaoForm.xhtml" x="338" y="4018" id="pf150661974890540" referenceLink="//@navigationRule.9/@navigationCase.1/@toViewId|" inlinks="pf150661974890539" path="/paginas/funcional/averbacaoForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/cargoList.xhtml" x="122" y="4402" id="pf150661974890541" referenceLink="//@navigationRule.10/@fromViewId|" outlinks="pf150661974890542 pf150661974890543" inlinks="pf150661974890542" path="/paginas/tabelas/cargoList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/cargoForm.xhtml" x="338" y="4402" id="pf150661974890544" referenceLink="//@navigationRule.10/@navigationCase.1/@toViewId|" inlinks="pf150661974890543" path="/paginas/tabelas/cargoForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/cargoList.xhtml" x="122" y="4402" id="pf150661974890541" referenceLink="//@navigationRule.11/@navigationCase.0/@toViewId|" outlinks="pf150661974890542 pf150661974890543" inlinks="pf150661974890542" path="/paginas/tabelas/cargoList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/cargoForm.xhtml" x="338" y="4402" id="pf150661974890544" referenceLink="//@navigationRule.11/@navigationCase.1/@toViewId|" inlinks="pf150661974890543" path="/paginas/tabelas/cargoForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/cargoComissionadoList.xhtml" x="122" y="4786" id="pf150661974890545" referenceLink="//@navigationRule.11/@fromViewId|" outlinks="pf150661974890546 pf150661974890547" inlinks="pf150661974890546" path="/paginas/tabelas/cargoComissionadoList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/cargoComissionadoForm.xhtml" x="338" y="4786" id="pf150661974890548" referenceLink="//@navigationRule.11/@navigationCase.1/@toViewId|" inlinks="pf150661974890547" path="/paginas/tabelas/cargoComissionadoForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/classeReferenciaList.xhtml" x="122" y="5170" id="pf150661974890549" referenceLink="//@navigationRule.12/@fromViewId|" outlinks="pf150661974890550 pf150661974890551" inlinks="pf150661974890550" path="/paginas/tabelas/classeReferenciaList.xhtml"/>
@@ -133,6 +133,8 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/aposentadoriaForm.xhtml" id="pf1506619748906266" referenceLink="//@navigationRule.29/@navigationCase.1/@toViewId|" inlinks="pf1506619748906265" path="/paginas/funcional/aposentadoriaForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/cList.xhtml" id="pf15106629125232" referenceLink="//@navigationRule.46/@fromViewId|" outlinks="pf15109293445550 pf15109293445551" inlinks="pf15109293445550" path="/paginas/funcional/carreiraPessoalList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/carreiraPessoalForm.xhtml" id="pf15109293445552" referenceLink="//@navigationRule.46/@navigationCase.1/@toViewId|" inlinks="pf15109293445551" path="/paginas/funcional/carreiraPessoalForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/cList.xhtml" id="pf15590644918532" referenceLink="//@navigationRule.11/@fromViewId|" outlinks="pf15590644918533 pf15590644918534" inlinks="pf15590644918533" path="/paginas/tabelas/carreiraList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/carreiraForm.xhtml" id="pf15590644918535" referenceLink="//@navigationRule.11/@navigationCase.1/@toViewId|" inlinks="pf15590644918534" path="/paginas/tabelas/carreiraForm.xhtml"/>
   <links id="pf15066197489043" target="pf15066197489054" source="pf15066197488961" outcome="incluirAlterar"/>
   <links id="pf15066197489057" target="pf15066197489058" source="pf15066197489055" outcome="incluirAlterar"/>
   <links id="pf150661974890511" target="pf150661974890512" source="pf15066197489059" outcome="incluirAlterar"/>
@@ -550,4 +552,6 @@
   <links id="pf1506619748906265" target="pf1506619748906266" source="pf1506619748906263" outcome="incluirAlterar"/>
   <links id="pf15109293445550" target="pf15106629125232" source="pf15106629125232" outcome="listar"/>
   <links id="pf15109293445551" target="pf15109293445552" source="pf15106629125232" outcome="incluirAlterar"/>
+  <links id="pf15590644918533" target="pf15590644918532" source="pf15590644918532" outcome="listar"/>
+  <links id="pf15590644918534" target="pf15590644918535" source="pf15590644918532" outcome="incluirAlterar"/>
 </pageflow:Pageflow>

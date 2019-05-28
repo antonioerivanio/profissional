@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<style>
+			.formularios fieldset, .box-border {
+				border: 1px solid #c6c6c6;
+				padding: 15px 15px 0px 15px;
+				padding-right: 0;
+				overflow: auto;
+				margin-bottom: 10px;
+				min-height: 100px;
+			}
+			
+			.formularios fieldset fieldset {
+				min-height: auto;
+				width: max-content;
+			}
+		</style>
+
+		<div class="titulo-pagina">
+
+			<h2>Cadastro de Carreira</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+
+			<fieldset>
+
+				<h:messages id="messages" infoClass="infoMessage"
+					errorClass="errorMessage" />
+
+				<h:inputHidden id="alterar" disabled="true"
+					value="#{aposentadoriaFormBean.alterar}" />
+
+				<div class="input-box box-10">
+					<label for="">ID</label>
+					<div class="conteiner">
+						<h:inputText disabled="true" value="#{cargoFormBean.entidade.id}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">Código *</label>
+					<div class="conteiner">
+						<h:inputText id="codigo"
+							value="#{carreiraFormBean.entidade.codigo}" maxlength="30"
+							required="true" requiredMessage="A código é obrigatório." />
+					</div>
+				</div>
+
+				<div class="input-box box-60">
+					<label for="">Descrição *</label>
+					<div class="conteiner">
+						<h:inputText id="descricao"
+							value="#{carreiraFormBean.entidade.descricao}" maxlength="100"
+							required="true" requiredMessage="A descrição é obrigatória." />
+					</div>
+				</div>
+
+				<fieldset>
+
+					<legend>Lei que criou a Carreira</legend>
+
+					<div class="input-box box-37">
+						<label for="">Número</label>
+						<div class="conteiner">
+							<h:inputText id="numerolei"
+								value="#{carreiraFormBean.entidade.lei}" maxlength="12"
+								required="true" requiredMessage="A lei é obrigatória." />
+						</div>
+					</div>
+
+					<div class="input-box box-20">
+						<label for="">Data</label>
+						<div class="conteiner">
+							<h:inputText id="dataLei" styleClass="maskData"
+								converter="dateConverter"
+								value="#{carreiraFormBean.entidade.dataLei}" maxlength="10">
+							</h:inputText>
+						</div>
+					</div>
+
+					<div class="select-box box-40">
+						<label for="">Situação</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="situacao"
+								value="#{carreiraFormBean.entidade.situacao}">
+								<f:selectItem id="selecioneSituacao" itemLabel="Selecione..." />
+								<f:selectItems id="comboSituacao"
+									value="#{carreiraFormBean.comboSituacao}" var="situacao"
+									itemLabel="#{situacao.descricao}" itemValue="#{situacao}" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+				</fieldset>
+
+
+				<fieldset>
+
+					<legend>Período de vigência</legend>
+
+					<div class="input-box box-50">
+						<label for="">Início</label>
+						<div class="conteiner">
+							<h:inputText id="dataInicio" name="dataInicio"
+								styleClass="maskData" converter="dateConverter"
+								value="#{carreiraFormBean.entidade.inicioValidade}"
+								maxlength="10" />
+						</div>
+					</div>
+
+					<div class="input-box box-50">
+						<label for="">Fim</label>
+						<div class="conteiner">
+							<h:inputText id="dataFim" name="dataFim" styleClass="maskData"
+								converter="dateConverter"
+								value="#{carreiraFormBean.entidade.fimValidade}" maxlength="10" />
+						</div>
+					</div>
+
+				</fieldset>
+
+			</fieldset>
+
+			<ui:fragment
+				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR, ROLE_CARGO_ALTERAR')}">
+
+				<h:commandButton value="Salvar" action="#{carreiraFormBean.salvar}"
+					styleClass="bt-padrao fr" />
+
+				<a href="/srh/paginas/tabelas/carreiraForm.faces"
+					class="bt-voltar fr mg-right-10">Limpar</a>
+
+			</ui:fragment>
+
+			<a href="/srh/paginas/tabelas/carreiraList.faces"
+				class="bt-voltar fr mg-right-10">Voltar</a>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

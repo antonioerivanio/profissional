@@ -30,6 +30,14 @@
 		
 							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARGO')}">
 								<li>
+									<a href="/srh/paginas/tabelas/carreiraList.faces">
+									Carreira
+									</a>
+								</li>
+							</ui:fragment>
+							
+							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARGO')}">
+								<li>
 									<a href="/srh/paginas/tabelas/cargoList.faces">
 									Cargo
 									</a>

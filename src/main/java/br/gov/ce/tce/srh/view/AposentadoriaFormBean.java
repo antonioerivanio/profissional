@@ -28,7 +28,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Scope("session")
 public class AposentadoriaFormBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(FeriasFormBean.class);
+	static Logger logger = Logger.getLogger(AposentadoriaFormBean.class);
 
 	@Autowired
 	private AposentadoriaService aposentadoriaService;
