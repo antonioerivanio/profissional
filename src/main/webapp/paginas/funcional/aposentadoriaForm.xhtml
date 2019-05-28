@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<style>
+		.formularios fieldset,.box-border {
+			border: 1px solid #c6c6c6;
+			padding: 15px 15px 0px 15px;
+			padding-right: 0;
+			overflow: auto;
+			margin-bottom: 10px;
+			min-height: 100px;
+		}
+		</style>
+
+		<script>
+			function openwindow() {
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alert('Digite pelo menos 3 caracteres para a pesquisa');
+				}
+			}
+			
+			function contarCaracteres(){
+				document.getElementById('countChar').innerHTML = 'Quantidade de caracteres: ' + (document.getElementById('form:observacao').value.length);
+			}
+			
+			function verificaLotacao(){
+				var mensagemLotacao = document.getElementById("form:mensagemLotacao").value;			
+				
+				if (mensagemLotacao.length > 0){
+					return confirm(mensagemLotacao);	
+				}
+			}
+			
+			function verificaRepresentacao(){
+				var mensagemRepresentacao = document.getElementById("form:mensagemRepresentacao").value;			
+				
+				if (mensagemRepresentacao.length > 0){
+					return confirm(mensagemRepresentacao);	
+				}
+			}
+			
+			function confirmaAposentadoria() {
+				var confirmado = false;
+				
+				confirmado = verificaLotacao();				
+				
+				if (confirmado)				
+					confirmado = verificaRepresentacao();	
+				
+				return confirmado;
+			}
+			
+			jQuery(document).ready(function($) {
+				contarCaracteres();
+			});
+				
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Cadastro de Aposentadoria</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+
+			<fieldset>
+
+				<legend>Dados Pessoais</legend>
+
+				<br/>
+
+            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+				<h:inputHidden id="alterar" disabled="true" value="#{aposentadoriaFormBean.alterar}" />				
+				<h:inputHidden id="mensagemRepresentacao" disabled="true" value="#{aposentadoriaFormBean.mensagemRepresentacao}" />
+				<h:inputHidden id="mensagemLotacao" disabled="true" value="#{aposentadoriaFormBean.mensagemLotacao}" />
+
+				<div class="input-box box-10">
+					<label for="">Matrícula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula" 
+									 name="matricula"
+									 maxlength="6"
+									 styleClass="maskMatricula"									 
+									 disabled="#{aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR'))}"
+									 value="#{aposentadoriaFormBean.matricula}">
+							<a4j:support event="onblur"
+										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, mensagemRepresentacao"
+										 ajaxSingle="true" />
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-75">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa" 
+									 name="nomeCompletoPessoa"
+									 disabled="#{aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR'))}"
+									 value="#{aposentadoriaFormBean.nome}" />
+					</div>
+				</div>
+
+				<ui:fragment rendered="#{not (aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')))}">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()"
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</ui:fragment>
+				
+				<div class="input-box box-100">
+					<label for="">Mãe</label>
+					<div class="conteiner">
+						<h:inputText id="mae"
+									 name="mae"
+									 disabled="true"
+									 value="#{aposentadoriaFormBean.entidade.funcional.pessoal.nomeMae}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 disabled="true"
+									 value="#{aposentadoriaFormBean.entidade.funcional.pessoal.cpf}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">RG</label>
+					<div class="conteiner">
+						<h:inputText id="rg" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{aposentadoriaFormBean.entidade.funcional.pessoal.rg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">Emissor</label>
+					<div class="conteiner">
+						<h:inputText id="rgEmissor" 
+									 maxlength="10"
+									 disabled="true"
+									 value="#{aposentadoriaFormBean.entidade.funcional.pessoal.emissorRg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">UF</label>
+					<div class="conteiner">
+						<h:inputText id="rgUf" 
+									 maxlength="2"
+									 disabled="true"
+									 value="#{aposentadoriaFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
+					</div>
+				</div>
+
+			</fieldset>
+
+			
+			<fieldset>
+
+				<legend>Dados da Aposentadoria</legend>
+
+				<br />				
+
+				<div class="select-box box-30">
+					<label for="">Tipo Benefício *</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="tipoBeneficio"
+										 converter="entityConverter"
+										 value="#{aposentadoriaFormBean.entidade.tipoBeneficio}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" >
+							<f:selectItem id="selecioneTipoBeneficio" itemLabel="Selecione..." itemValue="" />
+							<f:selectItems  id="comboTipoBeneficio" 
+											value="#{aposentadoriaFormBean.comboTipoBeneficio}"
+											var="tipoBeneficio"
+											itemValue="#{tipoBeneficio}"
+											itemLabel="#{tipoBeneficio.descricao}"/>
+						</h:selectOneMenu>
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Data Ato *</label>
+					<div class="conteiner">
+						<h:inputText id="dataAto" 
+									 name="dataAto"
+									 converter="dateConverter" 
+									 styleClass="maskData"
+									 value="#{aposentadoriaFormBean.entidade.dataAto}" 
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" />
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Número Resolução</label>
+					<div class="conteiner">
+						<h:inputText id="numeroResolucao" 
+									 name="numeroResolucao"
+									 value="#{aposentadoriaFormBean.entidade.numeroResolucao}" 
+									 maxlength="5"
+									 onkeyup="mantemSomenteNumeros(this)"									 
+									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Ano Resolucão</label>
+					<div class="conteiner">
+						<h:inputText id="anoResolucao" 
+									 name="anoResolucao"
+									 value="#{aposentadoriaFormBean.entidade.anoResolucao}" 
+									 maxlength="4"
+									 onkeyup="mantemSomenteNumeros(this)"
+									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
+						</h:inputText>
+					</div>
+				</div>
+				
+				<div class="input-box box-15">
+					<label for="">Data Última Contagem *</label>
+					<div class="conteiner">
+						<h:inputText id="dataUltimaContagem" 
+									 name="dataUltimaContagem"
+									 converter="dateConverter" 
+									 styleClass="maskData"
+									 value="#{aposentadoriaFormBean.entidade.dataUltimaContagem}" 
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" />
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Data Início Benefício *</label>
+					<div class="conteiner">
+						<h:inputText id="dataInicioBeneficio" 
+									 name="dataInicioBeneficio"
+									 converter="dateConverter" 
+									 styleClass="maskData"
+									 value="#{aposentadoriaFormBean.entidade.dataInicioBeneficio}" 
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
+							<a4j:support rendered = "#{not aposentadoriaFormBean.alterar}"
+										 id="dataInicioBeneficioChange" 
+										 event="onchange" 
+										 action="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
+										 reRender="mensagemLotacao" 
+										 ajaxSingle="true" />			 
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="select-box box-15">
+					<label for="">Tipo Publicação *</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="tipoPublicacao"
+										 converter="entityConverter" 
+										 value="#{aposentadoriaFormBean.entidade.tipoPublicacao}"
+										 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" > 
+							<f:selectItem id="selecioneTipoPublicacao" itemLabel="Selecione..." itemValue="" />
+					  		<f:selectItems 	id="comboTipoPublicacao" 
+					  						value="#{aposentadoriaFormBean.comboTipoPublicacao}"
+					  						var="tipoPublicacao"
+					  						itemValue="#{tipoPublicacao}"
+					  						itemLabel="#{tipoPublicacao.descricao}"/>
+						</h:selectOneMenu>    
+					</div>
+				</div>
+
+				<div class="input-box box-15">
+					<label for="">Data Publicação *</label>
+					<div class="conteiner">
+						<h:inputText id="dataPublicacao" 
+									 name="dataPublicacao"
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{aposentadoriaFormBean.entidade.dataPublicacao}"
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" />
+					</div>
+				</div>
+
+				<div class="textarea-box box-100">
+					<label for="">Observação</label>
+					<div class="conteiner">
+						<h:inputTextarea id="observacao"
+										 value="#{aposentadoriaFormBean.entidade.observacao}"
+										 validatorMessage="O campo Observação excedeu o tamanho máximo de 2000 caracteres"
+										 onkeyup="contarCaracteres();"
+										 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}" >
+							<f:validateLength maximum="2000" />
+						</h:inputTextarea>						
+					</div>
+					<label id="countChar" style="margin-top: 2px; font-size: 11px;" ></label>
+				</div>				
+
+			</fieldset>
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
+				
+				<h:commandButton 
+					value="Salvar" 
+					action="#{aposentadoriaFormBean.salvar}" 
+					styleClass="bt-padrao fr" 
+					onclick="return confirmaAposentadoria();"  />						
+				
+				<a href="/srh/paginas/funcional/aposentadoriaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			
+			</ui:fragment>
+			
+			<a href="/srh/paginas/funcional/aposentadoriaList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
