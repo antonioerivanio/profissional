@@ -1,0 +1,339 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.gov.ce.tce</groupId>
+	<artifactId>srh</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>srh Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+  
+  
+	<properties>
+		<spring.version>3.0.1.RELEASE</spring.version>
+		<spring.security.version>3.1.7.RELEASE</spring.security.version>
+		<hibernate.version>3.6.5.Final</hibernate.version>
+		<richfaces.version>3.3.3.Final</richfaces.version>
+		<apache-poi.version>3.15</apache-poi.version>
+		<java.version>1.7</java.version>
+		<!-- Encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+  
+  
+	<dependencies> 
+	
+		
+		<!-- Expression Language -->
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>2.2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		
+	
+		<!-- TOMCAT SERVLET API -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+	    
+	    
+	    <!-- ORACLE JDBC -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3</version>
+		</dependency>	      
+	    
+	    
+	    <!-- SPRING -->
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>				
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>		
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>		
+								
+		<dependency>
+		    <groupId>org.springframework.ldap</groupId>
+		    <artifactId>spring-ldap-core</artifactId>
+		    <version>1.3.0.RELEASE</version>
+		</dependency>		
+		
+		<!-- Quartz framework -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.8.6</version>
+		</dependency>		
+		
+		<!-- SPRING SECURITY -->
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-acl</artifactId>
+		    <version>${spring.security.version}</version>
+		</dependency>		
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-ldap</artifactId>
+		    <version>${spring.security.version}</version>
+		</dependency>		
+				
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-taglibs</artifactId>
+		    <version>${spring.security.version}</version>
+		</dependency> 		
+  		
+	    
+	        	
+    	<!-- HIBERNATE -->    	
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>		
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>		
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>		
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.2.0.Final</version>			
+		</dependency>
+		
+				
+		<!-- RICHFACES -->
+		
+		<dependency>
+		    <groupId>org.richfaces.ui</groupId>
+		    <artifactId>richfaces-ui</artifactId>
+		    <version>${richfaces.version}</version>
+		</dependency>
+
+		<dependency>
+	    	<groupId>org.richfaces.framework</groupId>
+	    	<artifactId>richfaces-impl-jsf2</artifactId>
+	    	<version>${richfaces.version}</version>
+	    </dependency>		
+				
+		<dependency>
+		    <groupId>com.uwyn</groupId>
+		    <artifactId>jhighlight</artifactId>
+		    <version>1.0</version>
+		</dependency>
+		
+		
+		
+		<!-- JSF --> 	
+    	
+    	<dependency>
+		    <groupId>javax.faces</groupId>
+		    <artifactId>jsf-api</artifactId>
+		    <version>2.0.2-FCS</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.faces</groupId>
+		    <artifactId>jsf-impl</artifactId>
+		    <version>2.0.2-FCS</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.sun.facelets</groupId>
+		    <artifactId>jsf-facelets</artifactId>
+		    <version>1.1.14</version>
+		</dependency>		
+		
+		
+		<!-- MYFACES TOMAHAWK -->		
+		<dependency>
+		    <groupId>org.apache.myfaces.tomahawk</groupId>
+		    <artifactId>tomahawk</artifactId>
+		    <version>1.1.11</version>
+		</dependency>		
+		
+		
+		
+		<!-- JASPERREPORTS -->				
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports</artifactId>
+			<version>6.5.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>itext</artifactId>
+					<groupId>com.lowagie</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.lowagie</groupId>
+		    <artifactId>itext</artifactId>
+		    <version>2.1.7</version>
+		</dependency>
+		
+		<dependency>
+		   <groupId>br.gov.ce.tce</groupId>
+		   <artifactId>CustomSans</artifactId>
+		   <version>1.0.0</version>
+	  	</dependency>
+		
+		<dependency>
+		   <groupId>br.gov.ce.tce</groupId>
+		   <artifactId>CustomSerif</artifactId>
+		   <version>1.0.0</version>
+		</dependency>
+		
+		<!-- APACHE POI -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${apache-poi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${apache-poi.version}</version>
+		</dependency>
+		
+		
+		<!-- COMMONS -->
+    	<dependency>
+		    <groupId>commons-discovery</groupId>
+		    <artifactId>commons-discovery</artifactId>
+		    <version>0.4</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>1.3.2</version>
+		</dependency>
+   
+            	
+            	
+    			
+		<!-- SLF4J LOG4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+  
+  
+  		<dependency>
+		    <groupId>org.dbunit</groupId>
+		    <artifactId>dbunit</artifactId>
+		    <version>2.4.7</version>
+		</dependency>
+				
+		
+		
+		<!-- JavaMail API -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+		
+		<!-- Commons Email -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		
+  
+  		
+  
+	</dependencies>
+  
+	<build>
+   
+		<finalName>srh</finalName>
+	
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
+                </configuration>
+            </plugin>
+		</plugins>
+		<resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <includes>
+	                <include>**/*.properties</include>
+	                <include>**/*.xml</include>
+	            </includes>
+	        </resource>
+	        <resource>
+	            <directory>src/main/java</directory>
+	            <includes>
+	                <include>**/*.properties</include>
+	            </includes>
+	        </resource>
+	    </resources>
+	</build>
+  
+  
+</project>
