@@ -28,6 +28,8 @@ public class CarreiraFormBean implements Serializable {
 	private Carreira entidade = new Carreira();
 
 	private boolean alterar = false;
+	
+	private boolean encerrado = false;
 
 	public String prepareIncluir() {
 		limpar();
@@ -37,6 +39,11 @@ public class CarreiraFormBean implements Serializable {
 	public String prepareAlterar() {
 
 		this.alterar = true;
+		
+		if(entidade.getInicioExclusao() != null)
+			this.encerrado = true;
+		else
+			this.encerrado = false;
 
 		try {
 
@@ -72,6 +79,7 @@ public class CarreiraFormBean implements Serializable {
 	private void limpar() {
 
 		this.alterar = false;
+		this.encerrado = false;
 		this.entidade = new Carreira();
 
 	}
@@ -94,6 +102,14 @@ public class CarreiraFormBean implements Serializable {
 
 	public void setAlterar(boolean alterar) {
 		this.alterar = alterar;
-	}	
+	}
+
+	public boolean isEncerrado() {
+		return encerrado;
+	}
+
+	public void setEncerrado(boolean encerrado) {
+		this.encerrado = encerrado;
+	}
 
 }

@@ -11,20 +11,20 @@
 	<ui:define name="content">
 
 		<style>
-			.formularios fieldset, .box-border {
-				border: 1px solid #c6c6c6;
-				padding: 15px 15px 0px 15px;
-				padding-right: 0;
-				overflow: auto;
-				margin-bottom: 10px;
-				min-height: 100px;
-			}
-			
-			.formularios fieldset fieldset {
-				min-height: auto;
-				width: max-content;
-			}
-		</style>
+.formularios fieldset, .box-border {
+	border: 1px solid #c6c6c6;
+	padding: 15px 15px 0px 15px;
+	padding-right: 0;
+	overflow: auto;
+	margin-bottom: 10px;
+	min-height: 100px;
+}
+
+.formularios fieldset fieldset {
+	min-height: auto;
+	width: max-content;
+}
+</style>
 
 		<div class="titulo-pagina">
 
@@ -45,7 +45,8 @@
 				<div class="input-box box-10">
 					<label for="">ID</label>
 					<div class="conteiner">
-						<h:inputText disabled="true" value="#{cargoFormBean.entidade.id}" />
+						<h:inputText disabled="true"
+							value="#{carreiraFormBean.entidade.id}" />
 					</div>
 				</div>
 
@@ -54,7 +55,7 @@
 					<div class="conteiner">
 						<h:inputText id="codigo"
 							value="#{carreiraFormBean.entidade.codigo}" maxlength="30"
-							required="true" requiredMessage="A código é obrigatório." />
+							required="true" requiredMessage="O Código é obrigatório." disabled="#{carreiraFormBean.encerrado}" />
 					</div>
 				</div>
 
@@ -63,29 +64,29 @@
 					<div class="conteiner">
 						<h:inputText id="descricao"
 							value="#{carreiraFormBean.entidade.descricao}" maxlength="100"
-							required="true" requiredMessage="A descrição é obrigatória." />
+							required="true" requiredMessage="A Descrição é obrigatória." disabled="#{carreiraFormBean.encerrado}" />
 					</div>
 				</div>
 
-				<fieldset>
+				<fieldset class="fl mg-right-15">
 
 					<legend>Lei que criou a Carreira</legend>
 
 					<div class="input-box box-37">
-						<label for="">Número</label>
+						<label for="">Lei</label>
 						<div class="conteiner">
 							<h:inputText id="numerolei"
-								value="#{carreiraFormBean.entidade.lei}" maxlength="12"
-								required="true" requiredMessage="A lei é obrigatória." />
+								value="#{carreiraFormBean.entidade.lei}" maxlength="12" disabled="#{carreiraFormBean.encerrado}" />
 						</div>
 					</div>
 
 					<div class="input-box box-20">
-						<label for="">Data</label>
+						<label for="">Data *</label>
 						<div class="conteiner">
 							<h:inputText id="dataLei" styleClass="maskData"
 								converter="dateConverter"
-								value="#{carreiraFormBean.entidade.dataLei}" maxlength="10">
+								value="#{carreiraFormBean.entidade.dataLei}" maxlength="10"
+								required="true" requiredMessage="A Data da Lei é obrigatória." disabled="#{carreiraFormBean.encerrado}">
 							</h:inputText>
 						</div>
 					</div>
@@ -94,7 +95,8 @@
 						<label for="">Situação</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="situacao"
-								value="#{carreiraFormBean.entidade.situacao}">
+								value="#{carreiraFormBean.entidade.situacao}" required="true"
+								requiredMessage="A Situação gerada pela Lei é obrigatória." disabled="#{carreiraFormBean.encerrado}">
 								<f:selectItem id="selecioneSituacao" itemLabel="Selecione..." />
 								<f:selectItems id="comboSituacao"
 									value="#{carreiraFormBean.comboSituacao}" var="situacao"
@@ -106,17 +108,19 @@
 				</fieldset>
 
 
-				<fieldset>
+				<fieldset class="fl">
 
 					<legend>Período de vigência</legend>
 
 					<div class="input-box box-50">
-						<label for="">Início</label>
+						<label for="">Início *</label>
 						<div class="conteiner">
 							<h:inputText id="dataInicio" name="dataInicio"
 								styleClass="maskData" converter="dateConverter"
 								value="#{carreiraFormBean.entidade.inicioValidade}"
-								maxlength="10" />
+								maxlength="10" required="true"
+								requiredMessage="O início da vigência é obrigatório."
+								disabled="#{carreiraFormBean.alterar}" />
 						</div>
 					</div>
 
@@ -125,7 +129,8 @@
 						<div class="conteiner">
 							<h:inputText id="dataFim" name="dataFim" styleClass="maskData"
 								converter="dateConverter"
-								value="#{carreiraFormBean.entidade.fimValidade}" maxlength="10" />
+								value="#{carreiraFormBean.entidade.fimValidade}" maxlength="10"
+								disabled="#{carreiraFormBean.alterar}" />
 						</div>
 					</div>
 
@@ -134,18 +139,18 @@
 			</fieldset>
 
 			<ui:fragment
-				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR, ROLE_CARGO_ALTERAR')}">
+				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR, ROLE_CARGO_ALTERAR') and not carreiraFormBean.encerrado }" >
 
 				<h:commandButton value="Salvar" action="#{carreiraFormBean.salvar}"
 					styleClass="bt-padrao fr" />
 
 				<a href="/srh/paginas/tabelas/carreiraForm.faces"
-					class="bt-voltar fr mg-right-10">Limpar</a>
+					class="bt-padrao fr mg-right-10">Limpar</a>
 
 			</ui:fragment>
 
 			<a href="/srh/paginas/tabelas/carreiraList.faces"
-				class="bt-voltar fr mg-right-10">Voltar</a>
+				class="bt-padrao fr mg-right-10">Voltar</a>
 
 		</h:form>
 

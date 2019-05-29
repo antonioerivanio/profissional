@@ -9,7 +9,6 @@ import javax.faces.component.html.HtmlForm;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Carreira;
@@ -77,7 +76,7 @@ public class CarreiraListBean implements Serializable{
 
 		try {
 
-			service.excluir(entidade);
+			service.encerrarVigencia(entidade);
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -85,9 +84,6 @@ public class CarreiraListBean implements Serializable{
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Registro selecionado está em uso no sistema. Exclusão não poderá ser realizada.");
-			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
