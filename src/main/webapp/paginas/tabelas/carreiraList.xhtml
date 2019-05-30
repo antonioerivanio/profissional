@@ -99,19 +99,13 @@
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
-						rendered="#{LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}">
+						rendered="#{LoginBean.anyGranted('ROLE_CARGO_EXCLUIR')}">
 						<f:facet name="header">
                             EXCLUIR
-                        </f:facet>
-
-						<ui:fragment rendered="#{item.inicioExclusao != null}" id="msg-encerrado">
-							<center><span class="errorMessage mg-zero">ENCERRADO</span></center>
-						</ui:fragment>
-
+                        </f:facet>						
 						<h:commandLink id="excluir" value="Excluir"
 							action="#{carreiraListBean.excluir}" styleClass="ico-delete"
-							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-							rendered="#{item.inicioExclusao == null}">
+							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
 							<f:setPropertyActionListener
 								target="#{carreiraListBean.entidade}" value="#{item}" />
 						</h:commandLink>

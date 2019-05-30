@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.gov.ce.tce.srh.enums.SituacaoCarreira;
+import br.gov.ce.tce.srh.enums.SituacaoLei;
 
 @Entity
 @SuppressWarnings("serial")
@@ -102,12 +102,13 @@ public class Carreira extends BasicEntity<Long> implements Serializable {
 		this.dataLei = dataLei;
 	}
 
-	public SituacaoCarreira getSituacao() {
-		return SituacaoCarreira.toEnum(this.situacao);
+	public SituacaoLei getSituacao() {
+		return SituacaoLei.toEnum(this.situacao);
 	}
 
-	public void setSituacao(SituacaoCarreira situacao) {
-		this.situacao = situacao.getCodigo();
+	public void setSituacao(SituacaoLei situacao) {
+		if(situacao != null)
+			this.situacao = situacao.getCodigo();
 	}
 
 	public Date getInicioValidade() {

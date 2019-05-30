@@ -1,13 +1,13 @@
 package br.gov.ce.tce.srh.enums;
 
-public enum SituacaoCarreira {
+public enum SituacaoLei {
 
 	CRIACAO(1, "Criação"), EXTINCAO(2, "Extinção"), REESTRUTURACAO(3, "Reestruturação");
 
 	private Integer codigo;
 	private String descricao;
 
-	private SituacaoCarreira(Integer codigo, String descricao) {
+	private SituacaoLei(Integer codigo, String descricao) {
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}
@@ -28,13 +28,13 @@ public enum SituacaoCarreira {
 		this.descricao = descricao;
 	}
 
-	public static SituacaoCarreira toEnum(Integer codigo) {
+	public static SituacaoLei toEnum(Integer codigo) {
 
 		if (codigo == null) {
 			return null;
 		}
 
-		for (SituacaoCarreira situacao : SituacaoCarreira.values()) {
+		for (SituacaoLei situacao : SituacaoLei.values()) {
 			if (codigo.equals(situacao.getCodigo())) {
 				return situacao;
 			}

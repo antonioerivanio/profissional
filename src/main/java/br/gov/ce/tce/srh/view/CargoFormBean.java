@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,6 +16,9 @@ import br.gov.ce.tce.srh.domain.EspecialidadeCargo;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.Simbolo;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
+import br.gov.ce.tce.srh.enums.ContagemEspecial;
+import br.gov.ce.tce.srh.enums.SituacaoLei;
+import br.gov.ce.tce.srh.enums.TipoAcumuloDeCargo;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.EscolaridadeService;
 import br.gov.ce.tce.srh.service.EspecialidadeCargoService;
@@ -70,9 +74,7 @@ public class CargoFormBean implements Serializable {
 	// combos
 	private List<Especialidade> comboEspecialidade;
 	private List<Escolaridade> comboEscolaridade;
-	private List<TipoOcupacao> comboTipoOcupacao; 
-
-
+	private List<TipoOcupacao> comboTipoOcupacao;
 
 	/**
 	 * Realizar antes de carregar tela incluir
@@ -97,8 +99,8 @@ public class CargoFormBean implements Serializable {
 			
 			limpar();
 			this.listaEspecialidade = especialidadeCargoService.findByOcupacao( entidade.getId() );
-			this.listaSimbolo = simboloService.findByOcupacao( entidade.getId() );
-
+			this.listaSimbolo = simboloService.findByOcupacao( entidade.getId() );			
+			
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -117,8 +119,7 @@ public class CargoFormBean implements Serializable {
 
 		try {
 
-			ocupacaoService.salvar(entidade, listaEspecialidade, listaSimbolo);
-			limpar();
+			this.entidade = ocupacaoService.salvar(entidade, listaEspecialidade, listaSimbolo);			
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -127,6 +128,7 @@ public class CargoFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -327,6 +329,17 @@ public class CargoFormBean implements Serializable {
 		return this.comboTipoOcupacao;
 	}
 
+	public List<SituacaoLei> getComboSituacaoLei() {
+		return Arrays.asList(SituacaoLei.values());
+	}
+	
+	public List<TipoAcumuloDeCargo> getComboTipoAcumulo() {
+		return Arrays.asList(TipoAcumuloDeCargo.values());
+	}
+	
+	public List<ContagemEspecial> getComboContagemEspecial() {
+		return Arrays.asList(ContagemEspecial.values());
+	}
 
 	/**
 	 * Limpar form

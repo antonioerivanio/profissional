@@ -76,7 +76,7 @@ public class CarreiraListBean implements Serializable{
 
 		try {
 
-			service.encerrarVigencia(entidade);
+			service.excluir(entidade);
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");

@@ -123,7 +123,7 @@ public class LoginBean implements Serializable {
 		for (GrantedAuthority permissao : authenticationService.getUsuarioLogado().getAuthorities()) {
 			
 			for (String grant : listaGrants) {
-				if (permissao.getAuthority().equals(grant))
+				if (permissao.getAuthority().trim().equals(grant.trim()))
 					return true;				
 			}
 

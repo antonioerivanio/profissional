@@ -37,10 +37,7 @@
 			<fieldset>
 
 				<h:messages id="messages" infoClass="infoMessage"
-					errorClass="errorMessage" />
-
-				<h:inputHidden id="alterar" disabled="true"
-					value="#{aposentadoriaFormBean.alterar}" />
+					errorClass="errorMessage" />				
 
 				<div class="input-box box-10">
 					<label for="">ID</label>
@@ -55,7 +52,7 @@
 					<div class="conteiner">
 						<h:inputText id="codigo"
 							value="#{carreiraFormBean.entidade.codigo}" maxlength="30"
-							required="true" requiredMessage="O Código é obrigatório." disabled="#{carreiraFormBean.encerrado}" />
+							required="true" requiredMessage="O Código é obrigatório." />
 					</div>
 				</div>
 
@@ -64,7 +61,7 @@
 					<div class="conteiner">
 						<h:inputText id="descricao"
 							value="#{carreiraFormBean.entidade.descricao}" maxlength="100"
-							required="true" requiredMessage="A Descrição é obrigatória." disabled="#{carreiraFormBean.encerrado}" />
+							required="true" requiredMessage="A Descrição é obrigatória." />
 					</div>
 				</div>
 
@@ -76,7 +73,7 @@
 						<label for="">Lei</label>
 						<div class="conteiner">
 							<h:inputText id="numerolei"
-								value="#{carreiraFormBean.entidade.lei}" maxlength="12" disabled="#{carreiraFormBean.encerrado}" />
+								value="#{carreiraFormBean.entidade.lei}" maxlength="12" />
 						</div>
 					</div>
 
@@ -86,7 +83,7 @@
 							<h:inputText id="dataLei" styleClass="maskData"
 								converter="dateConverter"
 								value="#{carreiraFormBean.entidade.dataLei}" maxlength="10"
-								required="true" requiredMessage="A Data da Lei é obrigatória." disabled="#{carreiraFormBean.encerrado}">
+								required="true" requiredMessage="A Data da Lei é obrigatória.">
 							</h:inputText>
 						</div>
 					</div>
@@ -96,7 +93,7 @@
 						<div class="conteiner">
 							<h:selectOneMenu id="situacao"
 								value="#{carreiraFormBean.entidade.situacao}" required="true"
-								requiredMessage="A Situação gerada pela Lei é obrigatória." disabled="#{carreiraFormBean.encerrado}">
+								requiredMessage="A Situação gerada pela Lei é obrigatória.">
 								<f:selectItem id="selecioneSituacao" itemLabel="Selecione..." />
 								<f:selectItems id="comboSituacao"
 									value="#{carreiraFormBean.comboSituacao}" var="situacao"
@@ -119,8 +116,7 @@
 								styleClass="maskData" converter="dateConverter"
 								value="#{carreiraFormBean.entidade.inicioValidade}"
 								maxlength="10" required="true"
-								requiredMessage="O início da vigência é obrigatório."
-								disabled="#{carreiraFormBean.alterar}" />
+								requiredMessage="O início da vigência é obrigatório." />
 						</div>
 					</div>
 
@@ -129,8 +125,7 @@
 						<div class="conteiner">
 							<h:inputText id="dataFim" name="dataFim" styleClass="maskData"
 								converter="dateConverter"
-								value="#{carreiraFormBean.entidade.fimValidade}" maxlength="10"
-								disabled="#{carreiraFormBean.alterar}" />
+								value="#{carreiraFormBean.entidade.fimValidade}" maxlength="10" />
 						</div>
 					</div>
 
@@ -139,7 +134,7 @@
 			</fieldset>
 
 			<ui:fragment
-				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR, ROLE_CARGO_ALTERAR') and not carreiraFormBean.encerrado }" >
+				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR, ROLE_CARGO_ALTERAR') }">
 
 				<h:commandButton value="Salvar" action="#{carreiraFormBean.salvar}"
 					styleClass="bt-padrao fr" />

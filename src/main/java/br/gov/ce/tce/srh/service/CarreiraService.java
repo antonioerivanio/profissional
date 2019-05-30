@@ -22,7 +22,7 @@ public class CarreiraService{
 	}
 
 	@Transactional
-	private void excluir(Carreira entidade) {
+	public void excluir(Carreira entidade) {
 		dao.excluir(entidade);
 	}
 	

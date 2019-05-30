@@ -36,7 +36,7 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 
 	@Override
 	@Transactional
-	public void salvar(Ocupacao entidade, List<EspecialidadeCargo> especialidades, List<Simbolo> simbologias) 
+	public Ocupacao salvar(Ocupacao entidade, List<EspecialidadeCargo> especialidades, List<Simbolo> simbologias) 
 			throws SRHRuntimeException {
 
 		/*
@@ -45,7 +45,7 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 		 * Nao deixar cadastrar entidade ja existente.
 		 * 
 		 */
-		verificandoSeEntidadeExiste(entidade);
+		//verificandoSeEntidadeExiste(entidade);
 
 		// salvando a ocupacao
 		entidade = dao.salvar(entidade);
@@ -65,6 +65,8 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 				especialidadeCargoService.salvar(especialidade);	
 			}
 		}
+		
+		return entidade;
 
 	}
 

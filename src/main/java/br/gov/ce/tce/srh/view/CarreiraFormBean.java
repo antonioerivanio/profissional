@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Carreira;
-import br.gov.ce.tce.srh.enums.SituacaoCarreira;
+import br.gov.ce.tce.srh.enums.SituacaoLei;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CarreiraService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -26,26 +26,16 @@ public class CarreiraFormBean implements Serializable {
 	private CarreiraService service;
 
 	private Carreira entidade = new Carreira();
-
-	private boolean alterar = false;
 	
-	private boolean encerrado = false;
-
 	public String prepareIncluir() {
 		limpar();
 		return "incluirAlterar";
 	}
 
-	public String prepareAlterar() {
-
-		this.alterar = true;
+	public String prepareAlterar() {		
 		
-		if(entidade.getInicioExclusao() != null)
-			this.encerrado = true;
-		else
-			this.encerrado = false;
-
 		try {
+			
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -77,15 +67,11 @@ public class CarreiraFormBean implements Serializable {
 	}
 
 	private void limpar() {
-
-		this.alterar = false;
-		this.encerrado = false;
 		this.entidade = new Carreira();
-
 	}
 	
-	public List<SituacaoCarreira> getComboSituacao() {
-		return Arrays.asList(SituacaoCarreira.values());
+	public List<SituacaoLei> getComboSituacao() {
+		return Arrays.asList(SituacaoLei.values());
 	}
 
 	public Carreira getEntidade() {
@@ -94,22 +80,6 @@ public class CarreiraFormBean implements Serializable {
 
 	public void setEntidade(Carreira entidade) {
 		this.entidade = entidade;
-	}
-
-	public boolean isAlterar() {
-		return alterar;
-	}
-
-	public void setAlterar(boolean alterar) {
-		this.alterar = alterar;
-	}
-
-	public boolean isEncerrado() {
-		return encerrado;
-	}
-
-	public void setEncerrado(boolean encerrado) {
-		this.encerrado = encerrado;
-	}
+	}	
 
 }
