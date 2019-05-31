@@ -28,7 +28,7 @@
 			            </a>
 			            <ul class="sub-sub-menu">
 		
-							<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARGO')}">
+							<ui:fragment rendered="#{true}">
 								<li>
 									<a href="/srh/paginas/tabelas/carreiraList.faces">
 									Carreira
@@ -366,6 +366,14 @@
 					<li>
 						<a href="/srh/paginas/tabelas/tipoDocumentoList.faces">
 						Tipo Documento
+						</a>
+					</li>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{true}">
+					<li>
+						<a href="/srh/paginas/tabelas/ambienteTrabalhoList.faces">
+						Ambiente de Trabalho
 						</a>
 					</li>
 				</ui:fragment>
