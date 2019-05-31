@@ -32,7 +32,7 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 		 * Nao deixar cadastrar entidade ja existente.
 		 * 
 		 */
-		verificandoSeEntidadeExiste(entidade);
+//		verificandoSeEntidadeExiste(entidade);
 
 		// persistindo
 		dao.salvar(entidade);

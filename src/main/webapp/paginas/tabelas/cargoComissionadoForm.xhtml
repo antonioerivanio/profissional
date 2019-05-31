@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition template="../../WEB-INF/templates/page.xhtml"
-	  xmlns="http://www.w3.org/1999/xhtml"      
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-	  xmlns:h="http://java.sun.com/jsf/html"
- 	  xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="content">
+
+		<style>
+		.formularios fieldset, .box-border {
+			border: 1px solid #c6c6c6;
+			padding: 15px;
+			overflow: auto;
+			margin-bottom: 10px;
+			min-height: 100px;
+		}
+		</style>
 
 		<div class="titulo-pagina">
 
@@ -14,77 +24,127 @@
 
 		</div>
 
-         <h:form styleClass="formularios">
+		<h:form styleClass="formularios">
 
 			<fieldset>
 
-            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+				<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
-			<div class="input-box box-10">
-				<label for="">ID</label>
-				<div class="conteiner">
-					<h:inputHidden value="#{cargoComissionadoBean.entidade.id}" />
-					<h:inputText disabled="true" value="#{cargoComissionadoBean.entidade.id}" />  
-				</div>
-			</div>
-
-			<div class="input-box box-90">
-				<label for="">Nomenclatura *</label>
-				<div class="conteiner">
-					<h:inputText id="nomenclatura"
-								 value="#{cargoComissionadoBean.entidade.nomenclatura}"
-								 required="true"
-								 requiredMessage="A nomenclatura é obrigatória." 
-								 maxlength="60" />    
-				</div>
-			</div>
-
-			<div class="input-box box-10">
-				<label for="">Símbolo</label>
-				<div class="conteiner">
-					<h:inputText id="simbolo" 
-								 value="#{cargoComissionadoBean.entidade.simbolo}" 
-								 maxlength="5" />    
-				</div>
-			</div>
-
-			<div class="input-box box-10">
-				<label for="">Ordem *</label>
-				<div class="conteiner">
-					<h:inputText id="ordem"
-								 value="#{cargoComissionadoBean.entidade.ordem}"
-								 required="true"
-								 requiredMessage="A ordem é obrigatória."
-								 maxlength="2"
-								 onkeyup="SoNumeros(this)" />    
-				</div>
-			</div>
-
-			<div class="radios-group box-5">
-				<h3>Ativa</h3>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectBooleanCheckbox value="#{cargoComissionadoBean.entidade.ativo}" />
+				<div class="input-box box-10">
+					<label for="">ID</label>
+					<div class="conteiner">
+						<h:inputHidden value="#{cargoComissionadoBean.entidade.id}" />
+						<h:inputText disabled="true"
+							value="#{cargoComissionadoBean.entidade.id}" />
 					</div>
 				</div>
-			</div>
 
-			<div class="textarea-box box-100">
-				<label for="">Observação</label>
-				<div class="conteiner">
-					<h:inputTextarea id="observacao"
-									 value="#{cargoComissionadoBean.entidade.observacao}"
-									 onkeyup="this.value = this.value.substring(0, 199);" />
+				<div class="input-box box-90">
+					<label for="">Nomenclatura *</label>
+					<div class="conteiner">
+						<h:inputText id="nomenclatura"
+							value="#{cargoComissionadoBean.entidade.nomenclatura}"
+							required="true" requiredMessage="A nomenclatura é obrigatória."
+							maxlength="60" />
+					</div>
 				</div>
-			</div>
 
-			</fieldset>                            
+				<div class="input-box box-10">
+					<label for="">Símbolo</label>
+					<div class="conteiner">
+						<h:inputText id="simbolo"
+							value="#{cargoComissionadoBean.entidade.simbolo}" maxlength="5" />
+					</div>
+				</div>
 
-			<h:commandButton action="#{cargoComissionadoBean.salvar()}" value="Salvar" styleClass="bt-padrao fr" />
-			<a href="/srh/paginas/tabelas/cargoComissionadoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
+				<div class="input-box box-10">
+					<label for="">Ordem *</label>
+					<div class="conteiner">
+						<h:inputText id="ordem"
+							value="#{cargoComissionadoBean.entidade.ordem}" required="true"
+							requiredMessage="A ordem é obrigatória." maxlength="2"
+							onkeyup="SoNumeros(this)" />
+					</div>
+				</div>
+
+				<div class="radios-group box-5">
+					<h3>Ativa</h3>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectBooleanCheckbox
+								value="#{cargoComissionadoBean.entidade.ativo}" />
+						</div>
+					</div>
+				</div>
+
+				<div class="textarea-box box-100">
+					<label for="">Observação</label>
+					<div class="conteiner">
+						<h:inputTextarea id="observacao"
+							value="#{cargoComissionadoBean.entidade.observacao}"
+							onkeyup="this.value = this.value.substring(0, 199);" />
+					</div>
+				</div>
+
+				<fieldset>
+
+					<legend>eSocial</legend>
+
+					<br />
+
+					<div class="input-box box-15">
+						<label for="">Código</label>
+						<div class="conteiner">
+							<h:inputText id="codigoEsocial"
+								value="#{cargoComissionadoBean.entidade.codigoEsocial}"
+								maxlength="30" />
+						</div>
+					</div>
+
+					<div class="input-box box-10">
+						<label for="">CBO</label>
+						<div class="conteiner">
+							<h:inputText id="cbo"
+								value="#{cargoComissionadoBean.entidade.cbo}" maxlength="6" />
+						</div>
+					</div>
+
+					<fieldset class="fl">
+
+						<legend>Período de Vigência</legend>
+
+						<div class="input-box box-50">
+							<label for="">Início</label>
+							<div class="conteiner">
+								<h:inputText id="dataInicio" name="dataInicio"
+									styleClass="maskData" converter="dateConverter"
+									value="#{cargoComissionadoBean.entidade.inicioValidade}"
+									maxlength="10" />
+							</div>
+						</div>
+
+						<div class="input-box box-50">
+							<label for="">Fim</label>
+							<div class="conteiner">
+								<h:inputText id="dataFim" name="dataFim" styleClass="maskData"
+									converter="dateConverter"
+									value="#{cargoComissionadoBean.entidade.fimValidade}"
+									maxlength="10" />
+							</div>
+						</div>
+
+					</fieldset>
+
+				</fieldset>
+
+			</fieldset>
+
+			<h:commandButton action="#{cargoComissionadoBean.salvar()}"
+				value="Salvar" styleClass="bt-padrao fr" />
+			<a href="/srh/paginas/tabelas/cargoComissionadoList.faces"
+				class="bt-voltar fr mg-right-10">Voltar</a>
 
 		</h:form>
 
 	</ui:define>
 </ui:composition>
-    

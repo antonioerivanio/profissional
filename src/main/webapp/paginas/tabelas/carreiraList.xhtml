@@ -71,23 +71,10 @@
 								<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
 							</h:outputText>
 						</center>
-					</h:column>
-
-					<h:column id="col7"
-						rendered="#{not LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}">
-						<f:facet name="header">
-                            DETALHAR
-                        </f:facet>
-						<h:commandLink id="detalhar" value="Detalhar"
-							action="#{carreiraFormBean.prepareAlterar}"
-							styleClass="ico-detail">
-							<f:setPropertyActionListener
-								target="#{carreiraFormBean.entidade}" value="#{item}" />
-						</h:commandLink>
-					</h:column>
+					</h:column>				
 
 					<h:column id="col8"
-						rendered="#{LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}">
+						rendered="#{true}">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -99,7 +86,7 @@
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
-						rendered="#{LoginBean.anyGranted('ROLE_CARGO_EXCLUIR')}">
+						rendered="#{true}">
 						<f:facet name="header">
                             EXCLUIR
                         </f:facet>						
@@ -122,7 +109,7 @@
 			<h:commandButton id="incluir" value="Incluir"
 				action="#{carreiraFormBean.prepareIncluir}"
 				styleClass="bt-padrao fr mg-right-15"
-				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR')}" />
+				rendered="#{true}" />
 			<h:commandButton id="limpaTela" value="Limpar"
 				action="#{carreiraListBean.limpaTela}"
 				styleClass="bt-padrao fr mg-right-15" />
