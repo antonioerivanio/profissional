@@ -94,7 +94,10 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	}
 
 	public void setIdVara(Integer idVara) {
-		this.idVara = idVara;
+		if (idVara > 0)
+			this.idVara = idVara;
+		else
+			this.idVara = null;
 	}
 
 	public TipoProcesso getTipoProcesso() {
