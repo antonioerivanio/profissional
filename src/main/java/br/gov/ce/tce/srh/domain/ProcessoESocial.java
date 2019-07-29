@@ -1,7 +1,9 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.gov.ce.tce.srh.enums.IndicativoAutoria;
 import br.gov.ce.tce.srh.enums.IndicativoMateria;
@@ -54,6 +57,9 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	@Column(name = "FIMVALIDADE")
 	@Temporal(TemporalType.DATE)
 	private Date fimValidade;
+	
+	@Transient
+	private List<ProcessoESocialSuspensao> suspensoes = new ArrayList<>();
 
 	@Override
 	public Long getId() {
@@ -141,6 +147,25 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 
 	public void setFimValidade(Date fimValidade) {
 		this.fimValidade = fimValidade;
-	}	
+	}
+
+	public List<ProcessoESocialSuspensao> getSuspensoes() {
+		return suspensoes;
+	}
+
+	public void setSuspensoes(List<ProcessoESocialSuspensao> suspensoes) {
+		this.suspensoes = suspensoes;
+	}
+	
+	public List<ProcessoESocialSuspensao> getSuspensoesAtualizadas() {
+		List<ProcessoESocialSuspensao> listaAtualizada = new ArrayList<>();
+		if (this.suspensoes != null) {
+			for(ProcessoESocialSuspensao suspensao: this.suspensoes) {
+				if(!suspensao.isExcluida())
+					listaAtualizada.add(suspensao);
+			}	
+		}					
+		return listaAtualizada;
+	}
 
 }

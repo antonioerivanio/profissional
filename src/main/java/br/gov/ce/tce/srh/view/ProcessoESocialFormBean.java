@@ -11,9 +11,12 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Municipio;
 import br.gov.ce.tce.srh.domain.ProcessoESocial;
+import br.gov.ce.tce.srh.domain.ProcessoESocialSuspensao;
 import br.gov.ce.tce.srh.domain.Uf;
 import br.gov.ce.tce.srh.enums.IndicativoAutoria;
 import br.gov.ce.tce.srh.enums.IndicativoMateria;
+import br.gov.ce.tce.srh.enums.IndicativoSuspensao;
+import br.gov.ce.tce.srh.enums.SimNao;
 import br.gov.ce.tce.srh.enums.TipoProcesso;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.MunicipioService;
@@ -38,6 +41,8 @@ public class ProcessoESocialFormBean implements Serializable {
 	private MunicipioService municipioService;
 
 	private ProcessoESocial entidade = new ProcessoESocial();
+	private ProcessoESocialSuspensao suspensao;
+	private ProcessoESocialSuspensao novaSuspensao = new ProcessoESocialSuspensao();
 	private Uf uf;
 	private List<Uf> comboUf;
 	private List<Municipio> comboMunicipio;
@@ -50,9 +55,10 @@ public class ProcessoESocialFormBean implements Serializable {
 	public String prepareAlterar() {		
 		
 		try {
-			
 			if (entidade.getMunicipioVara() != null)
 				this.uf = entidade.getMunicipioVara().getUf();
+			
+			this.entidade.setSuspensoes(service.getSuspensoes(this.entidade.getId()));
 
 		} catch (Exception e) {			
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -61,23 +67,59 @@ public class ProcessoESocialFormBean implements Serializable {
 
 		return "incluirAlterar";
 	}
+	
+	public String prepareAlterarSuspensao() {		
+		
+		try {
+			
+
+		} catch (Exception e) {			
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return "alterarSuspensao";
+	}
 
 	public String salvar() {
 
 		try {
-
+			
 			service.salvar(entidade);
 			limpar();
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
 
-		} catch (SRHRuntimeException e) {
+		} catch (SRHRuntimeException e) {			
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	public String salvarSuspensao() {
+
+		try {
+			
+			service.salvarSuspensao(this.suspensao);
+			
+			
+			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
+			logger.info("Operação realizada com sucesso.");
+
+		} catch (SRHRuntimeException e) {			
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			e.printStackTrace();
 		}
 
 		return null;
@@ -85,6 +127,9 @@ public class ProcessoESocialFormBean implements Serializable {
 
 	private void limpar() {
 		this.entidade = new ProcessoESocial();
+		this.suspensao = null;
+		this.novaSuspensao = new ProcessoESocialSuspensao();
+		this.uf = null;
 	}
 	
 	public List<Uf> getComboUf() {
@@ -130,6 +175,47 @@ public class ProcessoESocialFormBean implements Serializable {
 	public List<IndicativoMateria> getComboIndicativoMateria() {
 		return Arrays.asList(IndicativoMateria.values());
 	}
+	
+	public List<IndicativoSuspensao> getComboIndicativoSuspensao() {
+		return Arrays.asList(IndicativoSuspensao.values());
+	}
+	
+	public List<SimNao> getSimNao() {
+		return Arrays.asList(SimNao.values());
+	}
+	
+	public String incluirSuspensao() {
+		try {
+			if(this.novaSuspensao.isValido()) {			
+				this.entidade.getSuspensoes().add(this.novaSuspensao);			
+				setNovaSuspensao(new ProcessoESocialSuspensao());
+			} else {
+				throw new SRHRuntimeException("Para adicionar informações de suspensão de exigibilidade, informe todos os campos relacionados");
+			}			
+		} catch (SRHRuntimeException e) {			
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+        	FacesUtil.addErroMessage("Erro ao incluir a suspensão. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		return null;
+	}	
+	
+	public String excluirSuspensao() {
+		try {
+			if (this.suspensao.getId() == null)
+				this.entidade.getSuspensoes().remove(this.suspensao);
+			else	
+				this.suspensao.setExcluida(true);
+			setSuspensao(null);
+		} catch (Exception e) {
+        	FacesUtil.addErroMessage("Erro ao remover a suspensão. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		return null;
+	}
+	
 
 	public ProcessoESocial getEntidade() {
 		return entidade;
@@ -145,6 +231,22 @@ public class ProcessoESocialFormBean implements Serializable {
 
 	public void setUf(Uf uf) {
 		this.uf = uf;
-	}	
+	}
+
+	public ProcessoESocialSuspensao getSuspensao() {
+		return suspensao;
+	}
+
+	public void setSuspensao(ProcessoESocialSuspensao suspensao) {
+		this.suspensao = suspensao;
+	}
+
+	public ProcessoESocialSuspensao getNovaSuspensao() {
+		return novaSuspensao;
+	}
+
+	public void setNovaSuspensao(ProcessoESocialSuspensao novaSuspensao) {
+		this.novaSuspensao = novaSuspensao;
+	}		
 
 }

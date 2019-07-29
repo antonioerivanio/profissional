@@ -11,20 +11,20 @@
 	<ui:define name="content">
 
 		<style>
-.formularios fieldset, .box-border {
-	border: 1px solid #c6c6c6;
-	padding: 15px 15px 0px 15px;
-	padding-right: 0;
-	overflow: auto;
-	margin-bottom: 10px;
-	min-height: 100px;
-}
-
-.formularios fieldset fieldset {
-	min-height: auto;
-	width: max-content;
-}
-</style>
+		.formularios fieldset, .box-border {
+			border: 1px solid #c6c6c6;
+			padding: 15px 15px 0px 15px;
+			padding-right: 0;
+			overflow: auto;
+			margin-bottom: 10px;
+			min-height: 100px;
+		}
+		
+		.formularios fieldset fieldset {
+			min-height: auto;
+			width: max-content;
+		}
+		</style>
 
 		<script>
 			jQuery(document).ready(function($) {
@@ -44,7 +44,7 @@
 
 		<h:form id="form" styleClass="formularios">
 
-			<fieldset>
+			<fieldset style="padding-right: 15px">
 
 				<h:messages id="messages" infoClass="infoMessage"
 					errorClass="errorMessage" />
@@ -117,7 +117,7 @@
 
 				<div class="textarea-box box-100">
 					<label for="">Observação</label>
-					<div class="conteiner">
+					<div class="conteiner" style="margin-right: 0">
 						<h:inputTextarea id="observacao"
 							value="#{processoESocialFormBean.entidade.observacao}"
 							validatorMessage="O campo Observação excedeu o tamanho máximo de 255 caracteres"
@@ -198,8 +198,115 @@
 					</div>
 
 				</fieldset>
-
-			</fieldset>
+				
+				<fieldset class="box-100 fl mg-top-15" style="padding-top: 25px;">
+					<legend>Informações de Suspensão de Exigibilidade</legend>
+					
+					<div class="select-box box-40">
+						<label for="">Indicativo de suspensão da exigibilidade</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="indicativoSuspensao"
+								value="#{processoESocialFormBean.novaSuspensao.indicativoSuspensao}">
+								<f:selectItem id="selecioneIndicativoSuspensao" itemLabel="Selecione..." />
+								<f:selectItems id="comboIndicativoSuspensao"
+									value="#{processoESocialFormBean.comboIndicativoSuspensao}"
+									var="suspensao" itemLabel="#{suspensao.descricao}"
+									itemValue="#{suspensao}" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="input-box box-15">
+						<label for="">Data da decisão</label>
+						<div class="conteiner">
+							<h:inputText id="dataDecisao" name="dataDecisao" styleClass="maskData"
+								converter="dateConverter"
+								value="#{processoESocialFormBean.novaSuspensao.dataDecisao}"
+								maxlength="10" />
+						</div>
+					</div>
+					
+					<div class="radios-group box-25">
+						<h3>Indicativo de depósito do montante integral</h3>
+						<div class="conteiner">
+							<div class="radio-box">
+							<h:selectOneRadio id="indicativoDeposito" value="#{processoESocialFormBean.novaSuspensao.indicativoDeposito}">
+								<f:selectItems id="simNao" 
+									value="#{processoESocialFormBean.simNao}" 
+									var="item" itemLabel="#{item.descricao}" itemValue="#{item}" />
+							</h:selectOneRadio>
+							</div>
+						</div>
+					</div>
+					
+					<h:commandButton value="Adicionar" action="#{processoESocialFormBean.incluirSuspensao}" styleClass="bt-padrao" style="margin-top: 20px;">
+						<a4j:support id="btAdicionarSuspensao" 
+					  	             event="onclick"
+					  	             reRender="indicativoSuspensao, dataDecisao, indicativoDeposito, listaSuspensoes" />
+					</h:commandButton>
+					
+					
+					<div class="tabela-dados">
+						<rich:dataTable id="listaSuspensoes" var="suspensao" value="#{processoESocialFormBean.entidade.suspensoesAtualizadas}">		
+							<h:column id="col1" headerClass="cel-15">
+								<f:facet name="header">
+		                           ID
+		                        </f:facet>
+								<center>
+									<h:outputText id="suspensaoId" value="#{suspensao.id}" styleClass="cel-15" />
+								</center>
+							</h:column>		
+							<h:column id="col2" headerClass="cel-50">
+								<f:facet name="header">
+		                           Indicativo de suspensão
+		                        </f:facet>
+								<center>
+									<h:outputText id="item2" value="#{suspensao.indicativoSuspensao.descricao}"	styleClass="cel-50" />
+								</center>
+							</h:column>
+							<h:column id="col3" headerClass="cel-15">
+								<f:facet name="header">
+		                            Data da decisão
+		                        </f:facet>
+								<center>
+									<h:outputText id="item4" value="#{suspensao.dataDecisao}"	styleClass="cel-15">
+										<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
+									</h:outputText>
+								</center>
+							</h:column>
+							<h:column id="col4" headerClass="cel-15">
+								<f:facet name="header">
+		                           Indicativo de depósito do montante integral
+		                        </f:facet>
+								<center>
+									<h:outputText id="item5" value="#{suspensao.indicativoDeposito.descricao}" styleClass="cel-15" />
+								</center>
+							</h:column>
+							<h:column id="col5">
+		                       	<f:facet name="header">EDITAR</f:facet>
+		                       	<ui:fragment rendered="#{suspensao.id != null}">
+			                       	<h:commandLink id="editar"
+			                       				  value="Editar"
+			                       				  action="#{processoESocialFormBean.prepareAlterarSuspensao}"
+			                       				  styleClass="ico-editar" >
+			                            <f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />
+			                        </h:commandLink>
+		                       	</ui:fragment>
+		                    </h:column>				
+							
+							<h:column id="col6"	>
+								<f:facet name="header">EXCLUIR</f:facet>						
+								<h:commandLink id="excluirSuspensao" value="Excluir" action="#{processoESocialFormBean.excluirSuspensao}" styleClass="ico-delete"
+									onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
+									<f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />
+								</h:commandLink>
+							</h:column>
+						
+						</rich:dataTable>	
+					</div>
+				</fieldset>				
+				
+			</fieldset>			
 
 			<ui:fragment rendered="#{true}">
 

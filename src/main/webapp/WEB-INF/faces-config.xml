@@ -209,6 +209,13 @@
 			<to-view-id>/paginas/tabelas/processoESocialForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/processoESocialForm.xhtml</from-view-id>		
+		<navigation-case>
+			<from-outcome>alterarSuspensao</from-outcome>
+			<to-view-id>/paginas/tabelas/processoESocialSuspensaoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Cargo Comissionado -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/cargoComissionadoList.xhtml</from-view-id>

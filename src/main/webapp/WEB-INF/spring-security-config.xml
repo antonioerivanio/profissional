@@ -30,6 +30,7 @@
         
         <intercept-url pattern="/paginas/tabelas/processoESocialList.faces" access="" />
         <intercept-url pattern="/paginas/tabelas/processoESocialForm.faces" access="" />
+        <intercept-url pattern="/paginas/tabelas/processoESocialSuspensaoForm.faces" access="" />
 		
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoList.faces" access="ROLE_ESPECIALIDADE_CARGO" />
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoForm.faces" access="ROLE_ESPECIALIDADE_CARGO" />
