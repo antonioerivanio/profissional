@@ -10,6 +10,7 @@ import br.gov.ce.tce.srh.dao.ProcessoESocialDAO;
 import br.gov.ce.tce.srh.dao.ProcessoESocialSuspensaoDAO;
 import br.gov.ce.tce.srh.domain.ProcessoESocial;
 import br.gov.ce.tce.srh.domain.ProcessoESocialSuspensao;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("processoESocialService")
 public class ProcessoESocialService{
@@ -42,6 +43,7 @@ public class ProcessoESocialService{
 	
 	@Transactional
 	public void salvarSuspensao(ProcessoESocialSuspensao suspensao) {
+		validaSuspensao(suspensao);
 		suspensaoDao.salvar(suspensao);		
 	}
 
@@ -62,4 +64,10 @@ public class ProcessoESocialService{
 		return suspensaoDao.getSuspensoes(idProcesso);
 	}	
 
+	public void validaSuspensao(ProcessoESocialSuspensao suspensao) {
+		if(!suspensao.isValido()) {			
+			throw new SRHRuntimeException("Todos os campos de suspensão de exigibilidade são obrigatório.");
+		}			
+	}
+	
 }

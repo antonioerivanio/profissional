@@ -67,19 +67,6 @@ public class ProcessoESocialFormBean implements Serializable {
 
 		return "incluirAlterar";
 	}
-	
-	public String prepareAlterarSuspensao() {		
-		
-		try {
-			
-
-		} catch (Exception e) {			
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return "alterarSuspensao";
-	}
 
 	public String salvar() {
 
@@ -107,8 +94,7 @@ public class ProcessoESocialFormBean implements Serializable {
 
 		try {
 			
-			service.salvarSuspensao(this.suspensao);
-			
+			service.salvarSuspensao(this.suspensao);			
 			
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -133,9 +119,7 @@ public class ProcessoESocialFormBean implements Serializable {
 	}
 	
 	public List<Uf> getComboUf() {
-
 		try {
-
 			if (this.comboUf == null)
 				this.comboUf = ufService.findAll();
 
@@ -149,7 +133,6 @@ public class ProcessoESocialFormBean implements Serializable {
 	
 	public List<Municipio> getComboMunicipio() {
 		try {
-
 			if (this.uf != null
 					|| this.comboMunicipio == null
 					|| this.entidade.getMunicipioVara() == null
@@ -186,12 +169,9 @@ public class ProcessoESocialFormBean implements Serializable {
 	
 	public String incluirSuspensao() {
 		try {
-			if(this.novaSuspensao.isValido()) {			
-				this.entidade.getSuspensoes().add(this.novaSuspensao);			
-				setNovaSuspensao(new ProcessoESocialSuspensao());
-			} else {
-				throw new SRHRuntimeException("Para adicionar informações de suspensão de exigibilidade, informe todos os campos relacionados");
-			}			
+			this.service.validaSuspensao(this.novaSuspensao);			
+			this.entidade.getSuspensoes().add(this.novaSuspensao);			
+			setNovaSuspensao(new ProcessoESocialSuspensao());						
 		} catch (SRHRuntimeException e) {			
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());

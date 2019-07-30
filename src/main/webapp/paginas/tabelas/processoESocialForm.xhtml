@@ -285,12 +285,13 @@
 							<h:column id="col5">
 		                       	<f:facet name="header">EDITAR</f:facet>
 		                       	<ui:fragment rendered="#{suspensao.id != null}">
-			                       	<h:commandLink id="editar"
-			                       				  value="Editar"
-			                       				  action="#{processoESocialFormBean.prepareAlterarSuspensao}"
-			                       				  styleClass="ico-editar" >
-			                            <f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />
-			                        </h:commandLink>
+			                       	<a4j:commandLink id="editar"
+			                       				   value="Editar"			                       				 
+			                       				   styleClass="ico-editar"
+			                       				   oncomplete="Richfaces.showModalPanel('modal');"
+			                       				   reRender="modal" >
+			                        	<f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />		                       				  
+			                        </a4j:commandLink>
 		                       	</ui:fragment>
 		                    </h:column>				
 							
@@ -323,6 +324,67 @@
 				class="bt-padrao fr mg-right-10">Voltar</a>
 
 		</h:form>
+		
+        <rich:modalPanel id="modal" resizeable="false" height="320" width="600">					            
+        	
+			<f:facet name="header" class="header">
+            	<span>Editar Suspensão de Exigibilidade</span>
+            </f:facet>
+        	
+        	<h:form id="form2" styleClass="formularios">
+        					
+				<div class="input-box box-25">
+					<label for="">ID</label>
+					<div class="conteiner">
+						<h:inputText id="idEditar"
+							value="#{processoESocialFormBean.suspensao.id}"
+							disabled="#{true}" />
+					</div>
+				</div>
+				
+				<div class="select-box box-100">
+					<label for="">Indicativo de suspensão da exigibilidade</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="indicativoSuspensaoEditar"	value="#{processoESocialFormBean.suspensao.indicativoSuspensao}">
+							<f:selectItems id="comboIndicativoSuspensaoEditar" value="#{processoESocialFormBean.comboIndicativoSuspensao}"
+								var="suspensao" itemLabel="#{suspensao.descricao}"
+								itemValue="#{suspensao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="input-box box-30">
+					<label for="">Data da decisão</label>
+					<div class="conteiner">
+						<h:inputText id="dataDecisaoEditar" name="dataDecisao" styleClass="maskData"
+							converter="dateConverter"
+							value="#{processoESocialFormBean.suspensao.dataDecisao}"
+							maxlength="10" />
+					</div>
+				</div>
+				
+				<div class="radios-group box-70">
+					<h3>Indicativo de depósito do montante integral</h3>
+					<div class="conteiner">
+						<div class="radio-box">
+						<h:selectOneRadio id="indicativoDepositoEditar" value="#{processoESocialFormBean.suspensao.indicativoDeposito}">
+							<f:selectItems id="simNaoEditar" value="#{processoESocialFormBean.simNao}" 
+								var="item" itemLabel="#{item.descricao}" itemValue="#{item}" />
+						</h:selectOneRadio>
+						</div>
+					</div>
+				</div>						
+	
+				<div class="modal-actions" style="padding-bottom:0;">						
+					<h:commandLink value="Salvar" action="#{processoESocialFormBean.salvarSuspensao}" styleClass="bt-padrao fr">
+						<a4j:support event="click" oncomplete="Richfaces.hideModalPanel('modal');"	/>
+					</h:commandLink>	
+					<a href="#" onclick="Richfaces.hideModalPanel('modal');" class="bt-padrao fr mg-right-15">Cancelar</a>
+				</div>					
+			
+			</h:form>							
+		
+		</rich:modalPanel>				
 
 	</ui:define>
 </ui:composition>
