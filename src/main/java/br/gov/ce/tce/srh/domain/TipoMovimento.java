@@ -17,6 +17,10 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Table(name="TB_TIPOMOVIMENTO", schema="SRH")
 public class TipoMovimento extends BasicEntity<Long> implements Serializable {
+	
+	public static final Long ENQUADRAMENTO_PCC = 11l;
+	public static final Long DESCOMPRESSAO = 25l;
+	public static final Long APOSENTADORIA = 26l;
 
 	@Id
 	@Column(name="ID")

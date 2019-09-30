@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -48,7 +47,6 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 	
 	// entidades das telas
 	private ReferenciaFuncional entidade = new ReferenciaFuncional();
-	private Boolean exibirTodosOsCampos = true;
 	private Boolean permiteSalvar = true;
 
 	//Combos
@@ -70,7 +68,6 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 			limpar();
 
 			if ( this.entidade.getFim() == null) {
-				exibirTodosOsCampos = true;
 				permiteSalvar = true;
 				getEntidade().setTipoMovimento(null);
 				getEntidade().setInicio(null);
@@ -124,25 +121,9 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 	public List<ClasseReferencia> getComboClasseReferencia() {
 
 		try {
-
 			if ( entidade.getFuncional() != null && comboClasseReferencia == null ) {
-
-				this.comboClasseReferencia = new ArrayList<ClasseReferencia>();
-
-        		for (ClasseReferencia entidade : classeReferenciaService.findByCargo(this.entidade.getFuncional().getOcupacao().getId())) {
-
-    				if ( exibirTodosOsCampos == true ) {
-
-    					this.comboClasseReferencia.add(entidade);
-
-    				} else {
-    					this.comboClasseReferencia.add(entidade);
-    				}
-
-				}
-
-			} 
-
+				this.comboClasseReferencia = classeReferenciaService.findByCargo(this.entidade.getFuncional().getOcupacao().getId());
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar o campo Classe/Referência. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -162,11 +143,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
         try {
 
         	if ( comboTipoMovimento == null ) {
-        		if ( this.exibirTodosOsCampos ) {
-        			comboTipoMovimento =  tipoMovimentoService.findByTipo(3L);	
-        		} else {
-        			comboTipoMovimento =  tipoMovimentoService.findAll();
-        		}
+        		comboTipoMovimento =  tipoMovimentoService.findByTipo(3L);
         	}
 
         } catch (Exception e) {
@@ -203,7 +180,6 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 	 * Limpar form
 	 */
 	private void limpar() {
-		exibirTodosOsCampos = true;
 		permiteSalvar = false;
 		comboClasseReferencia = null;
 		comboTipoMovimento = null;
@@ -217,13 +193,7 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 	public ReferenciaFuncional getEntidade() {return entidade;}
 	public void setEntidade(ReferenciaFuncional entidade) {this.entidade = entidade;}
 
-	public Boolean getExibirTodosOsCampos() {return exibirTodosOsCampos;}
-	public void setExibirTodosOsCampos(Boolean exibirTodosOsCampos) {this.exibirTodosOsCampos = exibirTodosOsCampos;}
-
-
 	public Boolean getPermiteSalvar() {return permiteSalvar;}
 	public void setPermiteSalvar(Boolean permiteSalvar) {this.permiteSalvar = permiteSalvar;}
-	
-	
 
 }
