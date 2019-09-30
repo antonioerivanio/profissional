@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
+import br.gov.ce.tce.srh.enums.EnumStatusFuncional;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -434,15 +435,17 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	public void setAposentadoria(Aposentadoria aposentadoria) {this.aposentadoria = aposentadoria;}
 	
 	public boolean isProvenienteDoTCM() {
-		if (this.tipoMovimentoEntrada != null && this.tipoMovimentoEntrada.getId().longValue() == 43L)
-			return true;
-		return false;			
+		return this.tipoMovimentoEntrada != null && this.tipoMovimentoEntrada.getId().longValue() == 43L;		
 	}
 	
 	public boolean isEnquadramento() {
-		if (this.tipoMovimentoEntrada != null && this.tipoMovimentoEntrada.getId().longValue() == 11L)
-			return true;
-		return false;			
+		return this.tipoMovimentoEntrada != null && this.tipoMovimentoEntrada.getId().longValue() == 11L;
+	}
+	
+	public boolean isAposentado() {
+		return EnumStatusFuncional.INATIVO.getId().equals(this.status) 
+				|| (this.tipoMovimentoSaida != null && tipoMovimentoSaida.getId() == TipoMovimento.APOSENTADORIA)
+				|| (this.aposentadoria != null && this.aposentadoria.getId() > 0 ) ; 
 	}
 	
 }
