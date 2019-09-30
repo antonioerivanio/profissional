@@ -48,9 +48,12 @@
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" value="#{representacaoSetorBean.dataModel}" var="item" rows="10" binding="#{representacaoSetorBean.dataTable}">
-
-
+				<rich:dataTable 
+						id="lista" 
+						value="#{representacaoSetorBean.dataModel}" 
+						var="item" 
+						rows="#{representacaoSetorBean.dataModel.pageSize}"					
+					>
 					<h:column id="col1">
                         <f:facet name="header">
                             ID
@@ -124,7 +127,13 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{representacaoSetorBean.pagedList.size() > 0}"/>
+				<rich:datascroller 
+					id="scroller" 
+					for="lista" 
+					stepControls="hide"												
+					renderIfSinglePage="false"
+					page="#{representacaoSetorBean.pagina}"
+				/>
 
 			</div>
 			
