@@ -15,7 +15,7 @@ public interface OcupacaoDAO {
 	public void excluir(Ocupacao entidade);
 
 	public Ocupacao getById(Long id);
-	public Ocupacao getByNomenclatura(String nomenclatura);
+	public Ocupacao findByNomenclaturaAndTipoOcupacaoAndSituacao(String nomenclatura, Long tipoOcupacao, Long situacao);
 
 	public List<Ocupacao> findByTipoOcupacao(Long tipoOcupacao);
 	public List<Ocupacao> findAll();
