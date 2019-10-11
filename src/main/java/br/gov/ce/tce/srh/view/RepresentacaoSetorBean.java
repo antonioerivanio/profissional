@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -74,11 +73,10 @@ public class RepresentacaoSetorBean implements Serializable {
 	
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<RepresentacaoSetor> pagedList = new ArrayList<RepresentacaoSetor>();
-	private int flagRegistroInicial = 0;
-
+	private int registroInicial = 0;
+	private Integer pagina = 1;
 
 
 	/**
@@ -89,6 +87,8 @@ public class RepresentacaoSetorBean implements Serializable {
 	public String consultar() {
 
 		try {
+			
+			limparListas();
 
 			// validando campos da cosnulta
 			if ( this.cargo == null )
@@ -101,7 +101,7 @@ public class RepresentacaoSetorBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			flagRegistroInicial = -1;
+			registroInicial = -1;
 			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
@@ -287,6 +287,8 @@ public class RepresentacaoSetorBean implements Serializable {
 			comboSetor = null;
 			cargo = null;
 			lista = new ArrayList<RepresentacaoSetor>();
+			limparListas();
+			registroInicial = 0;
 		}
 		passouConsultar = false;
 		return form;
@@ -294,29 +296,31 @@ public class RepresentacaoSetorBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<RepresentacaoSetor>(); 
+		pagedList = new ArrayList<RepresentacaoSetor>();
+		pagina = 1;
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
-
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(representacaoSetorService.search(this.cargo.getId(), getDataTable().getFirst(), getDataTable().getRows()));
+		if( registroInicial != getPrimeiroDaPagina() ) {
+			registroInicial = getPrimeiroDaPagina();
+			setPagedList(representacaoSetorService.search(this.cargo.getId(), registroInicial, dataModel.getPageSize()));
 			if(count != 0) {
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
 				limparListas();
 			}
 		}
-		return dataModel;
+		return dataModel;		
 	}
 
 	public List<RepresentacaoSetor> getPagedList() {return pagedList;}
 	public void setPagedList(List<RepresentacaoSetor> pagedList) {this.pagedList = pagedList;}
+	
+	public Integer getPagina() {return pagina;}
+	public void setPagina(Integer pagina) {this.pagina = pagina;}
+	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 	//FIM PAGINAÇÃO
 
 }

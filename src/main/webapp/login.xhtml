@@ -21,12 +21,15 @@
 					<label for="form-login:senha">Senha</label>
                     <h:inputSecret id="senha" value="#{LoginBean.senha}" styleClass="input-text mg-zero" />
 				</div>
+				
+				<div>
+					<h:outputText id="message" value="#{LoginBean.mensagem}" styleClass="infoMessage" />
+				
+					<div class="fr">
+	                      <h:commandButton value="Entrar" action="#{LoginBean.autenticar}" styleClass="bt-padrao" />
+					</div>
+				</div>				
 
-				<h:outputText id="message" value="#{LoginBean.mensagem}" styleClass="infoMessage" />
-
-				<div class="fr">
-                      <h:commandButton value="Entrar" action="#{LoginBean.autenticar}" styleClass="bt-padrao" />
-				</div>
 				
 				<ui:fragment rendered="#{not fn:endsWith(app['database.url'], 'bdtce')}">					
 					<div class="clr msg-dev-div">

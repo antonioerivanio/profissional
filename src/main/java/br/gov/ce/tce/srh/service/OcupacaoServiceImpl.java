@@ -145,9 +145,16 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 	 */
 	private void verificandoSeEntidadeExiste(Ocupacao entidade) throws SRHRuntimeException {
 
-		Ocupacao entidadeJaExiste = dao.getByNomenclatura(entidade.getNomenclatura());
-		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
+		Ocupacao entidadeJaExistente = dao.findByNomenclaturaAndTipoOcupacaoAndSituacao(
+				entidade.getNomenclatura(), 
+				entidade.getTipoOcupacao().getId(), 
+				entidade.getSituacao());
+		
+			
+		if(entidadeJaExistente != null 
+				&& (entidade.getId() == null || !entidadeJaExistente.getId().equals(entidade.getId()))) {
 			throw new SRHRuntimeException("Cargo já cadastrado. Operação cancelada.");
+		}					
 		
 	}
 

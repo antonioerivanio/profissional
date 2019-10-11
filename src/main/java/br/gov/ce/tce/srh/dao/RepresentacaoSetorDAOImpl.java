@@ -63,7 +63,7 @@ public class RepresentacaoSetorDAOImpl implements RepresentacaoSetorDAO {
 
 	@Override
 	public int count(Long cargo) {
-		Query query = entityManager.createQuery("SELECT count (e) FROM RepresentacaoSetor e WHERE e.representacaoCargo.id = :cargo ORDER BY e.id ");
+		Query query = entityManager.createQuery("SELECT count (e) FROM RepresentacaoSetor e WHERE e.representacaoCargo.id = :cargo ");
 		query.setParameter("cargo", cargo);
 		return ((Long) query.getSingleResult()).intValue();
 	}
@@ -72,7 +72,7 @@ public class RepresentacaoSetorDAOImpl implements RepresentacaoSetorDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<RepresentacaoSetor> search(Long cargo, int first, int rows) {
-		Query query = entityManager.createQuery("SELECT e FROM RepresentacaoSetor e join fetch e.setor join fetch e.representacaoCargo WHERE e.representacaoCargo.id = :cargo ORDER BY e.id ");
+		Query query = entityManager.createQuery("SELECT e FROM RepresentacaoSetor e join fetch e.setor join fetch e.representacaoCargo WHERE e.representacaoCargo.id = :cargo ORDER BY e.ativo DESC, e.setor.nome ASC, e.id ASC");
 		query.setParameter("cargo", cargo);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);

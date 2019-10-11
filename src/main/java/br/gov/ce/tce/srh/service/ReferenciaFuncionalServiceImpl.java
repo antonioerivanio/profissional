@@ -1,5 +1,8 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import br.gov.ce.tce.srh.dao.FuncionalDAO;
 import br.gov.ce.tce.srh.dao.ReferenciaFuncionalDAO;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
+import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -60,26 +64,17 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 		
 		// validando dados obrigatorios.
 		validar(entidade);		
-
 		
-		entidade.setTipoMovimento( tipoMovimentoService.getById( entidade.getTipoMovimento().getId() ));
-		
-		if(	referenciaAnterior.getFuncional().getSaida() != null ) {
+		entidade.setTipoMovimento( tipoMovimentoService.getById( entidade.getTipoMovimento().getId() ));		
 			
-			if( ( referenciaAnterior.getFuncional().getTipoMovimentoSaida() != null 
-					&& referenciaAnterior.getFuncional().getTipoMovimentoSaida().getId() != 26 )			
-				|| entidade.getFuncional().getStatus() != 5 
-				|| entidade.getTipoMovimento().getTipo() != 3 
-				|| entidade.getTipoMovimento().getId() != 25 ) {
-			
-				throw new SRHRuntimeException("Não é permitido realizar Progressão para registros funcionais finalizados, exceto Descompressão para aposentados.");
-			}
+		if( (referenciaAnterior.getFuncional().isAposentado() && naoForExcecoesParaAposentados(entidade, referenciaAnterior)) 
+				|| referenciaAnterior.getFuncional().getSaida() != null ) {			
+				throw new SRHRuntimeException("Não é permitido realizar Progressão para registros funcionais finalizados, exceto Descompressão e Enquadramento Plano de Cargos e Carreiras para aposentados.");
+	
 		}		
 		
-		
 		if ( !entidade.getInicio().after( referenciaAnterior.getInicio() ))
-			throw new SRHRuntimeException("O Início deve ser posterior ao início da última Progressão Funcional.");						
-		
+			throw new SRHRuntimeException("O Início deve ser posterior ao início da última Progressão Funcional.");		
 				
 		/*
 		 * Regra: 
@@ -97,6 +92,22 @@ public class ReferenciaFuncionalServiceImpl implements ReferenciaFuncionalServic
 		Funcional funcional = entidade.getFuncional();
 		funcional.setClasseReferencia(entidade.getClasseReferencia());
 		funcionalDAO.salvar(funcional);
+	}
+	
+	
+	private boolean naoForExcecoesParaAposentados(ReferenciaFuncional entidade, ReferenciaFuncional referenciaAnterior) {		
+		boolean condicao = depoisDaDataLimiteParaProgressoesDeAposentados() 
+				|| (!TipoMovimento.ENQUADRAMENTO_PCC.equals(entidade.getTipoMovimento().getId())
+						&& !TipoMovimento.DESCOMPRESSAO.equals(entidade.getTipoMovimento().getId()));
+		return condicao;
+	}
+	
+	private boolean depoisDaDataLimiteParaProgressoesDeAposentados() {
+		Calendar dataLimite = new GregorianCalendar();
+		dataLimite.set(2020, 0, 1);
+		
+		boolean depoisDaDataLimite = new Date().after(dataLimite.getTime());
+		return depoisDaDataLimite;
 	}
 
 
