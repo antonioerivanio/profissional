@@ -4,19 +4,31 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
 
 	<ui:define name="content">
 
 		<style>
-		.formularios fieldset, .box-border {
-			border: 1px solid #c6c6c6;
-			padding: 15px;
-			overflow: auto;
-			margin-bottom: 10px;
-			min-height: 100px;
-		}
-		</style>
+.formularios fieldset, .box-border {
+	border: 1px solid #c6c6c6;
+	padding: 15px;
+	overflow: auto;
+	margin-bottom: 10px;
+	min-height: 100px;
+}
+.vigencia-msg-alerta{
+	position: relative;
+    bottom: 16px;
+    font-weight: bold;
+    color: red;
+    clear: both;
+}
+.vigencia-width-data {	
+	width: 120px !important;
+}
+</style>
 
 		<div class="titulo-pagina">
 
@@ -91,12 +103,132 @@
 					<legend>eSocial</legend>
 
 					<br />
+					
+					
+					
+					<!-- ########################################################################################## -->	
+					
+					
+					<fieldset class="fl mg-right-15" style="padding-bottom: 0" id="fieldset-vigencia">
 
+						<legend>Período de Vigência</legend>
+
+												
+						<ui:fragment rendered="#{!cargoComissionadoBean.alterarVigencia}">
+						
+							<div class="input-box vigencia-width-data">
+								<label for="">Início</label>
+								<div class="conteiner">
+									<h:inputText id="dataInicio" name="dataInicio"
+										styleClass="maskVigencia" converter="vigenciaConverter"
+										value="#{cargoComissionadoBean.entidade.esocialEvento.inicioValidade}"
+										maxlength="7"
+										disabled="#{cargoComissionadoBean.desabilitaVigencia}" />
+								</div>
+							</div>
+	
+							<div class="input-box vigencia-width-data">
+								<label for="">Fim</label>
+								<div class="conteiner">
+									<h:inputText id="dataFim" name="dataFim"
+										styleClass="maskVigencia" converter="vigenciaConverter"
+										value="#{cargoComissionadoBean.entidade.esocialEvento.fimValidade}"
+										maxlength="7"
+										disabled="#{cargoComissionadoBean.desabilitaVigencia}" />
+								</div>
+							</div>
+						
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{cargoComissionadoBean.alterarVigencia}">
+						
+							<div class="input-box vigencia-width-data">
+								<label for="">Novo início</label>
+								<div class="conteiner">
+									<h:inputText id="dataInicioNovaValidade" name="dataInicioNovaValidade"
+										styleClass="maskVigencia" converter="vigenciaConverter"
+										value="#{cargoComissionadoBean.entidade.esocialEvento.inicioNovaValidade}"
+										maxlength="7" />
+								</div>
+							</div>
+	
+							<div class="input-box vigencia-width-data">
+								<label for="">Novo fim</label>
+								<div class="conteiner">
+									<h:inputText id="dataFimNovaValidade" name="dataFimNovaValidade"
+										styleClass="maskVigencia" converter="vigenciaConverter"
+										value="#{cargoComissionadoBean.entidade.esocialEvento.fimNovaValidade}"
+										maxlength="7" />
+								</div>
+							</div>						
+							
+						</ui:fragment>
+												
+						<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialEvento.inicioValidade != null}">
+																		
+							<ui:fragment rendered="#{!cargoComissionadoBean.entidade.esocialEvento.houveAlteracao() and !cargoComissionadoBean.alterarVigencia}">
+								<div class="fl mg-top-19 mg-right-10">
+									<h:commandLink value="Nova validade" action="#{cargoComissionadoBean.informarNovaValidade}" styleClass="bt-padrao">
+										<a4j:support event="click" reRender="fieldset-vigencia"/>
+									</h:commandLink>	
+								</div>
+								<div class="fl mg-top-19">
+									<h:commandLink value="Excluir" action="#{cargoComissionadoBean.excluirVigencia}" styleClass="bt-padrao">
+										<a4j:support event="click" reRender="fieldset-vigencia"/>
+									</h:commandLink>
+								</div>
+							</ui:fragment>
+							
+							<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialEvento.houveAlteracao() or cargoComissionadoBean.alterarVigencia}">
+								<div class="fl mg-top-19 mg-right-10">
+									<h:commandLink value="Cancelar" action="#{cargoComissionadoBean.apagaAlteracao}" styleClass="bt-padrao">
+										<a4j:support event="click" reRender="fieldset-vigencia"/>
+									</h:commandLink>	
+								</div>
+							</ui:fragment>						
+							
+							<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialEvento.excluido}">
+								<div class="fl vigencia-msg-alerta">
+									<h:outputText value="Foi solicitada a exclusão da vigência atual." />
+								</div>
+							</ui:fragment>
+							
+							<ui:fragment rendered="#{cargoComissionadoBean.alterarVigencia}">
+								<div class="fl vigencia-msg-alerta">
+									<h:outputText value="Vigência anterior: " />
+									<h:outputText converter="vigenciaConverter"
+											  	  value="#{cargoComissionadoBean.entidade.esocialEvento.inicioValidade}" />
+									<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialEvento.fimValidade != null}">
+										<h:outputText value=" à " /> 
+										<h:outputText converter="vigenciaConverter"
+												  value="#{cargoComissionadoBean.entidade.esocialEvento.fimValidade}" />	
+									</ui:fragment>			  
+								</div>
+							</ui:fragment>
+					
+						</ui:fragment>
+					
+					</fieldset>
+					
+					<!-- ########################################################################################## -->
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					<div class="input-box box-15">
 						<label for="">Código</label>
 						<div class="conteiner">
-							<h:inputText id="codigoEsocial"
-								value="#{cargoComissionadoBean.entidade.codigoEsocial}"
+							<h:inputText id="codFuncao"
+								value="#{cargoComissionadoBean.entidade.codFuncao}"
 								maxlength="30" />
 						</div>
 					</div>
@@ -108,32 +240,6 @@
 								value="#{cargoComissionadoBean.entidade.cbo}" maxlength="6" />
 						</div>
 					</div>
-
-					<fieldset class="fl">
-
-						<legend>Período de Vigência</legend>
-
-						<div class="input-box box-50">
-							<label for="">Início</label>
-							<div class="conteiner">
-								<h:inputText id="dataInicio" name="dataInicio"
-									styleClass="maskData" converter="dateConverter"
-									value="#{cargoComissionadoBean.entidade.inicioValidade}"
-									maxlength="10" />
-							</div>
-						</div>
-
-						<div class="input-box box-50">
-							<label for="">Fim</label>
-							<div class="conteiner">
-								<h:inputText id="dataFim" name="dataFim" styleClass="maskData"
-									converter="dateConverter"
-									value="#{cargoComissionadoBean.entidade.fimValidade}"
-									maxlength="10" />
-							</div>
-						</div>
-
-					</fieldset>
 
 				</fieldset>
 

@@ -1,24 +1,16 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-/**
- * Referente a tabela: TB_REPRESENTACAOCARGO
- * 
- * @since : Ago 31, 2011, 10:53:50 AM
- * @author : robson.castro@ivia.com.br
- * 
- */
 @Entity
 @SuppressWarnings("serial")
 @Table(name = "TB_REPRESENTACAOCARGO", schema = "SRH")
@@ -42,21 +34,23 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 	private String nomenclatura;
 
 	@Column(name = "OBSERVACAO")
-	private String observacao;
+	private String observacao;	
 
-	@Column(name = "CODIGO_ESOCIAL", length = 30)
-	private String codigoEsocial;
-
+	@Column(name = "CODFUNCAO", length = 30)
+	private String codFuncao;
+	
 	@Column(name = "CBO", length = 6)
 	private String cbo;
 
-	@Column(name = "INICIOVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date inicioValidade;
-
-	@Column(name = "FIMVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date fimValidade;
+	@OneToOne
+	@JoinColumn(name = "IDESOCIALEVENTO")
+	private ESocialEvento esocialEvento;
+	
+	
+	public RepresentacaoCargo() {
+		super();
+		setEsocialEvento(new ESocialEvento());
+	}
 
 	public Long getOrdem() {
 		return ordem;
@@ -107,15 +101,7 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getCodigoEsocial() {
-		return codigoEsocial;
-	}
-
-	public void setCodigoEsocial(String codigoEsocial) {
-		this.codigoEsocial = codigoEsocial;
-	}
-
+	
 	public String getCbo() {
 		return cbo;
 	}
@@ -124,20 +110,21 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 		this.cbo = cbo;
 	}
 
-	public Date getInicioValidade() {
-		return inicioValidade;
+	public String getCodFuncao() {
+		return codFuncao;
 	}
 
-	public void setInicioValidade(Date inicioValidade) {
-		this.inicioValidade = inicioValidade;
+	public void setCodFuncao(String codFuncao) {
+		this.codFuncao = codFuncao;
 	}
 
-	public Date getFimValidade() {
-		return fimValidade;
+	public ESocialEvento getEsocialEvento() {
+		return esocialEvento;
 	}
 
-	public void setFimValidade(Date fimValidade) {
-		this.fimValidade = fimValidade;
+	public void setEsocialEvento(ESocialEvento esocialEvento) {
+		this.esocialEvento = esocialEvento;
 	}
+	
 
 }

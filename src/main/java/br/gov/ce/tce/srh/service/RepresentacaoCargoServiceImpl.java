@@ -10,16 +10,14 @@ import br.gov.ce.tce.srh.dao.RepresentacaoCargoDAO;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
-/**
- * 
- * @author robstown
- *
- */
 @Service("representacaoCargoService")
 public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService {
 
 	@Autowired
 	private RepresentacaoCargoDAO dao;
+	
+	@Autowired
+	private ESocialEventoService esocialEventoService;
 
 
 	@Override
@@ -33,6 +31,8 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 		 * 
 		 */
 //		verificandoSeEntidadeExiste(entidade);
+		
+		esocialEventoService.salvar(entidade.getEsocialEvento());
 
 		// persistindo
 		dao.salvar(entidade);
@@ -72,6 +72,7 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 	 * @throws SRHRuntimeException
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	private void verificandoSeEntidadeExiste(RepresentacaoCargo entidade) throws SRHRuntimeException {
 
 		RepresentacaoCargo entidadeJaExiste = dao.getByNomenclaturaSimbolo( entidade.getNomenclatura(), entidade.getSimbolo() );

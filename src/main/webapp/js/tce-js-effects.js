@@ -44,6 +44,7 @@ jQuery(document).ready(function($) {
     // INICIO MASCARAS
 
     $(".maskData").mask("99/99/9999",{placeholder:" "});  // DATA
+    $(".maskVigencia").mask("99/9999",{placeholder:" "});  // VIGÊNCIA ESOCIAL
     $(".maskCpf").mask("999.999.999-99",{placeholder:" "});  // CPF
     $(".maskPasep").mask("999.99999.99/9",{placeholder:" "});  // PASEP
     $(".maskAgencia").mask("9999-9",{placeholder:" "});  // AGENCIA

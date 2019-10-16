@@ -27,6 +27,10 @@
 		<converter-class>br.gov.ce.tce.srh.converter.DateConverter</converter-class>
 	</converter>
 	<converter>
+		<converter-id>vigenciaConverter</converter-id>
+		<converter-class>br.gov.ce.tce.srh.converter.VigenciaConverter</converter-class>
+	</converter>
+	<converter>
 		<converter-id>entityConverter</converter-id>
 		<converter-class>br.gov.ce.tce.srh.converter.EntityConverter</converter-class>
 	</converter>

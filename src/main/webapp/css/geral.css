@@ -74,6 +74,14 @@ textarea:disabled, input:not ([type] ):disabled, input[type="color" i]:disabled,
 	margin-top: 18px !important;
 }
 
+.mg-top-19 {
+	margin-top: 19px !important;
+}
+
+.mg-top-20 {
+	margin-top: 20px !important;
+}
+
 .mg-top-25 {
 	margin-top: 25px !important;
 }

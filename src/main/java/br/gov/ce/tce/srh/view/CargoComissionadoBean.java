@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.ESocialEvento;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.RepresentacaoCargoService;
@@ -22,12 +23,6 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC007_Manter Cargo Comissionado
-* 
-* @since   : Aug 31, 2011, 9:13:58 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("cargoComissionadoBean")
 @Scope("session")
@@ -41,10 +36,13 @@ public class CargoComissionadoBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-
 	// controle de acesso do formulario
 	private HtmlForm form;
 	private boolean passouConsultar = false;
+	
+	// vigencia eSocial
+	private boolean desabilitaVigencia = false;
+	private boolean alterarVigencia = false;
 
 	// parametro da tela de consulta
 	private String nomenclatura = new String();
@@ -53,20 +51,41 @@ public class CargoComissionadoBean implements Serializable {
 	private List<RepresentacaoCargo> lista;
 	private RepresentacaoCargo entidade = new RepresentacaoCargo();
 
-	//paginação
+	// paginação
 	private int count;
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<RepresentacaoCargo> pagedList = new ArrayList<RepresentacaoCargo>();
 	private int flagRegistroInicial = 0;
 
+	
+	public String prepareIncluir() {		
+		this.limparForm();
+		return "incluirAlterar";
+	}
 
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
+	public String prepareAlterar() {
+
+		try {
+			
+			if (entidade.getEsocialEvento() != null) {				
+				desabilitaVigencia = entidade.getEsocialEvento().getInicioValidade() != null;
+				alterarVigencia = entidade.getEsocialEvento().getInicioNovaValidade() != null;			
+			} else {
+				entidade.setEsocialEvento(new ESocialEvento());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return "incluirAlterar";
+	}
+	
+	
 	public String consultar() {
 
 		try {
@@ -91,19 +110,14 @@ public class CargoComissionadoBean implements Serializable {
 	}
 
 
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
+	
 	public String salvar() {
 
 		try {
 
 			representacaoCargoService.salvar(entidade);
 
-			setEntidade( new RepresentacaoCargo() );
-			getEntidade().setAtivo(true);
+			limparForm();
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso");
 			logger.info("Operação realizada com sucesso");
@@ -112,6 +126,7 @@ public class CargoComissionadoBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.error(e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -120,11 +135,7 @@ public class CargoComissionadoBean implements Serializable {
 	}
 
 
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
+	
 	public String excluir() {
 
 		try {
@@ -148,11 +159,7 @@ public class CargoComissionadoBean implements Serializable {
 	}
 
 
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
+	
 	public String relatorio() {
 
 		try {
@@ -178,14 +185,18 @@ public class CargoComissionadoBean implements Serializable {
 	}
 	
 	public String limpaTela() {
-		setEntidade(new RepresentacaoCargo());
+		limparForm();
 		return "listar";
 	}
 	
-
-	/**
-	 * Gets and Sets
-	 */
+	private void limparForm() {
+		setEntidade( new RepresentacaoCargo() );
+		getEntidade().setAtivo(true);
+		desabilitaVigencia = false;
+		alterarVigencia = false;
+	}
+	
+	
 	public String getNomenclatura() {return nomenclatura;}
 	public void setNomenclatura(String nomenclatura) {this.nomenclatura = nomenclatura;}
 
@@ -197,8 +208,7 @@ public class CargoComissionadoBean implements Serializable {
 	public void setForm(HtmlForm form) {this.form = form;}
 	public HtmlForm getForm() {
 		if (!passouConsultar) {
-			setEntidade( new RepresentacaoCargo() );
-			getEntidade().setAtivo(true);
+			this.limparForm();
 			nomenclatura = new String();
 			lista = new ArrayList<RepresentacaoCargo>();
 			limparListas();
@@ -208,7 +218,7 @@ public class CargoComissionadoBean implements Serializable {
 		return form;
 	}
 	
-	//PAGINAÇÃO
+	// PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new HtmlDataTable();
 		dataModel = new PagedListDataModel();
@@ -233,6 +243,29 @@ public class CargoComissionadoBean implements Serializable {
 
 	public List<RepresentacaoCargo> getPagedList() {return pagedList;}
 	public void setPagedList(List<RepresentacaoCargo> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINAÇÃO
+	// FIM PAGINAÇÃO
+
+
+	public boolean isDesabilitaVigencia() {
+		return desabilitaVigencia;
+	}
+
+	public boolean isAlterarVigencia() {
+		return alterarVigencia;
+	}
+	
+	public void informarNovaValidade() {
+		this.alterarVigencia = true;
+	}
+	
+	public void excluirVigencia() {
+		this.alterarVigencia = false;
+		this.entidade.getEsocialEvento().setExcluido(true);
+	}
+	
+	public void apagaAlteracao() {
+		this.alterarVigencia = false;
+		this.entidade.getEsocialEvento().apagaAlteracao();
+	}
 
 }
