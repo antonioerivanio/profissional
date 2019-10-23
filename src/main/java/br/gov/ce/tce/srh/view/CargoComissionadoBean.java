@@ -38,12 +38,8 @@ public class CargoComissionadoBean implements Serializable {
 
 	// controle de acesso do formulario
 	private HtmlForm form;
-	private boolean passouConsultar = false;
+	private boolean passouConsultar = false;	
 	
-	// vigencia eSocial
-	private boolean desabilitaVigencia = false;
-	private boolean alterarVigencia = false;
-
 	// parametro da tela de consulta
 	private String nomenclatura = new String();
 
@@ -69,12 +65,9 @@ public class CargoComissionadoBean implements Serializable {
 
 		try {
 			
-			if (entidade.getEsocialVigencia() != null) {				
-				desabilitaVigencia = entidade.getEsocialVigencia().getInicioValidade() != null;
-				alterarVigencia = entidade.getEsocialVigencia().getInicioNovaValidade() != null;			
-			} else {
-				entidade.setEsocialVigencia(new ESocialEventoVigencia());
-			}
+			if (entidade.getEsocialVigencia() == null) {
+				entidade.setEsocialVigencia(new ESocialEventoVigencia());			
+			} 
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -192,8 +185,6 @@ public class CargoComissionadoBean implements Serializable {
 	private void limparForm() {
 		setEntidade( new RepresentacaoCargo() );
 		getEntidade().setAtivo(true);
-		desabilitaVigencia = false;
-		alterarVigencia = false;
 	}
 	
 	
@@ -217,6 +208,7 @@ public class CargoComissionadoBean implements Serializable {
 		passouConsultar = false;
 		return form;
 	}
+	
 	
 	// PAGINAÇÃO
 	private void limparListas() {
@@ -244,36 +236,5 @@ public class CargoComissionadoBean implements Serializable {
 	public List<RepresentacaoCargo> getPagedList() {return pagedList;}
 	public void setPagedList(List<RepresentacaoCargo> pagedList) {this.pagedList = pagedList;}
 	// FIM PAGINAÇÃO
-
-
-	public boolean isDesabilitaVigencia() {
-		return desabilitaVigencia;
-	}
-
-	public boolean isAlterarVigencia() {
-		return alterarVigencia;
-	}
-	
-	public void informarNovaValidade() {
-		this.alterarVigencia = true;
-	}
-	
-	public void excluirVigencia() {
-		this.alterarVigencia = false;
-		this.entidade.getEsocialVigencia().setExcluido(true);
-	}
-	
-	public void apagaAlteracao() {
-		this.alterarVigencia = false;
-		this.entidade.getEsocialVigencia().apagaAlteracao();
-	}
-	
-	public void incluirNovamente() {
-		this.desabilitaVigencia = false;
-		this.alterarVigencia = false;
-		this.entidade.getEsocialVigencia().setExcluido(false);
-		this.entidade.getEsocialVigencia().setInicioValidade(null);
-		this.entidade.getEsocialVigencia().setFimValidade(null);
-	}
 
 }

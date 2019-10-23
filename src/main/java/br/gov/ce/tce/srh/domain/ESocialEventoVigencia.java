@@ -38,6 +38,13 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 	@Column(name = "REFERENCIA")
 	private String referencia;
 	
+	// TODO mapear coluna EVENTO
+	
+	@Transient
+	private Boolean vigenciaDesabilitada;
+	
+	@Transient
+	private Boolean vigenciaEditavel;
 	
 	@Override
 	public Long getId() {
@@ -103,7 +110,34 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
+	}	
+	
+	public Boolean getVigenciaDesabilitada() {
+		if(vigenciaDesabilitada == null)
+			return this.getInicioValidade() != null;		
+		return vigenciaDesabilitada;
 	}
+
+	public void setVigenciaDesabilitada(Boolean vigenciaDesabilitada) {
+		this.vigenciaDesabilitada = vigenciaDesabilitada;
+	}
+
+	public Boolean getVigenciaEditavel() {
+		if(vigenciaEditavel == null)
+			return this.getInicioNovaValidade() != null;
+		return vigenciaEditavel;
+	}
+
+	public void setVigenciaEditavel(Boolean vigenciaEditavel) {
+		this.vigenciaEditavel = vigenciaEditavel;
+	}
+	
+	@Transient
+	public void excluirVigencia() {
+		setVigenciaEditavel(false);
+		this.setExcluido(true);
+	}
+	
 
 	@Transient
 	public boolean exclusaoTransmitida() {
@@ -121,11 +155,24 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 	
 	@Transient
 	public void apagaAlteracao() {
+		this.setVigenciaEditavel(false);
 		this.inicioNovaValidade = null;
 		this.fimNovaValidade = null;
 		this.excluido = false;
 	}
+	
+	@Transient
+	public void incluirNovamente() {
+		this.setVigenciaDesabilitada(false);
+		this.setVigenciaEditavel(false);
+		this.setExcluido(false);
+		this.setInicioValidade(null);
+		this.setFimValidade(null);
+	}
 
+	
+	// FIXME refazer o equals e o hashCode depois de mapear a coluna evento
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

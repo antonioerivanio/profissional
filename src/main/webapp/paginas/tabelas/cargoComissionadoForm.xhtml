@@ -102,188 +102,30 @@
 							value="#{cargoComissionadoBean.entidade.observacao}"
 							onkeyup="this.value = this.value.substring(0, 199);" />
 					</div>
-				</div>			
+				</div>
 					
+				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
+                    <ui:param name="vigencia" value="#{cargoComissionadoBean.entidade.esocialVigencia}" />
+                </ui:include>
 					
-					
-<!-- ################################################################## VIGÊNCIA ESOCIAL ######################################################################### -->	
-					
-					
-					<fieldset class="fl mg-right-15" style="padding-bottom: 0" id="fieldset-vigencia">
-
-						<legend>Período de Vigência <span class="identificador-esocial">(e)</span></legend>
-												
-						<ui:fragment rendered="#{!cargoComissionadoBean.alterarVigencia}">
-						
-							<div class="input-box vigencia-width-data">
-								<label for="">Início</label>
-								<div class="conteiner">
-									<h:inputText 
-										id="dataInicio" 
-										name="dataInicio"
-										styleClass="maskVigencia" 
-										converter="vigenciaConverter"
-										value="#{cargoComissionadoBean.entidade.esocialVigencia.inicioValidade}"
-										maxlength="7"
-										disabled="#{cargoComissionadoBean.desabilitaVigencia}" />
-								</div>
-							</div>
-	
-							<div class="input-box vigencia-width-data">
-								<label for="">Fim</label>
-								<div class="conteiner">
-									<h:inputText 
-										id="dataFim" 
-										name="dataFim"
-										styleClass="maskVigencia" converter="vigenciaConverter"
-										value="#{cargoComissionadoBean.entidade.esocialVigencia.fimValidade}"
-										maxlength="7"
-										disabled="#{cargoComissionadoBean.desabilitaVigencia}" />
-								</div>
-							</div>
-						
-						</ui:fragment>
-						
-						<ui:fragment rendered="#{cargoComissionadoBean.alterarVigencia}">
-						
-							<div class="input-box vigencia-width-data">
-								<label for="">Novo início</label>
-								<div class="conteiner">
-									<h:inputText 
-										id="dataInicioNovaValidade" 
-										name="dataInicioNovaValidade"
-										styleClass="maskVigencia" 
-										converter="vigenciaConverter"
-										value="#{cargoComissionadoBean.entidade.esocialVigencia.inicioNovaValidade}"
-										maxlength="7" />
-								</div>
-							</div>
-	
-							<div class="input-box vigencia-width-data">
-								<label for="">Novo fim</label>
-								<div class="conteiner">
-									<h:inputText 
-										id="dataFimNovaValidade" 
-										name="dataFimNovaValidade"
-										styleClass="maskVigencia" 
-										converter="vigenciaConverter"
-										value="#{cargoComissionadoBean.entidade.esocialVigencia.fimNovaValidade}"
-										maxlength="7" />
-								</div>
-							</div>						
-							
-						</ui:fragment>
-												
-						<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialVigencia.inicioValidade != null}">
-																		
-							<!-- Botões de alteração -->
-							<ui:fragment rendered="#{!cargoComissionadoBean.entidade.esocialVigencia.exclusaoTransmitida()
-														and !cargoComissionadoBean.entidade.esocialVigencia.podeCancelarOperacaoAnterior() 
-														and !cargoComissionadoBean.alterarVigencia}">
-								<div class="fl mg-top-19 mg-right-10">
-									<h:commandLink 
-										value="Nova validade" 
-										action="#{cargoComissionadoBean.informarNovaValidade}" 
-										styleClass="bt-padrao">
-										<a4j:support event="click" reRender="fieldset-vigencia"/>
-									</h:commandLink>	
-								</div>
-								<div class="fl mg-top-19">
-									<h:commandLink 
-										value="Excluir" 
-										action="#{cargoComissionadoBean.excluirVigencia}" 
-										styleClass="bt-padrao">
-										<a4j:support event="click" reRender="fieldset-vigencia"/>
-									</h:commandLink>
-								</div>
-							</ui:fragment>
-							
-							<ui:fragment rendered="#{!cargoComissionadoBean.entidade.esocialVigencia.exclusaoTransmitida()
-														and (cargoComissionadoBean.entidade.esocialVigencia.podeCancelarOperacaoAnterior() 
-																or cargoComissionadoBean.alterarVigencia)}">
-								<div class="fl mg-top-19 mg-right-10">
-									<h:commandLink 
-										value="Cancelar" 
-										action="#{cargoComissionadoBean.apagaAlteracao}" 
-										styleClass="bt-padrao">
-										<a4j:support event="click" reRender="fieldset-vigencia"/>
-									</h:commandLink>	
-								</div>
-							</ui:fragment>
-							
-							<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialVigencia.exclusaoTransmitida()}">
-								<div class="fl mg-top-19 mg-right-10">
-									<h:commandLink 
-										value="Incluir novamente" 
-										action="#{cargoComissionadoBean.incluirNovamente}" 
-										styleClass="bt-padrao">
-										<a4j:support event="click" reRender="fieldset-vigencia"/>
-									</h:commandLink>	
-								</div>
-							</ui:fragment>						
-							
-							<!-- Mensagens de vigências anteriores -->
-							<ui:fragment rendered="#{cargoComissionadoBean.alterarVigencia}">
-								<div class="fl vigencia-msg-alerta">
-									<h:outputText
-										id="alterarVigenciaAnterior" 
-										value="Vigência anterior: " />
-									<h:outputText
-										id="alterarVigenciaInicioValidade" 
-										converter="vigenciaConverter"
-										value="#{cargoComissionadoBean.entidade.esocialVigencia.inicioValidade}" />
-									<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialVigencia.fimValidade != null}">
-										<h:outputText 
-											id="alterarVigenciaAFimValidade"
-											value=" à " /> 
-										<h:outputText
-											id="alterarVigenciaFimValidade" 
-											converter="vigenciaConverter"
-											value="#{cargoComissionadoBean.entidade.esocialVigencia.fimValidade}" />	
-									</ui:fragment>			  
-								</div>
-							</ui:fragment>
-							
-							<!-- Mensagens de exclusão -->
-							<ui:fragment rendered="#{cargoComissionadoBean.entidade.esocialVigencia.excluido}">
-								<div class="fl vigencia-msg-alerta">									
-									<h:outputText 
-										id="excluidaENaoTransmitida" 
-										value="Foi solicitada a exclusão da vigência atual." 
-										rendered="#{!cargoComissionadoBean.entidade.esocialVigencia.transmitido}" />																	
-									<h:outputText 
-										id="excluidaETransmitida" 
-										value="Foi transmitida a exclusão da vigência atual." 
-										rendered="#{cargoComissionadoBean.entidade.esocialVigencia.transmitido}" />
-								</div>
-							</ui:fragment>
-					
-						</ui:fragment>
-					
-					</fieldset>
-					
-<!-- ################################################################## VIGÊNCIA ESOCIAL ######################################################################### -->
-					
-					
-					
-					<div class="input-box box-15">
-						<label for="">Código</label>
-						<div class="conteiner">
-							<h:inputText id="codFuncao"
-								value="#{cargoComissionadoBean.entidade.codFuncao}"
-								maxlength="30" />
-						</div>
+				<div class="input-box box-15">
+					<label for="">Código</label>
+					<div class="conteiner">
+						<h:inputText id="codFuncao"
+							value="#{cargoComissionadoBean.entidade.codFuncao}"
+							maxlength="30" />
 					</div>
+				</div>
 
-					<div class="input-box box-10">
-						<label for="">CBO</label>
-						<div class="conteiner">
-							<h:inputText id="cbo"
-								value="#{cargoComissionadoBean.entidade.cbo}" maxlength="6" />
-						</div>
+				<div class="input-box box-10">
+					<label for="">CBO</label>
+					<div class="conteiner">
+						<h:inputText id="cbo"
+							value="#{cargoComissionadoBean.entidade.cbo}" maxlength="6" />
 					</div>
+				</div>
 
-				</fieldset>
+			</fieldset>
 
 			
 
