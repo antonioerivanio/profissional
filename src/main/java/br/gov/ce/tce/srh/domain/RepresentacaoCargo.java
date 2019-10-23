@@ -43,13 +43,13 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 	private String cbo;
 
 	@OneToOne
-	@JoinColumn(name = "IDESOCIALEVENTO")
-	private ESocialEvento esocialEvento;
+	@JoinColumn(name = "IDESOCIALVIGENCIA")
+	private ESocialEventoVigencia esocialVigencia;
 	
 	
 	public RepresentacaoCargo() {
 		super();
-		setEsocialEvento(new ESocialEvento());
+		setEsocialVigencia(new ESocialEventoVigencia());
 	}
 
 	public Long getOrdem() {
@@ -118,13 +118,12 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 		this.codFuncao = codFuncao;
 	}
 
-	public ESocialEvento getEsocialEvento() {
-		return esocialEvento;
+	public ESocialEventoVigencia getEsocialVigencia() {
+		return esocialVigencia;
 	}
 
-	public void setEsocialEvento(ESocialEvento esocialEvento) {
-		this.esocialEvento = esocialEvento;
-	}
-	
+	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
+		this.esocialVigencia = esocialVigencia;
+	}	
 
 }

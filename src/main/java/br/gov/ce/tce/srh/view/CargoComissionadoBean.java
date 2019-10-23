@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.ESocialEvento;
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.RepresentacaoCargoService;
@@ -69,11 +69,11 @@ public class CargoComissionadoBean implements Serializable {
 
 		try {
 			
-			if (entidade.getEsocialEvento() != null) {				
-				desabilitaVigencia = entidade.getEsocialEvento().getInicioValidade() != null;
-				alterarVigencia = entidade.getEsocialEvento().getInicioNovaValidade() != null;			
+			if (entidade.getEsocialVigencia() != null) {				
+				desabilitaVigencia = entidade.getEsocialVigencia().getInicioValidade() != null;
+				alterarVigencia = entidade.getEsocialVigencia().getInicioNovaValidade() != null;			
 			} else {
-				entidade.setEsocialEvento(new ESocialEvento());
+				entidade.setEsocialVigencia(new ESocialEventoVigencia());
 			}
 			
 		} catch (Exception e) {
@@ -260,12 +260,20 @@ public class CargoComissionadoBean implements Serializable {
 	
 	public void excluirVigencia() {
 		this.alterarVigencia = false;
-		this.entidade.getEsocialEvento().setExcluido(true);
+		this.entidade.getEsocialVigencia().setExcluido(true);
 	}
 	
 	public void apagaAlteracao() {
 		this.alterarVigencia = false;
-		this.entidade.getEsocialEvento().apagaAlteracao();
+		this.entidade.getEsocialVigencia().apagaAlteracao();
+	}
+	
+	public void incluirNovamente() {
+		this.desabilitaVigencia = false;
+		this.alterarVigencia = false;
+		this.entidade.getEsocialVigencia().setExcluido(false);
+		this.entidade.getEsocialVigencia().setInicioValidade(null);
+		this.entidade.getEsocialVigencia().setFimValidade(null);
 	}
 
 }

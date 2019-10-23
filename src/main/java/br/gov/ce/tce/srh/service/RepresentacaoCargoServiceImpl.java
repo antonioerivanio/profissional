@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.RepresentacaoCargoDAO;
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
@@ -17,24 +18,23 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 	private RepresentacaoCargoDAO dao;
 	
 	@Autowired
-	private ESocialEventoService esocialEventoService;
+	private ESocialEventoVigenciaService esocialEventoVigenciaService;
 
 
 	@Override
 	@Transactional
 	public void salvar(RepresentacaoCargo entidade) throws SRHRuntimeException {
 
-		/*
-		 * Regra: 
-		 *
-		 * Nao deixar cadastrar entidade ja existente.
-		 * 
-		 */
+		
 //		verificandoSeEntidadeExiste(entidade);
 		
-		esocialEventoService.salvar(entidade.getEsocialEvento());
+		
+		// TODO Fazer as validações para o eSocial		
+		ESocialEventoVigencia esocialVigencia = entidade.getEsocialVigencia();
+		esocialVigencia.setReferencia(entidade.getCodFuncao());
+		esocialEventoVigenciaService.salvar(esocialVigencia);
 
-		// persistindo
+		
 		dao.salvar(entidade);
 	}
 
