@@ -65,15 +65,27 @@
 							<h:outputText id="item1" value="#{item.id}" />
 						</center>
 					</h:column>
-					<h:column id="col2" headerClass="cel-75">
+					<h:column id="col2" headerClass="cel-50">
 						<f:facet name="header">
                             Nomenclatura
                         </f:facet>
 						<h:outputText id="item2" value="#{item.nomenclatura}"
 							styleClass="cel-75" />
 					</h:column>
+					
+					<h:column id="col3" headerClass="cel-15">
+						<f:facet name="header">
+					        Vigência
+					    </f:facet>
+						<center>
+							<h:outputText id="item4" value="#{item.esocialVigencia.inicioValidade}"
+								styleClass="cel-15">
+								<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
+							</h:outputText>
+						</center>
+					</h:column>	
 
-					<h:column id="col3"
+					<h:column id="col4"
 						rendered="#{LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}">
 						<f:facet name="header">
                             EDITAR
@@ -85,7 +97,7 @@
 						</h:commandLink>
 					</h:column>
 
-					<h:column id="col4"
+					<h:column id="col5"
 						rendered="#{LoginBean.anyGranted('ROLE_CARGO_EXCLUIR')}">
 						<f:facet name="header">
                             EXCLUIR

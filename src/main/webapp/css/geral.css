@@ -1216,3 +1216,20 @@ body {
 .rich-tabpanel .rich-tab-bottom-line>table>tbody>tr>td:nth-child(1) {
 	display: none;
 }
+
+
+
+.vigencia-msg-alerta {
+	position: relative;
+    bottom: 16px;
+    font-weight: bold;
+    color: red;
+    clear: both;
+}
+.vigencia-width-data {	
+	width: 120px !important;
+}
+.identificador-esocial {
+	font-weight: bold;
+	color: #4BD07B;
+}

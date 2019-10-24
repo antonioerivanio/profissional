@@ -248,29 +248,9 @@
 					</fieldset>
 
 
-					<fieldset class="fl">
-
-						<legend>Período de Vigência</legend>
-
-						<div class="input-box box-50">
-							<label for="">Início</label>
-							<div class="conteiner">
-								<h:inputText id="dataInicio" name="dataInicio"
-									styleClass="maskData" converter="dateConverter"
-									value="#{cargoFormBean.entidade.inicioValidade}" maxlength="10" />
-							</div>
-						</div>
-
-						<div class="input-box box-50">
-							<label for="">Fim</label>
-							<div class="conteiner">
-								<h:inputText id="dataFim" name="dataFim" styleClass="maskData"
-									converter="dateConverter"
-									value="#{cargoFormBean.entidade.fimValidade}" maxlength="10" />
-							</div>
-						</div>
-
-					</fieldset>
+					<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
+					  <ui:param name="vigencia" value="#{cargoFormBean.entidade.esocialVigencia}" />
+					</ui:include>
 
 				</div>
 
