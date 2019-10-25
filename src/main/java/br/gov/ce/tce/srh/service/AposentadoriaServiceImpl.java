@@ -15,7 +15,7 @@ import br.gov.ce.tce.srh.domain.AbonoPermanencia;
 import br.gov.ce.tce.srh.domain.Aposentadoria;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalSetor;
-import br.gov.ce.tce.srh.enums.EnumStatusFuncional;
+import br.gov.ce.tce.srh.enums.StatusFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -202,7 +202,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 		
 		if (excluirAposentadoria) {
 			
-			funcional.setStatus(EnumStatusFuncional.ATIVO.getId());
+			funcional.setStatus(StatusFuncional.ATIVO.getId());
 			
 			if (funcional.getOcupacao().getTipoOcupacao().getId() != 1L) // Diferente de membros
 				funcional.setPonto(true);
@@ -217,7 +217,7 @@ public class AposentadoriaServiceImpl implements AposentadoriaService {
 		
 		} else {
 			
-			funcional.setStatus(EnumStatusFuncional.INATIVO.getId());
+			funcional.setStatus(StatusFuncional.INATIVO.getId());
 			
 			funcional.setPonto(false);
 			

@@ -1,6 +1,6 @@
 package br.gov.ce.tce.srh.enums;
 
-public enum EnumStatusFuncional {
+public enum StatusFuncional {
 	
 	ATIVO(1L, "Ativo"),
 	ESTAGIARIO(2L, "Estagiário"),
@@ -11,7 +11,7 @@ public enum EnumStatusFuncional {
 	private Long id;
 	private String descricao;
 	
-	private EnumStatusFuncional( Long id, String descricao ) {
+	private StatusFuncional( Long id, String descricao ) {
 		this.id = id;
 		this.descricao = descricao;
 	}

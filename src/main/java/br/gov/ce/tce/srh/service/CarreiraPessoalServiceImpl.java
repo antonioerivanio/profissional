@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.CarreiraPessoalDAO;
 import br.gov.ce.tce.srh.domain.CarreiraPessoal;
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.enums.EnumCarreira;
+import br.gov.ce.tce.srh.enums.Carreira;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("carreiraPessoalService")
@@ -96,7 +96,7 @@ public class CarreiraPessoalServiceImpl implements CarreiraPessoalService {
 		if (entidade.getCarreira() == null)
 			throw new SRHRuntimeException("A Carreira é obrigatória.");
 		
-		if (entidade.getInicioCarreira() == null && entidade.getCarreira() != EnumCarreira.NAO_SE_APLICA)
+		if (entidade.getInicioCarreira() == null && entidade.getCarreira() != Carreira.NAO_SE_APLICA)
 			throw new SRHRuntimeException("A Data Início Carreira é obrigatória.");
 		
 		if (entidade.getFimCarreira() != null && entidade.getInicioCarreira().after(entidade.getFimCarreira()))

@@ -22,7 +22,7 @@ public enum TipoInscricao {
 		this.codigo = codigo;
 	}
 
-	public static TipoInscricao toEnum(Integer codigo) {
+	public static TipoInscricao getByCodigo(Integer codigo) {
 
 		if (codigo == null) {
 			return null;

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.AreaProfissional;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.Instituicao;
-import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
+import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AreaProfissionalService;
 import br.gov.ce.tce.srh.service.CursoProfissionalService;
@@ -208,8 +208,8 @@ public class CursoProfissionalBean implements Serializable {
 	}
 	
 	
-	public List<EnumTipoCursoProfissional> getComboTipoCurso() {
-		return Arrays.asList(EnumTipoCursoProfissional.values());
+	public List<TipoCursoProfissional> getComboTipoCurso() {
+		return Arrays.asList(TipoCursoProfissional.values());
 	}
 
 
