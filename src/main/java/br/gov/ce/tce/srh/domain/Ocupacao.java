@@ -8,9 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.gov.ce.tce.srh.enums.ContagemEspecial;
@@ -83,30 +82,10 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	@Column(name = "SITUACAOLEI")
 	private Integer situacaoLei;
 
-	@Column(name = "INICIOVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date inicioValidade;
-
-	@Column(name = "FIMVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date fimValidade;
-
-	@Column(name = "INICIONOVAVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date inicioNovaValidade;
-
-	@Column(name = "FIMNOVAVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date fimNovaValidade;
-
-	@Column(name = "INICIOEXCLUSAO")
-	@Temporal(TemporalType.DATE)
-	private Date inicioExclusao;
-
-	@Column(name = "FIMEXCLUSAO")
-	@Temporal(TemporalType.DATE)
-	private Date fimExclusao;
-
+	@OneToOne
+	@JoinColumn(name = "IDESOCIALVIGENCIA")
+	private ESocialEventoVigencia esocialVigencia;
+	
 	@Transient
 	private String descricaoSituacao;
 
@@ -248,52 +227,12 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 		this.dedicacaoExclusiva = dedicacaoExclusiva;
 	}
 
-	public Date getInicioValidade() {
-		return inicioValidade;
+	public ESocialEventoVigencia getEsocialVigencia() {
+		return esocialVigencia;
 	}
 
-	public void setInicioValidade(Date inicioValidade) {
-		this.inicioValidade = inicioValidade;
-	}
-
-	public Date getFimValidade() {
-		return fimValidade;
-	}
-
-	public void setFimValidade(Date fimValidade) {
-		this.fimValidade = fimValidade;
-	}
-
-	public Date getInicioNovaValidade() {
-		return inicioNovaValidade;
-	}
-
-	public void setInicioNovaValidade(Date inicioNovaValidade) {
-		this.inicioNovaValidade = inicioNovaValidade;
-	}
-
-	public Date getFimNovaValidade() {
-		return fimNovaValidade;
-	}
-
-	public void setFimNovaValidade(Date fimNovaValidade) {
-		this.fimNovaValidade = fimNovaValidade;
-	}
-
-	public Date getInicioExclusao() {
-		return inicioExclusao;
-	}
-
-	public void setInicioExclusao(Date inicioExclusao) {
-		this.inicioExclusao = inicioExclusao;
-	}
-
-	public Date getFimExclusao() {
-		return fimExclusao;
-	}
-
-	public void setFimExclusao(Date fimExclusao) {
-		this.fimExclusao = fimExclusao;
+	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
+		this.esocialVigencia = esocialVigencia;
 	}
 
 	public void setDescricaoSituacao(String descricaoSituacao) {
