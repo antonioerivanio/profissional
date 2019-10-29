@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +20,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC005_Manter Cargo
-* 
-* @since   : Sep 13, 2011, 17:28:36 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("cargoListBean")
-@Scope("session")
+@Scope("view")
 public class CargoListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CargoListBean.class);
@@ -41,10 +33,6 @@ public class CargoListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private Long situacao;
@@ -62,13 +50,7 @@ public class CargoListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -84,7 +66,6 @@ public class CargoListBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
@@ -92,16 +73,14 @@ public class CargoListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -119,16 +98,10 @@ public class CargoListBean implements Serializable {
 		}
 
 		entidade = new Ocupacao();
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -154,14 +127,8 @@ public class CargoListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-
-		return null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Long getSituacao() {return situacao;}
 	public void setSituacao(Long situacao) {this.situacao = situacao;}
 	
@@ -172,19 +139,6 @@ public class CargoListBean implements Serializable {
 	public void setEntidade(Ocupacao entidade) {this.entidade = entidade;}
 
 	public List<Ocupacao> getLista() {return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			nomenclatura = new String();
-			situacao = null;
-			lista = new ArrayList<Ocupacao>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {

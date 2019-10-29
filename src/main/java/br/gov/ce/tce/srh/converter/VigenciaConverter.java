@@ -28,7 +28,7 @@ public class VigenciaConverter implements Converter {
 
 
 	/**
-	 * Converte um  objeto Date para uma String no formato MM/yyyy.
+	 * Converte um objeto Date para uma String no formato MM/yyyy.
 	 */
 	@Override
 	public String getAsString(FacesContext fc, UIComponent ui, Object value) {

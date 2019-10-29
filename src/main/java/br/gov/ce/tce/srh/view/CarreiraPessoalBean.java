@@ -20,7 +20,7 @@ import br.gov.ce.tce.srh.domain.CarreiraPessoal;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.Pessoal;
-import br.gov.ce.tce.srh.enums.EnumCarreira;
+import br.gov.ce.tce.srh.enums.Carreira;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CarreiraPessoalService;
@@ -322,7 +322,7 @@ public class CarreiraPessoalBean implements Serializable {
 	
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 	
-	public List<EnumCarreira> getComboCarreira(){ return Arrays.asList(EnumCarreira.values()); }
+	public List<Carreira> getComboCarreira(){ return Arrays.asList(Carreira.values()); }
 	
 	public List<Funcional> getFuncionais(){	return this.funcionais;	}
 		
@@ -374,13 +374,13 @@ public class CarreiraPessoalBean implements Serializable {
 		this.entidade.setInicioCarreira(null);
 		this.entidade.setFimCarreira(null);
 		
-		if(this.entidade.getCarreira() != EnumCarreira.NAO_SE_APLICA && !this.funcionais.isEmpty())
+		if(this.entidade.getCarreira() != Carreira.NAO_SE_APLICA && !this.funcionais.isEmpty())
 			this.entidade.setInicioCarreira(funcionais.get(funcionais.size() - 1).getExercicio());
 		
 	}
 	
 	public boolean isDesabilitaDatasCarreira() {
-		if(this.entidade.getCarreira() == EnumCarreira.NAO_SE_APLICA)
+		if(this.entidade.getCarreira() == Carreira.NAO_SE_APLICA)
 			return true;
 		return false;
 	}

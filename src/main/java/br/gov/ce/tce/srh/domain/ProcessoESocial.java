@@ -2,7 +2,6 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,9 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import br.gov.ce.tce.srh.enums.IndicativoAutoria;
@@ -50,13 +48,10 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	@Column(name = "IDVARA")
 	private Integer idVara;
 
-	@Column(name = "INICIOVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date inicioValidade;
-
-	@Column(name = "FIMVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date fimValidade;
+	@OneToOne
+	@JoinColumn(name = "IDESOCIALVIGENCIA")
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
+	
 	
 	@Transient
 	private List<ProcessoESocialSuspensao> suspensoes = new ArrayList<>();
@@ -131,23 +126,7 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	public void setIndicativoMateria(IndicativoMateria indicativo) {
 		if(indicativo != null)
 			this.indicativoMateria = indicativo.getCodigo();
-	}
-
-	public Date getInicioValidade() {
-		return inicioValidade;
-	}
-
-	public void setInicioValidade(Date inicioValidade) {
-		this.inicioValidade = inicioValidade;
-	}
-
-	public Date getFimValidade() {
-		return fimValidade;
-	}
-
-	public void setFimValidade(Date fimValidade) {
-		this.fimValidade = fimValidade;
-	}
+	}	
 
 	public List<ProcessoESocialSuspensao> getSuspensoes() {
 		return suspensoes;
@@ -166,6 +145,14 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 			}	
 		}					
 		return listaAtualizada;
+	}
+
+	public ESocialEventoVigencia getEsocialVigencia() {
+		return esocialVigencia;
+	}
+
+	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
+		this.esocialVigencia = esocialVigencia;
 	}
 
 }

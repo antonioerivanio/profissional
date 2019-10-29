@@ -1,6 +1,6 @@
 package br.gov.ce.tce.srh.enums;
 
-public enum EnumTipoCursoProfissional {
+public enum TipoCursoProfissional {
 	
 	EXTENSAO("Curso de extensão"),
 	ESPECIALIZACAO("Pós-Graduação a nível de Especialização"),
@@ -9,7 +9,7 @@ public enum EnumTipoCursoProfissional {
 	
 	private String descricao;
 	
-	private EnumTipoCursoProfissional (String descricao){
+	private TipoCursoProfissional (String descricao){
 		this.descricao = descricao;
 	}
 

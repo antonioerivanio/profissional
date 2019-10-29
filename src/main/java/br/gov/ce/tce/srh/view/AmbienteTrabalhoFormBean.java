@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.dao.EstabelecimentoDAO;
 import br.gov.ce.tce.srh.domain.AmbienteTrabalho;
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.Estabelecimento;
 import br.gov.ce.tce.srh.enums.LocalAmbiente;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -19,7 +22,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("ambienteTrabalhoFormBean")
-@Scope("session")
+@Scope("view")
 public class AmbienteTrabalhoFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(AmbienteTrabalhoFormBean.class);
@@ -32,25 +35,16 @@ public class AmbienteTrabalhoFormBean implements Serializable {
 
 	private AmbienteTrabalho entidade = new AmbienteTrabalho();
 	
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
+	@PostConstruct
+	private void init() {
+		AmbienteTrabalho flashParameter = (AmbienteTrabalho)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new AmbienteTrabalho());
+		if(entidade.getEsocialVigencia() == null) {
+			entidade.setEsocialVigencia(new ESocialEventoVigencia());
+		}	
+    }
 
-	public String prepareAlterar() {		
-		
-		try {
-			
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return "incluirAlterar";
-	}
-
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -67,8 +61,7 @@ public class AmbienteTrabalhoFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+		
 	}
 
 	private void limpar() {

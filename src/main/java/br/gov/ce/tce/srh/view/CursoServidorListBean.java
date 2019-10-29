@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
-import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
+import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CursoServidorService;
@@ -55,7 +55,7 @@ public class CursoServidorListBean implements Serializable {
 	private String cpf = new String();
 	private String nome = new String();
 
-	private EnumTipoCursoProfissional tipoCurso;
+	private TipoCursoProfissional tipoCurso;
 	private boolean areaAtuacao;
 	private boolean somenteCargaHoraria;
 	private boolean somenteCursoGraduacao;
@@ -268,8 +268,8 @@ public class CursoServidorListBean implements Serializable {
 		}
 	}
 	
-	public List<EnumTipoCursoProfissional> getComboTipoCurso() {
-		return Arrays.asList(EnumTipoCursoProfissional.values());
+	public List<TipoCursoProfissional> getComboTipoCurso() {
+		return Arrays.asList(TipoCursoProfissional.values());
 	}
 
 	public String getNome() {return nome;}
@@ -296,8 +296,8 @@ public class CursoServidorListBean implements Serializable {
 	public Date getFim() {return fim;}
 	public void setFim(Date fim) {this.fim = fim;}
 
-	public EnumTipoCursoProfissional getTipoCurso() {return tipoCurso;}
-	public void setTipoCurso(EnumTipoCursoProfissional tipoCurso) {	this.tipoCurso = tipoCurso;}
+	public TipoCursoProfissional getTipoCurso() {return tipoCurso;}
+	public void setTipoCurso(TipoCursoProfissional tipoCurso) {	this.tipoCurso = tipoCurso;}
 	
 	public boolean isSomenteCargaHoraria() {return this.somenteCargaHoraria;}
 	public void setSomenteCargaHoraria(boolean somenteCargaHoraria) {this.somenteCargaHoraria = somenteCargaHoraria;}

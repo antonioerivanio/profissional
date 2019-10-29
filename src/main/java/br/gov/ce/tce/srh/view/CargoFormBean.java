@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.Escolaridade;
 import br.gov.ce.tce.srh.domain.Especialidade;
 import br.gov.ce.tce.srh.domain.EspecialidadeCargo;
@@ -28,15 +31,9 @@ import br.gov.ce.tce.srh.service.SimboloService;
 import br.gov.ce.tce.srh.service.TipoOcupacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC005_Manter Cargo
-* 
-* @since   : Sep 13, 2011, 17:28:36 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("cargoFormBean")
-@Scope("session")
+@Scope("view")
 public class CargoFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CargoFormBean.class);
@@ -76,46 +73,21 @@ public class CargoFormBean implements Serializable {
 	private List<Escolaridade> comboEscolaridade;
 	private List<TipoOcupacao> comboTipoOcupacao;
 
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		setEntidade( new Ocupacao() );
-		limpar();
-		return "incluirAlterar";
-	}
+	
+	@PostConstruct
+	private void init() {
+		Ocupacao flashParameter = (Ocupacao)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Ocupacao());
+		if(entidade.getEsocialVigencia() == null) {
+			entidade.setEsocialVigencia(new ESocialEventoVigencia());
+		}			
+		
+		this.listaEspecialidade = especialidadeCargoService.findByOcupacao( entidade.getId() );
+		this.listaSimbolo = simboloService.findByOcupacao( entidade.getId() );			
+    }
 
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		try {
-			
-			limpar();
-			this.listaEspecialidade = especialidadeCargoService.findByOcupacao( entidade.getId() );
-			this.listaSimbolo = simboloService.findByOcupacao( entidade.getId() );			
-			
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	
+	public void salvar() {
 
 		try {
 
@@ -132,31 +104,22 @@ public class CargoFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+		
 	}
 
-
-	/**
-	 * Adicionar especialidade
-	 * 
-	 * @return
-	 */
-	public String addEspecialidade() {
+	public void addEspecialidade() {
 
 		try {
 
 			// validando o campo obrigatorio Simbologia
 			if (entidadeEspecialidade.getEspecialidade() == null || entidadeEspecialidade.getEspecialidade().getId() == 0l) {
 				FacesUtil.addErroMessage("A especialidade é obrigatória.");
-				return null;
 			}
 
 			// verificando se a especialidade ja foi cadatrada
 			for (EspecialidadeCargo item : listaEspecialidade) {
 				if (item.getEspecialidade().getId().equals(entidadeEspecialidade.getEspecialidade().getId())) {
 					FacesUtil.addErroMessage("A especialidade já está na lista.");
-					return null;
 				}
 			}
 
@@ -172,16 +135,9 @@ public class CargoFormBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 
-
-	/**
-	 * Excluir especialidade
-	 * 
-	 * @return
-	 */
-	public String excluirEspecialidade() {
+	public void excluirEspecialidade() {
 
 		if (this.entidadeEspecialidade.getId() != null) {
 
@@ -193,35 +149,24 @@ public class CargoFormBean implements Serializable {
 
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Existem registros filhos utilizando a especialidade excluida. Exclusão não poderá ser realizada.");
-				return null;
 			}
 
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Adicionar simbolo
-	 * 
-	 * @return
-	 */
-	public String addSimbologia() {
+	public void addSimbologia() {
 
 		try {
 
 			// validando o campo obrigatorio Simbologia
 			if (simbologia == null || simbologia.equalsIgnoreCase("")) {
 				FacesUtil.addErroMessage("A simbologia é obrigatória.");
-				return null;
 			}
 
 			// verificando se a simbologia ja foi cadatrada
 			for (Simbolo item : listaSimbolo) {
 				if (item.getSimbolo().equalsIgnoreCase(simbologia)) {
 					FacesUtil.addErroMessage("A simbologia já está na lista.");
-					return null;
 				}
 			}
 
@@ -236,17 +181,9 @@ public class CargoFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a simbologia. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Excluir simbolo
-	 * 
-	 * @return
-	 */
-	public String excluirSimbologia() {
+	public void excluirSimbologia() {
 
 		if (this.entidadeSimbolo.getId() != null) {
 
@@ -258,20 +195,10 @@ public class CargoFormBean implements Serializable {
 
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Existem registros filhos utilizando o simbolo excluido. Exclusão não poderá ser realizada.");
-				return null;
 			}
-
 		}
-
-		return null;
 	}
-
-
-	/**
-	 * Combo Especialidade
-	 * 
-	 * @return
-	 */
+	
 	public List<Especialidade> getComboEspecialidade() {
 
 		try {
@@ -288,11 +215,6 @@ public class CargoFormBean implements Serializable {
 	}
 
 
-	/**
-	 * Combo Escolaridade
-	 * 
-	 * @return
-	 */
 	public List<Escolaridade> getComboEscolaridade() {
 
 		try {
@@ -308,12 +230,7 @@ public class CargoFormBean implements Serializable {
 		return this.comboEscolaridade;
 	}
 
-
-	/**
-	 * Combo Tipo Ocupacao
-	 * 
-	 * @return
-	 */
+	
 	public List<TipoOcupacao> getComboTipoOcupacao() {
 
 		try {
@@ -331,7 +248,7 @@ public class CargoFormBean implements Serializable {
 
 	public List<SituacaoLei> getComboSituacaoLei() {
 		return Arrays.asList(SituacaoLei.values());
-	}
+	}	
 	
 	public List<TipoAcumuloDeCargo> getComboTipoAcumulo() {
 		return Arrays.asList(TipoAcumuloDeCargo.values());
@@ -341,9 +258,7 @@ public class CargoFormBean implements Serializable {
 		return Arrays.asList(ContagemEspecial.values());
 	}
 
-	/**
-	 * Limpar form
-	 */
+	
 	private void limpar() {
 		this.listaEspecialidade = new ArrayList<EspecialidadeCargo>();
 		this.listaSimbolo = new ArrayList<Simbolo>();
@@ -359,10 +274,6 @@ public class CargoFormBean implements Serializable {
 	}
 	
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Ocupacao getEntidade() {return entidade;}
 	public void setEntidade(Ocupacao entidade) {this.entidade = entidade;}
 

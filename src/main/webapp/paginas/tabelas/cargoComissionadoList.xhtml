@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{cargoComissionadoBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="infoMessage" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -80,35 +80,16 @@
                         	<h:outputText id="nao" value="Não" rendered="#{!item.ativo}" />
                         </center>
                     </h:column>
-                    <h:column id="col8">
-                        <f:facet name="header">
-                            Vigência eSocial
-                        </f:facet>
-                        <center>
-                        	<ui:fragment id="fragmentVigencia" rendered="#{item.esocialVigencia != null}">
-	                        	<h:outputText 
-	                        		id="inicioValidade" 
-	                        		value="#{item.esocialVigencia.inicioValidade}"
-	                        		converter="vigenciaConverter"
-	                        		rendered="#{item.esocialVigencia.inicioValidade != null}" />
-	                        	<ui:fragment id="fragmentFimValidade" rendered="#{item.esocialVigencia.fimValidade != null}">
-									<h:outputText id="aFimValidade" value=" à " /> 
-									<h:outputText
-										id="fimValidade" 
-										converter="vigenciaConverter"
-										value="#{item.esocialVigencia.fimValidade}" />	
-								</ui:fragment>
-								<h:outputText id="isVigenciaExcluida" value="(Excluída)" rendered="#{item.esocialVigencia.excluido}" />
-							</ui:fragment>		
-                        </center>
-                    </h:column>
+                    
+                    <ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />                   
+                    
                 	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_CARGO_REPRESENTACAO_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{cargoComissionadoBean.prepareAlterar}"
+                       				  action="#{cargoComissionadoBean.editar}"
                        				  styleClass="ico-editar" >
                             <f:setPropertyActionListener target="#{cargoComissionadoBean.entidade}" value="#{item}" />
                         </h:commandLink>
@@ -133,13 +114,13 @@
 			
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{cargoComissionadoBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />
 
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{cargoComissionadoBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_CARGO_REPRESENTACAO_INSERIR')}"/>
 

@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
-import br.gov.ce.tce.srh.enums.EnumStatusFuncional;
+import br.gov.ce.tce.srh.enums.StatusFuncional;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -443,7 +443,7 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	}
 	
 	public boolean isAposentado() {
-		return EnumStatusFuncional.INATIVO.getId().equals(this.status) 
+		return StatusFuncional.INATIVO.getId().equals(this.status) 
 				|| (this.tipoMovimentoSaida != null && tipoMovimentoSaida.getId() == TipoMovimento.APOSENTADORIA)
 				|| (this.aposentadoria != null && this.aposentadoria.getId() > 0 ) ; 
 	}

@@ -16,29 +16,38 @@
 
 		</div>
 
-		<h:form id="form" binding="#{ambienteTrabalhoListBean.form}"
+		<h:form 
+			id="form" 
 			styleClass="formularios box-border">
 
-			<h:messages id="messages" infoClass="infoMessage"
+			<h:messages 
+				id="messages" 
+				infoClass="infoMessage"
 				errorClass="errorMessage" />
 
 			<div class="input-box box-75">
 				<label for="descricao">Nome do Ambiente</label>
 				<div class="conteiner">
-					<h:inputText id="nome" maxlength="100"
-						value="#{ambienteTrabalhoListBean.nome}">
-					</h:inputText>
+					<h:inputText 
+						id="nome" 
+						maxlength="100" 
+						value="#{ambienteTrabalhoListBean.nome}" />
 				</div>
 			</div>
 
-			<h:commandButton id="consultar" value="Consultar"
+			<h:commandButton 
+				id="consultar" 
+				value="Consultar"
 				action="#{ambienteTrabalhoListBean.consultar}"
 				styleClass="bt-padrao fl mg-top-18 mg-left-10"
-				reRender="scroller,listaCarreira" />
+				reRender="scroller,listaAmbiente"
+				/>
 
 			<div class="tabela-dados">
 
-				<rich:dataTable id="listaAmbiente" var="item"
+				<rich:dataTable 
+					id="listaAmbiente" 
+					var="item"
 					rows="#{ambienteTrabalhoListBean.dataModel.pageSize}"
 					value="#{ambienteTrabalhoListBean.dataModel}">
 
@@ -61,28 +70,20 @@
 								styleClass="cel-50" />
 						</center>
 					</h:column>
-					<h:column id="col3" headerClass="cel-15">
-						<f:facet name="header">
-                            Vigência
-                        </f:facet>
-						<center>
-							<h:outputText id="item4" value="#{item.inicioValidade}"
-								styleClass="cel-15">
-								<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
-							</h:outputText>
-						</center>
-					</h:column>					
+					
+					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />				
 
 					<h:column id="col8"
 						rendered="#{true}">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>
-						<h:commandLink id="editar" value="Editar"
-							action="#{ambienteTrabalhoFormBean.prepareAlterar}"
+						<h:commandLink 
+							id="editar" 
+							value="Editar"
+							action="#{ambienteTrabalhoListBean.editar}"
 							styleClass="ico-editar">
-							<f:setPropertyActionListener
-								target="#{ambienteTrabalhoFormBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{ambienteTrabalhoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
@@ -90,31 +91,38 @@
 						<f:facet name="header">
                             EXCLUIR
                         </f:facet>						
-						<h:commandLink id="excluir" value="Excluir"
-							action="#{ambienteTrabalhoListBean.excluir}" styleClass="ico-delete"
-							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
-							<f:setPropertyActionListener
-								target="#{ambienteTrabalhoListBean.entidade}" value="#{item}" />
+						<h:commandLink 
+							id="excluir" 
+							value="Excluir"
+							action="#{ambienteTrabalhoListBean.excluir}" 
+							styleClass="ico-delete"
+							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
+							reRender="scroller,listaAmbiente">							
+							<f:setPropertyActionListener target="#{ambienteTrabalhoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="listaAmbiente"
-					stepControls="hide" renderIfSinglePage="false"
+				<rich:datascroller 
+					id="scroller" 
+					for="listaAmbiente"
+					stepControls="hide" 
+					renderIfSinglePage="false"
 					page="#{ambienteTrabalhoListBean.pagina}" />
 
 			</div>
 
-
-			<h:commandButton id="incluir" value="Incluir"
-				action="#{AmbienteTrabalhoFormBean.prepareIncluir}"
+			<h:commandButton 
+				id="incluir" 
+				value="Incluir"
+				action="incluirAlterar"
 				styleClass="bt-padrao fr mg-right-15"
 				rendered="#{true}" />
-			<h:commandButton id="limpaTela" value="Limpar"
-				action="#{ambienteTrabalhoListBean.limpaTela}"
+			<h:commandButton 
+				id="limpaTela" 
+				value="Limpar"
+				action="listar"
 				styleClass="bt-padrao fr mg-right-15" />
-
-
 		</h:form>
 
 	</ui:define>

@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,16 +17,13 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
 @Component("processoESocialListBean")
-@Scope("session")
+@Scope("view")
 public class ProcessoESocialListBean implements Serializable{
 
 	static Logger logger = Logger.getLogger(ProcessoESocialListBean.class);
 
 	@Autowired
 	private ProcessoESocialService service;
-
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	private String numero;
 	private ProcessoESocial entidade = new ProcessoESocial();
@@ -40,7 +35,7 @@ public class ProcessoESocialListBean implements Serializable{
 	private int registroInicial = 0;
 	private Integer pagina = 1;
 
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -57,8 +52,6 @@ public class ProcessoESocialListBean implements Serializable{
 
 			registroInicial = -1;
 
-			passouConsultar = true;
-
 		} catch (SRHRuntimeException e) {
 			limparListas();
 			FacesUtil.addErroMessage(e.getMessage());
@@ -69,10 +62,14 @@ public class ProcessoESocialListBean implements Serializable{
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -89,12 +86,7 @@ public class ProcessoESocialListBean implements Serializable{
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return "listar";
-	}
-
-	public String limpaTela() {
-		this.entidade = new ProcessoESocial();
-		return "listar";
+		this.consultar();
 	}
 
 	private void limparListas() {
@@ -102,23 +94,7 @@ public class ProcessoESocialListBean implements Serializable{
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<ProcessoESocial>();
 		pagina = 1;
-	}
-
-	public void setForm(HtmlForm form) {
-		this.form = form;
-	}
-
-	public HtmlForm getForm() {
-
-		if (!passouConsultar) {
-			this.numero = new String();
-			this.entidade = new ProcessoESocial();
-			limparListas();
-			registroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
+	}	
 
 	public PagedListDataModel getDataModel() {
 		if (registroInicial != getPrimeiroDaPagina()) {

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
-import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
+import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 
@@ -98,7 +98,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	
 	
 	@Override
-	public int count(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim) {
+	public int count(Long pessoal, boolean areaAtuacao, TipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim) {
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append("Select count(*) from PessoalCursoProfissional e where e.pk.pessoal = :pessoal ");		
@@ -124,7 +124,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if(tipoCurso != null)
 			query.setParameter("tipoCurso", tipoCurso);
 		if(somentePosGraduacao)
-			query.setParameter("extensao", EnumTipoCursoProfissional.EXTENSAO);
+			query.setParameter("extensao", TipoCursoProfissional.EXTENSAO);
 		if (inicio != null ) 	
 			query.setParameter("inicio", inicio);		
 		if (fim != null) 
@@ -136,7 +136,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim, int first, int rows) {
+	public List<PessoalCursoProfissional> search(Long pessoal, boolean areaAtuacao, TipoCursoProfissional tipoCurso, boolean somentePosGraduacao, Date inicio, Date fim, int first, int rows) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("Select e from PessoalCursoProfissional e where e.pk.pessoal = :pessoal ");		
 		
@@ -161,7 +161,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 		if(tipoCurso != null)
 			query.setParameter("tipoCurso", tipoCurso);	
 		if(somentePosGraduacao)
-			query.setParameter("extensao", EnumTipoCursoProfissional.EXTENSAO);
+			query.setParameter("extensao", TipoCursoProfissional.EXTENSAO);
 		if (inicio != null ) 	
 			query.setParameter("inicio", inicio);		
 		if (fim != null) 
@@ -176,7 +176,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	}	
 
 	@Override
-	public int count(Date inicio, Date fim, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
+	public int count(Date inicio, Date fim, boolean areaAtuacao, TipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso) {
 		
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");		
 		
@@ -225,7 +225,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
+	public List<PessoalCursoProfissional> search(Date inicio, Date fim, boolean areaAtuacao, TipoCursoProfissional tipoCurso, boolean somentePosGraduacao, TipoOcupacao tipoOcupacao, Setor setor, Long idCurso, int first, int rows) {
 		
 		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");				
 		
@@ -285,7 +285,7 @@ public class CursoServidorDAOImpl implements CursoServidorDAO {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim,boolean areaAtuacao, EnumTipoCursoProfissional tipoCurso) {
+	public List<PessoalCursoProfissional> getCursos(Date inicio, Date fim,boolean areaAtuacao, TipoCursoProfissional tipoCurso) {
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append("Select e from PessoalCursoProfissional e where e.cursoProfissional.inicio >= :inicio AND e.cursoProfissional.fim <= :fim ");

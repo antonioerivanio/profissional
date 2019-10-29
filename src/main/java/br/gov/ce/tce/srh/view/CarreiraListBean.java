@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,16 +17,13 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
 @Component("carreiraListBean")
-@Scope("session")
+@Scope("view")
 public class CarreiraListBean implements Serializable{
 
 	static Logger logger = Logger.getLogger(CarreiraListBean.class);
 
 	@Autowired
 	private CarreiraService service;
-
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	private String descricao;
 	private Carreira entidade = new Carreira();
@@ -40,14 +35,13 @@ public class CarreiraListBean implements Serializable{
 	private int registroInicial = 0;
 	private Integer pagina = 1;
 
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
 			limparListas();
 
 			carreiraList = service.search(this.descricao, null, null);
-
 			count = carreiraList.size();
 
 			if (count == 0) {
@@ -56,8 +50,6 @@ public class CarreiraListBean implements Serializable{
 			}
 
 			registroInicial = -1;
-
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -68,15 +60,19 @@ public class CarreiraListBean implements Serializable{
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+		
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
-			service.excluir(entidade);
+			service.excluir(entidade);			
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -88,13 +84,9 @@ public class CarreiraListBean implements Serializable{
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
-	}
-
-	public String limpaTela() {
-		this.entidade = new Carreira();
-		return "listar";
+		
+		this.consultar();
+		
 	}
 
 	private void limparListas() {
@@ -102,22 +94,6 @@ public class CarreiraListBean implements Serializable{
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Carreira>();
 		pagina = 1;
-	}
-
-	public void setForm(HtmlForm form) {
-		this.form = form;
-	}
-
-	public HtmlForm getForm() {
-
-		if (!passouConsultar) {
-			this.descricao = new String();
-			this.entidade = new Carreira();
-			limparListas();
-			registroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
 	}
 
 	public PagedListDataModel getDataModel() {

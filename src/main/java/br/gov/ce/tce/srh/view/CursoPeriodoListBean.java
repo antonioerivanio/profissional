@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
-import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
+import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.sapjava.service.SetorService;
@@ -57,7 +57,7 @@ public class CursoPeriodoListBean implements Serializable {
 	private Date fim;
 	private boolean areaAtuacao;
 	private boolean somentePosGraduacao;
-	private EnumTipoCursoProfissional tipoCurso;	
+	private TipoCursoProfissional tipoCurso;	
 	private String curso;
 	private Long idCurso;
 	
@@ -237,8 +237,8 @@ public class CursoPeriodoListBean implements Serializable {
 	}
 	
 	
-	public List<EnumTipoCursoProfissional> getComboTipoCurso() {
-		return Arrays.asList(EnumTipoCursoProfissional.values());
+	public List<TipoCursoProfissional> getComboTipoCurso() {
+		return Arrays.asList(TipoCursoProfissional.values());
 	}
 	
 		
@@ -257,8 +257,8 @@ public class CursoPeriodoListBean implements Serializable {
 	public boolean isAreaAtuacao() {return areaAtuacao;}
 	public void setAreaAtuacao(boolean areaAtuacao) {this.areaAtuacao = areaAtuacao;}
 	
-	public EnumTipoCursoProfissional getTipoCurso() {return tipoCurso;}
-	public void setTipoCurso(EnumTipoCursoProfissional tipoTitulacao) {this.tipoCurso = tipoTitulacao;}
+	public TipoCursoProfissional getTipoCurso() {return tipoCurso;}
+	public void setTipoCurso(TipoCursoProfissional tipoTitulacao) {this.tipoCurso = tipoTitulacao;}
 	
 	public String getLabelTotalCargaHoraria() {return labelTotalCargaHoraria;}
 	public void setLabelTotalCargaHoraria(String labelTotalCargaHoraria) {this.labelTotalCargaHoraria = labelTotalCargaHoraria;}	

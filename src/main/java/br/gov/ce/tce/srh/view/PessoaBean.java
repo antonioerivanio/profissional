@@ -42,7 +42,7 @@ import br.gov.ce.tce.srh.domain.Raca;
 import br.gov.ce.tce.srh.domain.Recadastramento;
 import br.gov.ce.tce.srh.domain.TipoLogradouro;
 import br.gov.ce.tce.srh.domain.Uf;
-import br.gov.ce.tce.srh.enums.EnumCategoriaCNH;
+import br.gov.ce.tce.srh.enums.CategoriaCNH;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CEPService;
 import br.gov.ce.tce.srh.service.DependenteService;
@@ -413,8 +413,8 @@ public class PessoaBean implements Serializable {
 		return this.comboRaca;
 	}
 
-	public List<EnumCategoriaCNH> getComboCategoriaCNH() {
-		return Arrays.asList(EnumCategoriaCNH.values());
+	public List<CategoriaCNH> getComboCategoriaCNH() {
+		return Arrays.asList(CategoriaCNH.values());
 	}
 
 	public List<Pais> getComboPais() {

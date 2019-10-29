@@ -16,8 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{cargoListBean.form}"
-			styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -46,7 +45,7 @@
 
 			<h:commandButton id="consultar" value="Consultar"
 				action="#{cargoListBean.consultar}"
-				styleClass="bt-padrao fl mg-top-18" reRender="scroller,lista" />
+				styleClass="bt-padrao fl mg-top-18" reRender="scroller-tabela,lista" />
 			<h:commandButton id="relatorio" value="Relatório"
 				action="#{cargoListBean.relatorio}"
 				styleClass="bt-padrao fl mg-top-18 mg-left-10"
@@ -73,27 +72,19 @@
 							styleClass="cel-75" />
 					</h:column>
 					
-					<h:column id="col3" headerClass="cel-15">
-						<f:facet name="header">
-					        Vigência
-					    </f:facet>
-						<center>
-							<h:outputText id="item4" value="#{item.esocialVigencia.inicioValidade}"
-								styleClass="cel-15">
-								<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
-							</h:outputText>
-						</center>
-					</h:column>	
+					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  
 
 					<h:column id="col4"
 						rendered="#{LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>
-						<h:commandLink id="editar" value="Editar"
-							action="#{cargoFormBean.prepareAlterar}" styleClass="ico-editar">
-							<f:setPropertyActionListener target="#{cargoFormBean.entidade}"
-								value="#{item}" />
+						<h:commandLink 
+							id="editar" 
+							value="Editar"
+							action="#{cargoListBean.editar}" 
+							styleClass="ico-editar">
+							<f:setPropertyActionListener target="#{cargoListBean.entidade}"	value="#{item}" />
 						</h:commandLink>
 					</h:column>
 
@@ -102,27 +93,33 @@
 						<f:facet name="header">
                             EXCLUIR
                         </f:facet>                        
-						<h:commandLink id="excluir" value="Excluir"
-							action="#{cargoListBean.excluir}" styleClass="ico-delete"
-							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
-							<f:setPropertyActionListener target="#{cargoListBean.entidade}"
-								value="#{item}" />
+						<h:commandLink 
+							id="excluir" 
+							value="Excluir"
+							action="#{cargoListBean.excluir}" 
+							styleClass="ico-delete"
+							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
+							<f:setPropertyActionListener target="#{cargoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 
 				</rich:dataTable>
 
-				<rich:datascroller id="scroller" for="lista" stepControls="hide"
+				<rich:datascroller id="scroller-tabela" for="lista" stepControls="hide"
 					align="center" rendered="#{cargoListBean.pagedList.size() > 0}" />
 
 			</div>
 
-			<h:commandButton id="limpaTela" value="Limpar"
-				action="#{cargoFormBean.limpaTela}"
+			<h:commandButton 
+				id="limpaTela" 
+				value="Limpar"
+				action="listar"
 				styleClass="bt-padrao fr mg-right-15" />
 
-			<h:commandButton id="incluir" value="Incluir"
-				action="#{cargoFormBean.prepareIncluir}"
+			<h:commandButton 
+				id="incluir" 
+				value="Incluir"
+				action="incluirAlterar"
 				styleClass="bt-padrao fr mg-right-15"
 				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR')}" />
 		</h:form>

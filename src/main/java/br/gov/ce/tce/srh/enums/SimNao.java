@@ -2,8 +2,8 @@ package br.gov.ce.tce.srh.enums;
 
 public enum SimNao {
 	
-	S("Sim"),
-	N("Não");
+	N("Não"),
+	S("Sim");
 	
 	private String descricao;
 

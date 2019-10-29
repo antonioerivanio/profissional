@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
+import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
 
 /**
  * Referente a tabela: TB_CURSOPROFISSIONAL
@@ -66,7 +66,7 @@ public class CursoProfissional extends BasicEntity<Long> implements Serializable
 
 	@Column(name = "POSGRADUACAO")
 	@Enumerated(EnumType.ORDINAL)
-	private EnumTipoCursoProfissional posGraduacao;
+	private TipoCursoProfissional posGraduacao;
 
 	@Column(name="PRESENCIAL", nullable=false)
 	private boolean presencial;
@@ -111,8 +111,8 @@ public class CursoProfissional extends BasicEntity<Long> implements Serializable
 	public boolean isAreaAtuacao() {return areaAtuacao;}
 	public void setAreaAtuacao(boolean areaAtuacao) {this.areaAtuacao = areaAtuacao;}
 
-	public EnumTipoCursoProfissional getPosGraduacao() {return posGraduacao;}
-	public void setPosGraduacao(EnumTipoCursoProfissional posGraduacao) {this.posGraduacao = posGraduacao;}
+	public TipoCursoProfissional getPosGraduacao() {return posGraduacao;}
+	public void setPosGraduacao(TipoCursoProfissional posGraduacao) {this.posGraduacao = posGraduacao;}
 
 	public boolean isPresencial() {return presencial;}
 	public void setPresencial(boolean presencial) {this.presencial = presencial;}
