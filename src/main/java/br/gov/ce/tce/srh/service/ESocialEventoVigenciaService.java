@@ -18,7 +18,9 @@ public class ESocialEventoVigenciaService {
 
 	@Transactional
 	public ESocialEventoVigencia salvar(ESocialEventoVigencia entidade) {			
-		validarDadosObrigatorios(entidade);
+		if(entidade.getInicioValidade() != null) {			
+			validarDadosObrigatorios(entidade);
+		}
 		validarFlagTransmissao(entidade);
 		validarPeriodoVigencia(entidade);
 		return vigenciaDao.salvar(entidade);		
