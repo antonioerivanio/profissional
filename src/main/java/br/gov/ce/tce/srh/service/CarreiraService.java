@@ -25,15 +25,6 @@ public class CarreiraService{
 	public void excluir(Carreira entidade) {
 		dao.excluir(entidade);
 	}
-	
-	@Transactional
-	public void encerrarVigencia(Carreira entidade) {
-		
-		entidade.setInicioExclusao(entidade.getInicioValidade());
-		entidade.setFimExclusao(entidade.getFimValidade());		
-		
-		dao.salvar(entidade);
-	}
 
 	public Carreira getById(Long id) {
 		return dao.getById(id);

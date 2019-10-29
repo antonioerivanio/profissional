@@ -41,7 +41,7 @@ public class LotacaoTributaria extends BasicEntity<Long> implements Serializable
 	
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia;
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 
 	public Long getId() {
 		return id;
@@ -64,7 +64,8 @@ public class LotacaoTributaria extends BasicEntity<Long> implements Serializable
 	}
 
 	public void setTipoLotacao(TipoLotacaoTributaria tipoLotacao) {
-		this.tipoLotacao = tipoLotacao.getCodigo();
+		if (tipoLotacao != null)
+			this.tipoLotacao = tipoLotacao.getCodigo();
 	}
 
 	public TipoInscricao getTipoInscricao() {
@@ -72,7 +73,8 @@ public class LotacaoTributaria extends BasicEntity<Long> implements Serializable
 	}
 
 	public void setTipoInscricao(TipoInscricao tipoInscricao) {
-		this.tipoInscricao = tipoInscricao.getCodigo();
+		if(tipoInscricao != null)
+			this.tipoInscricao = tipoInscricao.getCodigo();
 	}
 
 	public String getNumeroInscricao() {
@@ -106,7 +108,5 @@ public class LotacaoTributaria extends BasicEntity<Long> implements Serializable
 	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
 		this.esocialVigencia = esocialVigencia;
 	}
-	
-	
 
 }

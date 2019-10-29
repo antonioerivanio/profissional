@@ -16,8 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{carreiraListBean.form}"
-			styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage"
 				errorClass="errorMessage" />
@@ -61,28 +60,20 @@
 								styleClass="cel-50" />
 						</center>
 					</h:column>
-					<h:column id="col3" headerClass="cel-15">
-						<f:facet name="header">
-                            Vigência
-                        </f:facet>
-						<center>
-							<h:outputText id="item4" value="#{item.inicioValidade}"
-								styleClass="cel-15">
-								<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
-							</h:outputText>
-						</center>
-					</h:column>				
+					 
+					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  			
 
 					<h:column id="col8"
 						rendered="#{true}">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>
-						<h:commandLink id="editar" value="Editar"
-							action="#{carreiraFormBean.prepareAlterar}"
+						<h:commandLink 
+							id="editar" 
+							value="Editar"
+							action="#{carreiraListBean.editar}"
 							styleClass="ico-editar">
-							<f:setPropertyActionListener
-								target="#{carreiraFormBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{carreiraFormBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
@@ -90,27 +81,35 @@
 						<f:facet name="header">
                             EXCLUIR
                         </f:facet>						
-						<h:commandLink id="excluir" value="Excluir"
+						<h:commandLink 
+							id="excluir" 
+							value="Excluir"
 							action="#{carreiraListBean.excluir}" styleClass="ico-delete"
 							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
-							<f:setPropertyActionListener
-								target="#{carreiraListBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{carreiraListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="listaCarreira"
-					stepControls="hide" renderIfSinglePage="false"
+				<rich:datascroller 
+					id="scroller" 
+					for="listaCarreira"
+					stepControls="hide" 
+					renderIfSinglePage="false"
 					page="#{carreiraListBean.pagina}" />
 
 			</div>
 
 
-			<h:commandButton id="incluir" value="Incluir"
-				action="#{carreiraFormBean.prepareIncluir}"
+			<h:commandButton 
+				id="incluir" 
+				value="Incluir"
+				action="incluirAlterar"
 				styleClass="bt-padrao fr mg-right-15"
 				rendered="#{true}" />
-			<h:commandButton id="limpaTela" value="Limpar"
+			<h:commandButton 
+				id="limpaTela" 
+				value="Limpar"
 				action="#{carreiraListBean.limpaTela}"
 				styleClass="bt-padrao fr mg-right-15" />
 

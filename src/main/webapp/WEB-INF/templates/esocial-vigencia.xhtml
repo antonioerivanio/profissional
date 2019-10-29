@@ -17,8 +17,8 @@
 				<label for="">Início</label>
 				<div class="conteiner">
 					<h:inputText 
-						id="dataInicio" 
-						name="dataInicio"
+						id="inicioValidade" 
+						name="inicioValidade"
 						styleClass="maskVigencia" 
 						converter="vigenciaConverter"
 						value="#{vigencia.inicioValidade}"
@@ -31,8 +31,8 @@
 				<label for="">Fim</label>
 				<div class="conteiner">
 					<h:inputText 
-						id="dataFim" 
-						name="dataFim"
+						id="fimValidade" 
+						name="fimValidade"
 						styleClass="maskVigencia" 
 						converter="vigenciaConverter"
 						value="#{vigencia.fimValidade}"
@@ -49,8 +49,8 @@
 				<label for="">Novo início</label>
 				<div class="conteiner">
 					<h:inputText 
-						id="dataInicioNovaValidade" 
-						name="dataInicioNovaValidade"
+						id="inicioNovaValidade" 
+						name="inicioNovaValidade"
 						styleClass="maskVigencia" 
 						converter="vigenciaConverter"
 						value="#{vigencia.inicioNovaValidade}"
@@ -62,8 +62,8 @@
 				<label for="">Novo fim</label>
 				<div class="conteiner">
 					<h:inputText 
-						id="dataFimNovaValidade" 
-						name="dataFimNovaValidade"
+						id="fimNovaValidade" 
+						name="fimNovaValidade"
 						styleClass="maskVigencia" 
 						converter="vigenciaConverter"
 						value="#{vigencia.fimNovaValidade}"
@@ -160,6 +160,5 @@
 		</ui:fragment>
 	
 	</fieldset>
-					
-<!-- ################################################################## VIGÊNCIA ESOCIAL ######################################################################### -->
+	
 </ui:composition>

@@ -61,17 +61,8 @@
 								styleClass="cel-50" />
 						</center>
 					</h:column>
-					<h:column id="col3" headerClass="cel-15">
-						<f:facet name="header">
-                            Vigência
-                        </f:facet>
-						<center>
-							<h:outputText id="item4" value="#{item.inicioValidade}"
-								styleClass="cel-15">
-								<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
-							</h:outputText>
-						</center>
-					</h:column>					
+					
+					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />				
 
 					<h:column id="col8"
 						rendered="#{true}">

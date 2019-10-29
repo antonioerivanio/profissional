@@ -1233,3 +1233,8 @@ body {
 	font-weight: bold;
 	color: #4BD07B;
 }
+.identificador-esocial-legenda {
+	position: absolute;
+    right: 35px;
+    top: 100px;	
+}

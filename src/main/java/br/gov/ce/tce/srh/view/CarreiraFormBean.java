@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +19,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("carreiraFormBean")
-@Scope("session")
+@Scope("view")
 public class CarreiraFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CarreiraFormBean.class);
@@ -25,25 +27,13 @@ public class CarreiraFormBean implements Serializable {
 	@Autowired
 	private CarreiraService service;
 
-	private Carreira entidade = new Carreira();
+	private Carreira entidade;
 	
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	public String prepareAlterar() {		
-		
-		try {
-			
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return "incluirAlterar";
-	}
+	@PostConstruct
+	private void init() {		
+		Carreira flashParameter = (Carreira)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Carreira());
+    }
 
 	public String salvar() {
 

@@ -40,7 +40,7 @@ public class GradeHorario extends BasicEntity<Long> implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia;
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 
 	public Long getId() {
 		return id;

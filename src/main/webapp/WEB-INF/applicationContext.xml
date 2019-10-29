@@ -45,9 +45,12 @@
 		<property name="initialPoolSize" value="${database.initialPoolSize}" />
 		<property name="minPoolSize" value="${database.minPoolSize}" />
 		<property name="maxPoolSize" value="${database.maxPoolSize}" />
-		<property name="maxConnectionAge" value="${database.maxConnectionAge}" />
 		<property name="maxIdleTime" value="${database.maxIdleTime}" />
+		<property name="maxConnectionAge" value="${database.maxConnectionAge}" />
 		<property name="maxIdleTimeExcessConnections" value="${database.maxIdleTimeExcessConnections}" />
+		<property name="idleConnectionTestPeriod" value="${database.idleConnectionTestPeriod}" />
+		<property name="preferredTestQuery" value="${database.preferredTestQuery}" />
+		<property name="testConnectionOnCheckin" value="${database.testConnectionOnCheckin}" />
 		<property name="testConnectionOnCheckout" value="${database.testConnectionOnCheckout}" />
 	</bean>
 
@@ -78,6 +81,17 @@
 		    </list>
 		</property>
     </bean>
+    
+    <!-- Custom Scope -->
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="view">
+					<bean class="br.gov.ce.tce.srh.util.ViewScope" />
+				</entry>
+			</map>
+		</property>
+	</bean>   
 		
 		
 	<!-- Agendamento de tarefas -->

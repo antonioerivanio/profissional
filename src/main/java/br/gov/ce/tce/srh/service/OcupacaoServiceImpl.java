@@ -143,6 +143,7 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 	 * @throws SRHRuntimeException
 	 *  
 	 */
+	@SuppressWarnings("unused")
 	private void verificandoSeEntidadeExiste(Ocupacao entidade) throws SRHRuntimeException {
 
 		Ocupacao entidadeJaExistente = dao.findByNomenclaturaAndTipoOcupacaoAndSituacao(

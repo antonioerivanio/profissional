@@ -46,7 +46,7 @@
 
 			<h:commandButton id="consultar" value="Consultar"
 				action="#{cargoListBean.consultar}"
-				styleClass="bt-padrao fl mg-top-18" reRender="scroller,lista" />
+				styleClass="bt-padrao fl mg-top-18" reRender="scroller-tabela,lista" />
 			<h:commandButton id="relatorio" value="Relatório"
 				action="#{cargoListBean.relatorio}"
 				styleClass="bt-padrao fl mg-top-18 mg-left-10"
@@ -73,17 +73,7 @@
 							styleClass="cel-75" />
 					</h:column>
 					
-					<h:column id="col3" headerClass="cel-15">
-						<f:facet name="header">
-					        Vigência
-					    </f:facet>
-						<center>
-							<h:outputText id="item4" value="#{item.esocialVigencia.inicioValidade}"
-								styleClass="cel-15">
-								<f:convertDateTime id="convInicio" type="date" pattern="MM/yyyy" />
-							</h:outputText>
-						</center>
-					</h:column>	
+					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  
 
 					<h:column id="col4"
 						rendered="#{LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}">
@@ -112,7 +102,7 @@
 
 				</rich:dataTable>
 
-				<rich:datascroller id="scroller" for="lista" stepControls="hide"
+				<rich:datascroller id="scroller-tabela" for="lista" stepControls="hide"
 					align="center" rendered="#{cargoListBean.pagedList.size() > 0}" />
 
 			</div>

@@ -60,7 +60,7 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia;	
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();	
 
 	public Long getId() {
 		return id;
@@ -115,7 +115,8 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	}
 
 	public void setTipo(TipoRubrica tipo) {
-		this.tipo = tipo.getCodigo();
+		if(tipo != null)
+			this.tipo = tipo.getCodigo();
 	}
 
 	public RubricaIncidenciaCP getCodigoPrevid() {
@@ -123,7 +124,8 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	}
 
 	public void setCodigoPrevid(RubricaIncidenciaCP codigoPrevid) {
-		this.codigoPrevid = codigoPrevid.getCodigo();
+		if(codigoPrevid != null)
+			this.codigoPrevid = codigoPrevid.getCodigo();
 	}
 
 	public RubricaIncidenciaIRRF getCodigoIrrf() {
@@ -131,7 +133,8 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	}
 
 	public void setCodigoIrrf(RubricaIncidenciaIRRF codigoIrrf) {
-		this.codigoIrrf = codigoIrrf.getCodigo();
+		if(codigoIrrf != null)
+			this.codigoIrrf = codigoIrrf.getCodigo();
 	}
 
 	public RubricaIncidenciaFGTS getCodigoFgts() {
@@ -139,7 +142,8 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	}
 
 	public void setCodigoFgts(RubricaIncidenciaFGTS codigoFgts) {
-		this.codigoFgts = codigoFgts.getCodigo();
+		if(codigoFgts != null)
+			this.codigoFgts = codigoFgts.getCodigo();
 	}
 
 	public RubricaIncidenciaSIND getCodigoSindicato() {
@@ -147,7 +151,8 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	}
 
 	public void setCodigoSindicato(RubricaIncidenciaSIND codigoSindicato) {
-		this.codigoSindicato = codigoSindicato.getCodigo();
+		if(codigoSindicato != null)
+			this.codigoSindicato = codigoSindicato.getCodigo();
 	}
 
 	public ESocialEventoVigencia getEsocialVigencia() {
@@ -157,11 +162,5 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
 		this.esocialVigencia = esocialVigencia;
 	}
-	
-	
-	
-	
-	
-	
 
 }

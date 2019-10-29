@@ -44,13 +44,7 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia;
-	
-	
-	public RepresentacaoCargo() {
-		super();
-		setEsocialVigencia(new ESocialEventoVigencia());
-	}
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 
 	public Long getOrdem() {
 		return ordem;

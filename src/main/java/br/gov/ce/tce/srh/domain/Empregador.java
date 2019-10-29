@@ -102,7 +102,7 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia;
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 
 	public Long getId() {
 		return id;
@@ -143,7 +143,8 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	}
 
 	public void setClassificacaoTributaria(ClassificacaoTributaria classificacaoTributaria) {
-		this.classificacaoTributaria = classificacaoTributaria.getCodigo();
+		if(classificacaoTributaria != null)
+			this.classificacaoTributaria = classificacaoTributaria.getCodigo();
 	}
 
 	public NaturezaJuridica getNaturezaJuridica() {
@@ -151,7 +152,8 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	}
 
 	public void setNaturezaJuridica(NaturezaJuridica naturezaJuridica) {
-		this.naturezaJuridica = naturezaJuridica.getCodigo();
+		if(naturezaJuridica != null)
+			this.naturezaJuridica = naturezaJuridica.getCodigo();
 	}	
 
 	public SimNao getCooperativa() {
@@ -279,7 +281,8 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	}
 
 	public void setSituacaoPj(SituacaoPj situacaoPj) {
-		this.situacaoPj = situacaoPj.getCodigo();
+		if(situacaoPj != null)
+			this.situacaoPj = situacaoPj.getCodigo();
 	}
 
 	public ESocialEventoVigencia getEsocialVigencia() {

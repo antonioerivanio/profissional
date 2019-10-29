@@ -84,7 +84,7 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia;
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 	
 	@Transient
 	private String descricaoSituacao;

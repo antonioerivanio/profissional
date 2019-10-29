@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.html.HtmlDataTable;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
+import br.gov.ce.tce.srh.domain.Carreira;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.RepresentacaoCargoService;
@@ -25,7 +25,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
 @Component("cargoComissionadoBean")
-@Scope("session")
+@Scope("view")
 public class CargoComissionadoBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CargoComissionadoBean.class);
@@ -34,11 +34,7 @@ public class CargoComissionadoBean implements Serializable {
 	private RepresentacaoCargoService representacaoCargoService;
 
 	@Autowired
-	private RelatorioUtil relatorioUtil;
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;	
+	private RelatorioUtil relatorioUtil;	
 	
 	// parametro da tela de consulta
 	private String nomenclatura = new String();
@@ -52,34 +48,15 @@ public class CargoComissionadoBean implements Serializable {
 	private HtmlDataTable dataTable = new HtmlDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<RepresentacaoCargo> pagedList = new ArrayList<RepresentacaoCargo>();
-	private int flagRegistroInicial = 0;
-
+	private int flagRegistroInicial = 0;	
 	
-	public String prepareIncluir() {		
-		this.limparForm();
-		return "incluirAlterar";
-	}
-
-
-	public String prepareAlterar() {
-
-		try {
-			
-			if (entidade.getEsocialVigencia() == null) {
-				entidade.setEsocialVigencia(new ESocialEventoVigencia());			
-			} 
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return "incluirAlterar";
-	}
+	@PostConstruct
+	private void init() {
+		RepresentacaoCargo flashParameter = (RepresentacaoCargo)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new RepresentacaoCargo());
+    }
 	
-	
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -91,15 +68,13 @@ public class CargoComissionadoBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+		
 	}
 
 
@@ -127,13 +102,18 @@ public class CargoComissionadoBean implements Serializable {
 		return null;
 	}
 
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
 
 	
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
 			representacaoCargoService.excluir(entidade);
+			this.consultar();
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -148,7 +128,8 @@ public class CargoComissionadoBean implements Serializable {
 
 		setEntidade( new RepresentacaoCargo() );
 		getEntidade().setAtivo(true);
-		return consultar();
+		
+		this.consultar();
 	}
 
 
@@ -195,19 +176,6 @@ public class CargoComissionadoBean implements Serializable {
 	public void setEntidade(RepresentacaoCargo entidade) {this.entidade = entidade;}
 
 	public List<RepresentacaoCargo> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			this.limparForm();
-			nomenclatura = new String();
-			lista = new ArrayList<RepresentacaoCargo>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	
 	// PAGINAÇÃO

@@ -6,9 +6,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import br.gov.ce.tce.srh.enums.SituacaoLei;
 
@@ -33,32 +33,13 @@ public class Carreira extends BasicEntity<Long> implements Serializable {
 	@Column(name = "DATALEI")
 	private Date dataLei;
 
-	@Column(name = "SITUACAO")
+	@Column(name = "SITUACAOLEI")
 	private Integer situacao;
 
-	@Column(name = "INICIOVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date inicioValidade;
-
-	@Column(name = "FIMVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date fimValidade;
-
-	@Column(name = "INICIONOVAVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date inicioNovaValidade;
-
-	@Column(name = "FIMNOVAVALIDADE")
-	@Temporal(TemporalType.DATE)
-	private Date fimNovaValidade;
-
-	@Column(name = "INICIOEXCLUSAO")
-	@Temporal(TemporalType.DATE)
-	private Date inicioExclusao;
-
-	@Column(name = "FIMEXCLUSAO")
-	@Temporal(TemporalType.DATE)
-	private Date fimExclusao;
+	@OneToOne
+	@JoinColumn(name = "IDESOCIALVIGENCIA")
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
+	
 
 	@Override
 	public Long getId() {
@@ -111,52 +92,12 @@ public class Carreira extends BasicEntity<Long> implements Serializable {
 			this.situacao = situacao.getCodigo();
 	}
 
-	public Date getInicioValidade() {
-		return inicioValidade;
+	public ESocialEventoVigencia getEsocialVigencia() {
+		return esocialVigencia;
 	}
 
-	public void setInicioValidade(Date inicioValidade) {
-		this.inicioValidade = inicioValidade;
-	}
-
-	public Date getFimValidade() {
-		return fimValidade;
-	}
-
-	public void setFimValidade(Date fimValidade) {
-		this.fimValidade = fimValidade;
-	}
-
-	public Date getInicioNovaValidade() {
-		return inicioNovaValidade;
-	}
-
-	public void setInicioNovaValidade(Date inicioNovaValidade) {
-		this.inicioNovaValidade = inicioNovaValidade;
-	}
-
-	public Date getFimNovaValidade() {
-		return fimNovaValidade;
-	}
-
-	public void setFimNovaValidade(Date fimNovaValidade) {
-		this.fimNovaValidade = fimNovaValidade;
-	}
-
-	public Date getInicioExclusao() {
-		return inicioExclusao;
-	}
-
-	public void setInicioExclusao(Date inicioExclusao) {
-		this.inicioExclusao = inicioExclusao;
-	}
-
-	public Date getFimExclusao() {
-		return fimExclusao;
-	}
-
-	public void setFimExclusao(Date fimExclusao) {
-		this.fimExclusao = fimExclusao;
-	}
+	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
+		this.esocialVigencia = esocialVigencia;
+	}	
 
 }

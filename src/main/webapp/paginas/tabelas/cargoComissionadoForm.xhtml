@@ -26,11 +26,11 @@
 
 		</div>
 
-		<h:form styleClass="formularios">
+		<h:form id="form" styleClass="formularios">
 
 			<fieldset>
 			
-				<div> (e) - campo enviado para eSocial</div>				
+				<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />				
 				
 				<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -112,11 +112,13 @@
 				</div>
 
 			</fieldset>
-
 			
 
-			<h:commandButton action="#{cargoComissionadoBean.salvar()}"
-				value="Salvar" styleClass="bt-padrao fr" />
+			<h:commandButton 
+				action="#{cargoComissionadoBean.salvar()}"
+				value="Salvar" 
+				styleClass="bt-padrao fr" />
+				
 			<a href="/srh/paginas/tabelas/cargoComissionadoList.faces"
 				class="bt-voltar fr mg-right-10">Voltar</a>
 

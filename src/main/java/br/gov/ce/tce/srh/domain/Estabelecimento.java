@@ -52,7 +52,7 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 	
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia;
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 
 	@Override
 	public Long getId() {
@@ -118,7 +118,8 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 	}
 
 	public void setRegistroPonto(RegistroPonto registroPonto) {
-		this.registroPonto = registroPonto.getCodigo();
+		if (registroPonto != null)
+			this.registroPonto = registroPonto.getCodigo();
 	}
 
 	public AprendizContrato getAprendizContrato() {
@@ -126,7 +127,8 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 	}
 
 	public void setAprendizContrato(AprendizContrato aprendizContrato) {
-		this.aprendizContrato = aprendizContrato.getCodigo();
+		if(aprendizContrato != null)
+			this.aprendizContrato = aprendizContrato.getCodigo();
 	}
 
 	public PcdContrato getPcdContrato() {
@@ -134,7 +136,8 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 	}
 
 	public void setPcdContrato(PcdContrato pcdContrato) {
-		this.pcdContrato = pcdContrato.getCodigo();
+		if(pcdContrato != null)
+			this.pcdContrato = pcdContrato.getCodigo();
 	}
 
 	public ESocialEventoVigencia getEsocialVigencia() {
