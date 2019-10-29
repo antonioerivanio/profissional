@@ -39,7 +39,7 @@ public class CarreiraFormBean implements Serializable {
 		}	
     }
 
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -57,8 +57,6 @@ public class CarreiraFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
 	private void limpar() {

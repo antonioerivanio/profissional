@@ -30,7 +30,7 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 	@Column(name = "ATIVO", nullable = false)
 	private boolean ativo;
 
-	@Column(name = "NOMENCLATURA", length = 60, nullable = false)
+	@Column(name = "NOMENCLATURA", length = 100, nullable = false)
 	private String nomenclatura;
 
 	@Column(name = "OBSERVACAO")

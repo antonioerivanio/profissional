@@ -10,6 +10,7 @@ import br.gov.ce.tce.srh.dao.CarreiraDAO;
 import br.gov.ce.tce.srh.domain.Carreira;
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("carreiraService")
 public class CarreiraService{
@@ -25,12 +26,22 @@ public class CarreiraService{
 		
 		// TODO Validações		
 		
+		validaCamposObrigatorios(entidade);
+		
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
 		vigencia.setReferencia(entidade.getCodigo());
 		vigencia.setTipoEvento(TipoEventoESocial.S1035);
 		esocialEventoVigenciaService.salvar(vigencia);
 		
 		return dao.salvar(entidade);
+	}
+	
+	private void validaCamposObrigatorios(Carreira entidade) {
+		// TODO Auto-generated method stub
+		if (entidade.getCodigo().toLowerCase().indexOf("ESOCIAL") == 0) {
+			throw new SRHRuntimeException("O código não pode ter eSocial nos sete primeiros caracteres.");
+		}
+		
 	}
 
 	@Transactional

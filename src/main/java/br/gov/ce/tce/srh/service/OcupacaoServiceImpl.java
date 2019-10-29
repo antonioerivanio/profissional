@@ -35,6 +35,7 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 	private ESocialEventoVigenciaService esocialEventoVigenciaService;
 
 	@Override
+	@Transactional
 	public Ocupacao salvar(Ocupacao entidade) {
 		return dao.salvar(entidade);
 	}	
@@ -51,6 +52,8 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 		 * 
 		 */
 		//verificandoSeEntidadeExiste(entidade);
+		
+		validaCamposObrigatorios(entidade);
 		
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
 		vigencia.setReferencia(entidade.getCodigoEsocial());
@@ -80,6 +83,14 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 
 	}
 
+
+	private void validaCamposObrigatorios(Ocupacao entidade) {
+		// TODO Auto-generated method stub
+		if (entidade.getCodigoEsocial().toLowerCase().indexOf("ESOCIAL") == 0) {
+			throw new SRHRuntimeException("O código não pode ter eSocial nos sete primeiros caracteres.");
+		}
+		
+	}
 
 	@Override
 	@Transactional
