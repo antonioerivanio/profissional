@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.Municipio;
 import br.gov.ce.tce.srh.domain.ProcessoESocial;
 import br.gov.ce.tce.srh.domain.ProcessoESocialSuspensao;
@@ -26,7 +29,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("processoESocialFormBean")
-@Scope("session")
+@Scope("view")
 public class ProcessoESocialFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ProcessoESocialFormBean.class);
@@ -47,28 +50,25 @@ public class ProcessoESocialFormBean implements Serializable {
 	private List<Uf> comboUf;
 	private List<Municipio> comboMunicipio;
 	
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	public String prepareAlterar() {		
-		
-		try {
-			if (entidade.getMunicipioVara() != null)
-				this.uf = entidade.getMunicipioVara().getUf();
-			
-			this.entidade.setSuspensoes(service.getSuspensoes(this.entidade.getId()));
-
-		} catch (Exception e) {			
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+	@PostConstruct
+	private void init() {		
+		ProcessoESocial flashParameter = (ProcessoESocial)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new ProcessoESocial());
+		if(entidade.getEsocialVigencia() == null) {
+			entidade.setEsocialVigencia(new ESocialEventoVigencia());
 		}
+		
+		if (entidade.getMunicipioVara() != null) {
+			this.uf = entidade.getMunicipioVara().getUf();
+		}
+		
+		if(this.entidade.getId() != null) {
+			this.entidade.setSuspensoes(service.getSuspensoes(this.entidade.getId()));			
+		}
+		
+    }	
 
-		return "incluirAlterar";
-	}
-
-	public String salvar() {
+	public void salvar() {
 
 		try {
 			
@@ -87,10 +87,9 @@ public class ProcessoESocialFormBean implements Serializable {
 			e.printStackTrace();
 		}
 
-		return null;
 	}
 	
-	public String salvarSuspensao() {
+	public void salvarSuspensao() {
 
 		try {
 			
@@ -108,7 +107,6 @@ public class ProcessoESocialFormBean implements Serializable {
 			e.printStackTrace();
 		}
 
-		return null;
 	}
 
 	private void limpar() {
@@ -167,7 +165,7 @@ public class ProcessoESocialFormBean implements Serializable {
 		return Arrays.asList(SimNao.values());
 	}
 	
-	public String incluirSuspensao() {
+	public void incluirSuspensao() {
 		try {
 			this.service.validaSuspensao(this.novaSuspensao);			
 			this.entidade.getSuspensoes().add(this.novaSuspensao);			
@@ -179,10 +177,9 @@ public class ProcessoESocialFormBean implements Serializable {
         	FacesUtil.addErroMessage("Erro ao incluir a suspensão. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		return null;
 	}	
 	
-	public String excluirSuspensao() {
+	public void excluirSuspensao() {
 		try {
 			if (this.suspensao.getId() == null)
 				this.entidade.getSuspensoes().remove(this.suspensao);
@@ -193,7 +190,6 @@ public class ProcessoESocialFormBean implements Serializable {
         	FacesUtil.addErroMessage("Erro ao remover a suspensão. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		return null;
 	}
 	
 

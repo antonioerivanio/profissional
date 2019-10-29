@@ -73,7 +73,7 @@
 							value="Editar"
 							action="#{carreiraListBean.editar}"
 							styleClass="ico-editar">
-							<f:setPropertyActionListener target="#{carreiraFormBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{carreiraListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
@@ -84,7 +84,8 @@
 						<h:commandLink 
 							id="excluir" 
 							value="Excluir"
-							action="#{carreiraListBean.excluir}" styleClass="ico-delete"
+							action="#{carreiraListBean.excluir}" 
+							styleClass="ico-delete"
 							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
 							<f:setPropertyActionListener target="#{carreiraListBean.entidade}" value="#{item}" />
 						</h:commandLink>
@@ -110,7 +111,7 @@
 			<h:commandButton 
 				id="limpaTela" 
 				value="Limpar"
-				action="#{carreiraListBean.limpaTela}"
+				action="listar"
 				styleClass="bt-padrao fr mg-right-15" />
 
 

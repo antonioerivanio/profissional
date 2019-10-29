@@ -230,7 +230,7 @@
 									<f:selectItem id="selecioneSituacaoLei"
 										itemLabel="Selecione..." />
 									<f:selectItems id="comboSituacaoLei"
-										value="#{carreiraFormBean.comboSituacao}" var="situacaoLei"
+										value="#{cargoFormBean.comboSituacaoLei}" var="situacaoLei"
 										itemLabel="#{situacaoLei.descricao}"
 										itemValue="#{situacaoLei}" />
 								</h:selectOneMenu>
@@ -269,31 +269,42 @@
 					</div>
 				</div>
 
-				<h:commandButton action="#{cargoFormBean.addEspecialidade}"
-					value="Adicionar" styleClass="bt-padrao fl mg-top-18" />
+				<h:commandButton 
+					action="#{cargoFormBean.addEspecialidade}"
+					value="Adicionar" 
+					styleClass="bt-padrao fl mg-top-18" />
 
 				<div class="tabela-dados">
 
-					<h:dataTable id="listaEspecialidade" border="1" var="item"
-						value="#{cargoFormBean.listaEspecialidade}" rowIndexVar="row">
+					<h:dataTable 
+						id="listaEspecialidade" 
+						border="1" 
+						var="item"
+						value="#{cargoFormBean.listaEspecialidade}" 
+						rowIndexVar="row"
+						render="#{cargoFormBean.listaEspecialidade > 0}"
+						>
 
 						<h:column id="col1" headerClass="cel-75">
 							<f:facet name="header">
                             Especialidade
                         </f:facet>
-							<h:outputText id="item1" value="#{item.especialidade.descricao}"
+							<h:outputText 
+								id="item1" 
+								value="#{item.especialidade.descricao}"
 								styleClass="cel-75" />
 						</h:column>
 						<h:column id="col2">
 							<f:facet name="header">
                             EXCLUIR
                         </f:facet>
-							<h:commandLink id="excluirEspecialidade" value="Excluir"
+							<h:commandLink 
+								id="excluirEspecialidade" 
+								value="Excluir"
 								action="#{cargoFormBean.excluirEspecialidade}"
 								styleClass="ico-delete"
 								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}">
-								<f:setPropertyActionListener
-									target="#{cargoFormBean.entidadeEspecialidade}" value="#{item}" />
+								<f:setPropertyActionListener target="#{cargoFormBean.entidadeEspecialidade}" value="#{item}" />
 							</h:commandLink>
 						</h:column>
 
@@ -302,7 +313,6 @@
 				</div>
 
 			</fieldset>
-
 
 
 			<!-- Simbologia -->
@@ -315,36 +325,44 @@
 				<div class="input-box box-75">
 					<label for="">Simbologia</label>
 					<div class="conteiner">
-						<h:inputText id="simbologia" value="#{cargoFormBean.simbologia}"
+						<h:inputText 
+							id="simbologia" 
+							value="#{cargoFormBean.simbologia}"
 							maxlength="5" />
 					</div>
 				</div>
 
-				<h:commandButton action="#{cargoFormBean.addSimbologia}"
-					value="Adicionar" styleClass="bt-padrao fl mg-top-18" />
+				<h:commandButton 
+					action="#{cargoFormBean.addSimbologia}"
+					value="Adicionar" 
+					styleClass="bt-padrao fl mg-top-18" />
 
 				<div class="tabela-dados">
 
-					<h:dataTable id="listaSimbolo" border="1" var="item"
-						value="#{cargoFormBean.listaSimbolo}" rowIndexVar="row">
+					<h:dataTable 
+						id="listaSimbolo" 
+						border="1" 
+						var="item"
+						value="#{cargoFormBean.listaSimbolo}" 
+						rowIndexVar="row">
 
 						<h:column id="col3" headerClass="cel-75">
 							<f:facet name="header">
 								<h:outputText value="Simbologia" />
 							</f:facet>
-							<h:outputText id="item3" value="#{item.simbolo}"
-								styleClass="cel-75" />
+							<h:outputText id="item3" value="#{item.simbolo}" styleClass="cel-75" />
 						</h:column>
 						<h:column id="col4">
 							<f:facet name="header">
                             EXCLUIR
                         </f:facet>
-							<h:commandLink id="excluirSimbologia" value="Excluir"
+							<h:commandLink 
+								id="excluirSimbologia" 
+								value="Excluir"
 								action="#{cargoFormBean.excluirSimbologia}"
 								styleClass="ico-delete"
 								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}">
-								<f:setPropertyActionListener
-									target="#{cargoFormBean.entidadeSimbolo}" value="#{item}" />
+								<f:setPropertyActionListener target="#{cargoFormBean.entidadeSimbolo}" value="#{item}" />
 							</h:commandLink>
 						</h:column>
 
@@ -355,10 +373,11 @@
 			</fieldset>
 
 
-			<h:commandButton action="#{cargoFormBean.salvar}" value="Salvar"
+			<h:commandButton 
+				action="#{cargoFormBean.salvar}" 
+				value="Salvar"
 				styleClass="bt-padrao fr" />
-			<a href="/srh/paginas/tabelas/cargoList.faces"
-				class="bt-voltar fr mg-right-10">Voltar</a>
+			<a href="/srh/paginas/tabelas/cargoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
 
 		</h:form>
 

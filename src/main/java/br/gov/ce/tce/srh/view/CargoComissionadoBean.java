@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.Carreira;
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.RepresentacaoCargoService;
@@ -54,6 +54,9 @@ public class CargoComissionadoBean implements Serializable {
 	private void init() {
 		RepresentacaoCargo flashParameter = (RepresentacaoCargo)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new RepresentacaoCargo());
+		if(entidade.getEsocialVigencia() == null) {
+			entidade.setEsocialVigencia(new ESocialEventoVigencia());
+		}	
     }
 	
 	public void consultar() {
@@ -76,10 +79,8 @@ public class CargoComissionadoBean implements Serializable {
 		}
 		
 	}
-
-
 	
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -99,7 +100,6 @@ public class CargoComissionadoBean implements Serializable {
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 
 	public String editar() {
@@ -113,7 +113,6 @@ public class CargoComissionadoBean implements Serializable {
 		try {
 
 			representacaoCargoService.excluir(entidade);
-			this.consultar();
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -131,10 +130,8 @@ public class CargoComissionadoBean implements Serializable {
 		
 		this.consultar();
 	}
-
-
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -154,13 +151,7 @@ public class CargoComissionadoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-	
-	public String limpaTela() {
-		limparForm();
-		return "listar";
+		
 	}
 	
 	private void limparForm() {

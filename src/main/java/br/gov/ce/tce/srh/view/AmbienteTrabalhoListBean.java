@@ -88,12 +88,6 @@ public class AmbienteTrabalhoListBean implements Serializable{
 		}
 		
 	}
-	
-
-	public String limpaTela() {
-		this.entidade = new AmbienteTrabalho();
-		return "listar";
-	}
 
 	private void limparListas() {
 		ambienteTrabalhoList = new ArrayList<AmbienteTrabalho>();

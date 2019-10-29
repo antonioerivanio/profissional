@@ -30,10 +30,10 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 		
 		// TODO Fazer as validações para o eSocial
 		
-		esocialEventoVigenciaService.salvar(
-				entidade.getEsocialVigencia()
-						.setReferencia(entidade.getCodFuncao())
-						.setTipoEvento(TipoEventoESocial.S1040));
+		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
+		vigencia.setReferencia(entidade.getCodFuncao());
+		vigencia.setTipoEvento(TipoEventoESocial.S1040);		
+		esocialEventoVigenciaService.salvar(vigencia);
 
 		
 		dao.salvar(entidade);

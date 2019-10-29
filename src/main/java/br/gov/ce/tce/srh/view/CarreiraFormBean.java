@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Carreira;
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.enums.SituacaoLei;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CarreiraService;
@@ -33,6 +34,9 @@ public class CarreiraFormBean implements Serializable {
 	private void init() {		
 		Carreira flashParameter = (Carreira)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Carreira());
+		if(entidade.getEsocialVigencia() == null) {
+			entidade.setEsocialVigencia(new ESocialEventoVigencia());
+		}	
     }
 
 	public String salvar() {
@@ -49,6 +53,7 @@ public class CarreiraFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}

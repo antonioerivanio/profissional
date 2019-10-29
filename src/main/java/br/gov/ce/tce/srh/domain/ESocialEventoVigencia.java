@@ -66,72 +66,64 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 		return inicioValidade;
 	}
 
-	public ESocialEventoVigencia setInicioValidade(Date inicioValidade) {
+	public void setInicioValidade(Date inicioValidade) {
 		this.inicioValidade = inicioValidade;
-		return this;
 	}
 
 	public Date getFimValidade() {
 		return fimValidade;
 	}
 
-	public ESocialEventoVigencia setFimValidade(Date fimValidade) {
+	public void setFimValidade(Date fimValidade) {
 		this.fimValidade = fimValidade;
-		return this;
 	}
 
 	public Date getInicioNovaValidade() {
 		return inicioNovaValidade;
 	}
 
-	public ESocialEventoVigencia setInicioNovaValidade(Date inicioNovaValidade) {
+	public void setInicioNovaValidade(Date inicioNovaValidade) {
 		this.inicioNovaValidade = inicioNovaValidade;
-		return this;
 	}
 
 	public Date getFimNovaValidade() {
 		return fimNovaValidade;
 	}
 
-	public ESocialEventoVigencia setFimNovaValidade(Date fimNovaValidade) {
+	public void setFimNovaValidade(Date fimNovaValidade) {
 		this.fimNovaValidade = fimNovaValidade;
-		return this;
 	}
 
 	public boolean isExcluido() {
 		return excluido;
 	}
 
-	public ESocialEventoVigencia setExcluido(boolean excluido) {
+	public void setExcluido(boolean excluido) {
 		this.excluido = excluido;
-		return this;
 	}
 
 	public boolean isTransmitido() {
 		return transmitido;
 	}
 
-	public ESocialEventoVigencia setTransmitido(boolean transmitido) {
+	public void setTransmitido(boolean transmitido) {
 		this.transmitido = transmitido;
-		return this;
 	}	
 	
 	public String getReferencia() {
 		return referencia;
 	}
 
-	public ESocialEventoVigencia setReferencia(String referencia) {
+	public void setReferencia(String referencia) {
 		this.referencia = referencia;
-		return this;
 	}
 	
 	public TipoEventoESocial getTipoEvento() {
 		return tipoEvento;
 	}
 
-	public ESocialEventoVigencia setTipoEvento(TipoEventoESocial tipoEvento) {
+	public void setTipoEvento(TipoEventoESocial tipoEvento) {
 		this.tipoEvento = tipoEvento;
-		return this;
 	}
 
 	public Boolean getVigenciaDesabilitada() {
@@ -140,9 +132,8 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 		return vigenciaDesabilitada;
 	}
 
-	public ESocialEventoVigencia setVigenciaDesabilitada(Boolean vigenciaDesabilitada) {
+	public void setVigenciaDesabilitada(Boolean vigenciaDesabilitada) {
 		this.vigenciaDesabilitada = vigenciaDesabilitada;
-		return this;
 	}
 
 	public Boolean getVigenciaEditavel() {
@@ -151,16 +142,19 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 		return vigenciaEditavel;
 	}
 
-	public ESocialEventoVigencia setVigenciaEditavel(Boolean vigenciaEditavel) {
+	public void setVigenciaEditavel(Boolean vigenciaEditavel) {
 		this.vigenciaEditavel = vigenciaEditavel;
-		return this;
 	}
 	
 	@Transient
-	public ESocialEventoVigencia excluirVigencia() {
-		this.setVigenciaEditavel(false)
-			.setExcluido(true);
-		return this;
+	public void alterarVigencia() {
+		this.setVigenciaEditavel(true);
+	}
+	
+	@Transient
+	public void excluirVigencia() {
+		this.setVigenciaEditavel(false);
+		this.setExcluido(true);
 	}
 	
 
@@ -179,22 +173,20 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 	}
 	
 	@Transient
-	public ESocialEventoVigencia apagaAlteracao() {
-		this.setVigenciaEditavel(false)
-			.setInicioNovaValidade(null)
-			.setFimNovaValidade(null)
-			.setExcluido(false);
-		return this;
+	public void apagaAlteracao() {
+		this.setVigenciaEditavel(false);
+		this.setInicioNovaValidade(null);
+		this.setFimNovaValidade(null);
+		this.setExcluido(false);
 	}
 	
 	@Transient
-	public ESocialEventoVigencia incluirNovamente() {
-		this.setVigenciaDesabilitada(false)
-			.setVigenciaEditavel(false)
-			.setExcluido(false)
-			.setInicioValidade(null)
-			.setFimValidade(null);
-		return this;
+	public void incluirNovamente() {
+		this.setVigenciaDesabilitada(false);
+		this.setVigenciaEditavel(false);
+		this.setExcluido(false);
+		this.setInicioValidade(null);
+		this.setFimValidade(null);
 	}
 
 	@Override

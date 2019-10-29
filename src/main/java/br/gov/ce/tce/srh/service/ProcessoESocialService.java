@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.ProcessoESocialDAO;
 import br.gov.ce.tce.srh.dao.ProcessoESocialSuspensaoDAO;
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.ProcessoESocial;
 import br.gov.ce.tce.srh.domain.ProcessoESocialSuspensao;
+import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("processoESocialService")
@@ -20,9 +22,19 @@ public class ProcessoESocialService{
 	
 	@Autowired
 	private ProcessoESocialSuspensaoDAO suspensaoDao;
+	
+	@Autowired
+	private ESocialEventoVigenciaService esocialEventoVigenciaService;
 
 	@Transactional
 	public void salvar(ProcessoESocial entidade) {
+		//TODO Validações
+		
+		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
+		vigencia.setReferencia(entidade.getNumero());
+		vigencia.setTipoEvento(TipoEventoESocial.S1070);
+		esocialEventoVigenciaService.salvar(vigencia);
+		
 		dao.salvar(entidade);
 		salvarSuspensoes(entidade);
 	}

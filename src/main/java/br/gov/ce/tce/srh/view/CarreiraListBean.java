@@ -72,8 +72,7 @@ public class CarreiraListBean implements Serializable{
 
 		try {
 
-			service.excluir(entidade);
-			this.consultar();
+			service.excluir(entidade);			
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -86,11 +85,8 @@ public class CarreiraListBean implements Serializable{
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
-	}
-
-	public String limpaTela() {
-		this.entidade = new Carreira();
-		return "listar";
+		this.consultar();
+		
 	}
 
 	private void limparListas() {

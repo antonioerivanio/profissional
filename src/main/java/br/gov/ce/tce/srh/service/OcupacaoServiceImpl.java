@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.OcupacaoDAO;
+import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.EspecialidadeCargo;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.Simbolo;
+import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 /**
@@ -28,6 +30,9 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 
 	@Autowired
 	private EspecialidadeCargoService especialidadeCargoService;
+	
+	@Autowired
+	private ESocialEventoVigenciaService esocialEventoVigenciaService;
 
 	@Override
 	public Ocupacao salvar(Ocupacao entidade) {
@@ -46,6 +51,11 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 		 * 
 		 */
 		//verificandoSeEntidadeExiste(entidade);
+		
+		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
+		vigencia.setReferencia(entidade.getCodigoEsocial());
+		vigencia.setTipoEvento(TipoEventoESocial.S1030);
+		esocialEventoVigenciaService.salvar(vigencia);
 
 		// salvando a ocupacao
 		entidade = dao.salvar(entidade);
