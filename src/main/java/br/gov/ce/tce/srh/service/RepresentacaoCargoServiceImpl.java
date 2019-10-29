@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.RepresentacaoCargoDAO;
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
+import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("representacaoCargoService")
@@ -24,15 +25,15 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 	@Override
 	@Transactional
 	public void salvar(RepresentacaoCargo entidade) throws SRHRuntimeException {
-
 		
-//		verificandoSeEntidadeExiste(entidade);
+//		verificandoSeEntidadeExiste(entidade);		
 		
+		// TODO Fazer as validações para o eSocial
 		
-		// TODO Fazer as validações para o eSocial		
-		ESocialEventoVigencia esocialVigencia = entidade.getEsocialVigencia();
-		esocialVigencia.setReferencia(entidade.getCodFuncao());
-		esocialEventoVigenciaService.salvar(esocialVigencia);
+		esocialEventoVigenciaService.salvar(
+				entidade.getEsocialVigencia()
+						.setReferencia(entidade.getCodFuncao())
+						.setTipoEvento(TipoEventoESocial.S1040));
 
 		
 		dao.salvar(entidade);

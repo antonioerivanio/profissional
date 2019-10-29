@@ -5,9 +5,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 
 @Entity
 @SuppressWarnings("serial")
@@ -38,8 +42,10 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 	@Column(name = "REFERENCIA")
 	private String referencia;
 	
-	// TODO mapear coluna EVENTO
-	
+	@Column(name = "EVENTO")
+	@Enumerated(EnumType.STRING)
+	private TipoEventoESocial tipoEvento;
+		
 	@Transient
 	private Boolean vigenciaDesabilitada;
 	
@@ -60,66 +66,83 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 		return inicioValidade;
 	}
 
-	public void setInicioValidade(Date inicioValidade) {
+	public ESocialEventoVigencia setInicioValidade(Date inicioValidade) {
 		this.inicioValidade = inicioValidade;
+		return this;
 	}
 
 	public Date getFimValidade() {
 		return fimValidade;
 	}
 
-	public void setFimValidade(Date fimValidade) {
+	public ESocialEventoVigencia setFimValidade(Date fimValidade) {
 		this.fimValidade = fimValidade;
+		return this;
 	}
 
 	public Date getInicioNovaValidade() {
 		return inicioNovaValidade;
 	}
 
-	public void setInicioNovaValidade(Date inicioNovaValidade) {
+	public ESocialEventoVigencia setInicioNovaValidade(Date inicioNovaValidade) {
 		this.inicioNovaValidade = inicioNovaValidade;
+		return this;
 	}
 
 	public Date getFimNovaValidade() {
 		return fimNovaValidade;
 	}
 
-	public void setFimNovaValidade(Date fimNovaValidade) {
+	public ESocialEventoVigencia setFimNovaValidade(Date fimNovaValidade) {
 		this.fimNovaValidade = fimNovaValidade;
+		return this;
 	}
 
 	public boolean isExcluido() {
 		return excluido;
 	}
 
-	public void setExcluido(boolean excluido) {
+	public ESocialEventoVigencia setExcluido(boolean excluido) {
 		this.excluido = excluido;
+		return this;
 	}
 
 	public boolean isTransmitido() {
 		return transmitido;
 	}
 
-	public void setTransmitido(boolean transmitido) {
+	public ESocialEventoVigencia setTransmitido(boolean transmitido) {
 		this.transmitido = transmitido;
+		return this;
 	}	
 	
 	public String getReferencia() {
 		return referencia;
 	}
 
-	public void setReferencia(String referencia) {
+	public ESocialEventoVigencia setReferencia(String referencia) {
 		this.referencia = referencia;
-	}	
+		return this;
+	}
 	
+	public TipoEventoESocial getTipoEvento() {
+		return tipoEvento;
+	}
+
+	public ESocialEventoVigencia setTipoEvento(TipoEventoESocial tipoEvento) {
+		this.tipoEvento = tipoEvento;
+		return this;
+	}
+
 	public Boolean getVigenciaDesabilitada() {
 		if(vigenciaDesabilitada == null)
 			return this.getInicioValidade() != null;		
 		return vigenciaDesabilitada;
 	}
 
-	public void setVigenciaDesabilitada(Boolean vigenciaDesabilitada) {
+	public ESocialEventoVigencia setVigenciaDesabilitada(Boolean vigenciaDesabilitada) {
 		this.vigenciaDesabilitada = vigenciaDesabilitada;
+		return this;
 	}
 
 	public Boolean getVigenciaEditavel() {
@@ -128,14 +151,16 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 		return vigenciaEditavel;
 	}
 
-	public void setVigenciaEditavel(Boolean vigenciaEditavel) {
+	public ESocialEventoVigencia setVigenciaEditavel(Boolean vigenciaEditavel) {
 		this.vigenciaEditavel = vigenciaEditavel;
+		return this;
 	}
 	
 	@Transient
-	public void excluirVigencia() {
-		setVigenciaEditavel(false);
-		this.setExcluido(true);
+	public ESocialEventoVigencia excluirVigencia() {
+		this.setVigenciaEditavel(false)
+			.setExcluido(true);
+		return this;
 	}
 	
 
@@ -154,25 +179,24 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 	}
 	
 	@Transient
-	public void apagaAlteracao() {
-		this.setVigenciaEditavel(false);
-		this.inicioNovaValidade = null;
-		this.fimNovaValidade = null;
-		this.excluido = false;
+	public ESocialEventoVigencia apagaAlteracao() {
+		this.setVigenciaEditavel(false)
+			.setInicioNovaValidade(null)
+			.setFimNovaValidade(null)
+			.setExcluido(false);
+		return this;
 	}
 	
 	@Transient
-	public void incluirNovamente() {
-		this.setVigenciaDesabilitada(false);
-		this.setVigenciaEditavel(false);
-		this.setExcluido(false);
-		this.setInicioValidade(null);
-		this.setFimValidade(null);
+	public ESocialEventoVigencia incluirNovamente() {
+		this.setVigenciaDesabilitada(false)
+			.setVigenciaEditavel(false)
+			.setExcluido(false)
+			.setInicioValidade(null)
+			.setFimValidade(null);
+		return this;
 	}
 
-	
-	// FIXME refazer o equals e o hashCode depois de mapear a coluna evento
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -184,6 +208,7 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 		result = prime * result + ((inicioNovaValidade == null) ? 0 : inicioNovaValidade.hashCode());
 		result = prime * result + ((inicioValidade == null) ? 0 : inicioValidade.hashCode());
 		result = prime * result + ((referencia == null) ? 0 : referencia.hashCode());
+		result = prime * result + ((tipoEvento == null) ? 0 : tipoEvento.hashCode());
 		return result;
 	}
 
@@ -228,7 +253,10 @@ public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializ
 				return false;
 		} else if (!referencia.equals(other.referencia))
 			return false;
+		if (tipoEvento != other.tipoEvento)
+			return false;
 		return true;
-	}
+	}	
+	
 
 }
