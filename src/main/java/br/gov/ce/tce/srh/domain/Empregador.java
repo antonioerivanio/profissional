@@ -16,6 +16,7 @@ import br.gov.ce.tce.srh.enums.ClassificacaoTributaria;
 import br.gov.ce.tce.srh.enums.NaturezaJuridica;
 import br.gov.ce.tce.srh.enums.SimNao;
 import br.gov.ce.tce.srh.enums.SituacaoPj;
+import br.gov.ce.tce.srh.enums.Subteto;
 import br.gov.ce.tce.srh.enums.TipoInscricao;
 
 @Entity
@@ -46,7 +47,7 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	@Enumerated(EnumType.ORDINAL)
 	private SimNao cooperativa;
 	
-	@Column(name = "COSTRUTORA")
+	@Column(name = "CONSTRUTORA")
 	@Enumerated(EnumType.ORDINAL)
 	private SimNao construtora;
 	
@@ -94,7 +95,7 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	private Integer subteto;
 	
 	@NotNull(message = "Valor do subteto obrigatório!")	
-	@Column(name = "VALORSUBTETO",precision = 14, scale = 2)
+	@Column(name = "VALORSUBTETO")
 	private Double valorSubteto;
 	
 	@Column(name = "SITUACAO")	
@@ -260,12 +261,13 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 		this.enteFederativoRpps = enteFederativoRpps;
 	}
 
-	public Integer getSubteto() {
-		return subteto;
+	public Subteto getSubteto() {
+		return Subteto.getByCodigo(this.subteto);
 	}
 
-	public void setSubteto(Integer subteto) {
-		this.subteto = subteto;
+	public void setSubteto(Subteto subteto) {
+		if(subteto != null)
+			this.subteto = subteto.getCodigo();
 	}
 
 	public Double getValorSubteto() {

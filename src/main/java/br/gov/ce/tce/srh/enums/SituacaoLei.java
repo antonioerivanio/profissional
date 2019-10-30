@@ -28,7 +28,7 @@ public enum SituacaoLei {
 		this.descricao = descricao;
 	}
 
-	public static SituacaoLei toEnum(Integer codigo) {
+	public static SituacaoLei getByCodigo(Integer codigo) {
 
 		if (codigo == null) {
 			return null;

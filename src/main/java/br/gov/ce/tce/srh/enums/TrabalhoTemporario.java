@@ -21,6 +21,10 @@ public enum TrabalhoTemporario {
 	}
 
 	public static TrabalhoTemporario getBySigla(String sigla) {
+		
+		if (sigla == null) {
+			return null;
+		}
 
 		for (TrabalhoTemporario parametro : values()) {
 			if (parametro.getSigla().equals(sigla)) {

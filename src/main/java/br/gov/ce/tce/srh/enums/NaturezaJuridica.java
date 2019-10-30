@@ -22,6 +22,10 @@ public enum NaturezaJuridica {
 
 	public static NaturezaJuridica getByCodigo(String codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (NaturezaJuridica parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

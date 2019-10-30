@@ -31,6 +31,11 @@ public enum LeiIncorporacao {
 	}
 	
 	public static LeiIncorporacao getByDescricao(String descricao){
+		
+		if (descricao == null) {
+			return null;
+		}
+		
 		for (LeiIncorporacao leiIncorporacao : LeiIncorporacao.values()) {
 			if(leiIncorporacao.getDescricao().equals(descricao)){
 				return leiIncorporacao;

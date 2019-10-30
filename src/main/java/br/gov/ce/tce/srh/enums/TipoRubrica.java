@@ -24,6 +24,10 @@ public enum TipoRubrica {
 	}
 
 	public static TipoRubrica getByCodigo(Integer codigo) {
+		
+		if (codigo == null) {
+			return null;
+		}
 
 		for (TipoRubrica parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {

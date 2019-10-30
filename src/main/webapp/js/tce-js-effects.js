@@ -57,7 +57,11 @@ jQuery(document).ready(function($) {
     $(".maskPlacaVeiculo").mask("aaa-9999",{placeholder:" "});  // PLACA VEICULO
     $(".maskProcesso").mask("99999/9999-9",{placeholder:" "});  // NUMERO DO PROCESSO
     $(".maskQtdQuintos").mask("9",{placeholder:" "});  // QTD QUINTOS
-    $(".maskSalario").maskMoney({precision:2});  // SALARIO
+    $(".maskSalario").maskMoney({
+    	symbol:'R$', 
+    	decimal:',', 
+    	thousands:'.',
+    	precision: 2});  // SALARIO
     $(".maskNoDocumento").mask("9999/9999",{placeholder:" "});  // NUMERO DO DOCUMENTO
 
     // FIM MASCARAS

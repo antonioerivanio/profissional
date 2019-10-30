@@ -19,6 +19,14 @@
 			<li>
 			<a href="#" title="">Tabelas</a>
 			<ul class="sub-menu">
+			
+				<ui:fragment rendered="#{true}">
+					<li>
+						<a href="/srh/paginas/tabelas/empregadorList.faces">
+						Empregador TCE
+						</a>
+					</li>
+				</ui:fragment>
 	
 				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS_OCUPACAO')}">
 	

@@ -36,7 +36,7 @@ public enum IndicativoMateria {
 		this.descricao = descricao;
 	}
 
-	public static IndicativoMateria toEnum(Integer codigo) {
+	public static IndicativoMateria getByCodigo(Integer codigo) {
 
 		if (codigo == null) {
 			return null;

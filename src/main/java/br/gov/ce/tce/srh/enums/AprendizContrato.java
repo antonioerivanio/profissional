@@ -23,7 +23,11 @@ public enum AprendizContrato {
 	}
 
 	public static AprendizContrato getByCodigo(Integer codigo) {
-
+		
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (AprendizContrato parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

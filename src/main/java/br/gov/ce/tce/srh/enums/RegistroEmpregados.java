@@ -22,6 +22,10 @@ public enum RegistroEmpregados {
 
 	public static RegistroEmpregados getByCodigo(Integer codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (RegistroEmpregados parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

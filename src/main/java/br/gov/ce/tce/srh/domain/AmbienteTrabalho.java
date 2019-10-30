@@ -73,7 +73,7 @@ public class AmbienteTrabalho extends BasicEntity<Long> implements Serializable 
 	}	
 
 	public LocalAmbiente getLocalAmbiente() {
-		return LocalAmbiente.toEnum(this.localAmbiente);
+		return LocalAmbiente.getByCodigo(this.localAmbiente);
 	}
 
 	public void setLocalAmbiente(LocalAmbiente local) {

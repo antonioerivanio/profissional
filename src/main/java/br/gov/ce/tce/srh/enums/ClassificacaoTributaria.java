@@ -24,11 +24,15 @@ public enum ClassificacaoTributaria {
 
 	public static ClassificacaoTributaria getByCodigo(Integer codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (ClassificacaoTributaria parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;
 			}
 		}
-		throw new IllegalArgumentException("Código Classificação Tributária inválida");
+		return null;
 	}
 }

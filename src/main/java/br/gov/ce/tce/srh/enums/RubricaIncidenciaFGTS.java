@@ -26,6 +26,10 @@ public enum RubricaIncidenciaFGTS {
 
 	public static RubricaIncidenciaFGTS getByCodigo(String codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (RubricaIncidenciaFGTS parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

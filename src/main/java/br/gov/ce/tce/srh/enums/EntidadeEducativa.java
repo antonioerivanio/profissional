@@ -22,6 +22,10 @@ public enum EntidadeEducativa {
 
 	public static EntidadeEducativa getBySigla(String sigla) {
 
+		if (sigla == null) {
+			return null;
+		}
+		
 		for (EntidadeEducativa parametro : values()) {
 			if (parametro.getSigla().equals(sigla)) {
 				return parametro;

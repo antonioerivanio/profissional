@@ -21,6 +21,10 @@ public enum EnteFederativo {
 	}
 
 	public static EnteFederativo getBySigla(String sigla) {
+		
+		if (sigla == null) {
+			return null;
+		}
 
 		for (EnteFederativo parametro : values()) {
 			if (parametro.getSigla().equals(sigla)) {

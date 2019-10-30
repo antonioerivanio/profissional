@@ -24,6 +24,10 @@ public enum RegistroPonto {
 
 	public static RegistroPonto getByCodigo(Integer codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (RegistroPonto parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

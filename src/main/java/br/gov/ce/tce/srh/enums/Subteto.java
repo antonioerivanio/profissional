@@ -22,6 +22,10 @@ public enum Subteto {
 
 	public static Subteto getByCodigo(Integer codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (Subteto parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

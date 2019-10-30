@@ -23,6 +23,10 @@ public enum SituacaoPj {
 
 	public static SituacaoPj getByCodigo(Integer codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (SituacaoPj parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

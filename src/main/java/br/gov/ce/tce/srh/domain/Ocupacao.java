@@ -210,7 +210,7 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	}
 
 	public TipoAcumuloDeCargo getTipoAcumulacao() {
-		return TipoAcumuloDeCargo.toEnum(this.tipoAcumulacao);
+		return TipoAcumuloDeCargo.getByCodigo(this.tipoAcumulacao);
 	}
 
 	public void setTipoAcumulacao(TipoAcumuloDeCargo tipoAcumulacao) {
@@ -219,7 +219,7 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	}
 
 	public ContagemEspecial getTempoEspecial() {
-		return ContagemEspecial.toEnum(this.tempoEspecial);
+		return ContagemEspecial.getByCodigo(this.tempoEspecial);
 	}
 
 	public void setTempoEspecial(ContagemEspecial tempoEspecial) {
@@ -264,7 +264,7 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	}
 
 	public SituacaoLei getSituacaoLei() {
-		return SituacaoLei.toEnum(this.situacaoLei);
+		return SituacaoLei.getByCodigo(this.situacaoLei);
 	}
 
 	public void setSituacaoLei(SituacaoLei situacao) {
