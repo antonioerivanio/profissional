@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import br.gov.ce.tce.srh.enums.SituacaoLei;
 
@@ -21,12 +22,15 @@ public class Carreira extends BasicEntity<Long> implements Serializable {
 	@Column(name = "ID")
 	private Long id;
 
+	@Size(max = 30)
 	@Column(name = "CODIGO")
 	private String codigo;
 
+	@Size(max = 100)
 	@Column(name = "DESCRICAO")
 	private String descricao;
 
+	@Size(max = 12)
 	@Column(name = "NUMEROLEI")
 	private String lei;
 

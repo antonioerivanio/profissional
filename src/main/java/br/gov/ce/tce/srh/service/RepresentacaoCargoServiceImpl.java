@@ -30,6 +30,8 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 		
 		// TODO Fazer as validações para o eSocial
 		
+		validaCamposObrigatorios(entidade);
+		
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
 		vigencia.setReferencia(entidade.getCodFuncao());
 		vigencia.setTipoEvento(TipoEventoESocial.S1040);		
@@ -40,6 +42,14 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 	}
 
 
+	private void validaCamposObrigatorios(RepresentacaoCargo entidade) {
+		// TODO Auto-generated method stub
+		if (entidade.getCodFuncao().toLowerCase().indexOf("ESOCIAL") == 0) {
+			throw new SRHRuntimeException("O código não pode ter eSocial nos sete primeiros caracteres.");
+		}
+		
+	}
+	
 	@Override
 	@Transactional
 	public void excluir(RepresentacaoCargo entidade) {

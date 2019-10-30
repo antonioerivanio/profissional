@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import br.gov.ce.tce.srh.enums.ContagemEspecial;
 import br.gov.ce.tce.srh.enums.SituacaoLei;
@@ -36,6 +37,7 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	@JoinColumn(name = "IDESCOLARIDADEEXIGIDA")
 	private Escolaridade escolaridade;
 
+	@Size(max = 100)
 	@Column(name = "NOMENCLATURA")
 	private String nomenclatura;
 
@@ -58,27 +60,33 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	@Column(name = "FLCARGOISOLADO", nullable = false)
 	private boolean cargoIsolado;
 
+	@Size(max = 30)
 	@Column(name = "CODIGO_ESOCIAL")
 	private String codigoEsocial;
 
 	@Column(name = "CBO")
 	private String cbo;
 
+	@Size(max = 1)
 	@Column(name = "TIPOACUMULACAO")
 	private Integer tipoAcumulacao;
-
+	
+	@Size(max = 1)
 	@Column(name = "TEMPOESPECIAL")
 	private Integer tempoEspecial;
 
+	@Size(max = 1)
 	@Column(name = "DEDICACAOEXCLUSIVA")
 	private Character dedicacaoExclusiva;
 	
+	@Size(max = 12)
 	@Column(name = "NUMEROLEI")
 	private String lei;
 
 	@Column(name = "DATALEI")
 	private Date dataLei;
 
+	@Size(max = 1)
 	@Column(name = "SITUACAOLEI")
 	private Integer situacaoLei;
 

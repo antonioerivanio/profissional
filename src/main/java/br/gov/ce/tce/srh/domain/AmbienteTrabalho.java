@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import br.gov.ce.tce.srh.enums.LocalAmbiente;
 
@@ -24,12 +25,15 @@ public class AmbienteTrabalho extends BasicEntity<Long> implements Serializable 
 	@Column(name = "CODIGO")
 	private String codigo;
 
+	@Size(max = 100)
 	@Column(name = "NOMEAMBIENTE")
 	private String nome;
 	
+	@Size(max = 8000)
 	@Column(name = "DESCRICAOAMBIENTE")
 	private String descricao;
 
+	@Size(max = 1)
 	@Column(name = "LOCALAMBIENTE")
 	private Integer localAmbiente;
 	

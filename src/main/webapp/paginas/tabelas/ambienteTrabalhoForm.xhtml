@@ -58,7 +58,7 @@
 				</div>
 
 				<div class="input-box box-25">
-					<label for="">Código *</label>
+					<label for="">Código * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="codigo"
 							value="#{ambienteTrabalhoFormBean.entidade.codigo}"
@@ -68,7 +68,7 @@
 				</div>
 
 				<div class="input-box box-60">
-					<label for="">Nome *</label>
+					<label for="">Nome * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="nome"
 							value="#{ambienteTrabalhoFormBean.entidade.nome}" maxlength="100"
@@ -78,7 +78,7 @@
 				</div>
 
 				<div class="select-box box-40">
-					<label for="">Tipo de Local *</label>
+					<label for="">Tipo de Local * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="local"
 							value="#{ambienteTrabalhoFormBean.entidade.localAmbiente}"
@@ -87,13 +87,13 @@
 							<f:selectItem id="selecioneLocal" itemLabel="Selecione..." />
 							<f:selectItems id="comboLocal"
 								value="#{ambienteTrabalhoFormBean.comboLocal}" var="local"
-								itemLabel="#{local.descricao}" itemValue="#{local}" />
+								itemLabel="#{local.codigo} - #{local.descricao}" itemValue="#{local}" />
 						</h:selectOneMenu>
 					</div>
 				</div>
 
 				<div class="select-box box-40">
-					<label for="">Estabelecimento</label>
+					<label for="">Estabelecimento * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="estabelecimento" converter="entityConverter"
 							value="#{ambienteTrabalhoFormBean.entidade.estabelecimento}"
@@ -108,14 +108,14 @@
 				</div>
 
 				<div class="textarea-box box-100">
-					<label for="">Descrição *</label>
+					<label for="">Descrição * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputTextarea id="descricao"
 							value="#{ambienteTrabalhoFormBean.entidade.descricao}"
 							validatorMessage="O campo Descrição excedeu o tamanho máximo de 4000 caracteres"
 							onkeyup="contarCaracteres();" required="true"
 							requiredMessage="A Descrição do Ambiente é obrigatória.">
-							<f:validateLength maximum="4000" />
+							<f:validateLength maximum="8000" />
 						</h:inputTextarea>
 					</div>
 					<label id="countChar" style="margin-top: 2px; font-size: 11px;"></label>

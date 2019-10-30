@@ -50,7 +50,7 @@
 				</div>
 
 				<div class="input-box box-25">
-					<label for="">Código *</label>
+					<label for="">Código * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="codigo"
 							value="#{carreiraFormBean.entidade.codigo}" maxlength="30"
@@ -59,7 +59,7 @@
 				</div>
 
 				<div class="input-box box-60">
-					<label for="">Descrição *</label>
+					<label for="">Descrição * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="descricao"
 							value="#{carreiraFormBean.entidade.descricao}" maxlength="100"
@@ -69,12 +69,12 @@
 
 				<fieldset class="fl mg-right-15">
 
-					<legend>Lei que criou a Carreira</legend>
+					<legend>Lei que criou a Carreira <span class="identificador-esocial">(e)</span></legend>
 
 					<div class="input-box box-37">
-						<label for="">Lei</label>
+						<label for="">Lei *</label>
 						<div class="conteiner">
-							<h:inputText id="numerolei"
+							<h:inputText id="numerolei" required="true" requiredMessage="A lei é obrigatória." 
 								value="#{carreiraFormBean.entidade.lei}" maxlength="12" />
 						</div>
 					</div>
