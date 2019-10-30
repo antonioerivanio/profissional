@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import br.gov.ce.tce.srh.enums.TipoInscricao;
 import br.gov.ce.tce.srh.enums.TipoLotacaoTributaria;
@@ -21,6 +22,7 @@ public class LotacaoTributaria extends BasicEntity<Long> implements Serializable
 	@Column(name="ID")
 	private Long id;
 
+	@Size(max = 30)
 	@Column(name="CODIGOLOTACAO")
 	private String codigo;
 	
