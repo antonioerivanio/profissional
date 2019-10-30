@@ -603,11 +603,12 @@ body {
 	min-height: 31px;
 	width: 100%;
 	position: relative;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 }
 
 .formularios .select-box .conteiner {
 	margin-right: 15px;
+	margin-bottom: 5px;
 	overflow: auto;
 }
 

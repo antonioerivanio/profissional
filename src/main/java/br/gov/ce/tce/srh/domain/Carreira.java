@@ -84,7 +84,7 @@ public class Carreira extends BasicEntity<Long> implements Serializable {
 	}
 
 	public SituacaoLei getSituacao() {
-		return SituacaoLei.toEnum(this.situacao);
+		return SituacaoLei.getByCodigo(this.situacao);
 	}
 
 	public void setSituacao(SituacaoLei situacao) {

@@ -111,7 +111,7 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	}
 	
 	public IndicativoAutoria getIndicativoAutoria() {
-		return IndicativoAutoria.toEnum(this.indicativoAutoria);
+		return IndicativoAutoria.getByCodigo(this.indicativoAutoria);
 	}
 
 	public void setIndicativoAutoria(IndicativoAutoria indicativo) {
@@ -120,7 +120,7 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	}
 	
 	public IndicativoMateria getIndicativoMateria() {
-		return IndicativoMateria.toEnum(this.indicativoMateria);
+		return IndicativoMateria.getByCodigo(this.indicativoMateria);
 	}
 
 	public void setIndicativoMateria(IndicativoMateria indicativo) {

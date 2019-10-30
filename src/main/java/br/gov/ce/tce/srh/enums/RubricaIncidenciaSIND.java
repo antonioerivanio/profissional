@@ -25,6 +25,10 @@ public enum RubricaIncidenciaSIND {
 
 	public static RubricaIncidenciaSIND getByCodigo(String codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (RubricaIncidenciaSIND parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

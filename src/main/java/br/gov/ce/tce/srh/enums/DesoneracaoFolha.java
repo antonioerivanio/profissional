@@ -21,6 +21,10 @@ public enum DesoneracaoFolha {
 	}
 
 	public static DesoneracaoFolha getByCodigo(Integer codigo) {
+		
+		if (codigo == null) {
+			return null;
+		}
 
 		for (DesoneracaoFolha parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {

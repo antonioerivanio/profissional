@@ -29,7 +29,7 @@ public enum IndicativoAutoria {
 		this.descricao = descricao;
 	}
 
-	public static IndicativoAutoria toEnum(Integer codigo) {
+	public static IndicativoAutoria getByCodigo(Integer codigo) {
 
 		if (codigo == null) {
 			return null;

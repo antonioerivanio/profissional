@@ -26,6 +26,10 @@ public enum PcdContrato {
 
 	public static PcdContrato getByCodigo(Integer codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (PcdContrato parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

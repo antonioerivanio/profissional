@@ -41,7 +41,7 @@ public enum IndicativoSuspensao {
 		this.descricao = descricao;
 	}
 
-	public static IndicativoSuspensao toEnum(String codigo) {
+	public static IndicativoSuspensao getByCodigo(String codigo) {
 
 		if (codigo == null) {
 			return null;

@@ -26,6 +26,10 @@ public enum TipoLotacaoTributaria {
 
 	public static TipoLotacaoTributaria getByCodigo(String codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (TipoLotacaoTributaria parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

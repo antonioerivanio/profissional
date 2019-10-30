@@ -51,7 +51,7 @@ public class ProcessoESocialSuspensao extends BasicEntity<Long> implements Seria
 	}
 
 	public IndicativoSuspensao getIndicativoSuspensao() {
-		return IndicativoSuspensao.toEnum(this.indicativoSuspensao);
+		return IndicativoSuspensao.getByCodigo(this.indicativoSuspensao);
 	}
 
 	public void setIndicativoSuspensao(IndicativoSuspensao indicativoSuspensao) {

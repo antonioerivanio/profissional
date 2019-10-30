@@ -13,6 +13,7 @@ public enum TipoRevisao {
 	
 	
 	public static TipoRevisao getById(Long id){
+		
 		for (TipoRevisao tipoRevisao : TipoRevisao.values()) {
 			if(tipoRevisao.getId().equals(id)){
 				return tipoRevisao;

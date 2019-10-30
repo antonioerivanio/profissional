@@ -48,7 +48,11 @@ public enum RubricaIncidenciaCP {
 	}
 
 	public static RubricaIncidenciaCP getByCodigo(String codigo) {
-
+		
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (RubricaIncidenciaCP parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

@@ -31,7 +31,7 @@ public enum ContagemEspecial {
 		this.descricao = descricao;
 	}
 
-	public static ContagemEspecial toEnum(Integer codigo) {
+	public static ContagemEspecial getByCodigo(Integer codigo) {
 
 		if (codigo == null) {
 			return null;

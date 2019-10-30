@@ -69,6 +69,10 @@ public enum RubricaIncidenciaIRRF {
 
 	public static RubricaIncidenciaIRRF getByCodigo(String codigo) {
 
+		if (codigo == null) {
+			return null;
+		}
+		
 		for (RubricaIncidenciaIRRF parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;

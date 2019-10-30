@@ -22,6 +22,10 @@ public enum EnteFederativoRpps {
 
 	public static EnteFederativoRpps getBySigla(String sigla) {
 
+		if (sigla == null) {
+			return null;
+		}
+		
 		for (EnteFederativoRpps parametro : values()) {
 			if (parametro.getSigla().equals(sigla)) {
 				return parametro;

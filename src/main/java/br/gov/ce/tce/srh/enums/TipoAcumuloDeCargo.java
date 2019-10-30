@@ -31,7 +31,7 @@ public enum TipoAcumuloDeCargo {
 		this.descricao = descricao;
 	}
 
-	public static TipoAcumuloDeCargo toEnum(Integer codigo) {
+	public static TipoAcumuloDeCargo getByCodigo(Integer codigo) {
 
 		if (codigo == null) {
 			return null;
