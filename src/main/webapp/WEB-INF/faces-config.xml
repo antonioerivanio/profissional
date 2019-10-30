@@ -189,6 +189,18 @@
 			<to-view-id>/paginas/tabelas/empregadorForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Lotação tributaria -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/lotacaoTributariaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/lotacaoTributariaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/lotacaoTributariaForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Carreira -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/carreiraList.xhtml</from-view-id>

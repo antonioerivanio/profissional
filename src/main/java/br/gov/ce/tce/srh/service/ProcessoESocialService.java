@@ -12,6 +12,7 @@ import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.ProcessoESocial;
 import br.gov.ce.tce.srh.domain.ProcessoESocialSuspensao;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
+import br.gov.ce.tce.srh.enums.TipoProcesso;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("processoESocialService")
@@ -29,6 +30,8 @@ public class ProcessoESocialService{
 	@Transactional
 	public void salvar(ProcessoESocial entidade) {
 		//TODO Validações
+		
+		validaCamposObrigatorios(entidade);
 		
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
 		vigencia.setReferencia(entidade.getNumero());
@@ -51,6 +54,30 @@ public class ProcessoESocialService{
 				}					
 			}
 		}
+	}
+	
+	private void validaCamposObrigatorios(ProcessoESocial entidade) {
+		// TODO Auto-generated method stub
+		if (entidade.getTipoProcesso() == TipoProcesso.ADMINISTRATIVO 
+				&& !(entidade.getNumero().length() == 17 || entidade.getNumero().length() == 21 )) {
+			throw new SRHRuntimeException("Processo do tipo " + TipoProcesso.ADMINISTRATIVO.getDescricao() + " deve possuir 17 (dezessete) ou 21 (vinte e um) algarismos.");
+		}
+		
+		if (entidade.getTipoProcesso() == TipoProcesso.JUDICIAL 
+				&& !(entidade.getNumero().length() == 20)) {
+			throw new SRHRuntimeException("Processo do tipo " + TipoProcesso.JUDICIAL.getDescricao() + " deve possuir 20 (vinte) algarismos.");
+		}
+		
+		if (entidade.getTipoProcesso() == TipoProcesso.NB_INSS 
+				&& !(entidade.getNumero().length() == 10)) {
+			throw new SRHRuntimeException("Processo do tipo " + TipoProcesso.NB_INSS.getDescricao() + " deve possuir 10 (vinte) algarismos.");
+		}
+		
+		if (entidade.getTipoProcesso() == TipoProcesso.FAP 
+				&& !(entidade.getNumero().length() == 16)) {
+			throw new SRHRuntimeException("Processo do tipo " + TipoProcesso.NB_INSS.getDescricao() + " deve possuir 16 (dezesseis) algarismos. Regra de validação.");
+		}
+		
 	}
 	
 	@Transactional

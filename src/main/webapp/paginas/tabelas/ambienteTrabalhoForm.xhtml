@@ -43,9 +43,11 @@
 		</div>
 
 		<h:form id="form" styleClass="formularios">
-
+		
 			<fieldset>
-
+			<br/>
+				<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />
+	
 				<h:messages id="messages" infoClass="infoMessage"
 					errorClass="errorMessage" />
 
@@ -118,7 +120,7 @@
 							<f:validateLength maximum="8000" />
 						</h:inputTextarea>
 					</div>
-					<label id="countChar" style="margin-top: 2px; font-size: 11px;"></label>
+						<label id="countChar" style="margin-top: 2px; font-size: 11px;"></label>
 				</div>
 
 				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
