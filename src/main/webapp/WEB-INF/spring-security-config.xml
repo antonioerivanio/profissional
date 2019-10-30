@@ -25,6 +25,9 @@
         <intercept-url pattern="/paginas/tabelas/empregadorList.faces" access="" />
         <intercept-url pattern="/paginas/tabelas/empregadorForm.faces" access="" />
         
+        <intercept-url pattern="/paginas/tabelas/estabelecimentoList.faces" access="" />
+        <intercept-url pattern="/paginas/tabelas/estabelecimentoForm.faces" access="" />
+        
         <intercept-url pattern="/paginas/tabelas/lotacaoTributariaList.faces" access="" />
         <intercept-url pattern="/paginas/tabelas/lotacaoTributaria.faces" access="" />
         

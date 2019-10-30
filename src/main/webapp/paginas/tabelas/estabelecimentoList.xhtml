@@ -11,7 +11,7 @@
 	<ui:define name="content">
 
 		<div class="titulo-pagina">
-			<h2>Consulta de Empregador</h2>
+			<h2>Consulta de Estabelecimento</h2>
 		</div>
 
 		<h:form id="form" styleClass="formularios box-border">
@@ -20,7 +20,7 @@
 			
 			<div class="tabela-dados">
 
-				<rich:dataTable id="listaEmpregador" var="item" value="#{empregadorListBean.empregadorList}">
+				<rich:dataTable id="listaEstabelecimento" var="item" value="#{estabelecimentoListBean.estabelecimentoList}">
 
 					<h:column id="col1">
 						<f:facet name="header">
@@ -33,16 +33,9 @@
 
 					<h:column id="col2">
 						<f:facet name="header">
-                           CNPJ
+                           Número Inscrição
                         </f:facet>
-						<h:outputText id="item2" value="#{item.cnpj}" styleClass="cel-50" />						
-					</h:column>
-					
-					<h:column id="col3">
-						<f:facet name="header">
-                           NOME DO ÓRGÃO
-                        </f:facet>
-						<h:outputText id="item3" value="#{item.nomeOrgao}" styleClass="cel-50" />						
+						<h:outputText id="item2" value="#{item.numeroInscricao}" styleClass="cel-50" />						
 					</h:column>
 					 
 					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  			
@@ -55,9 +48,9 @@
 						<h:commandLink 
 							id="editar" 
 							value="Editar"
-							action="#{empregadorListBean.editar}"
+							action="#{estabelecimentoListBean.editar}"
 							styleClass="ico-editar">
-							<f:setPropertyActionListener target="#{empregadorListBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{estabelecimentoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
@@ -68,10 +61,10 @@
 						<h:commandLink 
 							id="excluir" 
 							value="Excluir"
-							action="#{empregadorListBean.excluir}" 
+							action="#{estabelecimentoListBean.excluir}" 
 							styleClass="ico-delete"
 							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
-							<f:setPropertyActionListener target="#{empregadorListBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{estabelecimentoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 
@@ -84,7 +77,7 @@
 				value="Incluir"
 				action="incluirAlterar"
 				styleClass="bt-padrao fr mg-right-15"
-				rendered="#{false}" />	
+				rendered="#{true}" />	
 
 
 		</h:form>

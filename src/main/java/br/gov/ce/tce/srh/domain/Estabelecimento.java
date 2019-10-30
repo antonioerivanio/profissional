@@ -35,11 +35,11 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 	@Column(name = "RAT")
 	private Integer rat;
 	
-	@Column(name = "FAP", precision = 14, scale = 2)	
+	@Column(name = "FAP", precision = 5, scale = 4)	
 	private Double fap;
 	
-	@Column(name = "RAT_AJUSTADO")	
-	private Integer ratAjustado;
+	@Column(name = "RAT_AJUSTADO", precision = 5, scale = 4)	
+	private Double ratAjustado;
 	
 	@Column(name = "REGISTROPONTO")
 	private Integer registroPonto;
@@ -105,11 +105,11 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 		this.fap = fap;
 	}
 
-	public Integer getRatAjustado() {
+	public Double getRatAjustado() {
 		return ratAjustado;
 	}
 
-	public void setRatAjustado(Integer ratAjustado) {
+	public void setRatAjustado(Double ratAjustado) {
 		this.ratAjustado = ratAjustado;
 	}
 
@@ -132,7 +132,7 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 	}
 
 	public PcdContrato getPcdContrato() {
-		return PcdContrato.getByCodigo(pcdContrato);
+		return PcdContrato.getByCodigo(this.pcdContrato);
 	}
 
 	public void setPcdContrato(PcdContrato pcdContrato) {
