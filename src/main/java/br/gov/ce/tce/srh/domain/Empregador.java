@@ -95,7 +95,7 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	private Integer subteto;
 	
 	@NotNull(message = "Valor do subteto obrigatório!")	
-	@Column(name = "VALORSUBTETO")
+	@Column(name = "VALORSUBTETO",precision = 14, scale = 2)
 	private Double valorSubteto;
 	
 	@Column(name = "SITUACAO")	

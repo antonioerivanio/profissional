@@ -404,8 +404,10 @@
 							id="vrSubteto"
 							name="vrSubteto"
 							maxlength="14"
-							styleClass="maskSalario"
-							value="#{empregadorFormBean.entidade.valorSubteto}" />	            			
+							value="#{empregadorFormBean.entidade.valorSubteto}"
+							styleClass="maskSalario">
+							<f:convertNumber type="currency" currencySymbol="R$"/>
+						</h:inputText>	            			
 					</div>
 				</div>
 				

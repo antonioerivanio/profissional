@@ -58,7 +58,9 @@ jQuery(document).ready(function($) {
     $(".maskProcesso").mask("99999/9999-9",{placeholder:" "});  // NUMERO DO PROCESSO
     $(".maskQtdQuintos").mask("9",{placeholder:" "});  // QTD QUINTOS
     $(".maskSalario").maskMoney({
-    	symbol:'R$', 
+    	symbol:'R$ ',
+    	showSymbol:true,
+    	symbolStay: true,
     	decimal:',', 
     	thousands:'.',
     	precision: 2});  // SALARIO
