@@ -45,6 +45,8 @@
 		<h:form id="form" styleClass="formularios">
 
 			<fieldset style="padding-right: 15px">
+				<br/>
+				<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />
 
 				<h:messages id="messages" infoClass="infoMessage"
 					errorClass="errorMessage" />
@@ -58,7 +60,7 @@
 				</div>
 
 				<div class="select-box box-30">
-					<label for="">Tipo de Processo *</label>
+					<label for="">Tipo de Processo * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoProcesso"
 							value="#{processoESocialFormBean.entidade.tipoProcesso}"
@@ -67,13 +69,13 @@
 							<f:selectItem id="selecioneTipoProcesso" itemLabel="Selecione..." />
 							<f:selectItems id="comboTipoProcesso"
 								value="#{processoESocialFormBean.comboTipoProcesso}" var="tipo"
-								itemLabel="#{tipo.descricao}" itemValue="#{tipo}" />
+								itemLabel="#{tipo.codigo} - #{tipo.descricao}" itemValue="#{tipo}" />
 						</h:selectOneMenu>
 					</div>
 				</div>
 
 				<div class="input-box box-20">
-					<label for="">Número *</label>
+					<label for="">Número * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="numero"
 							value="#{processoESocialFormBean.entidade.numero}" maxlength="21"
@@ -84,7 +86,7 @@
 
 
 				<div class="select-box box-40 clr">
-					<label for="">Indicativo Autoria</label>
+					<label for="">Indicativo Autoria  <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="indicativoAutoria"
 							value="#{processoESocialFormBean.entidade.indicativoAutoria}">
@@ -92,14 +94,14 @@
 								itemLabel="Selecione..." />
 							<f:selectItems id="comboIndicativoAutoria"
 								value="#{processoESocialFormBean.comboIndicativoAutoria}"
-								var="autoria" itemLabel="#{autoria.descricao}"
+								var="autoria" itemLabel="#{autoria.codigo} - #{autoria.descricao}"
 								itemValue="#{autoria}" />
 						</h:selectOneMenu>
 					</div>
 				</div>
 
 				<div class="select-box box-40">
-					<label for="">Indicativo Matéria *</label>
+					<label for="">Indicativo Matéria * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="indicativoMateria"
 							value="#{processoESocialFormBean.entidade.indicativoMateria}"
@@ -109,14 +111,14 @@
 								itemLabel="Selecione..." />
 							<f:selectItems id="comboIndicativoMateria"
 								value="#{processoESocialFormBean.comboIndicativoMateria}"
-								var="materia" itemLabel="#{materia.descricao}"
+								var="materia" itemLabel="#{materia.codigo} - #{materia.descricao}"
 								itemValue="#{materia}" />
 						</h:selectOneMenu>
 					</div>
 				</div>
 
 				<div class="textarea-box box-100">
-					<label for="">Observação</label>
+					<label for="">Observação <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner" style="margin-right: 0">
 						<h:inputTextarea id="observacao"
 							value="#{processoESocialFormBean.entidade.observacao}"
@@ -125,20 +127,21 @@
 							<f:validateLength maximum="255" />
 						</h:inputTextarea>
 					</div>
-					<label id="countChar" style="margin-top: 2px; font-size: 11px;"></label>
+						<label id="countChar" style="margin-top: 2px; font-size: 11px;"></label>
 				</div>
 
 				<fieldset class="fl box-60 mg-right-15">
 					
-					<legend>Informações Complementares de Processo Judicial</legend>
+					<legend>Informações Complementares de Processo Judicial <span class="identificador-esocial">(e)</span></legend>
 					
 					<div class="select-box box-20">
-						<label for="">UF</label>
+						<label for="">UF *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="uf" converter="entityConverter"
 								value="#{processoESocialFormBean.uf}">
 								<f:selectItem id="selecioneUf" itemLabel="Selecione..." />
-								<f:selectItems id="comboUf"
+								<f:selectItems id="comboUf" required="true"
+									requiredMessage="O UF é obrigatório."
 									value="#{processoESocialFormBean.comboUf}" var="uf"
 									itemValue="#{uf}" itemLabel="#{uf.id}" />
 								<a4j:support id="comboUfAction" event="onchange"
@@ -148,23 +151,25 @@
 					</div>
 
 					<div class="select-box box-50">
-						<label for="">Município</label>
+						<label for="">Município *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="municipio" converter="entityConverter"
 								value="#{processoESocialFormBean.entidade.municipioVara}">
 								<f:selectItem id="selecioneMunicipio" itemLabel="Selecione..." />
-								<f:selectItems id="comboMunicipio"
+								<f:selectItems id="comboMunicipio" required="true"
+									requiredMessage="O município é obrigatório."
 									value="#{processoESocialFormBean.comboMunicipio}"
 									var="municipio" itemValue="#{municipio}"
-									itemLabel="#{municipio.nome}" />
+									itemLabel="#{municipio.codigoIBGE} - #{municipio.nome}" />
 							</h:selectOneMenu>
 						</div>
 					</div>
 
 					<div class="input-box box-20">
-						<label for="">ID Vara</label>
+						<label for="">ID Vara *</label>
 						<div class="conteiner">
-							<h:inputText id="nome"
+							<h:inputText id="nome" required="true"
+									requiredMessage="O id vara é obrigatório."
 								value="#{processoESocialFormBean.entidade.idVara}" maxlength="4"
 								onkeyup="mantemSomenteNumeros(this)" />
 						</div>
@@ -177,38 +182,41 @@
                 </ui:include>
 				
 				<fieldset class="box-100 fl mg-top-15" style="padding-top: 25px;">
-					<legend>Informações de Suspensão de Exigibilidade</legend>
+					<legend>Informações de Suspensão de Exigibilidade <span class="identificador-esocial">(e)</span></legend>
 					
 					<div class="select-box box-40">
-						<label for="">Indicativo de suspensão da exigibilidade</label>
+						<label for="">Indicativo de suspensão da exigibilidade *</label>
 						<div class="conteiner">
-							<h:selectOneMenu id="indicativoSuspensao"
+							<h:selectOneMenu id="indicativoSuspensao" required="true"
+									requiredMessage="O Indicativo de suspensão da exigibilidade é obrigatório."
 								value="#{processoESocialFormBean.novaSuspensao.indicativoSuspensao}">
 								<f:selectItem id="selecioneIndicativoSuspensao" itemLabel="Selecione..." />
-								<f:selectItems id="comboIndicativoSuspensao"
+								<f:selectItems id="comboIndicativoSuspensao" 
 									value="#{processoESocialFormBean.comboIndicativoSuspensao}"
-									var="suspensao" itemLabel="#{suspensao.descricao}"
+									var="suspensao" itemLabel="#{suspensao.codigo} - #{suspensao.descricao}"
 									itemValue="#{suspensao}" />
 							</h:selectOneMenu>
 						</div>
 					</div>
 					
 					<div class="input-box box-15">
-						<label for="">Data da decisão</label>
+						<label for="">Data da decisão *</label>
 						<div class="conteiner">
 							<h:inputText id="dataDecisao" name="dataDecisao" styleClass="maskData"
 								converter="dateConverter"
 								value="#{processoESocialFormBean.novaSuspensao.dataDecisao}"
-								maxlength="10" />
+								maxlength="10" required="true"
+								requiredMessage="O Data da decisão é obrigatório." />
 						</div>
 					</div>
 					
 					<div class="radios-group box-25">
-						<h3>Indicativo de depósito do montante integral</h3>
+						<h3>Indicativo de depósito do montante integral *</h3>
 						<div class="conteiner">
 							<div class="radio-box">
 							<h:selectOneRadio id="indicativoDeposito" value="#{processoESocialFormBean.novaSuspensao.indicativoDeposito}">
-								<f:selectItems id="simNao" 
+								<f:selectItems id="simNao"  required="true"
+									requiredMessage="O Indicativo de depósito do montante integral é obrigatório."
 									value="#{processoESocialFormBean.simNao}" 
 									var="item" itemLabel="#{item.descricao}" itemValue="#{item}" />
 							</h:selectOneRadio>
