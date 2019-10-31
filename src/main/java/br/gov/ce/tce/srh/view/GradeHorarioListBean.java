@@ -32,6 +32,8 @@ public class GradeHorarioListBean implements Serializable {
 	
 	@PostConstruct
 	public void consultar() {
+			
+		FacesUtil.setFlashParameter("entidade", null);
 
 		try {
 			

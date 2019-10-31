@@ -30,9 +30,12 @@ public class EmpregadorListBean implements Serializable{
 
 	private List<Empregador> empregadorList = new ArrayList<Empregador>();
 
+	
 	@PostConstruct
 	public void consultar() {
-
+		
+		FacesUtil.setFlashParameter("entidade", null);
+		
 		try {
 			
 			empregadorList = service.findAll();

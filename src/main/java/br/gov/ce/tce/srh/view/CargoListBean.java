@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,11 @@ public class CargoListBean implements Serializable {
 	private List<Ocupacao> pagedList = new ArrayList<Ocupacao>();
 	private int flagRegistroInicial = 0;
 
+	
+	@PostConstruct
+	private void init() {
+		FacesUtil.setFlashParameter("entidade", null);
+    }
 
 	public void consultar() {
 

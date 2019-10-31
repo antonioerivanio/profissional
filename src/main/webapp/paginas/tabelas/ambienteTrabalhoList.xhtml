@@ -57,7 +57,7 @@
                            ID
                         </f:facet>
 						<center>
-							<h:outputText id="item1" value="#{item.id}" styleClass="cel-15" />
+							<h:outputText id="item1" value="#{item.id}" />
 						</center>
 					</h:column>
 
@@ -66,15 +66,15 @@
                            Nome
                         </f:facet>
 						<center>
-							<h:outputText id="item2" value="#{item.nome}"
-								styleClass="cel-50" />
+							<h:outputText id="item2" value="#{item.nome}" />
 						</center>
 					</h:column>
 					
 					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />				
 
 					<h:column id="col8"
-						rendered="#{true}">
+						rendered="#{true}"
+						headerClass="cel-10">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -87,7 +87,7 @@
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
-						rendered="#{true}">
+						rendered="#{false}">
 						<f:facet name="header">
                             EXCLUIR
                         </f:facet>						

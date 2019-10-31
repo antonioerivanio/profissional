@@ -32,7 +32,7 @@
 			});
 			function contarCaracteres() {
 				document.getElementById('countChar').innerHTML = 'Quantidade de caracteres: '
-						+ (document.getElementById('form:descricao').value.length);
+						+ (document.getElementById('form:descricao').value.length) + ' / 4000';
 			}
 		</script>
 
@@ -45,11 +45,14 @@
 		<h:form id="form" styleClass="formularios">
 		
 			<fieldset>
-			<br/>
+			 
 				<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />
 	
-				<h:messages id="messages" infoClass="infoMessage"
-					errorClass="errorMessage" />
+				<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+				
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações de identificação" />
+                </ui:include>
 
 				<div class="input-box box-10">
 					<label for="">ID</label>
@@ -59,7 +62,7 @@
 					</div>
 				</div>
 
-				<div class="input-box box-25">
+				<div class="input-box box-30">
 					<label for="">Código * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="codigo"
@@ -68,18 +71,27 @@
 							requiredMessage="O Código é obrigatório." />
 					</div>
 				</div>
+				
+				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
+                    <ui:param name="vigencia" value="#{ambienteTrabalhoFormBean.entidade.esocialVigencia}" />
+                </ui:include>  
+                
+                <ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações do ambiente" />
+                </ui:include>
 
-				<div class="input-box box-60">
+				<div class="input-box box-40">
 					<label for="">Nome * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="nome"
-							value="#{ambienteTrabalhoFormBean.entidade.nome}" maxlength="100"
+							value="#{ambienteTrabalhoFormBean.entidade.nome}" 
+							maxlength="100"
 							required="true"
 							requiredMessage="O Nome do Ambiente é obrigatório." />
 					</div>
 				</div>
 
-				<div class="select-box box-40">
+				<div class="select-box box-30">
 					<label for="">Tipo de Local * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="local"
@@ -94,7 +106,7 @@
 					</div>
 				</div>
 
-				<div class="select-box box-40">
+				<div class="select-box box-30">
 					<label for="">Estabelecimento * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="estabelecimento" converter="entityConverter"
@@ -117,15 +129,13 @@
 							validatorMessage="O campo Descrição excedeu o tamanho máximo de 4000 caracteres"
 							onkeyup="contarCaracteres();" required="true"
 							requiredMessage="A Descrição do Ambiente é obrigatória.">
-							<f:validateLength maximum="8000" />
+							<f:validateLength maximum="4000" />
 						</h:inputTextarea>
 					</div>
 						<label id="countChar" style="margin-top: 2px; font-size: 11px;"></label>
 				</div>
 
-				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
-                    <ui:param name="vigencia" value="#{ambienteTrabalhoFormBean.entidade.esocialVigencia}" />
-                </ui:include>               
+				             
 
 			</fieldset>
 

@@ -31,11 +31,12 @@
 			<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />
 			
 			<fieldset>
-	<br/>
+	
 				<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
-				
-				<br />
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações de identificação" />
+                </ui:include>
 
 				<div class="input-box box-10">
 					<label for="">ID</label>
@@ -43,8 +44,27 @@
 						<h:inputText disabled="true" value="#{cargoFormBean.entidade.id}" />
 					</div>
 				</div>
+				
+				<div class="input-box box-15">
+					<label for="">Código * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:inputText id="codigoEsocial"
+							value="#{cargoFormBean.entidade.codigoEsocial}" 
+							maxlength="30"
+							required="true"
+							requiredMessage="O código é obrigatória." />
+					</div>
+				</div>
+				
+				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
+				  <ui:param name="vigencia" value="#{cargoFormBean.entidade.esocialVigencia}" />
+				</ui:include>
+				
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Detalhamento de informações" />
+                </ui:include>
 
-				<div class="input-box box-30">
+				<div class="input-box box-25">
 					<label for="">Nomenclatura * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="nomenclatura"
@@ -52,8 +72,117 @@
 							required="true" requiredMessage="A nomenclatura é obrigatória." />
 					</div>
 				</div>
+				
+				<div class="input-box box-10">
+					<label for="">CBO * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:inputText id="cbo" value="#{cargoFormBean.entidade.cbo}"
+							maxlength="6" required="true" requiredMessage="O CBO é obrigatória."
+							onkeyup="mantemSomenteNumeros(this)"  />
+					</div>
+				</div>
+				
+				<div class="select-box box-15">
+					<label for="">Acumulação * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="acumulacao" 
+							required="true" 
+							requiredMessage="A acumulação é obrigatória."
+							value="#{cargoFormBean.entidade.tipoAcumulacao}">
+							<f:selectItem id="selecioneAcumulacao" itemLabel="Selecione..." />
+							<f:selectItems 
+							id="comboAcumulacao"
+								value="#{cargoFormBean.comboTipoAcumulo}" 
+								var="acumulo"
+								itemLabel="#{acumulo.codigo} - #{acumulo.descricao}" 
+								itemValue="#{acumulo}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
 
+				<div class="select-box box-30">
+					<label for="">Contagem Especial * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="contagemEsp" 
+							required="true" 
+							requiredMessage="A contagem especial é obrigatória."
+							value="#{cargoFormBean.entidade.tempoEspecial}">
+							<f:selectItem id="selecioneContagemEsp" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboContagemEsp"
+								value="#{cargoFormBean.comboContagemEspecial}" 
+								var="contagemEsp"
+								itemLabel="#{contagemEsp.codigo} - #{contagemEsp.descricao}" 
+								itemValue="#{contagemEsp}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
 				<div class="select-box box-20">
+					<label for="">Dedicação Exclusiva * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="dedex" 
+							required="true" 
+							requiredMessage="A dedicação exclusiva é obrigatória."
+							value="#{cargoFormBean.entidade.dedicacaoExclusiva}">
+							<f:selectItem id="dedex0" itemLabel="Selecione..." itemValue="" />
+							<f:selectItem id="dedex1" itemLabel="Sim" itemValue="S" />
+							<f:selectItem id="dedex2" itemLabel="Não" itemValue="N" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+								
+
+				<fieldset class="fl box-50">
+
+					<legend>Lei <span class="identificador-esocial">(e)</span></legend>
+
+					<div class="input-box box-30">
+						<label for="">Lei *</label>
+						<div class="conteiner">
+							<h:inputText id="numerolei" required="true" requiredMessage="A lei é obrugatória."
+								value="#{cargoFormBean.entidade.lei}" maxlength="12"/>
+						</div>
+					</div>
+
+					<div class="input-box box-30">
+						<label for="">Data *</label>
+						<div class="conteiner">
+							<h:inputText id="dataLei" styleClass="maskData" required="true" 
+								requiredMessage="A data é obrugatória."
+								converter="dateConverter"
+								value="#{cargoFormBean.entidade.dataLei}" maxlength="10">
+							</h:inputText>
+						</div>
+					</div>
+
+					<div class="select-box box-40">
+						<label for="">Situação *</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="situacaoLei" required="true" requiredMessage="A situação é obrugatória."
+								value="#{cargoFormBean.entidade.situacaoLei}" >
+								<f:selectItem id="selecioneSituacaoLei"
+									itemLabel="Selecione..." />
+								<f:selectItems id="comboSituacaoLei"
+									value="#{cargoFormBean.comboSituacaoLei}" var="situacaoLei"
+									itemLabel="#{situacaoLei.descricao}"
+									itemValue="#{situacaoLei}" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+				</fieldset>					
+
+				<br />
+				
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações exclusivas do TCE" />
+                </ui:include>
+
+				<div class="select-box box-25">
 					<label for="">Tipo Ocupação *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoOcupacao"
@@ -143,114 +272,7 @@
 								onkeyup="SoNumeros(this)" />
 						</div>
 					</div>
-				</div>
-				
-				<div class="input-box box-15">
-					<label for="">Código * <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:inputText id="codigoEsocial"
-							value="#{cargoFormBean.entidade.codigoEsocial}" 
-							maxlength="30"
-							required="true"
-							requiredMessage="O código é obrigatória." />
-					</div>
-				</div>
-
-				<div class="input-box box-10">
-					<label for="">CBO * <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:inputText id="cbo" value="#{cargoFormBean.entidade.cbo}"
-							maxlength="6" required="true" requiredMessage="O CBO é obrigatória."
-							onkeyup="mantemSomenteNumeros(this)"  />
-					</div>
-				</div>
-
-				<div class="select-box box-20">
-					<label for="">Acumulação * <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:selectOneMenu id="acumulacao" required="true" requiredMessage="A acumulação é obrigatória."
-							value="#{cargoFormBean.entidade.tipoAcumulacao}">
-							<f:selectItem id="selecioneAcumulacao" itemLabel="Selecione..." />
-							<f:selectItems id="comboAcumulacao"
-								value="#{cargoFormBean.comboTipoAcumulo}" var="acumulo"
-								itemLabel="#{acumulo.descricao}" itemValue="#{acumulo}" />
-						</h:selectOneMenu>
-					</div>
-				</div>
-
-				<div class="select-box box-30">
-					<label for="">Contagem Especial * <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:selectOneMenu id="contagemEsp" required="true" requiredMessage="A contagem especial é obrigatória."
-							value="#{cargoFormBean.entidade.tempoEspecial}">
-							<f:selectItem id="selecioneContagemEsp" itemLabel="Selecione..." />
-							<f:selectItems id="comboContagemEsp"
-								value="#{cargoFormBean.comboContagemEspecial}" var="contagemEsp"
-								itemLabel="#{contagemEsp.descricao}" itemValue="#{contagemEsp}" />
-						</h:selectOneMenu>
-					</div>
-				</div>
-
-				<div class="select-box box-20">
-					<label for="">Dedicação Exclusiva * <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:selectOneMenu id="dedex" required="true" requiredMessage="A dedicação exclusiva é obrigatória."
-							value="#{cargoFormBean.entidade.dedicacaoExclusiva}">
-							<f:selectItem id="dedex0" itemLabel="Selecione..." itemValue="" />
-							<f:selectItem id="dedex1" itemLabel="Sim" itemValue="S" />
-							<f:selectItem id="dedex2" itemLabel="Não" itemValue="N" />
-						</h:selectOneMenu>
-					</div>
-				</div>
-
-				<div class="box-100 fl">
-
-					<fieldset class="fl mg-right-15">
-
-						<legend>Lei <span class="identificador-esocial">(e)</span></legend>
-
-						<div class="input-box box-30">
-							<label for="">Lei *</label>
-							<div class="conteiner">
-								<h:inputText id="numerolei" required="true" requiredMessage="A lei é obrugatória."
-									value="#{cargoFormBean.entidade.lei}" maxlength="12"/>
-							</div>
-						</div>
-
-						<div class="input-box box-30">
-							<label for="">Data *</label>
-							<div class="conteiner">
-								<h:inputText id="dataLei" styleClass="maskData" required="true" 
-									requiredMessage="A data é obrugatória."
-									converter="dateConverter"
-									value="#{cargoFormBean.entidade.dataLei}" maxlength="10">
-								</h:inputText>
-							</div>
-						</div>
-
-						<div class="select-box box-40">
-							<label for="">Situação *</label>
-							<div class="conteiner">
-								<h:selectOneMenu id="situacaoLei" required="true" requiredMessage="A situação é obrugatória."
-									value="#{cargoFormBean.entidade.situacaoLei}" >
-									<f:selectItem id="selecioneSituacaoLei"
-										itemLabel="Selecione..." />
-									<f:selectItems id="comboSituacaoLei"
-										value="#{cargoFormBean.comboSituacaoLei}" var="situacaoLei"
-										itemLabel="#{situacaoLei.descricao}"
-										itemValue="#{situacaoLei}" />
-								</h:selectOneMenu>
-							</div>
-						</div>
-
-					</fieldset>
-
-
-					<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
-					  <ui:param name="vigencia" value="#{cargoFormBean.entidade.esocialVigencia}" />
-					</ui:include>
-
-				</div>
+				</div>				
 
 			</fieldset>			
 

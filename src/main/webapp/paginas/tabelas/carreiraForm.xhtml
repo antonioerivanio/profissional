@@ -39,7 +39,11 @@
 			<fieldset>
 
 				<h:messages id="messages" infoClass="infoMessage"
-					errorClass="errorMessage" />				
+					errorClass="errorMessage" />
+					
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações de identificação" />
+                </ui:include>					
 
 				<div class="input-box box-10">
 					<label for="">ID</label>
@@ -49,7 +53,7 @@
 					</div>
 				</div>
 
-				<div class="input-box box-25">
+				<div class="input-box box-40">
 					<label for="">Código * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="codigo"
@@ -57,8 +61,16 @@
 							required="true" requiredMessage="O Código é obrigatório." />
 					</div>
 				</div>
+				
+				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
+                    <ui:param name="vigencia" value="#{carreiraFormBean.entidade.esocialVigencia}" />
+                </ui:include>
+                
+                <ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Detalhamento das informações" />
+                </ui:include>
 
-				<div class="input-box box-60">
+				<div class="input-box box-50">
 					<label for="">Descrição * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="descricao"
@@ -106,9 +118,7 @@
 
 				</fieldset>
 
-				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
-                    <ui:param name="vigencia" value="#{carreiraFormBean.entidade.esocialVigencia}" />
-                </ui:include>
+				
 
 			</fieldset>
 

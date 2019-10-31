@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -34,6 +36,11 @@ public class RubricaESocialTCEListBean implements Serializable{
 	private List<RubricaESocialTCE> pagedList = new ArrayList<RubricaESocialTCE>();
 	private int registroInicial = 0;
 	private Integer pagina = 1;
+	
+	@PostConstruct
+	private void init() {
+		FacesUtil.setFlashParameter("entidade", null);
+    }
 
 	public void consultar() {
 
