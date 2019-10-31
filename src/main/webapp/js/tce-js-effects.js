@@ -68,6 +68,7 @@ jQuery(document).ready(function($) {
     	decimal:',', 
     	precision: 4});
     $(".maskNoDocumento").mask("9999/9999",{placeholder:" "});  // NUMERO DO DOCUMENTO
+    $(".maskHora").mask("99:99", {placeholder:" "}); // HORA
 
     // FIM MASCARAS
     

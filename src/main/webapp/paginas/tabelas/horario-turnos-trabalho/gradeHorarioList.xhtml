@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.ajax4jsf.org/rich">
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+			<h2>Consulta de Horários/Turnos de Trabalho</h2>
+		</div>
+		
+		<h:form id="form" styleClass="formularios box-border">
+
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+			
+			<div class="tabela-dados">
+
+				<rich:dataTable id="listaHorario" var="item" value="#{gradeHorarioListBean.gradeHorarioList}">
+
+					<h:column id="col1">
+						<f:facet name="header">
+                           ID
+                        </f:facet>
+						<center>
+							<h:outputText id="item1" value="#{item.id}" styleClass="cel-15" />
+						</center>
+					</h:column>
+
+					<h:column id="col2">
+						<f:facet name="header">
+                           CÓDIGO
+                        </f:facet>
+						<h:outputText id="item2" value="#{item.codigo}" styleClass="cel-50" />						
+					</h:column>
+					
+					<h:column id="col3">
+						<f:facet name="header">
+                           HORA ENTRADA
+                        </f:facet>
+						<h:outputText id="item3" value="#{item.horaEntrada}" styleClass="cel-50" />						
+					</h:column>
+					
+					<h:column id="col4">
+						<f:facet name="header">
+                           HORA SAÍDA
+                        </f:facet>
+						<h:outputText id="item4"  value="#{item.horaSaida}" styleClass="cel-50 maskHora" />						
+					</h:column>
+					
+					<h:column id="col5">
+						<f:facet name="header">
+                           JORNADA
+                        </f:facet>
+						<h:outputText id="item5" value="#{item.duracaoJornada}" styleClass="cel-50" />						
+					</h:column>
+					 
+					<ui:include src="../../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  			
+
+					<h:column id="col8"
+						rendered="#{true}">
+						<f:facet name="header">
+                            EDITAR
+                        </f:facet>
+						<h:commandLink 
+							id="editar" 
+							value="Editar"
+							action="#{gradeHorarioListBean.editar}"
+							styleClass="ico-editar">
+							<f:setPropertyActionListener target="#{gradeHorarioListBean.entidade}" value="#{item}" />
+						</h:commandLink>
+					</h:column>
+					<h:column id="col9"
+						rendered="#{false}">
+						<f:facet name="header">
+                            EXCLUIR
+                        </f:facet>						
+						<h:commandLink 
+							id="excluir" 
+							value="Excluir"
+							action="#{gradeHorarioListBean.excluir}" 
+							styleClass="ico-delete"
+							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
+							<f:setPropertyActionListener target="#{gradeHorarioListBean.entidade}" value="#{item}" />
+						</h:commandLink>
+					</h:column>
+
+				</rich:dataTable>
+
+			</div>
+			
+			<h:commandButton 
+				id="incluir" 
+				value="Incluir"
+				action="incluirAlterar"
+				styleClass="bt-padrao fr mg-right-15"
+				rendered="#{true}" />	
+
+
+		</h:form>
+		
+	</ui:define>
+</ui:composition>

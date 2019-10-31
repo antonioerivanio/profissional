@@ -29,7 +29,7 @@
         <intercept-url pattern="/paginas/tabelas/estabelecimentoForm.faces" access="" />
         
         <intercept-url pattern="/paginas/tabelas/lotacaoTributariaList.faces" access="" />
-        <intercept-url pattern="/paginas/tabelas/lotacaoTributaria.faces" access="" />
+        <intercept-url pattern="/paginas/tabelas/lotacaoTributariaForm.faces" access="" />
         
         <intercept-url pattern="/paginas/tabelas/carreiraList.faces" access="" />        
         <intercept-url pattern="/paginas/tabelas/carreiraForm.faces" access="" />
@@ -39,6 +39,9 @@
         
         <intercept-url pattern="/paginas/tabelas/processoESocialList.faces" access="" />
         <intercept-url pattern="/paginas/tabelas/processoESocialForm.faces" access="" />
+        
+        <intercept-url pattern="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.faces" access="" />
+        <intercept-url pattern="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioForm.faces" access="" />
 		
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoList.faces" access="ROLE_ESPECIALIDADE_CARGO" />
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoForm.faces" access="ROLE_ESPECIALIDADE_CARGO" />
@@ -118,7 +121,7 @@
         <intercept-url pattern="/paginas/tabelas/tipoDocumentoList.faces" access="ROLE_TIPO_DOCUMENTO" />
         <intercept-url pattern="/paginas/tabelas/tipoDocumentoForm.faces" access="ROLE_TIPO_DOCUMENTO" />
 
-		<intercept-url pattern="/paginas/tabelas/*" access="ROLE_TABELAS" />
+		<intercept-url pattern="/paginas/tabelas/**" access="ROLE_TABELAS" />
 
 
 		<!-- CADASTRO -->
