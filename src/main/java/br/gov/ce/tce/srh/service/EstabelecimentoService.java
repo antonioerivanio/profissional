@@ -10,6 +10,7 @@ import br.gov.ce.tce.srh.dao.EstabelecimentoDAO;
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.Estabelecimento;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("estabelecimentoService")
 public class EstabelecimentoService {
@@ -23,7 +24,7 @@ public class EstabelecimentoService {
 	@Transactional
 	public Estabelecimento salvar(Estabelecimento entidade) {		
 		
-		// TODO Validações		
+		validar(entidade);
 		
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
 		vigencia.setReferencia(entidade.getNumeroInscricao());
@@ -33,6 +34,14 @@ public class EstabelecimentoService {
 		return dao.salvar(entidade);
 	}
 	
+	private void validar(Estabelecimento entidade) {		
+		
+		if(entidade.getFap() < 0.5 || entidade.getFap() > 2 ) {
+			throw new SRHRuntimeException("O FAP deve ser um número maior ou igual a 0,5000 e menor ou igual a 2,0000.");
+		}
+		
+	}
+
 	@Transactional
 	public void excluir(Estabelecimento entidade) {
 		dao.excluir(entidade);

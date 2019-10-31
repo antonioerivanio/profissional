@@ -147,5 +147,9 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
 		this.esocialVigencia = esocialVigencia;
 	}
+	
+	public void atualizaAliqRatAjust() {
+		this.ratAjustado = this.rat * this.fap;
+	}
 
 }

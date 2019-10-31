@@ -64,6 +64,9 @@ jQuery(document).ready(function($) {
     	decimal:',', 
     	thousands:'.',
     	precision: 2});  // SALARIO
+    $(".maskFap").maskMoney({
+    	decimal:',', 
+    	precision: 4});
     $(".maskNoDocumento").mask("9999/9999",{placeholder:" "});  // NUMERO DO DOCUMENTO
 
     // FIM MASCARAS
