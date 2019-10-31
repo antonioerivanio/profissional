@@ -213,7 +213,18 @@
 			<to-view-id>/paginas/tabelas/lotacaoTributariaForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	
+	<!-- Rubrica eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/rubricaESocialTCEList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/rubricaESocialTCEList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/rubricaESocialTCEForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Horários/Turnos de trabalho -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.xhtml</from-view-id>
@@ -226,7 +237,6 @@
 			<to-view-id>/paginas/tabelas/horario-turnos-trabalho/gradeHorarioForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	
 	<!-- Carreira -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/carreiraList.xhtml</from-view-id>

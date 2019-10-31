@@ -11,29 +11,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.AmbienteTrabalho;
+import br.gov.ce.tce.srh.domain.RubricaESocialTCE;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.AmbienteTrabalhoService;
+import br.gov.ce.tce.srh.service.RubricaESocialTCEService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
-@Component("ambienteTrabalhoListBean")
+@Component("rubricaESocialTCEListBean")
 @Scope("view")
-public class AmbienteTrabalhoListBean implements Serializable{
+public class RubricaESocialTCEListBean implements Serializable{
 
-	static Logger logger = Logger.getLogger(AmbienteTrabalhoListBean.class);
+	static Logger logger = Logger.getLogger(RubricaESocialTCEListBean.class);
 
 	@Autowired
-	private AmbienteTrabalhoService service;
+	private RubricaESocialTCEService service;
 
-	private String nome;
-	private AmbienteTrabalho entidade = new AmbienteTrabalho();
+	private String descricao;
+	private RubricaESocialTCE entidade = new RubricaESocialTCE();
 
-	private List<AmbienteTrabalho> ambienteTrabalhoList = new ArrayList<AmbienteTrabalho>();
+	private List<RubricaESocialTCE> rubricaESocialTCEList = new ArrayList<RubricaESocialTCE>();
 	private int count;
 	private PagedListDataModel dataModel = new PagedListDataModel();
-	private List<AmbienteTrabalho> pagedList = new ArrayList<AmbienteTrabalho>();
+	private List<RubricaESocialTCE> pagedList = new ArrayList<RubricaESocialTCE>();
 	private int registroInicial = 0;
 	private Integer pagina = 1;
 	
@@ -48,9 +48,9 @@ public class AmbienteTrabalhoListBean implements Serializable{
 
 			limparListas();
 
-			ambienteTrabalhoList = service.search(this.nome, null, null);
+			rubricaESocialTCEList = service.search(this.descricao, null, null);
 
-			count = ambienteTrabalhoList.size();
+			count = rubricaESocialTCEList.size();
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -64,6 +64,7 @@ public class AmbienteTrabalhoListBean implements Serializable{
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -97,9 +98,9 @@ public class AmbienteTrabalhoListBean implements Serializable{
 	}
 
 	private void limparListas() {
-		ambienteTrabalhoList = new ArrayList<AmbienteTrabalho>();
+		rubricaESocialTCEList = new ArrayList<RubricaESocialTCE>();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<AmbienteTrabalho>();
+		pagedList = new ArrayList<RubricaESocialTCE>();
 		pagina = 1;
 	}	
 
@@ -107,7 +108,7 @@ public class AmbienteTrabalhoListBean implements Serializable{
 		if (registroInicial != getPrimeiroDaPagina()) {
 			registroInicial = getPrimeiroDaPagina();
 
-			setPagedList(service.search(this.nome, registroInicial, dataModel.getPageSize()));
+			setPagedList(service.search(this.descricao, registroInicial, dataModel.getPageSize()));
 
 			if (count != 0) {
 				dataModel = new PagedListDataModel(getPagedList(), count);
@@ -118,11 +119,11 @@ public class AmbienteTrabalhoListBean implements Serializable{
 		return dataModel;
 	}
 
-	public List<AmbienteTrabalho> getPagedList() {
+	public List<RubricaESocialTCE> getPagedList() {
 		return pagedList;
 	}
 
-	public void setPagedList(List<AmbienteTrabalho> pagedList) {
+	public void setPagedList(List<RubricaESocialTCE> pagedList) {
 		this.pagedList = pagedList;
 	}
 
@@ -138,19 +139,19 @@ public class AmbienteTrabalhoListBean implements Serializable{
 		return dataModel.getPageSize() * (pagina - 1);
 	}	
 
-	public String getNome() {
-		return nome;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public AmbienteTrabalho getEntidade() {
+	public RubricaESocialTCE getEntidade() {
 		return entidade;
 	}
 
-	public void setEntidade(AmbienteTrabalho entidade) {
+	public void setEntidade(RubricaESocialTCE entidade) {
 		this.entidade = entidade;
 	}	
 	

@@ -12,7 +12,7 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Consulta de Ambiente de Trabalho</h2>
+			<h2>Consulta de Rubrica ESocial/TCE</h2>
 
 		</div>
 
@@ -25,65 +25,81 @@
 				infoClass="infoMessage"
 				errorClass="errorMessage" />
 
-			<div class="input-box box-75">
-				<label for="descricao">Nome do Ambiente</label>
+			<div class="input-box box-50">
+				<label for="descricao">Descrição da rubrica</label>
 				<div class="conteiner">
 					<h:inputText 
 						id="nome" 
 						maxlength="100" 
-						value="#{ambienteTrabalhoListBean.nome}" />
+						value="#{rubricaESocialTCEListBean.descricao}" />
 				</div>
 			</div>
 
 			<h:commandButton 
 				id="consultar" 
 				value="Consultar"
-				action="#{ambienteTrabalhoListBean.consultar}"
+				action="#{rubricaESocialTCEListBean.consultar}"
 				styleClass="bt-padrao fl mg-top-18 mg-left-10"
-				reRender="scroller,listaAmbiente"
+				reRender="scroller,listaRubrica"
 				/>
 
 			<div class="tabela-dados">
 
 				<rich:dataTable 
-					id="listaAmbiente" 
+					id="listaRubrica" 
 					var="item"
-					rows="#{ambienteTrabalhoListBean.dataModel.pageSize}"
-					value="#{ambienteTrabalhoListBean.dataModel}">
+					rows="#{rubricaESocialTCEListBean.dataModel.pageSize}"
+					value="#{rubricaESocialTCEListBean.dataModel}">
 
 
-					<h:column id="col1" headerClass="cel-15">
+					<h:column id="col1" headerClass="cel-10">
 						<f:facet name="header">
                            ID
                         </f:facet>
 						<center>
-							<h:outputText id="item1" value="#{item.id}" />
+							<h:outputText id="item1" value="#{item.id}"/>
 						</center>
 					</h:column>
 
-					<h:column id="col2" headerClass="cel-50">
+					<h:column id="col2" headerClass="cel-15">
 						<f:facet name="header">
-                           Nome
+                           Rubrica TCE
                         </f:facet>
 						<center>
-							<h:outputText id="item2" value="#{item.nome}" />
+							<h:outputText id="item2" value="#{item.rubrica.descricao}"/>
+						</center>
+					</h:column>
+					
+					<h:column id="col3" headerClass="cel-30">
+						<f:facet name="header">
+                           Rubrica eSocial
+                        </f:facet>
+						<center>
+							<h:outputText id="item3" value="#{item.rubricaESocial.descricao}"/>
+						</center>
+					</h:column>
+					
+					<h:column id="col4" headerClass="cel-10">
+						<f:facet name="header">
+                           Tabela
+                        </f:facet>
+						<center>
+							<h:outputText id="item4" value="#{item.tabela.descricao}" />
 						</center>
 					</h:column>
 					
 					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />				
 
-					<h:column id="col8"
-						rendered="#{true}"
-						headerClass="cel-10">
+					<h:column id="col8" rendered="#{true}" headerClass="cel-10">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>
 						<h:commandLink 
 							id="editar" 
 							value="Editar"
-							action="#{ambienteTrabalhoListBean.editar}"
+							action="#{rubricaESocialTCEListBean.editar}"
 							styleClass="ico-editar">
-							<f:setPropertyActionListener target="#{ambienteTrabalhoListBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{rubricaESocialTCEListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 					<h:column id="col9"
@@ -94,21 +110,21 @@
 						<h:commandLink 
 							id="excluir" 
 							value="Excluir"
-							action="#{ambienteTrabalhoListBean.excluir}" 
+							action="#{rubricaESocialTCEListBean.excluir}" 
 							styleClass="ico-delete"
 							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-							reRender="scroller,listaAmbiente">							
-							<f:setPropertyActionListener target="#{ambienteTrabalhoListBean.entidade}" value="#{item}" />
+							reRender="scroller,listaRubrica">							
+							<f:setPropertyActionListener target="#{rubricaESocialTCEListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>
 
 				</rich:dataTable>
 				<rich:datascroller 
 					id="scroller" 
-					for="listaAmbiente"
+					for="listaRubrica"
 					stepControls="hide" 
 					renderIfSinglePage="false"
-					page="#{ambienteTrabalhoListBean.pagina}" />
+					page="#{rubricaESocialTCEListBean.pagina}" />
 
 			</div>
 

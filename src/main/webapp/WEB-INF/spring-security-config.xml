@@ -31,6 +31,9 @@
         <intercept-url pattern="/paginas/tabelas/lotacaoTributariaList.faces" access="" />
         <intercept-url pattern="/paginas/tabelas/lotacaoTributariaForm.faces" access="" />
         
+        <intercept-url pattern="/paginas/tabelas/rubricaESocialTCEList.faces" access="" />
+        <intercept-url pattern="/paginas/tabelas/rubricaESocialTCEForm.faces" access="" />
+        
         <intercept-url pattern="/paginas/tabelas/carreiraList.faces" access="" />        
         <intercept-url pattern="/paginas/tabelas/carreiraForm.faces" access="" />
         

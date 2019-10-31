@@ -19,7 +19,7 @@ import br.gov.ce.tce.srh.enums.TipoRubrica;
 @Entity
 @SuppressWarnings("serial")
 @Table(name="ESOCIAL_RUBRICACONFIG", schema="SRH")
-public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable {
+public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable {
 	
 	@Id
 	@Column(name="ID")
@@ -30,10 +30,7 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name="IDTABELARUBRICA")
-	private RubricaESocialTabela tabela;
-	
-	@Column(name="DESCRICAO")
-	private String descricao;
+	private RubricaESocialTabela tabela;	
 	
 	@ManyToOne
 	@JoinColumn(name="IDRUBRICATCE")
@@ -57,6 +54,9 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 	
 	@Column(name="CODIGOSINDICATO")
 	private String codigoSindicato;	
+	
+	@Column(name="OBSERVACAO")
+	private String observacao;
 	
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
@@ -84,15 +84,7 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 
 	public void setTabela(RubricaESocialTabela tabela) {
 		this.tabela = tabela;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+	}	
 
 	public Rubrica getRubrica() {
 		return rubrica;
@@ -161,6 +153,14 @@ public class RubricaEsocialTCE extends BasicEntity<Long> implements Serializable
 
 	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
 		this.esocialVigencia = esocialVigencia;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
 	}
 
 }

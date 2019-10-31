@@ -33,6 +33,10 @@
 				<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />				
 				
 				<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+				
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações de identificação" />
+                </ui:include>
 
 				<div class="input-box box-10">
 					<label for="">ID</label>
@@ -42,8 +46,25 @@
 							value="#{cargoComissionadoBean.entidade.id}" />
 					</div>
 				</div>
+				
+				<div class="input-box box-25">
+					<label for="">Código *  <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:inputText id="codFuncao" required="true" requiredMessage="O código é obrigatório."
+							value="#{cargoComissionadoBean.entidade.codFuncao}"
+							maxlength="30" />
+					</div>
+				</div>
+				
+				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
+                    <ui:param name="vigencia" value="#{cargoComissionadoBean.entidade.esocialVigencia}" />
+                </ui:include>				
 
-				<div class="input-box box-90">
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Detalhamento de informações" />
+                </ui:include>	
+
+				<div class="input-box box-35">
 					<label for="">Nomenclatura * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="nomenclatura"
@@ -52,6 +73,18 @@
 							maxlength="100" />
 					</div>
 				</div>
+				
+				<div class="input-box box-10">
+					<label for="">CBO *  <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:inputText id="cbo" required="true" requiredMessage="O CBO é obrigatório."
+							value="#{cargoComissionadoBean.entidade.cbo}" maxlength="6" />
+					</div>
+				</div>
+				
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações exclusivas do TCE" />
+                </ui:include>
 
 				<div class="input-box box-10">
 					<label for="">Símbolo</label>
@@ -89,27 +122,7 @@
 							onkeyup="this.value = this.value.substring(0, 199);" />
 					</div>
 				</div>
-					
-				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
-                    <ui:param name="vigencia" value="#{cargoComissionadoBean.entidade.esocialVigencia}" />
-                </ui:include>
-					
-				<div class="input-box box-15">
-					<label for="">Código *  <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:inputText id="codFuncao" required="true" requiredMessage="O código é obrigatório."
-							value="#{cargoComissionadoBean.entidade.codFuncao}"
-							maxlength="30" />
-					</div>
-				</div>
-
-				<div class="input-box box-10">
-					<label for="">CBO *  <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:inputText id="cbo" required="true" requiredMessage="O CBO é obrigatório."
-							value="#{cargoComissionadoBean.entidade.cbo}" maxlength="6" />
-					</div>
-				</div>
+				
 
 			</fieldset>
 			

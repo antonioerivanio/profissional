@@ -28,10 +28,12 @@ public class EstabelecimentoListBean implements Serializable{
 
 	private Estabelecimento entidade = new Estabelecimento();
 
-	private List<Estabelecimento> estabelecimentoList = new ArrayList<Estabelecimento>();
+	private List<Estabelecimento> estabelecimentoList = new ArrayList<Estabelecimento>();	
 
 	@PostConstruct
 	public void consultar() {
+		
+		FacesUtil.setFlashParameter("entidade", null);
 
 		try {
 			

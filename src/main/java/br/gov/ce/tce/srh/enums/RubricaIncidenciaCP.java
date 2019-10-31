@@ -1,5 +1,8 @@
 package br.gov.ce.tce.srh.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum RubricaIncidenciaCP {
 	
 	RICP00("00", "Não é base de cálculo"),
@@ -59,6 +62,59 @@ public enum RubricaIncidenciaCP {
 			}
 		}
 		throw new IllegalArgumentException("Código de incidência inválido");
+	}
+	
+	public static List<RubricaIncidenciaCP> naoEhBase(){
+		List<RubricaIncidenciaCP> list = new ArrayList<>();
+		list.add(RICP00);
+		list.add(RICP01);
+		return list;
+	}
+	
+	public static List<RubricaIncidenciaCP> base(){
+		List<RubricaIncidenciaCP> list = new ArrayList<>();
+		list.add(RICP11);
+		list.add(RICP12);
+		list.add(RICP13);
+		list.add(RICP14);
+		list.add(RICP15);
+		list.add(RICP16);
+		list.add(RICP21);
+		list.add(RICP22);
+		list.add(RICP23);
+		list.add(RICP24);
+		list.add(RICP25);
+		list.add(RICP26);
+		return list;
+	}
+	
+	public static List<RubricaIncidenciaCP> contribuicao(){
+		List<RubricaIncidenciaCP> list = new ArrayList<>();
+		list.add(RICP31);
+		list.add(RICP32);
+		list.add(RICP34);
+		list.add(RICP35);
+		return list;
+	}
+	
+	public static List<RubricaIncidenciaCP> outros(){
+		List<RubricaIncidenciaCP> list = new ArrayList<>();
+		list.add(RICP51);
+		list.add(RICP61);
+		return list;
+	}
+	
+	public static List<RubricaIncidenciaCP> suspensao(){
+		List<RubricaIncidenciaCP> list = new ArrayList<>();
+		list.add(RICP91);
+		list.add(RICP92);
+		list.add(RICP93);
+		list.add(RICP94);
+		list.add(RICP95);
+		list.add(RICP96);
+		list.add(RICP97);
+		list.add(RICP98);
+		return list;
 	}
 
 }
