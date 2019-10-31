@@ -57,7 +57,6 @@ public class ProcessoESocialService{
 	}
 	
 	private void validaCamposObrigatorios(ProcessoESocial entidade) {
-		// TODO Auto-generated method stub
 		if (entidade.getTipoProcesso() == TipoProcesso.ADMINISTRATIVO 
 				&& !(entidade.getNumero().length() == 17 || entidade.getNumero().length() == 21 )) {
 			throw new SRHRuntimeException("Processo do tipo " + TipoProcesso.ADMINISTRATIVO.getDescricao() + " deve possuir 17 (dezessete) ou 21 (vinte e um) algarismos.");

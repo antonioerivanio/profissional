@@ -86,7 +86,7 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 
 	private void validaCamposObrigatorios(Ocupacao entidade) {
 		// TODO Auto-generated method stub
-		if (entidade.getCodigoEsocial().toLowerCase().indexOf("ESOCIAL") == 0) {
+		if (entidade.getCodigoEsocial().toUpperCase().indexOf("ESOCIAL") == 0) {
 			throw new SRHRuntimeException("O código não pode ter eSocial nos sete primeiros caracteres.");
 		}
 		
