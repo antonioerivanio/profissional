@@ -27,7 +27,11 @@
         <script type="application/x-javascript">
         	jQuery.noConflict();
             jQuery(document).ready(function($) {
-                $("#myTable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});                
+                $("#myTable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});
+                $('select option').each(function(){
+					var $this = $(this);
+					$this.text($this.text().substring(0, 80));
+				});
             });
         </script>
 
