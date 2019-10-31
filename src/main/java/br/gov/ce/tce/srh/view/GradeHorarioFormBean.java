@@ -12,30 +12,29 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
-import br.gov.ce.tce.srh.domain.LotacaoTributaria;
-import br.gov.ce.tce.srh.enums.TipoInscricao;
-import br.gov.ce.tce.srh.enums.TipoLotacaoTributaria;
+import br.gov.ce.tce.srh.domain.GradeHorario;
+import br.gov.ce.tce.srh.enums.SimNao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.LotacaoTributariaService;
+import br.gov.ce.tce.srh.service.GradeHorarioService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
-@Component("lotacaoTributariaFormBean")
+@Component("gradeHorarioFormBean")
 @Scope("view")
-public class LotacaoTributariaFormBean implements Serializable {
+public class GradeHorarioFormBean implements Serializable {
 	
-	static Logger logger = Logger.getLogger(LotacaoTributariaFormBean.class);
+	static Logger logger = Logger.getLogger(GradeHorarioFormBean.class);
 
 	@Autowired
-	private LotacaoTributariaService service;
+	private GradeHorarioService service;
 	
-	private LotacaoTributaria entidade;
+	private GradeHorario entidade;
 
 	
 	@PostConstruct
 	private void init() {		
-		LotacaoTributaria flashParameter = (LotacaoTributaria)FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new LotacaoTributaria());
+		GradeHorario flashParameter = (GradeHorario)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new GradeHorario());
 		
 		if(entidade.getEsocialVigencia() == null) {
 			entidade.setEsocialVigencia(new ESocialEventoVigencia());
@@ -63,26 +62,20 @@ public class LotacaoTributariaFormBean implements Serializable {
 	}
 
 	private void limpar() {
-		this.entidade = new LotacaoTributaria();
+		this.entidade = new GradeHorario();
 	}
 	
 	
-	public LotacaoTributaria getEntidade() {
+	public GradeHorario getEntidade() {
 		return entidade;
 	}
 
-	public void setEntidade(LotacaoTributaria entidade) {
+	public void setEntidade(GradeHorario entidade) {
 		this.entidade = entidade;
 	}
 	
-	public List<TipoLotacaoTributaria> getComboTipoLotacao() {
-		return Arrays.asList(TipoLotacaoTributaria.values());
+	public List<SimNao> getComboSimNao() {
+		return Arrays.asList(SimNao.values());
 	}
 	
-	public List<TipoInscricao> getComboTipoInscricao() {
-		return Arrays.asList(TipoInscricao.values());
-	}
-	
-	
-
 }

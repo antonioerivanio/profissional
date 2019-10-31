@@ -56,7 +56,7 @@
                 </ui:include>	
 				
 				<div class="input-box box-10">
-					<label for="">ID <span class="identificador-esocial">(e)</span></label>
+					<label for="">ID</label>
 					<div class="conteiner">
 						<h:inputText disabled="true" value="#{lotacaoTributariaFormBean.entidade.id}" />
 					</div>
@@ -78,7 +78,80 @@
                     <ui:param name="vigencia" value="#{lotacaoTributariaFormBean.entidade.esocialVigencia}" />
                 </ui:include>
                 
+                <ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Detalhamento das informações" />
+                </ui:include>	
                 
+                <div class="select-box box-30">
+					<label for="">Tipo Lotação * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="tipoLotacao"
+							value="#{lotacaoTributariaFormBean.entidade.tipoLotacao}">
+							<f:selectItem id="selecioneTipoLotacao" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboTipoLotacao"
+								value="#{lotacaoTributariaFormBean.comboTipoLotacao}" 
+								var="tipoLotacao"
+								itemLabel="#{tipoLotacao.codigo} - #{tipoLotacao.simplificado}" 
+								itemValue="#{tipoLotacao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				
+				<div class="select-box box-30">
+					<label for="">Tipo de inscrição <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="tpInsc"
+							value="#{lotacaoTributariaFormBean.entidade.tipoInscricao}" 
+							required="true"
+							requiredMessage="O tipo de inscrição é obrigatório.">
+							<f:selectItem id="selecioneTpInsc" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboTipoInscricao"
+								value="#{lotacaoTributariaFormBean.comboTipoInscricao}" 
+								var="tipoInscricao"
+								itemLabel="#{tipoInscricao}" 
+								itemValue="#{tipoInscricao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="input-box box-25">
+					<label for="">Número Inscrição <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="numeroInscricao"
+							value="#{lotacaoTributariaFormBean.entidade.numeroInscricao}" 
+							maxlength="15" />
+					</div>
+				</div>
+				
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações de FPAS" />
+                </ui:include>	
+                
+				<div class="input-box box-25">
+					<label for="">Fpas Lotação * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="fpasLotacao"
+							value="#{lotacaoTributariaFormBean.entidade.fpasLotacao}" 
+							maxlength="3" />
+					</div>
+				</div>
+                
+                <div class="input-box box-25">
+					<label for="">Código Terceiro * <span class="identificador-esocial">(e)</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="codigoTerceiros"
+							value="#{lotacaoTributariaFormBean.entidade.codigoTerceiros}" 
+							maxlength="4"/>
+					</div>
+				</div>
 				
 			</fieldset>
 			<h:commandButton value="Salvar" action="#{lotacaoTributariaFormBean.salvar}" styleClass="bt-padrao fr" rendered="#{true}"/>			
