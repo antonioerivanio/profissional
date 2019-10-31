@@ -1,6 +1,8 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.LotacaoTributaria;
+import br.gov.ce.tce.srh.enums.TipoInscricao;
+import br.gov.ce.tce.srh.enums.TipoLotacaoTributaria;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.LotacaoTributariaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -32,12 +36,6 @@ public class LotacaoTributariaFormBean implements Serializable {
 	private void init() {		
 		LotacaoTributaria flashParameter = (LotacaoTributaria)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new LotacaoTributaria());
-		
-		/*
-		 * if (entidade.getContato() != null) { idContato =
-		 * entidade.getContato().getId(); nomeContato =
-		 * entidade.getContato().getNomeCompleto(); }
-		 */
 		
 		if(entidade.getEsocialVigencia() == null) {
 			entidade.setEsocialVigencia(new ESocialEventoVigencia());
@@ -77,6 +75,13 @@ public class LotacaoTributariaFormBean implements Serializable {
 		this.entidade = entidade;
 	}
 	
+	public List<TipoLotacaoTributaria> getComboTipoLotacao() {
+		return Arrays.asList(TipoLotacaoTributaria.values());
+	}
+	
+	public List<TipoInscricao> getComboTipoInscricao() {
+		return Arrays.asList(TipoInscricao.values());
+	}
 	
 	
 

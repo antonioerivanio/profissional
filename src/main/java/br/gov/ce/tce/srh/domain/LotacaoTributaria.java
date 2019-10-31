@@ -32,6 +32,7 @@ public class LotacaoTributaria extends BasicEntity<Long> implements Serializable
 	@Column(name = "TIPOINSCRICAOLOTACAO")
 	private Integer tipoInscricao;
 
+	@Size(max = 15)
 	@Column(name = "NUMEROINSCRICAO")
 	private String numeroInscricao;
 	
