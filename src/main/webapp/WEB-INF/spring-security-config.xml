@@ -15,8 +15,8 @@
 
 		<intercept-url pattern="/home.faces" access="ROLE_TABELAS,ROLE_CADASTROS,ROLE_FUNCIONAL,ROLE_RELATORIO_CONSULTA,ROLE_RELATORIO" />
 
-
-
+		<intercept-url pattern="/paginas/esocial/**" access="" />
+	
 		<!-- TABELAS -->
 		       
         <intercept-url pattern="/paginas/tabelas/cargoList.faces" access="ROLE_CARGO" />

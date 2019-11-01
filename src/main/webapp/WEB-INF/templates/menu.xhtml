@@ -13,6 +13,12 @@
 		<h2 class="dn">Menu Principal</h2>
 	
 		<ul>
+			<ui:fragment rendered="#{true}">
+				<li>
+					<a href="/srh/paginas/esocial/eventos.faces">eSocial</a>
+				</li>
+			</ui:fragment>
+		
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS')}">
 	
 			<!-- MENU TABELAS -->

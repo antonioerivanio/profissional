@@ -6,8 +6,46 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
+	
+	<style>
+		.duvida-vigencia {
+			position: absolute;
+		    top: 12px;
+		    right: 5px;
+		    width: 16px;
+		    height: 16px;
+		    border-radius: 50%;
+		    border: 1px solid #707070;
+		    text-align: center;
+		    cursor: pointer;
+		}
+		
+		.duvida-vigencia span {
+			font-size: 14px;
+		    font-weight: bold;
+		    color: #707070;
+		}
+		
+		
+		.modal p, .modal b, .modal a{
+			font-size: 14px;
+		}
+		
+		.modal p{
+			padding: 10px;
+		}
+		
+		.modal p > a{
+			text-decoration: none;
+			font-weight: bold;
+			color: #1c5ba7;
+		}
+	
+	</style>
 					
-	<fieldset class="fl mg-right-15" style="padding-bottom: 0" id="fieldset-vigencia">
+	<fieldset class="fl mg-right-15" style="padding-bottom: 0; position: relative;" id="fieldset-vigencia">
+	
+		<div class="duvida-vigencia" onclick="Richfaces.showModalPanel('modal');"><span>?</span></div>
 
 		<legend>Período de Vigência <span class="identificador-esocial">(e)</span></legend>
 								
@@ -160,5 +198,25 @@
 		</ui:fragment>
 	
 	</fieldset>
+	
+	<rich:modalPanel id="modal" styleClass="modal" resizeable="false" height="280" width="500">					            
+        	
+		<f:facet name="header" class="header">
+	    	<span>Informações sobre o período de vigência</span>
+	    </f:facet>
+	    
+	    <p>Para enviar estes dados ao eSocial, preencha obrigatoriamente a data de <b>INÍCIO</b> do Período de Validade.</p> 
+       	<p>Caso este cadastro não deva ser enviado ao eSocial, basta não preencher as datas de validade.</p>
+		<p>
+			Para mais informações sobre a exclusão e a utilização da data fim, veja o 
+			<a href="http://portal.esocial.gov.br/institucional/documentacao-tecnica" target="_blank">
+				Manual de Orientação do eSocial</a>.
+		</p>
+       	
+       	<div class="modal-actions" style="padding-bottom:0;">
+			<a href="#" onclick="Richfaces.hideModalPanel('modal');" class="bt-padrao fr mg-right-15">OK</a>
+		</div>						
+	
+	</rich:modalPanel>
 	
 </ui:composition>
