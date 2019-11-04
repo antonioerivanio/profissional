@@ -22,7 +22,7 @@
 
 				<rich:dataTable id="listaEstabelecimento" var="item" value="#{estabelecimentoListBean.estabelecimentoList}">
 
-					<h:column id="col1">
+					<h:column id="col1" headerClass="cel-10">
 						<f:facet name="header">
                            ID
                         </f:facet>
@@ -41,7 +41,8 @@
 					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  			
 
 					<h:column id="col8"
-						rendered="#{true}">
+						rendered="#{true}"
+						headerClass="cel-10">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>

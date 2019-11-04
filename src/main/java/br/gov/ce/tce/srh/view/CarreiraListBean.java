@@ -15,7 +15,6 @@ import br.gov.ce.tce.srh.domain.Carreira;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.CarreiraService;
 import br.gov.ce.tce.srh.util.FacesUtil;
-import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
 @Component("carreiraListBean")
@@ -27,28 +26,22 @@ public class CarreiraListBean implements Serializable{
 	@Autowired
 	private CarreiraService service;
 
-	private String descricao;
 	private Carreira entidade = new Carreira();
 
 	private List<Carreira> carreiraList = new ArrayList<Carreira>();
 	private int count;
-	private PagedListDataModel dataModel = new PagedListDataModel();
-	private List<Carreira> pagedList = new ArrayList<Carreira>();
-	private int registroInicial = 0;
-	private Integer pagina = 1;
+	
 	
 	@PostConstruct
-	private void init() {
-		FacesUtil.setFlashParameter("entidade", null);
-    }
-
 	public void consultar() {
+		
+		FacesUtil.setFlashParameter("entidade", null);
 
 		try {
 
 			limparListas();
 
-			carreiraList = service.search(this.descricao, null, null);
+			carreiraList = service.search(null, null, null);
 			count = carreiraList.size();
 
 			if (count == 0) {
@@ -56,7 +49,6 @@ public class CarreiraListBean implements Serializable{
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			registroInicial = -1;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -98,53 +90,8 @@ public class CarreiraListBean implements Serializable{
 
 	private void limparListas() {
 		carreiraList = new ArrayList<Carreira>();
-		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<Carreira>();
-		pagina = 1;
-	}
-
-	public PagedListDataModel getDataModel() {
-		if (registroInicial != getPrimeiroDaPagina()) {
-			registroInicial = getPrimeiroDaPagina();
-
-			setPagedList(service.search(this.descricao, registroInicial, dataModel.getPageSize()));
-
-			if (count != 0) {
-				dataModel = new PagedListDataModel(getPagedList(), count);
-			} else {
-				limparListas();
-			}
-		}
-		return dataModel;
-	}
-
-	public List<Carreira> getPagedList() {
-		return pagedList;
-	}
-
-	public void setPagedList(List<Carreira> pagedList) {
-		this.pagedList = pagedList;
-	}
-
-	public Integer getPagina() {
-		return pagina;
-	}
-
-	public void setPagina(Integer pagina) {
-		this.pagina = pagina;
-	}
-
-	private int getPrimeiroDaPagina() {
-		return dataModel.getPageSize() * (pagina - 1);
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+		
+	}	
 
 	public Carreira getEntidade() {
 		return entidade;
@@ -152,6 +99,10 @@ public class CarreiraListBean implements Serializable{
 
 	public void setEntidade(Carreira entidade) {
 		this.entidade = entidade;
-	}	
+	}
+
+	public List<Carreira> getCarreiraList() {
+		return carreiraList;
+	}
 	
 }

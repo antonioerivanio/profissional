@@ -15,7 +15,6 @@ import br.gov.ce.tce.srh.domain.AmbienteTrabalho;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AmbienteTrabalhoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
-import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
 @Component("ambienteTrabalhoListBean")
@@ -27,28 +26,21 @@ public class AmbienteTrabalhoListBean implements Serializable{
 	@Autowired
 	private AmbienteTrabalhoService service;
 
-	private String nome;
 	private AmbienteTrabalho entidade = new AmbienteTrabalho();
 
 	private List<AmbienteTrabalho> ambienteTrabalhoList = new ArrayList<AmbienteTrabalho>();
-	private int count;
-	private PagedListDataModel dataModel = new PagedListDataModel();
-	private List<AmbienteTrabalho> pagedList = new ArrayList<AmbienteTrabalho>();
-	private int registroInicial = 0;
-	private Integer pagina = 1;
-	
-	@PostConstruct
-	private void init() {
-		FacesUtil.setFlashParameter("entidade", null);
-    }
+	private int count;		
 
+	@PostConstruct
 	public void consultar() {
+		
+		FacesUtil.setFlashParameter("entidade", null);
 
 		try {
 
 			limparListas();
 
-			ambienteTrabalhoList = service.search(this.nome, null, null);
+			ambienteTrabalhoList = service.search(null, null, null);
 
 			count = ambienteTrabalhoList.size();
 
@@ -56,8 +48,6 @@ public class AmbienteTrabalhoListBean implements Serializable{
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
 			}
-
-			registroInicial = -1;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -98,53 +88,7 @@ public class AmbienteTrabalhoListBean implements Serializable{
 
 	private void limparListas() {
 		ambienteTrabalhoList = new ArrayList<AmbienteTrabalho>();
-		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<AmbienteTrabalho>();
-		pagina = 1;
 	}	
-
-	public PagedListDataModel getDataModel() {
-		if (registroInicial != getPrimeiroDaPagina()) {
-			registroInicial = getPrimeiroDaPagina();
-
-			setPagedList(service.search(this.nome, registroInicial, dataModel.getPageSize()));
-
-			if (count != 0) {
-				dataModel = new PagedListDataModel(getPagedList(), count);
-			} else {
-				limparListas();
-			}
-		}
-		return dataModel;
-	}
-
-	public List<AmbienteTrabalho> getPagedList() {
-		return pagedList;
-	}
-
-	public void setPagedList(List<AmbienteTrabalho> pagedList) {
-		this.pagedList = pagedList;
-	}
-
-	public Integer getPagina() {
-		return pagina;
-	}
-
-	public void setPagina(Integer pagina) {
-		this.pagina = pagina;
-	}
-
-	private int getPrimeiroDaPagina() {
-		return dataModel.getPageSize() * (pagina - 1);
-	}	
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
 
 	public AmbienteTrabalho getEntidade() {
 		return entidade;
@@ -152,6 +96,10 @@ public class AmbienteTrabalhoListBean implements Serializable{
 
 	public void setEntidade(AmbienteTrabalho entidade) {
 		this.entidade = entidade;
-	}	
+	}
+
+	public List<AmbienteTrabalho> getAmbienteTrabalhoList() {
+		return ambienteTrabalhoList;
+	}
 	
 }

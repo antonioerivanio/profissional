@@ -23,36 +23,16 @@
 			<h:messages 
 				id="messages" 
 				infoClass="infoMessage"
-				errorClass="errorMessage" />
-
-			<div class="input-box box-75">
-				<label for="descricao">Nome do Ambiente</label>
-				<div class="conteiner">
-					<h:inputText 
-						id="nome" 
-						maxlength="100" 
-						value="#{ambienteTrabalhoListBean.nome}" />
-				</div>
-			</div>
-
-			<h:commandButton 
-				id="consultar" 
-				value="Consultar"
-				action="#{ambienteTrabalhoListBean.consultar}"
-				styleClass="bt-padrao fl mg-top-18 mg-left-10"
-				reRender="scroller,listaAmbiente"
-				/>
+				errorClass="errorMessage" />			
 
 			<div class="tabela-dados">
 
 				<rich:dataTable 
 					id="listaAmbiente" 
 					var="item"
-					rows="#{ambienteTrabalhoListBean.dataModel.pageSize}"
-					value="#{ambienteTrabalhoListBean.dataModel}">
+					value="#{ambienteTrabalhoListBean.ambienteTrabalhoList}">
 
-
-					<h:column id="col1" headerClass="cel-15">
+					<h:column id="col1" headerClass="cel-10">
 						<f:facet name="header">
                            ID
                         </f:facet>
@@ -103,21 +83,9 @@
 					</h:column>
 
 				</rich:dataTable>
-				<rich:datascroller 
-					id="scroller" 
-					for="listaAmbiente"
-					stepControls="hide" 
-					renderIfSinglePage="false"
-					page="#{ambienteTrabalhoListBean.pagina}" />
 
 			</div>
-
 			
-			<h:commandButton 
-				id="limpaTela" 
-				value="Limpar"
-				action="listar"
-				styleClass="bt-padrao fr mg-right-15" />
 			<h:commandButton 
 				id="incluir" 
 				value="Incluir"

@@ -19,30 +19,14 @@
 		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage"
-				errorClass="errorMessage" />
-
-			<div class="input-box box-75">
-				<label for="descricao">Descrição</label>
-				<div class="conteiner">
-					<h:inputText id="descricao" maxlength="100"
-						value="#{carreiraListBean.descricao}">
-					</h:inputText>
-				</div>
-			</div>
-
-			<h:commandButton id="consultar" value="Consultar"
-				action="#{carreiraListBean.consultar}"
-				styleClass="bt-padrao fl mg-top-18 mg-left-10"
-				reRender="scroller,listaCarreira" />
+				errorClass="errorMessage" />			
 
 			<div class="tabela-dados">
 
 				<rich:dataTable id="listaCarreira" var="item"
-					rows="#{carreiraListBean.dataModel.pageSize}"
-					value="#{carreiraListBean.dataModel}">
+					value="#{carreiraListBean.carreiraList}">
 
-
-					<h:column id="col1" headerClass="cel-15">
+					<h:column id="col1" headerClass="cel-10">
 						<f:facet name="header">
                            ID
                         </f:facet>
@@ -64,7 +48,8 @@
 					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  			
 
 					<h:column id="col8"
-						rendered="#{true}">
+						rendered="#{true}"
+						headerClass="cel-10">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -91,25 +76,12 @@
 						</h:commandLink>
 					</h:column>
 
-				</rich:dataTable>
-				<rich:datascroller 
-					id="scroller" 
-					for="listaCarreira"
-					stepControls="hide" 
-					renderIfSinglePage="false"
-					page="#{carreiraListBean.pagina}" />
+				</rich:dataTable>				
 
 			</div>
 
-
-			
-			<h:commandButton 
-				id="limpaTela" 
-				value="Limpar"
-				action="listar"
-				styleClass="bt-padrao fr mg-right-15" />
 				
-				<h:commandButton 
+			<h:commandButton 
 				id="incluir" 
 				value="Incluir"
 				action="incluirAlterar"

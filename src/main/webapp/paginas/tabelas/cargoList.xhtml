@@ -56,7 +56,7 @@
 				<rich:dataTable id="lista" value="#{cargoListBean.dataModel}"
 					var="item" rows="10" binding="#{cargoListBean.dataTable}">
 
-					<h:column id="col1">
+					<h:column id="col1" headerClass="cel-10">
 						<f:facet name="header">
                             ID
                         </f:facet>
@@ -75,7 +75,8 @@
 					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />  
 
 					<h:column id="col4"
-						rendered="#{LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}">
+						rendered="#{LoginBean.anyGranted('ROLE_CARGO_ALTERAR')}"
+						headerClass="cel-10">
 						<f:facet name="header">
                             EDITAR
                         </f:facet>

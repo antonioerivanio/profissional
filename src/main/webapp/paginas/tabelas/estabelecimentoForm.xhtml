@@ -52,7 +52,7 @@
 				</div>
 				
 				<div class="select-box box-20">
-					<label for="">Tipo de inscrição <span class="identificador-esocial">(e)</span></label>
+					<label for="">Tipo de inscrição * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="tpInsc"
@@ -72,7 +72,7 @@
 				
 
 				<div class="input-box box-20">
-					<label for="">Número de inscrição <span class="identificador-esocial">(e)</span></label>
+					<label for="">Número de inscrição * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText 
 							id="nrInsc" 
@@ -93,7 +93,7 @@
                 </ui:include>
 
 				<div class="input-box box-15">
-					<label for="">Código <br />do CNAE <span class="identificador-esocial">(e)</span></label>
+					<label for="">Código <br />do CNAE * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText 
 							id="cnaePrep"
@@ -106,7 +106,7 @@
 				</div>
 				
 				<div class="select-box box-15">
-					<label for="">Alíquota <br />RAT <span class="identificador-esocial">(e)</span></label>
+					<label for="">Alíquota <br />RAT * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="aliqRat"
@@ -127,7 +127,7 @@
 				</div>
 				
 				<div class="input-box box-15">
-					<label for="">Fator Acidentário <br />de Prevenção - FAP <span class="identificador-esocial">(e)</span></label>
+					<label for="">Fator Acidentário <br />de Prevenção - FAP * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText 
 							id="fap"
@@ -136,7 +136,7 @@
 							requiredMessage="O FAP é obrigatório."
 							styleClass="maskFap"
 							>
-							<f:convertNumber type="number" maxFractionDigits="4" maxIntegerDigits="1"/>
+							<f:convertNumber type="number" maxFractionDigits="4" maxIntegerDigits="1" locale="pt_br"/>
 							<a4j:support 
 								event="onblur" 
 								action="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
@@ -147,14 +147,14 @@
 				</div>
 				
 				<div class="input-box box-15">
-					<label for="">Alíquota do RAT <br />após ajuste pelo FAP <span class="identificador-esocial">(e)</span></label>
+					<label for="">Alíquota do RAT <br />após ajuste pelo FAP * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText 
 							id="aliqRatAjust"
 							value="#{estabelecimentoFormBean.entidade.ratAjustado}"
 							styleClass="maskFap"
 							disabled="true">
-							<f:convertNumber type="number" maxFractionDigits="4" maxIntegerDigits="1"/>
+							<f:convertNumber type="number" maxFractionDigits="4" maxIntegerDigits="1" locale="pt_br"/>
 						</h:inputText>	
 					</div>
 				</div>
@@ -185,7 +185,7 @@
                 </ui:include>
 				
 				<div class="select-box box-35">
-					<label for="">Indicativo de contratação de aprendiz <span class="identificador-esocial">(e)</span></label>
+					<label for="">Indicativo de contratação de aprendiz * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="contApr"
@@ -209,7 +209,7 @@
 				
 				
 				<div class="select-box box-35">
-					<label for="">Indicativo de contratação de PCD <span class="identificador-esocial">(e)</span></label>
+					<label for="">Indicativo de contratação de PCD * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="contPCD"
