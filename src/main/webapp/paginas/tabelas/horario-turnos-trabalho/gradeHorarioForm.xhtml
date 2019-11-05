@@ -9,36 +9,21 @@
 	xmlns:rich="http://richfaces.org/rich">
 
 	<ui:define name="content">
-		<script>
-			function openwindowServidor() {
-				nome = document.getElementById('form:nomeCompletoPessoa').value;
-				if (nome.length > 2) {
-					window
-							.open(
-									"/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome="
-											+ nome, "mywindow",
-									"scrollbars=1,menubar=0,resizable=0,width=800,height=300");
-				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
-				}
-			}
-		</script>
-
 		<style>
-.formularios fieldset, .box-border {
-	border: 1px solid #c6c6c6;
-	padding: 15px 15px 0px 15px;
-	padding-right: 0;
-	overflow: auto;
-	margin-bottom: 10px;
-	min-height: 100px;
-}
-
-.formularios fieldset fieldset {
-	min-height: auto;
-	width: max-content;
-}
-</style>
+			.formularios fieldset, .box-border {
+				border: 1px solid #c6c6c6;
+				padding: 15px 15px 0px 15px;
+				padding-right: 0;
+				overflow: auto;
+				margin-bottom: 10px;
+				min-height: 100px;
+			}
+			
+			.formularios fieldset fieldset {
+				min-height: auto;
+				width: max-content;
+			}
+		</style>
 
 		<div class="titulo-pagina">
 
@@ -89,9 +74,14 @@
 					<label for="">Hora Entrada * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText 
-							id="horaEntrada"  required="true" requiredMessage="A hora entrada é obrigatória"
+							id="horaEntrada"  
+							required="true" 
+							requiredMessage="A hora entrada é obrigatória"
 							value="#{gradeHorarioFormBean.entidade.horaEntrada}" 
-							maxlength="4" />
+							maxlength="5"
+							styleClass="maskHora">
+							<f:converter converterId="horaConverter"/>
+						</h:inputText>	
 					</div>
 				</div>
                 
@@ -99,9 +89,14 @@
 					<label for="">Hora Saída * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText 
-							id="horaSaida" required="true" requiredMessage="A hora saida é obrigatória"
+							id="horaSaida" 
+							required="true" 
+							requiredMessage="A hora saída é obrigatória"
 							value="#{gradeHorarioFormBean.entidade.horaSaida}" 
-							maxlength="4"/>
+							maxlength="5"
+							styleClass="maskHora">
+							<f:converter converterId="horaConverter"/>
+						</h:inputText>	
 					</div>
 				</div>
 				

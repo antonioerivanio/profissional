@@ -42,14 +42,24 @@
 						<f:facet name="header">
                            HORA ENTRADA
                         </f:facet>
-						<h:outputText id="item3" value="#{item.horaEntrada}" styleClass="cel-50" />						
+						<h:outputText 
+							id="item3" 
+							value="#{item.horaEntrada}"
+							styleClass="cel-50">
+							<f:converter converterId="horaConverter"/> 
+						</h:outputText>							
 					</h:column>
 					
 					<h:column id="col4">
 						<f:facet name="header">
                            HORA SAÍDA
                         </f:facet>
-						<h:outputText id="item4"  value="#{item.horaSaida}" styleClass="cel-50 maskHora" />						
+						<h:outputText 
+							id="item4"
+							value="#{item.horaSaida}"
+							styleClass="cel-50">
+							<f:converter converterId="horaConverter"/>
+						</h:outputText>						
 					</h:column>
 					
 					<h:column id="col5">

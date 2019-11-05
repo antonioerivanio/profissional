@@ -41,6 +41,10 @@
 	<converter>
 		<converter-id>processoConverter</converter-id>
 		<converter-class>br.gov.ce.tce.srh.converter.ProcessoConverter</converter-class>
+	</converter>	
+	<converter>
+		<converter-id>horaConverter</converter-id>
+		<converter-class>br.gov.ce.tce.srh.converter.HoraConverter</converter-class>
 	</converter>
 
 
