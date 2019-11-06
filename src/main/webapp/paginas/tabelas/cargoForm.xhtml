@@ -52,7 +52,7 @@
 							value="#{cargoFormBean.entidade.codigoEsocial}" 
 							maxlength="30"
 							required="true"
-							requiredMessage="O código é obrigatória." />
+							requiredMessage="O código é obrigatório." />
 					</div>
 				</div>
 				
@@ -77,7 +77,7 @@
 					<label for="">CBO * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="cbo" value="#{cargoFormBean.entidade.cbo}"
-							maxlength="6" required="true" requiredMessage="O CBO é obrigatória."
+							maxlength="6" required="true" requiredMessage="O CBO é obrigatório."
 							onkeyup="mantemSomenteNumeros(this)"  />
 					</div>
 				</div>
@@ -143,7 +143,7 @@
 					<div class="input-box box-30">
 						<label for="">Lei *</label>
 						<div class="conteiner">
-							<h:inputText id="numerolei" required="true" requiredMessage="A lei é obrugatória."
+							<h:inputText id="numerolei" required="true" requiredMessage="A lei é obrigatória."
 								value="#{cargoFormBean.entidade.lei}" maxlength="12"/>
 						</div>
 					</div>
@@ -152,7 +152,7 @@
 						<label for="">Data *</label>
 						<div class="conteiner">
 							<h:inputText id="dataLei" styleClass="maskData" required="true" 
-								requiredMessage="A data é obrugatória."
+								requiredMessage="A data é obrigatória."
 								converter="dateConverter"
 								value="#{cargoFormBean.entidade.dataLei}" maxlength="10">
 							</h:inputText>
@@ -162,7 +162,7 @@
 					<div class="select-box box-40">
 						<label for="">Situação *</label>
 						<div class="conteiner">
-							<h:selectOneMenu id="situacaoLei" required="true" requiredMessage="A situação é obrugatória."
+							<h:selectOneMenu id="situacaoLei" required="true" requiredMessage="A situação é obrigatória."
 								value="#{cargoFormBean.entidade.situacaoLei}" >
 								<f:selectItem id="selecioneSituacaoLei"
 									itemLabel="Selecione..." />
@@ -188,7 +188,7 @@
 						<h:selectOneMenu id="tipoOcupacao"
 							value="#{cargoFormBean.entidade.tipoOcupacao}"
 							converter="entityConverter" required="true"
-							requiredMessage="A ocupação é obrigatória.">
+							requiredMessage="O tipo ocupação é obrigatório.">
 							<f:selectItem id="selecioneTipoOcupacao" itemLabel="Selecione..." />
 							<f:selectItems id="comboTipoOcupacao"
 								value="#{cargoFormBean.comboTipoOcupacao}" var="tipoOcupacao"

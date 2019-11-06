@@ -60,33 +60,27 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	@Column(name = "FLCARGOISOLADO", nullable = false)
 	private boolean cargoIsolado;
 
-	@Size(max = 30)
 	@Column(name = "CODIGO_ESOCIAL")
 	private String codigoEsocial;
 
 	@Column(name = "CBO")
 	private String cbo;
 
-	@Size(max = 1)
 	@Column(name = "TIPOACUMULACAO")
 	private Integer tipoAcumulacao;
 	
-	@Size(max = 1)
 	@Column(name = "TEMPOESPECIAL")
 	private Integer tempoEspecial;
 
-	@Size(max = 1)
 	@Column(name = "DEDICACAOEXCLUSIVA")
 	private Character dedicacaoExclusiva;
 	
-	@Size(max = 12)
 	@Column(name = "NUMEROLEI")
 	private String lei;
 
 	@Column(name = "DATALEI")
 	private Date dataLei;
 
-	@Size(max = 1)
 	@Column(name = "SITUACAOLEI")
 	private Integer situacaoLei;
 
