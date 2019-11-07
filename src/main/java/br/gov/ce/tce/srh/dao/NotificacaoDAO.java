@@ -28,16 +28,18 @@ public class NotificacaoDAO {
 		this.entityManager = entityManager;
 	}
 
-	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from Notificacao e ");
-		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
-	}
+	/*
+	 * private Long getMaxId() { Query query =
+	 * entityManager.createQuery("Select max(e.id) from Notificacao e "); return
+	 * query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1; }
+	 */
 	
 	public Notificacao salvar(Notificacao entidade) {
 
-		if (entidade.getId() == null || entidade.getId().equals(0l)) {
-			entidade.setId(getMaxId());
-		}
+		/*
+		 * if (entidade.getId() == null || entidade.getId().equals(0l)) {
+		 * entidade.setId(getMaxId()); }
+		 */
 
 		return entityManager.merge(entidade);
 	}
@@ -55,6 +57,17 @@ public class NotificacaoDAO {
 	
 	public Notificacao getById(Long id) {
 		return entityManager.find(Notificacao.class, id);
+	}
+	
+	public Notificacao findByEventoIdAndTipo(long idEvento) {
+		Query query = entityManager.createQuery("SELECT n FROM Notificacao n WHERE n.evento.id = :idEvento AND n.tipo = N");
+		query.setParameter("idEvento", idEvento);
+		try {
+			return (Notificacao) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+		
 	}
 	
 	@SuppressWarnings("unchecked")

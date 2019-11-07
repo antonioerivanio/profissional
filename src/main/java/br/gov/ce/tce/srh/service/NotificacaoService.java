@@ -29,6 +29,10 @@ public class NotificacaoService {
 		return dao.getById(id);
 	}
 	
+	public Notificacao findByEventoIdAndTipo(long idEvento) {
+		return dao.findByEventoIdAndTipo(idEvento);
+	}
+	
 	public List<Notificacao> findAll() {
 		return dao.findAll();
 	}

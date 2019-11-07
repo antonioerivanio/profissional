@@ -7,9 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,10 +29,12 @@ import br.gov.ce.tce.srh.enums.TipoNotificacao;
 @Entity
 @SuppressWarnings("serial")
 @Table(name = "ESOCIAL_NOTIFICAO", schema = "SRH")
+@SequenceGenerator(name="SEQ_ESOCIAL_NOTIFICACAO", sequenceName="SEQ_ESOCIAL_NOTIFICACAO", schema = "SRH", allocationSize=1, initialValue=1)
 public class Notificacao extends BasicEntity<Long> implements Serializable {
 	
 	@Id
 	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_ESOCIAL_NOTIFICACAO")
 	private Long id;
 
 	@Column(name = "DESCRICAO")
