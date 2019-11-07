@@ -52,15 +52,8 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 
 	@Override
 	@Transactional
-	public Ocupacao salvar(Ocupacao entidade, List<EspecialidadeCargo> especialidades, List<Simbolo> simbologias) 
-			throws SRHRuntimeException {
+	public Ocupacao salvar(Ocupacao entidade, List<EspecialidadeCargo> especialidades, List<Simbolo> simbologias) throws SRHRuntimeException {
 
-		/*
-		 * Regra: 
-		 *
-		 * Nao deixar cadastrar entidade ja existente.
-		 * 
-		 */
 		//verificandoSeEntidadeExiste(entidade);
 		
 		validaCamposObrigatorios(entidade);
@@ -70,10 +63,8 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 		vigencia.setTipoEvento(TipoEventoESocial.S1030);
 		esocialEventoVigenciaService.salvar(vigencia);
 
-		// salvando a ocupacao
 		entidade = dao.salvar(entidade);
-
-		// salvando as simbologias
+		
 		for( Simbolo simbolo : simbologias ) {
 			if (simbolo.getId() == null) {
 				simbolo.setOcupacao(entidade);
@@ -81,7 +72,6 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 			}
 		}
 
-		// salvando as especialidades
 		for( EspecialidadeCargo especialidade : especialidades ) {
 			if (especialidade.getId() == null) {
 				especialidade.setOcupacao(entidade);
@@ -111,7 +101,6 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 
 
 	private void validaCamposObrigatorios(Ocupacao entidade) {
-		// TODO Auto-generated method stub
 		if (entidade.getCodigoEsocial().toUpperCase().indexOf("ESOCIAL") == 0) {
 			throw new SRHRuntimeException("O código não pode ter eSocial nos sete primeiros caracteres.");
 		}
