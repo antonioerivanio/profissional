@@ -265,5 +265,10 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 		if (situacao != null)
 			this.situacaoLei = situacao.getCodigo();
 	}	
+	
+	@Transient
+	public String getReferenciaESocial() {
+		return this.codigoEsocial;
+	}
 
 }

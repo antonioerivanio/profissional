@@ -98,4 +98,8 @@ public class GradeHorario extends BasicEntity<Long> implements Serializable {
 		this.esocialVigencia = esocialVigencia;
 	}
 
+	
+	public String getReferenciaESocial() {
+		return this.codigo;
+	}
 }

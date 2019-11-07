@@ -120,4 +120,8 @@ public class RepresentacaoCargo extends BasicEntity<Long> implements Serializabl
 		this.esocialVigencia = esocialVigencia;
 	}	
 
+	public String getReferenciaESocial() {
+		return this.codFuncao;
+	}
+	
 }

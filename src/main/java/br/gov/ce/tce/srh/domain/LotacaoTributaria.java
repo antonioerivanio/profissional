@@ -111,5 +111,9 @@ public class LotacaoTributaria extends BasicEntity<Long> implements Serializable
 	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
 		this.esocialVigencia = esocialVigencia;
 	}
+	
+	public String getReferenciaESocial() {
+		return this.codigo;
+	}
 
 }

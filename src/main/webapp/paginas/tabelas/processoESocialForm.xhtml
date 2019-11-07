@@ -191,10 +191,9 @@
 				
 								
 				<div class="select-box box-40">
-					<label for="">Indicativo de suspensão da exigibilidade * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Indicativo de suspensão da exigibilidade <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
-						<h:selectOneMenu id="indicativoSuspensao" required="true"
-								requiredMessage="O Indicativo de suspensão da exigibilidade é obrigatório."
+						<h:selectOneMenu id="indicativoSuspensao" 
 							value="#{processoESocialFormBean.novaSuspensao.indicativoSuspensao}">
 							<f:selectItem id="selecioneIndicativoSuspensao" itemLabel="Selecione..." />
 							<f:selectItems id="comboIndicativoSuspensao" 
@@ -206,23 +205,21 @@
 				</div>
 				
 				<div class="input-box box-15">
-					<label for="">Data da decisão * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Data da decisão <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
 						<h:inputText id="dataDecisao" name="dataDecisao" styleClass="maskData"
 							converter="dateConverter"
 							value="#{processoESocialFormBean.novaSuspensao.dataDecisao}"
-							maxlength="10" required="true"
-							requiredMessage="O Data da decisão é obrigatório." />
+							maxlength="10" />
 					</div>
 				</div>
 				
 				<div class="radios-group box-30">
-					<h3>Indicativo de depósito do montante integral * <span class="identificador-esocial">(e)</span></h3>
+					<h3>Indicativo de depósito do montante integral <span class="identificador-esocial">(e)</span></h3>
 					<div class="conteiner">
 						<div class="radio-box">
 						<h:selectOneRadio id="indicativoDeposito" value="#{processoESocialFormBean.novaSuspensao.indicativoDeposito}">
-							<f:selectItems id="simNao"  required="true"
-								requiredMessage="O Indicativo de depósito do montante integral é obrigatório."
+							<f:selectItems id="simNao" 
 								value="#{processoESocialFormBean.simNao}" 
 								var="item" itemLabel="#{item.descricao}" itemValue="#{item}" />
 						</h:selectOneRadio>

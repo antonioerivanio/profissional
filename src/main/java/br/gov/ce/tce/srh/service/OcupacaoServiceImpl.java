@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.OcupacaoDAO;
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.EspecialidadeCargo;
+import br.gov.ce.tce.srh.domain.Evento;
+import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.Simbolo;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
+import br.gov.ce.tce.srh.enums.TipoNotificacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 /**
@@ -33,6 +37,12 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 	
 	@Autowired
 	private ESocialEventoVigenciaService esocialEventoVigenciaService;
+	
+	@Autowired
+	private EventoService eventoService;
+	
+	@Autowired
+	private NotificacaoService notificacaoService;
 
 	@Override
 	@Transactional
@@ -68,6 +78,22 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 				especialidadeCargoService.salvar(especialidade);	
 			}
 		}
+		
+		// salvando notificação
+		Evento evento = this.eventoService.getById(TipoEventoESocial.S1030.getCodigo());
+		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipo(evento.getId()); 
+		if (notificacao == null) {
+			notificacao = new Notificacao();
+			notificacao.setDescricao("Evendo S1030 com pendência de envio.");
+			notificacao.setData(new Date());
+			notificacao.setTipo(TipoNotificacao.N);
+			notificacao.setEvento(evento);
+			notificacao.setReferencia(entidade.getReferenciaESocial());
+		} else {
+			notificacao.setData(new Date());
+		}
+		
+		this.notificacaoService.salvar(notificacao);
 		
 		return entidade;
 
