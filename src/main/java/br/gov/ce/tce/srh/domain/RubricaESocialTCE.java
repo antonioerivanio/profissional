@@ -162,5 +162,9 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
+	
+	public String getReferenciaESocial() {
+		return this.rubrica.getCodigo() + "-" + this.tabela.getCodigo();
+	}
 
 }

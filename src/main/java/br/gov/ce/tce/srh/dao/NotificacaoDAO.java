@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -60,14 +61,14 @@ public class NotificacaoDAO {
 	}
 	
 	public Notificacao findByEventoIdAndTipo(long idEvento) {
+		Notificacao notificacao = null;
 		Query query = entityManager.createQuery("SELECT n FROM Notificacao n WHERE n.evento.id = :idEvento AND n.tipo = N");
 		query.setParameter("idEvento", idEvento);
 		try {
 			return (Notificacao) query.getSingleResult();
-		} catch (Exception e) {
-			return null;
+		} catch (NoResultException e) {
+			return notificacao;
 		}
-		
 	}
 	
 	@SuppressWarnings("unchecked")

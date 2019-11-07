@@ -152,4 +152,8 @@ public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 		this.ratAjustado = this.rat * this.fap;
 	}
 
+	public String getReferenciaESocial() {
+		return this.numeroInscricao;
+	}
+	
 }

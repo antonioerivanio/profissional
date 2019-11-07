@@ -12,7 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 
 import br.gov.ce.tce.srh.enums.IndicativoAutoria;
 import br.gov.ce.tce.srh.enums.IndicativoMateria;
@@ -27,22 +26,18 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	@Column(name = "ID")
 	private Long id;
 
-	@Size(max = 1)
 	@Column(name = "TIPOPROCESSO")
 	private Integer tipoProcesso;
 	
-	@Size(max = 21)
 	@Column(name = "NUMEROPROCESSO")
 	private String numero;
 
-	@Size(max = 1)
 	@Column(name = "AUTORIA")
 	private Integer indicativoAutoria;
 	
 	@Column(name = "MATERIA")
 	private Integer indicativoMateria;
 		
-	@Size(max = 255)
 	@Column(name = "OBSERVACAO")
 	private String observacao;	
 	
@@ -158,6 +153,10 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 
 	public void setEsocialVigencia(ESocialEventoVigencia esocialVigencia) {
 		this.esocialVigencia = esocialVigencia;
+	}
+	
+	public String getReferenciaESocial() {
+		return this.numero;
 	}
 
 }
