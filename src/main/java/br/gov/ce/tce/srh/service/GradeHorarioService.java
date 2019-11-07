@@ -46,7 +46,7 @@ public class GradeHorarioService {
 		entidade = dao.salvar(entidade);
 		
 		Evento evento = this.eventoService.getById(TipoEventoESocial.S1050.getCodigo());
-		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipo(evento.getId());
+		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial());
 		if (notificacao == null) {
 			notificacao = new Notificacao();
 			notificacao.setDescricao("Evendo S1050 com pendência de envio.");

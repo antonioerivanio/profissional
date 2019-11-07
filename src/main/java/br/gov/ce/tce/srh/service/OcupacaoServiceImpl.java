@@ -81,7 +81,7 @@ public class OcupacaoServiceImpl implements OcupacaoService {
 		
 		// salvando notificação
 		Evento evento = this.eventoService.getById(TipoEventoESocial.S1030.getCodigo());
-		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipo(evento.getId()); 
+		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial()); 
 		if (notificacao == null) {
 			notificacao = new Notificacao();
 			notificacao.setDescricao("Evendo S1030 com pendência de envio.");

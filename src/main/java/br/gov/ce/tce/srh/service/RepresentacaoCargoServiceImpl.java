@@ -50,7 +50,7 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 
 		// salvando notificação
 		Evento evento = this.eventoService.getById(TipoEventoESocial.S1040.getCodigo());
-		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipo(evento.getId());
+		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial());
 		if (notificacao == null) {
 			notificacao = new Notificacao();
 			notificacao.setDescricao("Evendo S1040 com pendência de envio.");

@@ -45,7 +45,7 @@ public class RubricaESocialTCEService{
 
 		// salvando notificação
 		Evento evento = this.eventoService.getById(TipoEventoESocial.S1010.getCodigo());
-		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipo(evento.getId());
+		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial());
 		if (notificacao == null) {
 			notificacao = new Notificacao();
 			notificacao.setDescricao("Evendo S1010 com pendência de envio.");

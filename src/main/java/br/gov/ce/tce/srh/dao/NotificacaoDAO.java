@@ -60,10 +60,11 @@ public class NotificacaoDAO {
 		return entityManager.find(Notificacao.class, id);
 	}
 	
-	public Notificacao findByEventoIdAndTipo(long idEvento) {
+	public Notificacao findByEventoIdAndTipoAndReferencia(long idEvento, String referencia) {
 		Notificacao notificacao = null;
-		Query query = entityManager.createQuery("SELECT n FROM Notificacao n WHERE n.evento.id = :idEvento AND n.tipo = N");
+		Query query = entityManager.createQuery("SELECT n FROM Notificacao n WHERE n.evento.id = :idEvento AND n.tipo = N AND n.referencia = :referencia");
 		query.setParameter("idEvento", idEvento);
+		query.setParameter("referencia", referencia);
 		try {
 			return (Notificacao) query.getSingleResult();
 		} catch (NoResultException e) {
