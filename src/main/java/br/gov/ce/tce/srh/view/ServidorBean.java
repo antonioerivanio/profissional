@@ -9,8 +9,10 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
-import org.richfaces.component.html.HtmlDatascroller;
+//import org.richfaces.component.html.UIDataTable;
+//import org.richfaces.component.html.UIDataScroller;
+import org.richfaces.component.UIDataTable;
+import org.richfaces.component.UIDataScroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -63,8 +65,8 @@ public class ServidorBean  implements Serializable  {
 	
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
-	private HtmlDatascroller dataScroller = new HtmlDatascroller();
+	private UIDataTable dataTable = new UIDataTable();
+	private UIDataScroller dataScroller = new UIDataScroller();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Servidor> pagedList = new ArrayList<Servidor>();
 	private int flagRegistroInicial = 0;
@@ -134,17 +136,17 @@ public class ServidorBean  implements Serializable  {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
-		dataScroller = new HtmlDatascroller();
+		dataTable = new UIDataTable();
+		dataScroller = new UIDataScroller();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Servidor>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
-	public HtmlDatascroller getDataScroller() {return dataScroller;}
-	public void setDataScroller(HtmlDatascroller dataScroller) {this.dataScroller = dataScroller;}
+	public UIDataScroller getDataScroller() {return dataScroller;}
+	public void setDataScroller(UIDataScroller dataScroller) {this.dataScroller = dataScroller;}
 	
 	public PagedListDataModel getDataModel() throws Exception {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

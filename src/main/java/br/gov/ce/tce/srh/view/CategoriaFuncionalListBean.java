@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -44,7 +44,7 @@ public class CategoriaFuncionalListBean implements Serializable {
 	private boolean passouConsultar = false;
 	private int flagRegistroInicial = 0;
 	private List<CategoriaFuncional> pagedList = new ArrayList<CategoriaFuncional>();
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private HtmlForm form;
 	
@@ -176,17 +176,17 @@ public class CategoriaFuncionalListBean implements Serializable {
 	}
 
 
-	public HtmlDataTable getDataTable() {
+	public UIDataTable getDataTable() {
 		return dataTable;
 	}
 
 
-	public void setDataTable(HtmlDataTable dataTable) {
+	public void setDataTable(UIDataTable dataTable) {
 		this.dataTable = dataTable;
 	}
 	//PAGINAÇÃO
 	private void limparLista() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<CategoriaFuncional>(); 
 	}

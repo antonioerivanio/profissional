@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -70,7 +70,7 @@ public class ConsultarAuditoriaBean implements Serializable{
 //	PAGINAÇÃO - INICIO
 	
 	private int count = 0;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Revisao> pagedList = new ArrayList<Revisao>();
 	private int flagRegistroInicial = 0;
@@ -289,15 +289,15 @@ public class ConsultarAuditoriaBean implements Serializable{
 	
 	public void limparListas() {
 		count = 0;
-		dataTable = new HtmlDataTable();		
+		dataTable = new UIDataTable();		
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Revisao>();
 		flagRegistroInicial = 0;		
 	}
 
 	
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 	
 	
 	public PagedListDataModel getDataModel() {

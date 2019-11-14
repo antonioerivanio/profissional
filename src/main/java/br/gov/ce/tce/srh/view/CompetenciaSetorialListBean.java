@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.faces.component.html.HtmlForm;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -55,7 +55,7 @@ public class CompetenciaSetorialListBean implements Serializable {
 
 	// paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<CompetenciaSetorial> pagedList = new ArrayList<CompetenciaSetorial>();
 	private int flagRegistroInicial = 0;
@@ -229,16 +229,16 @@ public class CompetenciaSetorialListBean implements Serializable {
 
 	// PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<CompetenciaSetorial>();
 	}
 
-	public HtmlDataTable getDataTable() {
+	public UIDataTable getDataTable() {
 		return dataTable;
 	}
 
-	public void setDataTable(HtmlDataTable dataTable) {
+	public void setDataTable(UIDataTable dataTable) {
 		this.dataTable = dataTable;
 	}
 

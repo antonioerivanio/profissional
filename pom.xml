@@ -13,8 +13,7 @@
 	<properties>
 		<spring.version>3.0.1.RELEASE</spring.version>
 		<spring.security.version>3.1.7.RELEASE</spring.security.version>
-		<hibernate.version>3.6.5.Final</hibernate.version>
-		<richfaces.version>3.3.3.Final</richfaces.version>
+		<hibernate.version>3.6.5.Final</hibernate.version>		
 		<apache-poi.version>3.15</apache-poi.version>
 		<java.version>1.7</java.version>
 		<!-- Encoding -->
@@ -146,40 +145,21 @@
 		</dependency>
 		
 				
-		<!-- RICHFACES -->
-		
+		<!-- RICHFACES -->		
 		<dependency>
-		    <groupId>org.richfaces.ui</groupId>
-		    <artifactId>richfaces-ui</artifactId>
-		    <version>${richfaces.version}</version>
+		    <groupId>org.richfaces</groupId>
+		    <artifactId>richfaces</artifactId>
+		    <version>4.5.17.Final</version>
 		</dependency>
-
-		<dependency>
-	    	<groupId>org.richfaces.framework</groupId>
-	    	<artifactId>richfaces-impl-jsf2</artifactId>
-	    	<version>${richfaces.version}</version>
-	    </dependency>		
-				
-		<dependency>
-		    <groupId>com.uwyn</groupId>
-		    <artifactId>jhighlight</artifactId>
-		    <version>1.0</version>
-		</dependency>
-		
 		
 		
 		<!-- JSF --> 	
     	
-    	<dependency>
-		    <groupId>javax.faces</groupId>
-		    <artifactId>jsf-api</artifactId>
-		    <version>2.0.2-FCS</version>
-		</dependency>
-		
+    	<!-- JSF (Mojarra) -->
 		<dependency>
-		    <groupId>javax.faces</groupId>
-		    <artifactId>jsf-impl</artifactId>
-		    <version>2.0.2-FCS</version>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.faces</artifactId>
+			<version>2.2.13</version>
 		</dependency>
 		
 		<dependency>
@@ -193,7 +173,7 @@
 		<dependency>
 		    <groupId>org.apache.myfaces.tomahawk</groupId>
 		    <artifactId>tomahawk</artifactId>
-		    <version>1.1.11</version>
+		    <version>1.1.14</version>
 		</dependency>		
 		
 		
