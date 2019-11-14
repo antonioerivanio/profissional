@@ -8,6 +8,7 @@
 
 select, option, input, textarea {
 	outline: none;
+	background-color: #ffffff;
 }
 
 textarea:disabled, input:not ([type] ):disabled, input[type="color" i]:disabled,

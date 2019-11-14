@@ -82,10 +82,7 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 	private String enteFederativoNome;
 	
 	@Column(name = "ENTEFEDERATIVOUF")	
-	private String enteFederativoUf;
-	
-	@Column(name = "ENTEFEDERATIVOMUNICIPIO")	
-	private String enteFederativoMunicipio;
+	private String enteFederativoUf;	
 	
 	@Column(name = "ENTEFEDERATIVORPPS")
 	@Enumerated(EnumType.STRING)
@@ -243,15 +240,7 @@ public class Empregador extends BasicEntity<Long> implements Serializable{
 
 	public void setEnteFederativoUf(String enteFederativoUf) {
 		this.enteFederativoUf = enteFederativoUf;
-	}
-
-	public String getEnteFederativoMunicipio() {
-		return enteFederativoMunicipio;
-	}
-
-	public void setEnteFederativoMunicipio(String enteFederativoMunicipio) {
-		this.enteFederativoMunicipio = enteFederativoMunicipio;
-	}
+	}	
 
 	public SimNao getEnteFederativoRpps() {
 		return enteFederativoRpps;
