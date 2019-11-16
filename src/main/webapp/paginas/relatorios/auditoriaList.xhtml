@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core" 	  
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -51,9 +51,9 @@
 					  					var="tipoRevisao"
 					  					itemValue="#{tipoRevisao.id}"
 					  					itemLabel="#{tipoRevisao.descricao}"/>
-					  	<a4j:support id="selecionaTipoEvento"
+					  	<a4j:ajax id="selecionaTipoEvento"
 				  				 event="onchange" 
-				  				 ajaxSingle="true"	
+				  				 execute="@this"	
 				  				 focus="iptUsuario"
 				  				 action="#{consultarAuditoriaBean.tipoEventoSelecionado}"/>
 					</h:selectOneMenu>
@@ -71,9 +71,9 @@
 					  					var="usuario"
 					  					itemValue="#{usuario.id}"
 					  					itemLabel="#{usuario.nome}"/>
-					  	<a4j:support id="selecionaUsuario"
+					  	<a4j:ajax id="selecionaUsuario"
 					  				 event="onchange" 
-					  				 ajaxSingle="true"	
+					  				 execute="@this"	
 					  				 focus="iptPessoal"
 					  				 action="#{consultarAuditoriaBean.usuarioSelecionado}"/>
 					</h:selectOneMenu>
@@ -91,9 +91,9 @@
 					  					var="pessoal"
 					  					itemValue="#{pessoal.id}"
 					  					itemLabel="#{pessoal.nome}"/>
-					  	<a4j:support id="selecionaPessoal"
+					  	<a4j:ajax id="selecionaPessoal"
 					  				 event="onchange" 
-					  				 ajaxSingle="true"	
+					  				 execute="@this"	
 					  				 focus="iptEntidade"
 					  				 action="#{consultarAuditoriaBean.pessoalSelecionado}"/>
 					</h:selectOneMenu>
@@ -111,12 +111,12 @@
 					  					var="entidade"
 					  					itemValue="#{entidade.simpleName}"
 					  					itemLabel="#{entidade.simpleName}"/>
-					  	<a4j:support id="carregaIptEntidade"
+					  	<a4j:ajax id="carregaIptEntidade"
 				  				 event="onchange" 
-				  				 ajaxSingle="true"	
+				  				 execute="@this"	
 				  				 focus="iptAtributo"
 				  				 action="#{consultarAuditoriaBean.entidadeSelecionada}"
-				  				 reRender="iptAtributo"/>
+				  				 render="iptAtributo"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -199,7 +199,7 @@
 	                    	                   
 	    			</rich:dataTable>
 					
-					<rich:datascroller	id="scroller" 
+					<rich:dataScroller	id="scroller" 
 										for="tblRevisao"
 										stepControls="hide" 
 										align="center"

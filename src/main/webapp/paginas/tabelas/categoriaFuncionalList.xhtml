@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 		<div class="titulo-pagina">
@@ -23,7 +23,7 @@
 					<h:inputText id="descricao" value="#{categoriaFuncionalListBean.categoriaFuncional.descricao}"/>
 				</div>
 			</div>
-			<h:commandButton id="consultar" value="Consultar" action="#{categoriaFuncionalListBean.consultar}" reRender="scroller,lista" styleClass="bt-padrao fl mg-top-18 mg-left-10"  />
+			<h:commandButton id="consultar" value="Consultar" action="#{categoriaFuncionalListBean.consultar}" render="scroller,lista" styleClass="bt-padrao fl mg-top-18 mg-left-10"  />
 			<h:commandButton id="relatorio" value="Relatorio" action="#{categoriaFuncionalListBean.relatorio}" styleClass="bt-padrao fl mg-top-18 mg-left-10"  />
 			
 			<div class="tabela-dados">
@@ -50,7 +50,7 @@
 						</h:commandLink>
 					</rich:column>
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{categoriaFuncionalListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{categoriaFuncionalListBean.pagedList.size() > 0}"/>
 			</div>
 			
 			<h:commandButton id="incluir" value="Incluir" action="#{cadastroCategoriaFuncionalFormBean.prepareIncluir()}" styleClass="bt-padrao fr mg-right-15" />

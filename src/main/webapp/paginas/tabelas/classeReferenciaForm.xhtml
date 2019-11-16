@@ -43,11 +43,11 @@
 					  					var="cargo"
 					  					itemValue="#{cargo}"
 					  					itemLabel="#{cargo.nomenclatura}"/>
-						<a4j:support id="carregaSimbolo" 
+						<a4j:ajax id="carregaSimbolo" 
 					  				 event="onchange" 
-					  				 ajaxSingle="true"
+					  				 execute="@this"
 					  				 action="#{classeReferenciaFormBean.carregaSimbolo}"
-					  				 reRender="simbolo"/>
+					  				 render="simbolo"/>
 					</h:selectOneMenu>
 				</div>
 			</div>

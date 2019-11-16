@@ -62,10 +62,10 @@
 									 styleClass="maskMatricula"									 
 									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
 									 value="#{feriasFormBean.matricula}">
-							<a4j:support event="onchange"
+							<a4j:ajax event="onchange"
 										 focus="tipoFerias"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 ajaxSingle="true" />
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -162,12 +162,12 @@
 					  						var="tipoFerias"
 					  						itemValue="#{tipoFerias}"
 					  						itemLabel="#{tipoFerias.descricao}"/>					  						
-					  		<a4j:support id="atualizaDatas"
+					  		<a4j:ajax id="atualizaDatas"
 					  				 event="onchange" 
-					  				 ajaxSingle="true"	
+					  				 execute="@this"	
 					  				 action="#{feriasFormBean.atualizaBloqueioDeDatas}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 reRender="inicio,fim,qtdeDias"/>				
+					  				 render="inicio,fim,qtdeDias"/>				
 						</h:selectOneMenu>    
 					</div>
 				</div>
@@ -205,7 +205,7 @@
 									 value="#{feriasFormBean.inicial}"
 									 maxlength="10"
 									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
+							<a4j:ajax event="onchange" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -219,7 +219,7 @@
 									 value="#{feriasFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:support event="onchange" focus="tipoPublicacao" reRender="qtdeDias, messages" ajaxSingle="true"/>
+							<a4j:ajax event="onchange" focus="tipoPublicacao" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>			  
 					</div>
 				</div>

@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -42,7 +42,7 @@
 									 maxlength="6"
 									 styleClass="maskMatricula"
 									 value="#{licencaListBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, lista" ajaxSingle="true" />
+	            			<a4j:ajax id="matriculaChange" event="onchange" focus="cpf" render="messages, cpf, nomeCompletoPessoa, lista" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -56,7 +56,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 value="#{licencaListBean.cpf}" >
-							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, lista" ajaxSingle="true" />
+							<a4j:ajax id="cpfChange" event="onchange" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa, lista" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -96,13 +96,13 @@
 								 value="Consultar"
 								 action="#{licencaListBean.consultar}"
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10"
-								 reRender="scroller,lista"/>
+								 render="scroller,lista"/>
 				<h:commandButton id="relatorio"
 								 value="Relatório"
 								 action="#{licencaListBean.relatorio}"
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 style="margin-left: 10px"
-								 reRender="messages" />
+								 render="messages" />
 			</ui:fragment>
 
 			<div class="tabela-dados">
@@ -193,7 +193,7 @@
                         </h:commandLink>
                     </h:column>
 				</rich:dataTable>
-			<rich:datascroller  id="scroller" 
+			<rich:dataScroller  id="scroller" 
 								for="lista" 
 								stepControls="hide" 								
 								renderIfSinglePage="false"
@@ -221,7 +221,7 @@
 							 value="Relatório"
 							 action="#{licencaListBean.relatorio}"
 							 styleClass="bt-padrao fr mg-right-15" 								 
-							 reRender="messages"
+							 render="messages"
 							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />
 
 		</h:form>

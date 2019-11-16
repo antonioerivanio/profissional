@@ -8,7 +8,7 @@
  	xmlns:a4j="http://richfaces.org/a4j" 
 	xmlns:sec="http://www.springframework.org/security/facelets/tags"  >
 
-    <head>
+    <h:head>
    		<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
    		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
    	    <title>SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceará</title>
@@ -50,9 +50,9 @@
 		}
 		</style>      
         
-    </head>
+    </h:head>
     
-    <body>
+    <h:body>
 
     	<f:view>
 
@@ -76,7 +76,7 @@
 	
 	                    <div class="corpo-conteiner">
 	                    
-	                    	<rich:modalPanel id="modalRenovaSessao" resizeable="false" height="220" width="620">
+	                    	<rich:popupPanel id="modalRenovaSessao" resizeable="false" height="220" width="620">
 					            
 					            <f:facet name="header" class="header">
 					                <span>Renovação de sessão</span>
@@ -91,9 +91,9 @@
 									<a href="#" onclick="keepSession();" class="bt-padrao bt-dialog-sessao">OK</a>
 								</div>							
 								
-							</rich:modalPanel>
+							</rich:popupPanel>
 							
-							<rich:modalPanel id="modalRedirecionaLogin" resizeable="false" height="220" width="620">
+							<rich:popupPanel id="modalRedirecionaLogin" resizeable="false" height="220" width="620">
 					            
 					            <f:facet name="header" class="header">
 					                <span>Fazer novo login</span>
@@ -108,7 +108,7 @@
 									<a href="#{request.contextPath}/login.faces" class="bt-padrao bt-dialog-sessao">OK</a>
 								</div>							
 								
-							</rich:modalPanel>
+							</rich:popupPanel>
 	
 		          			<ui:insert name="content">
 								conteudo da pagina!!!
@@ -129,16 +129,15 @@
 	        </div>
 	
 			<!-- Modal Loading -->
-			<rich:modalPanel id="panel_loading" autosized="true" >
-				<h:graphicImage id="icone-aguarde" url="/img/loading.gif" style="border:0px; vertical-align: middle;" />
-				<rich:spacer id="icone-aguarde-spacer" width="20" />
+			<rich:popupPanel id="panel_loading" autosized="true" >
+				<h:graphicImage id="icone-aguarde" url="/img/loading.gif" style="border:0px; vertical-align: middle;" />				
 				<center><h:outputText value="Aguarde..." /></center>
-			</rich:modalPanel>
+			</rich:popupPanel>
 	
 			<a4j:status id="loading" onstart="Richfaces.showModalPanel('panel_loading')" onstop="Richfaces.hideModalPanel('panel_loading')" />
 
     	</f:view>
 
-    </body>
+    </h:body>
     
 </html>    

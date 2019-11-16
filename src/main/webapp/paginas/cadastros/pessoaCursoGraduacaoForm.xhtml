@@ -61,7 +61,7 @@
 								 name="nomeCompletoPessoa"
 								 disabled="#{pessoalCursoGraduacaoFormBean.alterar}"
 								 value="#{pessoalCursoGraduacaoFormBean.nome}" />
-					<a4j:support event="onchange" reRender="mae, cpf, rg, rgEmissor, rgUf, idPessoa" ajaxSingle="true" />
+					<a4j:ajax event="onchange" render="mae, cpf, rg, rgEmissor, rgUf, idPessoa" execute="@this" />
 				</div>
 			</div>
 

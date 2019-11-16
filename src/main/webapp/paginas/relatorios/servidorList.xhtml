@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -76,7 +76,7 @@
 							 value="Consultar"
 							 action="#{servidorBean.consultar}"
 							 styleClass="bt-padrao fr mg-top-25 mg-right-10"							 
-							 reRender="scroller,lista"/> 							 
+							 render="scroller,lista"/> 							 
  							
  			
  			<div class="tabela-dados">
@@ -148,7 +148,7 @@
 					</f:facet>					
 				</rich:dataTable>
 				
-				<rich:datascroller  id="scroller"
+				<rich:dataScroller  id="scroller"
 									align="center" 
 									for="lista" 
 									stepControls="hide"

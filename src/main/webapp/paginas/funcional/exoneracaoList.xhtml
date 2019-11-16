@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -40,7 +40,7 @@
 								 maxlength="6"
 								 styleClass="maskMatricula"
 								 value="#{exoneracaoListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" reRender="messages, cpf, nomeCompletoPessoa" ajaxSingle="true" />
+            			<a4j:ajax id="matriculaChange" event="onchange" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
         			</h:inputText>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{exoneracaoListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" reRender="messages, matricula, nomeCompletoPessoa" ajaxSingle="true" />
+						<a4j:ajax id="cpfChange" event="onchange" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -90,7 +90,7 @@
 							 value="Consultar"
 							 action="#{exoneracaoListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 
 			<div class="tabela-dados">
 

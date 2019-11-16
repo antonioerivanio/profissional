@@ -60,10 +60,10 @@
 									 styleClass="maskMatricula"
 									 disabled="#{averbacaoFormBean.alterar}"
 									 value="#{averbacaoFormBean.matricula}">
-							<a4j:support event="onchange"
+							<a4j:ajax event="onchange"
 										 focus="tipoFerias"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 ajaxSingle="true" />
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -159,11 +159,11 @@
 						  					var="uf"
 						  					itemValue="#{uf}"
 						  					itemLabel="#{uf.id}"/>
-				  			<a4j:support id="carregaMunicipio"
+				  			<a4j:ajax id="carregaMunicipio"
 					  				 event="onchange" 
-					  				 ajaxSingle="true"	
+					  				 execute="@this"	
 					  				 action="#{averbacaoFormBean.carregaMunicipio}"
-					  				 reRender="municipio" />
+					  				 render="municipio" />
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -203,7 +203,7 @@
 									 value="#{averbacaoFormBean.inicio}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
+							<a4j:ajax event="onchange" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -217,7 +217,7 @@
 									 value="#{averbacaoFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:support event="onchange" focus="esfera" reRender="qtdeDias, messages" ajaxSingle="true"/>
+							<a4j:ajax event="onchange" focus="esfera" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>
 					</div>
 				</div>
@@ -239,11 +239,11 @@
 					<div class="conteiner">
 						<div class="radio-box">
 							<h:selectBooleanCheckbox value="#{averbacaoFormBean.somenteDias}" id="somenteDias" >
-							 	<a4j:support id="atualizaSomenteDias" 
+							 	<a4j:ajax id="atualizaSomenteDias" 
 											 event="onclick"
 											 action="#{averbacaoFormBean.atualizaDatasEQtdeDias()}"
-											 ajaxSingle="true" 
-											 reRender="inicio, fim, qtdeDias"
+											 execute="@this" 
+											 render="inicio, fim, qtdeDias"
 											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />									
 					 		</h:selectBooleanCheckbox>
 						</div>
@@ -262,12 +262,12 @@
 										   itemValue="#{esfera.id}"
 										   itemLabel="#{esfera.descricao}" />
 	
-						    <a4j:support id="carregaSubtipo"
+						    <a4j:ajax id="carregaSubtipo"
 						  				 event="onchange" 
-						  				 ajaxSingle="true"	
+						  				 execute="@this"	
 						  				 focus="subtipo"
 						  				 action="#{averbacaoFormBean.carregaSubtipo}"
-						  				 reRender="subtipo"/>
+						  				 render="subtipo"/>
 							
 						</h:selectOneMenu>
 					</div>

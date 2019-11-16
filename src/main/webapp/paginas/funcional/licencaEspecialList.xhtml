@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -40,7 +40,7 @@
 								 maxlength="6"
 								 styleClass="maskMatricula"
 								 value="#{licencaEspecialListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa" ajaxSingle="true" />
+            			<a4j:ajax id="matriculaChange" event="onchange" focus="cpf" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
         			</h:inputText>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{licencaEspecialListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa" ajaxSingle="true" />
+						<a4j:ajax id="cpfChange" event="onchange" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 							 value="Consultar"
 							 action="#{licencaEspecialListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 			<h:commandButton id="Relatório"
 							 value="Relatório"
 							 action="#{licencaEspecialListBean.relatorio}" 
@@ -158,7 +158,7 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{licencaEspecialListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{licencaEspecialListBean.pagedList.size() > 0}"/>
 			</div>
 
 			<h:commandButton id="incluir" 

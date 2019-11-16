@@ -65,11 +65,11 @@
 							  					var="area"
 							  					itemValue="#{area}"
 							  					itemLabel="#{area.descricao}"/>
-						  		<a4j:support id="carregaCurso" 
+						  		<a4j:ajax id="carregaCurso" 
 						  					 event="onchange" 
-						  					 ajaxSingle="true"
+						  					 execute="@this"
 						  					 action="#{pessoalCursoProfissionalFormBean.carregaCurso}"
-						  				 	 reRender="curso"/>
+						  				 	 render="curso"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -87,11 +87,11 @@
 							  					var="curso"
 							  					itemValue="#{curso}"
 							  					itemLabel="#{curso.descricao}"/>
-						  		<a4j:support id="carregaInstituicao" 
+						  		<a4j:ajax id="carregaInstituicao" 
 						  					 event="onchange" 
-						  					 ajaxSingle="true"
+						  					 execute="@this"
 						  					 action="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
-						  				 	 reRender="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
+						  				 	 render="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -288,7 +288,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{pessoalCursoProfissionalFormBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+	            			<a4j:ajax id="matriculaChange" event="onchange" focus="cpf" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -301,7 +301,7 @@
 								 maxlength="14"
 								 styleClass="maskCpf"
 								 value="#{pessoalCursoProfissionalFormBean.cpf}" >
-            			<a4j:support event="onchange" focus="nomeCompletoPessoa" reRender="matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+            			<a4j:ajax event="onchange" focus="nomeCompletoPessoa" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
         			</h:inputText>
 
 				</div>

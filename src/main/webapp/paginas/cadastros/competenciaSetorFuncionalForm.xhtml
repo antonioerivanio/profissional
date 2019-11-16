@@ -25,11 +25,11 @@
 					  	<f:selectItem id="selecioneTipo" itemLabel="Todos..." itemValue="0" />					  	
 						<f:selectItem id="siComportamental" itemLabel="Comportamental" itemValue="2" />
 						<f:selectItem id="siTecnica" itemLabel="Técnica" itemValue="1" />
-						<a4j:support id="carregaCompetencia"
+						<a4j:ajax id="carregaCompetencia"
 					  				 event="onchange" 
-					  				 ajaxSingle="true"
+					  				 execute="@this"
 					  				 action="#{competenciaSetorFuncionalFormBean.carregaCompetencia}"	
-					  				 reRender="competencia"/>
+					  				 render="competencia"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -64,11 +64,11 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-						<a4j:support id="carregaCategoria"
+						<a4j:ajax id="carregaCategoria"
 					  				 event="onchange" 
-					  				 ajaxSingle="true"
+					  				 execute="@this"
 					  				 action="#{competenciaSetorFuncionalFormBean.carregaCategoria}"	
-					  				 reRender="categoria"/>
+					  				 render="categoria"/>
 					</h:selectOneMenu>
 				</div>
 			</div>

@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -42,7 +42,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{emitirDossieServidorListBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" reRender="cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+	            			<a4j:ajax id="matriculaChange" event="onchange" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>			
@@ -56,7 +56,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 value="#{emitirDossieServidorListBean.cpf}" >
-							<a4j:support id="cpfChange" event="onchange" reRender="matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+							<a4j:ajax id="cpfChange" event="onchange" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -82,10 +82,10 @@
 				<div class="conteiner" style="display: inline-block; float: left; margin-right: 0px; border-right: 0px;">
 					<div style="margin: 1px 3px 0px">
 						<h:selectBooleanCheckbox value="#{emitirDossieServidorListBean.marcaTodos}" id="marcaTodos">
-							<a4j:support id="marcaTodosEvento" 
+							<a4j:ajax id="marcaTodosEvento" 
 									 event="onclick"
-									 ajaxSingle="true" 
-									 reRender="historicoLotacao, historicoLicenca, historicoFerias, progracaoFuncional, representacaoFuncional, anotacaoServidor" />
+									 execute="@this" 
+									 render="historicoLotacao, historicoLicenca, historicoFerias, progracaoFuncional, representacaoFuncional, anotacaoServidor" />
 						</h:selectBooleanCheckbox>						
 					</div>
 				</div>

@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -42,7 +42,7 @@
 								 disabled="#{funcionalAreaSetorFormBean.passouConsultar}"
 								 styleClass="maskMatricula"
 								 value="#{funcionalAreaSetorFormBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onblur" focus="nomeCompletoPessoa" reRender="messages, nomeCompletoPessoa" ajaxSingle="true"/>
+            			<a4j:ajax id="matriculaChange" event="onblur" focus="nomeCompletoPessoa" render="messages, nomeCompletoPessoa" execute="@this"/>
         			</h:inputText>
 				</div>
 			</div>
@@ -92,11 +92,11 @@
 						  					var="setor"
 						  					itemValue="#{setor}"
 						  					itemLabel="#{setor.nome}"/>	
-						  <a4j:support id="carregaArea" 
+						  <a4j:ajax id="carregaArea" 
 					  					 event="onchange" 
-					  					 ajaxSingle="true"
+					  					 execute="@this"
 					  					 action="#{funcionalAreaSetorFormBean.carregaArea}"
-					  				 	 reRender="area"/>								 
+					  				 	 render="area"/>								 
 				        </h:selectOneMenu>
 					</div>
 				</div>

@@ -207,9 +207,9 @@
 							  					var="uf"
 							  					itemValue="#{uf}"
 							  					itemLabel="#{uf.id}"/>
-							  	<a4j:support id="comboUfAction" 
+							  	<a4j:ajax id="comboUfAction" 
 							  	             event="onchange"							  	            
-							  	             reRender="municipioNaturalidade" />
+							  	             render="municipioNaturalidade" />
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -378,10 +378,10 @@
 										 styleClass="maskCep"
 										 value="#{pessoaBean.entidade.cep}" 
 										 disabled="#{not pessoaBean.podeAlterar()}">
-								<a4j:support id="cepAction" 
+								<a4j:ajax id="cepAction" 
 							  	             event="onblur"
 							  	             action="#{pessoaBean.buscarCep()}"
-							  	             reRender="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
+							  	             render="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
 							</h:inputText>			 
 						</div>
 					</div>
@@ -457,9 +457,9 @@
 							  					var="ufEndereco"
 							  					itemValue="#{ufEndereco}"
 							  					itemLabel="#{ufEndereco.id}"/>
-							  	<a4j:support id="comboUfEnderecoAction" 
+							  	<a4j:ajax id="comboUfEnderecoAction" 
 							  	             event="onchange"							  	            
-							  	             reRender="municipioEndereco" />
+							  	             render="municipioEndereco" />
 							</h:selectOneMenu>
 						</div>
 					</div>							
@@ -1031,7 +1031,7 @@
 				
 			</div>
 			
-			<rich:modalPanel id="finalizaRecadastramento" resizeable="false" height="450" width="620">
+			<rich:popupPanel id="finalizaRecadastramento" resizeable="false" height="450" width="620">
 					            
 	            <f:facet name="header" class="header">
 	            	<span>Finalizar o Cadastro</span>
@@ -1062,7 +1062,7 @@
 					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-zero mg-right-10">Cancelar</a>
 				</div>							
 				
-			</rich:modalPanel>
+			</rich:popupPanel>
 			
 		</h:form>
 

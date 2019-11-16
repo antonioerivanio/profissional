@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -40,7 +40,7 @@
 							 value="Consultar" 
 							 action="#{publicacaoBean.consultar}" 
 							 styleClass="bt-padrao fl mg-top-18" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 			<h:commandButton id="relatorio"
 							 value="Relatório"
 							 action="#{publicacaoBean.relatorio}" 
@@ -98,7 +98,7 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{publicacaoBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{publicacaoBean.pagedList.size() > 0}"/>
 				
 			</div>
 

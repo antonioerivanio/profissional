@@ -45,11 +45,11 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-					  	<a4j:support id="carregaArea" 
+					  	<a4j:ajax id="carregaArea" 
 					  				 event="onchange" 
-					  				 ajaxSingle="true"
+					  				 execute="@this"
 					  				 action="#{areaSetorCompetenciaFormBean.carregarCategorias}"
-					  				 reRender="area"/>
+					  				 render="area"/>
 					</h:selectOneMenu>
 				</div>
 			</div>

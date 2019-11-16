@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -32,11 +32,11 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-					  	<a4j:support id="carregaArea" 
+					  	<a4j:ajax id="carregaArea" 
 					  				 event="onchange" 
-					  				 ajaxSingle="true"
+					  				 execute="@this"
 					  				 action="#{funcionarioCompetenciaSetorListBean.carregaArea}"
-					  				 reRender="area,competencia,lista"/>
+					  				 render="area,competencia,lista"/>
 					</h:selectOneMenu>
 				</div>
 			</div>

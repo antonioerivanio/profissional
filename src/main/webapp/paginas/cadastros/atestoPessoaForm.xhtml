@@ -76,7 +76,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{atestoPessoaFormBean.passouConsultar}"
 									 value="#{atestoPessoaFormBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onblur" focus="nomeCompletoPessoa" reRender="messages, nomeCompletoPessoa" ajaxSingle="true" />
+	            			<a4j:ajax id="matriculaChange" event="onblur" focus="nomeCompletoPessoa" render="messages, nomeCompletoPessoa" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>

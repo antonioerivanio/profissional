@@ -677,7 +677,7 @@ body {
 }
 
 .tabela-dados th {
-	background-color: #195297;
+	background: #195297;
 	color: #fff;
 	font-size: 11px;
 	text-transform: uppercase;
@@ -688,7 +688,6 @@ body {
 
 .tabela-dados td {
 	border: 1px solid #c5c5c5;
-	border-bottom: 0;
 	padding: 7px 9px;
 }
 

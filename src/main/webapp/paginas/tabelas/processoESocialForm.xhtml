@@ -154,8 +154,8 @@
 								requiredMessage="O UF é obrigatório."
 								value="#{processoESocialFormBean.comboUf}" var="uf"
 								itemValue="#{uf}" itemLabel="#{uf.id}" />
-							<a4j:support id="comboUfAction" event="onchange"
-								reRender="municipio" ajaxSingle="true"/>
+							<a4j:ajax id="comboUfAction" event="onchange"
+								render="municipio" execute="@this"/>
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -228,9 +228,9 @@
 				</div>
 				
 				<h:commandButton value="Adicionar" action="#{processoESocialFormBean.incluirSuspensao}" styleClass="bt-padrao" style="margin-top: 44px;" >
-					<a4j:support id="btAdicionarSuspensao" 
+					<a4j:ajax id="btAdicionarSuspensao" 
 				  	             event="onclick"
-				  	             reRender="indicativoSuspensao, dataDecisao, indicativoDeposito, listaSuspensoes" />
+				  	             render="indicativoSuspensao, dataDecisao, indicativoDeposito, listaSuspensoes" />
 				</h:commandButton>
 				
 				
@@ -277,7 +277,7 @@
 		                       				   value="Editar"			                       				 
 		                       				   styleClass="ico-editar"
 		                       				   oncomplete="Richfaces.showModalPanel('modal');"
-		                       				   reRender="modal" >
+		                       				   render="modal" >
 		                        	<f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />		                       				  
 		                        </a4j:commandLink>
 	                       	</ui:fragment>
@@ -312,7 +312,7 @@
 
 		</h:form>
 		
-        <rich:modalPanel id="modal" resizeable="false" height="320" width="600">					            
+        <rich:popupPanel id="modal" resizeable="false" height="320" width="600">					            
         	
 			<f:facet name="header" class="header">
             	<span>Editar Suspensão de Exigibilidade</span>
@@ -364,14 +364,14 @@
 	
 				<div class="modal-actions" style="padding-bottom:0;">						
 					<h:commandLink value="Salvar" action="#{processoESocialFormBean.salvarSuspensao}" styleClass="bt-padrao fr">
-						<a4j:support event="click" oncomplete="Richfaces.hideModalPanel('modal');"	/>
+						<a4j:ajax event="click" oncomplete="Richfaces.hideModalPanel('modal');"	/>
 					</h:commandLink>	
 					<a href="#" onclick="Richfaces.hideModalPanel('modal');" class="bt-padrao fr mg-right-15">Cancelar</a>
 				</div>					
 			
 			</h:form>							
 		
-		</rich:modalPanel>				
+		</rich:popupPanel>				
 
 	</ui:define>
 </ui:composition>

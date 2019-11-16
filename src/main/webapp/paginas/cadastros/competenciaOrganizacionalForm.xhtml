@@ -25,11 +25,11 @@
 					  	<f:selectItem id="selecioneTipo" itemLabel="Todos..." itemValue="0" />					  	
 						<f:selectItem id="siComportamental" itemLabel="Comportamental" itemValue="2" />
 						<f:selectItem id="siTecnica" itemLabel="Técnica" itemValue="1" />
-						<a4j:support id="carregaCompetencia"
+						<a4j:ajax id="carregaCompetencia"
 					  				 event="onchange" 
-					  				 ajaxSingle="true"
+					  				 execute="@this"
 					  				 action="#{competenciaOrganizacionalFormBean.carregaCompetencia}"	
-					  				 reRender="competencia"/>
+					  				 render="competencia"/>
 					</h:selectOneMenu>
 				</div>
 			</div>

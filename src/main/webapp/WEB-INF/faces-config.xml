@@ -11,6 +11,10 @@
 		</resource-bundle>
 		
 		<message-bundle>messages</message-bundle>
+		
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
 
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 
