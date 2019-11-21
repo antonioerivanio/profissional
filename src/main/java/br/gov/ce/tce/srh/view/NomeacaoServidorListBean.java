@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC024_Manter Nomeação do Servidor
-* 
-* @since   : Dez 05, 2011, 10:03:00 AM
-* @author  : robson.castro@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("nomeacaoServidorListBean")
-@Scope("session")
+@Scope("view")
 public class NomeacaoServidorListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(NomeacaoServidorListBean.class);
@@ -44,9 +38,7 @@ public class NomeacaoServidorListBean implements Serializable {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-
 	// controle de acesso do formulario
-	private HtmlForm form;
 	private boolean passouConsultar = false;
 	private Boolean exibirTodosOsCampos = true;
 
@@ -66,13 +58,38 @@ public class NomeacaoServidorListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 
+	@PostConstruct
+	public void init() {
+		FacesUtil.setFlashParameter("entidade", null);
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			
+			try {
+				setCpf(authenticationService.getUsuarioLogado().getCpf());								
+				count = funcionalService.count(getEntidade().getPessoal().getId(), "DESC");
+				limparListas();
+				flagRegistroInicial = -1;				
+				
+			} catch (Exception e) {
+				limparListas();
+				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}			
+			
+		}else if (!passouConsultar) {
+			setEntidade( null );
+			matricula = new String();
+			cpf = new String();
+			nome = new String();
+			lista = new ArrayList<Funcional>();
+			exibirTodosOsCampos = true;
+			limparListas();
+			flagRegistroInicial = 0;
+		}
+		passouConsultar = false;
+	}
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	
+	public void consultar() {
 
 		try {
 			
@@ -102,35 +119,24 @@ public class NomeacaoServidorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Limpar dados do formulario
-	 * 
-	 * @return
-	 */
-	public String limpar() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "alterar";
+	}
+	
+	public void limpar() {
 
 		setEntidade( null );
 		matricula = new String();
 		cpf = new String();
 		nome = new String();
 		lista = new ArrayList<Funcional>();
-		exibirTodosOsCampos = false;
-
-		return "listar";
+		exibirTodosOsCampos = false;	
 	}
-
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	
+	public void excluir() {
 
 		try {
 
@@ -151,17 +157,10 @@ public class NomeacaoServidorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
 
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -183,15 +182,9 @@ public class NomeacaoServidorListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório de Nomeação de Servidor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
+	}	
 
-
-		return null;
-	}
 	
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -246,39 +239,7 @@ public class NomeacaoServidorListBean implements Serializable {
 	public void setEntidade(Funcional entidade) {this.entidade = entidade;}
 
 	public List<Funcional> getLista() {return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {
-				setCpf(authenticationService.getUsuarioLogado().getCpf());								
-				count = funcionalService.count(getEntidade().getPessoal().getId(), "DESC");
-				limparListas();
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			setEntidade( null );
-			matricula = new String();
-			cpf = new String();
-			nome = new String();
-			lista = new ArrayList<Funcional>();
-			exibirTodosOsCampos = true;
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
-
+	
 	public Boolean getExibirTodosOsCampos() {return exibirTodosOsCampos;}
 	
 	//PAGINAÇÃO
@@ -307,15 +268,13 @@ public class NomeacaoServidorListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
 
 
 	public boolean isPassouConsultar() {
 		return passouConsultar;
 	}
-
 
 	public void setPassouConsultar(boolean passouConsultar) {
 		this.passouConsultar = passouConsultar;

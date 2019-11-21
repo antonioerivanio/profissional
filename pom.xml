@@ -175,7 +175,7 @@
     	<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.faces</artifactId>
-			<version>2.2.6</version>
+			<version>2.2.13</version>
 		</dependency>		
 		
 		<!-- MYFACES TOMAHAWK -->		

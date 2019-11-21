@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
@@ -45,15 +46,9 @@ import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.service.VinculoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC030_Manter Nomeação do Servidor
-* 
-* @since   : Dez 05, 2011, 10:10:00 AM
-* @author  : robson.castro@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("nomeacaoServidorFormBean")
-@Scope("session")
+@Scope("view")
 public class NomeacaoServidorFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(NomeacaoServidorFormBean.class);
@@ -151,84 +146,69 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private List<Entidade> comboOrgaoOrigem;
 
 
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
+	@PostConstruct
+	public void init() {
 		
-		setEntidade( new Funcional() );
-		getEntidade().setProporcionalidade( 100l );
-		getEntidade().setQtdQuintos( 0l );
-		getEntidade().setRegime( 1l );
-		getEntidade().setIRRF(true);
-		getEntidade().setAtivoPortal(true);
-
-		return "incluir";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		try {
-			limpar();
+		Funcional flashParameter = (Funcional)FacesUtil.getFlashParameter("entidade");
+		
+		if (flashParameter == null) {
 			
-			this.alterar = true;			
+			setEntidade( new Funcional() );
+			getEntidade().setProporcionalidade( 100l );
+			getEntidade().setQtdQuintos( 0l );
+			getEntidade().setRegime( 1l );
+			getEntidade().setIRRF(true);
+			getEntidade().setAtivoPortal(true);
 			
-			this.entidade = funcionalService.getById( this.entidade.getId() );
+		} else {			
+			
+			try {
+				
+				this.alterar = true;			
+				
+				this.entidade = funcionalService.getById( flashParameter.getId() );
 
-			// dados pessoais
-			this.pessoa = getEntidade().getPessoal().getId();
-			this.nome = getEntidade().getPessoal().getNomeCompleto();
+				// dados pessoais
+				this.pessoa = getEntidade().getPessoal().getId();
+				this.nome = getEntidade().getPessoal().getNomeCompleto();
 
-			// CBOs
-			if ( this.entidade.getCbo() != null) {
-				this.cbo3 = cboService.getByCodigo( this.entidade.getCbo().getCodigo().substring(0, this.entidade.getCbo().getCodigo().length() - 2) );
-				this.cbo2 = cboService.getByCodigo( this.cbo3.getCodigo().substring(0, this.cbo3.getCodigo().length() - 1) );
-				this.cbo1 = cboService.getByCodigo( this.cbo2.getCodigo().substring(0, this.cbo2.getCodigo().length() - 1) );				
+				// CBOs
+				if ( this.entidade.getCbo() != null) {
+					this.cbo3 = cboService.getByCodigo( this.entidade.getCbo().getCodigo().substring(0, this.entidade.getCbo().getCodigo().length() - 2) );
+					this.cbo2 = cboService.getByCodigo( this.cbo3.getCodigo().substring(0, this.cbo3.getCodigo().length() - 1) );
+					this.cbo1 = cboService.getByCodigo( this.cbo2.getCodigo().substring(0, this.cbo2.getCodigo().length() - 1) );				
+				}
+
+				// carrgar dados ocupacao
+				if ( this.entidade.getOcupacao() != null )
+					this.tipoOcupacao = getEntidade().getOcupacao().getTipoOcupacao();
+				
+				// exibir todos os campos?
+				exibirTodosOsCampos = false;
+				if(entidade.getSaida() == null)
+					exibirTodosOsCampos = true;
+
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
-
-			// carrgar dados ocupacao
-			if ( this.entidade.getOcupacao() != null )
-				this.tipoOcupacao = getEntidade().getOcupacao().getTipoOcupacao();
 			
-			// exibir todos os campos?
-			exibirTodosOsCampos = false;
-			if(entidade.getSaida() == null)
-				exibirTodosOsCampos = true;
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
+		
+	}	
 
-		return "alterar";
-	}
-	
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
 			if ( leiIncorporacao != null )
-				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );			
+				entidade.setLeiIncorporacao(leiIncorporacao.getDescricao());			
 
-			nomeacaoFuncionalService.nomear( entidade );			
-
+			if(alterar) {
+				nomeacaoFuncionalService.alterarNomeacao(entidade);
+			} else {				
+				nomeacaoFuncionalService.nomear(entidade);			
+			}
 			
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -240,45 +220,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-	
-	
-	/**
-	 * Realizar alterar
-	 * 
-	 * @return
-	 */
-	public String alterar() {
-
-		try {
-
-			if ( leiIncorporacao != null )
-				entidade.setLeiIncorporacao( leiIncorporacao.getDescricao() );
-			
-			nomeacaoFuncionalService.alterarNomeacao( entidade );			
-
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
-
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Tipo Entrada
-	 * 
-	 * @return
-	 */
 	public List<TipoMovimento> getComboTipoEntrada() {
 
         try {
@@ -299,12 +242,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboTipoEntrada;
 	}
 
-
-	/**
-	 * Combo Tipo Publicacao
-	 * 
-	 * @return
-	 */
 	public List<TipoPublicacao> getComboTipoPublicacao() {
 
         try {
@@ -320,12 +257,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboTipoPublicacao;
 	}
 
-
-	/**
-	 * Combo Tipo Folha
-	 * 
-	 * @return
-	 */
 	public List<Folha> getComboTipoFolha() {
 
 		try {
@@ -341,11 +272,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboTipoFolha;
 	}
 
-
-	/**
-	 * Combo Tipo Ocupação
-	 * @return
-	 */
 	public List<TipoOcupacao> getComboTipoOcupacao() {
 
         try {
@@ -361,12 +287,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboTipoOcupacao;
 	}
 
-
-	/**
-	 * Combo Cargo
-	 * 
-	 * @return
-	 */
 	public void carregaCargoFuncao() {
 
 		if ( getTipoOcupacao() != null) {
@@ -409,12 +329,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboCargoFuncao;
 	}
 
-
-	/**
-	 * Combo Classe Referencia
-	 * 
-	 * @return
-	 */
 	public void carregaClasseReferenciaEhEspecialidadeCargo() {
 
 		if( entidade.getOcupacao() != null ) {
@@ -429,11 +343,6 @@ public class NomeacaoServidorFormBean implements Serializable {
 		}
 	}
 
-	/**
-	 * Combo Orientação Cargo
-	 * 
-	 * @return
-	 */
 	public void carregaOrientacaoCargo() {
 
 		if( entidade.getEspecialidadeCargo() != null ) {
@@ -460,12 +369,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboClasseReferencia;
 	}
 
-
-	/**
-	 * Combo Especialidade
-	 * 
-	 * @return
-	 */
 	public List<EspecialidadeCargo> getComboEspecialidadeCargo() {
 
         try {
@@ -481,12 +384,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboEspecialidadeCargo;
 	}
 	
-
-	/**
-	 * Combo Orientação Cargo
-	 * 
-	 * @return
-	 */
 	public List<OrientacaoCargo> getComboOrientacaoCargo() {
 
         try {
@@ -503,12 +400,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboOrientacaoCargo;
 	}
 	
-	
-	/**
-	 * Combo Situação
-	 * 
-	 * @return
-	 */
 	public List<Situacao> getComboSituacao() {
 
         try {
@@ -524,12 +415,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboSituacao;
 	}
 
-
-	/**
-	 * Combo Vinculo
-	 * 
-	 * @return
-	 */
 	public List<Vinculo> getComboVinculo() {
 
         try {
@@ -545,12 +430,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboVinculo;
 	}
 
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
         try {
@@ -566,12 +445,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboSetor;
 	}
 
-
-	/**
-	 * Combo CBO 01
-	 * 
-	 * @return
-	 */
 	public List<Cbo> getComboCBO1() {
 
         try {
@@ -587,12 +460,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboCBO1;
 	}
 
-
-	/**
-	 * Combo CBO 02
-	 * 
-	 * @return
-	 */
 	public void carregaCbo2() {
 		this.cbo2 = null;
 		this.comboCBO2 = null;
@@ -619,12 +486,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboCBO2;
 	}
 
-
-	/**
-	 * Combo CBO 03
-	 * 
-	 * @return
-	 */
 	public void carregaCbo3() {
 		this.cbo3 = null;
 		this.comboCBO3 = null;
@@ -650,12 +511,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboCBO3;
 	}
 
-
-	/**
-	 * Combo CBO 04
-	 * 
-	 * @return
-	 */
 	public void carregaCbo4() {
 		this.entidade.setCbo(null);
 		this.comboCBO4 = null;
@@ -679,12 +534,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboCBO4;
 	}
 
-
-	/**
-	 * Combo Lei Incorporacao
-	 * 
-	 * @return
-	 */
 	public List<LeiIncorporacao> getComboLeiIncorporacao() {
 
         try {
@@ -700,12 +549,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboLeiIncorporacao;
 	}
 
-
-	/**
-	 * Combo Orgão Origem
-	 * 
-	 * @return
-	 */
 	public List<Entidade> getComboOrgaoOrigem() {
 
         try {
@@ -721,11 +564,6 @@ public class NomeacaoServidorFormBean implements Serializable {
         return this.comboOrgaoOrigem;
 	}
 
-
-	/**
-	 * Liberar o campo Qtd. Quintos a Lei Incorporacao
-	 * 
-	 */
 	public void carregaQtdQuintos() {
 
 		if( leiIncorporacao != null ) {
@@ -740,11 +578,6 @@ public class NomeacaoServidorFormBean implements Serializable {
 		}
 	}
 
-
-	/**
-	 * Liberar os campos Abono e SUPSEC conforme a Previdencia
-	 * 
-	 */
 	public void carregaPrevidenciaSupSec() {
 
 		if( entidade.getPrevidencia() != null ) {
@@ -760,11 +593,6 @@ public class NomeacaoServidorFormBean implements Serializable {
 		}
 	}
 
-
-	/**
-	 * Liberar o campo Orgao Origem conforme o Vinculo
-	 * 
-	 */
 	public void carregaOrgaoEhSalario() {
 
 		if( entidade.getVinculo() != null ) {
@@ -778,60 +606,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 			}
 
 		}
-	}
-	
-
-	/**
-	 * Limpar form incluir
-	 */
-	private void limpar() {
-
-		this.alterar = false;
-		this.digitarMatricula = false;
-
-		this.pessoa = new Long(0);
-		this.nome = null;
-		
-		
-		// CBOs
-		this.cbo1 = null;
-		this.cbo2 = null;
-		this.cbo3 = null;
-
-		this.tpOcupacaoCargoComissionado = false;
-		this.exibirTodosOsCampos = true;
-		this.tipoOcupacao = null;
-		this.leiIncorporacao = null;
-
-		// combos
-		this.comboTipoEntrada = null;
-		this.comboTipoPublicacao = null;
-		this.comboTipoFolha = null;
-		this.comboTipoOcupacao = null;
-		this.comboCargoFuncao = null;
-		this.comboClasseReferencia = null;
-		this.comboEspecialidadeCargo = null;
-		this.comboOrientacaoCargo = null;
-		this.comboSituacao = null;
-		this.comboVinculo = null;
-		this.comboSetor = null;
-		this.comboCBO1 = null;
-		this.comboCBO2 = null;
-		this.comboCBO3 = null;
-		this.comboCBO4 = null;
-		this.comboLeiIncorporacao = null;
-		this.comboOrgaoOrigem = null;
 	}	
-	
-	public String limpaTela() {
-		limpar();
-		return "nomeacaoServidorForm";
-	}	
-	
 
-	/**
-	 * Gets and Sets
-	 */
 	public String getNome() {return this.nome;}
 	public void setNome(String nome) {this.nome = nome;}
 

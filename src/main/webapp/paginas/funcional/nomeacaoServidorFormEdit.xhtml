@@ -52,9 +52,9 @@
 
 			<rich:tabPanel switchType="client">
 			
-				<rich:tab label="Admissão">				
-	
-					
+				<rich:tab header="Admissão">
+				
+					<br />						
 		            
 		            <div class="conteiner">
 		       			<h:inputHidden 
@@ -260,7 +260,7 @@
 	
 				</rich:tab>
 	
-				<rich:tab label="Cargo / Função">
+				<rich:tab header="Cargo / Função">
 		
 					<br/>				
 		
@@ -412,7 +412,7 @@
 				
 				</rich:tab>
 				
-				<rich:tab label="Info. Folha Pagamento">
+				<rich:tab header="Info. Folha Pagamento">
 		
 					<br/>
 	
@@ -722,7 +722,7 @@
 			<div style="margin-top: 14px;">
 				
 				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
-					<h:commandButton action="#{nomeacaoServidorFormBean.alterar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
+					<h:commandButton action="#{nomeacaoServidorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
 					<a href="/srh/paginas/funcional/nomeacaoServidorList.faces" class="bt-voltar fr mg-right-10">Limpar</a>			
 				</ui:fragment>
 				
