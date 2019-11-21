@@ -399,20 +399,20 @@ body {
 /* INICIO TELA INICIAL */
 .welcome-col {
 	padding: 20px;
-	background-color: #e4f1ff; 
-    margin-bottom: 1rem;
-    border: 1px solid #b8daff;
-    border-radius: .25rem;
-    color: #004085;
+	background-color: #e4f1ff;
+	margin-bottom: 1rem;
+	border: 1px solid #b8daff;
+	border-radius: .25rem;
+	color: #004085;
 }
+
 .welcome-col * {
 	font-size: 14px;
 }
 
 .welcome-col p {
-    line-height: 20px;
-    color: #004085;
-   
+	line-height: 20px;
+	color: #004085;
 }
 
 .welcome-col h2 {
@@ -456,22 +456,22 @@ body {
 
 .label-campos-obrigarotios {
 	color: #555;
-    /* position: absolute;
+	/* position: absolute;
     top: 148px;
     right: 25px; */
-    float: right;
+	float: right;
 }
 
 .mensagem-alerta {
 	clear: both;
-    color: #856404;
-    background-color: #fff3cd;
-    position: relative;
-    padding: 1em 1.5em;
-    margin-bottom: 1em;
-    margin-top: 1em;
-    border: 1px solid #ffeeba;
-    border-radius: .25em;
+	color: #856404;
+	background-color: #fff3cd;
+	position: relative;
+	padding: 1em 1.5em;
+	margin-bottom: 1em;
+	margin-top: 1em;
+	border: 1px solid #ffeeba;
+	border-radius: .25em;
 }
 
 .mensagem-alerta * {
@@ -622,13 +622,13 @@ body {
 	border: 1px solid #c5c5c5;
 }
 
-.formularios .select-box select:disabled, 
-.formularios .input-box input:disabled {
+.formularios .select-box select:disabled, .formularios .input-box input:disabled
+	{
 	background-color: #efefef;
 }
 
 .formularios .select-box option {
-	font-size:1.2em;
+	font-size: 1.2em;
 }
 
 .formularios .data-box {
@@ -1187,28 +1187,27 @@ body {
 	top: 40px !important;
 }
 
-
-.rf-tbp {	
-	display:table !important;
-	width: 100% !important;		
+.rf-tbp {
+	display: table !important;
+	width: 100% !important;
 }
 
 .rf-tab-cnt {
-	display:inline-block;
+	display: inline-block;
+	position: relative;
 	background: #fdfdfd !important;
 	padding: 20px !important;
 	border: 1px solid #C0C0C0 !important;
 	width: 100% !important;
-    box-sizing: border-box !important;
+	box-sizing: border-box !important;
 }
 
-
-.rf-tab-hdr{
-	padding: 8px 10px !important;	
+.rf-tab-hdr {
+	padding: 8px 10px !important;
 }
 
 .rf-tab-lbl {
-	font-size: 14px !important;	
+	font-size: 14px !important;
 	font-weight: normal !important;
 	border-spacing: none;
 }
@@ -1235,7 +1234,7 @@ body {
 	display: inline;
 }
 
-.rf-tab-hdr-brd{
+.rf-tab-hdr-brd {
 	display: none !important;
 }
 
@@ -1244,23 +1243,39 @@ body {
 	bottom: -1px;
 }
 
-
 .vigencia-msg-alerta {
 	position: relative;
-    bottom: 16px;
-    font-weight: bold;
-    color: red;
-    clear: both;
+	bottom: 16px;
+	font-weight: bold;
+	color: red;
+	clear: both;
 }
-.vigencia-width-data {	
+
+.vigencia-width-data {
 	width: 120px !important;
 }
+
 .identificador-esocial {
 	font-weight: bold;
 	color: #4BD07B;
 }
+
 .identificador-esocial-legenda {
 	position: absolute;
-    right: 35px;
-    top: 100px;	
+	right: 35px;
+	top: 100px;
+}
+
+.tooltip {
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.51);
+}
+
+.rf-p, .rf-p-b {
+	border: none !important;
+	padding: 0px !important;
+	background: none !important;
+}
+
+.rf-tt-cntr {
+	border-color: #C0C0C0 !important;
 }

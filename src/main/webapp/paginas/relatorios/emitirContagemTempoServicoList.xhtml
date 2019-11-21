@@ -30,7 +30,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{emitirContagemTempoServicoListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 			
@@ -125,7 +125,7 @@
 						</f:facet>
 						<h:commandLink id="detalhar"
 									   value="Detalhar"
-									   action="incluirAlterar"
+									   action="#{emitirContagemTempoServicoListBean.detalhar}"
 									   styleClass="ico-detail" >
 						</h:commandLink>
 					</h:column>

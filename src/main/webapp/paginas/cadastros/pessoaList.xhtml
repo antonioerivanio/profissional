@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{pessoaBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 			
@@ -86,7 +86,7 @@
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{pessoaBean.prepareAlterar}"
+                       				  action="#{pessoaBean.editar}"
                        				  styleClass="ico-detail" >
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </h:commandLink>
@@ -97,7 +97,7 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{pessoaBean.prepareAlterar}"
+                       				  action="#{pessoaBean.editar}"
                        				  styleClass="ico-editar" >
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </h:commandLink>

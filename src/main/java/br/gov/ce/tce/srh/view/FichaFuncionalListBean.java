@@ -4,12 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -26,15 +25,9 @@ import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC039_Emitir Ficha Funcional
-* 
-* @since   : Dez 19, 2012, 10:09:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("fichaFuncionalListBean")
-@Scope("session")
+@Scope("view")
 public class FichaFuncionalListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FichaFuncionalListBean.class);
@@ -49,12 +42,7 @@ public class FichaFuncionalListBean implements Serializable {
 	private RelatorioUtil relatorioUtil;
 	
 	@Autowired
-	private AuthenticationService authenticationService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
+	private AuthenticationService authenticationService;	
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -66,14 +54,14 @@ public class FichaFuncionalListBean implements Serializable {
 	private List<Funcional> lista;
 	private Funcional entidade = new Funcional();
 
+	@PostConstruct
+	public void init() {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());			
+		}
+	}
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -86,8 +74,6 @@ public class FichaFuncionalListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			passouConsultar = true;
-
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
@@ -95,18 +81,11 @@ public class FichaFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+		
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	@SuppressWarnings("unused")
-	public String relatorio() {
+	
+	public void relatorio() {
 
 		try {
 
@@ -123,11 +102,9 @@ public class FichaFuncionalListBean implements Serializable {
 	        Parametro parametro = parametroService.getByNome("pathImageSRH");
 
 			try {
-
-				// testando o carregamento da foto
-				InputStream in = null;
+				
 				if ( entidade.getPessoal().getFoto() != null && !entidade.getPessoal().getFoto().equals("") ) {
-					in = new FileInputStream( parametro.getValor() + entidade.getPessoal().getFoto() );
+					new FileInputStream( parametro.getValor() + entidade.getPessoal().getFoto() );
 					imagemPessoa = parametro.getValor() + entidade.getPessoal().getFoto();
 				}
 
@@ -150,25 +127,17 @@ public class FichaFuncionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 	
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	@SuppressWarnings("unused")
-	public String relatorioFichaAntiga() {
+	
+	public void relatorioFichaAntiga() {
 
 		try {
 
 			// validando campos da entidade
 			if ( getEntidade() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
-
-			Map<String, Object> parametros = new HashMap<String, Object>();
-
+			
 	        // pegando a foto
 	        String imagemFichaAntiga = entidade.getPessoal().getFicha();
 
@@ -196,7 +165,6 @@ public class FichaFuncionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 	
 	public String limpaTela() {
@@ -204,10 +172,6 @@ public class FichaFuncionalListBean implements Serializable {
 		return "listar";
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Long getIdFuncional() {return idFuncional;}
 	public void setIdFuncional(Long idFuncional) {this.idFuncional = idFuncional;}
 
@@ -264,22 +228,6 @@ public class FichaFuncionalListBean implements Serializable {
 	public void setLista(List<Funcional> lista) {this.lista = lista;}
 
 	public Funcional getEntidade() {return entidade;}
-	public void setEntidade(Funcional entidade) {this.entidade = entidade;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());			
-		} else if (!passouConsultar) {
-			setEntidade( new Funcional() );
-			matricula = new String();
-			cpf = new String();
-			nome = new String();
-			lista = new ArrayList<Funcional>();
-		}
-		passouConsultar = false;
-		return form;
-	}
+	public void setEntidade(Funcional entidade) {this.entidade = entidade;}	
 
 }

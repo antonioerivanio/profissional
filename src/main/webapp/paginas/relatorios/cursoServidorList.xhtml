@@ -24,28 +24,7 @@
 				document.getElementById('form:somenteCargaHoraria').checked = false;
 				document.getElementById('form:somenteCursoGraduacao').checked = false;
 			}			
-		</script>
-		
-		<style>
-	        .tooltip {
-	            background-color: rgb(243, 242, 242);
-			    border-width: 1px;
-			    padding: 10px;
-			    border-radius: 5px;
-			    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.51);
-	        }
-	        .rich-panel-body {
-	        	padding: 0px; 
-	        }
-	        .rich-panel {
-	        	border-style: none;
-    			padding: 0px;
-    			background-color:#ffffff;
-	        }
-	        .rich-tool-tip{
-	        	border-color: #195297;
-	        }
-    	</style>
+		</script>	
 
 		<div class="titulo-pagina">
 
@@ -53,7 +32,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{cursoServidorListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -112,12 +91,12 @@
 					<div class="radios-group box-15">
 						<rich:panel id="richpane1l">
 					        <label for="form:somenteCargaHoraria">Somente Carga Horária</label>
-					        <rich:toolTip id="tooltip1" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+					        <rich:tooltip id="tooltip1" followMouse="true" direction="topRight" showDelay="100" styleClass="tooltip">
 						            <span style="white-space:nowrap">
 						                Marcar essa opção somente para relatório consolidado <br />
 						                com cargas horárias atingidas por cada servidor do TCE. 
 						            </span>
-					      	</rich:toolTip>
+					      	</rich:tooltip>
 					      	<div class="conteiner">
 						      	<div class="radio-box">
 									<h:selectBooleanCheckbox
@@ -138,12 +117,12 @@
 					<div class="radios-group box-15">
 						<rich:panel id="richpanel2">
 					        <label for="form:somenteCursoGraduacao">Somente Curso Graduação</label>
-					        <rich:toolTip id="toolti2" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+					        <rich:tooltip id="toolti2" followMouse="true" direction="topRight" showDelay="100" styleClass="tooltip">
 						            <span style="white-space:nowrap">
 						                Marcar essa opção somente para relatório consolidado <br />
 						                com cursos de graduação de cada servidor do TCE. 
 						            </span>
-					      	</rich:toolTip>
+					      	</rich:tooltip>
 					      	<div class="conteiner">
 						      	<div class="radio-box">
 									<h:selectBooleanCheckbox

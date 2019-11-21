@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.ServletContext;
@@ -64,15 +64,9 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
- * Use case : SRH_UC022_Manter Pessoa
- * 
- * @since : Out 1, 2011, 5:43:50 PM
- * @author : robstownholanda@ivia.com.br
- */
 @SuppressWarnings("serial")
 @Component("pessoaBean")
-@Scope("session")
+@Scope("view")
 public class PessoaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoaBean.class);
@@ -125,8 +119,6 @@ public class PessoaBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 	private Boolean podeAlterar = null;
 	private Boolean ehServidor = null;
 	private boolean recadastramentoAtivo;
@@ -161,35 +153,49 @@ public class PessoaBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 
-	public String prepareAlterar() {
+	
+	@PostConstruct
+	private void init() {
+		Pessoal flashParameter = (Pessoal)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Pessoal());		
+		if(this.entidade != null) {		
+			try {
+				if (ehServidor()) {
+					this.entidade = pessoalService.getByCpf(loginBean.getCPFUsuarioLogado());
+					try {
+						count = pessoalService.count(loginBean.getUsuarioLogado());
+						limparListas();
+						flagRegistroInicial = -1;
 
-		try {
-			if (ehServidor()) {
-				this.entidade = pessoalService.getByCpf(loginBean.getCPFUsuarioLogado());
-			} else {
-				this.entidade = pessoalService.getById(this.entidade.getId());
-			}			
-			
-			if (ehServidor() || ehProprioCadastro())
-				verificaRecadastramento();
-			
-			atualizaNaturalidade();						
-			
-			buscarCep();
-			
-			dependentes = dependenteService.findByResponsavel(entidade.getId());
-			
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+					} catch (Exception e) {
+						limparListas();
+						FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+						logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+					}					
+					
+				} else {
+					this.entidade = pessoalService.getById(this.entidade.getId());
+				}			
+				
+				if (ehServidor() || ehProprioCadastro())
+					verificaRecadastramento();
+				
+				atualizaNaturalidade();						
+				
+				buscarCep();
+				
+				dependentes = dependenteService.findByResponsavel(entidade.getId());
+				
+	
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
 		}
+		
+	}
 
-		return "incluirAlterar";
-
-	}		
-
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -204,18 +210,14 @@ public class PessoaBean implements Serializable {
 
 			flagRegistroInicial = -1;
 
-			passouConsultar = true;
-
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}	
 
-	public String salvar(boolean finalizar) {
+	public void salvar(boolean finalizar) {
 
 		try {
 
@@ -240,11 +242,15 @@ public class PessoaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
+		
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
 
-		return null;
-	}	
-
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -263,7 +269,7 @@ public class PessoaBean implements Serializable {
 		}
 
 		setEntidade(new Pessoal());
-		return consultar();
+		consultar();
 	}
 	
 	private void verificaRecadastramento() {
@@ -811,35 +817,7 @@ public class PessoaBean implements Serializable {
 	
 	public List<Dependente> getDependentes() {
 		return dependentes;
-	}
-
-	public void setForm(HtmlForm form) {
-		this.form = form;
-	}
-	
-	public HtmlForm getForm() {
-
-		if (ehServidor()) {
-
-			try {
-				count = pessoalService.count(loginBean.getUsuarioLogado());
-				limparListas();
-				flagRegistroInicial = -1;
-
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
-		} else if (!passouConsultar) {
-			limpar();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-
-		passouConsultar = false;
-		return form;
-	}
+	}	
 
 	public UploadedFile getFoto() {
 		return foto;

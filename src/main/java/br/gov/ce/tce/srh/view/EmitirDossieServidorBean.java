@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
@@ -15,24 +15,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Ferias;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.FuncionalAnotacao;
+import br.gov.ce.tce.srh.domain.FuncionalSetor;
+import br.gov.ce.tce.srh.domain.Licenca;
+import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
+import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
+import br.gov.ce.tce.srh.service.FeriasService;
+import br.gov.ce.tce.srh.service.FuncionalAnotacaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.FuncionalSetorService;
+import br.gov.ce.tce.srh.service.LicencaService;
+import br.gov.ce.tce.srh.service.ReferenciaFuncionalService;
+import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
-/**
-* Use case :
-* 
-* @since   : Dez 19, 2011, 17:09:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
-@SuppressWarnings("serial")
-@Component("emitirDossieServidorListBean")
-@Scope("session")
-public class EmitirDossieServidorListBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(EmitirDossieServidorListBean.class);
+@SuppressWarnings("serial")
+@Component("emitirDossieServidorBean")
+@Scope("view")
+public class EmitirDossieServidorBean implements Serializable {
+
+	static Logger logger = Logger.getLogger(EmitirDossieServidorBean.class);
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
@@ -42,11 +49,24 @@ public class EmitirDossieServidorListBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
+	
+	@Autowired
+	private FuncionalSetorService funcionalSetorService;
 
+	@Autowired
+	private ReferenciaFuncionalService referenciaFuncionalService;
 
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
+	@Autowired
+	private FeriasService feriasService;
+	
+	@Autowired
+	private LicencaService licencaService;
+	
+	@Autowired
+	private FuncionalAnotacaoService funcionalAnotacaoService;
+	
+	@Autowired
+	private RepresentacaoFuncionalService representacaoFuncionalService;
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -66,15 +86,29 @@ public class EmitirDossieServidorListBean implements Serializable {
 	// entidades das telas
 	private List<Funcional> lista;
 	private Funcional entidade;
-
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	
+	//Listas
+	private List<ReferenciaFuncional> listaReferenciaFuncional;
+	private List<FuncionalSetor> listaFuncionalSetor;
+	private List<Ferias> listaFerias;
+	private List<Licenca> listaLicenca;
+	private List<FuncionalAnotacao>listaFuncionalAnotacao;
+	private List<RepresentacaoFuncional> listaRepresentacaoFuncional;	
+	
+	@PostConstruct
+	public void init() {
+		Funcional flashParameter = (Funcional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Funcional());
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			lista = new ArrayList<Funcional>();
+			lista.add(entidade); 
+		}
+	}
+	
+	
+	public void consultar() {
 
 		try {
 
@@ -83,9 +117,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
 			lista = new ArrayList<Funcional>();
-			lista.add( getEntidade() ); 
-
-			passouConsultar = true;
+			lista.add( getEntidade() );			
 
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -94,18 +126,30 @@ public class EmitirDossieServidorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
+	}
+	
+	public String visualizar() {
+		
+		FacesUtil.setFlashParameter("entidade", getEntidade());     
+        
+        try {
+    		
+			this.listaReferenciaFuncional = referenciaFuncionalService.findByPessoa(getEntidade().getPessoal().getId());
+			this.listaFuncionalSetor = funcionalSetorService.findByPessoal( entidade.getPessoal().getId() );
+			this.listaFerias = feriasService.findByPessoal( entidade.getPessoal().getId() );
+			this.listaLicenca = licencaService.findByPessoa( entidade.getPessoal().getId() );
+			this.listaFuncionalAnotacao = funcionalAnotacaoService.findByPessoal( entidade.getPessoal().getId() );
+			this.listaRepresentacaoFuncional = representacaoFuncionalService.findByPessoal(entidade.getPessoal().getId());
 
-		return "listar";
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} 
+			
+		return "incluirAlterar";        
 	}
 
-
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -149,8 +193,6 @@ public class EmitirDossieServidorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
 	public String limpaTela() {
@@ -158,9 +200,7 @@ public class EmitirDossieServidorListBean implements Serializable {
 		return "emitirDossieServidorList";
 	}
 
-	/**
-	 * Gets and Sets
-	 */
+	
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -221,14 +261,6 @@ public class EmitirDossieServidorListBean implements Serializable {
 	public void setHistoricoLotacao(boolean historicoLotacao) {this.historicoLotacao = historicoLotacao;}
 
 	public boolean isHistoricoLicenca() {return historicoLicenca;}
-	public boolean getPassouConsultar() {
-		return passouConsultar;
-	}
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
 	public void setHistoricoLicenca(boolean historicoLicenca) {this.historicoLicenca = historicoLicenca;}
 
 	public boolean isHistoricoFerias() {return historicoFerias;}
@@ -264,24 +296,11 @@ public class EmitirDossieServidorListBean implements Serializable {
 			this.anotacaoServidor = false;			
 		}
 	}
-
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());
-			lista = new ArrayList<Funcional>();
-			lista.add(entidade); 
-		} else if (!passouConsultar) {
-			setEntidade( null );
-			matricula = new String();
-			cpf = new String();
-			nome = new String();
-			lista = new ArrayList<Funcional>();
-			setMarcaTodos(false);
-		}
-		passouConsultar = false;
-		return form;
-	}
-
+	
+	public List<ReferenciaFuncional> getListaReferenciaFuncional() {return listaReferenciaFuncional;}
+	public List<FuncionalSetor> getListaFuncionalSetor() {return listaFuncionalSetor;}
+	public List<Ferias> getListaFerias() {return listaFerias;}
+	public List<Licenca> getListaLicenca() {return listaLicenca;}
+	public List<FuncionalAnotacao> getListaFuncionalAnotacao() {return listaFuncionalAnotacao;}
+	public List<RepresentacaoFuncional> getListaRepresentacaoFuncional() {return listaRepresentacaoFuncional;}
 }
