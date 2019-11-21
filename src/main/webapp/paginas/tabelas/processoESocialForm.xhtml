@@ -154,8 +154,7 @@
 								requiredMessage="O UF é obrigatório."
 								value="#{processoESocialFormBean.comboUf}" var="uf"
 								itemValue="#{uf}" itemLabel="#{uf.id}" />
-							<a4j:ajax id="comboUfAction" event="onchange"
-								render="municipio" execute="@this"/>
+							<a4j:ajax event="change" render="municipio" execute="@this"/>
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -228,8 +227,7 @@
 				</div>
 				
 				<h:commandButton value="Adicionar" action="#{processoESocialFormBean.incluirSuspensao}" styleClass="bt-padrao" style="margin-top: 44px;" >
-					<a4j:ajax id="btAdicionarSuspensao" 
-				  	             event="onclick"
+					<a4j:ajax event="click"
 				  	             render="indicativoSuspensao, dataDecisao, indicativoDeposito, listaSuspensoes" />
 				</h:commandButton>
 				
@@ -273,10 +271,9 @@
 						<h:column id="col5">
 	                       	<f:facet name="header">EDITAR</f:facet>
 	                       	<ui:fragment rendered="#{suspensao.id != null}">
-		                       	<a4j:commandLink id="editar"
-		                       				   value="Editar"			                       				 
+		                       	<a4j:commandLink value="Editar"			                       				 
 		                       				   styleClass="ico-editar"
-		                       				   oncomplete="Richfaces.showModalPanel('modal');"
+		                       				   oncomplete="#{rich:component('modal')}.show();"
 		                       				   render="modal" >
 		                        	<f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />		                       				  
 		                        </a4j:commandLink>
@@ -364,9 +361,9 @@
 	
 				<div class="modal-actions" style="padding-bottom:0;">						
 					<h:commandLink value="Salvar" action="#{processoESocialFormBean.salvarSuspensao}" styleClass="bt-padrao fr">
-						<a4j:ajax event="click" oncomplete="Richfaces.hideModalPanel('modal');"	/>
+						<a4j:ajax event="click" oncomplete="#{rich:component('modal')}.hide()"	/>
 					</h:commandLink>	
-					<a href="#" onclick="Richfaces.hideModalPanel('modal');" class="bt-padrao fr mg-right-15">Cancelar</a>
+					<a href="#" onclick="#{rich:component('modal')}.hide()" class="bt-padrao fr mg-right-15">Cancelar</a>
 				</div>					
 			
 			</h:form>							

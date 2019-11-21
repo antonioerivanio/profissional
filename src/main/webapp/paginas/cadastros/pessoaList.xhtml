@@ -64,7 +64,7 @@
 								rows="#{pessoaBean.dataModel.pageSize}" 
 								value="#{pessoaBean.dataModel}" >
 
-                    <h:column id="col2" headerClass="cel-25">
+                    <rich:column id="col2" headerClass="cel-25">
                         <f:facet name="header">
                             CPF
                         </f:facet>
@@ -73,14 +73,14 @@
 	                        	 <f:converter converterId="cpfConverter" />
 	                        </h:outputText>
 	                    </center>
-                    </h:column>
-                    <h:column id="col3" headerClass="cel-50">
+                    </rich:column>
+                    <rich:column id="col3" headerClass="cel-50">
                         <f:facet name="header">
                             Nome
                         </f:facet>
                         <h:outputText id="item3" value="#{item.nomeCompleto}" styleClass="cel-50" />
-                    </h:column>
-                    <h:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                    </rich:column>
+                    <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
                             DETALHAR
                         </f:facet>
@@ -90,8 +90,8 @@
                        				  styleClass="ico-detail" >
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </h:commandLink>
-                    </h:column>                    
-                	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                    </rich:column>                    
+                	<rich:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -101,8 +101,8 @@
                        				  styleClass="ico-editar" >
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </h:commandLink>
-                    </h:column>
-                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
+                    </rich:column>
+                	<rich:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -113,7 +113,7 @@
                         			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </h:commandLink>
-                    </h:column>
+                    </rich:column>
 
 				</rich:dataTable>
 				<rich:dataScroller  id="scroller" 

@@ -59,7 +59,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{representacaoFuncionalFormBean.alterarMenu or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')) }"
 									 value="#{representacaoFuncionalFormBean.matricula}">
-							<a4j:ajax event="onchange"
+							<a4j:ajax event="change"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, setor, representacaoCargo"
 										 execute="@this" />
 						</h:inputText>
@@ -181,8 +181,7 @@
 									   itemValue="#{setor}"
 									   itemLabel="#{setor.nome}" />
 
-					    <a4j:ajax id="carregaCargo"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="noDocumento"
 					  				 action="#{representacaoFuncionalFormBean.carregaCargo}"

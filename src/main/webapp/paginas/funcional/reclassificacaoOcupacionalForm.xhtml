@@ -135,8 +135,7 @@
 						  					itemValue="#{tipoOcupacao}"
 						  					itemLabel="#{tipoOcupacao.descricao}"/>
 						  					
-						  	<a4j:ajax id="carregaCargoFuncao"
-					  				 event="onchange" 
+						  	<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCargoFuncao}"
 					  				 render="tipoCargoFuncao"/>
@@ -158,8 +157,7 @@
 						   				   itemValue="#{tipoCargoFuncao}"
 						   				   itemLabel="#{tipoCargoFuncao.nomenclatura}"/>
 						   				   
-				  			<a4j:ajax id="carregaClasseReferencia"
-					  				 event="onchange" 
+				  			<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{reclassificacaoOcupacionalFormBean.carregaClasseReferencia}"
 					  				 render="tipoClasseReferencia"/>
@@ -205,8 +203,7 @@
 						   				   itemValue="#{cbo1}"
 						   				   itemLabel="#{cbo1.codigo} - #{cbo1.descricao}"/>
 						   				   
-					    <a4j:ajax id="carregaCbo2"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo2}"
 					  				 render="cbo2"/>
@@ -227,8 +224,7 @@
 						   				   itemValue="#{cbo2}"
 						   				   itemLabel="#{cbo2.codigo} - #{cbo2.descricao}"/>
 
-					    <a4j:ajax id="carregaCbo3"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo3}"
 					  				 render="cbo3"/>
@@ -249,8 +245,7 @@
 						   				   itemValue="#{cbo3}"
 						   				   itemLabel="#{cbo3.codigo} - #{cbo3.descricao}"/>
 
-					    <a4j:ajax id="carregaCbo4"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo4}"
 					  				 render="cbo4"/>
@@ -361,7 +356,7 @@
 									 maxlength="10"
 									 value="#{reclassificacaoOcupacionalFormBean.entidade.doeNomeacao}" 
 									 disabled="#{not reclassificacaoOcupacionalFormBean.exibirTodosOsCampos}">
-							<a4j:ajax event="onchange" execute="@this"/> 
+							<a4j:ajax event="change" execute="@this"/> 
 						</h:inputText>
 					</div>
 				</div>

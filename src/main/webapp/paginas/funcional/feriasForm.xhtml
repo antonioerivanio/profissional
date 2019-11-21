@@ -62,7 +62,7 @@
 									 styleClass="maskMatricula"									 
 									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
 									 value="#{feriasFormBean.matricula}">
-							<a4j:ajax event="onchange"
+							<a4j:ajax event="change"
 										 focus="tipoFerias"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
@@ -162,8 +162,7 @@
 					  						var="tipoFerias"
 					  						itemValue="#{tipoFerias}"
 					  						itemLabel="#{tipoFerias.descricao}"/>					  						
-					  		<a4j:ajax id="atualizaDatas"
-					  				 event="onchange" 
+					  		<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{feriasFormBean.atualizaBloqueioDeDatas}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
@@ -205,7 +204,7 @@
 									 value="#{feriasFormBean.inicial}"
 									 maxlength="10"
 									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:ajax event="onchange" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
+							<a4j:ajax event="change" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -219,7 +218,7 @@
 									 value="#{feriasFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:ajax event="onchange" focus="tipoPublicacao" render="qtdeDias, messages" execute="@this"/>
+							<a4j:ajax event="change" focus="tipoPublicacao" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>			  
 					</div>
 				</div>

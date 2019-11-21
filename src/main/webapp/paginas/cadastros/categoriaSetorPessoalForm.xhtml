@@ -79,7 +79,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{categoriaSetorPessoalFormBean.passouConsultar}"
 									 value="#{categoriaSetorPessoalFormBean.matricula}">
-							<a4j:ajax event="onchange"
+							<a4j:ajax 	 event="change"
 										 focus="tipoFerias"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
@@ -173,8 +173,7 @@
 						  					itemValue="#{setor}"
 						  					itemLabel="#{setor.nome}"
 						  					/>
-						  	<a4j:ajax 	id="carregaCategorias"
-						  		 	 		event="onchange" 
+						  	<a4j:ajax 		event="change" 
 					  				 		execute="@this"					  				 		
 					  				 		render="categoria"/>
 						</h:selectOneMenu>
@@ -184,8 +183,7 @@
 				<div class="radio-box fl mg-top-25">
 					 Exibir somente setores ativos
 					 <h:selectBooleanCheckbox value="#{categoriaSetorPessoalFormBean.setoresAtivos}" id="setoresAtivos" >
-					 	<a4j:ajax id="atualizaSetores" 
-									 event="onclick"
+					 	<a4j:ajax 	 event="click"
 									 execute="@this" 
 									 render="cmbSetor" />									
 					 </h:selectBooleanCheckbox>

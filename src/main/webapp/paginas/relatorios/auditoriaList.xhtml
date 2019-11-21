@@ -51,8 +51,7 @@
 					  					var="tipoRevisao"
 					  					itemValue="#{tipoRevisao.id}"
 					  					itemLabel="#{tipoRevisao.descricao}"/>
-					  	<a4j:ajax id="selecionaTipoEvento"
-				  				 event="onchange" 
+					  	<a4j:ajax event="change" 
 				  				 execute="@this"	
 				  				 focus="iptUsuario"
 				  				 action="#{consultarAuditoriaBean.tipoEventoSelecionado}"/>
@@ -71,8 +70,7 @@
 					  					var="usuario"
 					  					itemValue="#{usuario.id}"
 					  					itemLabel="#{usuario.nome}"/>
-					  	<a4j:ajax id="selecionaUsuario"
-					  				 event="onchange" 
+					  	<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="iptPessoal"
 					  				 action="#{consultarAuditoriaBean.usuarioSelecionado}"/>
@@ -91,8 +89,7 @@
 					  					var="pessoal"
 					  					itemValue="#{pessoal.id}"
 					  					itemLabel="#{pessoal.nome}"/>
-					  	<a4j:ajax id="selecionaPessoal"
-					  				 event="onchange" 
+					  	<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="iptEntidade"
 					  				 action="#{consultarAuditoriaBean.pessoalSelecionado}"/>
@@ -111,8 +108,7 @@
 					  					var="entidade"
 					  					itemValue="#{entidade.simpleName}"
 					  					itemLabel="#{entidade.simpleName}"/>
-					  	<a4j:ajax id="carregaIptEntidade"
-				  				 event="onchange" 
+					  	<a4j:ajax event="change" 
 				  				 execute="@this"	
 				  				 focus="iptAtributo"
 				  				 action="#{consultarAuditoriaBean.entidadeSelecionada}"

@@ -39,7 +39,7 @@
 								 maxlength="6"
 								 styleClass="maskMatricula"
 								 value="#{averbacaoListBean.matricula}" >
-            			<a4j:ajax id="matriculaChange" event="onchange" focus="cpf" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
+            			<a4j:ajax event="change" focus="cpf" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
         			</h:inputText>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{averbacaoListBean.cpf}" >
-						<a4j:ajax id="cpfChange" event="onchange" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
+						<a4j:ajax event="change" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>

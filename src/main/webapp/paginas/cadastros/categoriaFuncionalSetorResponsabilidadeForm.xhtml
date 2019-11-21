@@ -37,8 +37,7 @@
 						  					itemValue="#{setor}"
 						  					itemLabel="#{setor.nome}"
 						  					/>
-						  	<a4j:ajax 	id="carregaCategorias"
-						  		 	 		event="onchange" 
+						  	<a4j:ajax 		event="change" 
 					  				 		execute="@this"					  				 		
 					  				 		render="categoria"/>
 						</h:selectOneMenu>
@@ -48,8 +47,7 @@
 				<div id="div4" class="radio-box fl mg-top-25">
 					 Exibir somente setores ativos
 					 <h:selectBooleanCheckbox id="setoresAtivos" value="#{categoriaFuncionalSetorResponsabilidadeFormBean.setoresAtivos}" >
-					 	<a4j:ajax id="atualizaSetores" 
-									 event="onclick"
+					 	<a4j:ajax 	 event="click"
 									 execute="@this" 
 									 render="cmbSetor" />									
 					 </h:selectBooleanCheckbox>

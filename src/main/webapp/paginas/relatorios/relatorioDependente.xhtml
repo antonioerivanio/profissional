@@ -43,7 +43,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{relatorioDependenteBean.cpf}"	>
-						<a4j:ajax id="cpfChange" event="onblur" render="messages,cpf,nomeCompletoPessoa,tipoDependencia,prev,ir,sf,univ" execute="@this" />
+						<a4j:ajax event="blur" render="messages,cpf,nomeCompletoPessoa,tipoDependencia,prev,ir,sf,univ" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>

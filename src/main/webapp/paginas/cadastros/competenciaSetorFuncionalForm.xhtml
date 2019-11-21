@@ -25,8 +25,7 @@
 					  	<f:selectItem id="selecioneTipo" itemLabel="Todos..." itemValue="0" />					  	
 						<f:selectItem id="siComportamental" itemLabel="Comportamental" itemValue="2" />
 						<f:selectItem id="siTecnica" itemLabel="Técnica" itemValue="1" />
-						<a4j:ajax id="carregaCompetencia"
-					  				 event="onchange" 
+						<a4j:ajax 	 event="change" 
 					  				 execute="@this"
 					  				 action="#{competenciaSetorFuncionalFormBean.carregaCompetencia}"	
 					  				 render="competencia"/>
@@ -64,8 +63,7 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-						<a4j:ajax id="carregaCategoria"
-					  				 event="onchange" 
+						<a4j:ajax 	 event="change" 
 					  				 execute="@this"
 					  				 action="#{competenciaSetorFuncionalFormBean.carregaCategoria}"	
 					  				 render="categoria"/>

@@ -65,8 +65,7 @@
 							  					var="area"
 							  					itemValue="#{area}"
 							  					itemLabel="#{area.descricao}"/>
-						  		<a4j:ajax id="carregaCurso" 
-						  					 event="onchange" 
+						  		<a4j:ajax 	 event="change" 
 						  					 execute="@this"
 						  					 action="#{pessoalCursoProfissionalFormBean.carregaCurso}"
 						  				 	 render="curso"/>
@@ -87,8 +86,7 @@
 							  					var="curso"
 							  					itemValue="#{curso}"
 							  					itemLabel="#{curso.descricao}"/>
-						  		<a4j:ajax id="carregaInstituicao" 
-						  					 event="onchange" 
+						  		<a4j:ajax 	 event="change" 
 						  					 execute="@this"
 						  					 action="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
 						  				 	 render="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
@@ -288,7 +286,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{pessoalCursoProfissionalFormBean.matricula}" >
-	            			<a4j:ajax id="matriculaChange" event="onchange" focus="cpf" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
+	            			<a4j:ajax event="change" focus="cpf" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -301,7 +299,7 @@
 								 maxlength="14"
 								 styleClass="maskCpf"
 								 value="#{pessoalCursoProfissionalFormBean.cpf}" >
-            			<a4j:ajax event="onchange" focus="nomeCompletoPessoa" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
+            			<a4j:ajax event="change" focus="nomeCompletoPessoa" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
         			</h:inputText>
 
 				</div>

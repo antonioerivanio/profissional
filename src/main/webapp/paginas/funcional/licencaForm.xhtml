@@ -61,8 +61,7 @@
 								 styleClass="maskMatricula"
 								 value="#{licencaFormBean.matricula}"
 								 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }" >
-						<a4j:ajax id = "matriculaEvent"
-									 event="onblur"
+						<a4j:ajax event="blur"
 									 focus="processo"
 									 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 									 execute="@this" />
@@ -159,8 +158,7 @@
 									 maxlength="10"
 									 value="#{licencaFormBean.nrProcesso}"
 									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >
-							<a4j:ajax id="processoEvent" 
-										 event="onchange" 
+							<a4j:ajax event="change" 
 										 focus="tipoLicenca" 
 										 render="messages"
 										 execute="@this" />
@@ -182,8 +180,7 @@
 						  					var="tipoLicenca"
 						  					itemValue="#{tipoLicenca}"
 						  					itemLabel="#{tipoLicenca.descricao}" />
-				  			<a4j:ajax id="carregaLicencaEspecial"
-					  				 	 event="onchange" 
+				  			<a4j:ajax event="change" 
 					  				 	 execute="@this"	
 					  				 	 action="#{licencaFormBean.carregaLicencaEspecial}"
 					  				 	 render="licencaEspecial"/>
@@ -207,8 +204,7 @@
 							  					var="licencaEspecial"
 							  					itemValue="#{licencaEspecial}"
 							  					itemLabel="Período: #{licencaEspecial.anoinicial} / #{licencaEspecial.anofinal}  - Saldo em Dias: #{licencaEspecial.saldodias}" />
-								<a4j:ajax id="licencaEspecialChange" 
-											 event="onchange" 
+								<a4j:ajax event="change" 
 											 render="contarDiasEmDobroFragment, publicacaoEvent" 
 											 execute="@this" />
 							</h:selectOneMenu>
@@ -267,8 +263,7 @@
 									 value="#{licencaFormBean.entidade.doe}"
 									 maxlength="10"
 									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >							
-							<a4j:ajax id="publicacaoEvent" 
-										 event="onblur"
+							<a4j:ajax event="blur"
 										 actionListener="#{licencaFormBean.atualizarCampos()}" 
 										 execute="@this" 
 										 render="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
@@ -310,8 +305,7 @@
 										 maxlength="2"										 
 										 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }">
 							
-								<a4j:ajax id="contarDiasEmDobroEvent" 
-											 event="onblur"
+								<a4j:ajax event="blur"
 											 actionListener="#{licencaFormBean.atualizarCampos()}" 
 											 execute="@this" 
 											 render="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"

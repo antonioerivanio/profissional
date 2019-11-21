@@ -60,7 +60,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{licencaEspecialFormBean.alterar}"
 									 value="#{licencaEspecialFormBean.matricula}">
-							<a4j:ajax event="onchange"
+							<a4j:ajax event="change"
 										 focus="anoInicial"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
@@ -160,7 +160,7 @@
 									 required="true"
 									 requiredMessage="O ano inicial é obrigatório." 
 									 onkeyup="SoNumeros(this)" >
-							<a4j:ajax event="onchange" focus="anoFinal" render="qtdeDias, messages" execute="@this" />
+							<a4j:ajax event="change" focus="anoFinal" render="qtdeDias, messages" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -175,7 +175,7 @@
 									 required="true"
 									 requiredMessage="O ano final é obrigatório." 
 									 onkeyup="SoNumeros(this)" >
-							<a4j:ajax event="onchange" focus="saldoDobro" render="qtdeDias, messages" execute="@this" />
+							<a4j:ajax event="change" focus="saldoDobro" render="qtdeDias, messages" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>

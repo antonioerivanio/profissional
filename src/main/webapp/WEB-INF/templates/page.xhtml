@@ -14,7 +14,7 @@
    	    <title>SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceará</title>
         <link rel="stylesheet" type="text/css" media="all" href="/srh/css/geral.css?v=#{dateGetTime}" />
         <link rel="shortcut icon" href="/srh/favicon.ico" />
-        <script type="text/javascript" src="/srh/js/jquery-1.6.2.min.js"/>
+        <script type="text/javascript" src="/srh/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="/srh/js/tce-js-effects.js"/>
         <script type="text/javascript" src="/srh/js/jquery.maskMoney.js"/>
         <script type="text/javascript" src="/srh/js/jquery.tablesorter.min.js"/>
@@ -23,17 +23,6 @@
         <script type="text/javascript" src="/srh/js/licencaForm.js"/>
         <script type="text/javascript" src="/srh/js/feriasForm.js"/>
         <script type="text/javascript" src="/srh/js/sessaoUtil.js?v=#{dateGetTime}"></script>
-
-        <script type="application/x-javascript">
-        	jQuery.noConflict();
-            jQuery(document).ready(function($) {
-                $("#myTable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});
-                $('select option').each(function(){
-					var $this = $(this);
-					$this.text($this.text().substring(0, 80));
-				});
-            });
-        </script>
 
 		<style>
 		.infoMessage {
@@ -128,14 +117,18 @@
 	
 	        </div>
 	
-			<!-- Modal Loading -->
-			<rich:popupPanel id="panel_loading" autosized="true" >
-				<h:graphicImage id="icone-aguarde" url="/img/loading.gif" style="border:0px; vertical-align: middle;" />				
-				<center><h:outputText value="Aguarde..." /></center>
+			<!-- Modal Loading --> 			
+ 			<rich:popupPanel id="panel_loading" autosized="true" top="#{top}" width="#{width}">
+				<h:panelGrid columns="2">
+					<h:graphicImage url="/img/loading.gif" style="border:0px; vertical-align: middle;" />
+					<center><h:outputText value="Aguarde..." /></center>
+				</h:panelGrid>
 			</rich:popupPanel>
-	
-			<a4j:status id="loading" onstart="Richfaces.showModalPanel('panel_loading')" onstop="Richfaces.hideModalPanel('panel_loading')" />
-
+		
+			<a4j:status 
+				onstart="#{rich:component('panel_loading')}.show()"
+				onstop="#{rich:component('panel_loading')}.hide()" />
+ 			
     	</f:view>
 
     </h:body>

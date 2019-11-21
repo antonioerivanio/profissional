@@ -40,7 +40,7 @@
 								 maxlength="6"
 								 styleClass="maskMatricula"
 								 value="#{licencaEspecialListBean.matricula}" >
-            			<a4j:ajax id="matriculaChange" event="onchange" focus="cpf" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
+            			<a4j:ajax event="change" focus="cpf" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
         			</h:inputText>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{licencaEspecialListBean.cpf}" >
-						<a4j:ajax id="cpfChange" event="onchange" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
+						<a4j:ajax event="change" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>

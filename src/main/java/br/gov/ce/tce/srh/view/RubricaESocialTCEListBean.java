@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.RubricaESocialTCE;
@@ -19,7 +19,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
 @Component("rubricaESocialTCEListBean")
-@Scope("view")
+@ViewScoped
 public class RubricaESocialTCEListBean implements Serializable{
 
 	static Logger logger = Logger.getLogger(RubricaESocialTCEListBean.class);
@@ -39,7 +39,7 @@ public class RubricaESocialTCEListBean implements Serializable{
 	
 	@PostConstruct
 	private void init() {
-		FacesUtil.setFlashParameter("entidade", null);
+//		FacesUtil.setFlashParameter("entidade", null);
     }
 
 	public void consultar() {
@@ -49,6 +49,8 @@ public class RubricaESocialTCEListBean implements Serializable{
 			limparListas();
 
 			rubricaESocialTCEList = service.search(this.descricao, null, null);
+			
+			pagedList = rubricaESocialTCEList;
 
 			count = rubricaESocialTCEList.size();
 
@@ -127,11 +129,11 @@ public class RubricaESocialTCEListBean implements Serializable{
 		this.pagedList = pagedList;
 	}
 
-	public Integer getPagina() {
+	public int getPagina() {
 		return pagina;
 	}
 
-	public void setPagina(Integer pagina) {
+	public void setPagina(int pagina) {
 		this.pagina = pagina;
 	}
 

@@ -46,7 +46,7 @@
 								 converter="cpfConverter"
 								 value="#{abonoPermanenciaFormBean.cpf}"
 								 disabled="#{(not LoginBean.anyGranted('ROLE_ABONOPERMANENCIA_INSERIR,ROLE_ABONOPERMANENCIA_ALTERAR')) or abonoPermanenciaFormBean.alterar }">
-						<a4j:ajax id="cpfChange" event="onblur" render="messages, nomeCompletoPessoa, cpf, funcional" execute="@this" />
+						<a4j:ajax event="blur" render="messages, nomeCompletoPessoa, cpf, funcional" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 								 maxlength="10"
 								 value="#{abonoPermanenciaFormBean.nrProcesso}"
 								 disabled="#{not LoginBean.anyGranted('ROLE_ABONOPERMANENCIA_INSERIR,ROLE_ABONOPERMANENCIA_ALTERAR')}" >
-					<a4j:ajax event="onchange" focus="processo" render="messages" execute="@this" />
+					<a4j:ajax event="change" focus="processo" render="messages" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>

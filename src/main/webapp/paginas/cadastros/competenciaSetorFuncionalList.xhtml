@@ -24,8 +24,7 @@
 						<f:selectItem id="siSelecione1" itemLabel="Selecione..." />
 						<f:selectItems id="siSetor" value="#{competenciaSetorFuncionalListBean.comboSetor}" 
 							var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
-						<a4j:ajax id="carregaCategoriaFuncional"
-					  				 event="onchange" 
+						<a4j:ajax 	 event="change" 
 					  				 execute="@this"	
 					  				 focus="cmbCategoriaFuncional"
 					  				 action="#{competenciaSetorFuncionalListBean.carregaCategoriaFuncional}"

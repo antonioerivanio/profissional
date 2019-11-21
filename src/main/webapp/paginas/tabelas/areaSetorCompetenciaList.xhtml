@@ -32,8 +32,7 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-					  	<a4j:ajax id="carregaArea" 
-					  				 event="onchange" 
+					  	<a4j:ajax event="change" 
 					  				 execute="@this"
 					  				 action="#{areaSetorCompetenciaListBean.carregaArea}"
 					  				 render="area,competencia,lista"/>
@@ -53,8 +52,7 @@
 					  					var="area"
 					  					itemValue="#{area}"
 					  					itemLabel="#{area.descricao}"/>
-					  	<a4j:ajax id="carregaCompetencia"
-					  				 event="onchange" 
+					  	<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{areaSetorCompetenciaListBean.carregaCompetencia}" 
 					  				 render="competencia,lista"/>

@@ -42,10 +42,9 @@
 				<div class="radio-box fl mg-top-25">
 					 Exibir somente setores ativos	
 					 <h:selectBooleanCheckbox value="#{atribuicaoSetorFormBean.setoresAtivos}" id="setoresAtivos" >
-					 	<a4j:ajax id="atualizaSetores" 
-									 event="onclick"
-									 execute="@this" 
-									 render="cmbSetor" />									
+					 	<a4j:ajax 	event="click"
+								 	execute="@this" 
+									render="cmbSetor" />									
 					 </h:selectBooleanCheckbox>
 				</div>				
 			

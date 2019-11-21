@@ -60,8 +60,7 @@
             <div class="conteiner">
        			<h:inputHidden 
 					id="idPessoa"
-					value="#{nomeacaoServidorFormBean.pessoa}">
-					<a4j:ajax event="onchange" render="nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf" execute="@this" />
+					value="#{nomeacaoServidorFormBean.pessoa}">					
 				</h:inputHidden>
 			</div>
 
@@ -151,8 +150,7 @@
 							disabled="#{nomeacaoServidorFormBean.alterar or not nomeacaoServidorFormBean.exibirTodosOsCampos}"
 							value="#{nomeacaoServidorFormBean.digitarMatricula}" 
 							>
-							<a4j:ajax id="digitarMatriculaEvento" 
-									 event="onclick"
+							<a4j:ajax event="click"
 									 execute="@this" 
 									 render="matriculaFuncional" oncomplete=" jQuery('.maskMatricula').mask('9999-9',{placeholder:' '});"/>
 						</h:selectBooleanCheckbox>
@@ -274,7 +272,7 @@
 					   					var="tipoFolha"
 					   					itemValue="#{tipoFolha}"
 					   					itemLabel="#{tipoFolha.descricao}"/>
-					   	<a4j:ajax event="onchange" focus="tipoOcupacao" execute="@this" />
+					   	<a4j:ajax event="change" focus="tipoOcupacao" execute="@this" />
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -293,8 +291,7 @@
 					  					itemValue="#{tipoOcupacao}"
 					  					itemLabel="#{tipoOcupacao.descricao}"/>
 
-					    <a4j:ajax id="carregaCargoFuncao"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="tipoCargoFuncao"
 					  				 action="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
@@ -318,8 +315,7 @@
 					   				   itemValue="#{tipoCargoFuncao}"
 					   				   itemLabel="#{tipoCargoFuncao.nomenclatura} - #{tipoCargoFuncao.descricaoSituacao}"/>
 					   				   
-					    <a4j:ajax id="carregaClasseReferencia"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="tipoClasseReferencia"
 					  				 action="#{nomeacaoServidorFormBean.carregaClasseReferenciaEhEspecialidadeCargo}"
@@ -360,8 +356,7 @@
 					   				   itemValue="#{especialidadeCargo}"
 					   				   itemLabel="#{especialidadeCargo.especialidade.descricao}"/>
 					   				   
-						<a4j:ajax id="carregaOrientacaoCargo"
-					  				 event="onchange" 
+						<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="tipoOrientacaoCargo"
 					  				 action="#{nomeacaoServidorFormBean.carregaOrientacaoCargo}"
@@ -419,8 +414,7 @@
 					   				   itemValue="#{vinculo}"
 					   				   itemLabel="#{vinculo.descricao}"/>
 					   				   
-		   				<a4j:ajax id="carregaOrgaoEhSalario"
-					  				 event="onchange" 
+		   				<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{nomeacaoServidorFormBean.carregaOrgaoEhSalario}"
 					  				 render="orgaoOrigem,salario"/>
@@ -561,8 +555,7 @@
 						   				   itemValue="#{cbo1}"
 						   				   itemLabel="#{cbo1.codigo} - #{cbo1.descricao}"/>
 						   				   
-					    <a4j:ajax id="carregaCbo2"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{nomeacaoServidorFormBean.carregaCbo2}"
 					  				 render="cbo2"/>
@@ -583,8 +576,7 @@
 						   				   itemValue="#{cbo2}"
 						   				   itemLabel="#{cbo2.codigo} - #{cbo2.descricao}"/>
 
-					    <a4j:ajax id="carregaCbo3"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{nomeacaoServidorFormBean.carregaCbo3}"
 					  				 render="cbo3"/>
@@ -605,8 +597,7 @@
 						   				   itemValue="#{cbo3}"
 						   				   itemLabel="#{cbo3.codigo} - #{cbo3.descricao}"/>
 
-					    <a4j:ajax id="carregaCbo4"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{nomeacaoServidorFormBean.carregaCbo4}"
 					  				 render="cbo4"/>
@@ -657,8 +648,7 @@
 					   				   itemValue="#{leiIncorporacao}"
 					   				   itemLabel="#{leiIncorporacao.descricao}"/>
 					   				   
-					    <a4j:ajax id="carregaQtdQuintos"
-					  				 event="onchange" 
+					    <a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{nomeacaoServidorFormBean.carregaQtdQuintos}"
 					  				 render="qtdQuintos"/>
@@ -691,8 +681,7 @@
 						<f:selectItem itemLabel="SUPSEC" itemValue="2" id="supsec"/>
 						<f:selectItem itemLabel="INSS" itemValue="3" id="inss"/>
 						<f:selectItem itemLabel="SEM PREVIDÊNCIA" itemValue="4" id="semprev"/>
-						<a4j:ajax id="carregaPrevidenciaSupSec" 
-								 	 event="onclick" 
+						<a4j:ajax event="click" 
 								 	 execute="@this"
 								 	 action="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}"
 								 	 render="abonoPrevidenciario,SupSecIntegral"/>

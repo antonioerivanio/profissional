@@ -40,7 +40,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{tempoRepresentacaoFuncionalListBean.matricula}" >
-	            			<a4j:ajax id="matriculaChange" event="onchange" render="message, cpf, nomeCompletoPessoa, matricula, cargo" execute="@this" />
+	            			<a4j:ajax event="change" render="message, cpf, nomeCompletoPessoa, matricula, cargo" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 value="#{tempoRepresentacaoFuncionalListBean.cpf}" >
-							<a4j:ajax id="cpfChange" event="onchange" render="message, matricula, nomeCompletoPessoa, cpf, cargo" execute="@this" />
+							<a4j:ajax event="change" render="message, matricula, nomeCompletoPessoa, cpf, cargo" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>

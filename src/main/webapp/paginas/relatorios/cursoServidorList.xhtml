@@ -69,7 +69,7 @@
 									 styleClass="maskMatricula"
 									 value="#{cursoServidorListBean.matricula}"
 									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-	            			<a4j:ajax id="matriculaChange" event="onchange" focus="cpf" render="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" execute="@this" />
+	            			<a4j:ajax event="change" focus="cpf" render="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 									 converter="cpfConverter"
 									 value="#{cursoServidorListBean.cpf}"
 									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-							<a4j:ajax id="cpfChange" event="onchange" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" execute="@this" />
+							<a4j:ajax event="change" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -124,8 +124,8 @@
 										id="somenteCargaHoraria"
 										value="#{cursoServidorListBean.somenteCargaHoraria}"
 										disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
-											<a4j:ajax id="somenteCargaHorariaClick" 
-											 event="onclick"
+											<a4j:ajax
+											 event="click"
 											 action="#{cursoServidorListBean.somenteCargaHorariaAction}"
 											 execute="@this" 
 											 render="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCursoGraduacao, consultar" />
@@ -150,8 +150,8 @@
 										id="somenteCursoGraduacao"
 										value="#{cursoServidorListBean.somenteCursoGraduacao}"
 										disabled="#{cursoServidorListBean.somenteCargaHoraria}">
-											<a4j:ajax id="somenteCursoGraduacaoClick" 
-											 event="onclick"
+											<a4j:ajax 
+											 event="click"
 											 action="#{cursoServidorListBean.somenteCursoGraduacaoAction}"
 											 execute="@this" 
 											 render="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCargaHoraria, dataInicio, dataFim, atuacao, posGraduacao, profissional, consultar"
@@ -217,8 +217,7 @@
 					  					itemValue="#{tipo}"
 					  					itemLabel="#{tipo.descricao}"/>					
 						
-						<a4j:ajax id="tipoCursoChange" 
-											 event="onchange"
+						<a4j:ajax event="change"
 											 action="#{cursoServidorListBean.tipoCursoAction}"
 											 execute="@this" 
 											 render="somentePosGraduacao, messages, lista, scroller" />
@@ -236,8 +235,7 @@
 							value="#{cursoServidorListBean.somentePosGraduacao}"
 							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
 							
-							<a4j:ajax id="somentePosGraduacaoClick" 
-											 event="onclick"
+							<a4j:ajax event="click"
 											 action="#{cursoServidorListBean.somentePosGraduacaoAction}"
 											 execute="@this" 
 											 render="tipoCurso, messages, lista, scroller" />

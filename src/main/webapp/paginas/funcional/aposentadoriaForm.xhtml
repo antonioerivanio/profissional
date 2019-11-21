@@ -97,7 +97,7 @@
 									 styleClass="maskMatricula"									 
 									 disabled="#{aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR'))}"
 									 value="#{aposentadoriaFormBean.matricula}">
-							<a4j:ajax event="onblur"
+							<a4j:ajax event="blur"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, mensagemRepresentacao"
 										 execute="@this" />
 						</h:inputText>
@@ -262,8 +262,7 @@
 									 maxlength="10"
 									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
 							<a4j:ajax rendered = "#{not aposentadoriaFormBean.alterar}"
-										 id="dataInicioBeneficioChange" 
-										 event="onchange" 
+										 event="change" 
 										 action="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
 										 render="mensagemLotacao" 
 										 execute="@this" />			 

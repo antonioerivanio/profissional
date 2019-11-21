@@ -187,8 +187,7 @@
 									 styleClass="maskData"
 									 value="#{exoneracaoFormBean.funcional.saida}" 
 									 maxlength="10">
-							<a4j:ajax id="dataFinalChange" 
-										 event="onblur" 
+							<a4j:ajax 	 event="blur" 
 										 actionListener="#{exoneracaoFormBean.verificaFeriasPosterior()}" 
 										 execute="@this" 
 										 render="existeFeriasPosterior" />									 

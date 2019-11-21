@@ -45,8 +45,7 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-					  	<a4j:ajax id="carregaArea" 
-					  				 event="onchange" 
+					  	<a4j:ajax event="change" 
 					  				 execute="@this"
 					  				 action="#{areaSetorCompetenciaFormBean.carregarCategorias}"
 					  				 render="area"/>

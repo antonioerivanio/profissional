@@ -207,8 +207,7 @@
 							  					var="uf"
 							  					itemValue="#{uf}"
 							  					itemLabel="#{uf.id}"/>
-							  	<a4j:ajax id="comboUfAction" 
-							  	             event="onchange"							  	            
+							  	<a4j:ajax 	 event="change"							  	            
 							  	             render="municipioNaturalidade" />
 							</h:selectOneMenu>
 						</div>
@@ -378,8 +377,7 @@
 										 styleClass="maskCep"
 										 value="#{pessoaBean.entidade.cep}" 
 										 disabled="#{not pessoaBean.podeAlterar()}">
-								<a4j:ajax id="cepAction" 
-							  	             event="onblur"
+								<a4j:ajax 	 event="blur"
 							  	             action="#{pessoaBean.buscarCep()}"
 							  	             render="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
 							</h:inputText>			 
@@ -457,8 +455,7 @@
 							  					var="ufEndereco"
 							  					itemValue="#{ufEndereco}"
 							  					itemLabel="#{ufEndereco.id}"/>
-							  	<a4j:ajax id="comboUfEnderecoAction" 
-							  	             event="onchange"							  	            
+							  	<a4j:ajax    event="change"							  	            
 							  	             render="municipioEndereco" />
 							</h:selectOneMenu>
 						</div>
@@ -1019,7 +1016,7 @@
 			<div class="bt-conteiner">				
 				
 				<ui:fragment rendered="#{pessoaBean.cadastroAindaNaoFinalizado()}">
-					<a onclick="Richfaces.showModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr">Finalizar</a>
+					<a onclick="#{rich:component('finalizaRecadastramento')}.show();" href="#" class="bt-padrao fr">Finalizar</a>
 				</ui:fragment>
 				
 				<ui:fragment rendered="#{pessoaBean.podeAlterar()}">								
@@ -1056,10 +1053,10 @@
 				<div class="modal-actions">													
 					<h:commandButton id="confirmar" 
 						action="#{pessoaBean.salvar(true)}"						
-						onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" 
+						onclick="#{rich:component('finalizaRecadastramento')}.hide();" 
 						value="Confirmar" 
 						styleClass="bt-padrao fr mg-zero" />
-					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-zero mg-right-10">Cancelar</a>
+					<a onclick="#{rich:component('finalizaRecadastramento')}.hide();" href="#" class="bt-padrao fr mg-zero mg-right-10">Cancelar</a>
 				</div>							
 				
 			</rich:popupPanel>

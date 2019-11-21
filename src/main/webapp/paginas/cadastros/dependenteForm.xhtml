@@ -46,7 +46,7 @@
 								 name="nomeCompletoPessoa"
 								 disabled="#{(not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')) or dependenteFormBean.alterar }"								
 								 value="#{dependenteFormBean.nomeResponsavel}" />
-					<a4j:ajax event="onchange" render="idResponsavel" execute="@this" />
+					<a4j:ajax event="change" render="idResponsavel" execute="@this" />
 				</div>
 			</div>
 
@@ -87,7 +87,7 @@
 					  					var="tipoDependencia"
 					  					itemValue="#{tipoDependencia}"
 					  					itemLabel="#{tipoDependencia.descricao}"/>
-					  	<a4j:ajax event="onchange" 
+					  	<a4j:ajax event="change" 
 					  	             action="#{dependenteFormBean.tipoDependenciaSelecionado}"
 					  	             render="tipoDuracao, universitario" 
 					  	             execute="@this" />
@@ -109,7 +109,7 @@
 					  					var="motivo"
 					  					itemValue="#{motivo}"
 					  					itemLabel="#{motivo.descricao}"/>
-					  	<a4j:ajax event="onchange" 
+					  	<a4j:ajax event="change" 
 					  	             action="#{dependenteFormBean.motivoInicioSelecionado}"
 					  	             render="tipoDuracao" 
 					  	             execute="@this" 

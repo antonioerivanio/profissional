@@ -47,7 +47,7 @@
 	
 		<div 
 			class="duvida-vigencia" 
-			onclick="Richfaces.showModalPanel('modal');" 
+			onclick="#{rich:component('modalInstrucoesVigencia')}.show();" 
 			title="Informações sobre o período de vigência"><span>?</span></div>
 
 		<legend>Período de Vigência <span class="identificador-esocial">(e)</span></legend>
@@ -202,7 +202,7 @@
 	
 	</fieldset>
 	
-	<rich:popupPanel id="modal" styleClass="modal" resizeable="false" height="280" width="500">					            
+	<rich:popupPanel id="modalInstrucoesVigencia" styleClass="modal" resizeable="false" height="280" width="500">					            
         	
 		<f:facet name="header" class="header">
 	    	<span>Informações sobre o período de vigência</span>
@@ -217,7 +217,7 @@
 		</p>
        	
        	<div class="modal-actions" style="padding-bottom:0;">
-			<a href="#" onclick="Richfaces.hideModalPanel('modal');" class="bt-padrao fr mg-right-15">OK</a>
+			<a href="#" onclick="#{rich:component('modalInstrucoesVigencia')}.hide();" class="bt-padrao fr mg-right-15">OK</a>
 		</div>						
 	
 	</rich:popupPanel>

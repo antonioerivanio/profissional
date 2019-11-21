@@ -43,8 +43,7 @@
 					  					var="cargo"
 					  					itemValue="#{cargo}"
 					  					itemLabel="#{cargo.nomenclatura}"/>
-						<a4j:ajax id="carregaSimbolo" 
-					  				 event="onchange" 
+						<a4j:ajax event="change" 
 					  				 execute="@this"
 					  				 action="#{classeReferenciaFormBean.carregaSimbolo}"
 					  				 render="simbolo"/>

@@ -43,7 +43,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 value="#{abonoPermanenciaListBean.cpf}" >
-							<a4j:ajax id="cpfChange" event="onchange" render="messages, nomeCompletoPessoa, cpf" execute="@this" />
+							<a4j:ajax event="change" render="messages, nomeCompletoPessoa, cpf" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>

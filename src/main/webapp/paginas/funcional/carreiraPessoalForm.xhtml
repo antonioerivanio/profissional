@@ -59,7 +59,7 @@
 									 converter="cpfConverter"
 									 disabled="#{carreiraPessoalBean.alterar or ( not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') ) }"
 									 value="#{carreiraPessoalBean.cpf}" >
-							<a4j:ajax id="cpfChange" event="onblur" focus="nomeCompletoPessoa" render="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " execute="@this" />
+							<a4j:ajax event="blur" focus="nomeCompletoPessoa" render="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -97,8 +97,7 @@
 											var="carreira"
 											itemValue="#{carreira}"
 											itemLabel="#{carreira.descricao}"/>
-							<a4j:ajax id="atualizaInicioCarreira"
-					  				 event="onchange" 
+							<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{carreiraPessoalBean.atualizaDatasCarreira}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
@@ -151,8 +150,7 @@
 					  						var="ocupacao"
 					  						itemValue="#{ocupacao}"
 					  						itemLabel="#{ocupacao.nomenclatura}"/>
-					  		<a4j:ajax id="atualizaInicioCargo"
-					  				 event="onchange" 
+					  		<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{carreiraPessoalBean.atualizaInicioCargo}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"

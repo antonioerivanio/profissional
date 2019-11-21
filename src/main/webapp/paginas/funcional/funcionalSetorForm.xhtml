@@ -60,7 +60,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{funcionalSetorFormBean.alterar or (not LoginBean.anyGranted('ROLE_LOTACAO_INSERIR,ROLE_LOTACAO_ALTERAR'))}"
 									 value="#{funcionalSetorFormBean.matricula}">
-							<a4j:ajax event="onchange"
+							<a4j:ajax event="change"
 										 focus="setor"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
@@ -168,8 +168,7 @@
 			<div class="radio-box fl mg-top-25">
 				 Exibir somente setores ativos	
 				 <h:selectBooleanCheckbox value="#{funcionalSetorFormBean.setoresAtivos}" id="setoresAtivos" >
-				 	<a4j:ajax id="atualizaSetores" 
-								 event="onclick"
+				 	<a4j:ajax event="click"
 								 execute="@this" 
 								 render="cmbSetor" />									
 				 </h:selectBooleanCheckbox>

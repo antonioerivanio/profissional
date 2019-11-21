@@ -60,7 +60,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{averbacaoFormBean.alterar}"
 									 value="#{averbacaoFormBean.matricula}">
-							<a4j:ajax event="onchange"
+							<a4j:ajax event="change"
 										 focus="tipoFerias"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
@@ -159,8 +159,7 @@
 						  					var="uf"
 						  					itemValue="#{uf}"
 						  					itemLabel="#{uf.id}"/>
-				  			<a4j:ajax id="carregaMunicipio"
-					  				 event="onchange" 
+				  			<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 action="#{averbacaoFormBean.carregaMunicipio}"
 					  				 render="municipio" />
@@ -203,7 +202,7 @@
 									 value="#{averbacaoFormBean.inicio}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:ajax event="onchange" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
+							<a4j:ajax event="change" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -217,7 +216,7 @@
 									 value="#{averbacaoFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:ajax event="onchange" focus="esfera" render="qtdeDias, messages" execute="@this"/>
+							<a4j:ajax event="change" focus="esfera" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>
 					</div>
 				</div>
@@ -239,8 +238,7 @@
 					<div class="conteiner">
 						<div class="radio-box">
 							<h:selectBooleanCheckbox value="#{averbacaoFormBean.somenteDias}" id="somenteDias" >
-							 	<a4j:ajax id="atualizaSomenteDias" 
-											 event="onclick"
+							 	<a4j:ajax 	 event="click"
 											 action="#{averbacaoFormBean.atualizaDatasEQtdeDias()}"
 											 execute="@this" 
 											 render="inicio, fim, qtdeDias"
@@ -262,8 +260,7 @@
 										   itemValue="#{esfera.id}"
 										   itemLabel="#{esfera.descricao}" />
 	
-						    <a4j:ajax id="carregaSubtipo"
-						  				 event="onchange" 
+						    <a4j:ajax 	 event="change" 
 						  				 execute="@this"	
 						  				 focus="subtipo"
 						  				 action="#{averbacaoFormBean.carregaSubtipo}"

@@ -21,8 +21,7 @@
 	</listener>
 	<listener>
 		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-	</listener>
-	
+	</listener>	
 	
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -41,7 +40,8 @@
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.faces</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping>	
+	
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.xhtml</param-value>
@@ -55,7 +55,7 @@
 		<param-name>com.sun.faces.verifyObjects</param-name>
 		<param-value>false</param-value>
 	</context-param>
-	
+		
 	<context-param>
 		<param-name>org.richfaces.skin</param-name>
 		<param-value>classic</param-value>
@@ -87,10 +87,6 @@
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
-	
-	<welcome-file-list>		
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>		
 	
 	<servlet>
 		<servlet-name>GetArquivo</servlet-name>
