@@ -281,7 +281,7 @@
 							    <a4j:ajax event="change" 
 							  				 execute="@this"	
 							  				 focus="tipoCargoFuncao"
-							  				 action="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
 							  				 render="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, regime, salario"/>
 		
 							</h:selectOneMenu>
@@ -305,7 +305,7 @@
 							    <a4j:ajax event="change" 
 							  				 execute="@this"	
 							  				 focus="tipoClasseReferencia"
-							  				 action="#{nomeacaoServidorFormBean.carregaClasseReferenciaEhEspecialidadeCargo}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaClasseReferenciaEhEspecialidadeCargo}"
 							  				 render="tipoClasseReferencia,especialidadeCargo"/>
 							  				 
 							</h:selectOneMenu>
@@ -346,7 +346,7 @@
 								<a4j:ajax event="change" 
 							  				 execute="@this"	
 							  				 focus="tipoOrientacaoCargo"
-							  				 action="#{nomeacaoServidorFormBean.carregaOrientacaoCargo}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaOrientacaoCargo}"
 							  				 render="orientacaoCargo"/>
 							</h:selectOneMenu>
 						</div>
@@ -403,7 +403,7 @@
 							   				   
 				   				<a4j:ajax event="change" 
 							  				 execute="@this"	
-							  				 action="#{nomeacaoServidorFormBean.carregaOrgaoEhSalario}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaOrgaoEhSalario}"
 							  				 render="orgaoOrigem,salario"/>
 							  				 
 							</h:selectOneMenu>
@@ -503,7 +503,7 @@
 								   				   
 							    <a4j:ajax event="change" 
 							  				 execute="@this"	
-							  				 action="#{nomeacaoServidorFormBean.carregaCbo2}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaCbo2}"
 							  				 render="cbo2"/>
 		
 								</h:selectOneMenu>
@@ -525,7 +525,7 @@
 		
 							    <a4j:ajax event="change" 
 							  				 execute="@this"	
-							  				 action="#{nomeacaoServidorFormBean.carregaCbo3}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaCbo3}"
 							  				 render="cbo3"/>
 		
 								</h:selectOneMenu>
@@ -547,7 +547,7 @@
 		
 							    <a4j:ajax event="change" 
 							  				 execute="@this"	
-							  				 action="#{nomeacaoServidorFormBean.carregaCbo4}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaCbo4}"
 							  				 render="cbo4"/>
 		
 								</h:selectOneMenu>
@@ -599,7 +599,7 @@
 							   				   
 							    <a4j:ajax event="change" 
 							  				 execute="@this"	
-							  				 action="#{nomeacaoServidorFormBean.carregaQtdQuintos}"
+							  				 listener="#{nomeacaoServidorFormBean.carregaQtdQuintos}"
 							  				 render="qtdQuintos"/>
 							  				 
 							</h:selectOneMenu>
@@ -632,7 +632,7 @@
 								<f:selectItem itemLabel="SEM PREVIDÊNCIA" itemValue="4" id="semprev"/>
 								<a4j:ajax event="click" 
 										 	 execute="@this"
-										 	 action="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}"
+										 	 listener="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}"
 										 	 render="abonoPrevidenciario,SupSecIntegral"/>
 							</h:selectOneRadio>
 							</div>

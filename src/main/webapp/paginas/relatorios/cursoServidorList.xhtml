@@ -105,7 +105,7 @@
 										disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
 											<a4j:ajax
 											 event="click"
-											 action="#{cursoServidorListBean.somenteCargaHorariaAction}"
+											 listener="#{cursoServidorListBean.somenteCargaHorariaAction}"
 											 execute="@this" 
 											 render="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCursoGraduacao, consultar" />
 									</h:selectBooleanCheckbox>
@@ -131,7 +131,7 @@
 										disabled="#{cursoServidorListBean.somenteCargaHoraria}">
 											<a4j:ajax 
 											 event="click"
-											 action="#{cursoServidorListBean.somenteCursoGraduacaoAction}"
+											 listener="#{cursoServidorListBean.somenteCursoGraduacaoAction}"
 											 execute="@this" 
 											 render="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCargaHoraria, dataInicio, dataFim, atuacao, posGraduacao, profissional, consultar"
 											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />
@@ -197,7 +197,7 @@
 					  					itemLabel="#{tipo.descricao}"/>					
 						
 						<a4j:ajax event="change"
-											 action="#{cursoServidorListBean.tipoCursoAction}"
+											 listener="#{cursoServidorListBean.tipoCursoAction}"
 											 execute="@this" 
 											 render="somentePosGraduacao, messages, lista, scroller" />
 						
@@ -215,7 +215,7 @@
 							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
 							
 							<a4j:ajax event="click"
-											 action="#{cursoServidorListBean.somentePosGraduacaoAction}"
+											 listener="#{cursoServidorListBean.somentePosGraduacaoAction}"
 											 execute="@this" 
 											 render="tipoCurso, messages, lista, scroller" />
 							

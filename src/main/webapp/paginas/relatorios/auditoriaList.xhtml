@@ -16,7 +16,7 @@
 
 		</div>
 		
-		<h:form id="form" binding="#{consultarAuditoriaBean.form}" styleClass="formularios">
+		<h:form id="form" styleClass="formularios">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -54,7 +54,7 @@
 					  	<a4j:ajax event="change" 
 				  				 execute="@this"	
 				  				 focus="iptUsuario"
-				  				 action="#{consultarAuditoriaBean.tipoEventoSelecionado}"/>
+				  				 listener="#{consultarAuditoriaBean.tipoEventoSelecionado}"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 					  	<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="iptPessoal"
-					  				 action="#{consultarAuditoriaBean.usuarioSelecionado}"/>
+					  				 listener="#{consultarAuditoriaBean.usuarioSelecionado}"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -92,7 +92,7 @@
 					  	<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 focus="iptEntidade"
-					  				 action="#{consultarAuditoriaBean.pessoalSelecionado}"/>
+					  				 listener="#{consultarAuditoriaBean.pessoalSelecionado}"/>
 					</h:selectOneMenu>
 				</div>
 			</div>			
@@ -111,7 +111,7 @@
 					  	<a4j:ajax event="change" 
 				  				 execute="@this"	
 				  				 focus="iptAtributo"
-				  				 action="#{consultarAuditoriaBean.entidadeSelecionada}"
+				  				 listener="#{consultarAuditoriaBean.entidadeSelecionada}"
 				  				 render="iptAtributo"/>
 					</h:selectOneMenu>
 				</div>
@@ -206,7 +206,7 @@
 			
 			<h:commandButton id="btLimpar"									 
 							 value="Limpar" 
-							 action="#{consultarAuditoriaBean.limpar}" 
+							 action="listar" 
 							 styleClass="bt-padrao fr mg-right-15" />			
 			
 		</h:form>

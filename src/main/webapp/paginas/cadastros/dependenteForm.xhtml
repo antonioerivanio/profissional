@@ -88,7 +88,7 @@
 					  					itemValue="#{tipoDependencia}"
 					  					itemLabel="#{tipoDependencia.descricao}"/>
 					  	<a4j:ajax event="change" 
-					  	             action="#{dependenteFormBean.tipoDependenciaSelecionado}"
+					  	             listener="#{dependenteFormBean.tipoDependenciaSelecionado}"
 					  	             render="tipoDuracao, universitario" 
 					  	             execute="@this" />
 					</h:selectOneMenu>
@@ -110,7 +110,7 @@
 					  					itemValue="#{motivo}"
 					  					itemLabel="#{motivo.descricao}"/>
 					  	<a4j:ajax event="change" 
-					  	             action="#{dependenteFormBean.motivoInicioSelecionado}"
+					  	             listener="#{dependenteFormBean.motivoInicioSelecionado}"
 					  	             render="tipoDuracao" 
 					  	             execute="@this" 
 					  	             rendered="#{!dependenteFormBean.alterar}" />

@@ -23,12 +23,7 @@ import br.gov.ce.tce.srh.service.CompetenciaGraduacaoService;
 import br.gov.ce.tce.srh.service.PessoalCursoAcademicaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC042_Manter Emitir Dociê do Servidor 
-* 
-* @since   : Fev 09, 2012, 11:16:00
-* @author  : wesllhey.holanda@ivia.com.br
-*/
+//TODO terminar de implementar o escopo view
 @SuppressWarnings("serial")
 @Component("funcionarioCompetenciaSetorFormBean")
 @Scope("session")
@@ -71,16 +66,7 @@ public class FuncionarioCompetenciaSetorFormBean implements Serializable {
 	
 	private List<CursoProfissional> listaCursoProfissional = new ArrayList<CursoProfissional>();
 	
-	public String getTestaTela() {
-		return "Aqui";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela de visualizacao
-	 * 
-	 * @return
-	 */
+	
 	public String visualizar() {
 		try {
 
@@ -91,10 +77,7 @@ public class FuncionarioCompetenciaSetorFormBean implements Serializable {
 			entidadeAtestoPessoa = atestoPessoaService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
 			
 			competenciaGraduacao = competenciaGraduacaoService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
-			
-			
-			
-			
+						
 			if(entidadeAtestoPessoa != null){
 				atestoPessoa  = true;
 			}
@@ -120,10 +103,6 @@ public class FuncionarioCompetenciaSetorFormBean implements Serializable {
 	}
 
 
-	/**
-	 * Gets and Sets
-	 */
-	
 	public ServidorCompetencia getServidorCompetencia() {return servidorCompetencia;}
 	public void setServidorCompetencia(ServidorCompetencia servidorCompetencia) {this.servidorCompetencia = servidorCompetencia;}
 	

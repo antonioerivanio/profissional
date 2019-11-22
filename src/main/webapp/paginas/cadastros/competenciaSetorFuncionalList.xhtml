@@ -27,7 +27,7 @@
 						<a4j:ajax 	 event="change" 
 					  				 execute="@this"	
 					  				 focus="cmbCategoriaFuncional"
-					  				 action="#{competenciaSetorFuncionalListBean.carregaCategoriaFuncional}"
+					  				 listener="#{competenciaSetorFuncionalListBean.carregaCategoriaFuncional}"
 					  				 render="cmbCategoriaFuncional"/>
 					</h:selectOneMenu>
 				</div>

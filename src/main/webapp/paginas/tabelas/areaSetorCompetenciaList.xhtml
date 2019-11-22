@@ -34,7 +34,7 @@
 					  					itemLabel="#{setor.nome}"/>
 					  	<a4j:ajax event="change" 
 					  				 execute="@this"
-					  				 action="#{areaSetorCompetenciaListBean.carregaArea}"
+					  				 listener="#{areaSetorCompetenciaListBean.carregaArea}"
 					  				 render="area,competencia,lista"/>
 					</h:selectOneMenu>
 				</div>
@@ -54,7 +54,7 @@
 					  					itemLabel="#{area.descricao}"/>
 					  	<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{areaSetorCompetenciaListBean.carregaCompetencia}" 
+					  				 listener="#{areaSetorCompetenciaListBean.carregaCompetencia}" 
 					  				 render="competencia,lista"/>
 					</h:selectOneMenu>
 				</div>

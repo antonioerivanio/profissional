@@ -40,7 +40,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
  */
 @SuppressWarnings("serial")
 @Component("relatorioFeriasListBean")
-@Scope("session")
+@Scope("view")
 public class RelatorioFeriasListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(RelatorioFeriasListBean.class);
@@ -63,9 +63,6 @@ public class RelatorioFeriasListBean implements Serializable {
 	@Autowired
 	private FuncionalService funcionalService;
 
-
-	//controle de acesso do formulário
-	private HtmlForm form;
 
 	//parametos de tela de consulta
 	private List<String> tiposFerias;
@@ -97,7 +94,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 
 
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -119,11 +116,9 @@ public class RelatorioFeriasListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {		
 			
@@ -214,8 +209,6 @@ public class RelatorioFeriasListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório das Ferias por Setor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
 	public void limpaTela() {
@@ -234,10 +227,7 @@ public class RelatorioFeriasListBean implements Serializable {
 		nome = new String();
 		funcional = null; 
 
-	}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {return form;}
+	}	
 
 	public List<RelatorioFerias> getLista() {return lista;}
 	public void setLista(List<RelatorioFerias> lista) {this.lista = lista;}
@@ -264,12 +254,7 @@ public class RelatorioFeriasListBean implements Serializable {
 		}
 		return dataModel;
 	}
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
+	
 	public List<Setor> getComboSetor() {
 
         try {
@@ -427,7 +412,5 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
-	
-	
 
 }

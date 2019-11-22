@@ -182,7 +182,7 @@
 						  					itemLabel="#{tipoLicenca.descricao}" />
 				  			<a4j:ajax event="change" 
 					  				 	 execute="@this"	
-					  				 	 action="#{licencaFormBean.carregaLicencaEspecial}"
+					  				 	 listener="#{licencaFormBean.carregaLicencaEspecial}"
 					  				 	 render="licencaEspecial"/>
 						</h:selectOneMenu>
 					</div>
@@ -264,7 +264,7 @@
 									 maxlength="10"
 									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >							
 							<a4j:ajax event="blur"
-										 actionListener="#{licencaFormBean.atualizarCampos()}" 
+										 listener="#{licencaFormBean.atualizarCampos()}" 
 										 execute="@this" 
 										 render="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
 										 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"  
@@ -306,7 +306,7 @@
 										 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }">
 							
 								<a4j:ajax event="blur"
-											 actionListener="#{licencaFormBean.atualizarCampos()}" 
+											 listener="#{licencaFormBean.atualizarCampos()}" 
 											 execute="@this" 
 											 render="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
 											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"											  

@@ -179,7 +179,7 @@
 					<div class="conteiner">
 						<h:inputText id="qtdeDias" value="#{acrescimoFormBean.entidade.qtdeDias}">
 							<a4j:ajax event="change" 
-										action="#{acrescimoFormBean.apagaDatas()}" 
+										listener="#{acrescimoFormBean.apagaDatas()}" 
 										focus="descricao" 
 										render="inicio, fim, messages" 
 										execute="@this"

@@ -263,7 +263,7 @@
 									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
 							<a4j:ajax rendered = "#{not aposentadoriaFormBean.alterar}"
 										 event="change" 
-										 action="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
+										 listener="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
 										 render="mensagemLotacao" 
 										 execute="@this" />			 
 						</h:inputText>

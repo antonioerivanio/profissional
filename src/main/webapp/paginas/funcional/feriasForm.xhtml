@@ -164,7 +164,7 @@
 					  						itemLabel="#{tipoFerias.descricao}"/>					  						
 					  		<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{feriasFormBean.atualizaBloqueioDeDatas}"
+					  				 listener="#{feriasFormBean.atualizaBloqueioDeDatas}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
 					  				 render="inicio,fim,qtdeDias"/>				
 						</h:selectOneMenu>    

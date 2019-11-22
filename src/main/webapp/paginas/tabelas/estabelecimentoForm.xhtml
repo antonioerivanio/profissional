@@ -119,7 +119,7 @@
 							<f:selectItem id="aliqRat3" itemLabel="3%" itemValue="3"/>
 							<a4j:ajax 
 								event="change" 
-								action="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
+								listener="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
 								render="aliqRatAjust" 
 								ajaxSlingle="true" />
 						</h:selectOneMenu>
@@ -139,7 +139,7 @@
 							<f:convertNumber type="number" maxFractionDigits="4" maxIntegerDigits="1" locale="pt_br"/>
 							<a4j:ajax 
 								event="blur" 
-								action="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
+								listener="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
 								render="aliqRatAjust" 
 								ajaxSlingle="true" />
 						</h:inputText>	

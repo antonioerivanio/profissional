@@ -45,7 +45,7 @@
 					  					itemLabel="#{cargo.nomenclatura}"/>
 						<a4j:ajax event="change" 
 					  				 execute="@this"
-					  				 action="#{classeReferenciaFormBean.carregaSimbolo}"
+					  				 listener="#{classeReferenciaFormBean.carregaSimbolo}"
 					  				 render="simbolo"/>
 					</h:selectOneMenu>
 				</div>

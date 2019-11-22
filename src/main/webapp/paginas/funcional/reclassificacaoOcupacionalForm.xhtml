@@ -137,7 +137,7 @@
 						  					
 						  	<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCargoFuncao}"
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCargoFuncao}"
 					  				 render="tipoCargoFuncao"/>
 						</h:selectOneMenu>
 					</div>
@@ -159,7 +159,7 @@
 						   				   
 				  			<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaClasseReferencia}"
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaClasseReferencia}"
 					  				 render="tipoClasseReferencia"/>
 						</h:selectOneMenu>
 					</div>
@@ -205,7 +205,7 @@
 						   				   
 					    <a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo2}"
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCbo2}"
 					  				 render="cbo2"/>
 
 						</h:selectOneMenu>
@@ -226,7 +226,7 @@
 
 					    <a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo3}"
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCbo3}"
 					  				 render="cbo3"/>
 
 						</h:selectOneMenu>
@@ -247,7 +247,7 @@
 
 					    <a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo4}"
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCbo4}"
 					  				 render="cbo4"/>
 
 						</h:selectOneMenu>

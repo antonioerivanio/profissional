@@ -161,7 +161,7 @@
 						  					itemLabel="#{uf.id}"/>
 				  			<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{averbacaoFormBean.carregaMunicipio}"
+					  				 listener="#{averbacaoFormBean.carregaMunicipio}"
 					  				 render="municipio" />
 						</h:selectOneMenu>
 					</div>
@@ -239,7 +239,7 @@
 						<div class="radio-box">
 							<h:selectBooleanCheckbox value="#{averbacaoFormBean.somenteDias}" id="somenteDias" >
 							 	<a4j:ajax 	 event="click"
-											 action="#{averbacaoFormBean.atualizaDatasEQtdeDias()}"
+											 listener="#{averbacaoFormBean.atualizaDatasEQtdeDias()}"
 											 execute="@this" 
 											 render="inicio, fim, qtdeDias"
 											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />									
@@ -263,7 +263,7 @@
 						    <a4j:ajax 	 event="change" 
 						  				 execute="@this"	
 						  				 focus="subtipo"
-						  				 action="#{averbacaoFormBean.carregaSubtipo}"
+						  				 listener="#{averbacaoFormBean.carregaSubtipo}"
 						  				 render="subtipo"/>
 							
 						</h:selectOneMenu>

@@ -94,7 +94,7 @@
 						  					itemLabel="#{setor.nome}"/>	
 						  <a4j:ajax event="change" 
 					  					 execute="@this"
-					  					 action="#{funcionalAreaSetorFormBean.carregaArea}"
+					  					 listener="#{funcionalAreaSetorFormBean.carregaArea}"
 					  				 	 render="area"/>								 
 				        </h:selectOneMenu>
 					</div>

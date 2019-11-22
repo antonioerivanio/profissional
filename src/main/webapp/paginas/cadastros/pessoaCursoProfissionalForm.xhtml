@@ -67,7 +67,7 @@
 							  					itemLabel="#{area.descricao}"/>
 						  		<a4j:ajax 	 event="change" 
 						  					 execute="@this"
-						  					 action="#{pessoalCursoProfissionalFormBean.carregaCurso}"
+						  					 listener="#{pessoalCursoProfissionalFormBean.carregaCurso}"
 						  				 	 render="curso"/>
 							</h:selectOneMenu>
 						</div>
@@ -88,7 +88,7 @@
 							  					itemLabel="#{curso.descricao}"/>
 						  		<a4j:ajax 	 event="change" 
 						  					 execute="@this"
-						  					 action="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
+						  					 listener="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
 						  				 	 render="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
 							</h:selectOneMenu>
 						</div>

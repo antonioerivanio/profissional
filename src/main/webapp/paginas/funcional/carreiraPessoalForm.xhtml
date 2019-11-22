@@ -99,7 +99,7 @@
 											itemLabel="#{carreira.descricao}"/>
 							<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{carreiraPessoalBean.atualizaDatasCarreira}"
+					  				 listener="#{carreiraPessoalBean.atualizaDatasCarreira}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
 					  				 render="dataInicioCarreira, dataFimCarreira" />
 						</h:selectOneMenu>
@@ -152,7 +152,7 @@
 					  						itemLabel="#{ocupacao.nomenclatura}"/>
 					  		<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 action="#{carreiraPessoalBean.atualizaInicioCargo}"
+					  				 listener="#{carreiraPessoalBean.atualizaInicioCargo}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
 					  				 render="dataInicioCargoAtual" />
 						</h:selectOneMenu>    

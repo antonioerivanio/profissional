@@ -27,7 +27,7 @@
 						<f:selectItem id="siTecnica" itemLabel="Técnica" itemValue="1" />
 						<a4j:ajax 	 event="change" 
 					  				 execute="@this"
-					  				 action="#{competenciaSetorFuncionalFormBean.carregaCompetencia}"	
+					  				 listener="#{competenciaSetorFuncionalFormBean.carregaCompetencia}"	
 					  				 render="competencia"/>
 					</h:selectOneMenu>
 				</div>
@@ -65,7 +65,7 @@
 					  					itemLabel="#{setor.nome}"/>
 						<a4j:ajax 	 event="change" 
 					  				 execute="@this"
-					  				 action="#{competenciaSetorFuncionalFormBean.carregaCategoria}"	
+					  				 listener="#{competenciaSetorFuncionalFormBean.carregaCategoria}"	
 					  				 render="categoria"/>
 					</h:selectOneMenu>
 				</div>

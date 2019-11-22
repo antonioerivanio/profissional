@@ -41,7 +41,7 @@
 						<f:selectItem id="municipal" itemLabel="Municipal" itemValue="3" />
 						<a4j:ajax 	 event="click" 
 					  				 execute="@this"	
-					  				 action="#{publicacaoBean.carregaTipoDocumento}"
+					  				 listener="#{publicacaoBean.carregaTipoDocumento}"
 					  				 render="tipoDocumento"/>
 					</h:selectOneRadio>
 					</div>

@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{funcionarioCompetenciaSetorListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -34,7 +34,7 @@
 					  					itemLabel="#{setor.nome}"/>
 					  	<a4j:ajax event="change" 
 					  				 execute="@this"
-					  				 action="#{funcionarioCompetenciaSetorListBean.carregaArea}"
+					  				 listener="#{funcionarioCompetenciaSetorListBean.carregaArea}"
 					  				 render="area,competencia,lista"/>
 					</h:selectOneMenu>
 				</div>
@@ -113,7 +113,7 @@
 							value="#{item.areaSetorCompetencia.competencia.descricao}" />
 					</rich:column>
 
-					<rich:subTable var="expense" value="#{item}">
+					<rich:collapsibleSubTable var="expense" value="#{item}">
 					
 						<rich:column>
 							<center>
@@ -139,7 +139,7 @@
 							</h:commandLink>
 						</rich:column>
 						
-					</rich:subTable>
+					</rich:collapsibleSubTable>
 
 				</rich:dataTable>
 

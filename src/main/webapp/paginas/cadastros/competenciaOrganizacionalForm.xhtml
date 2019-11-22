@@ -27,7 +27,7 @@
 						<f:selectItem id="siTecnica" itemLabel="Técnica" itemValue="1" />
 						<a4j:ajax 	 event="change" 
 					  				 execute="@this"
-					  				 action="#{competenciaOrganizacionalFormBean.carregaCompetencia}"	
+					  				 listener="#{competenciaOrganizacionalFormBean.carregaCompetencia}"	
 					  				 render="competencia"/>
 					</h:selectOneMenu>
 				</div>

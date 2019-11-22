@@ -378,7 +378,7 @@
 										 value="#{pessoaBean.entidade.cep}" 
 										 disabled="#{not pessoaBean.podeAlterar()}">
 								<a4j:ajax 	 event="blur"
-							  	             action="#{pessoaBean.buscarCep()}"
+							  	             listener="#{pessoaBean.buscarCep()}"
 							  	             render="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
 							</h:inputText>			 
 						</div>
