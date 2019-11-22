@@ -84,7 +84,7 @@
 						<h:selectBooleanCheckbox value="#{emitirDossieServidorBean.marcaTodos}" id="marcaTodos">
 							<a4j:ajax event="click"
 									 execute="@this" 
-									 render="historicoLotacao, historicoLicenca, historicoFerias, progracaoFuncional, representacaoFuncional, anotacaoServidor" />
+									 render="historicoLotacao, historicoLicenca, historicoFerias, progrecaoFuncional, representacaoFuncional, anotacaoServidor" />
 						</h:selectBooleanCheckbox>						
 					</div>
 				</div>
@@ -99,7 +99,7 @@
 					 Histórico de Férias<h:selectBooleanCheckbox value="#{emitirDossieServidorBean.historicoFerias}" id="historicoFerias"/>
 					</div>
 					<div class="radio-box">
-					 Progressão Funcional<h:selectBooleanCheckbox value="#{emitirDossieServidorBean.progracaoFuncional}" id="progracaoFuncional"/>
+					 Progressão Funcional<h:selectBooleanCheckbox value="#{emitirDossieServidorBean.progrecaoFuncional}" id="progrecaoFuncional"/>
 				    </div>
 				    <div class="radio-box">
 					 Representação Funcional<h:selectBooleanCheckbox value="#{emitirDossieServidorBean.representacaoFuncional}" id="representacaoFuncional"/>
@@ -155,7 +155,7 @@
 						</f:facet>
 						<center><h:outputText id="item4" value="#{item.setor.nome}" /></center>
 					</h:column>
-					<h:column id="col5" rendered="false">
+					<h:column id="col5">
 						<f:facet name="header">
 						VISUALIZAR
 						</f:facet>

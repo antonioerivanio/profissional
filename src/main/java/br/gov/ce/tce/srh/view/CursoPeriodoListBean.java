@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +31,10 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
 @Component("cursoPeriodoListBean")
-@Scope("session")
+@Scope("view")
 public class CursoPeriodoListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CursoPeriodoListBean.class);
-
 
 	@Autowired
 	private CursoServidorService cursoServidorService;
@@ -48,10 +47,6 @@ public class CursoPeriodoListBean implements Serializable {
 	
 	@Autowired
 	private SetorService setorService;
-
-
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	private Date inicio;
 	private Date fim;
@@ -78,8 +73,13 @@ public class CursoPeriodoListBean implements Serializable {
 	private Long totalCargaHoraria;
 	private String labelTotalCargaHoraria;
 	
+	@PostConstruct
+	public void init() {
+		limparVariaveis();
+		limparListas();
+	}
 	
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -97,7 +97,6 @@ public class CursoPeriodoListBean implements Serializable {
 			totalCargaHoraria = 0L;
 
 			registroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -108,12 +107,10 @@ public class CursoPeriodoListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 	
 
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -172,20 +169,12 @@ public class CursoPeriodoListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório de Curso por Período. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	
 	private void validaCamposObrigatorios(){
 		if ( (idCurso == null || idCurso == 0) && (inicio == null || fim == null) && !somentePosGraduacao )
 			throw new SRHRuntimeException("Informe o período, pesquise um curso ou marque Somente Pós-Graduação");
-	}
-	
-
-	public String limpaTela() {
-		limparVariaveis();
-		return "listar";
 	}
 	
 	
@@ -276,22 +265,9 @@ public class CursoPeriodoListBean implements Serializable {
 	public void setIdCurso(Long idCurso) {this.idCurso = idCurso;}
 
 	public boolean isSomentePosGraduacao() {return somentePosGraduacao;}
-	public void setSomentePosGraduacao(boolean somentePosGraduacao) {this.somentePosGraduacao = somentePosGraduacao;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			limparVariaveis();
-			limparListas();
-			registroInicial = 0;			
-		}
-		passouConsultar = false;
-		return form;
-	}
+	public void setSomentePosGraduacao(boolean somentePosGraduacao) {this.somentePosGraduacao = somentePosGraduacao;}	
 	
-	
-	//PAGINAÇÃO
-	
+	//PAGINAÇÃO	
 	private void limparListas() {
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<PessoalCursoProfissional>();
@@ -318,8 +294,7 @@ public class CursoPeriodoListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
 
 }

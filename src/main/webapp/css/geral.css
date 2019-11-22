@@ -1143,12 +1143,12 @@ body {
 	line-height: 1.5em;
 }
 
-.rich-mpnl-mask-div {
-	background-color: rgba(0, 0, 0, 0.1);
+.rf-pp-shade {
+	background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
-.rich-mpnl-shadow {
-	display: none;
+.rf-pp-shdw {
+	display: none !important;
 }
 
 .modal-actions {
@@ -1162,29 +1162,20 @@ body {
 	border-top: 1px solid #e4e4e4;
 }
 
-.rich-mpnl-content {
-	padding: 0px;
-	border-radius: 5px;
-	moz-border-radius: 5px;
-	webkit-border-radius: 5px;
-	background-color: #ffffff;
+.rf-pp-cntr {
+	border: none !important;
 }
 
-.rich-mpnl-text {
-	padding: 8px;
-	font-size: 16px;
-	font-weight: normal;
-	background: #195297;
-	border: 1px solid #113664;
+.rf-pp-hdr {
+	padding: 8px !important;
+	font-size: 16px !important;
+	font-weight: normal !important;
+	background: #195297 !important;
+	border: 1px solid #113664 !important;
 }
 
-.rich-mpnl-text span {
-	font-size: 16px;
-}
-
-.rich-mp-container#modalRenovaSessaoCDiv, .rich-mp-container#modalRedirecionaLoginCDiv
-	{
-	top: 40px !important;
+.rf-pp-hdr span {
+	font-size: 14px;
 }
 
 .rf-tbp {
@@ -1241,6 +1232,7 @@ body {
 .rf-tab-hdr-tabs {
 	position: relative;
 	bottom: -1px;
+	z-index: 1;
 }
 
 .vigencia-msg-alerta {

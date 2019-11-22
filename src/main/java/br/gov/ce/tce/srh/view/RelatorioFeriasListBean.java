@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,25 +207,7 @@ public class RelatorioFeriasListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório das Ferias por Setor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-	}
-
-	public void limpaTela() {
-		tiposFerias = null;
-		tipoOcupacao = null;
-		setor = null;
-		inicio = null;
-		fim = null;
-		anoReferencia = null;
-		formato = 1;
-		lista = new ArrayList<RelatorioFerias>();
-		limparListas();
-		flagRegistroInicial = 0;
-		matricula = new String();
-		cpf = new String();
-		nome = new String();
-		funcional = null; 
-
-	}	
+	}		
 
 	public List<RelatorioFerias> getLista() {return lista;}
 	public void setLista(List<RelatorioFerias> lista) {this.lista = lista;}

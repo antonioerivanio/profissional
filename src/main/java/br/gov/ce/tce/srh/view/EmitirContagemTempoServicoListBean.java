@@ -90,9 +90,22 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	private Long dia = new Long(0);
 	
 	
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void init() {
 		setEntidade((Funcional)FacesUtil.getFlashParameter("entidade"));
+		dataFim = (Date)FacesUtil.getFlashParameter("dataFim");
+		totalDia = (Long)FacesUtil.getFlashParameter("totalDia");
+		ano = (Long)FacesUtil.getFlashParameter("ano");
+		mes = (Long)FacesUtil.getFlashParameter("mes");
+		dia = (Long)FacesUtil.getFlashParameter("dia");
+		listaFuncional = (List<Funcional>)FacesUtil.getFlashParameter("listaFuncional");
+		listaFerias = (List<Ferias>)FacesUtil.getFlashParameter("listaFerias");
+		listaLicencaEspecial =(List<LicencaEspecial>) FacesUtil.getFlashParameter("listaLicencaEspecial");
+		listaAverbacao = (List<Averbacao>)FacesUtil.getFlashParameter("listaAverbacao");
+		listaAcrescimo = (List<Acrescimo>)FacesUtil.getFlashParameter("listaAcrescimo");
+		listaDeducao = (List<Deducao>)FacesUtil.getFlashParameter("listaDeducao");
+		
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 			setMatricula(funcionalService.getMatriculaAndNomeByCpfAtiva(authenticationService.getUsuarioLogado().getCpf()).getMatricula());
 			consultar();
@@ -336,8 +349,20 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	}
 	
 	public String detalhar() {
-		FacesUtil.setFlashParameter("entidade", getEntidade());        
-        return "incluirAlterar";
+		FacesUtil.setFlashParameter("entidade", getEntidade());
+		FacesUtil.setFlashParameter("dataFim", dataFim);
+		FacesUtil.setFlashParameter("totalDia", totalDia);
+		FacesUtil.setFlashParameter("ano", ano);
+		FacesUtil.setFlashParameter("mes", mes);
+		FacesUtil.setFlashParameter("dia", dia);
+		FacesUtil.setFlashParameter("listaFuncional", listaFuncional);
+		FacesUtil.setFlashParameter("listaFerias", listaFerias);
+		FacesUtil.setFlashParameter("listaLicencaEspecial", listaLicencaEspecial);
+		FacesUtil.setFlashParameter("listaAverbacao", listaAverbacao);
+		FacesUtil.setFlashParameter("listaAcrescimo", listaAcrescimo);
+		FacesUtil.setFlashParameter("listaDeducao", listaDeducao);
+		
+		return "incluirAlterar";
 	}
 	
 	public String limpaTela() {

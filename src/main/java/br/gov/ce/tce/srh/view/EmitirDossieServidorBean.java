@@ -77,7 +77,7 @@ public class EmitirDossieServidorBean implements Serializable {
 	private boolean historicoLotacao = false;
 	private boolean historicoLicenca = false;
 	private boolean historicoFerias = false;
-	private boolean progracaoFuncional = false;
+	private boolean progrecaoFuncional = false;
 	private boolean representacaoFuncional = false;
 	private boolean anotacaoServidor = false;
 	private boolean marcaTodos = false;
@@ -100,10 +100,33 @@ public class EmitirDossieServidorBean implements Serializable {
 		Funcional flashParameter = (Funcional)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Funcional());
 		
+		historicoLotacao = FacesUtil.getFlashParameter("historicoLotacao") == null ? false : true;
+		historicoLicenca = FacesUtil.getFlashParameter("historicoLicenca") == null ? false : true;
+		historicoFerias = FacesUtil.getFlashParameter("historicoFerias") == null ? false : true;
+		progrecaoFuncional = FacesUtil.getFlashParameter("progrecaoFuncional") == null ? false : true;
+		representacaoFuncional = FacesUtil.getFlashParameter("representacaoFuncional") == null ? false : true;
+		anotacaoServidor = FacesUtil.getFlashParameter("anotacaoServidor") == null ? false : true;
+		
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 			setCpf(authenticationService.getUsuarioLogado().getCpf());
 			lista = new ArrayList<Funcional>();
 			lista.add(entidade); 
+		}		
+		
+		if(this.entidade.getId() != null) {
+			try {
+	    		
+				this.listaReferenciaFuncional = referenciaFuncionalService.findByPessoa(getEntidade().getPessoal().getId());
+				this.listaFuncionalSetor = funcionalSetorService.findByPessoal( entidade.getPessoal().getId() );
+				this.listaFerias = feriasService.findByPessoal( entidade.getPessoal().getId() );
+				this.listaLicenca = licencaService.findByPessoa( entidade.getPessoal().getId() );
+				this.listaFuncionalAnotacao = funcionalAnotacaoService.findByPessoal( entidade.getPessoal().getId() );
+				this.listaRepresentacaoFuncional = representacaoFuncionalService.findByPessoal(entidade.getPessoal().getId());
+
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
 		}
 	}
 	
@@ -130,22 +153,14 @@ public class EmitirDossieServidorBean implements Serializable {
 	
 	public String visualizar() {
 		
-		FacesUtil.setFlashParameter("entidade", getEntidade());     
-        
-        try {
-    		
-			this.listaReferenciaFuncional = referenciaFuncionalService.findByPessoa(getEntidade().getPessoal().getId());
-			this.listaFuncionalSetor = funcionalSetorService.findByPessoal( entidade.getPessoal().getId() );
-			this.listaFerias = feriasService.findByPessoal( entidade.getPessoal().getId() );
-			this.listaLicenca = licencaService.findByPessoa( entidade.getPessoal().getId() );
-			this.listaFuncionalAnotacao = funcionalAnotacaoService.findByPessoal( entidade.getPessoal().getId() );
-			this.listaRepresentacaoFuncional = representacaoFuncionalService.findByPessoal(entidade.getPessoal().getId());
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		} 
-			
+		FacesUtil.setFlashParameter("entidade", this.entidade);
+		FacesUtil.setFlashParameter("historicoLotacao", this.historicoLotacao);
+		FacesUtil.setFlashParameter("historicoLicenca", this.historicoLicenca);
+		FacesUtil.setFlashParameter("historicoFerias", this.historicoFerias);
+		FacesUtil.setFlashParameter("progrecaoFuncional", this.progrecaoFuncional);
+		FacesUtil.setFlashParameter("representacaoFuncional", this.representacaoFuncional);
+		FacesUtil.setFlashParameter("anotacaoServidor", this.anotacaoServidor);		
+					
 		return "incluirAlterar";        
 	}
 
@@ -166,7 +181,7 @@ public class EmitirDossieServidorBean implements Serializable {
 			parametros.put("IDFUNCIONAL", entidade.getId().toString() );
 			parametros.put("IDPESSOAL", entidade.getPessoal().getId().toString() );
 
-			if ( progracaoFuncional == true )
+			if ( progrecaoFuncional == true )
 				parametros.put("PROGRACAOFUNCIONAL", servletContext.getRealPath("//WEB-INF/relatorios/emitirDossiseServidor_progressaoFuncionalSub.jasper") );
 			
 			if ( representacaoFuncional == true )
@@ -266,8 +281,8 @@ public class EmitirDossieServidorBean implements Serializable {
 	public boolean isHistoricoFerias() {return historicoFerias;}
 	public void setHistoricoFerias(boolean historicoFerias) {this.historicoFerias = historicoFerias;}
 
-	public boolean isProgracaoFuncional() {return progracaoFuncional;}
-	public void setProgracaoFuncional(boolean progracaoFuncional) {this.progracaoFuncional = progracaoFuncional;}
+	public boolean isProgrecaoFuncional() {return progrecaoFuncional;}
+	public void setProgrecaoFuncional(boolean progracaoFuncional) {this.progrecaoFuncional = progracaoFuncional;}
 	
 	public boolean isRepresentacaoFuncional() {return representacaoFuncional;}
 	public void setRepresentacaoFuncional(boolean representacaoFuncional) {this.representacaoFuncional = representacaoFuncional;}
@@ -283,7 +298,7 @@ public class EmitirDossieServidorBean implements Serializable {
 			this.historicoLotacao = true;
 			this.historicoLicenca = true;
 			this.historicoFerias = true;
-			this.progracaoFuncional = true;
+			this.progrecaoFuncional = true;
 			this.representacaoFuncional = true;
 			this.anotacaoServidor = true;
 		}else{
@@ -291,7 +306,7 @@ public class EmitirDossieServidorBean implements Serializable {
 			this.historicoLotacao = false;
 			this.historicoLicenca = false;
 			this.historicoFerias = false;
-			this.progracaoFuncional = false;
+			this.progrecaoFuncional = false;
 			this.representacaoFuncional = false;
 			this.anotacaoServidor = false;			
 		}

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Component("relatorioDependenteBean")
-@Scope("session")
+@Scope("view")
 public class RelatorioDependenteBean  implements Serializable  {
 
 	private static final long serialVersionUID = 2375679883082367578L;
@@ -40,9 +40,7 @@ public class RelatorioDependenteBean  implements Serializable  {
 	private PessoalService pessoalService;
 	
 	@Autowired
-	private RelatorioUtil relatorioUtil;
-	
-	private HtmlForm form;
+	private RelatorioUtil relatorioUtil;	
 		
 	private List<TipoDependencia> comboTipoDependencia;
 		
@@ -51,22 +49,17 @@ public class RelatorioDependenteBean  implements Serializable  {
 	private Dependente dependente = new Dependente();
 	private boolean darBaixa;
 	private boolean pessoaSelecionada;
-			
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
+		
+	@PostConstruct
+	public void init() {
 		this.cpf = new String();
 		this.nomeResponsavel = new String();
 		this.dependente = new Dependente(); 
 		this.darBaixa = false;
 		this.pessoaSelecionada = false;
-		return form;
-	}	
+	}
 	
-	public void limpar() {
-		
-	}	
-	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 			
@@ -78,14 +71,11 @@ public class RelatorioDependenteBean  implements Serializable  {
 			if (dependentes.size() == 0){
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
-				return null;
-			}
-
-			Map<String, Object> parametros = new HashMap<String, Object>();	
-			
-			parametros.put("darBaixa", this.darBaixa);
-								
-			relatorioUtil.relatorio("relatorioDependentes.jasper", parametros, "dependentes.pdf", dependentes);			
+			} else {
+				Map<String, Object> parametros = new HashMap<String, Object>();					
+				parametros.put("darBaixa", this.darBaixa);									
+				relatorioUtil.relatorio("relatorioDependentes.jasper", parametros, "dependentes.pdf", dependentes);
+			}		
 			
 		
 		} catch (SRHRuntimeException e) {
@@ -95,8 +85,6 @@ public class RelatorioDependenteBean  implements Serializable  {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	public List<TipoDependencia> getComboTipoDependencia() {
@@ -117,8 +105,6 @@ public class RelatorioDependenteBean  implements Serializable  {
 	public void setCpf(String cpf) {
 		this.cpf = SRHUtils.removerMascara(cpf);
 		if ( !this.cpf.isEmpty() ) {
-			
-
 			try {
 				
 				List<Pessoal> list = pessoalService.findServidorByNomeOuCpf(null, this.cpf);
@@ -132,8 +118,7 @@ public class RelatorioDependenteBean  implements Serializable  {
 					this.dependente = new Dependente();
 					this.dependente.setResponsavel(responsavel);
 					this.pessoaSelecionada = true;
-				} 
-
+				}
 				
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");

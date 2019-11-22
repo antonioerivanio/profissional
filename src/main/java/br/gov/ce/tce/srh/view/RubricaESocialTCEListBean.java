@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.RubricaESocialTCE;
@@ -19,7 +19,7 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
 @Component("rubricaESocialTCEListBean")
-@ViewScoped
+@Scope("view")
 public class RubricaESocialTCEListBean implements Serializable{
 
 	static Logger logger = Logger.getLogger(RubricaESocialTCEListBean.class);

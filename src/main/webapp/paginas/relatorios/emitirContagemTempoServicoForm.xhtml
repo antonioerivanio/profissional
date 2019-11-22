@@ -209,7 +209,7 @@
 
 			<!-- Tempo de Contribuição -->
 
-			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaFuncional.size() > 0}">
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaFuncional != null and emitirContagemTempoServicoListBean.listaFuncional.size() > 0}">
 			
 			<fieldset>
 
@@ -293,7 +293,7 @@
 
 			<!-- Ferias em Dobro -->					
 
-			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaFerias.size() > 0}">
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaFerias != null and emitirContagemTempoServicoListBean.listaFerias.size() > 0}">
 
 			<fieldset>
 
@@ -340,7 +340,7 @@
 
 			<!-- Licenca em Dobro -->					
 
-			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaLicencaEspecial.size() > 0}">
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaLicencaEspecial != null and emitirContagemTempoServicoListBean.listaLicencaEspecial.size() > 0}">
 
 			<fieldset>
 
@@ -396,7 +396,7 @@
 
 			<!-- Averbacao -->
 
-			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaAverbacao.size() > 0}">
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaAverbacao != null and emitirContagemTempoServicoListBean.listaAverbacao.size() > 0}">
 
 				<fieldset>
 
@@ -476,7 +476,7 @@
 
 			<!-- Acrescimo -->
 					
-			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaAcrescimo.size() > 0}">
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaAcrescimo != null and emitirContagemTempoServicoListBean.listaAcrescimo.size() > 0}">
 
 				<fieldset>
 
@@ -535,7 +535,7 @@
 
 			<!-- Deducao -->
 
-			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaDeducao.size() > 0}">
+			<h:panelGroup rendered="#{emitirContagemTempoServicoListBean.listaDeducao != null and emitirContagemTempoServicoListBean.listaDeducao.size() > 0}">
 
 			<fieldset>
 
@@ -620,7 +620,7 @@
 			</h:panelGroup>
 			
 			<a href="/srh/paginas/relatorios/emitirContagemTempoServicoList.faces"
-				class="bt-voltar fr mg-right-10">Voltar</a>
+				class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

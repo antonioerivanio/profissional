@@ -182,8 +182,8 @@
   <links id="pf1506619748906127" target="pf1506619748906128" source="pf1506619748906125" outcome="incluirAlterar"/>
   <links id="pf1506619748906131" target="pf1506619748906132" source="pf1506619748906129" outcome="incluirAlterar"/>
   <links id="pf1506619748906135" target="pf1506619748906136" source="pf1506619748906133" outcome="incluirAlterar"/>
-  <links id="pf1506619748906140" target="pf1506619748906141" source="pf1506619748906139" outcome="login"/>
-  <links id="pf1506619748906142" target="pf1506619748906144" source="pf1506619748906141" outcome="home"/>
+  <links id="pf1506619748906140" target="pf1506619748906141" source="pf1506619748906139" outcome="login" redirect="true"/>
+  <links id="pf1506619748906142" target="pf1506619748906144" source="pf1506619748906141" outcome="home" redirect="true"/>
   <links id="pf1506619748906147" target="pf1506619748906148" source="pf1506619748906145" outcome="incluirAlterar"/>
   <links id="pf1506619748906151" target="pf1506619748906153" source="pf1506619748906149" outcome="incluir"/>
   <links id="pf1506619748906152" target="pf1506619748906154" source="pf1506619748906149" outcome="alterar"/>
@@ -408,7 +408,7 @@
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
-  <links id="pf1506619748906143" target="pf1506619748906141" source="pf1506619748906141" outcome="loginInvalido">
+  <links id="pf1506619748906143" target="pf1506619748906141" source="pf1506619748906141" outcome="loginInvalido" redirect="true">
     <bendPoints d1Height="-36" d2Height="-36"/>
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
     <bendPoints d1Width="-64" d2Width="-64"/>
