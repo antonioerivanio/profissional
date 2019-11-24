@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -23,15 +23,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC004_Manter Especialidade do Cargo
-* 
-* @since   : Aug 29, 2011, 1:33:38 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("orientacaoCargoBean")
-@Scope("session")
+@Scope("view")
 public class OrientacaoCargoBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(OrientacaoCargoBean.class);
@@ -41,11 +35,6 @@ public class OrientacaoCargoBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -64,14 +53,17 @@ public class OrientacaoCargoBean implements Serializable {
 	private List<OrientacaoCargo> pagedList = new ArrayList<OrientacaoCargo>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	@PostConstruct
+	public void init() {
+		OrientacaoCargo flashParameter = (OrientacaoCargo)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new OrientacaoCargo());
+		this.descricao = new String();
+		this.lista = new ArrayList<OrientacaoCargo>();
+		limparListas();
+		flagRegistroInicial = 0;		
+	}
+	
+	public void consultar() {
 
 		try {
 
@@ -83,24 +75,15 @@ public class OrientacaoCargoBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -117,17 +100,14 @@ public class OrientacaoCargoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -145,21 +125,10 @@ public class OrientacaoCargoBean implements Serializable {
 		}
 
 		setEntidade( new OrientacaoCargo() );
-		return consultar();
-	}
+		consultar();
+	}	
 	
-	public String limpaTela() {
-		limparListas();
-		return "listar";
-	}
-
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -179,16 +148,8 @@ public class OrientacaoCargoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Especialidade
-	 * 
-	 * @return
-	 */
 	public List<Especialidade> getComboEspecialidade() {
 
 		try {
@@ -203,10 +164,7 @@ public class OrientacaoCargoBean implements Serializable {
 
 		return this.comboEspecialidade;
 	}	
-	
-	/**
-	 * Gets and Sets
-	 */
+
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
@@ -214,19 +172,6 @@ public class OrientacaoCargoBean implements Serializable {
 	public void setEntidade(OrientacaoCargo entidade) {this.entidade = entidade;}
 
 	public List<OrientacaoCargo> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new OrientacaoCargo() );
-			this.descricao = new String();
-			this.lista = new ArrayList<OrientacaoCargo>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {

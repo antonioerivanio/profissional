@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
- * Use case : SRH_UC001_Manter Competência Funcional
- * 
- * @since  : Aug 26, 2011, 10:33:38 AM
- * @author : robstownholanda@ivia.com.br
- */
 @SuppressWarnings("serial")
 @Component("competenciaFuncionalBean")
-@Scope("session")
+@Scope("view")
 public class CompetenciaFuncionalBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CompetenciaFuncionalBean.class);
@@ -40,11 +34,6 @@ public class CompetenciaFuncionalBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -59,15 +48,23 @@ public class CompetenciaFuncionalBean implements Serializable {
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Competencia> pagedList = new ArrayList<Competencia>();
 	private int flagRegistroInicial = 0;
+	
+	@PostConstruct
+	public void init() {		
+		Competencia flashParameter = (Competencia)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Competencia());
+		
+		if (this.entidade.getId() == null) {
+			getEntidade().setAtivo(true);
+		}
+		
+		descricao = new String();
+		lista = new ArrayList<Competencia>();
+		limparListas();
+		flagRegistroInicial = 0;
+	}
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -79,7 +76,6 @@ public class CompetenciaFuncionalBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -90,17 +86,9 @@ public class CompetenciaFuncionalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -119,17 +107,14 @@ public class CompetenciaFuncionalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -152,16 +137,10 @@ public class CompetenciaFuncionalBean implements Serializable {
 		setEntidade( new Competencia() );
 		getEntidade().setAtivo(true);
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -178,20 +157,8 @@ public class CompetenciaFuncionalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String limpaTela() {
-		setEntidade(new Competencia());
-		getEntidade().setAtivo(true);
-		return "listar";
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
@@ -199,20 +166,6 @@ public class CompetenciaFuncionalBean implements Serializable {
 	public void setEntidade(Competencia entidade) {this.entidade = entidade;}
 
 	public List<Competencia> getLista() {return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new Competencia() );
-			getEntidade().setAtivo(true);
-			descricao = new String();
-			lista = new ArrayList<Competencia>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
@@ -240,15 +193,5 @@ public class CompetenciaFuncionalBean implements Serializable {
 	public List<Competencia> getPagedList() {return pagedList;}
 	public void setPagedList(List<Competencia> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
-
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
 
 }

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC004_Manter Especialidade do Cargo
-* 
-* @since   : Aug 29, 2011, 1:33:38 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("especialidadeCargoBean")
-@Scope("session")
+@Scope("view")
 public class EspecialidadeCargoBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(EspecialidadeCargoBean.class);
@@ -40,11 +34,6 @@ public class EspecialidadeCargoBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -59,15 +48,18 @@ public class EspecialidadeCargoBean implements Serializable {
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Especialidade> pagedList = new ArrayList<Especialidade>();
 	private int flagRegistroInicial = 0;
+	
+	@PostConstruct
+	public void init() {
+		Especialidade flashParameter = (Especialidade)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Especialidade());
+		this.descricao = new String();
+		this.lista = new ArrayList<Especialidade>();
+		limparListas();
+		flagRegistroInicial = 0;
+	}
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -79,7 +71,6 @@ public class EspecialidadeCargoBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
@@ -87,16 +78,9 @@ public class EspecialidadeCargoBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -113,17 +97,14 @@ public class EspecialidadeCargoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void excluir() {
 
 		try {
 
@@ -140,22 +121,11 @@ public class EspecialidadeCargoBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		setEntidade( new Especialidade() );
-		return consultar();
+		setEntidade(new Especialidade());
+		consultar();
 	}
-	
-	public String limpaTela() {
-		limparListas();
-		return "listar";
-	}
-
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+		
+	public void relatorio() {
 
 		try {
 
@@ -175,34 +145,15 @@ public class EspecialidadeCargoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
 	public Especialidade getEntidade() {return entidade;}
 	public void setEntidade(Especialidade entidade) {this.entidade = entidade;}
 
-	public List<Especialidade> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new Especialidade() );
-			this.descricao = new String();
-			this.lista = new ArrayList<Especialidade>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
+	public List<Especialidade> getLista(){return lista;}	
 	
 	//PAGINAÇÃO
 	private void limparListas() {

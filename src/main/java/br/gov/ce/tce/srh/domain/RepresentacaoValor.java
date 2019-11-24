@@ -12,13 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- * Referente a tabela: TB_REPRESENTACAOVALOR
- * 
- * @since   : Out 20, 2011, 10:11:33 AM
- * @author  : robstownholanda@ivia.com.br
- *
- */
 @Entity
 @SuppressWarnings("serial")
 @Table(name="TB_REPRESENTACAOVALOR", schema="SRH")
