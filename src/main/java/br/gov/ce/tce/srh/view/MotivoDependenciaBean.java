@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC009_Manter Motivo de Dependência
-* 
-* @since   : Sep 9, 2011, 11:19:50 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("motivoDependenciaBean")
-@Scope("session")
+@Scope("view")
 public class MotivoDependenciaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(MotivoDependenciaBean.class);
@@ -40,11 +34,6 @@ public class MotivoDependenciaBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -60,14 +49,13 @@ public class MotivoDependenciaBean implements Serializable {
 	private List<MotivoDependencia> pagedList = new ArrayList<MotivoDependencia>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	@PostConstruct
+	public void init() {
+		MotivoDependencia flashParameter = (MotivoDependencia)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new MotivoDependencia());		
+	}
+	
+	public void consultar() {
 
 		try {
 
@@ -79,24 +67,15 @@ public class MotivoDependenciaBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -113,17 +92,14 @@ public class MotivoDependenciaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -141,16 +117,10 @@ public class MotivoDependenciaBean implements Serializable {
 		}
 
 		setEntidade( new MotivoDependencia() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -167,14 +137,8 @@ public class MotivoDependenciaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
@@ -182,19 +146,6 @@ public class MotivoDependenciaBean implements Serializable {
 	public void setEntidade(MotivoDependencia entidade) {this.entidade = entidade;}
 
 	public List<MotivoDependencia> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new MotivoDependencia() );
-			this.descricao = new String();
-			this.lista = new ArrayList<MotivoDependencia>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {

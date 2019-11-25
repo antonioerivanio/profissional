@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{tipoBeneficioBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -61,7 +61,7 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="incluirAlterar"
+                       				  action="#{tipoBeneficioBean.editar}"
                        				  styleClass="ico-editar" >
                             <f:setPropertyActionListener target="#{tipoBeneficioBean.entidade}" value="#{item}" />
                         </h:commandLink>
@@ -80,7 +80,7 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{tipoBeneficioBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 				
 			</div>
 
@@ -92,7 +92,7 @@
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{tipoBeneficioBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

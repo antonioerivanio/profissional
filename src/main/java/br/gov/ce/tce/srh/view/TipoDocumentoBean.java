@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC021_Manter Tipo de Documento de Publicação
-* 
-* @since   : Sep 2, 2011, 9:16:10 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("tipoDocumentoBean")
-@Scope("session")
+@Scope("view")
 public class TipoDocumentoBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(TipoDocumentoBean.class);
@@ -40,10 +34,6 @@ public class TipoDocumentoBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -58,14 +48,14 @@ public class TipoDocumentoBean implements Serializable {
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<TipoDocumento> pagedList = new ArrayList<TipoDocumento>();
 	private int flagRegistroInicial = 0;
+	
+	@PostConstruct
+	private void init() {
+		TipoDocumento flashParameter = (TipoDocumento)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new TipoDocumento());
+    }
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -77,24 +67,15 @@ public class TipoDocumentoBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -111,17 +92,14 @@ public class TipoDocumentoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -139,16 +117,10 @@ public class TipoDocumentoBean implements Serializable {
 		}
 
 		setEntidade( new TipoDocumento() );
-		return consultar();
+		consultar();
 	}
-
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	
+	public void relatorio() {
 
 		try {
 
@@ -165,39 +137,15 @@ public class TipoDocumentoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
+	}	
 	
-	public String limpaTela() {
-		setEntidade(new TipoDocumento());
-		return "listar";
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
 	public TipoDocumento getEntidade() {return entidade;}
 	public void setEntidade(TipoDocumento entidade) {this.entidade = entidade;}
 
-	public List<TipoDocumento> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new TipoDocumento() );
-			descricao = new String();
-			lista = new ArrayList<TipoDocumento>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
+	public List<TipoDocumento> getLista(){return lista;}	
 	
 	//PAGINAÇÃO
 	private void limparListas() {

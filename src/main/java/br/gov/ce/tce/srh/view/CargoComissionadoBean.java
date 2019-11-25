@@ -106,7 +106,6 @@ public class CargoComissionadoBean implements Serializable {
 		FacesUtil.setFlashParameter("entidade", getEntidade());        
         return "incluirAlterar";
 	}
-
 	
 	public void excluir() {
 

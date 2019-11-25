@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.Carreira;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CarreiraPessoalService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoalService;
@@ -33,7 +32,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("carreiraPessoalBean")
-@Scope("session")
+@Scope("view")
 public class CarreiraPessoalBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CarreiraPessoalBean.class);
@@ -50,12 +49,6 @@ public class CarreiraPessoalBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 	
-	@Autowired
-	private AuthenticationService authenticationService;
-
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	private String cpf = new String();
 	private String nome = new String();
 
@@ -69,27 +62,24 @@ public class CarreiraPessoalBean implements Serializable {
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<CarreiraPessoal> pagedList = new ArrayList<CarreiraPessoal>();
 	private int flagRegistroInicial;
-	private Integer pagina = 1;	
-
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	public String prepareAlterar() {
-		this.nome = entidade.getPessoal().getNomeCompleto();
-		this.cpf = entidade.getPessoal().getCpf();
-		atualizaFuncionais();
-		this.alterar = true;
-		return "incluirAlterar";
-	}
+	private Integer pagina = 1;
 	
-	public String consultar() {
+	@PostConstruct
+	private void init() {
+		CarreiraPessoal flashParameter = (CarreiraPessoal)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CarreiraPessoal());
+		if(this.entidade.getId() != null) {
+			this.nome = entidade.getPessoal().getNomeCompleto();
+			this.cpf = entidade.getPessoal().getCpf();
+			atualizaFuncionais();
+			this.alterar = true;
+		}
+    }	
+	
+	
+	public void consultar() {
 
-		try {
-
-						
-			limparListas();			
+		try {		
 			
 			if (entidade.getPessoal() == null)			
 				count = carreiraPessoalService.count( null );
@@ -103,8 +93,6 @@ public class CarreiraPessoalBean implements Serializable {
 			
 			flagRegistroInicial = -1;
 			
-			passouConsultar = true;
-
 		} catch (SRHRuntimeException e) {
 			limparListas();
 			FacesUtil.addErroMessage(e.getMessage());
@@ -114,12 +102,9 @@ public class CarreiraPessoalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
-
 	
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -136,12 +121,14 @@ public class CarreiraPessoalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
-
 	
-	public String excluir() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void excluir() {
 
 		try {
 
@@ -157,12 +144,11 @@ public class CarreiraPessoalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return consultar();
+		setEntidade(new CarreiraPessoal());
+		consultar();
 	}
 
-
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 			
@@ -178,21 +164,12 @@ public class CarreiraPessoalBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-
-	public String limpaTela() {
-		limpar();
-		return "listar";
-	}
-	
+	}	
 	
 	public String limpaForm() {
 		limpar();
 		return "carreiraPessoalForm";
 	}
-
 	
 	private void limpar() {
 		
@@ -204,7 +181,6 @@ public class CarreiraPessoalBean implements Serializable {
 		this.nome = new String();
 		
 	}
-
 
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
@@ -244,43 +220,6 @@ public class CarreiraPessoalBean implements Serializable {
 
 	public CarreiraPessoal getEntidade() {return entidade;}
 	public void setEntidade(CarreiraPessoal entidade) {this.entidade = entidade;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {
-				
-				limparListas();
-				
-				setCpf(authenticationService.getUsuarioLogado().getCpf());				
-				
-				count = carreiraPessoalService.count( getEntidade().getPessoal().getId() );				
-				
-				if (count == 0) {
-					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-					logger.info("Nenhum registro foi encontrado.");
-				}	
-				
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			limpar();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		
-		passouConsultar = false;
-		
-		return form;
-	}
 
 	public boolean isAlterar() {return alterar;}	
 	
@@ -330,8 +269,7 @@ public class CarreiraPessoalBean implements Serializable {
 				
 		if (entidade != null && entidade.getPessoal() != null) {		
 			this.funcionais = funcionalService.findByPessoal(getEntidade().getPessoal().getId(), "DESC");			
-		}
-		
+		}		
 		atualizaCargos();		
 		
 	}
@@ -353,18 +291,13 @@ public class CarreiraPessoalBean implements Serializable {
 
 	public void atualizaInicioCargo() {
 				
-		if(!alterar) {
-		
-			int index = 0;
-			
-			for (int i = 0; i < funcionais.size(); i++) {
-				
-				Funcional funcional = funcionais.get(i);
-				
+		if(!alterar) {		
+			int index = 0;			
+			for (int i = 0; i < funcionais.size(); i++) {				
+				Funcional funcional = funcionais.get(i);				
 				if(funcional.getOcupacao().getId().intValue() == entidade.getOcupacao().getId().intValue())
 					index = i;				
-			}
-			
+			}			
 			entidade.setInicioCargoAtual(funcionais.get(index).getExercicio());
 		}
 	}

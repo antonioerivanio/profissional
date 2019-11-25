@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -24,15 +24,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC011_Manter Curso  de Formação Acadêmica
-* 
-* @since   : Set 9, 2011, 3:53:00 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("cursoAcademicaBean")
-@Scope("session")
+@Scope("view")
 public class CursoAcademicaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CursoAcademicaBean.class);
@@ -45,11 +39,6 @@ public class CursoAcademicaBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private AreaAcademica area;
@@ -69,14 +58,13 @@ public class CursoAcademicaBean implements Serializable {
 	private List<CursoAcademica> pagedList = new ArrayList<CursoAcademica>();
 	private int flagRegistroInicial = 0;
 
+	@PostConstruct
+	private void init() {
+		CursoAcademica flashParameter = (CursoAcademica)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CursoAcademica());			
+    }
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -92,7 +80,6 @@ public class CursoAcademicaBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -103,17 +90,9 @@ public class CursoAcademicaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -130,17 +109,14 @@ public class CursoAcademicaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -158,15 +134,9 @@ public class CursoAcademicaBean implements Serializable {
 		}
 
 		setEntidade( new CursoAcademica() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
 	public List<AreaAcademica> getComboArea() {
 
         try {
@@ -182,13 +152,7 @@ public class CursoAcademicaBean implements Serializable {
         return this.comboArea;
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -211,21 +175,8 @@ public class CursoAcademicaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
+	}	
 	
-	public String limpaTela() {
-		setEntidade(new CursoAcademica());
-		setArea(new AreaAcademica());
-		descricao = null;
-		return "listar";
-	}
-	
-	
-	/**
-	 * Gets and Sets
-	 */
 	public AreaAcademica getArea() {return area;}
 	public void setArea(AreaAcademica area) {this.area = area;}
 
@@ -235,22 +186,7 @@ public class CursoAcademicaBean implements Serializable {
 	public CursoAcademica getEntidade() {return entidade;}
 	public void setEntidade(CursoAcademica entidade) {this.entidade = entidade;}
 
-	public List<CursoAcademica> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new CursoAcademica() );
-			this.area = null;
-			this.comboArea = null;
-			this.descricao = new String();
-			this.lista = new ArrayList<CursoAcademica>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
+	public List<CursoAcademica> getLista(){return lista;}	
 	
 	//PAGINAÇÃO
 	private void limparListas() {

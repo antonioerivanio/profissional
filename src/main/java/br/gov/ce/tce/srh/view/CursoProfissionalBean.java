@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -28,15 +28,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC044_Manter Curso de Formação Profissional
-* 
-* @since   : Out 11, 2011, 17:11:20 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("cursoProfissionalBean")
-@Scope("session")
+@Scope("view")
 public class CursoProfissionalBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CursoProfissionalBean.class);
@@ -51,11 +45,6 @@ public class CursoProfissionalBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private AreaProfissional area;
@@ -77,15 +66,14 @@ public class CursoProfissionalBean implements Serializable {
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<CursoProfissional> pagedList = new ArrayList<CursoProfissional>();
 	private int flagRegistroInicial = 0;
+	
+	@PostConstruct
+	private void init() {
+		CursoProfissional flashParameter = (CursoProfissional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CursoProfissional());
+    }
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -97,7 +85,6 @@ public class CursoProfissionalBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -108,17 +95,9 @@ public class CursoProfissionalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -135,17 +114,14 @@ public class CursoProfissionalBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void excluir() {
 
 		try {
 
@@ -163,15 +139,9 @@ public class CursoProfissionalBean implements Serializable {
 		}
 
 		setEntidade( new CursoProfissional() );
-		return consultar();
+		consultar();
 	}
-
-
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
+	
 	public List<AreaProfissional> getComboArea() {
 
         try {
@@ -186,12 +156,7 @@ public class CursoProfissionalBean implements Serializable {
 
         return this.comboArea;
 	}
-	
-	/**
-	 * Combo Instituicao
-	 * 
-	 * @return
-	 */
+		
 	public List<Instituicao> getComboInstituicao() {
 
 		try {
@@ -206,19 +171,12 @@ public class CursoProfissionalBean implements Serializable {
 
 		return this.comboInstituicao;
 	}
-	
-	
+		
 	public List<TipoCursoProfissional> getComboTipoCurso() {
 		return Arrays.asList(TipoCursoProfissional.values());
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 			
@@ -227,30 +185,16 @@ public class CursoProfissionalBean implements Serializable {
 			if (cursos == null || cursos.size() == 0){
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
-				return null;
-			}
-			
-			relatorioUtil.relatorio("cursoprofissional.jasper", new HashMap<String, Object>(), "cursoprofissional.pdf", cursos);
+			} else {				
+				relatorioUtil.relatorio("cursoprofissional.jasper", new HashMap<String, Object>(), "cursoprofissional.pdf", cursos);
+			}			
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
-	}
-	
-	public String limpaTela() {
-		setEntidade(new CursoProfissional());
-		setArea(new AreaProfissional());
-		this.inicio = null;
-		this.fim = null;
-		return "listar";
 	}
 
-	/**
-	 * Gets and Sets
-	 */
 	public AreaProfissional getArea() {return area;}
 	public void setArea(AreaProfissional area) {this.area = area;}
 	private Long getIdArea(){
@@ -276,23 +220,6 @@ public class CursoProfissionalBean implements Serializable {
 
 	public List<CursoProfissional> getLista(){return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new CursoProfissional() );
-			this.area = null;
-			this.comboArea = null;
-			this.descricao = new String();
-			this.inicio = null;
-			this.fim = null;
-			this.lista = new ArrayList<CursoProfissional>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-	
 	//PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new UIDataTable();

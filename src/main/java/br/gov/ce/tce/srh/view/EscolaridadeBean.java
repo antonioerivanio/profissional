@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC013_Manter Nível de Escolaridade
-* 
-* @since   : Aug 31, 2011, 5:03:00 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("escolaridadeBean")
-@Scope("session")
+@Scope("view")
 public class EscolaridadeBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(EscolaridadeBean.class);
@@ -40,11 +34,6 @@ public class EscolaridadeBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -59,15 +48,14 @@ public class EscolaridadeBean implements Serializable {
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Escolaridade> pagedList = new ArrayList<Escolaridade>();
 	private int flagRegistroInicial = 0;
+	
+	@PostConstruct
+	private void init() {
+		Escolaridade flashParameter = (Escolaridade)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Escolaridade());			
+    }
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -79,24 +67,15 @@ public class EscolaridadeBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -113,17 +92,14 @@ public class EscolaridadeBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -141,16 +117,10 @@ public class EscolaridadeBean implements Serializable {
 		}
 
 		setEntidade( new Escolaridade() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -167,15 +137,8 @@ public class EscolaridadeBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-
-		return null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
@@ -184,30 +147,13 @@ public class EscolaridadeBean implements Serializable {
 
 	public List<Escolaridade> getLista(){return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new Escolaridade() );
-			this.descricao = new String();
-			this.lista = new ArrayList<Escolaridade>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-	
+		
 	//PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Escolaridade>(); 
-	}
-	
-	public String limpaTela() {
-		setEntidade(new Escolaridade());
-		return "listar";
-	}
+	}	
 
 	public UIDataTable getDataTable() {return dataTable;}
 	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}

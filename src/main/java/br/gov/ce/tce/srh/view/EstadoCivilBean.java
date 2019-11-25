@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC019_Manter Estado Civil
-* 
-* @since   : Sep 1, 2011, 12:00:00 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("estadoCivilBean")
-@Scope("session")
+@Scope("view")
 public class EstadoCivilBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(EstadoCivilBean.class);
@@ -40,11 +34,6 @@ public class EstadoCivilBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -60,14 +49,13 @@ public class EstadoCivilBean implements Serializable {
 	private List<EstadoCivil> pagedList = new ArrayList<EstadoCivil>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	@PostConstruct
+	private void init() {
+		EstadoCivil flashParameter = (EstadoCivil)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new EstadoCivil());
+    }
+	
+	public void consultar() {
 
 		try {
 
@@ -79,24 +67,15 @@ public class EstadoCivilBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	
+	public void salvar() {
 
 		try {
 
@@ -112,18 +91,15 @@ public class EstadoCivilBean implements Serializable {
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return null;
+		}		
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -141,16 +117,10 @@ public class EstadoCivilBean implements Serializable {
 		}
 
 		setEntidade( new EstadoCivil() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -167,19 +137,8 @@ public class EstadoCivilBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String limpaTela() {
-		setEntidade(new EstadoCivil());
-		return "listar";
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
@@ -187,19 +146,6 @@ public class EstadoCivilBean implements Serializable {
 	public void setEntidade(EstadoCivil entidade) {this.entidade = entidade;}
 
 	public List<EstadoCivil> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new EstadoCivil() );
-			this.descricao = new String();
-			this.lista = new ArrayList<EstadoCivil>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
