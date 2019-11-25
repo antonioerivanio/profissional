@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC008_Manter Tipo de Dependência
-* 
-* @since   : Aug 31, 2011, 11:23:18 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("tipoDependenciaBean")
-@Scope("session")
+@Scope("view")
 public class TipoDependenciaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(TipoDependenciaBean.class);
@@ -41,13 +35,8 @@ public class TipoDependenciaBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// parametro da tela de consulta
 	private String descricao = new String();
-
 
 	// entidades das telas
 	private List<TipoDependencia> lista = new ArrayList<TipoDependencia>();
@@ -60,13 +49,13 @@ public class TipoDependenciaBean implements Serializable {
 	private List<TipoDependencia> pagedList = new ArrayList<TipoDependencia>();
 	private int flagRegistroInicial = 0;
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	@PostConstruct
+	public void init() {
+		TipoDependencia flashParameter = (TipoDependencia)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new TipoDependencia());
+	}
+	
+	public void consultar() {
 
 		try {
 
@@ -78,24 +67,15 @@ public class TipoDependenciaBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -112,17 +92,14 @@ public class TipoDependenciaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -140,16 +117,10 @@ public class TipoDependenciaBean implements Serializable {
 		}
 
 		setEntidade( new TipoDependencia() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -166,14 +137,8 @@ public class TipoDependenciaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
@@ -181,19 +146,6 @@ public class TipoDependenciaBean implements Serializable {
 	public void setEntidade(TipoDependencia entidade) {this.entidade = entidade;}
 
 	public List<TipoDependencia> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new TipoDependencia() );
-			descricao = new String();
-			lista = new ArrayList<TipoDependencia>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {

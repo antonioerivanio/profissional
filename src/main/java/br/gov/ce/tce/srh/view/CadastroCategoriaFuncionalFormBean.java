@@ -2,7 +2,7 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 
-import javax.faces.bean.ManagedBean;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("cadastroCategoriaFuncionalFormBean")
-@Scope("session")
-@ManagedBean
+@Scope("view")
 public class CadastroCategoriaFuncionalFormBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(CadastroCategoriaFuncionalFormBean.class);
@@ -30,12 +29,36 @@ public class CadastroCategoriaFuncionalFormBean implements Serializable {
 	private CategoriaFuncional entidade = new CategoriaFuncional();
 	private boolean ativa = true;
 	
+	@PostConstruct
+	public void init(){		
+		try {
+			
+			CategoriaFuncional flashParameter = (CategoriaFuncional)FacesUtil.getFlashParameter("entidade");
+			setEntidade(flashParameter != null ? flashParameter : new CategoriaFuncional());
+			
+			if(this.entidade.getId() != null) {				
+				this.alterar = true;
+				
+				if(entidade.getAtiva() == 1L){
+					ativa = true;
+				} else {
+					ativa = false;
+				}
+			}
+			
+		} catch (Exception e) {
+			
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
+	
 	private void limpar(){
 		entidade = new CategoriaFuncional();
 		ativa = true;
 	}
 	
-	public String salvar(){
+	public void salvar(){
 		if(ativa){
 			entidade.setAtiva(1L);
 		} else {
@@ -57,31 +80,6 @@ public class CadastroCategoriaFuncionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
-	}
-	
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-	
-	public String prepareAlterar(){
-		this.alterar = true;
-		try {
-			if(entidade.getAtiva() == 1L){
-				ativa = true;
-			} else {
-				ativa = false;
-			}
-			
-		} catch (Exception e) {
-			
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-		
-		return "incluirAlterar";
 	}
 
 	public CategoriaFuncional getEntidade() {

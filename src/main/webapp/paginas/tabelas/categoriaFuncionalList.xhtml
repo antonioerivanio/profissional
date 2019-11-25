@@ -14,7 +14,7 @@
 			<h2>Consulta de Categoria</h2>
 
 		</div>
-		<h:form id="form" binding="#{categoriaFuncionalListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
 			<div class="input-box box-38">
@@ -38,8 +38,8 @@
 					</rich:column>
 					<rich:column id="colEditar">
 						<f:facet name="header">EDITAR</f:facet>
-						<h:commandLink id="editar" value="Editar" action="#{cadastroCategoriaFuncionalFormBean.prepareAlterar}" styleClass="ico-editar" >
-							<f:setPropertyActionListener target="#{cadastroCategoriaFuncionalFormBean.entidade}" value="#{item}" />
+						<h:commandLink id="editar" value="Editar" action="#{categoriaFuncionalListBean.editar}" styleClass="ico-editar" >
+							<f:setPropertyActionListener target="#{categoriaFuncionalListBean.categoriaFuncional}" value="#{item}" />
 						</h:commandLink>
 					</rich:column>
 					<rich:column id="colExcluir">
@@ -50,12 +50,12 @@
 						</h:commandLink>
 					</rich:column>
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{categoriaFuncionalListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 			</div>
 			
-			<h:commandButton id="incluir" value="Incluir" action="#{cadastroCategoriaFuncionalFormBean.prepareIncluir()}" styleClass="bt-padrao fr mg-right-15" />
+			<h:commandButton id="incluir" value="Incluir" action="incluirAlterar" styleClass="bt-padrao fr mg-right-15" />
 			
-			<h:commandButton id="limpaTela" value="Limpar" action="#{categoriaFuncionalListBean.limpaTela}" styleClass="bt-padrao fr mg-right-15" />
+			<h:commandButton id="limpaTela" value="Limpar" action="listar" styleClass="bt-padrao fr mg-right-15" />
 			
 		</h:form>
 	</ui:define>
