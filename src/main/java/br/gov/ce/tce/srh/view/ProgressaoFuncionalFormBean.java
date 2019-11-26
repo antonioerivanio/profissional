@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,15 +21,9 @@ import br.gov.ce.tce.srh.service.TipoMovimentoService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC031_Manter Progressão Funcional do Servidor
-* 
-* @since   : Jan 17, 2012, 18:28:00
-* @author  : robson.castro@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("progressaoFuncionalFormBean")
-@Scope("session")
+@Scope("view")
 public class ProgressaoFuncionalFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ProgressaoFuncionalFormBean.class);
@@ -54,14 +50,10 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 	private List<TipoMovimento> comboTipoMovimento;
 	private List<TipoPublicacao> comboTipoPublicacao;
 
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
+	@PostConstruct
+	public void init() {
+		ReferenciaFuncional flashParameter = (ReferenciaFuncional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new ReferenciaFuncional());
 
 		try {
 
@@ -81,17 +73,9 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -108,16 +92,8 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null; 
 	}
 
-
-	/**
-	 * Combo Classe Referencia
-	 * 
-	 * @return
-	 */
 	public List<ClasseReferencia> getComboClasseReferencia() {
 
 		try {
@@ -132,12 +108,6 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 		return this.comboClasseReferencia;
 	}
 
-
-	/**
-	 * Combo Tipo Movimento
-	 * 
-	 * @return
-	 */
 	public List<TipoMovimento> getComboTipoMovimento() {
 
         try {
@@ -154,12 +124,6 @@ public class ProgressaoFuncionalFormBean implements Serializable {
         return comboTipoMovimento;
 	}
 
-
-	/**
-	 * Combo Tipo Publicacao
-	 * 
-	 * @return
-	 */
 	public List<TipoPublicacao> getComboTipoPublicacao() {
 
         try {
@@ -175,10 +139,6 @@ public class ProgressaoFuncionalFormBean implements Serializable {
         return comboTipoPublicacao;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 		permiteSalvar = false;
 		comboClasseReferencia = null;
@@ -186,10 +146,6 @@ public class ProgressaoFuncionalFormBean implements Serializable {
 		comboTipoPublicacao = null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public ReferenciaFuncional getEntidade() {return entidade;}
 	public void setEntidade(ReferenciaFuncional entidade) {this.entidade = entidade;}
 

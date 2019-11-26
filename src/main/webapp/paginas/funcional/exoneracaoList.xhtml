@@ -28,7 +28,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{exoneracaoListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -128,9 +128,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="exonerarCargoEfetivo"
+                       				  action="#{exoneracaoListBean.exonerarCargoEfetivo}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{exoneracaoFormBean.funcional}" value="#{itemEfetivo}" />
+                            <f:setPropertyActionListener target="#{exoneracaoListBean.entidade}" value="#{itemEfetivo}" />
                         </h:commandLink>
                     </h:column>
 
@@ -171,9 +171,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="exonerarRepresentacao"
+                       				  action="#{exoneracaoListBean.exonerarRepresentacao}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{exoneracaoFormBean.representacao}" value="#{itemRepre}" />
+                            <f:setPropertyActionListener target="#{exoneracaoListBean.representacao}" value="#{itemRepre}" />
                         </h:commandLink>
                     </h:column>
 

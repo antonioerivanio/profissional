@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,15 +28,9 @@ import br.gov.ce.tce.srh.service.TipoOcupacaoService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC042_Manter Reclassificação Ocupacional do Servidor
-* 
-* @since   : Fev 09, 2012, 10:00:00
-* @author  : robson.castro@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("reclassificacaoOcupacionalFormBean")
-@Scope("session")
+@Scope("view")
 public class ReclassificacaoOcupacionalFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ReclassificacaoOcupacionalFormBean.class);
@@ -86,16 +82,11 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 
 	private Boolean exibirTodosOsCampos = false;
 
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		limpar();
+	@PostConstruct
+	public void init() {
+		
+		Funcional flashParameter = (Funcional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Funcional());
 
 		this.entidade = funcionalService.getById( this.entidade.getId() );
 		this.tipoOcupacao = getEntidade().getOcupacao().getTipoOcupacao();
@@ -122,17 +113,9 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 			entidade.setTipoPublicacaoSaida(null);
 			entidade.setExercicio(null);
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -149,16 +132,8 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Tipo Ocupacao
-	 * 
-	 * @return
-	 */
 	public List<TipoOcupacao> getComboTipoOcupacao() {
 
         try {
@@ -174,12 +149,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         return this.comboTipoOcupacao;
 	}
 
-
-	/**
-	 * Combo Cargo/Funcao
-	 * 
-	 * @return
-	 */
 	public void carregaCargoFuncao() {
 		comboCargoFuncao = null;
 		comboClasseReferencia = null;
@@ -202,12 +171,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         return this.comboCargoFuncao;
 	}
 
-
-	/**
-	 * Combo Classe/Referência
-	 * 
-	 * @return
-	 */
 	public void carregaClasseReferencia() {
 		comboClasseReferencia = null;
 		getComboClasseReferencia();
@@ -228,12 +191,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 		return this.comboClasseReferencia;
 	}
 
-
-	/**
-	 * Combo Motivo Entrada
-	 * 
-	 * @return
-	 */
 	public List<TipoMovimento> getComboTipoMovimentoEntrada() {
 
 		try {
@@ -256,12 +213,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 		return this.comboTipoMovimentoEntrada;
 	}
 
-
-	/**
-	 * Combo Motivo Saida
-	 * 
-	 * @return
-	 */
 	public List<TipoMovimento> getComboTipoMovimentoSaida() {
 
 		try {
@@ -284,12 +235,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 		return this.comboTipoMovimentoSaida;
 	}
 
-
-	/**
-	 * Combo CBO 01
-	 * 
-	 * @return
-	 */
 	public List<Cbo> getComboCBO1() {
 
         try {
@@ -305,12 +250,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         return this.comboCBO1;
 	}
 
-
-	/**
-	 * Combo CBO 02
-	 * 
-	 * @return
-	 */
 	public void carregaCbo2() {
 		this.cbo2 = null;
 		this.comboCBO2 = null;
@@ -338,12 +277,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         return this.comboCBO2;
 	}
 
-
-	/**
-	 * Combo CBO 03
-	 * 
-	 * @return
-	 */
 	public void carregaCbo3() {
 		this.cbo3 = null;
 		this.comboCBO3 = null;
@@ -369,12 +302,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
         return this.comboCBO3;
 	}
 
-
-	/**
-	 * Combo CBO 04
-	 * 
-	 * @return
-	 */
 	public void carregaCbo4() {
 		this.entidade.setCbo(null);
 		this.comboCBO4 = null;
@@ -397,13 +324,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 
         return this.comboCBO4;
 	}
-	
 
-	/**
-	 * Combo Tipo de Publicação 
-	 * 
-	 * @return
-	 */
 	public List<TipoPublicacao> getComboTipoPublicacao() {
 
         try {
@@ -418,12 +339,7 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 
         return this.comboTipoPublicacao;
 	}
-	
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		this.exibirTodosOsCampos = true;
@@ -445,10 +361,6 @@ public class ReclassificacaoOcupacionalFormBean implements Serializable {
 		comboTipoPublicacao = null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Funcional getEntidade() {return entidade;}
     public void setEntidade(Funcional entidade) {this.entidade = entidade;}
 

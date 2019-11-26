@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,7 +22,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("categoriaFuncionalSetorResponsabilidadeFormBean")
-@Scope("session")
+@Scope("view")
 public class CategoriaFuncionalSetorResponsabilidadeFormBean implements Serializable {
 
 static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
@@ -41,19 +43,18 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
 	
 	private List<CategoriaFuncionalSetor> categorias;
 	
-	public String prepareIncluir() {
-		limpaTela();
-		return "incluirAlterar";
+	@PostConstruct
+	public void init() {
+		CategoriaFuncionalSetorResponsabilidade flashParameter = (CategoriaFuncionalSetorResponsabilidade)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CategoriaFuncionalSetorResponsabilidade());
+		
+		if(this.entidade.getId() != null) {
+			entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId()));		
+			setor = entidade.getCategoriaFuncionalSetor().getSetor();
+		}
 	}
 	
-	public String prepareAlterar() {
-		entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId()));		
-		setor = entidade.getCategoriaFuncionalSetor().getSetor();
-		return "incluirAlterar";
-	}
-	
-	public String salvar() {
-				
+	public void salvar() {
 		try {
 						
 			atribuicaoSetorService.salvar(entidade);
@@ -70,8 +71,6 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}	
 	
 	public List<Setor> getComboSetor() {
@@ -130,5 +129,4 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
 			entidade.setTipo(tipo); 
 		}
 	}	
-	
 }

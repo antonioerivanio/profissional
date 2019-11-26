@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
@@ -17,16 +18,9 @@ import br.gov.ce.tce.srh.service.CompetenciaOrganizacionalService;
 import br.gov.ce.tce.srh.service.CompetenciaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
- * Use case : Compentencia Organizacional
- * 
- * @since   : Dez 12, 2012, 12:12:12 PM
- * @author  : raphael.ferreira@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("competenciaOrganizacionalFormBean")
-@Scope("session")
+@Scope("view")
 public class CompetenciaOrganizacionalFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CompetenciaOrganizacionalFormBean.class);
@@ -44,34 +38,13 @@ public class CompetenciaOrganizacionalFormBean implements Serializable {
 	private List<Competencia> comboCompetencia;
 	private String tipoCompetencia;
 
+	@PostConstruct
+	public void init() {
+		CompetenciaOrganizacional flashParameter = (CompetenciaOrganizacional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CompetenciaOrganizacional());
+	}	
 
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 		
 		try {
 
@@ -88,21 +61,12 @@ public class CompetenciaOrganizacionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}
 
 	public void filtrarCompetencia(ValueChangeEvent event) {
-
 		tipoCompetencia =  (String) event.getNewValue() ;
-
 	}
 
-	/**
-	 * Combo Tipo de Ferias
-	 * 
-	 * @return
-	 */
 	public List<Competencia> getComboCompetencia() {
 
 		try {
@@ -120,11 +84,7 @@ public class CompetenciaOrganizacionalFormBean implements Serializable {
 		
 		return this.comboCompetencia;
 	}
-
 	
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		setEntidade(new CompetenciaOrganizacional());
@@ -135,18 +95,10 @@ public class CompetenciaOrganizacionalFormBean implements Serializable {
 		this.comboCompetencia = null;
 	}
 
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public void carregaCompetencia() {
 		this.comboCompetencia = null;
 	}
 
-	/**
-	 * Gets and Sets
-	 */
 	public CompetenciaOrganizacional getEntidade() { return entidade; }
 	public void setEntidade(CompetenciaOrganizacional entidade) { this.entidade = entidade; }
 

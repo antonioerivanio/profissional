@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +24,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
- * Use case : Competencia Setor Funcional
- * 
- * @since   : Dez 12, 2012, 12:12:12 PM
- * @author  : raphael.ferreira@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("competenciaSetorFuncionalListBean")
-@Scope("session")
+@Scope("view")
 public class CompetenciaSetorFuncionalListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(CompetenciaSetorFuncionalListBean.class);
@@ -51,11 +42,6 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;	
-
-
-	//controle de acesso do formulário
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	//parametos de tela de consulta
 	private String tipo = new String();
@@ -79,14 +65,7 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 	private List<CompetenciaSetorFuncional> pagedList = new ArrayList<CompetenciaSetorFuncional>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -101,7 +80,6 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -112,17 +90,14 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -142,16 +117,10 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -178,31 +147,6 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório das Competências Setor Funcional. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-
-	public String limpaTela() {
-		tipo = null;
-		passouConsultar = false;
-		this.setor = null;
-		this.comboSetor = null;
-		this.comboCategoriaFuncional = null;
-		setEntidade(new CompetenciaSetorFuncional());
-		lista = new ArrayList<CompetenciaSetorFuncional>();
-		limparListas();
-		flagRegistroInicial = 0;
-		
-		return "listar";
-	}
-
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			limpaTela();		
-		}
-		return form;
 	}
 
 	public List<CompetenciaSetorFuncional> getLista() {return lista;}
@@ -230,12 +174,11 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 		}
 		return dataModel;
 	}
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
+	
+	public List<CompetenciaSetorFuncional> getPagedList() {return pagedList;}
+	public void setPagedList(List<CompetenciaSetorFuncional> pagedList) {this.pagedList = pagedList;}
+	//FIM PAGINAÇÃO
+	
 	public List<Setor> getComboSetor() {
 
         try {
@@ -251,11 +194,6 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
         return this.comboSetor;
 	}
 	
-	/**
-	 * Combo Categoria Funcional
-	 * 
-	 * @return
-	 */
 	public List<CategoriaFuncional> getComboCategoriaFuncional() {
 
         try {
@@ -271,11 +209,6 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
         return this.comboCategoriaFuncional;
 	}
 	
-	/**
-	 * Combo Categoria Funcional
-	 * 
-	 * @return
-	 */
 	public void carregaCategoriaFuncional() {
 		if ( getSetor() != null) {
 			setSetor( setorService.getById( getSetor().getId() ));
@@ -283,61 +216,38 @@ public class CompetenciaSetorFuncionalListBean implements Serializable {
 			getCategoriaFuncional();
 		}
 	}
-
-	public List<CompetenciaSetorFuncional> getPagedList() {return pagedList;}
-	public void setPagedList(List<CompetenciaSetorFuncional> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINAÇÃO
-
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
-
+	
 	public String getTipo() {
 		return tipo;
 	}
-
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 
-
 	public CompetenciaSetorFuncional getEntidade() {
 		return entidade;
 	}
-
 
 	public void setEntidade(CompetenciaSetorFuncional entidade) {
 		this.entidade = entidade;
 	}
 
-
 	public Setor getSetor() {
 		return setor;
 	}
 
-
 	public void setSetor(Setor setor) {
 		this.setor = setor;
 	}
-	
 
 	public CategoriaFuncional getCategoriaFuncional() {
 		return categoriaFuncional;
 	}
-
 	
 	public void setCategoriaFuncional(CategoriaFuncional categoriaFuncional) {
 		this.categoriaFuncional = categoriaFuncional;
 	}
-
 
 	public void setComboSetor(List<Setor> comboSetor) {
 		this.comboSetor = comboSetor;

@@ -110,17 +110,8 @@
 			</fieldset>
 
 			<h:commandButton action="#{competenciaSetorialFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/competenciaSetorialList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{competenciaSetorialListBean.passouConsultar}" value="true"/>
-			</h:commandButton>
-<!-- 			<a href="/srh/paginas/tabelas/areaSetorCompetenciaList.faces" class="bt-voltar fr mg-right-10">Voltar</a> -->
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/competenciaSetorialList.faces" />
 			
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{competenciaSetorialFormBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />
-
 		</h:form>
 
 	</ui:define>

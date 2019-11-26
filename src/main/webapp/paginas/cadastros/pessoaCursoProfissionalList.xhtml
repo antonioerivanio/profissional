@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{pessoalCursoProfissionalListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -99,9 +99,8 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{pessoalCursoProfissionalFormBean.prepareAlterar}"
+                       				  action="#{pessoalCursoProfissionalListBean.editar}"
                        				  styleClass="ico-editar" >
-							<f:setPropertyActionListener target="#{pessoalCursoProfissionalFormBean.curso}" value="#{item}" />
 							<f:setPropertyActionListener target="#{pessoalCursoProfissionalListBean.cursoProfissional}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
@@ -131,19 +130,19 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{pessoalCursoProfissionalListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 				
 			</div>
 
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{pessoalCursoProfissionalFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_PROFISSIONAL_INSERIR')}"/>
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{pessoalCursoProfissionalListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

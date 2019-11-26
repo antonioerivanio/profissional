@@ -105,11 +105,11 @@
 					
    					<h:column id="col6" headerClass="cel-25" >
 						<f:facet name="header">EDITAR</f:facet>
-                       <h:commandLink id="editar"
+                       	<h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{competenciaSetorFuncionalFormBean.prepareAlterar}"
+                       				  action="#{competenciaSetorFuncionalListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{competenciaSetorFuncionalFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{competenciaSetorFuncionalListBean.entidade}" value="#{item}" />
                         </h:commandLink>
 					</h:column>
 					<h:column id="col7" headerClass="cel-25" >
@@ -123,17 +123,17 @@
                         </h:commandLink>
 					</h:column>
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{competenciaSetorFuncionalListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 			</div>
 
 			<h:commandButton id="incluir" 
 							 value="Incluir" 
-							 action="#{competenciaSetorFuncionalFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{competenciaSetorFuncionalListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15"  />				 
 		</h:form>
 	</ui:define>

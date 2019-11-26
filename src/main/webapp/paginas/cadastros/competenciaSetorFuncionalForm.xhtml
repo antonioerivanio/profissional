@@ -132,10 +132,7 @@
 					</div>
 				</div>			
 			<h:commandButton action="#{competenciaSetorFuncionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10"  />
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/competenciaSetorFuncionalList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{competenciaSetorFuncionalListBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
-			<a href="/srh/paginas/cadastros/competenciaSetorFuncionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/competenciaSetorFuncionalList.faces" />
 		</h:form>
 	</ui:define>
 </ui:composition>

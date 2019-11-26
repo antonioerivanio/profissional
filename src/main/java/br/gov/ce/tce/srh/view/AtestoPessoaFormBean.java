@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC026_Manter Competência do Servidor
-* 
-* @since   : Jan 12, 2012, 11:53:50 PM
-* @author  : joel.barbosa@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("atestoPessoaFormBean")
-@Scope("session")
+@Scope("view")
 public class AtestoPessoaFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(AtestoPessoaFormBean.class);
@@ -47,11 +41,8 @@ public class AtestoPessoaFormBean implements Serializable {
 	@Autowired
 	private FuncionalService funcionalService;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 	private boolean alterar = false;
+	private boolean passouConsultar = false;
 
 	// entidades das telas
 	private AtestoPessoa entidade = new AtestoPessoa();
@@ -65,48 +56,29 @@ public class AtestoPessoaFormBean implements Serializable {
 
 	// combos
 	private List<Competencia> comboCompetencia;
-	
-	
 
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
+	@PostConstruct
+	public void init() {
+		
+		AtestoPessoa flashParameter = (AtestoPessoa)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new AtestoPessoa());
+
+		if(this.entidade.getId() != null) {			
+			this.alterar = true;
+			this.passouConsultar = true;
+			
+			this.funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
+			
+			this.matricula = this.funcional.getMatricula();
+			this.nome = getEntidade().getPessoal().getNomeCompleto();
+			
+			this.idResponsavel = getEntidade().getResponsavel().getId();
+			this.nomeResponsavel = getEntidade().getResponsavel().getFuncional().getNomeCompleto();
+		}
+
 	}
 
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		this.alterar = true;
-		this.passouConsultar = true;
-
-		this.funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
-
-		this.matricula = this.funcional.getMatricula();
-		this.nome = getEntidade().getPessoal().getNomeCompleto();
-
-		this.idResponsavel = getEntidade().getResponsavel().getId();
-		this.nomeResponsavel = getEntidade().getResponsavel().getFuncional().getNomeCompleto();
-
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar Carregamento dos dados do servidor
-	 * 
-	 * @return
-	 */
-	public String carregar() {
+	public void carregar() {
 
 		try {
 
@@ -114,35 +86,15 @@ public class AtestoPessoaFormBean implements Serializable {
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
 			this.funcional = funcionalService.getById( this.funcional.getId() );
-			
 			this.passouConsultar = true;
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Reiniciar formulario
-	 * 
-	 * @return
-	 */
-	public String limparForm() {
-		limpar();
-		return null;
-	}
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 		
 		try {
 
@@ -159,15 +111,8 @@ public class AtestoPessoaFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}
-	
 
-	/**
-	 * Como Competencia
-	 * @return
-	 */
 	public List<Competencia> getComboCompetencia() {
 
 		try {
@@ -187,16 +132,11 @@ public class AtestoPessoaFormBean implements Serializable {
 		return this.comboCompetencia;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		setEntidade( new AtestoPessoa() );
 
 		this.alterar = false;
-		this.passouConsultar = false;
 
 		this.funcional = null;
 
@@ -208,11 +148,7 @@ public class AtestoPessoaFormBean implements Serializable {
 
 		this.comboCompetencia = null;
 	}
-
-
-	/**
-	 * Gets and Sets
-	 */
+	
 	public AtestoPessoa getEntidade() {return entidade;}
 	public void setEntidade(AtestoPessoa entidade) {this.entidade = entidade;}
 
@@ -266,20 +202,6 @@ public class AtestoPessoaFormBean implements Serializable {
 	public void setNomeResponsavel(String nomeResponsavel) {this.nomeResponsavel = nomeResponsavel;}
 
 	public boolean isAlterar() {return alterar;}
-
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new AtestoPessoa() );
-			this.nome = new String();
-			limpar();
-		}
-		passouConsultar = false;
-		return form;
-	}
-
 	public boolean isPassouConsultar() {return passouConsultar;}
-	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
-
+	
 }

@@ -14,7 +14,7 @@
 			<h2>Cadastro Competências Setoriais</h2>
 
 		</div>
-		<h:form id="form" binding="#{competenciaSetorialListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
 			<div id="div1" class="select-box box-38">
@@ -74,10 +74,10 @@
 					<rich:column id="clmEditar" >
 						<f:facet id="lblEditar" name="header">EDITAR</f:facet>
 						<h:commandLink id="editar" value="Editar"
-							action="#{competenciaSetorialFormBean.prepareAlterar}"
+							action="#{competenciaSetorialListBean.editar}"
 							styleClass="ico-editar">
 							<f:setPropertyActionListener
-								target="#{competenciaSetorialFormBean.entidade}" value="#{item}" />
+								target="#{competenciaSetorialListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</rich:column>
 					<rich:column id="clmExcluir" >
@@ -91,17 +91,17 @@
                         </h:commandLink>
 					</rich:column>
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{competenciaSetorialListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 			</div>
 			
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{competenciaSetorialFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15"  />
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{competenciaSetorialListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />	
 			

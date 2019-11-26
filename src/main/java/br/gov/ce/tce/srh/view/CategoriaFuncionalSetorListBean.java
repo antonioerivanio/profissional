@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
 @Component("categoriaFuncionalSetorListBean")
-@Scope("session")
+@Scope("view")
 public class CategoriaFuncionalSetorListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CategoriaFuncionalSetorListBean.class);
@@ -39,10 +37,6 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// entidades das telas
 	private CategoriaFuncionalSetor entidade;
@@ -59,12 +53,7 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 	private List<CategoriaFuncionalSetor> pagedList = new ArrayList<CategoriaFuncionalSetor>();
 	private int flagRegistroInicial = 0;
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -81,7 +70,6 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -91,16 +79,14 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -118,10 +104,10 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 		}
 
 		entidade = new CategoriaFuncionalSetor();
-		return consultar();
+		consultar();
 	}
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -141,16 +127,8 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório das Férias. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
         try {
@@ -166,9 +144,6 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
         return this.comboSetor;
 	}
 
-
-	
-	// GETs e SETs	
 	public CategoriaFuncionalSetor getEntidade() {
 		return entidade;
 	}
@@ -188,28 +163,7 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 	public void setComboSetor(List<Setor> comboSetor) {
 		this.comboSetor = comboSetor;
 	}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setor = null;
-			comboSetor = null;
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-				
-		passouConsultar = false;
-		return form;
-	}
 	
-	public String limpaTela() {
-		setEntidade(new CategoriaFuncionalSetor());
-		this.setor = null;
-		return "listar";
-	}
-	
-	
-
 	// PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new UIDataTable();
@@ -251,13 +205,5 @@ public class CategoriaFuncionalSetorListBean implements Serializable {
 		this.pagedList = pagedList;
 	}
 	// FIM PAGINAÇÃO
-	
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
 
 }

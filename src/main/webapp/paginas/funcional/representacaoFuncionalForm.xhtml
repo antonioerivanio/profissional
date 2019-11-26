@@ -293,21 +293,12 @@
 
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')}">
 				<h:commandButton action="#{representacaoFuncionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr"
-								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
-				<a href="/srh/paginas/funcional/representacaoFuncionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>				
 			</ui:fragment>
 						
 			<a href="/srh/paginas/funcional/representacaoFuncionalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>		
 			
-		</h:form>
-
-		<script>
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}	
-		}
-		</script>
+		</h:form>		
 
 	</ui:define>
 </ui:composition>

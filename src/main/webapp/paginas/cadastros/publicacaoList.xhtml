@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{publicacaoBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -79,7 +79,7 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{publicacaoBean.prepareAlterar}"
+                       				  action="#{publicacaoBean.editar}"
                        				  styleClass="ico-editar" >
                             <f:setPropertyActionListener target="#{publicacaoBean.entidade}" value="#{item}" />
                         </h:commandLink>
@@ -110,7 +110,7 @@
 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{publicacaoBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />
 			

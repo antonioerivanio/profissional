@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +23,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
- * Use case : SRH_UC048_Manter Acrecimos do Servidor
- * 
- * @since : Apr 17, 2012, 10:08:34 PM
- * @author : robstownholanda@ivia.com.br
- * 
- */
 @SuppressWarnings("serial")
 @Component("categoriaSetorPessoalListBean")
-@Scope("session")
+@Scope("view")
 public class CategoriaSetorPessoalListBean implements Serializable {
 
 	static Logger logger = Logger
@@ -46,10 +37,6 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 	private FuncionalService funcionalService;
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-	// controle de acesso do formulário
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametos de tela de consulta
 	private String matricula = new String();
@@ -66,13 +53,8 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<CategoriaSetorPessoal> pagedList = new ArrayList<CategoriaSetorPessoal>();
 	private int flagRegistroInicial = 0;
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	
+	public void consultar() {
 
 		try {
 
@@ -89,7 +71,6 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -97,20 +78,17 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			limparListas();
-			FacesUtil
-					.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void excluir() {
 
 		try {
 
@@ -132,15 +110,10 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -164,18 +137,8 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 					.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-																																	
-		return null;
 	}
 
-	public String limpaTela() {
-		setEntidade(new CategoriaSetorPessoal());
-		return "listar";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {
 		return matricula;
 	}
@@ -233,24 +196,6 @@ public class CategoriaSetorPessoalListBean implements Serializable {
 			}
 
 		}
-	}
-
-	public void setForm(HtmlForm form) {
-		this.form = form;
-	}
-
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade(new CategoriaSetorPessoal());
-			matricula = new String();
-			nome = new String();
-			cpf = new String();
-			lista = new ArrayList<Acrescimo>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
 	}
 
 	public String getNome() {

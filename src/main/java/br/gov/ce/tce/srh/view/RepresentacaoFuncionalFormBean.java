@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -25,15 +27,9 @@ import br.gov.ce.tce.srh.service.TipoDocumentoService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC033_Manter Representação Funcional
-* 
-* @since   : Dez 19, 2011, 17:59:02 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("representacaoFuncionalFormBean")
-@Scope("session")
+@Scope("view")
 public class RepresentacaoFuncionalFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalCursoGraduacaoFormBean.class);
@@ -73,48 +69,29 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 	
 	private Boolean exibirTodosOsCampos = false;
 	private Boolean alterarMenu = false;
-	
 
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		this.alterar = true;
-
-		this.nome = getEntidade().getFuncional().getNomeCompleto();
-		this.matricula = getEntidade().getFuncional().getMatricula();		
+	@PostConstruct
+	public void init() {
 		
-		exibirTodosOsCampos = true;
-		alterarMenu = true;
-		if(entidade.getFim() == null){
-			exibirTodosOsCampos = false;
-			alterar = false;
+		RepresentacaoFuncional flashParameter = (RepresentacaoFuncional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new RepresentacaoFuncional());
+		
+		if(this.entidade.getId() != null) {
+			this.alterar = true;
+	
+			this.nome = getEntidade().getFuncional().getNomeCompleto();
+			this.matricula = getEntidade().getFuncional().getMatricula();		
+			
+			exibirTodosOsCampos = true;
+			alterarMenu = true;
+			if(entidade.getFim() == null){
+				exibirTodosOsCampos = false;
+				alterar = false;
+			}
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -131,16 +108,8 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Tipo Documento
-	 * 
-	 * @return
-	 */
 	public List<TipoDocumento> getComboTipoDocumento() {
 
 		try {
@@ -156,12 +125,6 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 		return this.comboTipoDocumento;
 	}
 
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
 		try {
@@ -177,23 +140,11 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 		return this.comboSetor;
 	}
 
-
-	/**
-	 * Combo Cargo
-	 * 
-	 * @return
-	 */
 	public void carregaCargo() {
 		this.comboRepresentacaoCargo = null;
 		getComboRepresentacaoCargo();			
 	}
 
-
-	/**
-	 * Combo Representacao Cargo
-	 * 
-	 * @return
-	 */
 	public List<RepresentacaoCargo> getComboRepresentacaoCargo() {
 
 		try {
@@ -216,13 +167,7 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 
 		return this.comboRepresentacaoCargo;
 	}
-	
-	
-	/**
-	 * Combo Tipo Publicacao
-	 * 
-	 * @return
-	 */
+
 	public List<TipoPublicacao> getComboTipoPublicacao() {
 
 		try {
@@ -238,10 +183,6 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 		return this.comboTipoPublicacao;
 	}
 	
-	
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		setEntidade(new RepresentacaoFuncional());
@@ -259,11 +200,7 @@ public class RepresentacaoFuncionalFormBean implements Serializable {
 		this.exibirTodosOsCampos = false;
 		this.alterarMenu = false;
 	}
-	
-	
-	/**
-	 * Gets and Sets
-	 */
+		
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
@@ -26,15 +25,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC023_Manter Curso da Pessoa
-* 
-* @since   : Out 26, 2011, 13:03:00 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("pessoalCursoProfissionalListBean")
-@Scope("session")
+@Scope("view")
 public class PessoalCursoProfissionalListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalCursoProfissionalListBean.class);
@@ -47,11 +40,6 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private AreaProfissional area;
@@ -72,17 +60,10 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
-			// validando campos da entidade
 			if ( this.area == null )
 				throw new SRHRuntimeException("Selecione uma área.");
 
@@ -94,7 +75,6 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -105,17 +85,14 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getCursoProfissional());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -134,16 +111,8 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return consultar();
 	}
 
-
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
 	public List<AreaProfissional> getComboArea() {
 
 		try {
@@ -159,17 +128,10 @@ public class PessoalCursoProfissionalListBean implements Serializable {
         return this.comboArea;
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
-			// validando campos da entidade
 			if ( this.area == null )
 				throw new SRHRuntimeException("Selecione o campo área.");
 
@@ -192,20 +154,12 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}
 	
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorioCurso() {
+	public void relatorioCurso() {
 
 		try {
-
-			// validando campos da entidade
+			
 			if ( this.cursoProfissional == null )
 				throw new SRHRuntimeException("Selecione um curso.");
 
@@ -227,20 +181,8 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório de curso. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}
-
-	public String limpaTela() {
-		setArea(new AreaProfissional());
-		setCursoProfissional(new CursoProfissional());
-		return "listar";
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
+	
 	public AreaProfissional getArea() {return area;}
 	public void setArea(AreaProfissional area) {this.area = area;}
 
@@ -251,20 +193,6 @@ public class PessoalCursoProfissionalListBean implements Serializable {
 	public void setCursoProfissional(CursoProfissional cursoProfissional) {this.cursoProfissional = cursoProfissional;}
 
 	public List<String> getLista() {return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			this.area = null;
-			this.curso = null;
-			this.comboArea = null;
-			this.lista = new ArrayList<String>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {

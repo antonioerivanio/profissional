@@ -14,7 +14,7 @@
 			<h2>Consulta de Atribuições Setoriais</h2>
 
 		</div>
-		<h:form id="form" binding="#{atribuicaoSetorListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 			
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
@@ -102,9 +102,9 @@
 					<rich:column id="clmEditar" >
 						<f:facet id="lblEditar" name="header">EDITAR</f:facet>
 						<h:commandLink id="editar" value="Editar"
-							action="#{atribuicaoSetorFormBean.prepareAlterar}"
+							action="#{atribuicaoSetorListBean.editar}"
 							styleClass="ico-editar">
-							<f:setPropertyActionListener target="#{atribuicaoSetorFormBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{atribuicaoSetorListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</rich:column>
 					
@@ -128,12 +128,12 @@
 			
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{atribuicaoSetorFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15"  />
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{atribuicaoSetorListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 	/>	
 			
 		</h:form>

@@ -28,7 +28,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{pessoalCursoGraduacaoListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -106,9 +106,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{pessoalCursoGraduacaoFormBean.prepareAlterar}"
+                       				  action="#{pessoalCursoGraduacaoListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{pessoalCursoGraduacaoFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{pessoalCursoGraduacaoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_GRADUACAO_EXCLUIR')}">
@@ -125,19 +125,19 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{pessoalCursoGraduacaoListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 				
 			</div>
 
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{pessoalCursoGraduacaoFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_GRADUACAO_INSERIR')}"/>
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{pessoalCursoGraduacaoListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

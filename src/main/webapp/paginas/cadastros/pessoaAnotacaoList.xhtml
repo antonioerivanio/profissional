@@ -27,7 +27,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{funcionalAnotacaoBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -137,7 +137,7 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{funcionalAnotacaoBean.prepareAlterar}"
+                       				  action="#{funcionalAnotacaoBean.editar}"
                        				  styleClass="ico-editar" >
                             <f:setPropertyActionListener target="#{funcionalAnotacaoBean.entidade}" value="#{item}" />
                         </h:commandLink>
@@ -174,7 +174,7 @@
 								 
 				<h:commandButton id="limpaTela"
 								 value="Limpar"
-								 action="#{funcionalAnotacaoBean.limpaTela}"
+								 action="listar"
 								 styleClass="bt-padrao fr mg-right-15" 
 								 />	
 			</ui:fragment>				 

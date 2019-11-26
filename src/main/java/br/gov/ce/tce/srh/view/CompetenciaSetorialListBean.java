@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
 @Component("competenciaSetorialListBean")
-@Scope("session")
+@Scope("view")
 public class CompetenciaSetorialListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(AreaSetorCompetenciaFormBean.class);
@@ -39,10 +37,6 @@ public class CompetenciaSetorialListBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// entidades das telas
 	private CompetenciaSetorial entidade;
@@ -60,12 +54,7 @@ public class CompetenciaSetorialListBean implements Serializable {
 	private List<CompetenciaSetorial> pagedList = new ArrayList<CompetenciaSetorial>();
 	private int flagRegistroInicial = 0;
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -88,7 +77,6 @@ public class CompetenciaSetorialListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -98,16 +86,14 @@ public class CompetenciaSetorialListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -125,7 +111,7 @@ public class CompetenciaSetorialListBean implements Serializable {
 		}
 
 		entidade = new CompetenciaSetorial();
-		return consultar();
+		consultar();
 	}
 	
 	public String relatorio() {
@@ -153,12 +139,6 @@ public class CompetenciaSetorialListBean implements Serializable {
 		return null;
 	}
 
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
         try {
@@ -174,8 +154,6 @@ public class CompetenciaSetorialListBean implements Serializable {
         return this.comboSetor;
 	}
 
-	
-	// GETs e SETs	
 	public CompetenciaSetorial getEntidade() {
 		return entidade;
 	}
@@ -203,29 +181,6 @@ public class CompetenciaSetorialListBean implements Serializable {
 	public void setComboSetor(List<Setor> comboSetor) {
 		this.comboSetor = comboSetor;
 	}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setor = null;
-			tipo = null;
-			comboSetor = null;
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-				
-		passouConsultar = false;
-		return form;
-	}
-	
-	public String limpaTela() {
-		setEntidade(new CompetenciaSetorial());
-		this.tipo = null;
-		this.setor = null;
-		return "listar";
-	}
-	
-	
 
 	// PAGINAÇÃO
 	private void limparListas() {
@@ -276,12 +231,4 @@ public class CompetenciaSetorialListBean implements Serializable {
 	}
 	// FIM PAGINAÇÃO
 	
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
 }

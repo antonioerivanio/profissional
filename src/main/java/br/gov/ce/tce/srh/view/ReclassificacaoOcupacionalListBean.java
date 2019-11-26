@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,36 +17,15 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 
-/**
-* Use case : SRH_UC042_Manter Reclassificação Ocupacional do Servidor
-* 
-* @since   : Fev 09, 2012, 10:00:00
-* @author  : robson.castro@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("reclassificacaoOcupacionalListBean")
-@Scope("session")
+@Scope("view")
 public class ReclassificacaoOcupacionalListBean implements Serializable {
 
-	/**
-	 * Robson, estou fazendo alterações na exibição de relatório, a questão é que estava com muito codigo "desnecessário"
-	 * , pois havia muitas linhas de comando repetida, segue a nova estrutura que irei comentar la em baixo ok!
-	 * 
-	 * 
-	 * Wesllhey Holanda
-	 * */
-	
 	static Logger logger = Logger.getLogger(ReclassificacaoOcupacionalListBean.class);
-
-
 
 	@Autowired
 	private FuncionalService funcionalService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -66,8 +43,7 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 	private List<Funcional> pagedList = new ArrayList<Funcional>();
 	private int flagRegistroInicial = 0;
 
-
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			// validando campos da entidade
@@ -82,7 +58,6 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -92,16 +67,14 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-	public String limpaTela() {
-		setEntidade(new Funcional());
-		return "listar";
-	}
-
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -121,7 +94,7 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 	
 
@@ -178,21 +151,6 @@ public class ReclassificacaoOcupacionalListBean implements Serializable {
 
 	public Funcional getEntidade() {return entidade;}
 	public void setEntidade(Funcional entidade) {this.entidade = entidade;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( null );
-			matricula = new String();
-			cpf = new String();
-			nome = new String();
-			lista = new ArrayList<Funcional>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {

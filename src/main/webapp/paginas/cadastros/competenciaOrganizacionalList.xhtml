@@ -78,9 +78,9 @@
 						<f:facet name="header">EDITAR</f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{competenciaOrganizacionalFormBean.prepareAlterar}"
+                       				  action="#{competenciaOrganizacionalListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{competenciaOrganizacionalFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{competenciaOrganizacionalListBean.entidade}" value="#{item}" />
                         </h:commandLink>
 					</h:column>
 					<h:column id="col7" headerClass="cel-25" >
@@ -94,17 +94,17 @@
                         </h:commandLink>
 					</h:column>
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{competenciaOrganizacionalListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false" />
 			</div>
 
 			<h:commandButton id="incluir" 
 							 value="Incluir" 
-							 action="#{competenciaOrganizacionalFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{competenciaOrganizacionalListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15"  />				 
 		</h:form>
 	</ui:define>

@@ -28,7 +28,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{representacaoFuncionalListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -159,9 +159,9 @@
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{representacaoFuncionalFormBean.prepareAlterar}"
+                       				  action="#{representacaoFuncionalListBean.editar}"
                        				  styleClass="ico-detail" >
-                            <f:setPropertyActionListener target="#{representacaoFuncionalFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{representacaoFuncionalListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')}" >
@@ -170,9 +170,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{representacaoFuncionalFormBean.prepareAlterar}"
+                       				  action="#{representacaoFuncionalListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{representacaoFuncionalFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{representacaoFuncionalListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_EXCLUIR')}">
@@ -205,7 +205,7 @@
 								 
 				<h:commandButton id="limpaTela"
 								 value="Limpar"
-								 action="#{representacaoFuncionalListBean.limpaTela}"
+								 action="listar"
 								 styleClass="bt-padrao fr mg-right-15" 
 								 />				 
 			</ui:fragment>

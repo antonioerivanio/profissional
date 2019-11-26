@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
@@ -21,16 +22,9 @@ import br.gov.ce.tce.srh.service.CompetenciaService;
 import br.gov.ce.tce.srh.service.CompetenciaSetorFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
- * Use case : Compentencia Setor Funcional
- * 
- * @since   : Dez 12, 2012, 12:12:12 PM
- * @author  : raphael.ferreira@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("competenciaSetorFuncionalFormBean")
-@Scope("session")
+@Scope("view")
 public class CompetenciaSetorFuncionalFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CompetenciaSetorFuncionalFormBean.class);
@@ -60,47 +54,18 @@ public class CompetenciaSetorFuncionalFormBean implements Serializable {
 	private String tipoCompetencia;
 	private Setor setor;
 
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
+	@PostConstruct
+	public void init() {
+		CompetenciaSetorFuncional flashParameter = (CompetenciaSetorFuncional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CompetenciaSetorFuncional());
 		
-	//	try {
-			
-			//this.entidade = competenciaSetorFuncionalService.getById( this.entidade.getId() );     
+		if(this.entidade.getId() != null) {
 			this.setor = entidade.getCategoria().getSetor();
-			this.tipoCompetencia = ""+entidade.getCompetencia().getTipo();
-
-//		} catch (Exception e) {
-//			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
-//			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-//		}
-
-		
-		return "incluirAlterar";
+			this.tipoCompetencia = ""+entidade.getCompetencia().getTipo();			
+		}
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 		
 		try {
 			
@@ -117,8 +82,6 @@ public class CompetenciaSetorFuncionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}
 
 	public void filtrarCompetencia(ValueChangeEvent event) {
@@ -127,11 +90,6 @@ public class CompetenciaSetorFuncionalFormBean implements Serializable {
 
 	}
 
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public List<Competencia> getComboCompetencia() {
 
 		try {
@@ -150,11 +108,6 @@ public class CompetenciaSetorFuncionalFormBean implements Serializable {
 		return this.comboCompetencia;
 	}
 
-	/**
-	 * Combo Categoria
-	 * 
-	 * @return
-	 */
 	public List<CategoriaFuncionalSetor> getComboCategoria() {
 
 		try {
@@ -172,11 +125,7 @@ public class CompetenciaSetorFuncionalFormBean implements Serializable {
 		
 		return this.comboCategoria;
 	}
-
 	
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		setEntidade(new CompetenciaSetorFuncional());
@@ -189,40 +138,24 @@ public class CompetenciaSetorFuncionalFormBean implements Serializable {
 		comboCategoria = null;
 	}
 
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public void carregaCompetencia() {
 		this.comboCompetencia = null;
 	}
 
-	/**
-	 * Combo Categoria
-	 * 
-	 * @return
-	 */
 	public void carregaCategoria() {
 		this.comboCategoria = null;
 	}
 
-	/**
-	 * Gets and Sets
-	 */
 	public CompetenciaSetorFuncional getEntidade() { return entidade; }
 	public void setEntidade(CompetenciaSetorFuncional entidade) { this.entidade = entidade; }
-
 
 	public String getTipoCompetencia() {
 		return tipoCompetencia;
 	}
 
-
 	public void setTipoCompetencia(String tipoCompetencia) {
 		this.tipoCompetencia = tipoCompetencia;
 	}
-
 
 	public void setComboCompetencia(List<Competencia> comboCompetencia) {
 		this.comboCompetencia = comboCompetencia;
@@ -232,24 +165,19 @@ public class CompetenciaSetorFuncionalFormBean implements Serializable {
 		return setor;
 	}
 
-
 	public void setSetor(Setor setor) {
 		this.setor = setor;
 	}
-
 
 	public void setComboCategoria(List<CategoriaFuncionalSetor> comboCategoria) {
 		this.comboCategoria = comboCategoria;
 	}
 
-
 	public List<Setor> getComboSetor() {
 		return comboSetor = setorService.findAll();
 	}
 
-
 	public void setComboSetor(List<Setor> comboSetor) {
 		this.comboSetor = comboSetor;
-	}
-	
+	}	
 }
