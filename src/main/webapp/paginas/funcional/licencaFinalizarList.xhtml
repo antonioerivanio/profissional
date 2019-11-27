@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{licencaFinalizarListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -111,14 +111,14 @@
                         </h:commandLink>
                     </h:column>
 				</rich:dataTable>
-			<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{licencaFinalizarListBean.pagedList.size() > 0}"/>
+			<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage=""/>
 
 
 			</div>
 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{licencaFinalizarListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />								 
 

@@ -79,7 +79,7 @@
 				</div>
 			</div>
 			
-			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR') or licencaFormBean.alterar }">
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR') and !licencaFormBean.alterar }">
 				<a id="form:Pesquisar" 
 				   href="#" 
 				   onclick="openwindow()" 
@@ -332,13 +332,10 @@
 				</div>				
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
-				<h:commandButton action="#{licencaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarLicenca()" />						
-				<a href="/srh/paginas/funcional/licencaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+				<h:commandButton action="#{licencaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarLicenca()" />
 			</ui:fragment>	
 				
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/licencaList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{licencaListBean.passouConsultar}" value="true"/>
-			</h:commandButton>
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/licencaList.faces" />
 
 		</h:form>
 

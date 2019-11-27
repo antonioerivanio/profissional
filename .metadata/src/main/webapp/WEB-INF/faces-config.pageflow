@@ -125,7 +125,6 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/categoriaFuncionalSetorList.xhtml" x="122" y="25714" id="pf1506619748906249" referenceLink="//@navigationRule.75/@fromViewId|" outlinks="pf1506619748906250 pf1506619748906248" inlinks="pf1506619748906246 pf1506619748906250" path="/paginas/cadastros/categoriaFuncionalSetorList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/dependenteList.xhtml" x="122" y="26482" id="pf1506619748906251" referenceLink="//@navigationRule.76/@fromViewId|" outlinks="pf1506619748906252 pf1506619748906253" inlinks="pf1506619748906252" path="/paginas/cadastros/dependenteList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/cadastros/dependenteForm.xhtml" x="338" y="26482" id="pf1506619748906254" referenceLink="//@navigationRule.76/@navigationCase.1/@toViewId|" inlinks="pf1506619748906253" path="/paginas/cadastros/dependenteForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/relatorios/servidorList.xhtml" x="122" y="19954" id="pf1506619748906255" referenceLink="//@navigationRule.77/@navigationCase.0/@toViewId|" outlinks="pf1506619748906256" inlinks="pf1506619748906256" path="/paginas/relatorios/servidorList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/relatorios/relatorioServidorList.xhtml" x="122" y="22642" id="pf1506619748906257" referenceLink="//@navigationRule.78/@navigationCase.0/@toViewId|" outlinks="pf1506619748906258" inlinks="pf1506619748906258" path="/paginas/relatorios/relatorioServidorList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/relatorios/relatorioDemonstrativoDeCargosList.xhtml" x="122" y="26098" id="pf1506619748906259" referenceLink="//@navigationRule.79/@navigationCase.0/@toViewId|" outlinks="pf1506619748906260" inlinks="pf1506619748906260" path="/paginas/relatorios/relatorioDemonstrativoDeCargosList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/relatorios/relatorioDependente.xhtml" x="122" y="26866" id="pf1506619748906261" referenceLink="//@navigationRule.80/@navigationCase.0/@toViewId|" outlinks="pf1506619748906262" inlinks="pf1506619748906262" path="/paginas/relatorios/relatorioDependente.xhtml"/>
@@ -549,11 +548,6 @@
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
   <links id="pf1506619748906252" target="pf1506619748906251" source="pf1506619748906251" outcome="listar">
-    <bendPoints d1Height="-36" d2Height="-36"/>
-    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
-    <bendPoints d1Width="-64" d2Width="-64"/>
-  </links>
-  <links id="pf1506619748906256" target="pf1506619748906255" source="pf1506619748906255" outcome="listar">
     <bendPoints d1Height="-36" d2Height="-36"/>
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
     <bendPoints d1Width="-64" d2Width="-64"/>

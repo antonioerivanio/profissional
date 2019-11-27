@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @SuppressWarnings("serial")
 @Component("abonoPermanenciaListBean")
-@Scope("session")
+@Scope("view")
 public class AbonoPermanenciaListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(DependenteListBean.class);
@@ -45,10 +45,6 @@ public class AbonoPermanenciaListBean implements Serializable {
 	@Autowired
 	private AuthenticationService authenticationService;
 	
-	
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-	
 	private String cpf = new String();
 	private String nome = new String();
 	private Pessoal pessoal;
@@ -63,8 +59,15 @@ public class AbonoPermanenciaListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 	
+	@PostConstruct
+	public void init() {		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		}
+	}	
 	
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -77,8 +80,6 @@ public class AbonoPermanenciaListBean implements Serializable {
 			
 			flagRegistroInicial = -1;
 			
-			passouConsultar = true;
-		
 		} catch (SRHRuntimeException e) {
 			limparListas();
 			FacesUtil.addErroMessage(e.getMessage());
@@ -89,11 +90,14 @@ public class AbonoPermanenciaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
-	}	
+	}
 	
-	public String relatorio() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void relatorio() {
 
 		try {
 			
@@ -102,7 +106,7 @@ public class AbonoPermanenciaListBean implements Serializable {
 			if (listaAbono.size() == 0){
 				FacesUtil.addInfoMessage("O servidor selecionado não possui abono de permanência cadastrado.");
 				logger.info("O servidor selecionado não possui abono de permanência cadastrado.");
-				return null;
+				return;
 			}
 
 			Map<String, Object> parametros = new HashMap<String, Object>();			
@@ -118,17 +122,9 @@ public class AbonoPermanenciaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-		
-	public String limpaTela() {		
-		setEntidade(new AbonoPermanencia());
-		return "listar";
-	}
+	}		
 	
-	
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -145,7 +141,7 @@ public class AbonoPermanenciaListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
-		return consultar();
+		consultar();
 	}
 	
 		
@@ -178,42 +174,8 @@ public class AbonoPermanenciaListBean implements Serializable {
 
 	public AbonoPermanencia getEntidade() {return entidade;}
 	public void setEntidade(AbonoPermanencia entidade) {this.entidade = entidade;}
-	
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
 		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {
-				setCpf(authenticationService.getUsuarioLogado().getCpf());
-				count = count();	
-				limparListas();
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			
-			entidade = new AbonoPermanencia();
-			
-			cpf = new String();
-			nome = new String();
-			pessoal = null;
-			
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-	
-	
-//	PAGINAÇÃO
-	
+//	PAGINAÇÃO	
 	private void limparListas() {
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<AbonoPermanencia>();
@@ -241,8 +203,7 @@ public class AbonoPermanenciaListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-		
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}		
 //	FIM PAGINAÇÃO	
 	
 	private int count(){

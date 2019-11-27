@@ -23,15 +23,12 @@
 
 			<div class="input-box box-10">
 				<label for="">ID</label>
-				<div class="conteiner">
-					<!-- <h:inputHidden value="#{areaSetorCompetenciaFormBean.entidade.id}" />  -->
+				<div class="conteiner">					
 					<h:inputText id="id" 
 								 disabled="true" 
 								 value="#{areaSetorCompetenciaFormBean.entidade.id}" />  
 				</div>
 			</div>
-
-			<br/><br/><br/><br/><br/>
 
 			<div class="select-box box-25">
 				<label for="">Setor *</label>
@@ -85,7 +82,6 @@
 				</div>
 			</div>
 
-			<br/><br/><br/><br/><br/>
 			<div class="input-box box-10">
 				<label for="">Data Inicio *</label>
 				<div class="conteiner">
@@ -132,12 +128,6 @@
 
 			<h:commandButton action="#{areaSetorCompetenciaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/tabelas/areaSetorCompetenciaList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{areaSetorCompetenciaFormBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />
 
 		</h:form>
 

@@ -132,9 +132,9 @@
 
 						<rich:column style="text-align:center">
 							<h:commandLink id="tipo" value="#{item.validaCompetencia}"
-								action="#{funcionarioCompetenciaSetorFormBean.visualizar}" >
+								action="#{funcionarioCompetenciaSetorListBean.visualizar}" >
 								<f:setPropertyActionListener
-									target="#{funcionarioCompetenciaSetorFormBean.servidorCompetencia}"
+									target="#{funcionarioCompetenciaSetorListBean.servidorCompetencia}"
 									value="#{item}" />
 							</h:commandLink>
 						</rich:column>

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,14 +25,12 @@ import br.gov.ce.tce.srh.service.CompetenciaGraduacaoService;
 import br.gov.ce.tce.srh.service.PessoalCursoAcademicaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-//TODO terminar de implementar o escopo view
 @SuppressWarnings("serial")
 @Component("funcionarioCompetenciaSetorFormBean")
-@Scope("session")
+@Scope("view")
 public class FuncionarioCompetenciaSetorFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FuncionarioCompetenciaSetorFormBean.class);
-
 	
 	@Autowired
 	private SetorService setorService;
@@ -66,42 +66,43 @@ public class FuncionarioCompetenciaSetorFormBean implements Serializable {
 	
 	private List<CursoProfissional> listaCursoProfissional = new ArrayList<CursoProfissional>();
 	
-	
-	public String visualizar() {
+	@PostConstruct
+	public void init() {
+		
+		ServidorCompetencia flashParameter = (ServidorCompetencia)FacesUtil.getFlashParameter("entidade");
+		setServidorCompetencia(flashParameter != null ? flashParameter : new ServidorCompetencia());
+		
 		try {
+			
+			if(this.servidorCompetencia.getId() != null) {
 
-			servidorCompetencia.setSetor(setorService.getById(servidorCompetencia.getSetor().getId()));
-			
-			competenciaCurso = competenciaCursoService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
-
-			entidadeAtestoPessoa = atestoPessoaService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
-			
-			competenciaGraduacao = competenciaGraduacaoService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
-						
-			if(entidadeAtestoPessoa != null){
-				atestoPessoa  = true;
-			}
-			
-			if(competenciaCurso != null){
-				cursoProfissional = true;
-			}
-			
-			if (competenciaCurso != null) {
-				listaAcademica = pessoalCursoAcademicaService.findByCursoAcademica(competenciaGraduacao.getCursoAcademica().getId());
-				cursoGraduacao = true;
+				servidorCompetencia.setSetor(setorService.getById(servidorCompetencia.getSetor().getId()));
 				
+				competenciaCurso = competenciaCursoService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
+	
+				entidadeAtestoPessoa = atestoPessoaService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
+				
+				competenciaGraduacao = competenciaGraduacaoService.getByPessoalCompetencia(servidorCompetencia.getPessoal().getId(), servidorCompetencia.getAreaSetorCompetencia().getCompetencia().getId());
+							
+				if(entidadeAtestoPessoa != null){
+					atestoPessoa  = true;
+				}
+				
+				if(competenciaCurso != null){
+					cursoProfissional = true;
+				}
+				
+				if (competenciaCurso != null) {
+					listaAcademica = pessoalCursoAcademicaService.findByCursoAcademica(competenciaGraduacao.getCursoAcademica().getId());
+					cursoGraduacao = true;					
+				}
 			}
-			
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao visualizar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} 
-			
-		
-		return "incluirAlterar";
 	}
-
 
 	public ServidorCompetencia getServidorCompetencia() {return servidorCompetencia;}
 	public void setServidorCompetencia(ServidorCompetencia servidorCompetencia) {this.servidorCompetencia = servidorCompetencia;}

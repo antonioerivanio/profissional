@@ -27,7 +27,7 @@
 			<h2>Consultar Acréscimos do Servidor</h2>
 		</div>
 
-		<h:form id="form" binding="#{acrescimoListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
@@ -125,9 +125,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{acrescimoFormBean.prepareAlterar}"
+                       				  action="#{acrescimoListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{acrescimoFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{acrescimoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_ACRESCIMO_EXCLUIR')}">
@@ -144,17 +144,17 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{acrescimoListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 			</div>
 
 			<h:commandButton id="incluir" 
 							 value="Incluir"
-							 action="#{acrescimoFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_ACRESCIMO_INSERIR')}"/>
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{acrescimoListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />					 
 

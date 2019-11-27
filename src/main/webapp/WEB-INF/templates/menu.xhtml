@@ -862,14 +862,7 @@
 						</li>
 					</ui:fragment>
 					
-					<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RELATORIO_SERVIDOR')}">
-						<!-- 
-						<li>
-							<a href="/srh/paginas/relatorios/servidorList.faces">
-							Servidor por Setor
-							</a>
-						</li>
-						 -->
+					<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RELATORIO_SERVIDOR')}">						
 						<li>
 							<a href="/srh/paginas/relatorios/relatorioServidorList.faces">
 							Servidores

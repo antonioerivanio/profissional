@@ -27,7 +27,7 @@
 			<h2>Consultar Periodos de Férias</h2>
 		</div>
 
-		<h:form id="form" binding="#{feriasListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
@@ -151,9 +151,9 @@
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{feriasFormBean.prepareAlterar}"
+                       				  action="#{feriasListBean.editar}"
                        				  styleClass="ico-detail" >
-                            <f:setPropertyActionListener target="#{feriasFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{feriasListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>     
                		<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_FERIAS_ALTERAR')}">
@@ -162,9 +162,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{feriasFormBean.prepareAlterar}"
+                       				  action="#{feriasListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{feriasFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{feriasListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_FERIAS_EXCLUIR')}">
@@ -191,12 +191,12 @@
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 
 								 value="Incluir"
-								 action="#{feriasFormBean.prepareIncluir}"
+								 action="incluirAlterar"
 								 styleClass="bt-padrao fr mg-right-15" 
 								 rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR')}"/>
 				<h:commandButton id="limpaTela"
 								 value="Limpar"
-								 action="#{feriasListBean.limpaTela}"
+								 action="listar"
 								 styleClass="bt-padrao fr mg-right-15" 
 								 />
 			</ui:fragment>

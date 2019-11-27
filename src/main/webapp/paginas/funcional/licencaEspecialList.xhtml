@@ -28,12 +28,12 @@
 
 		</div>
 
-		<h:form id="form" binding="#{licencaEspecialListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
 			<div class="input-box box-10">
-				<label for="">Matricula</label>
+				<label for="">Matrícula</label>
 				<div class="conteiner">
 					<h:inputText id="matricula"
 								 name="matricula"
@@ -139,9 +139,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{licencaEspecialFormBean.prepareAlterar}"
+                       				  action="#{licencaEspecialListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{licencaEspecialFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{licencaEspecialListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ESPECIAL_EXCLUIR')}">
@@ -158,17 +158,17 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{licencaEspecialListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 			</div>
 
 			<h:commandButton id="incluir" 
 							 value="Incluir"
-							 action="#{licencaEspecialFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ESPECIAL_INSERIR')}"/>
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{licencaEspecialListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

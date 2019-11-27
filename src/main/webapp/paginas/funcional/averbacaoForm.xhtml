@@ -49,8 +49,6 @@
 
             	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
-				<h:inputHidden id="alterar" disabled="true" value="#{averbacaoFormBean.alterar}" />
-
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
 					<div class="conteiner">
@@ -78,11 +76,13 @@
 					</div>
 				</div>
 
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindow()"
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
-	
+				<ui:fragment rendered="#{!averbacaoFormBean.alterar}">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()"
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</ui:fragment>	
+				
 				<div class="input-box box-100">
 					<label for="">Mãe</label>
 					<div class="conteiner">
@@ -312,17 +312,8 @@
 
 			<h:commandButton action="#{averbacaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/funcional/averbacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/funcional/averbacaoForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
-
-		<script>
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}	
-		}
-		</script>
-
+		
 	</ui:define>
 </ui:composition>

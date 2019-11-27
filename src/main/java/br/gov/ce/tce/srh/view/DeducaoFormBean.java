@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,16 +20,9 @@ import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
- * Use case : SRH_UC049_Manter Deduções do Servidor
- * 
- * @since   : Apr 17, 2012, 11:51:59 PM
- * @author  : robstownholanda@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("deducaoFormBean")
-@Scope("session")
+@Scope("view")
 public class DeducaoFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(DeducaoFormBean.class);
@@ -55,60 +50,36 @@ public class DeducaoFormBean implements Serializable {
 	private boolean alterar = false;
 	private boolean nrProcessoValido = false;
 
-	// combos
-
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		this.alterar = true;
+	@PostConstruct
+	public void init() {
+		Deducao flashParameter = (Deducao)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Deducao());
 
 		try {
-
-			Funcional funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
-			this.matricula = funcional.getMatricula();
-			this.nome = entidade.getPessoal().getNomeCompleto();
-
-			this.inicio = entidade.getInicio();
-			this.fim = entidade.getFim();
-			
-			if(getEntidade().getNrProcesso() != null){
-				this.nrProcesso = SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(getEntidade().getNrProcesso(), 1);
-			} else {
-				this.nrProcesso = getNrProcesso();
+			if(this.entidade.getId() != null) {				
+				this.alterar = true;
+				
+				Funcional funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
+				this.matricula = funcional.getMatricula();
+				this.nome = entidade.getPessoal().getNomeCompleto();
+				
+				this.inicio = entidade.getInicio();
+				this.fim = entidade.getFim();
+				
+				if(getEntidade().getNrProcesso() != null){
+					this.nrProcesso = SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(getEntidade().getNrProcesso(), 1);
+				} else {
+					this.nrProcesso = getNrProcesso();
+				}
 			}
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 		
 		try {
 
@@ -128,7 +99,7 @@ public class DeducaoFormBean implements Serializable {
 					limpar();
 					FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 					logger.info("Operação realizada com sucesso.");
-					} 
+				} 
 			}
 		}  catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -139,13 +110,8 @@ public class DeducaoFormBean implements Serializable {
 		} 
 		
 		nrProcesso = new String();
-		return null;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		this.alterar = false;
@@ -161,11 +127,7 @@ public class DeducaoFormBean implements Serializable {
 		
 		nrProcesso = new String();
 	}
-
-
-	/**
-	 * Gets and Sets
-	 */
+	
 	public Deducao getEntidade() { return entidade; }
 	public void setEntidade(Deducao entidade) { this.entidade = entidade; }
 
@@ -264,6 +226,5 @@ public class DeducaoFormBean implements Serializable {
 	}
 
 	public boolean isBloquearDatas() {return bloquearDatas;}
-	public boolean isAlterar() {return alterar;}
-	
+	public boolean isAlterar() {return alterar;}	
 }

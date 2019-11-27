@@ -27,7 +27,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{aposentadoriaListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -135,9 +135,9 @@
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{aposentadoriaFormBean.prepareAlterar}"
+                       				  action="#{aposentadoriaListBean.editar}"
                        				  styleClass="ico-detail" >
-                            <f:setPropertyActionListener target="#{aposentadoriaFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{aposentadoriaListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>     
                		
@@ -147,9 +147,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{aposentadoriaFormBean.prepareAlterar}"
+                       				  action="#{aposentadoriaListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{aposentadoriaFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{aposentadoriaListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_APOSENTADORIA_EXCLUIR')}">
@@ -177,12 +177,12 @@
 			
 			<h:commandButton id="incluir" 
 							 value="Incluir"
-							 action="#{aposentadoriaFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR')}"/>
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{aposentadoriaListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />			
 				

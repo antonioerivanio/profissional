@@ -30,7 +30,6 @@ import br.gov.ce.tce.srh.service.CompetenciaGraduacaoService;
 import br.gov.ce.tce.srh.service.FuncionalAreaSetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-// TODO terminar de implementar o escopo view
 @SuppressWarnings("serial")
 @Component("funcionarioCompetenciaSetorListBean")
 @Scope("view")
@@ -69,6 +68,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 	private Date dataFinal;
 
 	private List<ServidorCompetencia> listaServidorCompetencia = new ArrayList<ServidorCompetencia>();
+	private ServidorCompetencia servidorCompetencia = new ServidorCompetencia();
 
 	// combos
 	private List<Setor> comboSetor;
@@ -241,7 +241,11 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 		}
 
 	}
-
+	
+	public String visualizar() {
+		FacesUtil.setFlashParameter("entidade", getServidorCompetencia());        
+        return "incluirAlterar";
+	}
 	
 	public List<Setor> getComboSetor() {
 
@@ -311,5 +315,8 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 
 	public Date getDataFinal() {return dataFinal;}
 	public void setDataFinal(Date dataFinal) {this.dataFinal = dataFinal;}
+
+	public ServidorCompetencia getServidorCompetencia() {return servidorCompetencia;}
+	public void setServidorCompetencia(ServidorCompetencia servidorCompetencia) {this.servidorCompetencia = servidorCompetencia;}	
 	
 }

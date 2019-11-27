@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +25,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC042_Manter Lotação do Servidor
-* 
-* @since   : Dez 19, 2011, 17:09:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("funcionalSetorListBean")
-@Scope("session")
+@Scope("view")
 public class FuncionalSetorListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FuncionalSetorListBean.class);
@@ -53,11 +47,6 @@ public class FuncionalSetorListBean implements Serializable {
 	@Autowired
 	private PessoalService pessoalService;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// parametros da tela de consulta
 	private String matricula = new String();
 	private String cpf = new String();
@@ -74,13 +63,16 @@ public class FuncionalSetorListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 	
+	@PostConstruct
+	public void init() {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		}
+	}
+	
 
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -102,7 +94,6 @@ public class FuncionalSetorListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -113,17 +104,14 @@ public class FuncionalSetorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -144,16 +132,10 @@ public class FuncionalSetorListBean implements Serializable {
 		}
 
 		setEntidade( new FuncionalSetor() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -175,18 +157,8 @@ public class FuncionalSetorListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório de Funcional Setor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
-
-	public String limpaTela() {
-		setEntidade(new FuncionalSetor());
-		return "listar";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
+	
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -258,35 +230,6 @@ public class FuncionalSetorListBean implements Serializable {
 
 	public FuncionalSetor getEntidade() {return entidade;}
 	public void setEntidade(FuncionalSetor entidade) {this.entidade = entidade;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {				
-				setCpf(authenticationService.getUsuarioLogado().getCpf());								
-				count = funcionalSetorService.count( getEntidade().getFuncional().getPessoal().getId() );
-				limparListas();
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			setEntidade( new FuncionalSetor() );
-			this.matricula = new String();
-			this.cpf = new String();
-			this.nome = new String();
-			this.lista = new ArrayList<FuncionalSetor>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
@@ -314,8 +257,7 @@ public class FuncionalSetorListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
 
 }

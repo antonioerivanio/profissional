@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{areaSetorCompetenciaListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -135,9 +135,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar" 
-                       				  action="#{areaSetorCompetenciaFormBean.prepareAlterar}"
+                       				  action="#{areaSetorCompetenciaListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{areaSetorCompetenciaFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{areaSetorCompetenciaListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR_EXCLUIR')}">
@@ -160,13 +160,13 @@
 
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{areaSetorCompetenciaFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15"
 							 rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR_INSERIR')}"/>
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{areaSetorCompetenciaListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

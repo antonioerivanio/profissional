@@ -28,14 +28,14 @@
 
 		</div>
 
-		<h:form id="form" binding="#{funcionalSetorListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 
 					<div class="input-box box-10">
-						<label for="">Matricula</label>
+						<label for="">Matrícula</label>
 						<div class="conteiner">
 							<h:inputText id="matricula"
 										 name="matricula"
@@ -132,9 +132,9 @@
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{funcionalSetorFormBean.prepareAlterar}"
+                       				  action="#{funcionalSetorListBean.editar}"
                        				  styleClass="ico-detail" >
-                            <f:setPropertyActionListener target="#{funcionalSetorFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{funcionalSetorListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}">
@@ -143,9 +143,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{funcionalSetorFormBean.prepareAlterar}"
+                       				  action="#{funcionalSetorListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{funcionalSetorFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{funcionalSetorListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_EXCLUIR')}">
@@ -172,12 +172,12 @@
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 
 								 value="Incluir" 
-								 action="#{funcionalSetorFormBean.prepareIncluir}" 
+								 action="incluirAlterar" 
 								 styleClass="bt-padrao fr mg-right-15" 
 								 rendered="#{LoginBean.anyGranted('ROLE_LOTACAO_INSERIR')}"/>
 				<h:commandButton id="limpaTela"
 								 value="Limpar"
-								 action="#{funcionalSetorListBean.limpaTela}"
+								 action="listar"
 								 styleClass="bt-padrao fr mg-right-15" 
 								 />	
 			</ui:fragment>			 
