@@ -225,7 +225,7 @@
 							   					var="tipoFolha"
 							   					itemValue="#{tipoFolha}"
 							   					itemLabel="#{tipoFolha.descricao}"/>
-							   	<a4j:ajax event="change" focus="tipoOcupacao" execute="@this" />
+							   	<a4j:ajax event="change" execute="@this" />
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -279,8 +279,7 @@
 							  					itemLabel="#{tipoOcupacao.descricao}"/>
 		
 							    <a4j:ajax event="change" 
-							  				 execute="@this"	
-							  				 focus="tipoCargoFuncao"
+							  				 execute="@this"
 							  				 listener="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
 							  				 render="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, regime, salario"/>
 		
@@ -303,8 +302,7 @@
 							   				   itemLabel="#{tipoCargoFuncao.nomenclatura} - #{tipoCargoFuncao.descricaoSituacao}"/>
 							   				   
 							    <a4j:ajax event="change" 
-							  				 execute="@this"	
-							  				 focus="tipoClasseReferencia"
+							  				 execute="@this"
 							  				 listener="#{nomeacaoServidorFormBean.carregaClasseReferenciaEhEspecialidadeCargo}"
 							  				 render="tipoClasseReferencia,especialidadeCargo"/>
 							  				 
@@ -344,8 +342,7 @@
 							   				   itemLabel="#{especialidadeCargo.especialidade.descricao}"/>
 							   				   
 								<a4j:ajax event="change" 
-							  				 execute="@this"	
-							  				 focus="tipoOrientacaoCargo"
+							  				 execute="@this"
 							  				 listener="#{nomeacaoServidorFormBean.carregaOrientacaoCargo}"
 							  				 render="orientacaoCargo"/>
 							</h:selectOneMenu>

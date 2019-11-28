@@ -62,7 +62,6 @@
 								 value="#{licencaFormBean.matricula}"
 								 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }" >
 						<a4j:ajax event="blur"
-									 focus="processo"
 									 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 									 execute="@this" />
 					</h:inputText>
@@ -159,7 +158,6 @@
 									 value="#{licencaFormBean.nrProcesso}"
 									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >
 							<a4j:ajax event="change" 
-										 focus="tipoLicenca" 
 										 render="messages"
 										 execute="@this" />
 						</h:inputText>

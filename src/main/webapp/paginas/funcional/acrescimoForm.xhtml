@@ -60,7 +60,6 @@
 									 disabled="#{acrescimoFormBean.alterar}"
 									 value="#{acrescimoFormBean.matricula}">
 							<a4j:ajax event="change"
-										 focus="tipoFerias"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
 						</h:inputText>
@@ -156,7 +155,7 @@
 									 converter="dateConverter"
 									 value="#{acrescimoFormBean.inicio}"
 									 maxlength="10" >
-							<a4j:ajax event="change" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -169,7 +168,7 @@
 									 converter="dateConverter"
 									 value="#{acrescimoFormBean.fim}"
 									 maxlength="10" >
-							<a4j:ajax event="change" focus="qtdeDias" render="qtdeDias, messages" execute="@this"/>
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>
 					</div>
 				</div>
@@ -179,8 +178,7 @@
 					<div class="conteiner">
 						<h:inputText id="qtdeDias" value="#{acrescimoFormBean.entidade.qtdeDias}">
 							<a4j:ajax event="change" 
-										listener="#{acrescimoFormBean.apagaDatas()}" 
-										focus="descricao" 
+										listener="#{acrescimoFormBean.apagaDatas()}"										 
 										render="inicio, fim, messages" 
 										execute="@this"
 										oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"/>

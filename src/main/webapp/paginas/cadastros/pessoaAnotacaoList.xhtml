@@ -41,7 +41,7 @@
 									 maxlength="6"
 									 styleClass="maskMatricula"
 									 value="#{funcionalAnotacaoBean.matricula}" >
-	            			<a4j:ajax event="change" focus="cpf" render="cpf, nomeCompletoPessoa, messages" execute="@this" />
+	            			<a4j:ajax event="change" render="cpf, nomeCompletoPessoa, messages" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -55,7 +55,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 value="#{funcionalAnotacaoBean.cpf}" >
-							<a4j:ajax event="change" focus="nomeCompletoPessoa" render="matricula, nomeCompletoPessoa, messages" execute="@this" />
+							<a4j:ajax event="change" render="matricula, nomeCompletoPessoa, messages" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>

@@ -99,8 +99,9 @@
                         </f:facet>
                         <label for="#{item.matricula}"></label>
                         <center>
-                        	<input type="radio" id="#{item.matricula}" name="seleciona" 
-                        			value="#{item.matricula},#{item.id},#{item.pessoal.id},#{item.pessoal.nomeCompleto},#{item.pessoal.nomeMae},#{item.pessoal.cpf},#{item.pessoal.rg},#{item.pessoal.emissorRg},#{item.pessoal.ufEmissorRg.id},#{item.setor.id},#{item.setor.nome}" onfocus="retorno(this)" />
+                        	<input  type="radio" id="#{item.matricula}" name="seleciona" 
+                        			value="#{item.matricula},#{item.id},#{item.pessoal.id},#{item.pessoal.nomeCompleto},#{item.pessoal.nomeMae},#{item.pessoal.cpf},#{item.pessoal.rg},#{item.pessoal.emissorRg},#{item.pessoal.ufEmissorRg.id},#{item.setor.id},#{item.setor.nome}" 
+                        			onfocus="retorno(this)" />
                         </center>
                     </h:column>
 					<h:column id="col2">

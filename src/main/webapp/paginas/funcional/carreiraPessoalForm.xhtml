@@ -59,7 +59,7 @@
 									 converter="cpfConverter"
 									 disabled="#{carreiraPessoalBean.alterar or ( not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') ) }"
 									 value="#{carreiraPessoalBean.cpf}" >
-							<a4j:ajax event="blur" focus="nomeCompletoPessoa" render="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " execute="@this" />
+							<a4j:ajax event="blur" render="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " execute="@this" />
 						</h:inputText>
 					</div>
 				</div>

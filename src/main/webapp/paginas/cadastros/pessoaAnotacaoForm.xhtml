@@ -60,7 +60,6 @@
 									 disabled="#{funcionalAnotacaoBean.alterar or ( not LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') ) }"
 									 value="#{funcionalAnotacaoBean.matricula}">
 							<a4j:ajax event="change"
-										 focus="setor"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
 						</h:inputText>

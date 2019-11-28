@@ -286,7 +286,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{pessoalCursoProfissionalFormBean.matricula}" >
-	            			<a4j:ajax event="change" focus="cpf" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
+	            			<a4j:ajax event="change" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -299,7 +299,7 @@
 								 maxlength="14"
 								 styleClass="maskCpf"
 								 value="#{pessoalCursoProfissionalFormBean.cpf}" >
-            			<a4j:ajax event="change" focus="nomeCompletoPessoa" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
+            			<a4j:ajax event="change" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
         			</h:inputText>
 
 				</div>

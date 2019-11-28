@@ -42,7 +42,7 @@
 										 maxlength="6" 
 										 styleClass="maskMatricula"
 										 value="#{funcionalSetorListBean.matricula}" >
-		            			<a4j:ajax event="change" focus="cpf" render="messages, cpf, nomeCompletoPessoa, matricula" execute="@this" />
+		            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa, matricula" execute="@this" />
 		        			</h:inputText>
 						</div>
 					</div>
@@ -56,7 +56,7 @@
 										 styleClass="maskCpf"
 										 converter="cpfConverter"
 										 value="#{funcionalSetorListBean.cpf}" >
-								<a4j:ajax event="change" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa, cpf" execute="@this" />
+								<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa, cpf" execute="@this" />
 							</h:inputText>
 						</div>
 					</div>

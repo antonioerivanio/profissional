@@ -48,7 +48,7 @@
 									 styleClass="maskMatricula"
 									 value="#{cursoServidorListBean.matricula}"
 									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-	            			<a4j:ajax event="change" focus="cpf" render="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" execute="@this" />
+	            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -63,7 +63,7 @@
 									 converter="cpfConverter"
 									 value="#{cursoServidorListBean.cpf}"
 									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-							<a4j:ajax event="change" focus="nomeCompletoPessoa" render="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" execute="@this" />
+							<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>

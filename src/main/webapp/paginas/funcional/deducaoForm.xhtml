@@ -66,7 +66,6 @@
 									 disabled="#{deducaoFormBean.alterar}"
 									 value="#{deducaoFormBean.matricula}">
 							<a4j:ajax event="change"
-										 focus="tipoFerias"
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
 						</h:inputText>
@@ -202,7 +201,7 @@
 									 converter="dateConverter"
 									 value="#{deducaoFormBean.inicio}"
 									 maxlength="10" >
-							<a4j:ajax event="change" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -216,7 +215,7 @@
 									 value="#{deducaoFormBean.fim}"
 									 maxlength="10" 
 									 onfocus="sugerirDataFim()" >
-							<a4j:ajax event="blur" focus="qtdeDias" render="qtdeDias, messages" execute="@this"/>
+							<a4j:ajax event="blur" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>
 					</div>
 				</div>

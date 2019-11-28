@@ -58,8 +58,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{averbacaoFormBean.alterar}"
 									 value="#{averbacaoFormBean.matricula}">
-							<a4j:ajax event="change"
-										 focus="tipoFerias"
+							<a4j:ajax event="change"										
 										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 										 execute="@this" />
 						</h:inputText>
@@ -202,7 +201,7 @@
 									 value="#{averbacaoFormBean.inicio}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:ajax event="change" focus="fim" render="qtdeDias, messages" execute="@this"/>		 
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -216,7 +215,7 @@
 									 value="#{averbacaoFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:ajax event="change" focus="esfera" render="qtdeDias, messages" execute="@this"/>
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>
 					</div>
 				</div>
@@ -261,8 +260,7 @@
 										   itemLabel="#{esfera.descricao}" />
 	
 						    <a4j:ajax 	 event="change" 
-						  				 execute="@this"	
-						  				 focus="subtipo"
+						  				 execute="@this"
 						  				 listener="#{averbacaoFormBean.carregaSubtipo}"
 						  				 render="subtipo"/>
 							
