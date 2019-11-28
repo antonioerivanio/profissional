@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -24,16 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
- * Use case : SRH_UC047_Manter Averbações do Servidor
- * 
- * @since   : Apr 17, 2012, 15:13:11 PM
- * @author  : robstownholanda@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("averbacaoListBean")
-@Scope("session")
+@Scope("view")
 public class AverbacaoListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(AverbacaoListBean.class);
@@ -47,11 +38,6 @@ public class AverbacaoListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-
-	//controle de acesso do formulário
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	//parametos de tela de consulta
 	private String matricula = new String();
 	private String cpf = new String();
@@ -63,20 +49,12 @@ public class AverbacaoListBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Averbacao> pagedList = new ArrayList<Averbacao>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
-
+	public void consultar() {
 		try {
 
 			//valida consulta pessoa
@@ -91,7 +69,6 @@ public class AverbacaoListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -102,17 +79,14 @@ public class AverbacaoListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -132,16 +106,10 @@ public class AverbacaoListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -164,18 +132,8 @@ public class AverbacaoListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 	
-	public String limpaTela() {
-		setEntidade(new Averbacao());
-		return "listar";
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;	}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -224,21 +182,6 @@ public class AverbacaoListBean implements Serializable {
 		}
 	}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new Averbacao() );
-			matricula = new String();
-			nome = new String();
-			cpf = new String();
-			lista = new ArrayList<Averbacao>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
 
@@ -250,13 +193,13 @@ public class AverbacaoListBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Averbacao>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,15 +25,9 @@ import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
-* Use case : SRH_UC036_Lançar Licença
-* 
-* @since   : Nov 24, 2011, 10:09:22 AM
-* @author  : robson.castro@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("licencaFormBean")
-@Scope("session")
+@Scope("view")
 public class LicencaFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(LicencaFormBean.class);
@@ -51,7 +47,6 @@ public class LicencaFormBean implements Serializable {
 	@Autowired
 	private FuncionalService funcionalService;
 
-
 	// entidades das telas
 	private Licenca entidade = new Licenca();
 	private String nrProcesso = new String();
@@ -67,59 +62,44 @@ public class LicencaFormBean implements Serializable {
 	// combos
 	private List<TipoLicenca> comboTipoLicenca;
 	private List<TipoPublicacao> comboTipoPublicacao;
-
-
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
 	
-	
-	public String prepareAlterar() {
+	@PostConstruct
+	public void init() {
+		
+		Licenca flashParameter = (Licenca)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Licenca());
 
 		try {
-
-			this.nrProcesso = getEntidade().getNrprocesso();
-			this.nome = getEntidade().getPessoal().getNomeCompleto();
-
-			Funcional funcional = funcionalService.getByPessoaAtivo( entidade.getPessoal().getId() );			
-			if (funcional != null)
-				this.matricula = funcional.getMatricula();
-			
-			alterar = true;
-			
-
+			if (this.entidade.getId() != null) {				
+				this.nrProcesso = getEntidade().getNrprocesso();
+				this.nome = getEntidade().getPessoal().getNomeCompleto();
+				
+				Funcional funcional = funcionalService.getByPessoaAtivo( entidade.getPessoal().getId() );			
+				if (funcional != null)
+					this.matricula = funcional.getMatricula();
+				
+				alterar = true;
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
-
 	
-	public String salvar() {
-
+	public void salvar() {
 		try {
-
-			this.entidade.setNrprocesso(this.nrProcesso);
-			
-			String mensagem = licencaService.salvar(entidade);
-			
+			this.entidade.setNrprocesso(this.nrProcesso);			
+			String mensagem = licencaService.salvar(entidade);			
 			
 			limpar();
 
-			if (mensagem == null){
-				
+			if (mensagem == null){				
 				FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-				logger.info("Operação realizada com sucesso.");					
-				
-			} else {
-				
+				logger.info("Operação realizada com sucesso.");
+			} else {				
 				FacesUtil.addInfoMessage(mensagem);
 				logger.info(mensagem);
-			}			
-
+			}
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());		
@@ -127,18 +107,15 @@ public class LicencaFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null; 
+ 
 	}
-
 	
 	public List<TipoLicenca> getComboTipoLicenca() {
 
 		try {
-
-			if ( this.comboTipoLicenca == null)
+			if ( this.comboTipoLicenca == null) {
 				this.comboTipoLicenca = tipoLicencaService.findAll();
-
+			}
 		} catch (Exception e) {
 	      	FacesUtil.addErroMessage("Erro ao carregar o campo tipo de licença. Operação cancelada.");
 	       	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -158,7 +135,6 @@ public class LicencaFormBean implements Serializable {
 		List<LicencaEspecial> toReturn = new ArrayList<LicencaEspecial>();
 
         try {
-
         	exibirComboLicencaEspecial = false;
 		
 			if (getEntidade().getTipoLicenca() != null ) {
@@ -190,10 +166,9 @@ public class LicencaFormBean implements Serializable {
 	public List<TipoPublicacao> getComboTipoPublicacao() {
         
         try {
-
-        	if ( this.comboTipoPublicacao == null )
+        	if ( this.comboTipoPublicacao == null ) {
         		this.comboTipoPublicacao = tipoPublicacaoService.findAll();
-
+        	}
         } catch (Exception e) {
         	FacesUtil.addErroMessage("Erro ao carregar o campo tipo publicação. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());

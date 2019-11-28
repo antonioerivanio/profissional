@@ -37,10 +37,9 @@
 						  					itemValue="#{setor}"
 						  					itemLabel="#{setor.nome}"
 						  					/>
-						  	<a4j:support 	id="carregaCategorias"
-						  		 	 		event="onchange" 
-					  				 		ajaxSingle="true"					  				 		
-					  				 		reRender="categoria"/>
+						  	<a4j:ajax 		event="change" 
+					  				 		execute="@this"					  				 		
+					  				 		render="categoria"/>
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -48,16 +47,13 @@
 				<div id="div4" class="radio-box fl mg-top-25">
 					 Exibir somente setores ativos
 					 <h:selectBooleanCheckbox id="setoresAtivos" value="#{categoriaFuncionalSetorResponsabilidadeFormBean.setoresAtivos}" >
-					 	<a4j:support id="atualizaSetores" 
-									 event="onclick"
-									 ajaxSingle="true" 
-									 reRender="cmbSetor" />									
+					 	<a4j:ajax 	 event="click"
+									 execute="@this" 
+									 render="cmbSetor" />									
 					 </h:selectBooleanCheckbox>
 				</div>
-				
-				<br /><br /><br /><br /><br /><br />
-				
-				<div id="div5" class="select-box box-35">
+								
+				<div id="div5" class="select-box box-35 clr">
 					<label for="">Categoria Funcional *</label>
 					<div id="div6" class="conteiner">
 						<h:selectOneMenu id="categoria" 
@@ -74,9 +70,7 @@
 						</h:selectOneMenu>
 					</div>
 				</div>
-				
-				<br /><br /><br /><br /><br />				
-				
+								
 				<div id="div7" class="radios-group box-38">
 					<label for="">Tipo</label>
 					<div id="div8" class="conteiner">
@@ -89,8 +83,6 @@
 					</div>
 				</div>
 				
-				<br /><br /><br /><br /><br />
-
 				<div id="div10" class="input-box box-15" style="clear: both;">
 					<label for="">Início *</label>
 					<div id="div11" class="conteiner">
@@ -114,9 +106,7 @@
 						</h:inputText>			  
 					</div>
 				</div>
-				
-				<br /><br /><br /><br /><br />
-				
+								
 				<div id="div14" class="textarea-box box-100">
 					<label for="">Descrição *</label>
 					<div id="div15" class="conteiner">
@@ -131,7 +121,6 @@
 			</fieldset>
 	
 			<h:commandButton id="salvar" action="#{categoriaFuncionalSetorResponsabilidadeFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
-			<h:commandButton id="limpaTela" value="Limpar" action="#{categoriaFuncionalSetorResponsabilidadeFormBean.limpaTela}" styleClass="bt-padrao fr mg-right-10" />
 			<a href="/srh/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
 			
 		</h:form>

@@ -60,8 +60,9 @@
 					<h:inputText id="nomeCompletoPessoa"
 								 name="nomeCompletoPessoa"
 								 disabled="#{pessoalCursoGraduacaoFormBean.alterar}"
-								 value="#{pessoalCursoGraduacaoFormBean.nome}" />
-					<a4j:support event="onchange" reRender="mae, cpf, rg, rgEmissor, rgUf, idPessoa" ajaxSingle="true" />
+								 value="#{pessoalCursoGraduacaoFormBean.nome}">
+						<a4j:ajax event="change" render="mae, cpf, rg, rgEmissor, rgUf, idPessoa" execute="@this" />
+					</h:inputText>	
 				</div>
 			</div>
 
@@ -332,7 +333,6 @@
 
 			<h:commandButton action="#{pessoalCursoGraduacaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/cadastros/pessoaCursoGraduacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/cadastros/pessoaCursoGraduacaoForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
 

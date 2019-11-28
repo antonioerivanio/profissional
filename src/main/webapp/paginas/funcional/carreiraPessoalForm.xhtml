@@ -59,7 +59,7 @@
 									 converter="cpfConverter"
 									 disabled="#{carreiraPessoalBean.alterar or ( not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') ) }"
 									 value="#{carreiraPessoalBean.cpf}" >
-							<a4j:support id="cpfChange" event="onblur" focus="nomeCompletoPessoa" reRender="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " ajaxSingle="true" />
+							<a4j:ajax event="blur" render="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -97,12 +97,11 @@
 											var="carreira"
 											itemValue="#{carreira}"
 											itemLabel="#{carreira.descricao}"/>
-							<a4j:support id="atualizaInicioCarreira"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{carreiraPessoalBean.atualizaDatasCarreira}"
+							<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{carreiraPessoalBean.atualizaDatasCarreira}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 reRender="dataInicioCarreira, dataFimCarreira" />
+					  				 render="dataInicioCarreira, dataFimCarreira" />
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -151,12 +150,11 @@
 					  						var="ocupacao"
 					  						itemValue="#{ocupacao}"
 					  						itemLabel="#{ocupacao.nomenclatura}"/>
-					  		<a4j:support id="atualizaInicioCargo"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{carreiraPessoalBean.atualizaInicioCargo}"
+					  		<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{carreiraPessoalBean.atualizaInicioCargo}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 reRender="dataInicioCargoAtual" />
+					  				 render="dataInicioCargoAtual" />
 						</h:selectOneMenu>    
 					</div>
 				</div>

@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -16,16 +18,9 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
- * Use case : SRH_UC048_Manter Acrecimos do Servidor
- * 
- * @since   : Apr 17, 2012, 10:00:29 PM
- * @author  : robstownholanda@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("acrescimoFormBean")
-@Scope("session")
+@Scope("view")
 public class AcrescimoFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(AcrescimoFormBean.class);
@@ -35,7 +30,6 @@ public class AcrescimoFormBean implements Serializable {
 
 	@Autowired
 	private FuncionalService funcionalService;
-
 
 	//endidade das telas
 	private Acrescimo entidade = new Acrescimo();
@@ -49,54 +43,28 @@ public class AcrescimoFormBean implements Serializable {
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
 
-	// combos
-
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		this.alterar = true;
-
+	@PostConstruct
+	public void init() {
+		Acrescimo flashParameter = (Acrescimo)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Acrescimo());
 		try {
-
-			Funcional funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
-			this.matricula = funcional.getMatricula();
-			this.nome = entidade.getPessoal().getNomeCompleto();
-
-			this.inicio = entidade.getInicio();
-			this.fim = entidade.getFim();
-
+			if(this.entidade.getId() != null) {
+				this.alterar = true;
+				
+				Funcional funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
+				this.matricula = funcional.getMatricula();
+				this.nome = entidade.getPessoal().getNomeCompleto();
+				
+				this.inicio = entidade.getInicio();
+				this.fim = entidade.getFim();				
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 		
 		try {
 
@@ -116,14 +84,8 @@ public class AcrescimoFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		this.alterar = false;
@@ -138,10 +100,6 @@ public class AcrescimoFormBean implements Serializable {
 		this.bloquearDatas = false;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Acrescimo getEntidade() { return entidade; }
 	public void setEntidade(Acrescimo entidade) { this.entidade = entidade; }
 

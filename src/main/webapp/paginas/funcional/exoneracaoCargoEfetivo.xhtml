@@ -187,11 +187,10 @@
 									 styleClass="maskData"
 									 value="#{exoneracaoFormBean.funcional.saida}" 
 									 maxlength="10">
-							<a4j:support id="dataFinalChange" 
-										 event="onblur" 
-										 actionListener="#{exoneracaoFormBean.verificaFeriasPosterior()}" 
-										 ajaxSingle="true" 
-										 reRender="existeFeriasPosterior" />									 
+							<a4j:ajax 	 event="blur" 
+										 listener="#{exoneracaoFormBean.verificaFeriasPosterior()}" 
+										 execute="@this" 
+										 render="existeFeriasPosterior" />									 
 						</h:inputText>
 						
 						<h:inputHidden id="existeFeriasPosterior" value="#{exoneracaoFormBean.existeFeriasPosterior}" />

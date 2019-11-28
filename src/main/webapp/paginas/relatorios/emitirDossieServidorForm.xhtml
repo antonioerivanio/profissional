@@ -42,7 +42,7 @@
 						<h:inputText id="nomeCompletoPessoa" 
 									 name="nomeCompletoPessoa"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.pessoal.nomeCompleto}" />
+									 value="#{emitirDossieServidorBean.entidade.pessoal.nomeCompleto}" />
 					</div>
 				</div>
 
@@ -52,7 +52,7 @@
 						<h:inputText id="mae" 
 									 name="mae"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.pessoal.nomeMae}" />
+									 value="#{emitirDossieServidorBean.entidade.pessoal.nomeMae}" />
 					</div>
 				</div>
 
@@ -63,7 +63,7 @@
 									 maxlength="14" 
 									 styleClass="maskCpf"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.pessoal.cpf}" />
+									 value="#{emitirDossieServidorBean.entidade.pessoal.cpf}" />
 					</div>
 				</div>
 
@@ -73,7 +73,7 @@
 						<h:inputText id="rg"
 									 maxlength="15"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.pessoal.rg}" />
+									 value="#{emitirDossieServidorBean.entidade.pessoal.rg}" />
 					</div>
 				</div>
 
@@ -83,7 +83,7 @@
 						<h:inputText id="rgEmissor"
 									 maxlength="10"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.pessoal.emissorRg}" />
+									 value="#{emitirDossieServidorBean.entidade.pessoal.emissorRg}" />
 					</div>
 				</div>
 
@@ -93,7 +93,7 @@
 						<h:inputText id="rgUf"
 									 maxlength="2"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.pessoal.ufEmissorRg.id}" />
+									 value="#{emitirDossieServidorBean.entidade.pessoal.ufEmissorRg.id}" />
 					</div>
 				</div>
 
@@ -115,7 +115,7 @@
 						<h:inputText id="cargo" 
 									 name="cargo"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.ocupacao.nomenclatura}" />
+									 value="#{emitirDossieServidorBean.entidade.ocupacao.nomenclatura}" />
 					</div>
 				</div>
 				
@@ -126,7 +126,7 @@
 									 name="dataInicio"
 									 disabled="true"
 									 converter="dateConverter"
-									 value="#{emitirDossieServidorFormBean.entidade.exercicio}" />
+									 value="#{emitirDossieServidorBean.entidade.exercicio}" />
 					</div>
 				</div>
 				
@@ -136,7 +136,7 @@
 						<h:inputText id="setor" 
 									 name="setor"
 									 disabled="true"
-									 value="#{emitirDossieServidorFormBean.entidade.setor.nome}" />
+									 value="#{emitirDossieServidorBean.entidade.setor.nome}" />
 					</div>
 				</div>
 
@@ -144,7 +144,7 @@
 
 
 
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.historicoLotacao}">
+			<h:panelGroup rendered="#{emitirDossieServidorBean.historicoLotacao}">
 
 				<fieldset>
 
@@ -154,7 +154,7 @@
 
 				<div class="tabela-dados">
 	
-					<rich:dataTable id="listaHistoricoLotacao" value="#{emitirDossieServidorFormBean.listaFuncionalSetor}" var="item1" >
+					<rich:dataTable id="listaHistoricoLotacao" value="#{emitirDossieServidorBean.listaFuncionalSetor}" var="item1" >
 	
 	                    <h:column id="col6">
 	                        <f:facet name="header">
@@ -204,7 +204,7 @@
 			
 
 
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.historicoLicenca}">
+			<h:panelGroup rendered="#{emitirDossieServidorBean.historicoLicenca}">
 
 				<fieldset>
 
@@ -214,7 +214,7 @@
 
 				<div class="tabela-dados">
 
-					<rich:dataTable id="listaLicenca" value="#{emitirDossieServidorFormBean.listaLicenca}" var="item3" >
+					<rich:dataTable id="listaLicenca" value="#{emitirDossieServidorBean.listaLicenca}" var="item3" >
 
 	                    <h:column id="col14">
 	                        <f:facet name="header">
@@ -287,7 +287,7 @@
 
 
 
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.historicoFerias}">
+			<h:panelGroup rendered="#{emitirDossieServidorBean.historicoFerias}">
 
 				<fieldset>
 
@@ -297,7 +297,7 @@
 
 				<div class="tabela-dados">
 	
-					<rich:dataTable id="listaFerias" value="#{emitirDossieServidorFormBean.listaFerias}" var="item2" >
+					<rich:dataTable id="listaFerias" value="#{emitirDossieServidorBean.listaFerias}" var="item2" >
 	
 	                    <h:column id="col10">
 	                        <f:facet name="header">
@@ -354,7 +354,7 @@
 			
 			
 
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.progracaoFuncional}">
+			<h:panelGroup rendered="#{emitirDossieServidorBean.progrecaoFuncional}">
 
 				<fieldset>
 
@@ -364,7 +364,7 @@
 
 				<div class="tabela-dados">
 	
-					<rich:dataTable id="listaProgrecaoFuncional" value="#{emitirDossieServidorFormBean.listaReferenciaFuncional}" var="item" >
+					<rich:dataTable id="listaProgrecaoFuncional" value="#{emitirDossieServidorBean.listaReferenciaFuncional}" var="item" >
 	
 	                    <h:column id="col1">
 	                        <f:facet name="header">
@@ -420,7 +420,7 @@
 			
 
 
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.representacaoFuncional}">
+			<h:panelGroup rendered="#{emitirDossieServidorBean.representacaoFuncional}">
 
 				<fieldset>
 
@@ -430,7 +430,7 @@
 
 					<div class="tabela-dados">
 		
-						<rich:dataTable id="listaRepresentacaoFuncional" value="#{emitirDossieServidorFormBean.listaRepresentacaoFuncional}" var="item" >
+						<rich:dataTable id="listaRepresentacaoFuncional" value="#{emitirDossieServidorBean.listaRepresentacaoFuncional}" var="item" >
 							 <h:column id="col35" headerClass="cel-25" >
                         		<f:facet name="header">
                            			Ocupação
@@ -494,12 +494,12 @@
 
 
 			
-			<h:panelGroup rendered="#{emitirDossieServidorListBean.anotacaoServidor}">
+			<h:panelGroup rendered="#{emitirDossieServidorBean.anotacaoServidor}">
 				<fieldset>
 				<legend>Anotação Servidor</legend>
 				<br/>		
 				<div class="tabela-dados">
-					<rich:dataTable id="listaFuncionalAnotacao" value="#{emitirDossieServidorFormBean.listaFuncionalAnotacao}" var="item4" >
+					<rich:dataTable id="listaFuncionalAnotacao" value="#{emitirDossieServidorBean.listaFuncionalAnotacao}" var="item4" >
                        <h:column id="col17">
 	                        <f:facet name="header">
 	                           Data Início
@@ -522,9 +522,8 @@
 				</fieldset>
 			</h:panelGroup>
 			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/relatorios/emitirDossieServidorList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{emitirDossieServidorListBean.passouConsultar}" value="true"/>			
-			</h:commandButton>
+			<a href="/srh/paginas/relatorios/emitirDossieServidorList.faces"
+				class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 			
 		</h:form>
 	</ui:define>

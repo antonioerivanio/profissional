@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -24,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC006_Manter Classe e Referência do Cargo
-* 
-* @since   : Sep 14, 2011, 11:01:27 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("classeReferenciaListBean")
-@Scope("session")
+@Scope("view")
 public class ClasseReferenciaListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ClasseReferenciaListBean.class);
@@ -46,11 +38,6 @@ public class ClasseReferenciaListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// parametros da tela de consulta
 	private Ocupacao cargo;
 	private List<ClasseReferencia> lista;
@@ -61,23 +48,21 @@ public class ClasseReferenciaListBean implements Serializable {
 	
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<ClasseReferencia> pagedList = new ArrayList<ClasseReferencia>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
+	/*
+	 * @PostConstruct public void init() { cargo = null; this.comboCargo = null;
+	 * this.lista = new ArrayList<ClasseReferencia>(); limparListas();
+	 * flagRegistroInicial = 0; }
 	 * 
-	 * @return
 	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
-
-			// validando filtro
+			
 			if ( this.cargo == null )
 				throw new SRHRuntimeException("Selecione um cargo.");
 
@@ -89,7 +74,6 @@ public class ClasseReferenciaListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -100,17 +84,14 @@ public class ClasseReferenciaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -128,15 +109,10 @@ public class ClasseReferenciaListBean implements Serializable {
 		}
 
 		entidade = new ClasseReferencia();
-		return consultar();
+		consultar();
 	}
 
 	
-	/**
-	 * Combo Cargo
-	 * 
-	 * @return
-	 */
 	public List<Ocupacao> getComboCargo() {
 
 		try {
@@ -159,13 +135,7 @@ public class ClasseReferenciaListBean implements Serializable {
 		return this.comboCargo;
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -185,8 +155,6 @@ public class ClasseReferenciaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	public String limpaTela() {
@@ -194,10 +162,6 @@ public class ClasseReferenciaListBean implements Serializable {
 		return "listar";
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Ocupacao getCargo() {return cargo;}
 	public void setCargo(Ocupacao cargo) {this.cargo = cargo;}
 	
@@ -206,28 +170,15 @@ public class ClasseReferenciaListBean implements Serializable {
 
 	public List<ClasseReferencia> getLista() {return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			cargo = null;
-			this.comboCargo = null;
-			this.lista = new ArrayList<ClasseReferencia>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<ClasseReferencia>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

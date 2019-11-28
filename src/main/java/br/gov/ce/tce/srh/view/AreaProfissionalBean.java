@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -22,29 +22,18 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC012_Manter Área de Formação Profissional
-* 
-* @since   : Aug 31, 2011, 5:23:20 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("areaProfissionalBean")
-@Scope("session")
-public class AreaProfissionaBean implements Serializable {
+@Scope("view")
+public class AreaProfissionalBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(AreaProfissionaBean.class);
+	static Logger logger = Logger.getLogger(AreaProfissionalBean.class);
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 	
 	@Autowired
 	private AreaProfissionalService areaProfissionalService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private String descricao = new String();
@@ -55,19 +44,18 @@ public class AreaProfissionaBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<AreaProfissional> pagedList = new ArrayList<AreaProfissional>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	@PostConstruct
+	private void init() {
+		AreaProfissional flashParameter = (AreaProfissional)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new AreaProfissional());
+    }
+	
+	public void consultar() {
 
 		try {
 
@@ -77,26 +65,17 @@ public class AreaProfissionaBean implements Serializable {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
 			}
-
+			
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (Exception e) {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -113,17 +92,14 @@ public class AreaProfissionaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -141,16 +117,10 @@ public class AreaProfissionaBean implements Serializable {
 		}
 
 		setEntidade( new AreaProfissional() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -167,49 +137,25 @@ public class AreaProfissionaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-	
-	public String limpaTela() {
-		setEntidade(new AreaProfissional());
-		return "listar";
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getDescricao() {return descricao;}
 	public void setDescricao(String descricao) {this.descricao = descricao;}
 
 	public AreaProfissional getEntidade() {return entidade;}
 	public void setEntidade(AreaProfissional entidade) {this.entidade = entidade;}
 
-	public List<AreaProfissional> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new AreaProfissional() );
-			descricao = new String();
-			lista = new ArrayList<AreaProfissional>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
+	public List<AreaProfissional> getLista(){return lista;}	
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<AreaProfissional>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

@@ -117,10 +117,10 @@
 							<f:selectItem id="aliqRat1" itemLabel="1%" itemValue="1" />
 							<f:selectItem id="aliqRat2" itemLabel="2%" itemValue="2"/>
 							<f:selectItem id="aliqRat3" itemLabel="3%" itemValue="3"/>
-							<a4j:support 
-								event="onchange" 
-								action="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
-								reRender="aliqRatAjust" 
+							<a4j:ajax 
+								event="change" 
+								listener="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
+								render="aliqRatAjust" 
 								ajaxSlingle="true" />
 						</h:selectOneMenu>
 					</div>
@@ -137,10 +137,10 @@
 							styleClass="maskFap"
 							>
 							<f:convertNumber type="number" maxFractionDigits="4" maxIntegerDigits="1" locale="pt_br"/>
-							<a4j:support 
-								event="onblur" 
-								action="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
-								reRender="aliqRatAjust" 
+							<a4j:ajax 
+								event="blur" 
+								listener="#{estabelecimentoFormBean.entidade.atualizaAliqRatAjust}" 
+								render="aliqRatAjust" 
 								ajaxSlingle="true" />
 						</h:inputText>	
 					</div>

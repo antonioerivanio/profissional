@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +25,9 @@ import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC040_Emitir Tempo Representação Funcional em Cargo Comissionado
-* 
-* @since   : Dez 19, 2012, 10:09:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("tempoRepresentacaoFuncionalListBean")
-@Scope("session")
+@Scope("view")
 public class TempoRepresentacaoFuncionalListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(TempoRepresentacaoFuncionalListBean.class);
@@ -52,11 +46,14 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-
-
-	// controle de acesso do formulario
-    private HtmlForm form;
-	private boolean passouConsultar = false;
+	
+	@PostConstruct
+	public void init() {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		} 
+	}
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -69,13 +66,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 	private List<RepresentacaoFuncional> lista;
 	private RepresentacaoFuncional entidade;
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -105,7 +96,6 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 			
 			
 			lista = validaDataFimTempoRepresentacao(lista);
-			passouConsultar = true;
 
 		}  catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -115,7 +105,6 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
-		return "listar";
 	}
 	
 	public List<RepresentacaoFuncional> validaDataFimTempoRepresentacao(List<RepresentacaoFuncional> listaRepresentacao) {
@@ -132,13 +121,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 		return listaRepresentacao;
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String visualizarFicha() {
+	public void visualizarFicha() {
 		
 		try {
 
@@ -161,8 +144,6 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	public String limpaTela() {
@@ -170,10 +151,6 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 		return "listar";
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -240,32 +217,7 @@ public class TempoRepresentacaoFuncionalListBean implements Serializable {
 	public RepresentacaoFuncional getEntidade() {return entidade;}
 	public void setEntidade(RepresentacaoFuncional entidade) {this.entidade = entidade;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());
-			consultar();
-		} else if (!passouConsultar) {
-			setEntidade( null );
-			this.matricula = new String();
-			this.cpf = new String();
-			this.nome = new String();
-			this.cargo = null;
-			this.cargos = null;
-			this.lista = new ArrayList<RepresentacaoFuncional>();
-		}
-		passouConsultar = false;
-		return form;
-	}
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
+	
 	public Ocupacao getCargo() {
 		return cargo;
 	}

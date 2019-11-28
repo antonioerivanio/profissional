@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{areaSetorCompetenciaListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -32,11 +32,10 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-					  	<a4j:support id="carregaArea" 
-					  				 event="onchange" 
-					  				 ajaxSingle="true"
-					  				 action="#{areaSetorCompetenciaListBean.carregaArea}"
-					  				 reRender="area,competencia,lista"/>
+					  	<a4j:ajax event="change" 
+					  				 execute="@this"
+					  				 listener="#{areaSetorCompetenciaListBean.carregaArea}"
+					  				 render="area,competencia,lista"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -53,11 +52,10 @@
 					  					var="area"
 					  					itemValue="#{area}"
 					  					itemLabel="#{area.descricao}"/>
-					  	<a4j:support id="carregaCompetencia"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{areaSetorCompetenciaListBean.carregaCompetencia}" 
-					  				 reRender="competencia,lista"/>
+					  	<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{areaSetorCompetenciaListBean.carregaCompetencia}" 
+					  				 render="competencia,lista"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -82,7 +80,7 @@
 							 value="Consultar"
 							 action="#{areaSetorCompetenciaListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 			<h:commandButton id="relatorio"
 							 value="Relatório"
 							 action="#{areaSetorCompetenciaListBean.relatorio}"
@@ -137,9 +135,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar" 
-                       				  action="#{areaSetorCompetenciaFormBean.prepareAlterar}"
+                       				  action="#{areaSetorCompetenciaListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{areaSetorCompetenciaFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{areaSetorCompetenciaListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR_EXCLUIR')}">
@@ -156,19 +154,19 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{areaSetorCompetenciaListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{areaSetorCompetenciaListBean.pagedList.size() > 0}"/>
 
 			</div>
 
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{areaSetorCompetenciaFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15"
 							 rendered="#{LoginBean.anyGranted('ROLE_COMPETENCIA_SETOR_INSERIR')}"/>
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{areaSetorCompetenciaListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

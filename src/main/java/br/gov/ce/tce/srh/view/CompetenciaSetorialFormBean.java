@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +21,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("competenciaSetorialFormBean")
-@Scope("session")
+@Scope("view")
 public class CompetenciaSetorialFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CompetenciaSetorialFormBean.class);
@@ -43,35 +45,17 @@ public class CompetenciaSetorialFormBean implements Serializable {
 	private List<Setor> comboSetor;
 	private List<Competencia> comboCompetencia;
 
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		setSetor(new Setor());
-		setEntidade(new CompetenciaSetorial());
-		comboSetor = null;
-		return "incluirAlterar";
+	@PostConstruct
+	public void init() {
+		CompetenciaSetorial flashParameter = (CompetenciaSetorial)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CompetenciaSetorial());
+		
+		if(this.entidade.getId() != null) {
+			this.setor = entidade.getSetor();
+		}
 	}
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-		comboSetor = null;
-		this.setor = entidade.getSetor();
-		return "incluirAlterar";
-	}
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	
+	public void salvar() {
 		if(ativa){
 			entidade.setAtiva(1L);
 		} else {
@@ -96,15 +80,8 @@ public class CompetenciaSetorialFormBean implements Serializable {
 					.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	/**
-	 * Combo setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
 		try {
@@ -121,11 +98,6 @@ public class CompetenciaSetorialFormBean implements Serializable {
 		return this.comboSetor;
 	}
 
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public List<Competencia> getComboCompetencia() {
 
 		try {
@@ -148,25 +120,10 @@ public class CompetenciaSetorialFormBean implements Serializable {
 		return this.comboCompetencia;
 	}
 	
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public void carregaCompetencia() {
 		this.comboCompetencia = null;
 	}
 	
-	public String limpaTela() {
-		setTipo(0L);
-		setEntidade(new CompetenciaSetorial());
-		setSetor(new Setor());
-		return null;
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public CompetenciaSetorial getEntidade() {
 		return entidade;
 	}

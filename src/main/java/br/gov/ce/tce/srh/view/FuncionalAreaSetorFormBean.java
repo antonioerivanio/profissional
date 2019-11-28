@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,15 +21,9 @@ import br.gov.ce.tce.srh.service.FuncionalAreaSetorService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
- * Use case : SRH_UC025_Manter Área do Setor do Servidor
- * 
- * @since  : Dez 3, 2011, 11:14:10 AM
- * @author : wesllhey.holanda@ivia.com.br
- */
 @SuppressWarnings("serial")
 @Component("funcionalAreaSetorFormBean")
-@Scope("session")
+@Scope("view")
 public class FuncionalAreaSetorFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FuncionalAreaSetorFormBean.class);
@@ -48,11 +40,6 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 	@Autowired
 	private SetorService setorService;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-	
 	// entidades das telas
 	private FuncionalAreaSetor entidade = new FuncionalAreaSetor();
 	
@@ -66,14 +53,7 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 
 	private List<FuncionalAreaSetor> lista;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -83,8 +63,7 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			}
 			this.setFuncional( funcionalService.getById( getFuncional().getId() ) );
 
-			lista = funcionalAreaSetorService.findByFuncionalComSetorAtual( getFuncional().getId() );
-			this.passouConsultar = true;
+			lista = funcionalAreaSetorService.findByFuncionalComSetorAtual( getFuncional().getId() );			
 	
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -94,27 +73,9 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 
-
-	/**
-	 * Reiniciar formulario
-	 * 
-	 * @return
-	 */
-	public String limparForm() {
-		limpar();
-		return null;
-	}
-
-
-	/**
-	 * Adicionar Area
-	 * 
-	 * @return
-	 */
-	public String adicionar() {
+	public void adicionar() {
 
 		try {
 
@@ -142,8 +103,6 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			funcionalAreaSetorService.salvar( getEntidade() );
 			lista = funcionalAreaSetorService.findByFuncional( getFuncional().getId() );
 
-			return null;
-
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
@@ -151,17 +110,9 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu um erro ao adicionar a área do servidor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Remover a Area
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -172,8 +123,6 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu um erro ao remover a área do servidor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	public void carregaArea() {
@@ -184,11 +133,6 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 		return setorService.findAll();
 	}
 
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
 	public List<AreaSetor> getComboArea() {
 
 		this.comboArea = new ArrayList<AreaSetor>();
@@ -210,33 +154,8 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 		}
 
 		return comboArea;
-	}
+	}	
 
-
-	/**
-	 * Limpar dados
-	 * 
-	 * @return
-	 */
-	private void limpar() {
-		
-		this.passouConsultar = false;
-
-		this.entidade = new FuncionalAreaSetor();
-
-		this.matricula = new String();
-		this.nome = new String();
-
-		this.funcional = new Funcional();
-		this.areaSetor = new AreaSetor();
-
-		this.lista = new ArrayList<FuncionalAreaSetor>();
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public FuncionalAreaSetor getEntidade() {return entidade;}
 	public void setEntidade(FuncionalAreaSetor entidade) {this.entidade = entidade;}
 
@@ -273,36 +192,16 @@ public class FuncionalAreaSetorFormBean implements Serializable {
 
 	public List<FuncionalAreaSetor> getLista() {return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new FuncionalAreaSetor());
-			this.matricula = new String();
-			this.nome = new String();
-			this.lista = new ArrayList<FuncionalAreaSetor>();
-		}
-		limpar();
-		passouConsultar = false;
-		return form;
-	}
-
-	public boolean isPassouConsultar() {return passouConsultar;}
-	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
-
-
 	public Setor getSetor() {
 		return setor;
 	}
-
 
 	public void setSetor(Setor setor) {
 		this.setor = setor;
 	}
 
-
 	public void setComboArea(List<AreaSetor> comboArea) {
 		this.comboArea = comboArea;
-	}
-	
+	}	
 	
 }

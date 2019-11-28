@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
@@ -20,7 +20,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("pessoalConsultaBean")
-@Scope("session")
+@Scope("view")
 public class PessoalConsultaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalConsultaBean.class);
@@ -31,13 +31,9 @@ public class PessoalConsultaBean implements Serializable {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-	// controle de acesso do formulario
-	private HtmlForm form;
-
-	// entidades das telas
 	private List<Pessoal> lista;
 
-
+	@PostConstruct
 	private void consultar() {
 
 		try {
@@ -75,13 +71,6 @@ public class PessoalConsultaBean implements Serializable {
 
 	}
 
-	public List<Pessoal> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		lista = new ArrayList<Pessoal>();
-		consultar();
-		return form;
-	}
+	public List<Pessoal> getLista(){return lista;}	
 
 }

@@ -61,11 +61,9 @@
 								 styleClass="maskMatricula"
 								 value="#{licencaFormBean.matricula}"
 								 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }" >
-						<a4j:support id = "matriculaEvent"
-									 event="onblur"
-									 focus="processo"
-									 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-									 ajaxSingle="true" />
+						<a4j:ajax event="blur"
+									 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+									 execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -80,7 +78,7 @@
 				</div>
 			</div>
 			
-			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR') or licencaFormBean.alterar }">
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR') and !licencaFormBean.alterar }">
 				<a id="form:Pesquisar" 
 				   href="#" 
 				   onclick="openwindow()" 
@@ -159,11 +157,9 @@
 									 maxlength="10"
 									 value="#{licencaFormBean.nrProcesso}"
 									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >
-							<a4j:support id="processoEvent" 
-										 event="onchange" 
-										 focus="tipoLicenca" 
-										 reRender="messages"
-										 ajaxSingle="true" />
+							<a4j:ajax event="change" 
+										 render="messages"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -182,11 +178,10 @@
 						  					var="tipoLicenca"
 						  					itemValue="#{tipoLicenca}"
 						  					itemLabel="#{tipoLicenca.descricao}" />
-				  			<a4j:support id="carregaLicencaEspecial"
-					  				 	 event="onchange" 
-					  				 	 ajaxSingle="true"	
-					  				 	 action="#{licencaFormBean.carregaLicencaEspecial}"
-					  				 	 reRender="licencaEspecial"/>
+				  			<a4j:ajax event="change" 
+					  				 	 execute="@this"	
+					  				 	 listener="#{licencaFormBean.carregaLicencaEspecial}"
+					  				 	 render="licencaEspecial"/>
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -207,10 +202,9 @@
 							  					var="licencaEspecial"
 							  					itemValue="#{licencaEspecial}"
 							  					itemLabel="Período: #{licencaEspecial.anoinicial} / #{licencaEspecial.anofinal}  - Saldo em Dias: #{licencaEspecial.saldodias}" />
-								<a4j:support id="licencaEspecialChange" 
-											 event="onchange" 
-											 reRender="contarDiasEmDobroFragment, publicacaoEvent" 
-											 ajaxSingle="true" />
+								<a4j:ajax event="change" 
+											 render="contarDiasEmDobroFragment, publicacaoEvent" 
+											 execute="@this" />
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -267,11 +261,10 @@
 									 value="#{licencaFormBean.entidade.doe}"
 									 maxlength="10"
 									 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) }" >							
-							<a4j:support id="publicacaoEvent" 
-										 event="onblur"
-										 actionListener="#{licencaFormBean.atualizarCampos()}" 
-										 ajaxSingle="true" 
-										 reRender="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
+							<a4j:ajax event="blur"
+										 listener="#{licencaFormBean.atualizarCampos()}" 
+										 execute="@this" 
+										 render="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
 										 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"  
 										 disabled="#{ not (licencaFormBean.entidade.contarDiasEmDobro != null and licencaFormBean.entidade.contarDiasEmDobro > 0 ) }"
 										 />
@@ -310,11 +303,10 @@
 										 maxlength="2"										 
 										 disabled="#{ (not LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')) or licencaFormBean.alterar }">
 							
-								<a4j:support id="contarDiasEmDobroEvent" 
-											 event="onblur"
-											 actionListener="#{licencaFormBean.atualizarCampos()}" 
-											 ajaxSingle="true" 
-											 reRender="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
+								<a4j:ajax event="blur"
+											 listener="#{licencaFormBean.atualizarCampos()}" 
+											 execute="@this" 
+											 render="tipoLicenca, licencaEspecial, periodoInicial, periodoFinal, delTempoServico, delRetribuicaoFin"
 											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"											  
 											 />
 							
@@ -338,13 +330,10 @@
 				</div>				
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_LICENCA_INSERIR,ROLE_LICENCA_ALTERAR')}">
-				<h:commandButton action="#{licencaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarLicenca()" />						
-				<a href="/srh/paginas/funcional/licencaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+				<h:commandButton action="#{licencaFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarLicenca()" />
 			</ui:fragment>	
 				
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/licencaList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{licencaListBean.passouConsultar}" value="true"/>
-			</h:commandButton>
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/licencaList.faces" />
 
 		</h:form>
 

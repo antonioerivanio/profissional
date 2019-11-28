@@ -19,7 +19,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("categoriaFuncionalSetorFormBean")
-@Scope("session")
+@Scope("view")
 public class CategoriaFuncionalSetorFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CategoriaFuncionalSetorFormBean.class);
@@ -43,38 +43,17 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 	private List<Setor> comboSetor;
 	private List<CategoriaFuncional> comboCategoriaFuncional;
 
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		setSetor(new Setor());
-		setCategoriaFuncional(new CategoriaFuncional());
-		setEntidade(new CategoriaFuncionalSetor());
-		comboSetor = null;
-		ativa = true;
-		return "incluirAlterar";
+	
+	public void init() {
+		CategoriaFuncionalSetor flashParameter = (CategoriaFuncionalSetor)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CategoriaFuncionalSetor());
+		
+		if(this.entidade.getId() != null) {
+			this.setor = entidade.getSetor();
+		}
 	}
 
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-		comboSetor = null;
-		comboCategoriaFuncional = null;
-		this.setor = entidade.getSetor();
-		return "incluirAlterar";
-	}
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 		if(ativa){
 			entidade.setAtiva(1L);
 		} else {
@@ -106,15 +85,8 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 					.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	/**
-	 * Combo setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
 		try {
@@ -131,11 +103,6 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 		return this.comboSetor;
 	}
 
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public List<CategoriaFuncional> getComboCategoriaFuncional() {
 
 		try {
@@ -153,26 +120,11 @@ public class CategoriaFuncionalSetorFormBean implements Serializable {
 
 		return this.comboCategoriaFuncional;
 	}
-	
-	/**
-	 * Combo Categoria Funcional
-	 * 
-	 * @return
-	 */
+		
 	public void carregaCategoriaFuncional() {
 		this.comboCategoriaFuncional = null;
 	}
-	
-	public String limpaTela() {
-		setEntidade(new CategoriaFuncionalSetor());
-		setSetor(new Setor());
-		setCategoriaFuncional(new CategoriaFuncional());
-		return null;
-	}
 
-	/**
-	 * Gets and Sets
-	 */
 	public CategoriaFuncionalSetor getEntidade() {
 		return entidade;
 	}

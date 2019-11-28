@@ -27,14 +27,14 @@ function checkSession() {
     	checkSessionId = setTimeout('checkSession()', 1000);
     	
         if ((getTempoRestanteDaSessao() <= tempoParaAlertarOFimDaSessao()) && renovaSessao) {
-        	Richfaces.showModalPanel('modalRenovaSessao');
+        	RichFaces.ui.PopupPanel.showPopupPanel('modalRenovaSessao');
         	timeout = setTimeout ("handleTimeout()", 1000);
         }
         
     } else {
     	clearTimeout(checkSessionId);
-    	Richfaces.hideModalPanel('modalRenovaSessao');
-    	Richfaces.showModalPanel('modalRedirecionaLogin');
+    	RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
+    	RichFaces.ui.PopupPanel.showPopupPanel('modalRedirecionaLogin');
     }
 }
 
@@ -75,8 +75,8 @@ function handleTimeout () {
 		timeout = setTimeout("handleTimeout()", 1000);
 	} else {
 		clearTimeout(timeout);
-		Richfaces.hideModalPanel('modalRenovaSessao');
-		Richfaces.showModalPanel('modalRedirecionaLogin');	
+		RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
+		RichFaces.ui.PopupPanel.showPopupPanel('modalRedirecionaLogin');	
 	}
 }
 
@@ -87,7 +87,7 @@ function keepSession() {
 		url:'#{request.contextPath}/ping.html'			
 	}).done(function(){
 		console.log("Concluiu a requisicao para manter sessao");
-		Richfaces.hideModalPanel('modalRenovaSessao');
+		RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
 	});
 }
 
@@ -97,7 +97,7 @@ function getLocalTime() {
 
 function dontKeepSession() {	
 	renovaSessao = false;
-	Richfaces.hideModalPanel('modalRenovaSessao');
+	RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
 }
 
 function setCookie(cname, cvalue) {

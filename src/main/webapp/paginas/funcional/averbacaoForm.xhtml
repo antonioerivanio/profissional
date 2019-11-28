@@ -49,8 +49,6 @@
 
             	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
-				<h:inputHidden id="alterar" disabled="true" value="#{averbacaoFormBean.alterar}" />
-
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
 					<div class="conteiner">
@@ -60,10 +58,9 @@
 									 styleClass="maskMatricula"
 									 disabled="#{averbacaoFormBean.alterar}"
 									 value="#{averbacaoFormBean.matricula}">
-							<a4j:support event="onchange"
-										 focus="tipoFerias"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 ajaxSingle="true" />
+							<a4j:ajax event="change"										
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -78,11 +75,13 @@
 					</div>
 				</div>
 
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindow()"
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
-	
+				<ui:fragment rendered="#{!averbacaoFormBean.alterar}">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()"
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</ui:fragment>	
+				
 				<div class="input-box box-100">
 					<label for="">Mãe</label>
 					<div class="conteiner">
@@ -159,11 +158,10 @@
 						  					var="uf"
 						  					itemValue="#{uf}"
 						  					itemLabel="#{uf.id}"/>
-				  			<a4j:support id="carregaMunicipio"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{averbacaoFormBean.carregaMunicipio}"
-					  				 reRender="municipio" />
+				  			<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{averbacaoFormBean.carregaMunicipio}"
+					  				 render="municipio" />
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -203,7 +201,7 @@
 									 value="#{averbacaoFormBean.inicio}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -217,7 +215,7 @@
 									 value="#{averbacaoFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{averbacaoFormBean.somenteDias}" >
-							<a4j:support event="onchange" focus="esfera" reRender="qtdeDias, messages" ajaxSingle="true"/>
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>
 					</div>
 				</div>
@@ -239,11 +237,10 @@
 					<div class="conteiner">
 						<div class="radio-box">
 							<h:selectBooleanCheckbox value="#{averbacaoFormBean.somenteDias}" id="somenteDias" >
-							 	<a4j:support id="atualizaSomenteDias" 
-											 event="onclick"
-											 action="#{averbacaoFormBean.atualizaDatasEQtdeDias()}"
-											 ajaxSingle="true" 
-											 reRender="inicio, fim, qtdeDias"
+							 	<a4j:ajax 	 event="click"
+											 listener="#{averbacaoFormBean.atualizaDatasEQtdeDias()}"
+											 execute="@this" 
+											 render="inicio, fim, qtdeDias"
 											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />									
 					 		</h:selectBooleanCheckbox>
 						</div>
@@ -262,12 +259,10 @@
 										   itemValue="#{esfera.id}"
 										   itemLabel="#{esfera.descricao}" />
 	
-						    <a4j:support id="carregaSubtipo"
-						  				 event="onchange" 
-						  				 ajaxSingle="true"	
-						  				 focus="subtipo"
-						  				 action="#{averbacaoFormBean.carregaSubtipo}"
-						  				 reRender="subtipo"/>
+						    <a4j:ajax 	 event="change" 
+						  				 execute="@this"
+						  				 listener="#{averbacaoFormBean.carregaSubtipo}"
+						  				 render="subtipo"/>
 							
 						</h:selectOneMenu>
 					</div>
@@ -315,17 +310,8 @@
 
 			<h:commandButton action="#{averbacaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/funcional/averbacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/funcional/averbacaoForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
-
-		<script>
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}	
-		}
-		</script>
-
+		
 	</ui:define>
 </ui:composition>

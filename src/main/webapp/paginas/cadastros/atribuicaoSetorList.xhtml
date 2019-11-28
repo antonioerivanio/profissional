@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 		<div class="titulo-pagina">
@@ -14,7 +14,7 @@
 			<h2>Consulta de Atribuições Setoriais</h2>
 
 		</div>
-		<h:form id="form" binding="#{atribuicaoSetorListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 			
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
@@ -23,10 +23,9 @@
 					<div class="radio-box mg-left-10 " style="display: inline-block;">
 					 Exibir somente setores ativos	
 					 <h:selectBooleanCheckbox value="#{atribuicaoSetorListBean.setoresAtivos}" id="setoresAtivos" >
-					 	<a4j:support id="atualizaSetores" 
-									 event="onclick"
-									 ajaxSingle="true" 
-									 reRender="cmbSetor" />									
+					 	<a4j:ajax 	 event="click"
+									 execute="@this" 
+									 render="cmbSetor" />									
 					 </h:selectBooleanCheckbox>
 					</div>
 				</h:outputLabel>
@@ -56,7 +55,7 @@
 							 value="Consultar"
 							 action="#{atribuicaoSetorListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-30" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 			<h:commandButton id="relatorio"
 							 value="Relatório" 
 							 action="#{atribuicaoSetorListBean.relatorio}" 
@@ -103,9 +102,9 @@
 					<rich:column id="clmEditar" >
 						<f:facet id="lblEditar" name="header">EDITAR</f:facet>
 						<h:commandLink id="editar" value="Editar"
-							action="#{atribuicaoSetorFormBean.prepareAlterar}"
+							action="#{atribuicaoSetorListBean.editar}"
 							styleClass="ico-editar">
-							<f:setPropertyActionListener target="#{atribuicaoSetorFormBean.entidade}" value="#{item}" />
+							<f:setPropertyActionListener target="#{atribuicaoSetorListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</rich:column>
 					
@@ -120,7 +119,7 @@
                         </h:commandLink>
 					</rich:column>
 				</rich:dataTable>
-				<rich:datascroller  id="scroller" 
+				<rich:dataScroller  id="scroller" 
 									for="lista" 
 									stepControls="hide" 
 									renderIfSinglePage="false" 
@@ -129,12 +128,12 @@
 			
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{atribuicaoSetorFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15"  />
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{atribuicaoSetorListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 	/>	
 			
 		</h:form>

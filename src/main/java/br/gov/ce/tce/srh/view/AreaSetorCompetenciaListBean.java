@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -27,15 +25,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC003_Manter Competências do Setor
-* 
-* @since   : Aug 31, 2011, 10:44:18 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("areaSetorCompetenciaListBean")
-@Scope("session")
+@Scope("view")
 public class AreaSetorCompetenciaListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(AreaSetorCompetenciaListBean.class);
@@ -52,11 +44,6 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// entidades das telas
 	private List<AreaSetorCompetencia> lista;
 	private AreaSetorCompetencia entidade;
@@ -72,19 +59,12 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 	
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<AreaSetorCompetencia> pagedList = new ArrayList<AreaSetorCompetencia>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -107,7 +87,6 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -117,17 +96,14 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -145,15 +121,9 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 		}
 
 		entidade = new AreaSetorCompetencia();
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
         try {
@@ -169,12 +139,6 @@ public class AreaSetorCompetenciaListBean implements Serializable {
         return this.comboSetor;
 	}
 
-
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
 	public void carregaArea() {
 		lista = new ArrayList<AreaSetorCompetencia>();
 		this.areaSetor = new AreaSetor();
@@ -199,12 +163,6 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 		return null;
 	}
 
-
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public void carregaCompetencia() {
 		lista = new ArrayList<AreaSetorCompetencia>();
 		this.competencia = new Competencia();
@@ -232,14 +190,8 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 
         return null;
 	}
-
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */ 
-	public String relatorio() {
+ 
+	public void relatorio() {
 
 		try {
 
@@ -268,42 +220,12 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String limpaTela() {
-		setEntidade(new AreaSetorCompetencia());
-		return "listar";
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public AreaSetorCompetencia getEntidade() {return entidade;}
 	public void setEntidade(AreaSetorCompetencia entidade) {this.entidade = entidade;}
 
 	public List<AreaSetorCompetencia> getLista() {return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar && lista != null) {
-			lista = null;
-			setor = null;
-			areaSetor = null;
-			comboSetor = null;
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		
-		if(setor == null || areaSetor == null){
-			competencia = null;
-		}
-		
-		passouConsultar = false;
-		return form;
-	}
 
 	public Setor getSetor() {return setor;}
 	public void setSetor(Setor setor) {this.setor = setor;}
@@ -316,13 +238,13 @@ public class AreaSetorCompetenciaListBean implements Serializable {
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<AreaSetorCompetencia>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

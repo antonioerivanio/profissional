@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -27,7 +25,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("atribuicaoSetorListBean")
-@Scope("session")
+@Scope("view")
 public class AtribuicaoSetorListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
@@ -39,12 +37,8 @@ public class AtribuicaoSetorListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// entidades das telas
-	private AtribuicaoSetor entidade;
+	private AtribuicaoSetor entidade = new AtribuicaoSetor();
 	
 	// combos
 	private List<Setor> comboSetor;
@@ -59,7 +53,7 @@ public class AtribuicaoSetorListBean implements Serializable {
 	private Integer pagina = 1;
 		
 	
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -76,8 +70,6 @@ public class AtribuicaoSetorListBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -88,19 +80,21 @@ public class AtribuicaoSetorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}		
-
-		return "listar";
 	}
 	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 			
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado. Realize uma consulta antes de solicitar o relatório.");
 				logger.info("Nenhum registro foi encontrado. Realize uma consulta antes de solicitar o relatório.");
-				return null;
+				return;
 			}
 			
 			List<AtribuicaoSetor> consultaList = atribuicaoSetorService.search(entidade.getSetor(), opcaoAtiva, flagRegistroInicial, count);
@@ -138,13 +132,10 @@ public class AtribuicaoSetorListBean implements Serializable {
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-																																	
-		return null;
+		}		
 	}
-	
-	
-	public String excluir() {
+		
+	public void excluir() {
 
 		try {
 
@@ -161,7 +152,7 @@ public class AtribuicaoSetorListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
-		return consultar();
+		consultar();
 	}	
 	
 	public List<Setor> getComboSetor() {
@@ -187,38 +178,12 @@ public class AtribuicaoSetorListBean implements Serializable {
 	
 	public AtribuicaoSetor getEntidade() {return entidade;}
 	public void setEntidade(AtribuicaoSetor entidade) {this.entidade = entidade;}
-		
-	public boolean isPassouConsultar() {return passouConsultar;}
-	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
 	
 	public boolean isSetoresAtivos() {return this.setoresAtivos;}
 	public void setSetoresAtivos(boolean setoresAtivos) {this.setoresAtivos = setoresAtivos;}	
 
 	public int getOpcaoAtiva() {return opcaoAtiva;}
 	public void setOpcaoAtiva(int opcaoAtiva) {this.opcaoAtiva = opcaoAtiva;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {			
-			limpar();
-			limparListas();
-			flagRegistroInicial = 0;
-		}				
-		passouConsultar = false;
-		return form;
-	}
-	
-	private void limpar() {
-		setEntidade( new AtribuicaoSetor() );
-		comboSetor = null;
-		setoresAtivos = true;
-		opcaoAtiva = 0;
-	}
-	
-	public String limpaTela() {
-		setEntidade(new AtribuicaoSetor());		
-		return "listar";
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {

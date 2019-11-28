@@ -37,8 +37,6 @@
 				</div>
 			</div>
 					
-			<br/><br/><br/><br/><br/>
-
 			<div class="select-box box-50">
 				<label for="">Categoria Funcional *</label>
 				<div class="conteiner">
@@ -54,8 +52,7 @@
 					</h:selectOneMenu>
 				</div>
 			</div>
-
-			<br/><br/><br/><br/><br/>
+			
 			<div class="input-box box-10">
 				<label for="">Data Inicio</label>
 				<div class="conteiner">
@@ -87,9 +84,7 @@
 						<h:selectBooleanCheckbox value="#{categoriaFuncionalSetorFormBean.ativa}" />
 					</div>
 				</div>
-			</div>
-			
-			<br/><br/><br/><br/><br/>
+			</div>			
 			
 			<div class="textarea-box">
 				<h:outputLabel value="Observação" />
@@ -103,16 +98,7 @@
 			</fieldset>
 
 			<h:commandButton action="#{categoriaFuncionalSetorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/categoriaFuncionalSetorList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{categoriaFuncionalSetorListBean.passouConsultar}" value="true"/>
-			</h:commandButton>
-<!-- 			<a href="/srh/paginas/tabelas/areaSetorCompetenciaList.faces" class="bt-voltar fr mg-right-10">Voltar</a> -->
-			
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{categoriaFuncionalSetorFormBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/categoriaFuncionalSetorList.faces" />
 
 		</h:form>
 

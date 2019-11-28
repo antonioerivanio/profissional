@@ -59,10 +59,9 @@
 									 styleClass="maskMatricula"
 									 disabled="#{funcionalAnotacaoBean.alterar or ( not LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') ) }"
 									 value="#{funcionalAnotacaoBean.matricula}">
-							<a4j:support event="onchange"
-										 focus="setor"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 ajaxSingle="true" />
+							<a4j:ajax event="change"
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -173,8 +172,7 @@
 			</fieldset>
 
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') }">	
-				<h:commandButton action="#{funcionalAnotacaoBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
-				<h:commandButton id="limpaTela" value="Limpar" action="#{funcionalAnotacaoBean.limpaForm}" styleClass="bt-padrao fr mg-right-10" />
+				<h:commandButton action="#{funcionalAnotacaoBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			</ui:fragment>				 
 			<a href="/srh/paginas/cadastros/pessoaAnotacaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 

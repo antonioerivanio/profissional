@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC033_Manter Representação Funcional
-* 
-* @since   : Dez 19, 2011, 17:09:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("representacaoFuncionalListBean")
-@Scope("session")
+@Scope("view")
 public class RepresentacaoFuncionalListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(RepresentacaoFuncionalListBean.class);
@@ -48,11 +42,6 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// parametros da tela de consulta
 	private String matricula = new String();
 	private String cpf = new String();
@@ -68,13 +57,16 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 	private List<RepresentacaoFuncional> pagedList = new ArrayList<RepresentacaoFuncional>();
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	
+	@PostConstruct
+	public void init() {		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		}	
+	}
+	
+	public void consultar() {
 
 		try {
 			
@@ -92,8 +84,6 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -104,17 +94,14 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -134,16 +121,10 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {  
+	public void relatorio() {  
 
 		try {
 
@@ -163,18 +144,8 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	public String limpaTela() {
-		setEntidade(new RepresentacaoFuncional());
-		return "listar";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -232,36 +203,6 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 
 	public RepresentacaoFuncional getEntidade() {return entidade;}
 	public void setEntidade(RepresentacaoFuncional entidade) {this.entidade = entidade;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {				
-				setCpf(authenticationService.getUsuarioLogado().getCpf());								
-				count = representacaoFuncionalService.count( getEntidade().getFuncional().getPessoal().getId() );
-				limparListas();
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			setEntidade( new RepresentacaoFuncional() );
-			matricula = new String();
-			cpf = new String();
-			nome = new String();
-			lista = new ArrayList<RepresentacaoFuncional>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {		
@@ -292,15 +233,5 @@ public class RepresentacaoFuncionalListBean implements Serializable {
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 	
 	//FIM PAGINAÇÃO
-
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
 
 }

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Component("relatorioServidorBean")
-@Scope("session")
+@Scope("view")
 public class RelatorioServidorBean  implements Serializable  {
 
 	private static final long serialVersionUID = 2375679883082367578L;
@@ -32,8 +32,6 @@ public class RelatorioServidorBean  implements Serializable  {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-	
-	private HtmlForm form;
 		
 	//por setor
 	private Setor setor;
@@ -53,28 +51,18 @@ public class RelatorioServidorBean  implements Serializable  {
 	//falecidos
 	private Date inicio;
 	private Date fim;
-			
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		setor = null;
-		vinculo = null;
+	
+	@PostConstruct
+	public void init() {
 		ativoPortal = true;
-		comboSetor = null;
 		sexo = 0;					
 		incluirMembros = false;
 		agruparServidoresQueTemFilhos = false;
 		mes = 0;
 		ordemAniversariantes = 1;
-		inicio = null;
-		fim = null;
-		return form;
 	}	
 	
-	public String limpar() {
-		return "listar";
-	}
-	
-	public String relatorioPorSetor() {
+	public void relatorioPorSetor() {
 
 		try {
 
@@ -164,12 +152,10 @@ public class RelatorioServidorBean  implements Serializable  {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 		
-	public String relatorioPorSexo() {
+	public void relatorioPorSexo() {
 
 		try {
 
@@ -198,11 +184,9 @@ public class RelatorioServidorBean  implements Serializable  {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String relatorioAniversariantes() {
+	public void relatorioAniversariantes() {
 
 		try {
 			
@@ -229,11 +213,10 @@ public class RelatorioServidorBean  implements Serializable  {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+		
 	}
 	
-	public String relatorioFalecidos() {
+	public void relatorioFalecidos() {
 
 		try {
 			
@@ -263,7 +246,6 @@ public class RelatorioServidorBean  implements Serializable  {
 			e.printStackTrace();
 		}
 
-		return null;
 	}
 	
 	public List<Setor> getComboSetor() {

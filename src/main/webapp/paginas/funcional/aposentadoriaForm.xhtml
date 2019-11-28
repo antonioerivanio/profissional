@@ -97,9 +97,9 @@
 									 styleClass="maskMatricula"									 
 									 disabled="#{aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR'))}"
 									 value="#{aposentadoriaFormBean.matricula}">
-							<a4j:support event="onblur"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, mensagemRepresentacao"
-										 ajaxSingle="true" />
+							<a4j:ajax event="blur"
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, mensagemRepresentacao"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -261,12 +261,11 @@
 									 value="#{aposentadoriaFormBean.entidade.dataInicioBeneficio}" 
 									 maxlength="10"
 									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
-							<a4j:support rendered = "#{not aposentadoriaFormBean.alterar}"
-										 id="dataInicioBeneficioChange" 
-										 event="onchange" 
-										 action="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
-										 reRender="mensagemLotacao" 
-										 ajaxSingle="true" />			 
+							<a4j:ajax rendered = "#{not aposentadoriaFormBean.alterar}"
+										 event="change" 
+										 listener="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
+										 render="mensagemLotacao" 
+										 execute="@this" />			 
 						</h:inputText>
 					</div>
 				</div>
@@ -323,9 +322,7 @@
 					value="Salvar" 
 					action="#{aposentadoriaFormBean.salvar}" 
 					styleClass="bt-padrao fr" 
-					onclick="return confirmaAposentadoria();"  />						
-				
-				<a href="/srh/paginas/funcional/aposentadoriaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+					onclick="return confirmaAposentadoria();"  />
 			
 			</ui:fragment>
 			

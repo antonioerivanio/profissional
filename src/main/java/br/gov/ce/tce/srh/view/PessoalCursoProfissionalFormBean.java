@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -27,15 +29,9 @@ import br.gov.ce.tce.srh.service.PessoalCursoProfissionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
-* Use case : SRH_UC023_Manter Curso da Pessoa
-* 
-* @since   : Out 27, 2011, 10:59:22 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("pessoalCursoProfissionalFormBean")
-@Scope("session")
+@Scope("view")
 public class PessoalCursoProfissionalFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalCursoProfissionalFormBean.class);
@@ -89,50 +85,28 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 	private List<AreaProfissional> comboArea;
 	private List<Competencia> comboCompetencia;
 
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */	
-	public String prepareAlterar() {
+	@PostConstruct
+	public void init() {
+		CursoProfissional flashParameter = (CursoProfissional)FacesUtil.getFlashParameter("entidade");
+		setCurso(flashParameter != null ? flashParameter : new CursoProfissional());
 
 		try {
-
-			this.alterar = true;
-
-			this.curso = cursoProfissionalService.getById( curso.getId() );
-			this.cursoAux = this.curso;
-			this.listaCompetencias = competenciaCursoService.findByCurso( curso.getId() );
-			this.listaPessoaCurso = pessoalCursoProfissionalService.findByCurso( curso.getId() );
+			if(curso.getId() != null) {
+				this.alterar = true;
+				
+				this.curso = cursoProfissionalService.getById( curso.getId() );
+				this.cursoAux = this.curso;
+				this.listaCompetencias = competenciaCursoService.findByCurso( curso.getId() );
+				this.listaPessoaCurso = pessoalCursoProfissionalService.findByCurso( curso.getId() );				
+			}
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -150,16 +124,8 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
 	public List<AreaProfissional> getComboArea() {
 
 		try {
@@ -175,12 +141,6 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 		return this.comboArea;
 	}
 
-
-	/**
-	 * Combo Curso
-	 * 
-	 * @return
-	 */
 	public void carregaCurso() {
 		this.comboCurso = getCursoByArea();
 	}
@@ -205,12 +165,6 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 		return toReturn;
 	}
 
-
-	/**
-	 * Carrega dados da instituicao
-	 * 
-	 * @param event
-	 */
 	public void carregaInstituicao() {
 
         try {
@@ -231,12 +185,6 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 
 	}
 
-
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public List<Competencia> getComboCompetencia() {
  
         try {
@@ -252,33 +200,27 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
         return this.comboCompetencia;
 	}
 
-
-	/**
-	 * Adicionar Competencia
-	 * 
-	 * @return
-	 */
-	public String addCompetencia() {
+	public void addCompetencia() {
 
 		try {
 
 			// validando se o curso foi selecionado
 			if ( getCursoAux() == null || getCursoAux().getId().equals(0l)) {
 				FacesUtil.addErroMessage("O curso é obrigatório.");
-				return null;
+				return;
 			}
 
 			// validando o campo obrigatorio competencia
 			if ( this.competenciaCurso.getCompetencia() == null ) {
 				FacesUtil.addErroMessage("A competência é obrigatória.");
-				return null;
+				return;
 			}
 
 			// verificando se a competencia ja foi cadatrada
 			for (CompetenciaCurso item : listaCompetencias) {
 				if ( item.getCompetencia().getId().equals(this.competenciaCurso.getCompetencia().getId()) ) {
 					FacesUtil.addErroMessage("A competência já está na lista.");
-					return null;
+					return;
 				}
 			}
 
@@ -297,17 +239,9 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
         	FacesUtil.addErroMessage("Erro ao adicionar a competência. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Remover Competencia
-	 * 
-	 * @return
-	 */
-	public String excluirCompetencia() {
+	public void excluirCompetencia() {
 
 		try {
 
@@ -320,37 +254,29 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
         	FacesUtil.addErroMessage("Erro ao remover a competência. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Adicionar Servidor
-	 * 
-	 * @return
-	 */
-	public String addServidor() {
+	public void addServidor() {
 
 		try {
 
 			// validando se o curso foi selecionado
 			if ( getCurso() == null ) {
 				FacesUtil.addErroMessage("O curso é obrigatório.");
-				return null;
+				return;
 			}
 
 			// validando o campo obrigatorio competencia
 			if ( getEntidade().getPessoal() == null ) {
 				FacesUtil.addErroMessage("O Funcionário é obrigatório.");
-				return null;
+				return;
 			}
 
 			// verificando se o servidor ja foi cadatrado
 			for (PessoalCursoProfissional item : listaPessoaCurso) {
 				if (item.getPessoal().getId().equals( this.getEntidade().getPessoal().getId() )) {
 					FacesUtil.addErroMessage("O Funcionário já está na lista.");
-					return null;
+					return;
 				}
 			}
 
@@ -380,16 +306,9 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 
-
-	/**
-	 * Excluir o servidor
-	 * 
-	 * @return
-	 */
-	public String excluirServidor() {
+	public void excluirServidor() {
 
 		try {
 
@@ -400,14 +319,8 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
         	FacesUtil.addErroMessage("Erro ao remover o servidor. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Limpar dados
-	 */
 	private void limpar() {
 
 		this.alterar = false;
@@ -436,10 +349,6 @@ public class PessoalCursoProfissionalFormBean implements Serializable {
 		this.comboCompetencia = null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public AreaProfissional getArea() {return area;}
 	public void setArea(AreaProfissional area) {this.area = area;}
 

@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +19,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("atribuicaoSetorFormBean")
-@Scope("session")
+@Scope("view")
 public class AtribuicaoSetorFormBean  implements Serializable {
 	
 	static Logger logger = Logger.getLogger(AtribuicaoSetorFormBean.class);
@@ -35,20 +37,16 @@ public class AtribuicaoSetorFormBean  implements Serializable {
 	private List<Setor> comboSetor;
 	private boolean setoresAtivos = true;
 	
-	public String prepareIncluir() {
-		setSetor(new Setor());
-		setEntidade(new AtribuicaoSetor());
-		comboSetor = null;
-		return "incluirAlterar";
+	@PostConstruct
+	public void init() {
+		AtribuicaoSetor flashParameter = (AtribuicaoSetor)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new AtribuicaoSetor());
+		if(this.entidade.getId() != null) {			
+			this.setor = entidade.getSetor();
+		}		
 	}
 	
-	public String prepareAlterar() {
-		this.comboSetor = null;
-		this.setor = entidade.getSetor();
-		return "incluirAlterar";
-	}
-	
-	public String salvar() {
+	public void salvar() {
 				
 		try {
 			
@@ -66,8 +64,6 @@ public class AtribuicaoSetorFormBean  implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	public List<Setor> getComboSetor() {

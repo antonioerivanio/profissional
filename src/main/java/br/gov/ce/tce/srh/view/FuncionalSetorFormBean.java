@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -16,15 +18,9 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.FuncionalSetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC042_Manter Lotação do Servidor
-* 
-* @since   : Dez 19, 2011, 17:59:02 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("funcionalSetorFormBean")
-@Scope("session")
+@Scope("view")
 public class FuncionalSetorFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalCursoGraduacaoFormBean.class);
@@ -38,7 +34,6 @@ public class FuncionalSetorFormBean implements Serializable {
 	@Autowired
 	private SetorService setorService;
 
-
 	// entidades das telas
 	private FuncionalSetor entidade = new FuncionalSetor();	
 
@@ -51,47 +46,26 @@ public class FuncionalSetorFormBean implements Serializable {
 	private List<Setor> comboSetor;
 	private boolean setoresAtivos = true;
 
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-		this.alterar = true;
+	@PostConstruct
+	public void init() {
+		FuncionalSetor flashParameter = (FuncionalSetor)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new FuncionalSetor());
 
 		try {
-
-			this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
-			this.matricula = entidade.getFuncional().getMatricula();
+			if(this.entidade.getId() != null) {			
+				this.alterar = true;
+	
+				this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
+				this.matricula = entidade.getFuncional().getMatricula();
+			}
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -108,16 +82,8 @@ public class FuncionalSetorFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 			
 		try {
@@ -135,10 +101,6 @@ public class FuncionalSetorFormBean implements Serializable {
 	    return this.comboSetor;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 
 		this.alterar = false;
@@ -149,16 +111,7 @@ public class FuncionalSetorFormBean implements Serializable {
 		setEntidade( new FuncionalSetor() );
 		this.comboSetor = null;
 	}
-	
-	public String limpaTelaForm() {
-		limpar();
-		return "listar";
-	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {

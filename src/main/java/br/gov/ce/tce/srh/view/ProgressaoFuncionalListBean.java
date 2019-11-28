@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC031_Manter Progressão Funcional do Servidor
-* 
-* @since   : Jan 17, 2012, 18:22:00
-* @author  : robson.castro@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("progressaoFuncionalListBean")
-@Scope("session")
+@Scope("view")
 public class ProgressaoFuncionalListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ProgressaoFuncionalListBean.class);
@@ -46,11 +40,6 @@ public class ProgressaoFuncionalListBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -68,13 +57,15 @@ public class ProgressaoFuncionalListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	@PostConstruct
+	public void init() {		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		}
+	}
+	
+	public void consultar() {
 
 		try {
 			
@@ -91,9 +82,7 @@ public class ProgressaoFuncionalListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			flagRegistroInicial = -1;
-			
-			passouConsultar = true;
+			flagRegistroInicial = -1;			
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -104,17 +93,14 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-	
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 			
@@ -135,28 +121,8 @@ public class ProgressaoFuncionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 	
-	public String limpaTela() {
-		setEntidade(new ReferenciaFuncional());
-		return "listar";
-	}
-	
-	/**
-	 * Limpar form
-	 */
-	private void limpar() {
-		setEntidade( new ReferenciaFuncional() );
-		matricula = new String();
-		cpf = new String();
-		nome = new String();
-		lista = new ArrayList<ReferenciaFuncional>();
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -208,32 +174,6 @@ public class ProgressaoFuncionalListBean implements Serializable {
 	public void setEntidade(ReferenciaFuncional entidade) {this.entidade = entidade;}
 
 	public List<ReferenciaFuncional> getLista() {return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {				
-				setCpf(authenticationService.getUsuarioLogado().getCpf());								
-				count = referenciaFuncionalService.count(getEntidade().getFuncional().getPessoal().getId());
-				limparListas();
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			limpar();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
@@ -269,15 +209,5 @@ public class ProgressaoFuncionalListBean implements Serializable {
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 	
 	//FIM PAGINAÇÃO
-
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
 
 }

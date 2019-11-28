@@ -58,14 +58,11 @@
 
 		</div>
 
-		 <h:form id="form" binding="#{atestoPessoaFormBean.form}" styleClass="formularios">
+		 <h:form id="form" styleClass="formularios">
 
 				<br/>
 
-            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
-
-				<h:inputHidden id="alterar" disabled="true" value="#{atestoPessoaFormBean.alterar}" />
-				<h:inputHidden id="passouConsulta" disabled="true" value="#{atestoPessoaFormBean.passouConsultar}" />
+            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />				
 
 				<div class="input-box box-10">
 					<label for="">Matricula</label>
@@ -76,7 +73,7 @@
 									 styleClass="maskMatricula"
 									 disabled="#{atestoPessoaFormBean.passouConsultar}"
 									 value="#{atestoPessoaFormBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onblur" focus="nomeCompletoPessoa" reRender="messages, nomeCompletoPessoa" ajaxSingle="true" />
+	            			<a4j:ajax event="blur" render="messages, nomeCompletoPessoa" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -267,25 +264,7 @@
 			</h:panelGroup>
 
 		</h:form>
-
-		<script>
-
-		// quando for alterar
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-				document.getElementById('form:PesquisarResponsavel').style.visibility='hidden';
-			}	
-		}
-
-		// quando for carregar
-		if (document.getElementById('form:passouConsulta') != null) {
-			if (document.getElementById('form:passouConsulta').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}
-		}
-		</script>
-
+		
 	</ui:define>
 </ui:composition>
 		

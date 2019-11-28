@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @SuppressWarnings("serial")
 @Component("emitirContagemTempoServicoListBean")
-@Scope("session")
+@Scope("view")
 public class EmitirContagemTempoServicoListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(EmitirContagemTempoServicoListBean.class);
@@ -70,10 +70,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	private String matricula = new String();
 	private String nome = new String();
 	private Date dataFim;
@@ -92,9 +88,32 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	private Long ano = new Long(0);
 	private Long mes = new Long(0);
 	private Long dia = new Long(0);
+	
+	
+	@SuppressWarnings("unchecked")
+	@PostConstruct
+	public void init() {
+		setEntidade((Funcional)FacesUtil.getFlashParameter("entidade"));
+		dataFim = (Date)FacesUtil.getFlashParameter("dataFim");
+		totalDia = (Long)FacesUtil.getFlashParameter("totalDia");
+		ano = (Long)FacesUtil.getFlashParameter("ano");
+		mes = (Long)FacesUtil.getFlashParameter("mes");
+		dia = (Long)FacesUtil.getFlashParameter("dia");
+		listaFuncional = (List<Funcional>)FacesUtil.getFlashParameter("listaFuncional");
+		listaFerias = (List<Ferias>)FacesUtil.getFlashParameter("listaFerias");
+		listaLicencaEspecial =(List<LicencaEspecial>) FacesUtil.getFlashParameter("listaLicencaEspecial");
+		listaAverbacao = (List<Averbacao>)FacesUtil.getFlashParameter("listaAverbacao");
+		listaAcrescimo = (List<Acrescimo>)FacesUtil.getFlashParameter("listaAcrescimo");
+		listaDeducao = (List<Deducao>)FacesUtil.getFlashParameter("listaDeducao");
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setMatricula(funcionalService.getMatriculaAndNomeByCpfAtiva(authenticationService.getUsuarioLogado().getCpf()).getMatricula());
+			consultar();
+		}
+	}
 
 		
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -275,10 +294,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			
 			this.ano = anosMesesDias[0];
 			this.mes = anosMesesDias[1];
-			this.dia = anosMesesDias[2];			
-			
-			passouConsultar = true;
-
+			this.dia = anosMesesDias[2];
 		
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
@@ -287,12 +303,11 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+		
 	}
 	
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -327,14 +342,27 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 		} catch (SRHRuntimeException e) {			
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-			return "listar";
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");			
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			return "listar";
 		}
-
-		return null;
+	}
+	
+	public String detalhar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());
+		FacesUtil.setFlashParameter("dataFim", dataFim);
+		FacesUtil.setFlashParameter("totalDia", totalDia);
+		FacesUtil.setFlashParameter("ano", ano);
+		FacesUtil.setFlashParameter("mes", mes);
+		FacesUtil.setFlashParameter("dia", dia);
+		FacesUtil.setFlashParameter("listaFuncional", listaFuncional);
+		FacesUtil.setFlashParameter("listaFerias", listaFerias);
+		FacesUtil.setFlashParameter("listaLicencaEspecial", listaLicencaEspecial);
+		FacesUtil.setFlashParameter("listaAverbacao", listaAverbacao);
+		FacesUtil.setFlashParameter("listaAcrescimo", listaAcrescimo);
+		FacesUtil.setFlashParameter("listaDeducao", listaDeducao);
+		
+		return "incluirAlterar";
 	}
 	
 	public String limpaTela() {
@@ -342,10 +370,6 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 		return "listar";
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Funcional getEntidade() {return entidade;}
 	public void setEntidade(Funcional entidade) {this.entidade = entidade;}
 
@@ -375,23 +399,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	public void setNome(String nome) {this.nome = nome;}
 
 	public Date getDataFim() {return dataFim;}
-	public void setDataFim(Date dataFim) {this.dataFim = dataFim;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setMatricula(funcionalService.getMatriculaAndNomeByCpfAtiva(authenticationService.getUsuarioLogado().getCpf()).getMatricula());
-			consultar();
-		} else if (!passouConsultar) {
-			setEntidade( null );
-			matricula = new String();
-			nome = new String();
-			listaFuncional = new ArrayList<Funcional>();
-			dataFim = null;
-		}
-		passouConsultar = false;
-		return form;
-	}	
+	public void setDataFim(Date dataFim) {this.dataFim = dataFim;}	
 
 	public List<Funcional> getListaFuncional() {return listaFuncional;}
 	public List<Ferias> getListaFerias() {return listaFerias;}
@@ -404,9 +412,4 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 	public Long getAno() {return ano;}
 	public Long getMes() {return mes;}
 	public Long getDia() {return dia;}
-	
-	public boolean isPassouConsultar() {return passouConsultar;}
-	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
-
-
 }

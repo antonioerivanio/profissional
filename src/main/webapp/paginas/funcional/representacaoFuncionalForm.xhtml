@@ -59,9 +59,9 @@
 									 styleClass="maskMatricula"
 									 disabled="#{representacaoFuncionalFormBean.alterarMenu or (not LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')) }"
 									 value="#{representacaoFuncionalFormBean.matricula}">
-							<a4j:support event="onchange"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, setor, representacaoCargo"
-										 ajaxSingle="true" />
+							<a4j:ajax event="change"
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, setor, representacaoCargo"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -181,12 +181,10 @@
 									   itemValue="#{setor}"
 									   itemLabel="#{setor.nome}" />
 
-					    <a4j:support id="carregaCargo"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 focus="noDocumento"
-					  				 action="#{representacaoFuncionalFormBean.carregaCargo}"
-					  				 reRender="representacaoCargo"/>
+					    <a4j:ajax event="change" 
+					  				 execute="@this"
+					  				 listener="#{representacaoFuncionalFormBean.carregaCargo}"
+					  				 render="representacaoCargo"/>
 						
 					</h:selectOneMenu>
 				</div>
@@ -294,21 +292,12 @@
 
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR,ROLE_REPRESENTACAO_FUNCIONAL_ALTERAR')}">
 				<h:commandButton action="#{representacaoFuncionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr"
-								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>
-				<a href="/srh/paginas/funcional/representacaoFuncionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+								 disabled="#{representacaoFuncionalFormBean.alterar or representacaoFuncionalFormBean.exibirTodosOsCampos}"/>				
 			</ui:fragment>
 						
 			<a href="/srh/paginas/funcional/representacaoFuncionalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>		
 			
-		</h:form>
-
-		<script>
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}	
-		}
-		</script>
+		</h:form>		
 
 	</ui:define>
 </ui:composition>

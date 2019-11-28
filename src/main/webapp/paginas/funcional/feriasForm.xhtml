@@ -51,8 +51,6 @@
 
             	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
-				<h:inputHidden id="alterar" disabled="true" value="#{feriasFormBean.alterar}" />
-
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
 					<div class="conteiner">
@@ -62,10 +60,9 @@
 									 styleClass="maskMatricula"									 
 									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
 									 value="#{feriasFormBean.matricula}">
-							<a4j:support event="onchange"
-										 focus="tipoFerias"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 ajaxSingle="true" />
+							<a4j:ajax event="change"
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -80,10 +77,12 @@
 					</div>
 				</div>
 
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindow()"
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				<ui:fragment rendered="#{!feriasFormBean.alterar and LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()"
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</ui:fragment>
 	
 				<div class="input-box box-100">
 					<label for="">Mãe</label>
@@ -162,12 +161,11 @@
 					  						var="tipoFerias"
 					  						itemValue="#{tipoFerias}"
 					  						itemLabel="#{tipoFerias.descricao}"/>					  						
-					  		<a4j:support id="atualizaDatas"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{feriasFormBean.atualizaBloqueioDeDatas}"
+					  		<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{feriasFormBean.atualizaBloqueioDeDatas}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 reRender="inicio,fim,qtdeDias"/>				
+					  				 render="inicio,fim,qtdeDias"/>				
 						</h:selectOneMenu>    
 					</div>
 				</div>
@@ -205,7 +203,7 @@
 									 value="#{feriasFormBean.inicial}"
 									 maxlength="10"
 									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -219,7 +217,7 @@
 									 value="#{feriasFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:support event="onchange" focus="tipoPublicacao" reRender="qtdeDias, messages" ajaxSingle="true"/>
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>			  
 					</div>
 				</div>
@@ -294,23 +292,12 @@
 			</div>
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
-				<h:commandButton action="#{feriasFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarFerias()"  />						
-				<a href="/srh/paginas/funcional/feriasForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+				<h:commandButton action="#{feriasFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarFerias()"  />
 			</ui:fragment>
 			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/feriasList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{feriasListBean.passouConsultar}" value="true"/>
-			</h:commandButton>
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/feriasList.faces" />
 
 		</h:form>
-		
-		<script>
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}	
-		}
-		</script>
 
 	</ui:define>
 </ui:composition>

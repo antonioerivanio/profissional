@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,7 +21,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
 @Component("aposentadoriaListBean")
-@Scope("session")
+@Scope("view")
 public class AposentadoriaListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(AposentadoriaListBean.class);
@@ -37,10 +35,6 @@ public class AposentadoriaListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 	
-	
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	private String matricula = new String();
 	private String cpf = new String();
 	private String nome = new String();
@@ -55,7 +49,7 @@ public class AposentadoriaListBean implements Serializable {
 	private Integer pagina = 1;
 
 
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -74,8 +68,6 @@ public class AposentadoriaListBean implements Serializable {
 			}
 
 			registroInicial = -1;
-			
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -86,12 +78,14 @@ public class AposentadoriaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
-
 	
-	public String excluir() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void excluir() {
 
 		try {
 
@@ -110,12 +104,11 @@ public class AposentadoriaListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+		
+		consultar();
 	}
 
-
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 			
@@ -131,15 +124,8 @@ public class AposentadoriaListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	public String limpaTela() {
-		setEntidade(new Aposentadoria());
-		return "listar";
-	}
-	
 	public String getMatricula() {return matricula;	}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -186,26 +172,6 @@ public class AposentadoriaListBean implements Serializable {
 		}
 	}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if (!passouConsultar) {
-			limparAtributos();
-			limparListas();
-			registroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
-
-	private void limparAtributos() {
-		setEntidade( new Aposentadoria() );
-		matricula = new String();
-		nome = new String();
-		cpf = new String();		
-	}
-
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
 	
@@ -247,18 +213,7 @@ public class AposentadoriaListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
-
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
 
 }

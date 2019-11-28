@@ -67,9 +67,7 @@
 			</fieldset>
 			
 			<h:commandButton action="#{competenciaFuncionalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/tabelas/competenciasGeraisList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{competenciaFuncionalBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/tabelas/competenciasGeraisList.faces" immediate="true" />
 		</h:form>
 
 	</ui:define>

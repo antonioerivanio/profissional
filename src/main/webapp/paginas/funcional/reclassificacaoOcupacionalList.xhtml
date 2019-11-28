@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -28,7 +28,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{reclassificacaoOcupacionalListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -40,7 +40,7 @@
 								 maxlength="6"
 								 styleClass="maskMatricula"
 								 value="#{reclassificacaoOcupacionalListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" reRender="messages, cpf, nomeCompletoPessoa" ajaxSingle="true" />
+            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
         			</h:inputText>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{reclassificacaoOcupacionalListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" reRender="messages, matricula, nomeCompletoPessoa" ajaxSingle="true" />
+						<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
 							 action="#{reclassificacaoOcupacionalListBean.consultar}"
 							 value="Consultar"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 
 			<div class="tabela-dados">
 
@@ -130,19 +130,19 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{reclassificacaoOcupacionalFormBean.prepareAlterar}"
+                       				  action="#{reclassificacaoOcupacionalListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{reclassificacaoOcupacionalFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{reclassificacaoOcupacionalListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{reclassificacaoOcupacionalListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 			</div>
 			
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{reclassificacaoOcupacionalListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />
 			

@@ -1,10 +1,9 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
@@ -18,20 +17,18 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("cursoConsultaBean")
-@Scope("session")
+@Scope("view")
 public class CursoConsultaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CursoConsultaBean.class);
 
 	@Autowired
-	private CursoServidorService cursoServidorService;
-	
-	// controle de acesso do formulario
-	private HtmlForm form;
+	private CursoServidorService cursoServidorService;	
 
 	// entidades das telas
 	private List<CursoProfissional> lista;
 
+	@PostConstruct
 	private void consultar() {
 
 		try {
@@ -54,13 +51,6 @@ public class CursoConsultaBean implements Serializable {
 
 	}
 
-	public List<CursoProfissional> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		lista = new ArrayList<CursoProfissional>();
-		consultar();
-		return form;
-	}
+	public List<CursoProfissional> getLista(){return lista;}	
 
 }

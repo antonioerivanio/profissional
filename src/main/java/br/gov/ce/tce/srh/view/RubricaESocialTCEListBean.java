@@ -39,7 +39,7 @@ public class RubricaESocialTCEListBean implements Serializable{
 	
 	@PostConstruct
 	private void init() {
-		FacesUtil.setFlashParameter("entidade", null);
+//		FacesUtil.setFlashParameter("entidade", null);
     }
 
 	public void consultar() {
@@ -49,6 +49,8 @@ public class RubricaESocialTCEListBean implements Serializable{
 			limparListas();
 
 			rubricaESocialTCEList = service.search(this.descricao, null, null);
+			
+			pagedList = rubricaESocialTCEList;
 
 			count = rubricaESocialTCEList.size();
 
@@ -127,11 +129,11 @@ public class RubricaESocialTCEListBean implements Serializable{
 		this.pagedList = pagedList;
 	}
 
-	public Integer getPagina() {
+	public int getPagina() {
 		return pagina;
 	}
 
-	public void setPagina(Integer pagina) {
+	public void setPagina(int pagina) {
 		this.pagina = pagina;
 	}
 

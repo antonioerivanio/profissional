@@ -65,11 +65,10 @@
 							  					var="area"
 							  					itemValue="#{area}"
 							  					itemLabel="#{area.descricao}"/>
-						  		<a4j:support id="carregaCurso" 
-						  					 event="onchange" 
-						  					 ajaxSingle="true"
-						  					 action="#{pessoalCursoProfissionalFormBean.carregaCurso}"
-						  				 	 reRender="curso"/>
+						  		<a4j:ajax 	 event="change" 
+						  					 execute="@this"
+						  					 listener="#{pessoalCursoProfissionalFormBean.carregaCurso}"
+						  				 	 render="curso"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -87,11 +86,10 @@
 							  					var="curso"
 							  					itemValue="#{curso}"
 							  					itemLabel="#{curso.descricao}"/>
-						  		<a4j:support id="carregaInstituicao" 
-						  					 event="onchange" 
-						  					 ajaxSingle="true"
-						  					 action="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
-						  				 	 reRender="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
+						  		<a4j:ajax 	 event="change" 
+						  					 execute="@this"
+						  					 listener="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
+						  				 	 render="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -288,7 +286,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{pessoalCursoProfissionalFormBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+	            			<a4j:ajax event="change" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -301,7 +299,7 @@
 								 maxlength="14"
 								 styleClass="maskCpf"
 								 value="#{pessoalCursoProfissionalFormBean.cpf}" >
-            			<a4j:support event="onchange" focus="nomeCompletoPessoa" reRender="matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+            			<a4j:ajax event="change" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
         			</h:inputText>
 
 				</div>
@@ -396,7 +394,6 @@
 
 			<h:commandButton action="#{pessoalCursoProfissionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/cadastros/pessoaCursoProfissionalList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/cadastros/pessoaCursoProfissionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
 

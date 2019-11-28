@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("dependenteListBean")
-@Scope("session")
+@Scope("view")
 public class DependenteListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(DependenteListBean.class);
@@ -43,12 +43,7 @@ public class DependenteListBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-	
-	
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-	
+		
 	// parametros da tela de consulta
 	private String cpf = new String();
 	private String nome = new String();
@@ -63,8 +58,15 @@ public class DependenteListBean implements Serializable {
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 	
+	@PostConstruct
+	public void init() {
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		}
+	}
 	
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -81,8 +83,6 @@ public class DependenteListBean implements Serializable {
 			}
 			
 			flagRegistroInicial = -1;
-			
-			passouConsultar = true;
 		
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -94,12 +94,14 @@ public class DependenteListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -123,18 +125,9 @@ public class DependenteListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-		
-	public String limpaTela() {		
-		setEntidade(new Dependente());
-		return "listar";
-	}
-	
-	
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -150,8 +143,6 @@ public class DependenteListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return consultar();
 	}
 	
 		
@@ -184,39 +175,7 @@ public class DependenteListBean implements Serializable {
 
 	public Dependente getEntidade() {return entidade;}
 	public void setEntidade(Dependente entidade) {this.entidade = entidade;}
-	
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
 		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {
-				setCpf(authenticationService.getUsuarioLogado().getCpf());
-				count = dependenteService.count(entidade.getResponsavel().getId());	
-				limparListas();
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			
-			setEntidade(new Dependente());
-			
-			cpf = new String();
-			nome = new String();
-			
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-	
-	
 //	PAGINAÇÃO
 	
 	private void limparListas() {
@@ -249,8 +208,5 @@ public class DependenteListBean implements Serializable {
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
 	
 //	FIM PAGINAÇÃO
-	
-	
-	
 
 }

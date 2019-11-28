@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core" 	  
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -16,7 +16,7 @@
 
 		</div>
 		
-		<h:form id="form" binding="#{consultarAuditoriaBean.form}" styleClass="formularios">
+		<h:form id="form" styleClass="formularios">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -51,11 +51,9 @@
 					  					var="tipoRevisao"
 					  					itemValue="#{tipoRevisao.id}"
 					  					itemLabel="#{tipoRevisao.descricao}"/>
-					  	<a4j:support id="selecionaTipoEvento"
-				  				 event="onchange" 
-				  				 ajaxSingle="true"	
-				  				 focus="iptUsuario"
-				  				 action="#{consultarAuditoriaBean.tipoEventoSelecionado}"/>
+					  	<a4j:ajax event="change" 
+				  				 execute="@this"
+				  				 listener="#{consultarAuditoriaBean.tipoEventoSelecionado}"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -71,11 +69,9 @@
 					  					var="usuario"
 					  					itemValue="#{usuario.id}"
 					  					itemLabel="#{usuario.nome}"/>
-					  	<a4j:support id="selecionaUsuario"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 focus="iptPessoal"
-					  				 action="#{consultarAuditoriaBean.usuarioSelecionado}"/>
+					  	<a4j:ajax event="change" 
+					  				 execute="@this"
+					  				 listener="#{consultarAuditoriaBean.usuarioSelecionado}"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -91,11 +87,9 @@
 					  					var="pessoal"
 					  					itemValue="#{pessoal.id}"
 					  					itemLabel="#{pessoal.nome}"/>
-					  	<a4j:support id="selecionaPessoal"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 focus="iptEntidade"
-					  				 action="#{consultarAuditoriaBean.pessoalSelecionado}"/>
+					  	<a4j:ajax event="change" 
+					  				 execute="@this"
+					  				 listener="#{consultarAuditoriaBean.pessoalSelecionado}"/>
 					</h:selectOneMenu>
 				</div>
 			</div>			
@@ -111,12 +105,10 @@
 					  					var="entidade"
 					  					itemValue="#{entidade.simpleName}"
 					  					itemLabel="#{entidade.simpleName}"/>
-					  	<a4j:support id="carregaIptEntidade"
-				  				 event="onchange" 
-				  				 ajaxSingle="true"	
-				  				 focus="iptAtributo"
-				  				 action="#{consultarAuditoriaBean.entidadeSelecionada}"
-				  				 reRender="iptAtributo"/>
+					  	<a4j:ajax event="change" 
+				  				 execute="@this"
+				  				 listener="#{consultarAuditoriaBean.entidadeSelecionada}"
+				  				 render="iptAtributo"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -199,7 +191,7 @@
 	                    	                   
 	    			</rich:dataTable>
 					
-					<rich:datascroller	id="scroller" 
+					<rich:dataScroller	id="scroller" 
 										for="tblRevisao"
 										stepControls="hide" 
 										align="center"
@@ -210,7 +202,7 @@
 			
 			<h:commandButton id="btLimpar"									 
 							 value="Limpar" 
-							 action="#{consultarAuditoriaBean.limpar}" 
+							 action="listar" 
 							 styleClass="bt-padrao fr mg-right-15" />			
 			
 		</h:form>

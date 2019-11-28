@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -24,15 +22,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC035_Manter Período de Licença Especial
-* 
-* @since   : Out 26, 2011, 13:03:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("licencaEspecialListBean")
-@Scope("session")
+@Scope("view")
 public class LicencaEspecialListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(LicencaEspecialListBean.class);
@@ -46,11 +38,6 @@ public class LicencaEspecialListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// parametros da tela de consulta
 	private String matricula = new String();
 	private String cpf = new String();
@@ -62,19 +49,12 @@ public class LicencaEspecialListBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<LicencaEspecial> pagedList = new ArrayList<LicencaEspecial>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -90,7 +70,6 @@ public class LicencaEspecialListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -101,17 +80,14 @@ public class LicencaEspecialListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -131,16 +107,10 @@ public class LicencaEspecialListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -162,18 +132,8 @@ public class LicencaEspecialListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	public String limpaTela() {
-		setEntidade(new LicencaEspecial());
-		return "listar";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -230,31 +190,16 @@ public class LicencaEspecialListBean implements Serializable {
 
 	public LicencaEspecial getEntidade() {return entidade;}
 	public void setEntidade(LicencaEspecial entidade) {this.entidade = entidade;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new LicencaEspecial() );
-			matricula = new String();
-			cpf = new String();
-			nome = new String();
-			lista = new ArrayList<LicencaEspecial>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<LicencaEspecial>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

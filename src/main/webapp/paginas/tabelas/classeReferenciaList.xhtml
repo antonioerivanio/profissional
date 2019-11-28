@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -16,7 +16,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{classeReferenciaListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -40,7 +40,7 @@
 							 value="Consultar"
 							 action="#{classeReferenciaListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18"
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 			<h:commandButton id="relatorio"
 							 value="Relatório"
 							 action="#{classeReferenciaListBean.relatorio}"
@@ -81,9 +81,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{classeReferenciaFormBean.prepareAlterar}"
+                       				  action="#{classeReferenciaListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{classeReferenciaFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{classeReferenciaListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_CLASSE_REFERENCIA_CARGO_EXCLUIR')}" >
@@ -100,18 +100,18 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{classeReferenciaListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 				
 			</div>
 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{classeReferenciaListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />
 			<h:commandButton id="incluir" 
 							 value="Incluir"
-							 action="#{classeReferenciaFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15"
 							 rendered="#{LoginBean.anyGranted('ROLE_CLASSE_REFERENCIA_CARGO_INSERIR')}"  />
 

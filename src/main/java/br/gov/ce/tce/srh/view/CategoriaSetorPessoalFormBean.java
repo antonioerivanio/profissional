@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("categoriaSetorPessoalFormBean")
-@Scope("session")
-@ManagedBean
+@Scope("view")
 public class CategoriaSetorPessoalFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CategoriaSetorPessoalFormBean.class);
@@ -45,10 +43,6 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 	private CategoriaSetorPessoal entidade = new CategoriaSetorPessoal();
 	private Funcional funcional;
 
-	/**
-	 * CONTROLE DE ACESSO DE FORMULARIO
-	 */
-	private HtmlForm form;
 	private boolean passouConsultar = false;
 	private boolean alterar = false;
 
@@ -61,45 +55,23 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 	private String nome = new String();
 	private boolean ativa;
 
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	/**
-	 * Reiniciar formulario
-	 * 
-	 * @return
-	 */
-	public String limparForm() {
-		limpar();
-		return null;
-	}
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		this.alterar = true;
-		this.passouConsultar = true;
+	@PostConstruct
+	public void init() {
+		CategoriaSetorPessoal flashParameter = (CategoriaSetorPessoal)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new CategoriaSetorPessoal());
 		
-		entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId()));
-
-		this.funcional = funcionalService.getByPessoaAtivo(getEntidade().getPessoal().getId());
-
-		this.matricula = this.funcional.getMatricula();
-		this.nome = getEntidade().getPessoal().getNomeCompleto();				
-		this.setor = entidade.getCategoriaFuncionalSetor().getSetor();
-
-		return "incluirAlterar";
+		if(this.entidade.getId() != null) {
+			this.alterar = true;
+			this.passouConsultar = true;
+			
+			entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId()));
+	
+			this.funcional = funcionalService.getByPessoaAtivo(getEntidade().getPessoal().getId());
+	
+			this.matricula = this.funcional.getMatricula();
+			this.nome = getEntidade().getPessoal().getNomeCompleto();			
+			this.setor = entidade.getCategoriaFuncionalSetor().getSetor();
+		}
 	}
 
 	private void limpar() {
@@ -125,7 +97,7 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 
 	}
 
-	public String salvar() {
+	public void salvar() {
 		try {
 			
 //			entidade.setCategoriaFuncionalSetor(categoriaFuncionalSetorService.findById(entidade.getCategoriaFuncionalSetor().getId()));
@@ -150,8 +122,6 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 					.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
 	public List<Setor> getComboSetor() {
@@ -185,20 +155,8 @@ public class CategoriaSetorPessoalFormBean implements Serializable {
 		}
 	}
 
-	/**
-	 * GETTERS e SETTERS
-	 */
 	public CategoriaSetorPessoal getEntidade() {return entidade;}
 	public void setEntidade(CategoriaSetorPessoal entidade) {this.entidade = entidade;}
-
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			limpar();
-		}
-		passouConsultar = false;
-		return form;
-	}
-	public void setForm(HtmlForm form) {this.form = form;}
 
 	public boolean isPassouConsultar() {return passouConsultar;}
 	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}

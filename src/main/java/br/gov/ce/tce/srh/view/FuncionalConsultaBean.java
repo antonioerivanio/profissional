@@ -1,10 +1,9 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
@@ -17,15 +16,9 @@ import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : 
-* 
-* @since   : Nov 16, 2011, 13:39:19 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("funcionalConsultaBean")
-@Scope("session")
+@Scope("view")
 public class FuncionalConsultaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FuncionalConsultaBean.class);
@@ -35,20 +28,10 @@ public class FuncionalConsultaBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-	
-	//controle de acesso do formulario
-	private HtmlForm form;
-
-	// entidades das telas
+		
 	private List<Funcional> lista;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */	
+	@PostConstruct
 	private void consultar() {
 
 		try {
@@ -84,12 +67,4 @@ public class FuncionalConsultaBean implements Serializable {
 	}
 
 	public List<Funcional> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		lista = new ArrayList<Funcional>();
-		consultar();
-		return form;
-	}
-
 }

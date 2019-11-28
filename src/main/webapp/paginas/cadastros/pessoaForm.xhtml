@@ -56,7 +56,7 @@
 
 			<rich:tabPanel switchType="client">
 			
-				<rich:tab label="Dados Pessoais">					
+				<rich:tab header="Dados Pessoais">					
 								
 					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
 						<div class="select-box box-20">
@@ -207,9 +207,8 @@
 							  					var="uf"
 							  					itemValue="#{uf}"
 							  					itemLabel="#{uf.id}"/>
-							  	<a4j:support id="comboUfAction" 
-							  	             event="onchange"							  	            
-							  	             reRender="municipioNaturalidade" />
+							  	<a4j:ajax 	 event="change"							  	            
+							  	             render="municipioNaturalidade" />
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -316,7 +315,7 @@
 				</rich:tab>
 	
 	
-				<rich:tab label="Característica">
+				<rich:tab header="Característica">
 					
 					<div class="select-box box-22">
 						<label for="">Raça/Cor *</label>
@@ -368,7 +367,7 @@
 				</rich:tab>
 	
 				
-				<rich:tab label="Endereço">
+				<rich:tab header="Endereço">
 				
 					<div class="input-box box-10">
 						<label for="">CEP *</label>
@@ -378,10 +377,9 @@
 										 styleClass="maskCep"
 										 value="#{pessoaBean.entidade.cep}" 
 										 disabled="#{not pessoaBean.podeAlterar()}">
-								<a4j:support id="cepAction" 
-							  	             event="onblur"
-							  	             action="#{pessoaBean.buscarCep()}"
-							  	             reRender="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
+								<a4j:ajax 	 event="blur"
+							  	             listener="#{pessoaBean.buscarCep()}"
+							  	             render="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
 							</h:inputText>			 
 						</div>
 					</div>
@@ -457,9 +455,8 @@
 							  					var="ufEndereco"
 							  					itemValue="#{ufEndereco}"
 							  					itemLabel="#{ufEndereco.id}"/>
-							  	<a4j:support id="comboUfEnderecoAction" 
-							  	             event="onchange"							  	            
-							  	             reRender="municipioEndereco" />
+							  	<a4j:ajax    event="change"							  	            
+							  	             render="municipioEndereco" />
 							</h:selectOneMenu>
 						</div>
 					</div>							
@@ -483,7 +480,7 @@
 				
 				</rich:tab>
 				
-				<rich:tab label="Contato">
+				<rich:tab header="Contato">
 				
 					<div class="input-box box-20">
 						<label for="">Telefone</label>
@@ -530,7 +527,7 @@
 				</rich:tab>
 	
 		
-				<rich:tab label="Documentos">
+				<rich:tab header="Documentos">
 				
 					<div class="input-box box-25">
 						<label for="">CPF *</label>
@@ -857,7 +854,7 @@
 				
 				</rich:tab>
 	
-				<rich:tab label="Dados Bancários" rendered="#{not pessoaBean.ehServidor()}">
+				<rich:tab header="Dados Bancários" rendered="#{not pessoaBean.ehServidor()}">
 				
 					<div class="radios-group box-25">
 						<h3>Tipo</h3>
@@ -898,7 +895,7 @@
 				</rich:tab>				
 			
 			
-				<rich:tab label="Dependentes" rendered="#{pessoaBean.ehAlteracao()}">
+				<rich:tab header="Dependentes" rendered="#{pessoaBean.ehAlteracao()}">
 				
 					<ui:fragment rendered="#{pessoaBean.temPermisssaoParaAlterar()}">
 						<div class="input-box box-25">
@@ -1019,7 +1016,7 @@
 			<div class="bt-conteiner">				
 				
 				<ui:fragment rendered="#{pessoaBean.cadastroAindaNaoFinalizado()}">
-					<a onclick="Richfaces.showModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr">Finalizar</a>
+					<a onclick="#{rich:component('finalizaRecadastramento')}.show();" href="#" class="bt-padrao fr">Finalizar</a>
 				</ui:fragment>
 				
 				<ui:fragment rendered="#{pessoaBean.podeAlterar()}">								
@@ -1031,7 +1028,7 @@
 				
 			</div>
 			
-			<rich:modalPanel id="finalizaRecadastramento" resizeable="false" height="450" width="620">
+			<rich:popupPanel id="finalizaRecadastramento" resizeable="false" height="450" width="620">
 					            
 	            <f:facet name="header" class="header">
 	            	<span>Finalizar o Cadastro</span>
@@ -1056,13 +1053,13 @@
 				<div class="modal-actions">													
 					<h:commandButton id="confirmar" 
 						action="#{pessoaBean.salvar(true)}"						
-						onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" 
+						onclick="#{rich:component('finalizaRecadastramento')}.hide();" 
 						value="Confirmar" 
 						styleClass="bt-padrao fr mg-zero" />
-					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-zero mg-right-10">Cancelar</a>
+					<a onclick="#{rich:component('finalizaRecadastramento')}.hide();" href="#" class="bt-padrao fr mg-zero mg-right-10">Cancelar</a>
 				</div>							
 				
-			</rich:modalPanel>
+			</rich:popupPanel>
 			
 		</h:form>
 

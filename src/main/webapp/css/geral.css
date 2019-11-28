@@ -399,20 +399,20 @@ body {
 /* INICIO TELA INICIAL */
 .welcome-col {
 	padding: 20px;
-	background-color: #e4f1ff; 
-    margin-bottom: 1rem;
-    border: 1px solid #b8daff;
-    border-radius: .25rem;
-    color: #004085;
+	background-color: #e4f1ff;
+	margin-bottom: 1rem;
+	border: 1px solid #b8daff;
+	border-radius: .25rem;
+	color: #004085;
 }
+
 .welcome-col * {
 	font-size: 14px;
 }
 
 .welcome-col p {
-    line-height: 20px;
-    color: #004085;
-   
+	line-height: 20px;
+	color: #004085;
 }
 
 .welcome-col h2 {
@@ -456,26 +456,36 @@ body {
 
 .label-campos-obrigarotios {
 	color: #555;
-    /* position: absolute;
-    top: 148px;
-    right: 25px; */
-    float: right;
+	float: right;
 }
 
 .mensagem-alerta {
 	clear: both;
-    color: #856404;
-    background-color: #fff3cd;
-    position: relative;
-    padding: 1em 1.5em;
-    margin-bottom: 1em;
-    margin-top: 1em;
-    border: 1px solid #ffeeba;
-    border-radius: .25em;
+	color: #856404;
+	background-color: #fff3cd;
+	position: relative;
+	padding: 1em 1.5em;
+	margin-bottom: 1em;
+	margin-top: 1em;
+	border: 1px solid #ffeeba;
+	border-radius: .25em;
 }
 
 .mensagem-alerta * {
 	font-size: 13px;
+}
+
+.infoMessage {
+     color: blue;
+     font-weight: bold;
+     margin-left: 12px; 
+     margin-bottom: 20px;
+}
+.errorMessage {
+     color: red;
+     font-weight: bold;
+     margin-left: 12px; 
+     margin-bottom: 20px;
 }
 
 .formularios {
@@ -622,13 +632,13 @@ body {
 	border: 1px solid #c5c5c5;
 }
 
-.formularios .select-box select:disabled, 
-.formularios .input-box input:disabled {
+.formularios .select-box select:disabled, .formularios .input-box input:disabled
+	{
 	background-color: #efefef;
 }
 
 .formularios .select-box option {
-	font-size:1.2em;
+	font-size: 1.2em;
 }
 
 .formularios .data-box {
@@ -677,7 +687,7 @@ body {
 }
 
 .tabela-dados th {
-	background-color: #195297;
+	background: #195297;
 	color: #fff;
 	font-size: 11px;
 	text-transform: uppercase;
@@ -688,7 +698,6 @@ body {
 
 .tabela-dados td {
 	border: 1px solid #c5c5c5;
-	border-bottom: 0;
 	padding: 7px 9px;
 }
 
@@ -1060,7 +1069,6 @@ body {
 	cursor: pointer;
 	display: block;
 	text-decoration: none;
-	/*    width: 50px; */
 	text-align: center;
 }
 
@@ -1144,12 +1152,13 @@ body {
 	line-height: 1.5em;
 }
 
-.rich-mpnl-mask-div {
-	background-color: rgba(0, 0, 0, 0.1);
+/* Modal/Popup */
+.rf-pp-shade {
+	background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
-.rich-mpnl-shadow {
-	display: none;
+.rf-pp-shdw {
+	display: none !important;
 }
 
 .modal-actions {
@@ -1163,82 +1172,176 @@ body {
 	border-top: 1px solid #e4e4e4;
 }
 
-.rich-mpnl-content {
-	padding: 0px;
-	border-radius: 5px;
-	moz-border-radius: 5px;
-	webkit-border-radius: 5px;
-	background-color: #ffffff;
+.rf-pp-cntr {
+	border: none !important;
 }
 
-.rich-mpnl-text {
-	padding: 8px;
-	font-size: 16px;
-	font-weight: normal;
-	background: #195297;
-	border: 1px solid #113664;
+.rf-pp-hdr {
+	padding: 8px !important;
+	font-size: 16px !important;
+	font-weight: normal !important;
+	background: #195297 !important;
+	border: 1px solid #113664 !important;
 }
 
-.rich-mpnl-text span {
-	font-size: 16px;
-}
-
-.rich-mp-container#modalRenovaSessaoCDiv, .rich-mp-container#modalRedirecionaLoginCDiv
-	{
-	top: 40px !important;
-}
-
-.rich-tab-header {
+.rf-pp-hdr span {
 	font-size: 14px;
-	padding: 8px 10px;
-	font-weight: normal;
 }
 
-.rich-tab-active {
-	background-image: none;
-	background-color: #fdfdfd;
-	color: #195297;
+/* Tabs */
+.rf-tbp {
+	display: table !important;
+	width: 100% !important;
 }
 
-.rich-tab-inactive {
-	background-image: none;
-	background-color: #f0f0f0;
-	color: #000;
-	cursor: pointer;
-	border: 0;
+.rf-tab-cnt {
+	display: inline-block;
+	position: relative;
+	background: #fdfdfd !important;
+	padding: 20px !important;
+	border: 1px solid #C0C0C0 !important;
+	width: 100% !important;
+	box-sizing: border-box !important;
 }
 
-.rich-tab-inactive:hover {
-	color: #195297;
+.rf-tab-hdr {
+	padding: 8px 10px !important;
 }
 
-.rich-tabpanel-content {
-	background-color: #fdfdfd;
-	padding: 20px;
+.rf-tab-lbl {
+	font-size: 14px !important;
+	font-weight: normal !important;
+	border-spacing: none;
 }
 
-.rich-tabpanel .rich-tab-bottom-line>table>tbody>tr>td:nth-child(1) {
-	display: none;
+.rf-tab-hdr-act {
+	background: #fdfdfd !important;
+	color: #195297 !important;
+	border-bottom: 0 !important;
+}
+
+.rf-tab-hdr-inact {
+	background: #f0f0f0 !important;
+	color: #000 !important;
+	cursor: pointer !important;
+}
+
+.rf-tab-hdr-inact:hover {
+	color: #195297 !important;
+}
+
+.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
+	background: none !important;
+	border: none !important;
+	display: inline;
+}
+
+.rf-tab-hdr-brd {
+	display: none !important;
+}
+
+.rf-tab-hdr-tabs {
+	position: relative;
+	bottom: -1px;
+	z-index: 1;
 }
 
 
+/* Panel e tooltip */
+.tooltip {
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.51);
+}
 
+.rf-p, .rf-p-b {
+	border: none !important;
+	padding: 0px !important;
+	background: none !important;
+}
+
+.rf-tt-cntr {
+	border-color: #C0C0C0 !important;
+}
+
+/* Paginação/Scrooler */
+.rf-ds {
+	display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    position: relative;
+    left: -1px;
+    margin-top: 1px;
+}
+
+.rf-ds > * {	
+	flex: 1 1 0;
+	padding: 7px 0px !important;
+	margin: 0 !important;
+	background: none !important;
+	border: .1px solid #ddd !important;
+	font-size: 13px !important;
+	text-align: center !important;
+	vertical-align: middle;
+}
+
+.rf-ds-btn {
+	background: none !important;
+	color: #195297 !important;
+	transition: all .2s;
+	font-weight: bold !important;	
+}
+
+.rf-ds-btn:hover {
+	background-color: #19529724 !important;
+	color: #777 !important;
+}
+
+.rf-ds-dis {
+	color: #bbb !important;
+	background: #a6b0bd1c !important;	
+	border: .1px solid #eee !important;
+}
+
+.rf-ds-dis:hover {
+	color: #bbb !important;
+	background: #a6b0bd1c !important;
+}
+
+.rf-ds-nmb-btn {
+	color: #333 !important;
+	transition: all .2s;
+}
+
+.rf-ds-nmb-btn:hover {
+	background-color: #19529724 !important;
+}
+
+.rf-ds-nmb-btn.rf-ds-act {
+	border-color: #19529757 !important;
+	color: #222 !important;
+	background-color: #1952970d !important;
+}
+
+
+/* eSocial */
 .vigencia-msg-alerta {
 	position: relative;
-    bottom: 16px;
-    font-weight: bold;
-    color: red;
-    clear: both;
+	bottom: 16px;
+	font-weight: bold;
+	color: red;
+	clear: both;
 }
-.vigencia-width-data {	
+
+.vigencia-width-data {
 	width: 120px !important;
 }
+
 .identificador-esocial {
 	font-weight: bold;
 	color: #4BD07B;
 }
+
 .identificador-esocial-legenda {
 	position: absolute;
-    right: 35px;
-    top: 100px;	
+	right: 35px;
+	top: 100px;
 }

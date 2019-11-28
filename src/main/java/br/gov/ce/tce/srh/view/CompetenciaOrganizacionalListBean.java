@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -22,16 +20,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
- * Use case : Competencia Organizacional
- * 
- * @since   : Dez 12, 2012, 12:12:12 PM
- * @author  : raphael.ferreira@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("competenciaOrganizacionalListBean")
-@Scope("session")
+@Scope("view")
 public class CompetenciaOrganizacionalListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(CompetenciaOrganizacionalListBean.class);
@@ -41,11 +32,6 @@ public class CompetenciaOrganizacionalListBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	//controle de acesso do formulário
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	//parametos de tela de consulta
 	private String tipo = new String();
@@ -57,19 +43,12 @@ public class CompetenciaOrganizacionalListBean implements Serializable {
 	
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<CompetenciaOrganizacional> pagedList = new ArrayList<CompetenciaOrganizacional>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -81,7 +60,6 @@ public class CompetenciaOrganizacionalListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -92,17 +70,14 @@ public class CompetenciaOrganizacionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -122,16 +97,10 @@ public class CompetenciaOrganizacionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return  
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -152,41 +121,20 @@ public class CompetenciaOrganizacionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
-	}
-
-	public String limpaTela() {
-		tipo = null;
-		passouConsultar = false;
-		setEntidade(new CompetenciaOrganizacional());
-		lista = new ArrayList<CompetenciaOrganizacional>();
-		limparListas();
-		flagRegistroInicial = 0;
-		
-		return "listar";
-	}
-
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			limpaTela();		
-		}
-		return form;
-	}
+	}	
 
 	public List<CompetenciaOrganizacional> getLista() {return lista;}
 	public void setLista(List<CompetenciaOrganizacional> lista) {this.lista = lista;}
 
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<CompetenciaOrganizacional>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
@@ -204,17 +152,6 @@ public class CompetenciaOrganizacionalListBean implements Serializable {
 	public List<CompetenciaOrganizacional> getPagedList() {return pagedList;}
 	public void setPagedList(List<CompetenciaOrganizacional> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
-
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
 
 	public String getTipo() {
 		return tipo;

@@ -8,10 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -40,7 +38,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
  */
 @SuppressWarnings("serial")
 @Component("relatorioFeriasListBean")
-@Scope("session")
+@Scope("view")
 public class RelatorioFeriasListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(RelatorioFeriasListBean.class);
@@ -63,9 +61,6 @@ public class RelatorioFeriasListBean implements Serializable {
 	@Autowired
 	private FuncionalService funcionalService;
 
-
-	//controle de acesso do formulário
-	private HtmlForm form;
 
 	//parametos de tela de consulta
 	private List<String> tiposFerias;
@@ -91,13 +86,13 @@ public class RelatorioFeriasListBean implements Serializable {
 	
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<RelatorioFerias> pagedList = new ArrayList<RelatorioFerias>();
 	private int flagRegistroInicial = 0;
 
 
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -119,11 +114,9 @@ public class RelatorioFeriasListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {		
 			
@@ -214,43 +207,20 @@ public class RelatorioFeriasListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório das Ferias por Setor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-
-	public void limpaTela() {
-		tiposFerias = null;
-		tipoOcupacao = null;
-		setor = null;
-		inicio = null;
-		fim = null;
-		anoReferencia = null;
-		formato = 1;
-		lista = new ArrayList<RelatorioFerias>();
-		limparListas();
-		flagRegistroInicial = 0;
-		matricula = new String();
-		cpf = new String();
-		nome = new String();
-		funcional = null; 
-
-	}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {return form;}
+	}		
 
 	public List<RelatorioFerias> getLista() {return lista;}
 	public void setLista(List<RelatorioFerias> lista) {this.lista = lista;}
 
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<RelatorioFerias>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
@@ -264,12 +234,7 @@ public class RelatorioFeriasListBean implements Serializable {
 		}
 		return dataModel;
 	}
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
+	
 	public List<Setor> getComboSetor() {
 
         try {
@@ -427,7 +392,5 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
-	
-	
 
 }

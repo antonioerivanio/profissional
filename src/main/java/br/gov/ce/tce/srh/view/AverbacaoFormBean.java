@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -28,7 +30,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("averbacaoFormBean")
-@Scope("session")
+@Scope("view")
 public class AverbacaoFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(AverbacaoFormBean.class);
@@ -71,42 +73,36 @@ public class AverbacaoFormBean implements Serializable {
 	private List<TipoTempoServico> comboEsfera;
 	private List<SubtipoTempoServico> comboSubtipo;
 
-
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	
-	public String prepareAlterar() {
-
-		this.alterar = true;
-
+	@PostConstruct
+	public void init() {
+		Averbacao flashParameter = (Averbacao)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Averbacao());
+		
 		try {
-
-			Funcional funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
-			this.matricula = funcional.getMatricula();
-			this.nome = entidade.getPessoal().getNomeCompleto();
-
-			this.inicio = entidade.getInicio();
-			this.fim = entidade.getFim();
-			
-			if (this.inicio == null 
-					&& this.fim == null
-					&& entidade.getQtdeDias() != null
-					&& entidade.getQtdeDias() > 0)
-				this.somenteDias = true;
-
+			if(this.entidade.getId() != null) {
+				this.alterar = true;
+	
+				Funcional funcional = funcionalService.getByPessoaAtivo( getEntidade().getPessoal().getId() );
+				this.matricula = funcional.getMatricula();
+				this.nome = entidade.getPessoal().getNomeCompleto();
+	
+				this.inicio = entidade.getInicio();
+				this.fim = entidade.getFim();
+				
+				if (this.inicio == null 
+						&& this.fim == null
+						&& entidade.getQtdeDias() != null
+						&& entidade.getQtdeDias() > 0)
+					this.somenteDias = true;
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
 	
-	public String salvar() {
+	public void salvar() {
 		
 		try {
 
@@ -130,9 +126,7 @@ public class AverbacaoFormBean implements Serializable {
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-		
-		return null;
+		}		
 	}
 	
 

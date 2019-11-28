@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -28,7 +28,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{pessoalCursoGraduacaoListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios box-border">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -41,7 +41,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{pessoalCursoGraduacaoListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+						<a4j:ajax event="change" render="messages, nomeCompletoPessoa, cpf" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 							 value="Consultar"
 							 action="#{pessoalCursoGraduacaoListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 			<h:commandButton id="Relatório"
 							 value="Relatório"
 							 action="#{pessoalCursoGraduacaoListBean.relatorio}" 
@@ -106,9 +106,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{pessoalCursoGraduacaoFormBean.prepareAlterar}"
+                       				  action="#{pessoalCursoGraduacaoListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{pessoalCursoGraduacaoFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{pessoalCursoGraduacaoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_GRADUACAO_EXCLUIR')}">
@@ -125,19 +125,19 @@
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{pessoalCursoGraduacaoListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 				
 			</div>
 
 			<h:commandButton id="incluir"
 							 value="Incluir"
-							 action="#{pessoalCursoGraduacaoFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_GRADUACAO_INSERIR')}"/>
 							 
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{pessoalCursoGraduacaoListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

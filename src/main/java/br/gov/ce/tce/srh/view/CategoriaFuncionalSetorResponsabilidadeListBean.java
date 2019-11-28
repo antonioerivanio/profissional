@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -27,7 +25,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("categoriaFuncionalSetorResponsabilidadeListBean")
-@Scope("session")
+@Scope("view")
 public class CategoriaFuncionalSetorResponsabilidadeListBean implements Serializable {
 
 static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
@@ -38,10 +36,6 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	private SetorService setorService;
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// entidades das telas
 	private CategoriaFuncionalSetorResponsabilidade entidade;
@@ -59,11 +53,8 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
 		
-	
-	public String consultar() {
-
-		try {		
-			
+	public void consultar() {
+		try {				
 			limparListas();
 
 			if( setor == null )
@@ -77,8 +68,6 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 			}
 			
 			flagRegistroInicial = -1;
-			
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -89,18 +78,20 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}		
-
-		return "listar";
 	}
 	
-	public String relatorio() {
-
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void relatorio() {
 		try {
 			
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado. Realize uma consulta antes de solicitar o relatório.");
 				logger.info("Nenhum registro foi encontrado. Realize uma consulta antes de solicitar o relatório.");
-				return null;
+				return;
 			}
 			
 			List<CategoriaFuncionalSetorResponsabilidade> consultaList = categoriaFuncionalSetorResponsabilidadeService.search(setor, opcaoAtiva, flagRegistroInicial, count);
@@ -143,11 +134,9 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-																																	
-		return null;
 	}
 	
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -164,7 +153,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}	
 	
 	public List<Setor> getComboSetor() {
@@ -186,9 +175,6 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	
 	public CategoriaFuncionalSetorResponsabilidade getEntidade() {return entidade;}
 	public void setEntidade(CategoriaFuncionalSetorResponsabilidade entidade) {this.entidade = entidade;}
-		
-	public boolean isPassouConsultar() {return passouConsultar;}
-	public void setPassouConsultar(boolean passouConsultar) {this.passouConsultar = passouConsultar;}
 	
 	public boolean isSetoresAtivos() {return this.setoresAtivos;}
 	public void setSetoresAtivos(boolean setoresAtivos) {this.setoresAtivos = setoresAtivos;}
@@ -198,30 +184,6 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 	
 	public int getOpcaoAtiva() {return opcaoAtiva;}
 	public void setOpcaoAtiva(int opcaoAtiva) {this.opcaoAtiva = opcaoAtiva;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {			
-			limpar();
-			limparListas();
-			flagRegistroInicial = 0;
-		}				
-		passouConsultar = false;
-		return form;
-	}
-	
-	private void limpar() {
-		setEntidade( new CategoriaFuncionalSetorResponsabilidade() );
-		comboSetor = null;
-		setoresAtivos = true;
-		setor = null;
-		opcaoAtiva = 0;
-	}
-	
-	public String limpaTela() {
-		setEntidade(new CategoriaFuncionalSetorResponsabilidade());		
-		return "listar";
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
@@ -229,8 +191,7 @@ static Logger logger = Logger.getLogger(AtribuicaoSetorListBean.class);
 		pagedList = new ArrayList<CategoriaFuncionalSetorResponsabilidade>();
 		pagina = 1;	
 	}
-
-
+	
 	public PagedListDataModel getDataModel() {
 		
 		if( flagRegistroInicial != getPrimeiroDaPagina() ) {
