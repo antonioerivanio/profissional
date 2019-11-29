@@ -117,7 +117,8 @@
                         			   value="Excluir"
                         			   action="#{competenciaSetorFuncionalListBean.excluir}" 
                         			   styleClass="ico-delete" 
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
+                        			   immediate="false">
                             <f:setPropertyActionListener target="#{competenciaSetorFuncionalListBean.entidade}" value="#{item}" />
                         </h:commandLink>
 					</h:column>

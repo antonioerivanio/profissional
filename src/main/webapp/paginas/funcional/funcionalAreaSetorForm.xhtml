@@ -141,7 +141,8 @@
 	                        <h:commandLink id="excluir"
 	                        			   value="Excluir"
 	                        			   action="#{funcionalAreaSetorFormBean.excluir}" 
-	                        			   styleClass="ico-delete" >
+	                        			   styleClass="ico-delete" 
+	                        			   immediate="false">
 	                            <f:setPropertyActionListener target="#{funcionalAreaSetorFormBean.entidade}" value="#{item}" />
 	                        </h:commandLink>
 	                    </h:column>

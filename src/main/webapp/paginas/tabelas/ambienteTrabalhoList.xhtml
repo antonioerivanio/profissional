@@ -77,7 +77,8 @@
 							action="#{ambienteTrabalhoListBean.excluir}" 
 							styleClass="ico-delete"
 							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-							render="scroller,listaAmbiente">							
+							render="scroller,listaAmbiente"
+							immediate="false">							
 							<f:setPropertyActionListener target="#{ambienteTrabalhoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>

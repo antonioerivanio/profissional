@@ -25,12 +25,6 @@ public class TipoBeneficioServiceImpl implements TipoBeneficioService {
 	@Transactional
 	public void salvar(TipoBeneficio entidade) throws SRHRuntimeException {
 
-		/*
-		 * Regra: 
-		 *
-		 * Nao deixar cadastrar entidade ja existente.
-		 * 
-		 */
 		verificandoSeEntidadeExiste(entidade);
 		
 		// persistindo

@@ -138,7 +138,8 @@
                         			   value="Excluir"
                         			   action="#{acrescimoListBean.excluir}" 
                         			   styleClass="ico-delete" 
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
+                        			   immediate="false">
                             <f:setPropertyActionListener target="#{acrescimoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>

@@ -183,7 +183,8 @@
                         			   value="Excluir"
                         			   action="#{representacaoFuncionalListBean.excluir}" 
                         			   styleClass="ico-delete" 
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
+                        			   immediate="false">
                             <f:setPropertyActionListener target="#{representacaoFuncionalListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>

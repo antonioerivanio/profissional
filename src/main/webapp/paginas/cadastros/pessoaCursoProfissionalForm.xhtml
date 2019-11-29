@@ -259,7 +259,8 @@
                         			   value="Excluir"
                         			   action="#{pessoalCursoProfissionalFormBean.excluirCompetencia}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
+                        			   immediate="false">
                             <f:setPropertyActionListener target="#{pessoalCursoProfissionalFormBean.competenciaCurso}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
@@ -381,7 +382,8 @@
                         			   value="Excluir"
                         			   action="#{pessoalCursoProfissionalFormBean.excluirServidor}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
+                        			   immediate="false">
                             <f:setPropertyActionListener target="#{pessoalCursoProfissionalFormBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>

@@ -331,7 +331,8 @@
 								value="Excluir"
 								action="#{cargoFormBean.excluirEspecialidade}"
 								styleClass="ico-delete"
-								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}">
+								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
+								immediate="false">
 								<f:setPropertyActionListener target="#{cargoFormBean.entidadeEspecialidade}" value="#{item}" />
 							</h:commandLink>
 						</h:column>
@@ -389,7 +390,8 @@
 								value="Excluir"
 								action="#{cargoFormBean.excluirSimbologia}"
 								styleClass="ico-delete"
-								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}">
+								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
+								immediate="false">
 								<f:setPropertyActionListener target="#{cargoFormBean.entidadeSimbolo}" value="#{item}" />
 							</h:commandLink>
 						</h:column>

@@ -236,7 +236,7 @@ public class CarreiraPessoalBean implements Serializable {
 			flagRegistroInicial = getPrimeiroDaPagina();
 						
 			if (entidade.getPessoal() == null)
-				setPagedList(carreiraPessoalService.search(null, null, null));
+				setPagedList(carreiraPessoalService.search(null, flagRegistroInicial, dataModel.getPageSize()));
 			else
 				setPagedList(carreiraPessoalService.search(getEntidade().getPessoal().getId(), flagRegistroInicial, dataModel.getPageSize()));
 			

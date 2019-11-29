@@ -768,12 +768,7 @@
 			</fieldset>
 			
 			<h:commandButton action="#{nomeacaoServidorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
-
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/nomeacaoServidorList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{nomeacaoServidorListBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
-							 
-			<a href="/srh/paginas/funcional/nomeacaoServidorForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/funcional/nomeacaoServidorList.faces" />
 			
 		</h:form>
 

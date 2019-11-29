@@ -189,15 +189,7 @@
 			
 						
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') }">	
-				<h:commandButton action="#{carreiraPessoalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
-				
-				<ui:fragment rendered="#{!carreiraPessoalBean.alterar}">
-					<h:commandButton id="limpaTela" value="Limpar" action="#{carreiraPessoalBean.limpaForm}" styleClass="bt-padrao fr mg-right-10" />
-				</ui:fragment>
-				
-				<ui:fragment rendered="#{carreiraPessoalBean.alterar}">
-					<a href="/srh/paginas/funcional/carreiraPessoalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>				
-				</ui:fragment>				
+				<h:commandButton action="#{carreiraPessoalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			</ui:fragment>
 							 
 			<a href="/srh/paginas/funcional/carreiraPessoalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>

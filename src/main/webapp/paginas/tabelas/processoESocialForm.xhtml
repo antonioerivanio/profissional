@@ -283,7 +283,7 @@
 						<h:column id="col6"	>
 							<f:facet name="header">EXCLUIR</f:facet>						
 							<h:commandLink id="excluirSuspensao" value="Excluir" action="#{processoESocialFormBean.excluirSuspensao}" styleClass="ico-delete"
-								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
+								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" immediate="false">							
 								<f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />
 							</h:commandLink>
 						</h:column>
@@ -298,9 +298,6 @@
 				<h:commandButton value="Salvar"
 					action="#{processoESocialFormBean.salvar}"
 					styleClass="bt-padrao fr" />
-
-				<a href="/srh/paginas/tabelas/processoESocialForm.faces"
-					class="bt-padrao fr mg-right-10">Limpar</a>
 
 			</ui:fragment>
 

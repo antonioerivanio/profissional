@@ -64,7 +64,8 @@
 							value="Excluir"
 							action="#{estabelecimentoListBean.excluir}" 
 							styleClass="ico-delete"
-							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
+							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
+							immediate="false">							
 							<f:setPropertyActionListener target="#{estabelecimentoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>

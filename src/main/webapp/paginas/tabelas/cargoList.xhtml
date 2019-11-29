@@ -99,7 +99,8 @@
 							value="Excluir"
 							action="#{cargoListBean.excluir}" 
 							styleClass="ico-delete"
-							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >							
+							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
+							immediate="false">							
 							<f:setPropertyActionListener target="#{cargoListBean.entidade}" value="#{item}" />
 						</h:commandLink>
 					</h:column>

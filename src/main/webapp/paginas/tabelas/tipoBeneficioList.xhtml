@@ -75,7 +75,7 @@
                         			   action="#{tipoBeneficioBean.excluir}"
                         			   styleClass="ico-delete"
                         			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
-                        			   immediate="true">
+                        			   immediate="false">
                             <f:setPropertyActionListener target="#{tipoBeneficioBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>

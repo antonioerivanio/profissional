@@ -146,7 +146,8 @@
                         			   value="Excluir"
                         			   action="#{cursoProfissionalBean.excluir}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
+                        			   immediate="false">
                             <f:setPropertyActionListener target="#{cursoProfissionalBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
