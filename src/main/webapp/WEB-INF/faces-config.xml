@@ -605,6 +605,11 @@
 			<from-outcome>loginInvalido</from-outcome>
 			<to-view-id>/login.xhtml</to-view-id>
 			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>erro</from-outcome>
+			<to-view-id>/erro.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>		
 	</navigation-rule>
 	<!-- Motivo Dependencia -->
