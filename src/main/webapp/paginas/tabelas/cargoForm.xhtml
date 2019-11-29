@@ -26,7 +26,7 @@
 
 		</div>
 
-		<h:form styleClass="formularios">
+		<h:form id="form" styleClass="formularios">
 			
 			<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />
 			
@@ -326,15 +326,16 @@
 							<f:facet name="header">
                             EXCLUIR
                         </f:facet>
-							<h:commandLink 
+							<a4j:commandLink 
 								id="excluirEspecialidade" 
 								value="Excluir"
 								action="#{cargoFormBean.excluirEspecialidade}"
 								styleClass="ico-delete"
 								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-								immediate="false">
+								execute="@this"
+                        		render="form">
 								<f:setPropertyActionListener target="#{cargoFormBean.entidadeEspecialidade}" value="#{item}" />
-							</h:commandLink>
+							</a4j:commandLink>
 						</h:column>
 
 					</h:dataTable>
@@ -385,15 +386,16 @@
 							<f:facet name="header">
                             EXCLUIR
                         </f:facet>
-							<h:commandLink 
+							<a4j:commandLink 
 								id="excluirSimbologia" 
 								value="Excluir"
 								action="#{cargoFormBean.excluirSimbologia}"
 								styleClass="ico-delete"
 								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-								immediate="false">
+								execute="@this"
+                        		render="form">
 								<f:setPropertyActionListener target="#{cargoFormBean.entidadeSimbolo}" value="#{item}" />
-							</h:commandLink>
+							</a4j:commandLink>
 						</h:column>
 
 					</h:dataTable>

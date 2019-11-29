@@ -115,14 +115,15 @@
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
-                        <h:commandLink id="excluir"
+                        <a4j:commandLink id="excluir"
                         			   value="Excluir"
                         			   action="#{pessoalCursoGraduacaoListBean.excluir}" 
                         			   styleClass="ico-delete" 
                         			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
-                        			   immediate="false">
+                        			   execute="@this"
+                        			   render="form">
                             <f:setPropertyActionListener target="#{pessoalCursoGraduacaoListBean.entidade}" value="#{item}" />
-                        </h:commandLink>
+                        </a4j:commandLink>
                     </h:column>
 
 				</rich:dataTable>

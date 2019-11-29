@@ -138,13 +138,14 @@
 	                        <f:facet name="header">
 	                            EXCLUIR
 	                        </f:facet>
-	                        <h:commandLink id="excluir"
+	                        <a4j:commandLink id="excluir"
 	                        			   value="Excluir"
 	                        			   action="#{funcionalAreaSetorFormBean.excluir}" 
 	                        			   styleClass="ico-delete" 
-	                        			   immediate="false">
+	                        			   execute="@this"
+                        			   	   render="form">
 	                            <f:setPropertyActionListener target="#{funcionalAreaSetorFormBean.entidade}" value="#{item}" />
-	                        </h:commandLink>
+	                        </a4j:commandLink>
 	                    </h:column>
 	
 					</rich:dataTable>

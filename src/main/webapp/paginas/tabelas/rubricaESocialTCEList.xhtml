@@ -107,16 +107,17 @@
 						<f:facet name="header">
                             EXCLUIR
                         </f:facet>						
-						<h:commandLink 
+						<a4j:commandLink 
 							id="excluir" 
 							value="Excluir"
 							action="#{rubricaESocialTCEListBean.excluir}" 
 							styleClass="ico-delete"
 							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
 							render="scroller,listaRubrica"
-							immediate="false">							
+							execute="@this"
+							render="form">							
 							<f:setPropertyActionListener target="#{rubricaESocialTCEListBean.entidade}" value="#{item}" />
-						</h:commandLink>
+						</a4j:commandLink>
 					</rich:column>
 
 				</rich:dataTable>

@@ -108,14 +108,15 @@
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
-                        <h:commandLink id="excluir"
+                        <a4j:commandLink id="excluir"
                         			   value="Excluir"
                         			   action="#{pessoalCursoProfissionalListBean.excluir}" 
                         			   styleClass="ico-delete" 
                         			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
-                        			   immediate="false">
+                        			   execute="@this"
+                        			   render="form">
                             <f:setPropertyActionListener target="#{pessoalCursoProfissionalListBean.cursoProfissional}" value="#{item}" />
-                        </h:commandLink>
+                        </a4j:commandLink>
                     </h:column>
                 	<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_CURSO_PROFISSIONAL_EXCLUIR')}">
                         <f:facet name="header">

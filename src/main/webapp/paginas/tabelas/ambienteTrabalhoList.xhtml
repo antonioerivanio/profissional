@@ -71,16 +71,16 @@
 						<f:facet name="header">
                             EXCLUIR
                         </f:facet>						
-						<h:commandLink 
+						<a4j:commandLink 
 							id="excluir" 
 							value="Excluir"
 							action="#{ambienteTrabalhoListBean.excluir}" 
 							styleClass="ico-delete"
 							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-							render="scroller,listaAmbiente"
-							immediate="false">							
+							execute="@this"
+                        	render="form">							
 							<f:setPropertyActionListener target="#{ambienteTrabalhoListBean.entidade}" value="#{item}" />
-						</h:commandLink>
+						</a4j:commandLink>
 					</h:column>
 
 				</rich:dataTable>
