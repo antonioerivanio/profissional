@@ -144,7 +144,6 @@ body {
 	max-width: 1205px;
 	min-width: 768px;
 	background-color: #fff;
-	border: 1px solid #b5b5b5;
 	border-radius: 8px;
 	height: 15px;
 	margin: 0 auto;
@@ -173,7 +172,6 @@ body {
 }
 
 .login-corpo {
-	border: 1px solid #b5b5b5;
 	border-radius: 10px;
 	background-color: #fff;
 	width: 581px;
@@ -219,7 +217,6 @@ body {
 /* INICIO TOPO */
 .topo, .login-topo {
 	margin-bottom: 3px;
-	border: 1px solid #b5b5b5;
 	border-radius: 10px;
 	padding: 8px;
 	height: 117px;
@@ -270,7 +267,7 @@ body {
 .topo .login-box {
 	position: absolute;
 	border: 1px solid #bdbdbd;
-	background-color: #e6e6e6;
+	background-color: #f6f6f6;
 	right: 13px;
 	bottom: 30px;
 	padding: 8px;
@@ -426,7 +423,6 @@ body {
 .corpo {
 	padding: 30px 10px 10px 10px;
 	background-color: #fff;
-	border: 1px solid #b5b5b5;
 	border-radius: 8px;
 	position: relative;
 	z-index: 80;
@@ -435,7 +431,6 @@ body {
 }
 
 .corpo-conteiner {
-	border: 1px solid #b5b5b5;
 	padding: 10px;
 	padding-bottom: 0;
 	border-radius: 10px;
@@ -444,14 +439,14 @@ body {
 
 .titulo-pagina {
 	color: #1c5ba7;
-	border: 1px solid #b5b5b5;
-	background-color: #f2f2f2;
+	border: 1px solid #d5d5d5;
+	background-color: #f6f6f6;
 	margin-bottom: 13px;
 }
 
 .titulo-pagina h2 {
 	color: #1c5ba7;
-	font-size: 15px;
+	font-size: 16px;
 	padding: 8px 10px;
 }
 
@@ -1326,6 +1321,10 @@ body {
 	background-color: #1952970d !important;
 }
 
+.rf-plhdr{
+	color:#afafaf !important;
+}
+
 
 /* eSocial */
 .vigencia-msg-alerta {
@@ -1350,3 +1349,4 @@ body {
 	right: 35px;
 	top: 100px;
 }
+
