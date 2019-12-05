@@ -54,7 +54,7 @@ public class RubricaESocialTCEDAO {
 		sql.append(" SELECT e FROM RubricaESocialTCE e inner join fetch e.rubrica r");
 
 		if (descricao != null && !descricao.isEmpty()) {
-			sql.append(" WHERE upper( e.descricao ) like :descricao ");
+			sql.append(" WHERE upper( r.descricao ) like :descricao ");
 		}
 
 		sql.append(" ORDER BY r.descricao ");

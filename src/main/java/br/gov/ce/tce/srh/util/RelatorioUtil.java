@@ -39,7 +39,7 @@ public class RelatorioUtil {
 		WebApplicationContext wctx = (WebApplicationContext) servletContext.getAttribute(springVar);
 		DataSource dataSource = (DataSource) wctx.getBean("dataSource");
 
-		String logo = servletContext.getRealPath(File.separator + "img" + File.separator + "logo-srh.png");
+		String logo = servletContext.getRealPath(File.separator + "img" + File.separator + "logo-srh.svg");
 		String logo_tce = servletContext.getRealPath(File.separator + "img" + File.separator + "logo-tce-report.png");
 		String back = servletContext.getRealPath(File.separator + "img" + File.separator + "bg-topo.png");
 		String pathRel = servletContext.getRealPath(File.separator + "WEB-INF" + File.separator + "relatorios" + File.separator + arquivoRelatorio);  
@@ -75,7 +75,7 @@ public class RelatorioUtil {
 
 		JRRewindableDataSource dataSource = relatorioList == null ? new net.sf.jasperreports.engine.JREmptyDataSource() : new JRBeanCollectionDataSource(relatorioList);
 
-		String logo = servletContext.getRealPath(File.separator + "img" + File.separator + "logo-srh.png");
+		String logo = servletContext.getRealPath(File.separator + "img" + File.separator + "logo-srh.svg");
 		String logo_tce = servletContext.getRealPath(File.separator + "img" + File.separator + "logo-tce-report.png");
 		String back = servletContext.getRealPath(File.separator + "img" + File.separator + "bg-topo.png");
 		String pathRel = servletContext.getRealPath(File.separator + "WEB-INF" + File.separator + "relatorios" + File.separator + arquivoRelatorio);  

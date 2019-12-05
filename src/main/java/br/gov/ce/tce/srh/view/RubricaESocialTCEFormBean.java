@@ -18,9 +18,9 @@ import br.gov.ce.tce.srh.domain.Rubrica;
 import br.gov.ce.tce.srh.domain.RubricaESocial;
 import br.gov.ce.tce.srh.domain.RubricaESocialTCE;
 import br.gov.ce.tce.srh.domain.RubricaESocialTabela;
-import br.gov.ce.tce.srh.enums.RubricaIncidenciaCP;
+import br.gov.ce.tce.srh.enums.RubricaIncidenciaCPTipo;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaFGTS;
-import br.gov.ce.tce.srh.enums.RubricaIncidenciaIRRF;
+import br.gov.ce.tce.srh.enums.RubricaIncidenciaIRRFTipo;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaSIND;
 import br.gov.ce.tce.srh.enums.TipoRubrica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -55,6 +55,9 @@ public class RubricaESocialTCEFormBean implements Serializable {
 	
 	private List<RubricaESocial> rubricasESocial;
 	
+	private RubricaIncidenciaCPTipo codigoPrevidTipo;
+	private RubricaIncidenciaIRRFTipo codigoIrrfTipo;
+	
 	@PostConstruct
 	private void init() {
 		RubricaESocialTCE flashParameter = (RubricaESocialTCE)FacesUtil.getFlashParameter("entidade");
@@ -65,6 +68,8 @@ public class RubricaESocialTCEFormBean implements Serializable {
 		this.tabelasRubrica = rubricaESocialTabelaDAO.findAll();
 		this.rubricasTCE = rubricaService.findAll();
 		this.rubricasESocial = rubricaESocialDAO.findAll();
+		this.codigoPrevidTipo = entidade.getCodigoPrevid() != null ? entidade.getCodigoPrevid().getTipo() : null;
+		this.codigoIrrfTipo = entidade.getCodigoIrrf() != null ? entidade.getCodigoIrrf().getTipo() : null;
     }
 
 	public void salvar() {
@@ -95,12 +100,12 @@ public class RubricaESocialTCEFormBean implements Serializable {
 		return Arrays.asList(TipoRubrica.values());
 	}
 	
-	public List<RubricaIncidenciaCP> getComboCodigoPrevid() {
-		return Arrays.asList(RubricaIncidenciaCP.values());
+	public List<RubricaIncidenciaCPTipo> getComboCodigoPrevidTipo() {
+		return Arrays.asList(RubricaIncidenciaCPTipo.values());
 	}
 	
-	public List<RubricaIncidenciaIRRF> getComboCodigoIrrf() {
-		return Arrays.asList(RubricaIncidenciaIRRF.values());
+	public List<RubricaIncidenciaIRRFTipo> getComboCodigoIrrfTipo() {
+		return Arrays.asList(RubricaIncidenciaIRRFTipo.values());
 	}
 	
 	public List<RubricaIncidenciaFGTS> getComboCodigoFgts() {
@@ -129,6 +134,22 @@ public class RubricaESocialTCEFormBean implements Serializable {
 	
 	public List<RubricaESocial> getRubricasESocial() {
 		return this.rubricasESocial;
+	}
+
+	public RubricaIncidenciaCPTipo getCodigoPrevidTipo() {
+		return codigoPrevidTipo;
+	}
+
+	public void setCodigoPrevidTipo(RubricaIncidenciaCPTipo codigoPrevidTipo) {
+		this.codigoPrevidTipo = codigoPrevidTipo;
+	}
+
+	public RubricaIncidenciaIRRFTipo getCodigoIrrfTipo() {
+		return codigoIrrfTipo;
+	}
+
+	public void setCodigoIrrfTipo(RubricaIncidenciaIRRFTipo codigoIrrfTipo) {
+		this.codigoIrrfTipo = codigoIrrfTipo;
 	}
 
 }

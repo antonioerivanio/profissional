@@ -39,7 +39,7 @@ public class RubricaESocialTCEListBean implements Serializable{
 	
 	@PostConstruct
 	private void init() {
-//		FacesUtil.setFlashParameter("entidade", null);
+		FacesUtil.setFlashParameter("entidade", null);
     }
 
 	public void consultar() {

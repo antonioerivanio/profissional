@@ -10,9 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import br.gov.ce.tce.srh.enums.RubricaIncidenciaCP;
+import br.gov.ce.tce.srh.enums.RubricaIncidenciaCPCodigo;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaFGTS;
-import br.gov.ce.tce.srh.enums.RubricaIncidenciaIRRF;
+import br.gov.ce.tce.srh.enums.RubricaIncidenciaIRRFCodigo;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaSIND;
 import br.gov.ce.tce.srh.enums.TipoRubrica;
 
@@ -111,20 +111,20 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 			this.tipo = tipo.getCodigo();
 	}
 
-	public RubricaIncidenciaCP getCodigoPrevid() {
-		return RubricaIncidenciaCP.getByCodigo(this.codigoPrevid);
+	public RubricaIncidenciaCPCodigo getCodigoPrevid() {
+		return RubricaIncidenciaCPCodigo.getByCodigo(this.codigoPrevid);
 	}
 
-	public void setCodigoPrevid(RubricaIncidenciaCP codigoPrevid) {
+	public void setCodigoPrevid(RubricaIncidenciaCPCodigo codigoPrevid) {
 		if(codigoPrevid != null)
 			this.codigoPrevid = codigoPrevid.getCodigo();
 	}
 
-	public RubricaIncidenciaIRRF getCodigoIrrf() {
-		return RubricaIncidenciaIRRF.getByCodigo(this.codigoIrrf);
+	public RubricaIncidenciaIRRFCodigo getCodigoIrrf() {
+		return RubricaIncidenciaIRRFCodigo.getByCodigo(this.codigoIrrf);
 	}
 
-	public void setCodigoIrrf(RubricaIncidenciaIRRF codigoIrrf) {
+	public void setCodigoIrrf(RubricaIncidenciaIRRFCodigo codigoIrrf) {
 		if(codigoIrrf != null)
 			this.codigoIrrf = codigoIrrf.getCodigo();
 	}

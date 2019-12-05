@@ -28,6 +28,16 @@
     <h:body>
 
     	<f:view>
+    		
+    		<h:outputScript>
+		        function customFilter(subString, value) {
+		            if (subString.length >= 1) {
+		                if (value.indexOf(subString) != -1)
+		                    return true;
+		            } else
+		                return false;
+		        };
+		    </h:outputScript>
 
 	        <div class="geral">
 	
@@ -111,10 +121,10 @@
 		
 			<a4j:status 
 				onstart="#{rich:component('panel_loading')}.show()"
-				onstop="#{rich:component('panel_loading')}.hide()" />
+				onstop="#{rich:component('panel_loading')}.hide()" />				
  			
     	</f:view>
-
+    	
     </h:body>
     
 </html>    

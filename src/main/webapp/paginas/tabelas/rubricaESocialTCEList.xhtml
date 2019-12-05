@@ -26,7 +26,7 @@
 				errorClass="errorMessage" />
 
 			<div class="input-box box-50">
-				<label for="descricao">Descrição da rubrica</label>
+				<label for="descricao">Descrição da Rubrica TCE</label>
 				<div class="conteiner">
 					<h:inputText 
 						id="nome" 
@@ -112,8 +112,7 @@
 							value="Excluir"
 							action="#{rubricaESocialTCEListBean.excluir}" 
 							styleClass="ico-delete"
-							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-							render="scroller,listaRubrica"
+							onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"							
 							execute="@this"
 							render="form">							
 							<f:setPropertyActionListener target="#{rubricaESocialTCEListBean.entidade}" value="#{item}" />

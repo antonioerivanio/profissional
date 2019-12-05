@@ -8,27 +8,7 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
 
-	<ui:define name="content">
-
-		<style>
-			.formularios fieldset, .box-border {
-				border: 1px solid rgba(198, 198, 198);
-				padding: 15px 15px 0px 15px;
-				padding-right: 0;
-				overflow: auto;
-				margin-bottom: 10px;
-				min-height: 100px;
-			}
-			
-			.formularios fieldset fieldset {
-				min-height: auto;
-				width: max-content;
-			}
-			option {
-				overflow: hidden;
-			}
-		</style>
-
+	<ui:define name="content">		
 		<script>
 			jQuery(document).ready(function($) {
 				contarCaracteres();				
@@ -85,20 +65,24 @@
 				<div class="select-box box-30">
 					<label for="">Tabela * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
-						<h:selectOneMenu 
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="400"
+							listHeight="160" 
 							id="tabela"
 							value="#{rubricaESocialTCEFormBean.entidade.tabela}"
 							required="true"
 							requiredMessage="A tabela da rubrica é obrigatório."
-							converter="entityConverter">
-							<f:selectItem id="selecioneTabela" itemLabel="Selecione..." />
+							converter="entityConverter">							
 							<f:selectItems 
 								id="tabelaItens"
 								value="#{rubricaESocialTCEFormBean.tabelasRubrica}" 
 								var="tabela"
 								itemLabel="#{tabela.codigo} - #{tabela.descricao}" 
 								itemValue="#{tabela}" />
-						</h:selectOneMenu>
+						</rich:select>
 					</div>
 				</div>
 				
@@ -113,116 +97,205 @@
 				<div class="select-box box-30">
 					<label for="">Rubrica TCE * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
-						<h:selectOneMenu 
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="400"
+							listHeight="300" 
 							id="rubricaTce"
 							value="#{rubricaESocialTCEFormBean.entidade.rubrica}"
 							required="true"
 							requiredMessage="A rubrica do TCE é obrigatória."
-							converter="entityConverter">
-							<f:selectItem id="selecioneRubricaTce" itemLabel="Selecione..." />
+							converter="entityConverter">							
 							<f:selectItems 
 								id="rubricaTceItens"
 								value="#{rubricaESocialTCEFormBean.rubricasTCE}" 
 								var="rub"
 								itemLabel="#{rub.codigo} - #{rub.descricao}" 
 								itemValue="#{rub}" />
-						</h:selectOneMenu>
+						</rich:select>
 					</div>
 				</div>
 				
 				<div class="select-box box-40">
 					<label for="">Rubrica eSocial * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
-						<h:selectOneMenu 
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="500"
+							listHeight="300"						
 							id="rubricaESocial"
 							value="#{rubricaESocialTCEFormBean.entidade.rubricaESocial}"
 							required="true"
 							requiredMessage="A rubrica do eSocial é obrigatória."
-							converter="entityConverter">
-							<f:selectItem id="selecioneRubricaESocial" itemLabel="Selecione..." />
+							converter="entityConverter">							
 							<f:selectItems 
 								id="rubricaESocialItens"
 								value="#{rubricaESocialTCEFormBean.rubricasESocial}" 
 								var="rub"
 								itemLabel="#{rub.codigo} - #{rub.descricao}" 
 								itemValue="#{rub}" />
-						</h:selectOneMenu>
+						</rich:select>
 					</div>
 				</div>
 
 				<div class="select-box box-30">
 					<label for="">Tipo de rubrica * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
-						<h:selectOneMenu 
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="350"
+							listHeight="160" 
 							id="tipo"
 							value="#{rubricaESocialTCEFormBean.entidade.tipo}"
 							required="true"
-							requiredMessage="O tipo de rubrica é obrigatório.">
-							<f:selectItem id="selecioneLocal" itemLabel="Selecione..." />
+							requiredMessage="O tipo de rubrica é obrigatório.">							
 							<f:selectItems 
 								id="comboTipo"
 								value="#{rubricaESocialTCEFormBean.comboTipoRubrica}" 
 								var="tipo"
 								itemLabel="#{tipo.codigo} - #{tipo.descricao}" 
 								itemValue="#{tipo}" />
-						</h:selectOneMenu>
+						</rich:select>
 					</div>
+				</div>
+								
+				<div class="select-box box-50">
+				
+					<fieldset class="conteiner">
+						
+						<legend>Código de incidência tributária para Previdência Social * <span class="identificador-esocial">(e)</span></legend>
+									
+						<div class="select-box box-50">
+							<label>Tipo</label>
+							<div class="conteiner">
+								<rich:select 
+									enableManualInput="true"
+									defaultLabel="Selecione..."	
+									clientFilterFunction="customFilter"
+									listWidth="350"
+									listHeight="250" 
+									id="codIncCPTipo"
+									value="#{rubricaESocialTCEFormBean.codigoPrevidTipo}">							
+									<f:selectItems 
+										value="#{rubricaESocialTCEFormBean.comboCodigoPrevidTipo}" 
+										var="item"
+										itemLabel="#{item.descricao}" 
+										itemValue="#{item}" />
+									<a4j:ajax event="selectitem" execute="@this" render="codIncCPCodigo" />	
+								</rich:select>
+							</div>
+						</div>
+						
+						<div class="select-box box-45">
+							<label>Código</label>
+							<div class="conteiner">
+								<rich:select 
+									enableManualInput="true"
+									defaultLabel="Selecione..."	
+									clientFilterFunction="customFilter"
+									listWidth="350"
+									listHeight="250" 
+									id="codIncCPCodigo"
+									value="#{rubricaESocialTCEFormBean.entidade.codigoPrevid}"
+									required="true"
+									requiredMessage="O código de incidência PREVID é obrigatório.">							
+									<f:selectItems 
+										value="#{rubricaESocialTCEFormBean.codigoPrevidTipo.codigos}" 
+										var="item"
+										itemLabel="#{item.codigo} - #{item.descricao}" 
+										itemValue="#{item}" />
+								</rich:select>
+							</div>
+						</div>
+					
+					</fieldset>
 				</div>
 				
-				<div class="select-box box-25">
-					<label for="">Código de incidência tributária<br />para Previdência Social * <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:selectOneMenu 
-							id="codIncCP"
-							value="#{rubricaESocialTCEFormBean.entidade.codigoPrevid}"
-							required="true"
-							requiredMessage="O código de incidência PREVID é obrigatório.">
-							<f:selectItem id="selecioneCodIncCP" itemLabel="Selecione..." />
-							<f:selectItems 
-								id="comboCodIncCP"
-								value="#{rubricaESocialTCEFormBean.comboCodigoPrevid}" 
-								var="item"
-								itemLabel="#{item.codigo} - #{item.descricao}" 
-								itemValue="#{item}" />
-						</h:selectOneMenu>
-					</div>
-				</div>
+				<div class="select-box box-50">
 				
-				<div class="select-box box-25">
-					<label for="">Código de incidência tributária<br />para IRRF * <span class="identificador-esocial">(e)</span></label>
-					<div class="conteiner">
-						<h:selectOneMenu 
-							id="codIncIRRF"
-							value="#{rubricaESocialTCEFormBean.entidade.codigoIrrf}"
-							required="true"
-							requiredMessage="O código de incidência IRRF é obrigatório.">
-							<f:selectItem id="selecioneCodIncIRRF" itemLabel="Selecione..." />
-							<f:selectItems 
-								id="comboCodIncIRRF"
-								value="#{rubricaESocialTCEFormBean.comboCodigoIrrf}" 
-								var="item"
-								itemLabel="#{item.codigo} - #{item.descricao}" 
-								itemValue="#{item}" />
-						</h:selectOneMenu>
-					</div>
-				</div>
+					<fieldset class="conteiner">
+						
+						<legend>Código de incidência tributária para IRRF * <span class="identificador-esocial">(e)</span></legend>
+					
+						<div class="select-box box-50">
+							<label for="">Tipo</label>
+							<div class="conteiner">
+								<rich:select 
+									enableManualInput="true"
+									defaultLabel="Selecione..."	
+									clientFilterFunction="customFilter"
+									listWidth="350"
+									listHeight="250" 
+									id="codIncIRRFTipo"
+									value="#{rubricaESocialTCEFormBean.codigoIrrfTipo}">
+									<f:selectItems
+										value="#{rubricaESocialTCEFormBean.comboCodigoIrrfTipo}" 
+										var="item"
+										itemLabel="#{item.descricao}" 
+										itemValue="#{item}" />
+									<a4j:ajax event="selectitem" execute="@this" render="codIncIRRFCodigo" />	
+								</rich:select>
+							</div>
+						</div>
+						
+						<div class="select-box box-50">
+							<label for="">Código</label>
+							<div class="conteiner">
+								<rich:select 
+									enableManualInput="true"
+									defaultLabel="Selecione..."	
+									clientFilterFunction="customFilter"
+									listWidth="350"
+									listHeight="250" 
+									id="codIncIRRFCodigo"
+									value="#{rubricaESocialTCEFormBean.entidade.codigoIrrf}"
+									required="true"
+									requiredMessage="O código de incidência IRRF é obrigatório.">
+									<f:selectItems 
+										value="#{rubricaESocialTCEFormBean.codigoIrrfTipo.codigos}" 
+										var="item"
+										itemLabel="#{item.codigo} - #{item.descricao}" 
+										itemValue="#{item}" />
+								</rich:select>
+							</div>
+						</div>
+					
+					</fieldset>
+				</div>	
 				
 				<div class="select-box box-25">
 					<label for="">Código de incidência tributária<br />para FGTS * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
-						<h:selectOneMenu 
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="350"
+							listHeight="240" 
 							id="codIncFGTS"
 							value="#{rubricaESocialTCEFormBean.entidade.codigoFgts}"
 							required="true"
 							requiredMessage="O código de incidência FGTS é obrigatório.">
-							<f:selectItem id="selecioneCodIncFGTS" itemLabel="Selecione..." />
 							<f:selectItems 
 								id="comboCodIncFGTS"
 								value="#{rubricaESocialTCEFormBean.comboCodigoFgts}" 
 								var="item"
 								itemLabel="#{item.codigo} - #{item.descricao}" 
+								itemValue="#{item}">								
+							</f:selectItems>
+							<f:selectItem  itemLabel="Teste" noSelectionOption="true" />
+							<f:selectItems								
+								value="#{rubricaESocialTCEFormBean.comboCodigoFgts}" 
+								var="item"
+								itemLabel="#{item.codigo} - #{item.descricao}" 
 								itemValue="#{item}" />
-						</h:selectOneMenu>
+						</rich:select>
 					</div>
 				</div>
 				
@@ -230,19 +303,23 @@
 				<div class="select-box box-25">
 					<label for="">Código de incidência tributária<br />para contribuição sindical * <span class="identificador-esocial">(e)</span></label>
 					<div class="conteiner">
-						<h:selectOneMenu 
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="350"
+							listHeight="200" 
 							id="codIncSIND"
 							value="#{rubricaESocialTCEFormBean.entidade.codigoSindicato}"
 							required="true"
-							requiredMessage="O código de incidência de contribuição sindical é obrigatório.">
-							<f:selectItem id="selecioneCodIncSIND" itemLabel="Selecione..." />
+							requiredMessage="O código de incidência de contribuição sindical é obrigatório.">							
 							<f:selectItems 
 								id="comboCodIncSIND"
 								value="#{rubricaESocialTCEFormBean.comboCodigoSindicato}" 
 								var="item"
 								itemLabel="#{item.codigo} - #{item.descricao}" 
 								itemValue="#{item}" />
-						</h:selectOneMenu>
+						</rich:select>
 					</div>
 				</div>
 				

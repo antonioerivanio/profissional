@@ -11,8 +11,9 @@ select, option, input, textarea {
 	background-color: #ffffff;
 }
 
-textarea:disabled, input:not ([type] ):disabled, input[type="color" i]:disabled,
-	input[type="date" i]:disabled, input[type="datetime" i]:disabled, input[type="datetime-local"
+textarea:disabled, input:not 
+	 ([type] ):disabled, input[type="color" i]:disabled, input[type="date"
+	i]:disabled, input[type="datetime" i]:disabled, input[type="datetime-local"
 	i]:disabled, input[type="email" i]:disabled, input[type="month" i]:disabled,
 	input[type="password" i]:disabled, input[type="number" i]:disabled,
 	input[type="search" i]:disabled, input[type="tel" i]:disabled, input[type="text"
@@ -235,7 +236,7 @@ body {
 	width: 368px;
 	height: 121px;
 	display: block;
-	background: url(../img/logo-srh.png) 0 0 no-repeat;
+	background: url(../img/logo-srh.svg) 0 0 no-repeat;
 	text-indent: -9000px;
 }
 
@@ -249,7 +250,6 @@ body {
 	position: absolute;
 	right: 29px;
 	top: 20px;
-	
 }
 
 .login-topo .logo-tce {
@@ -266,13 +266,18 @@ body {
 
 .topo .login-box {
 	position: absolute;
-	border: 1px solid #bdbdbd;
-	background-color: #f6f6f6;
+	border: 1px solid #dadada;
+	background-color: #fff;
 	right: 13px;
-	bottom: 30px;
-	padding: 8px;
+	bottom: 33px;
+	padding: 10px;
 	border-radius: 8px;
 	overflow: auto;
+}
+
+.topo .login-box #login-form {
+	display: flex;
+	align-items: center;
 }
 
 .topo .login-box p {
@@ -281,7 +286,17 @@ body {
 
 .topo .login-box p, .topo .login-box span {
 	font-size: 12px;
+	color: #505050;
+}
+
+.topo .login-box p, .topo .login-box span.user {
+	/* text-transform: capitalize; */
+}
+
+.topo .login-box a span {
 	color: #1c5ba7;
+	text-transform: uppercase;
+	font-weight: bold;
 }
 
 .topo .login-box a {
@@ -289,8 +304,6 @@ body {
 	color: #505050;
 	margin-left: 10px;
 	display: block;
-	padding-right: 15px;
-	background: url(../img/ico-logout.png) right 3px no-repeat;
 	text-decoration: none;
 }
 
@@ -312,14 +325,17 @@ body {
 }
 
 .menu-principal ul li {
-	border: 1px solid #b7b7b7;
 	float: left;
-	margin-right: 4px;
-	background: #fff url(../img/bg-menu.png) 0 bottom repeat-x;
+	margin-right: 5px;
+	background: #fff;
 	border-radius: 10px;
 	width: 170px;
 	height: 42px;
 	overflow: hidden;
+}
+
+#form-menu-template>ul>li {
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.25);
 }
 
 .menu-principal ul li a {
@@ -349,8 +365,7 @@ body {
 	border: none;
 	margin: 0;
 	background: none;
-	border-radius: 0;
-	border-bottom: 1px dotted #b7b7b7;
+	border-radius: 0;	
 	width: auto;
 	height: auto;
 }
@@ -358,7 +373,7 @@ body {
 .menu-principal ul li ul li a {
 	font-weight: normal;
 	font-size: 12px;
-	padding: 5px 8px;
+	padding: 6px 8px;
 	background: none;
 }
 
@@ -447,7 +462,7 @@ body {
 .titulo-pagina h2 {
 	color: #1c5ba7;
 	font-size: 16px;
-	padding: 8px 10px;
+	padding: 9px 10px 8px 10px;
 }
 
 .label-campos-obrigarotios {
@@ -472,16 +487,17 @@ body {
 }
 
 .infoMessage {
-     color: blue;
-     font-weight: bold;
-     margin-left: 12px; 
-     margin-bottom: 20px;
+	color: blue;
+	font-weight: bold;
+	margin-left: 12px;
+	margin-bottom: 20px;
 }
+
 .errorMessage {
-     color: red;
-     font-weight: bold;
-     margin-left: 12px; 
-     margin-bottom: 20px;
+	color: red;
+	font-weight: bold;
+	margin-left: 12px;
+	margin-bottom: 20px;
 }
 
 .formularios {
@@ -503,13 +519,21 @@ body {
 	float: left;
 }
 
-.formularios fieldset, .box-border {
-	border: 1px solid #c6c6c6;
-	padding: 15px 15px 0px 15px;
-	padding-right: 0;
+.box-border {
+	border: 1px solid #d5d5d5;
+	padding: 15px 0px 0px 15px;
 	overflow: auto;
 	margin-bottom: 20px;
 	min-height: 300px;
+	box-sizing: border-box;
+}
+
+.formularios fieldset {
+	border: 1px solid #d5d5d5;
+	padding: 15px 0px 0px 15px;
+	overflow: auto;
+	margin-bottom: 10px;
+	min-height: auto;
 	box-sizing: border-box;
 }
 
@@ -521,7 +545,7 @@ body {
 }
 
 .formularios .input-box, .formularios .textarea-box, .formularios .radios-group,
-	.formularios .checkbox-group {
+	.formularios .checkbox-group, .formularios .select-box {
 	float: left;
 	min-height: 35px;
 	width: 100%;
@@ -604,14 +628,6 @@ body {
 
 .formularios .radio-box table {
 	border-spacing: 0;
-}
-
-.formularios .select-box {
-	float: left;
-	min-height: 31px;
-	width: 100%;
-	position: relative;
-	margin-bottom: 20px;
 }
 
 .formularios .select-box .conteiner {
@@ -1039,15 +1055,15 @@ body {
 .bt-padrao {
 	border: 1px solid #195297;
 	font-size: 14px;
-	font-weight: bold;
 	color: #fff;
-	padding: 7px 15px 6px 15px;
+	padding: 8px 15px 8px 15px;
 	background: #195297;
 	border-radius: 4px;
 	cursor: pointer;
 	display: block;
 	margin-bottom: 15px;
 	text-decoration: none;
+	text-transform: uppercase;	
 }
 
 .bt-padrao:hover {
@@ -1108,14 +1124,9 @@ body {
 }
 
 #login-form #relogio>img {
-	width: 15px;
-	vertical-align: middle;
-	margin-right: 2px;
-}
-
-#login-form #relogio>span {
-	vertical-align: middle;
-	font-weight: bold;
+	width: 13px;
+    vertical-align: text-top;
+    margin-right: 2px;
 }
 
 #countdown {
@@ -1149,7 +1160,7 @@ body {
 }
 
 /* Modal/Popup */
-#modalRenovaSessao, #modalRedirecionaLogin{
+#modalRenovaSessao, #modalRedirecionaLogin {
 	float: left;
 }
 
@@ -1246,7 +1257,6 @@ body {
 	z-index: 1;
 }
 
-
 /* Panel e tooltip */
 .tooltip {
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.51);
@@ -1265,14 +1275,14 @@ body {
 /* Paginação/Scrooler */
 .rf-ds {
 	display: flex !important;
-    width: 100% !important;
-    justify-content: center !important;
-    position: relative;
-    left: -1px;
-    margin-top: 1px;
+	width: 100% !important;
+	justify-content: center !important;
+	position: relative;
+	left: -1px;
+	margin-top: 1px;
 }
 
-.rf-ds > * {	
+.rf-ds>* {
 	flex: 1 1 0;
 	padding: 7px 0px !important;
 	margin: 0 !important;
@@ -1287,7 +1297,7 @@ body {
 	background: none !important;
 	color: #195297 !important;
 	transition: all .2s;
-	font-weight: bold !important;	
+	font-weight: bold !important;
 }
 
 .rf-ds-btn:hover {
@@ -1297,7 +1307,7 @@ body {
 
 .rf-ds-dis {
 	color: #bbb !important;
-	background: #a6b0bd1c !important;	
+	background: #a6b0bd1c !important;
 	border: .1px solid #eee !important;
 }
 
@@ -1321,10 +1331,65 @@ body {
 	background-color: #1952970d !important;
 }
 
-.rf-plhdr{
-	color:#afafaf !important;
+.rf-plhdr {
+	color: #afafaf !important;
 }
 
+/* Select */
+.rf-sel {
+	width: 100%;
+}
+
+.rf-sel-cntr {
+	box-sizing: border-box;
+	display: flex !important;
+	align-items: center;
+}
+
+.rf-sel-inp {
+	background: none !important;
+	padding: 8px 0px 6px 6px !important;
+	font-size: 12px !important;
+	color: #343434 !important;
+}
+
+.rf-sel-btn {
+	background: none !important;
+	border: none !important;
+	margin: 0 !important;
+	padding: 5px;
+}
+
+.rf-sel-lst-cord {
+	max-width: 100%;
+}
+
+.rf-sel-lst-dcrtn {
+	border: none !important;
+}
+
+.rf-sel-lst-scrl {
+	/*width: 500px !important;*/
+	
+}
+
+.rf-sel-opt, .rf-sel-opt-dis {
+	padding: 10px !important;
+	font-size: 14px !important;
+	border: none !important;
+	white-space: normal !important;
+	line-height: 20px;
+	box-sizing: border-box;
+}
+
+.rf-sel-shdw {
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+	padding: 0px !important;
+}
+
+.rf-sel-shdw-l, .rf-sel-shdw-r, .rf-sel-shdw-b {
+	display: none !important;
+}
 
 /* eSocial */
 .vigencia-msg-alerta {
@@ -1349,4 +1414,3 @@ body {
 	right: 35px;
 	top: 100px;
 }
-
