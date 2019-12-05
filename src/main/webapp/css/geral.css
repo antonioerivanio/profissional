@@ -268,7 +268,7 @@ body {
 	position: absolute;
 	border: 1px solid #dadada;
 	background-color: #fff;
-	right: 13px;
+	right: 14px;
 	bottom: 33px;
 	padding: 10px;
 	border-radius: 8px;
@@ -291,6 +291,7 @@ body {
 
 .topo .login-box p, .topo .login-box span.user {
 	/* text-transform: capitalize; */
+	
 }
 
 .topo .login-box a span {
@@ -365,7 +366,7 @@ body {
 	border: none;
 	margin: 0;
 	background: none;
-	border-radius: 0;	
+	border-radius: 0;
 	width: auto;
 	height: auto;
 }
@@ -500,10 +501,6 @@ body {
 	margin-bottom: 20px;
 }
 
-.formularios {
-	
-}
-
 .col-50 {
 	width: 50%;
 	float: left;
@@ -542,6 +539,11 @@ body {
 	font-weight: bold;
 	color: #505050;
 	padding: 0 5px;
+}
+
+.formularios fieldset fieldset {
+	min-height: auto;
+	width: max-content;
 }
 
 .formularios .input-box, .formularios .textarea-box, .formularios .radios-group,
@@ -1052,47 +1054,30 @@ body {
 /* FIM TAMANHOS INPUTS  */
 
 /* INICIO BOTOES */
-.bt-padrao {
+.bt-padrao, .bt-voltar {
 	border: 1px solid #195297;
-	font-size: 14px;
+	font-size: 13px;
 	color: #fff;
-	padding: 8px 15px 8px 15px;
+	padding: 8px 12px;
 	background: #195297;
 	border-radius: 4px;
 	cursor: pointer;
 	display: block;
 	margin-bottom: 15px;
 	text-decoration: none;
-	text-transform: uppercase;	
+	text-transform: uppercase;
+	transition: background 0.2s ease;
 }
 
-.bt-padrao:hover {
+.bt-padrao:hover, .bt-voltar:hover {
 	background: #10396c;
-}
-
-.bt-voltar {
-	border: 1px solid #195297;
-	font-size: 14px;
-	font-weight: bold;
-	color: #fff;
-	padding: 7px 15px 6px 15px;
-	background: #195297;
-	border-radius: 4px;
-	cursor: pointer;
-	display: block;
-	text-decoration: none;
-	text-align: center;
-}
-
-.bt-voltar:hover {
-	background-color: #10396c;
 }
 
 .bt-conteiner {
 	margin-top: 15px;
 }
-
 /* FIM BOTOES */
+
 .msg-dev-div {
 	background-image: url("../img/ico-dev.png");
 	background-repeat: no-repeat;
@@ -1125,8 +1110,8 @@ body {
 
 #login-form #relogio>img {
 	width: 13px;
-    vertical-align: text-top;
-    margin-right: 2px;
+	vertical-align: text-top;
+	margin-right: 2px;
 }
 
 #countdown {
@@ -1413,4 +1398,55 @@ body {
 	position: absolute;
 	right: 35px;
 	top: 100px;
+}
+
+.pagina-eventos-esocial p {
+	font-size: 14px;
+ 	margin-bottom: 18px;
+}
+
+.pagina-eventos-esocial p.subtitulo {
+	font-size: 15px;
+	margin-top: 5px;
+ 	margin-bottom: 30px;
+}
+
+.pagina-eventos-esocial p > span {
+	font-weight: bold;
+    font-size: 14px;
+    color: #404040;
+}
+
+.pagina-eventos-esocial ul {
+	margin-left: 30px;
+	margin-bottom: 20px;
+ 	list-style-type: none;
+}
+
+.pagina-eventos-esocial li, .pagina-eventos-esocial a{
+	font-size: 14px;
+}
+
+.pagina-eventos-esocial a {
+	text-decoration: none;
+	font-weight: bold;
+	color: #1c5ba7;
+}
+
+/* telas de consulta */
+.rf-dt-c {
+	position: relative;
+}
+
+.rf-dt-c label {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	display: block;
+}
+
+.rf-dt-c label:hover {
+	cursor: pointer;
 }
