@@ -3,34 +3,49 @@ jQuery(document).ready(function($) {
     
     //  INICIO EFEITOS MENU PRINCIPAL
     
-    $(".menu-principal li a").click(function(){
-        
-        if( $(this).parent().find(".sub-menu").hasClass("menu-aberto")) {
+	var idMenuSelecionado;
+	
+    $(".menu-principal li a").click(function(){ 
+    	
+    	if( $(this).parent().find(".sub-menu").hasClass("menu-aberto")) {
+    		
+    		idMenuSelecionado = undefined;
             
             $(this).parent().animate({
                 height: 42
             }, 450,function(){                    
                 $(this).parent().find(".sub-menu").slideUp();
+                $(this).parent().find(".sub-menu").removeClass("menu-aberto");
             });
-            
-            $(this).parent().find(".sub-menu").removeClass("menu-aberto");
             
         }
         else{
             
             if($(this).parent().hasClass("third-menu")) {
                 
-                $(this).parent().find(".sub-sub-menu").slideToggle();
-                
-                $(this).toggleClass("sub-menu-aberto")
+                $(this).parent().find(".sub-sub-menu").slideToggle();                
+                $(this).toggleClass("sub-menu-aberto");
                 
             }else {
-                
-                $(this).parent().css("height","auto");
-            
-                $(this).parent().find(".sub-menu").slideDown();
-                
-                $(this).parent().find(".sub-menu").addClass("menu-aberto");
+            	
+            	var element = $(this);
+            	
+            	element.parent().css("height","auto");
+            	element.parent().find(".sub-menu").slideDown();
+            	element.parent().find(".sub-menu").addClass("menu-aberto");
+            	
+            	if(idMenuSelecionado || idMenuSelecionado != "#" + element.parent().attr('id')){
+            		 $(idMenuSelecionado).animate({
+                         height: 42
+                     }, 450,function(){                    
+                         $(idMenuSelecionado).find(".sub-menu").slideUp();
+                         $(idMenuSelecionado).find(".sub-menu").removeClass("menu-aberto");                         
+                     });   
+            	}
+            	
+            	setTimeout(function(){
+            		idMenuSelecionado = "#" + element.parent().attr('id');
+            	}, 500);
                 
             } 
             
