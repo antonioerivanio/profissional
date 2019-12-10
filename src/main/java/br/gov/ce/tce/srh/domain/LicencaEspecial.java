@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_DIREITOLICENCAESP", schema="SRH")
+@Table(name="TB_DIREITOLICENCAESP", schema=DatabaseMetadata.SCHEMA_SRH)
 public class LicencaEspecial extends BasicEntity<Long> implements Serializable {
 
     @Id

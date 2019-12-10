@@ -2,7 +2,7 @@
 	padding: 0;
 	margin: 0;
 	font-family: arial;
-	font-size: 12px;
+	/* font-size: 12px; */
 	/*   color: #505050; */
 }
 
@@ -204,6 +204,7 @@ body {
 	padding: 8px 6px;
 	width: 150px;
 	margin: 0 10px 0 0;
+	border-radius: 4px;
 }
 
 .login-corpo .box-inputs {
@@ -466,20 +467,21 @@ body {
 
 .titulo-pagina {
 	color: #1c5ba7;
-	border: 1px solid #d5d5d5;
 	background-color: #f6f6f6;
 	margin-bottom: 13px;
+	border-radius: 4px;
 }
 
 .titulo-pagina h2 {
 	color: #1c5ba7;
 	font-size: 16px;
-	padding: 9px 10px 8px 10px;
+	padding: 10px;
 }
 
 .label-campos-obrigarotios {
 	color: #555;
 	float: right;
+	font-size: 12px;
 }
 
 .mensagem-alerta {
@@ -503,6 +505,7 @@ body {
 	font-weight: bold;
 	margin-left: 12px;
 	margin-bottom: 20px;
+	font-size: 12px;
 }
 
 .errorMessage {
@@ -510,6 +513,7 @@ body {
 	font-weight: bold;
 	margin-left: 12px;
 	margin-bottom: 20px;
+	font-size: 12px;
 }
 
 .col-50 {
@@ -564,7 +568,7 @@ body {
 .formularios .input-box label, .formularios .textarea-box label,
 	.formularios .radios-group h3, .formularios .radios-group label,
 	.formularios .select-box label, .formularios .data-box label,
-	.formularios .checkbox-box h3 {
+	.formularios .checkbox-box h3, .foto-pessoal label {
 	font-size: 12px;
 	color: #505050;
 	margin-bottom: 5px;
@@ -576,6 +580,7 @@ body {
 	border: 1px solid #c5c5c5;
 	margin-right: 15px;
 	margin-bottom: 5px;
+	border-radius: 4px;
 }
 
 .formularios .input-box input {
@@ -585,12 +590,14 @@ body {
 	width: 100%;
 	padding: 8px 6px;
 	box-sizing: border-box;
+	border-radius: 4px;
 }
 
 .formularios .textarea-box .conteiner {
 	margin-right: 15px;
 	border: 1px solid #c5c5c5;
 	padding: 8px 6px;
+	border-radius: 4px;
 }
 
 .formularios .textarea-box textarea {
@@ -601,6 +608,7 @@ body {
 	overflow: auto;
 	height: 80px;
 	background: none;
+	border-radius: 4px;
 }
 
 .formularios .radios-group .conteiner, .formularios .checkbox-group .conteiner
@@ -610,6 +618,7 @@ body {
 	margin-right: 15px;
 	overflow: auto;
 	background: white;
+	border-radius: 4px;
 }
 
 .formularios .radios-group .radio-box, .formularios .checkbox-group .checkbox-box
@@ -642,6 +651,7 @@ body {
 	margin-right: 15px;
 	margin-bottom: 5px;
 	overflow: auto;
+	border-radius: 4px;
 }
 
 .formularios .select-box select {
@@ -650,6 +660,7 @@ body {
 	font-size: 12px;
 	color: #343434;
 	border: 1px solid #c5c5c5;
+	border-radius: 4px;
 }
 
 .formularios .select-box select:disabled, .formularios .input-box input:disabled
@@ -1190,6 +1201,10 @@ body {
 	font-size: 14px;
 }
 
+.rf-pp-cnt-scrlr {
+	background: #fff !important;
+}
+
 /* Tabs */
 .rf-tbp {
 	display: table !important;
@@ -1208,6 +1223,7 @@ body {
 
 .rf-tab-hdr {
 	padding: 8px 10px !important;
+	border-radius: 4px 4px 0 0;
 }
 
 .rf-tab-lbl {
@@ -1384,6 +1400,11 @@ body {
 }
 
 /* eSocial */
+@font-face {
+  font-family: 'eSocialFont';
+  src: url('../font/BreeSerif-Regular.ttf')  format('truetype');
+}
+
 .vigencia-msg-alerta {
 	position: relative;
 	bottom: 16px;
@@ -1397,14 +1418,18 @@ body {
 }
 
 .identificador-esocial {
-	font-weight: bold;
+	font-family: eSocialFont;	
 	color: #4BD07B;
+	font-size: 17px;
+	line-height: 0px;
+	font-weight: normal;
 }
 
 .identificador-esocial-legenda {
 	position: absolute;
 	right: 35px;
 	top: 100px;
+	font-size: 12px;
 }
 
 .pagina-eventos-esocial p {
@@ -1443,6 +1468,7 @@ body {
 /* telas de consulta */
 .rf-dt-c {
 	position: relative;
+	font-size: 12px !important;
 }
 
 .rf-dt-c label {
@@ -1456,4 +1482,16 @@ body {
 
 .rf-dt-c label:hover {
 	cursor: pointer;
+}
+
+.modalInstrucoesVigencia p{
+	padding: 10px 5px;
+	text-align: left;
+	font-size: 14px;
+}
+
+.modalInstrucoesVigencia p > a{
+	text-decoration: none;
+	font-weight: bold;
+	color: #1c5ba7;
 }

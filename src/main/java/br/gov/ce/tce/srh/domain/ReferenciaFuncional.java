@@ -30,7 +30,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_REFERENCIAFUNCIONAL", schema="SRH")
+@Table(name="TB_REFERENCIAFUNCIONAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class ReferenciaFuncional extends BasicEntity<Long> implements Serializable {
 
 	@Id

@@ -44,10 +44,11 @@
 					</rich:column>
 					<rich:column id="colExcluir">
 						<f:facet name="header">EXCLUIR</f:facet>
-						<a4j:commandLink id="excluir" value="Excluir" action="#{categoriaFuncionalListBean.excluir}" styleClass="ico-delete"
-						onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" execute="@this" render="form">
+						<a4j:commandLink id="excluir" value="Excluir" styleClass="ico-delete"
+						onclick="alertaExclusao()" execute="@this">
 							<f:setPropertyActionListener target="#{categoriaFuncionalListBean.categoriaFuncional}" value="#{item}" />
 						</a4j:commandLink>
+						<a4j:jsFunction name="excluir" action="#{categoriaFuncionalListBean.excluir}" render="form"/>
 					</rich:column>
 				</rich:dataTable>
 				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>

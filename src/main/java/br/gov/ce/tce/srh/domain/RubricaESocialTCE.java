@@ -18,7 +18,7 @@ import br.gov.ce.tce.srh.enums.TipoRubrica;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="ESOCIAL_RUBRICACONFIG", schema="SRH")
+@Table(name="ESOCIAL_RUBRICACONFIG", schema=DatabaseMetadata.SCHEMA_SRH)
 public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable {
 	
 	@Id

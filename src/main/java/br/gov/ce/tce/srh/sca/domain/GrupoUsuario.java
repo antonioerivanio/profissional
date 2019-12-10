@@ -12,8 +12,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.BatchSize;
 
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
+
 @Entity
-@Table(name="GRUPOUSUARIO", schema="SCA")
+@Table(name="GRUPOUSUARIO", schema=DatabaseMetadata.SCHEMA_SCA)
 @BatchSize(size=1000)
 public class GrupoUsuario implements Serializable{
 	

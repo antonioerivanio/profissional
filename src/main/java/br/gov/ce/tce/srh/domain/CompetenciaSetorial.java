@@ -24,7 +24,7 @@ import br.gov.ce.tce.srh.sapjava.domain.Setor;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_COMPETENCIASETORIAL", schema="SRH")
+@Table(name="TB_COMPETENCIASETORIAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class CompetenciaSetorial extends BasicEntity<Long> implements Serializable {
 	
 	@Id

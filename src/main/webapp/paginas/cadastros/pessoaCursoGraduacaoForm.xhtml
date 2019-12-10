@@ -16,7 +16,7 @@
 			if (nome.length > 2) {
 				window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 		}
 		</script>
@@ -305,13 +305,12 @@
                         </f:facet>
                         <a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{pessoalCursoGraduacaoFormBean.excluirCompetencia}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
-                        			   execute="@this"
-                        			   render="form">
+                        			   onclick="alertaExclusao()" 
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{pessoalCursoGraduacaoFormBean.competenciaGraduacao}" value="#{item}" />
                         </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{pessoalCursoGraduacaoFormBean.excluirCompetencia}" render="form"/>
                     </h:column>
 
     			</h:dataTable>

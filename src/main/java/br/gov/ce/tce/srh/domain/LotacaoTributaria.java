@@ -15,7 +15,7 @@ import br.gov.ce.tce.srh.enums.TipoLotacaoTributaria;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="ESOCIAL_TRIBUTARIO", schema="SRH")
+@Table(name="ESOCIAL_TRIBUTARIO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class LotacaoTributaria extends BasicEntity<Long> implements Serializable {
 	
 	@Id

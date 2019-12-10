@@ -90,13 +90,12 @@
                         </f:facet>
                         <a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{tipoMovimentoBean.excluir}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
-                        			   execute="@this"
-									   render="form">
+                        			   onclick="alertaExclusao()" 
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{tipoMovimentoBean.entidade}" value="#{item}" />
                         </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{tipoMovimentoBean.excluir}" render="form"/>
                     </h:column>
 
     			</rich:dataTable>

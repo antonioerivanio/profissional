@@ -84,13 +84,12 @@
 						<f:facet id="lblExcluir" name="header">EXCLUIR</f:facet>
 						<a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{competenciaSetorialListBean.excluir}" 
                         			   styleClass="ico-delete" 
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-                        			   execute="@this"
-                        			   render="form">
+                        			   onclick="alertaExclusao()"
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{competenciaSetorialListBean.entidade}" value="#{item}" />
                         </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{competenciaSetorialListBean.excluir}" render="form"/>
 					</rich:column>
 				</rich:dataTable>
 				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>

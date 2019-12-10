@@ -15,7 +15,7 @@ import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_ATRIBUICAOSETOR", schema="SRH")
+@Table(name="TB_ATRIBUICAOSETOR", schema=DatabaseMetadata.SCHEMA_SRH)
 public class AtribuicaoSetor extends BasicEntity<Long> implements Serializable{
 
 	

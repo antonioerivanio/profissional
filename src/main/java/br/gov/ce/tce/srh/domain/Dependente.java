@@ -20,7 +20,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_DEPENDENTE", schema="SRH")
+@Table(name="TB_DEPENDENTE", schema=DatabaseMetadata.SCHEMA_SRH)
 @NamedQueries({
 	@NamedQuery(name = "Dependente.findAll", query = "SELECT d FROM Dependente d ORDER BY d.responsavel.nomeCompleto")
 })

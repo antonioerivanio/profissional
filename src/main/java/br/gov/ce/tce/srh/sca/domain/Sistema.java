@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
+
 @Entity
-@Table(name="SISTEMA", schema="SCA")
+@Table(name="SISTEMA", schema=DatabaseMetadata.SCHEMA_SCA)
 public class Sistema {
 
 	@Id

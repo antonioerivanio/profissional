@@ -18,7 +18,7 @@ import br.gov.ce.tce.srh.enums.Carreira;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="TB_CARREIRAPESSOAL", schema="SRH")
+@Table(name="TB_CARREIRAPESSOAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class CarreiraPessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Id

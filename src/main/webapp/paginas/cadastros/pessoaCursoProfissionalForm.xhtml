@@ -15,7 +15,7 @@
 				if (nome.length > 2) {
 					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}
 		</script>
@@ -244,12 +244,11 @@
                         </f:facet>
                         <a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{pessoalCursoProfissionalFormBean.excluirCompetencia}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-                        			   execute="@this"
-                        			   render="form">
+                        			   onclick="alertaExclusao()"
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{pessoalCursoProfissionalFormBean.competenciaCurso}" value="#{item}" />
+                        	<a4j:jsFunction name="excluir" action="#{pessoalCursoProfissionalFormBean.excluirCompetencia}" render="form"/>
                         </a4j:commandLink>
                     </h:column>
 
@@ -368,12 +367,11 @@
                         </f:facet>
                         <a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{pessoalCursoProfissionalFormBean.excluirServidor}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
-                        			   execute="@this"
-                        			   render="form">
+                        			   onclick="alertaExclusao2()" 
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{pessoalCursoProfissionalFormBean.entidade}" value="#{item}" />
+                        	<a4j:jsFunction name="excluir2" action="#{pessoalCursoProfissionalFormBean.excluirServidor}" render="form"/>
                         </a4j:commandLink>
                     </h:column>
 

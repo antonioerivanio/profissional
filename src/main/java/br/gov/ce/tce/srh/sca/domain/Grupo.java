@@ -12,8 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
+
 @Entity
-@Table(name="GRUPO", schema="SCA")
+@Table(name="GRUPO", schema=DatabaseMetadata.SCHEMA_SCA)
 public class Grupo implements Serializable {
 
 	private static final long serialVersionUID = 937394715296920532L;

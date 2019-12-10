@@ -14,6 +14,9 @@
         <title>SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceara</title>
         <link rel="shortcut icon" href="/srh/favicon.ico" />
         <link rel="stylesheet" type="text/css" media="all" href="/srh/css/geral.css?v=#{dateGetTime}" />
+        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/sweetalert2.min.css"/>
+        <script type="text/javascript" src="/srh/js/sweetalert2.min.js"/>
+        <script type="text/javascript" src="/srh/js/sweetAlertSRH.js"/>
         <script type="text/javascript" src="/srh/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="/srh/js/tce-js-effects.js"></script>
         <script type="text/javascript" src="/srh/js/jquery.maskMoney.js"></script>
@@ -46,40 +49,6 @@
 
                     <div class="corpo-conteiner" >
                     
-                    	<rich:popupPanel id="modalRenovaSessao" resizeable="false" height="220" width="620">
-				            
-				            <f:facet name="header" class="header">
-				                <span>Renovação de sessão</span>
-				            </f:facet>
-							
-							<div class="sessao-expirada-msg">
-								<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão irá expirar em alguns instantes. Clique em OK para renová-la.</span>				
-							</div>
-							
-							<div class="modal-actions">						
-								<a href="#" onclick="dontKeepSession();" class="bt-padrao bt-dialog-sessao">Cancelar</a>
-								<a href="#" onclick="keepSession();" class="bt-padrao bt-dialog-sessao">OK</a>
-							</div>							
-							
-						</rich:popupPanel>
-						
-						<rich:popupPanel id="modalRedirecionaLogin" resizeable="false" height="220" width="620">
-				            
-				            <f:facet name="header" class="header">
-				                <span>Fazer novo login</span>
-				            </f:facet>
-													
-							<div class="sessao-expirada-msg">
-								<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão expirou. Clique em OK para fazer um novo login.</span>				
-							</div>
-							
-							
-							<div class="modal-actions">													
-								<a href="#{request.contextPath}/login.faces" class="bt-padrao bt-dialog-sessao">OK</a>
-							</div>							
-							
-						</rich:popupPanel>
-
                         <div class="titulo-pagina center">
 
                             <h2>

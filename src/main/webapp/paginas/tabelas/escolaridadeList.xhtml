@@ -80,13 +80,12 @@
                         <a4j:commandLink id="excluir"
                         			   name="excluir"
                         			   value="Excluir"
-                        			   action="#{escolaridadeBean.excluir}"
                         			   styleClass="ico-delete" 
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" 
-                        			   execute="@this"
-                        			   render="form">
+                        			   onclick="alertaExclusao()" 
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{escolaridadeBean.entidade}" value="#{item}" />
                         </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{escolaridadeBean.excluir}" render="form"/>
                     </h:column>
 				</rich:dataTable>
 				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>

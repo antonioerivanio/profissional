@@ -57,6 +57,7 @@ function mantemSomenteNumeros(obj) {
 function validarPessoa() {
 	cpf = document.getElementById('form:cpf').value;
 	if(cpf==""){
-		alert("Antes de preencher este campo, informe o nome e clique em pesquisar para preencher os dados pessoais.");
+		alerta("Antes de preencher este campo, informe o nome e clique em pesquisar para preencher os dados pessoais.");
 	}
 }
+

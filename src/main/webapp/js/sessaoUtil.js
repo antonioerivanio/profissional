@@ -5,6 +5,8 @@ var checkSessionId;
 var segundos;
 var minutos;
 var renovaSessao = true;
+var mostrandoModalRenovaSessao = false;
+var mostrandoModalRedirecionaLogin = false;
            
 function inicializaVariaveis() {
 	startValue = 30;
@@ -26,15 +28,16 @@ function checkSession() {
     if ( isSessaoValida() ) {    	
     	checkSessionId = setTimeout('checkSession()', 1000);
     	
-        if ((getTempoRestanteDaSessao() <= tempoParaAlertarOFimDaSessao()) && renovaSessao) {
-        	RichFaces.ui.PopupPanel.showPopupPanel('modalRenovaSessao');
+        if ((getTempoRestanteDaSessao() <= tempoParaAlertarOFimDaSessao()) && renovaSessao && !mostrandoModalRenovaSessao) {
+        	modalRenovaSessao();
         	timeout = setTimeout ("handleTimeout()", 1000);
+        	mostrandoModalRenovaSessao = true;
         }
         
     } else {
+    	mostrandoModalRenovaSessao = false;
     	clearTimeout(checkSessionId);
-    	RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
-    	RichFaces.ui.PopupPanel.showPopupPanel('modalRedirecionaLogin');
+    	modalRedirecionaLogin();    	
     }
 }
 
@@ -75,8 +78,7 @@ function handleTimeout () {
 		timeout = setTimeout("handleTimeout()", 1000);
 	} else {
 		clearTimeout(timeout);
-		RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
-		RichFaces.ui.PopupPanel.showPopupPanel('modalRedirecionaLogin');	
+		modalRedirecionaLogin(); 
 	}
 }
 
@@ -87,7 +89,6 @@ function keepSession() {
 		url:'#{request.contextPath}/ping.html'			
 	}).done(function(){
 		console.log("Concluiu a requisicao para manter sessao");
-		RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
 	});
 }
 
@@ -97,7 +98,6 @@ function getLocalTime() {
 
 function dontKeepSession() {	
 	renovaSessao = false;
-	RichFaces.ui.PopupPanel.hidePopupPanel('modalRenovaSessao');
 }
 
 function setCookie(cname, cvalue) {

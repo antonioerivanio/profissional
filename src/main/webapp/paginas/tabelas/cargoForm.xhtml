@@ -35,7 +35,7 @@
 				</div>
 				
 				<div class="input-box box-15">
-					<label for="">Código * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Código * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="codigoEsocial"
 							value="#{cargoFormBean.entidade.codigoEsocial}" 
@@ -54,7 +54,7 @@
                 </ui:include>
 
 				<div class="input-box box-25">
-					<label for="">Nomenclatura * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Nomenclatura * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="nomenclatura"
 							value="#{cargoFormBean.entidade.nomenclatura}" maxlength="100"
@@ -63,7 +63,7 @@
 				</div>
 				
 				<div class="input-box box-10">
-					<label for="">CBO * <span class="identificador-esocial">(e)</span></label>
+					<label for="">CBO * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="cbo" value="#{cargoFormBean.entidade.cbo}"
 							maxlength="6" required="true" requiredMessage="O CBO é obrigatório."
@@ -72,7 +72,7 @@
 				</div>
 				
 				<div class="select-box box-15">
-					<label for="">Acumulação * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Acumulação * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="acumulacao" 
@@ -91,7 +91,7 @@
 				</div>
 
 				<div class="select-box box-30">
-					<label for="">Contagem Especial * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Contagem Especial * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="contagemEsp" 
@@ -110,7 +110,7 @@
 				</div>
 				
 				<div class="select-box box-20">
-					<label for="">Dedicação Exclusiva * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Dedicação Exclusiva * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="dedex" 
@@ -127,7 +127,7 @@
 
 				<fieldset class="fl box-50">
 
-					<legend>Lei <span class="identificador-esocial">(e)</span></legend>
+					<legend>Lei <span class="identificador-esocial">e</span></legend>
 
 					<div class="input-box box-30">
 						<label for="">Lei *</label>
@@ -318,13 +318,12 @@
 							<a4j:commandLink 
 								id="excluirEspecialidade" 
 								value="Excluir"
-								action="#{cargoFormBean.excluirEspecialidade}"
 								styleClass="ico-delete"
-								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-								execute="@this"
-                        		render="form">
+								onclick="alertaExclusao()"
+								execute="@this">
 								<f:setPropertyActionListener target="#{cargoFormBean.entidadeEspecialidade}" value="#{item}" />
 							</a4j:commandLink>
+							<a4j:jsFunction name="excluir" action="#{cargoFormBean.excluirEspecialidade}" render="form"/>
 						</h:column>
 
 					</h:dataTable>
@@ -378,13 +377,12 @@
 							<a4j:commandLink 
 								id="excluirSimbologia" 
 								value="Excluir"
-								action="#{cargoFormBean.excluirSimbologia}"
 								styleClass="ico-delete"
-								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}"
-								execute="@this"
-                        		render="form">
+								onclick="alertaExclusao2()"
+								execute="@this">
 								<f:setPropertyActionListener target="#{cargoFormBean.entidadeSimbolo}" value="#{item}" />
 							</a4j:commandLink>
+							<a4j:jsFunction name="excluir2" action="#{cargoFormBean.excluirSimbologia}" render="form"/>
 						</h:column>
 
 					</h:dataTable>

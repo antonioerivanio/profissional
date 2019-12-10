@@ -29,7 +29,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "TB_REVISAO", schema="SRH")
+@Table(name = "TB_REVISAO", schema=DatabaseMetadata.SCHEMA_SRH)
 @RevisionEntity(RevisaoListener.class)
 public class Revisao extends BasicEntity<Long> implements Serializable, Comparable<Revisao>{
 

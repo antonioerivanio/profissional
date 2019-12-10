@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_SIMBOLO", schema="SRH")
+@Table(name="TB_SIMBOLO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Simbolo extends BasicEntity<Long> implements Serializable {
 
 	@Id

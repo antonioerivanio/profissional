@@ -22,8 +22,10 @@ import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
 
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
+
 @Entity
-@Table(name="USUARIO", schema="SCA")
+@Table(name="USUARIO", schema=DatabaseMetadata.SCHEMA_SCA)
 @NamedQueries({
   @NamedQuery(name = "Usuario.findByUsername", query = "SELECT usu FROM Usuario usu WHERE UPPER(usu.username) = UPPER(:username)")
 })

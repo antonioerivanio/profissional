@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="ESOCIAL_RUBRICA", schema="SRH")
+@Table(name="ESOCIAL_RUBRICA", schema=DatabaseMetadata.SCHEMA_SRH)
 public class RubricaESocial extends BasicEntity<Long> implements Serializable {
 	
 	@Id

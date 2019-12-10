@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_RUBRICA", schema="SRH")
+@Table(name="TB_RUBRICA", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Rubrica extends BasicEntity<Long> implements Serializable {
 
 	@Id

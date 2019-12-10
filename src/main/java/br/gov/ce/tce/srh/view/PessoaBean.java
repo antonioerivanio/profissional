@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,9 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-import javax.servlet.ServletContext;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -44,6 +41,7 @@ import br.gov.ce.tce.srh.domain.TipoLogradouro;
 import br.gov.ce.tce.srh.domain.Uf;
 import br.gov.ce.tce.srh.enums.CategoriaCNH;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CEPService;
 import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.EscolaridadeService;
@@ -99,10 +97,7 @@ public class PessoaBean implements Serializable {
 	private ParametroService parametroService;
 
 	@Autowired
-	private PessoalCategoriaService pessoalCategoriaService;
-
-	@Autowired
-	private LoginBean loginBean;
+	private PessoalCategoriaService pessoalCategoriaService;	
 
 	@Autowired
 	private CEPService cepService;
@@ -118,6 +113,12 @@ public class PessoaBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
+	
+	@Autowired
+	private ImageBean imageBean; 
 
 	private Boolean podeAlterar = null;
 	private Boolean ehServidor = null;
@@ -158,12 +159,14 @@ public class PessoaBean implements Serializable {
 	private void init() {
 		Pessoal flashParameter = (Pessoal)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Pessoal());		
-		if(this.entidade != null) {		
+		imageBean.setFoto(null);
+		
+		if(this.entidade.getId() != null) {		
 			try {
 				if (ehServidor()) {
-					this.entidade = pessoalService.getByCpf(loginBean.getCPFUsuarioLogado());
+					this.entidade = pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf());
 					try {
-						count = pessoalService.count(loginBean.getUsuarioLogado());
+						count = pessoalService.count(authenticationService.getUsuarioLogado());
 						limparListas();
 						flagRegistroInicial = -1;
 
@@ -186,6 +189,7 @@ public class PessoaBean implements Serializable {
 				
 				dependentes = dependenteService.findByResponsavel(entidade.getId());
 				
+				imageBean.setFoto(this.entidade.getFoto());				
 	
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -221,9 +225,7 @@ public class PessoaBean implements Serializable {
 
 		try {
 
-			entidade = pessoalService.salvar(entidade);
-
-//			limpar();			
+			entidade = pessoalService.salvar(entidade);		
 			
 			if(finalizar) {
 				getPessoalRecadastramento().setStatus(1);
@@ -308,14 +310,15 @@ public class PessoaBean implements Serializable {
 
 	public boolean temPermisssaoParaAlterar() {
 		if (podeAlterar == null)
-			podeAlterar = loginBean.anyGranted("ROLE_PESSOA_INSERIR, ROLE_PESSOA_ALTERAR");
+			podeAlterar = authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_INSERIR")
+				|| authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_ALTERAR");
 
 		return podeAlterar;
 	}
 
 	public boolean ehServidor() {
 		if (ehServidor == null)
-			ehServidor = loginBean.anyGranted("ROLE_PESSOA_SERVIDOR");
+			ehServidor = authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR");
 		return ehServidor;
 	}
 	
@@ -329,7 +332,7 @@ public class PessoaBean implements Serializable {
 	
 	public boolean ehProprioCadastro() {
 		try {
-			return loginBean.getCPFUsuarioLogado().equals(entidade.getCpf());
+			return authenticationService.getUsuarioLogado().getCpf().equals(entidade.getCpf());
 		} catch (Exception e) {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}		
@@ -455,11 +458,11 @@ public class PessoaBean implements Serializable {
 
 	public List<Municipio> getComboMunicipioEndereco() {
 		try {
-
-			if (this.comboMunicipioEndereco == null
-					|| !this.comboMunicipioEndereco.get(0).getUf().equals(this.entidade.getUfEndereco()))
-				this.comboMunicipioEndereco = municipioService.findByUF(entidade.getUfEndereco().getId());
-
+			if (entidade.getUfEndereco() != null) {
+				if (this.comboMunicipioEndereco == null || !this.comboMunicipioEndereco.get(0).getUf().equals(this.entidade.getUfEndereco())) {
+					this.comboMunicipioEndereco = municipioService.findByUF(entidade.getUfEndereco().getId());
+				}	
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os municípios. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -469,11 +472,12 @@ public class PessoaBean implements Serializable {
 
 	public List<Municipio> getComboMunicipioNaturalidade() {
 		try {
-
-			if (this.comboMunicipioNaturalidade == null
-					|| !this.comboMunicipioNaturalidade.get(0).getUf().equals(this.entidade.getUf()))
-				this.comboMunicipioNaturalidade = municipioService.findByUF(entidade.getUf().getId());
-
+			
+			if (entidade.getUf() != null) {
+				if (this.comboMunicipioNaturalidade == null	|| !this.comboMunicipioNaturalidade.get(0).getUf().equals(this.entidade.getUf())) {
+					this.comboMunicipioNaturalidade = municipioService.findByUF(entidade.getUf().getId());
+				}	
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os municípios. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -491,7 +495,7 @@ public class PessoaBean implements Serializable {
 			filtro.append(" WHERE 1 = 1 ");
 
 			if (ehServidor()) {
-				filtro.append(" AND upper( cpf ) like '%" + loginBean.getCPFUsuarioLogado() + "%' ");
+				filtro.append(" AND upper( cpf ) like '%" + authenticationService.getUsuarioLogado().getCpf() + "%' ");
 			} else {
 				if (this.cpf != null && !this.cpf.equalsIgnoreCase(""))
 					cpf = SRHUtils.removerMascara(cpf);
@@ -524,14 +528,13 @@ public class PessoaBean implements Serializable {
 			Parametro parametro = parametroService.getByNome("pathImageSRH");
 
 			if (parametro == null)
-				throw new SRHRuntimeException(
-						"Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
+				throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
 
 			// setando o nome da foto
 			setFoto((UploadedFile) event.getNewValue());
-			nomeDoArquivo = SRHUtils.getNomeArquivo(foto.getName()) + "-" + nomeDoArquivo
-					+ SRHUtils.getTipoArquivo(foto.getName());
+			nomeDoArquivo = SRHUtils.getNomeArquivo(foto.getName()) + "-" + nomeDoArquivo + SRHUtils.getTipoArquivo(foto.getName());
 			getEntidade().setFoto(nomeDoArquivo);
+			imageBean.setFoto(nomeDoArquivo);
 
 			// gravando em disco
 			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFoto());
@@ -553,62 +556,7 @@ public class PessoaBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-	}
-
-	public void geraFoto(OutputStream out, Object data) {
-
-		try {
-
-			// pegando o servlet context
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-
-			// pegando o caminho do arquivo no servidor
-			Parametro parametro = parametroService.getByNome("pathImageSRH");
-
-			if (parametro == null)
-				throw new SRHRuntimeException(
-						"Parametro do caminho da imagem nao encontrado na tabela SAPJAVA.FWPARAMETER");
-
-			// pegando a foto
-			InputStream in = null;
-
-			try {
-
-				// pegando a foto
-				if (getEntidade().getFoto() != null && !getEntidade().getFoto().equalsIgnoreCase(""))
-					in = new FileInputStream(parametro.getValor() + getEntidade().getFoto());
-
-			} catch (FileNotFoundException e) {
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
-
-			// pegando a foto DEFAULT
-			if (in == null)
-				in = new FileInputStream(servletContext.getRealPath("//img/" + "sem_imagem.jpg"));
-
-			// Retornando os bytes da foto
-			byte[] buffer = new byte[1024];
-			int n = 0;
-			while ((n = in.read(buffer)) != -1) {
-				out.write(buffer, 0, n);
-				out.flush();
-			}
-
-			out.close();
-
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage("Erro na geração da foto do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na geração da foto do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na geração da foto do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-	}
+	}	
 
 	public void uploadFicha(ValueChangeEvent event) {
 
@@ -647,22 +595,17 @@ public class PessoaBean implements Serializable {
 
 	}
 
-	public String fichaAntiga() {
-
+	public void fichaAntiga() {
 		try {
+			
+			Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
+			String fichaAntiga = parametro.getValor() + entidade.getFicha();
+			InputStream in = new FileInputStream(fichaAntiga);
+			byte[] fichaAntigaBytes = IOUtils.toByteArray(in);
+			relatorioUtil.openPdf(fichaAntigaBytes, fichaAntiga);
 
-			try {
-
-				Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
-				String fichaAntiga = parametro.getValor() + entidade.getFicha();
-				InputStream in = new FileInputStream(fichaAntiga);
-				byte[] fichaAntigaBytes = IOUtils.toByteArray(in);
-				relatorioUtil.openPdf(fichaAntigaBytes, fichaAntiga);
-
-			} catch (FileNotFoundException e) {
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
-
+		} catch (FileNotFoundException e) {
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
@@ -670,12 +613,9 @@ public class PessoaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do arquivo. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	public String formularioDependentes() {
-
+	public void formularioDependentes() {
 		try {
 
 			HashMap<String, Object> parametros = new HashMap<String, Object>();
@@ -690,8 +630,6 @@ public class PessoaBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do formulário. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	private void atualizaNaturalidade() {
@@ -709,7 +647,7 @@ public class PessoaBean implements Serializable {
 		
 	}
 
-	public String buscarCep() {
+	public void buscarCep() {
 
 		try {
 			
@@ -746,32 +684,7 @@ public class PessoaBean implements Serializable {
 		} catch (Exception e) {
 			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-
-	private void limpar() {
-		setEntidade(new Pessoal());
-			
-		this.nome = new String();
-		this.cpf = new String();
-		this.lista = new ArrayList<Pessoal>();
-		this.dependentes = new ArrayList<Dependente>();
-		
-		this.foto = null;
-		this.ficha = null;
-
-		this.comboEstadoCivil = null;
-		this.comboEscolaridade = null;
-		this.comboUf = null;
-		this.comboCategoria = null;
-		this.comboRaca = null;
-	}
-
-	public String limpaTela() {
-		limpar();
-		return "listar";
-	}
+	}	
 
 	public String getNome() {
 		return nome;
@@ -855,7 +768,7 @@ public class PessoaBean implements Serializable {
 			flagRegistroInicial = getPrimeiroDaPagina();
 
 			if (ehServidor()) {
-				setPagedList(pessoalService.search(loginBean.getUsuarioLogado(), flagRegistroInicial,
+				setPagedList(pessoalService.search(authenticationService.getUsuarioLogado(), flagRegistroInicial,
 						dataModel.getPageSize()));
 			} else {
 				setPagedList(pessoalService.search(nome, cpf, flagRegistroInicial, dataModel.getPageSize()));

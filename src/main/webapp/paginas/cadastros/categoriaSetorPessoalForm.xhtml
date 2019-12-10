@@ -16,7 +16,7 @@
 			if (nome.length > 2) {
 				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 		}
 
@@ -26,14 +26,14 @@
 			responsavel = document.getElementById('form:nomeRepresentante').value;
 
 			if (setor.length == 0) {
-				alert('Selecione o funcionario.');
+				alerta('Selecione o funcionario.');
 				return;
 			}
 
 			if (responsavel.length > 2) {
 				window.open("/srh/paginas/funcional/representacaoFuncionalConsulta.faces?parametro=" + responsavel + ";" + setor,"mywindow2","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 
 		}

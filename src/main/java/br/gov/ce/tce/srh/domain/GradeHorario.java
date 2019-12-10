@@ -15,7 +15,7 @@ import br.gov.ce.tce.srh.enums.SimNao;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_GRADE_HORARIO", schema="SRH")
+@Table(name="TB_GRADE_HORARIO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class GradeHorario extends BasicEntity<Long> implements Serializable {
 	
 	@Id

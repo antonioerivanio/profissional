@@ -32,7 +32,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Audited
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_FUNCIONAL", schema="SRH")
+@Table(name="TB_FUNCIONAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Funcional extends BasicEntity<Long> implements Serializable {
 
 	@Id

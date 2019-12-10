@@ -23,7 +23,7 @@ import br.gov.ce.tce.srh.sapjava.domain.Setor;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_REPRESENTACAOSETOR", schema="SRH")
+@Table(name="TB_REPRESENTACAOSETOR", schema=DatabaseMetadata.SCHEMA_SRH)
 public class RepresentacaoSetor extends BasicEntity<Long> implements Serializable {
 
     @Id

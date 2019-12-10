@@ -28,7 +28,7 @@ import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_CURSOPROFISSIONAL", schema="SRH")
+@Table(name="TB_CURSOPROFISSIONAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class CursoProfissional extends BasicEntity<Long> implements Serializable {
 
 	@Id

@@ -17,7 +17,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("LoginBean")
-@Scope("view")
+@Scope("session")
 public class LoginBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(LoginBean.class);

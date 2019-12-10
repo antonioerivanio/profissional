@@ -31,7 +31,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_REPRESENTACAOFUNCIONAL", schema="SRH")
+@Table(name="TB_REPRESENTACAOFUNCIONAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class RepresentacaoFuncional extends BasicEntity<Long> implements Serializable {
 
 	@Id

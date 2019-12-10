@@ -46,7 +46,7 @@
 				</div>
 
 				<div class="select-box box-25">
-					<label for="">Tipo de Processo * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Tipo de Processo * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="tipoProcesso"
 							value="#{processoESocialFormBean.entidade.tipoProcesso}"
@@ -61,7 +61,7 @@
 				</div>
 
 				<div class="input-box box-15">
-					<label for="">Número * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Número * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="numero"
 							value="#{processoESocialFormBean.entidade.numero}" maxlength="21"
@@ -79,7 +79,7 @@
                 </ui:include>
 
 				<div class="select-box box-50">
-					<label for="">Indicativo Autoria  <span class="identificador-esocial">(e)</span></label>
+					<label for="">Indicativo Autoria  <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="indicativoAutoria"
 							value="#{processoESocialFormBean.entidade.indicativoAutoria}">
@@ -94,7 +94,7 @@
 				</div>
 
 				<div class="select-box box-50">
-					<label for="">Indicativo Matéria * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Indicativo Matéria * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="indicativoMateria"
 							value="#{processoESocialFormBean.entidade.indicativoMateria}"
@@ -111,7 +111,7 @@
 				</div>
 
 				<div class="textarea-box box-100">
-					<label for="">Observação <span class="identificador-esocial">(e)</span></label>
+					<label for="">Observação <span class="identificador-esocial">e</span></label>
 					<div class="conteiner" style="margin-right: 0">
 						<h:inputTextarea id="observacao"
 							value="#{processoESocialFormBean.entidade.observacao}"
@@ -128,7 +128,7 @@
                 </ui:include>
 
 				<div class="select-box box-15">
-					<label for="">UF * <span class="identificador-esocial">(e)</span></label>
+					<label for="">UF * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="uf" converter="entityConverter"
 							value="#{processoESocialFormBean.uf}">
@@ -143,7 +143,7 @@
 				</div>
 
 				<div class="select-box box-35">
-					<label for="">Município * <span class="identificador-esocial">(e)</span></label>
+					<label for="">Município * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="municipio" converter="entityConverter"
 							value="#{processoESocialFormBean.entidade.municipioVara}">
@@ -158,7 +158,7 @@
 				</div>
 
 				<div class="input-box box-20">
-					<label for="">ID Vara * <span class="identificador-esocial">(e)</span></label>
+					<label for="">ID Vara * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="nome" required="true"
 								requiredMessage="O id vara é obrigatório."
@@ -173,7 +173,7 @@
 				
 								
 				<div class="select-box box-40">
-					<label for="">Indicativo de suspensão da exigibilidade <span class="identificador-esocial">(e)</span></label>
+					<label for="">Indicativo de suspensão da exigibilidade <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu id="indicativoSuspensao" 
 							value="#{processoESocialFormBean.novaSuspensao.indicativoSuspensao}">
@@ -187,7 +187,7 @@
 				</div>
 				
 				<div class="input-box box-15">
-					<label for="">Data da decisão <span class="identificador-esocial">(e)</span></label>
+					<label for="">Data da decisão <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="dataDecisao" name="dataDecisao" styleClass="maskData"
 							converter="dateConverter"
@@ -197,7 +197,7 @@
 				</div>
 				
 				<div class="radios-group box-30">
-					<h3>Indicativo de depósito do montante integral <span class="identificador-esocial">(e)</span></h3>
+					<h3>Indicativo de depósito do montante integral <span class="identificador-esocial">e</span></h3>
 					<div class="conteiner">
 						<div class="radio-box">
 						<h:selectOneRadio id="indicativoDeposito" value="#{processoESocialFormBean.novaSuspensao.indicativoDeposito}">
@@ -265,10 +265,11 @@
 						
 						<h:column id="col6"	>
 							<f:facet name="header">EXCLUIR</f:facet>						
-							<a4j:commandLink id="excluirSuspensao" value="Excluir" action="#{processoESocialFormBean.excluirSuspensao}" styleClass="ico-delete"
-								onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" execute="@this" render="form">							
+							<a4j:commandLink id="excluirSuspensao" value="Excluir" styleClass="ico-delete"
+								onclick="alertaExclusao()" execute="@this">							
 								<f:setPropertyActionListener target="#{processoESocialFormBean.suspensao}" value="#{suspensao}" />
 							</a4j:commandLink>
+							<a4j:jsFunction name="excluir" action="#{processoESocialFormBean.excluirSuspensao}" render="form"/>
 						</h:column>
 					
 					</rich:dataTable>	
@@ -289,13 +290,13 @@
 
 		</h:form>
 		
-        <rich:popupPanel id="modal" resizeable="false" height="320" width="600">					            
+        <rich:popupPanel id="modal" resizeable="false" height="360" width="600">					            
         	
 			<f:facet name="header" class="header">
             	<span>Editar Suspensão de Exigibilidade</span>
             </f:facet>
         	
-        	<h:form id="form2" styleClass="formularios">
+        	<h:form id="form2" styleClass="formularios" style="padding: 10px;">
         					
 				<div class="input-box box-25">
 					<label for="">ID</label>

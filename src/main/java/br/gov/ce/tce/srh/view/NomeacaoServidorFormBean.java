@@ -159,6 +159,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 			getEntidade().setRegime( 1l );
 			getEntidade().setIRRF(true);
 			getEntidade().setAtivoPortal(true);
+			exibirTodosOsCampos = true;
 			
 		} else {			
 			

@@ -23,7 +23,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_ABONOPERMANENCIA", schema="SRH")
+@Table(name="TB_ABONOPERMANENCIA", schema=DatabaseMetadata.SCHEMA_SRH)
 @NamedQueries({
 	@NamedQuery(name = "AbonoPermanencia.findAll", query = "SELECT a FROM AbonoPermanencia a ORDER BY a.funcional.nomeCompleto")
 })

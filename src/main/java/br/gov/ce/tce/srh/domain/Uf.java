@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_UF", schema="SRH")
+@Table(name="TB_UF", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Uf extends BasicEntity<String> implements Serializable {
 
 	@Id

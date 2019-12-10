@@ -110,7 +110,7 @@ public class FichaFuncionalListBean implements Serializable {
 
 			} catch (FileNotFoundException e) {
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-				imagemPessoa = parametro.getValor() + "sem_imagem.jpg";
+				imagemPessoa = parametro.getValor() + "semfoto.png";
 			}
 
 			String filtro = " where f.matricula = '" + getEntidade().getMatricula() + "' ";
@@ -154,7 +154,7 @@ public class FichaFuncionalListBean implements Serializable {
 
 			} catch (FileNotFoundException e) {
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-				imagemFichaAntiga = parametro.getValor() + "sem_imagem.jpg";
+				imagemFichaAntiga = parametro.getValor() + "semfoto.png";
 			}			
 
 		} catch (SRHRuntimeException e) {

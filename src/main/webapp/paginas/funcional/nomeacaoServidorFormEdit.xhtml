@@ -16,7 +16,7 @@
 				if (nome.length > 2) {
 					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}			
 
@@ -718,12 +718,9 @@
 				
 				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
 					<h:commandButton action="#{nomeacaoServidorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
-					<a href="/srh/paginas/funcional/nomeacaoServidorList.faces" class="bt-voltar fr mg-right-10">Limpar</a>			
 				</ui:fragment>
 				
-				<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/nomeacaoServidorList.faces" immediate="true">
-					<f:setPropertyActionListener target="#{nomeacaoServidorListBean.passouConsultar}" value="true"/>
-				</h:commandButton>				
+				<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/nomeacaoServidorList.faces"/>
 					
 			</div>	
 		
