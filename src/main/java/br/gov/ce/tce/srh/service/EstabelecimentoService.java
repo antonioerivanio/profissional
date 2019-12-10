@@ -48,7 +48,7 @@ public class EstabelecimentoService {
 		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial());
 		if (notificacao == null) {
 			notificacao = new Notificacao();
-			notificacao.setDescricao("Evendo S1005 com pendência de envio.");
+			notificacao.setDescricao("Evento S1005 com pendência de envio.");
 			notificacao.setData(new Date());
 			notificacao.setTipo(TipoNotificacao.N);
 			notificacao.setEvento(evento);

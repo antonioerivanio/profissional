@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "TB_REPRESENTACAOCARGO", schema = "SRH")
+@Table(name = "TB_REPRESENTACAOCARGO", schema=DatabaseMetadata.SCHEMA_SRH)
 @NamedQueries({ @NamedQuery(name = "RepresentacaoCargo.findAll", query = "SELECT r FROM RepresentacaoCargo r ORDER BY r.nomenclatura, r.simbolo ") })
 public class RepresentacaoCargo extends BasicEntity<Long> implements Serializable {
 

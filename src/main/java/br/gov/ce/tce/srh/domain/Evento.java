@@ -16,7 +16,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_EVENTO", schema = "SRH")
+@Table(name = "ESOCIAL_EVENTO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Evento extends BasicEntity<Long> implements Serializable {
 	
 	@Id

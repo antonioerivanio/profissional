@@ -28,8 +28,8 @@ import br.gov.ce.tce.srh.enums.TipoNotificacao;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_NOTIFICACAO", schema = "SRH")
-@SequenceGenerator(name="SEQ_ESOCIAL_NOTIFICACAO", sequenceName="SEQ_ESOCIAL_NOTIFICACAO", schema = "SRH", allocationSize=1, initialValue=1)
+@Table(name = "ESOCIAL_NOTIFICACAO", schema=DatabaseMetadata.SCHEMA_SRH)
+@SequenceGenerator(name="SEQ_ESOCIAL_NOTIFICACAO", sequenceName="SEQ_ESOCIAL_NOTIFICACAO", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
 public class Notificacao extends BasicEntity<Long> implements Serializable {
 	
 	@Id

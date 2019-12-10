@@ -18,7 +18,7 @@ import br.gov.ce.tce.srh.enums.SimNao;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_PROCESSO_SUSPENSAO", schema = "SRH")
+@Table(name = "ESOCIAL_PROCESSO_SUSPENSAO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class ProcessoESocialSuspensao extends BasicEntity<Long> implements Serializable {
 
 	@Id

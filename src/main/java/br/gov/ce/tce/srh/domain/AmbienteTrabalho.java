@@ -15,7 +15,7 @@ import br.gov.ce.tce.srh.enums.LocalAmbiente;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "TB_AMBIENTE_TRABALHO", schema = "SRH")
+@Table(name = "TB_AMBIENTE_TRABALHO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class AmbienteTrabalho extends BasicEntity<Long> implements Serializable {
 
 	@Id

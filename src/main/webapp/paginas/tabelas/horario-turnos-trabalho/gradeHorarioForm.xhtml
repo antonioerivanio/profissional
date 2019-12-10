@@ -20,7 +20,7 @@
 
 			<ui:include src="../../../WEB-INF/templates/esocial-legenda.xhtml" />
 			
-			<fieldset>
+			<div class="corpo-formulario">
 				
 				<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 				
@@ -114,7 +114,7 @@
 					</div>
 				</div>
                 	
-            </fieldset>
+            </div>
 			<h:commandButton value="Salvar" action="#{gradeHorarioFormBean.salvar}" styleClass="bt-padrao fr" rendered="#{true}"/>			
 
 			<a href="/srh/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.faces" class="bt-padrao fr mg-right-10">Voltar</a>	

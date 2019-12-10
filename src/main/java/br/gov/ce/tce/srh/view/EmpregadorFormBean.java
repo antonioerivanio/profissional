@@ -119,7 +119,7 @@ public class EmpregadorFormBean implements Serializable {
 	}
 
 	public void setIdContato(Long idContato) {
-		if ( !this.idContato.equals(idContato) ) {
+		if ( idContato != null && (this.idContato == null || !this.idContato.equals(idContato)) ) {
 			this.idContato = idContato;
 			try {
 				entidade.setContato(pessoalService.getById(this.idContato));

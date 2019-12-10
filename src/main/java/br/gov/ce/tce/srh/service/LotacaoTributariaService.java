@@ -51,7 +51,7 @@ public class LotacaoTributariaService {
 		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial());
 		if (notificacao == null) {
 			notificacao = new Notificacao();
-			notificacao.setDescricao("Evendo S1020 com pendência de envio.");
+			notificacao.setDescricao("Evento S1020 com pendência de envio.");
 			notificacao.setData(new Date());
 			notificacao.setTipo(TipoNotificacao.N);
 			notificacao.setEvento(evento);

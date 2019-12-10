@@ -31,7 +31,7 @@
 		
 			<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />
 
-			<fieldset>
+			<div class="corpo-formulario">
 				
 				<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 				
@@ -89,9 +89,7 @@
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="tpInsc"
-							value="#{lotacaoTributariaFormBean.entidade.tipoInscricao}" 
-							required="true"
-							requiredMessage="O tipo de inscrição é obrigatório.">
+							value="#{lotacaoTributariaFormBean.entidade.tipoInscricao}">
 							<f:selectItem id="selecioneTpInsc" itemLabel="Selecione..." />
 							<f:selectItems 
 								id="comboTipoInscricao"
@@ -137,7 +135,7 @@
 					</div>
 				</div>
 				
-			</fieldset>
+			</div>
 			<h:commandButton value="Salvar" action="#{lotacaoTributariaFormBean.salvar}" styleClass="bt-padrao fr" rendered="#{true}"/>			
 
 			<a href="/srh/paginas/tabelas/lotacaoTributariaList.faces" class="bt-padrao fr mg-right-10">Voltar</a>

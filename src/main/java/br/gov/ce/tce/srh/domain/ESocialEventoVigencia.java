@@ -15,7 +15,7 @@ import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_EVENTO_VIGENCIA", schema = "SRH")
+@Table(name = "ESOCIAL_EVENTO_VIGENCIA", schema=DatabaseMetadata.SCHEMA_SRH)
 public class ESocialEventoVigencia extends BasicEntity<Long> implements Serializable{
 
 	@Id

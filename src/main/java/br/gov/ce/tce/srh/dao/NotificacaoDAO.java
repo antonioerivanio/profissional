@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Notificacao;
+import br.gov.ce.tce.srh.enums.TipoNotificacao;
 
 /**
  * 
@@ -62,8 +63,9 @@ public class NotificacaoDAO {
 	
 	public Notificacao findByEventoIdAndTipoAndReferencia(long idEvento, String referencia) {
 		Notificacao notificacao = null;
-		Query query = entityManager.createQuery("SELECT n FROM Notificacao n WHERE n.evento.id = :idEvento AND n.tipo = N AND n.referencia = :referencia");
+		Query query = entityManager.createQuery("SELECT n FROM Notificacao n WHERE n.evento.id = :idEvento AND n.tipo = :tipo AND n.referencia = :referencia");
 		query.setParameter("idEvento", idEvento);
+		query.setParameter("tipo", TipoNotificacao.N);
 		query.setParameter("referencia", referencia);
 		try {
 			return (Notificacao) query.getSingleResult();

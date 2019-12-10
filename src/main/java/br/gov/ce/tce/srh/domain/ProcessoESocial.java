@@ -19,7 +19,7 @@ import br.gov.ce.tce.srh.enums.TipoProcesso;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_PROCESSO", schema = "SRH")
+@Table(name = "ESOCIAL_PROCESSO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 
 	@Id

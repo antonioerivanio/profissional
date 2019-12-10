@@ -26,7 +26,7 @@ import br.gov.ce.tce.srh.enums.TipoAcumuloDeCargo;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "TB_OCUPACAO", schema = "SRH")
+@Table(name = "TB_OCUPACAO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Ocupacao extends BasicEntity<Long> implements Serializable {
 
 	@Id

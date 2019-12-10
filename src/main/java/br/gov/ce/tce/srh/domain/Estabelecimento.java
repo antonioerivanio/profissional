@@ -16,7 +16,7 @@ import br.gov.ce.tce.srh.enums.TipoInscricao;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_ESTABELECIMENTO", schema = "SRH")
+@Table(name = "ESOCIAL_ESTABELECIMENTO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Estabelecimento extends BasicEntity<Long> implements Serializable {
 
 	@Id

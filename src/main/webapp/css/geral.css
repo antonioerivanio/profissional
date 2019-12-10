@@ -533,16 +533,24 @@ body {
 
 .box-border {
 	border: 1px solid #d5d5d5;
-	padding: 15px 0px 0px 15px;
+	padding: 15px;
 	overflow: auto;
 	margin-bottom: 20px;
 	min-height: auto;
 	box-sizing: border-box;
 }
 
+.corpo-formulario {
+	padding: 5px 0 0 15px;
+	overflow: auto;
+	min-height: auto;
+	box-sizing: border-box;
+}
+
 .formularios fieldset {
 	border: 1px solid #d5d5d5;
-	padding: 15px 0px 0px 15px;
+	padding: 15px;
+	padding-bottom: 5px;
 	overflow: auto;
 	margin-bottom: 10px;
 	min-height: auto;
@@ -708,13 +716,14 @@ body {
 
 .tabela-dados {
 	clear: both;
-	margin: 0 15px 15px 0;
+	margin-bottom: 15px;
 }
 
 .tabela-dados table {
 	border-collapse: collapse;
 	border: 1px solid #c5c5c5;
 	width: 100%;
+	font-size: 12px;
 }
 
 .tabela-dados th {
