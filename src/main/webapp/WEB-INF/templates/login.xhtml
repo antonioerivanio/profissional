@@ -32,8 +32,16 @@
 	                 
 						
 	                    <h2 class="logo-tce">
-	                        Tribunal de Contas do Estado  do CearÃ¡
+	                        Tribunal de Contas do Estado  do Ceará
 	                    </h2>
+	                    
+	                    <ui:fragment rendered="#{fn:endsWith(app['database.url'], 'bddes')}">
+							<img src="img/ambienteDev.png" class="ambiente" alt="Ambiente de desenvolvimento" title="Ambiente de desenvolvimento" />					
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{fn:endsWith(app['database.url'], 'bdhom')}">					
+							<img src="img/ambienteHom.png" class="ambiente" alt="Ambiente de homologação" title="Ambiente de homologação" />					
+						</ui:fragment>
 	                
 	                </div>
 	

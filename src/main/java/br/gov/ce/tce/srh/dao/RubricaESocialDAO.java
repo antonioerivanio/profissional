@@ -30,6 +30,12 @@ public class RubricaESocialDAO {
 	public List<RubricaESocial> findAll(){
 		TypedQuery<RubricaESocial> query = entityManager.createQuery("Select e from RubricaESocial e order by e.id", RubricaESocial.class);
 		return query.getResultList(); 
-	}	
+	}
+	
+	public List<RubricaESocial> findByAtivo(Integer ativo){
+		TypedQuery<RubricaESocial> query = entityManager.createQuery("Select e from RubricaESocial e where e.ativo = :ativo order by e.id", RubricaESocial.class);
+		query.setParameter("ativo", ativo);
+		return query.getResultList(); 
+	}
 
 }

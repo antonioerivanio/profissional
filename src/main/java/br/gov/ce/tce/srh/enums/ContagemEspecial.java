@@ -4,8 +4,8 @@ public enum ContagemEspecial {
 	
 	NAO(1, "Não"),
 	PROFESSOR(2, "Professor (Infantil, Fundamental e Médio)"),
-	MEMBRO_TC(3, "Professor de Ensino Superior, Magistrado, Membro de Ministério Público, Membro do Tribunal de Contas (com ingresso anterior a 16/12/1998 EC nr. 20/98)"),
-	RISCO(4, "Atividade de risco");
+	MEMBRO_TC(3, "Professor de Ensino Superior, Magistrado, Membro de Ministério Público, Membro do Tribunal de Contas (com ingresso anterior a 16/12/1998 EC nr. 20/98)");
+//	RISCO(4, "Atividade de risco");
 	
 	private Integer codigo;
 	private String descricao;

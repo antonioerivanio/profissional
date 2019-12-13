@@ -67,7 +67,7 @@ public class RubricaESocialTCEFormBean implements Serializable {
 		}
 		this.tabelasRubrica = rubricaESocialTabelaDAO.findAll();
 		this.rubricasTCE = rubricaService.findAll();
-		this.rubricasESocial = rubricaESocialDAO.findAll();
+		this.rubricasESocial = rubricaESocialDAO.findByAtivo(1);
 		this.codigoPrevidTipo = entidade.getCodigoPrevid() != null ? entidade.getCodigoPrevid().getTipo() : null;
 		this.codigoIrrfTipo = entidade.getCodigoIrrf() != null ? entidade.getCodigoIrrf().getTipo() : null;
     }

@@ -266,6 +266,19 @@ body {
 	top: 10px;
 }
 
+img.ambiente {
+	position: absolute;
+    right: 245px;
+    bottom: 36px;
+
+}
+
+.login-topo img.ambiente {
+	position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
 .topo .login-box {
 	position: absolute;
 	border: 1px solid #dadada;
@@ -383,8 +396,8 @@ body {
 
 .menu-principal ul li ul li a {
 	font-weight: normal;
-	font-size: 12px;
-	padding: 6px 8px;
+	font-size: 13px;
+    padding: 6px 14px 6px 4px;
 	background: none;
 }
 
@@ -448,6 +461,7 @@ body {
 /* FIM TELA INICIAL */
 
 /* INICIO CORPO */
+
 .corpo {
 	padding: 30px 10px 10px 10px;
 	background-color: #fff;
@@ -463,6 +477,21 @@ body {
 	padding-bottom: 0;
 	border-radius: 10px;
 	overflow: auto;
+}
+
+.bem-vindo {
+	text-align: center;
+    padding: 60px;
+}
+
+.bem-vindo img {
+	width: 250px;
+}
+
+.bem-vindo h2 {
+	color: #505050;
+	padding: 20px;
+    font-size: 28px;
 }
 
 .titulo-pagina {
@@ -501,19 +530,19 @@ body {
 }
 
 .infoMessage {
-	color: blue;
+	color: #0768f9;
 	font-weight: bold;
 	margin-left: 12px;
 	margin-bottom: 20px;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .errorMessage {
-	color: red;
+	color: #F55047;
 	font-weight: bold;
 	margin-left: 12px;
 	margin-bottom: 20px;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .col-50 {
@@ -1104,28 +1133,6 @@ body {
 }
 /* FIM BOTOES */
 
-.msg-dev-div {
-	background-image: url("../img/ico-dev.png");
-	background-repeat: no-repeat;
-	height: 20px;
-	background-size: auto 100%;
-}
-
-.msg-dev {
-	color: red;
-	font-weight: bold;
-	font-size: 1.1em;
-	padding-left: 24px;
-	padding-top: 5px;
-	display: block;
-}
-
-.msg-dev-home {
-	position: absolute;
-	left: 40%;
-	top: 40%;
-}
-
 #login-form #relogio {
 	display: inline-block;
 	margin-left: 30px;
@@ -1223,7 +1230,7 @@ body {
 .rf-tab-cnt {
 	display: inline-block;
 	position: relative;
-	background: #fdfdfd !important;
+	background: #fff !important;
 	padding: 20px !important;
 	border: 1px solid #C0C0C0 !important;
 	width: 100% !important;
@@ -1360,6 +1367,7 @@ body {
 	box-sizing: border-box;
 	display: flex !important;
 	align-items: center;
+	border-radius: 4px;
 }
 
 .rf-sel-inp {
@@ -1418,7 +1426,7 @@ body {
 	position: relative;
 	bottom: 16px;
 	font-weight: bold;
-	color: red;
+	color: #505050;
 	clear: both;
 }
 
@@ -1466,6 +1474,7 @@ body {
 
 .pagina-eventos-esocial li, .pagina-eventos-esocial a{
 	font-size: 14px;
+	padding-bottom: 10px;
 }
 
 .pagina-eventos-esocial a {

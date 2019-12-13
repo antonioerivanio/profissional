@@ -11,19 +11,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Size;
 
 import br.gov.ce.tce.srh.enums.ContagemEspecial;
 import br.gov.ce.tce.srh.enums.SituacaoLei;
 import br.gov.ce.tce.srh.enums.TipoAcumuloDeCargo;
 
-/**
- * Referente a tabela: TB_OCUPACAO
- * 
- * @since : Sep 13, 2011, 15:04:56 AM
- * @author : robstownholanda@ivia.com.br
- *
- */
 @Entity
 @SuppressWarnings("serial")
 @Table(name = "TB_OCUPACAO", schema=DatabaseMetadata.SCHEMA_SRH)
@@ -37,7 +29,6 @@ public class Ocupacao extends BasicEntity<Long> implements Serializable {
 	@JoinColumn(name = "IDESCOLARIDADEEXIGIDA")
 	private Escolaridade escolaridade;
 
-	@Size(max = 100)
 	@Column(name = "NOMENCLATURA")
 	private String nomenclatura;
 
