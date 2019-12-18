@@ -6,7 +6,7 @@ BEGIN
         SELECT
             *
         FROM
-            tb_dependente
+            srh.tb_dependente
     ) LOOP
         CASE dep.idtipodependencia
             WHEN 0 THEN
@@ -53,7 +53,7 @@ BEGIN
                 invalido := 0;
         END CASE;
 
-        UPDATE tb_dependente
+        UPDATE srh.tb_dependente
         SET
             codigoesocial = codigo,
             flinvalido = invalido
@@ -62,5 +62,3 @@ BEGIN
 
     END LOOP;
 END;
-
-COMMIT;
