@@ -1,4 +1,4 @@
-UPDATE esocial_pais
+UPDATE srh.esocial_pais
 SET
 	dataextincao = to_date('30/04/2018')
 WHERE
@@ -11,41 +11,41 @@ WHERE
 		'490',
 		'873'
 	);
-
-UPDATE esocial_pais
+/**/
+UPDATE srh.esocial_pais
 SET
 	dataextincao = to_date('27/06/2016')
 WHERE
 	codigo IN (
 		'678'
 	);
-
-UPDATE esocial_pais
+/**/
+UPDATE srh.esocial_pais
 SET
 	dataextincao = to_date('21/11/2013')
 WHERE
 	codigo IN (
 		'388'
 	);
-
-UPDATE esocial_pais
+/**/
+UPDATE srh.esocial_pais
 SET
 	descricao = 'Jersey',
 	codigo = '393'
 WHERE
 	codigo = '150';
-
-UPDATE esocial_pais
+/**/
+UPDATE srh.esocial_pais
 SET
 	descricao = 'Papua Nova Guine'
 WHERE
 	codigo = '583';
-
-DELETE FROM esocial_pais
+/***/
+DELETE FROM srh.esocial_pais
 WHERE
 	id = 222;
-
-INSERT INTO esocial_pais (
+/**/
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -56,7 +56,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'015',
 	'Aland, Ilhas',
@@ -64,7 +64,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -75,7 +75,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'042',
 	'Antartica',
@@ -83,7 +83,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -94,7 +94,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'099',
 	'Bonaire, Saint Eustatius E Saba',
@@ -102,7 +102,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -113,7 +113,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'102',
 	'Bouvet, Ilha',
@@ -121,7 +121,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -132,7 +132,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'200',
 	'Curacao',
@@ -140,7 +140,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -151,7 +151,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'754',
 	'eSwatini',
@@ -159,7 +159,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -170,7 +170,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'292',
 	'Georgia Do Sul E Sandwich Do Sul, Ilhas',
@@ -178,7 +178,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -189,7 +189,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'321',
 	'Guernsey',
@@ -197,7 +197,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -208,7 +208,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'343',
 	'Heard E Ilhas McDonald, Ilha',
@@ -216,7 +216,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -227,7 +227,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'150',
 	'Ilhas Do Canal (Jersey E Guernsey)',
@@ -235,7 +235,7 @@ INSERT INTO esocial_pais (
 	to_date('30/04/2018')
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -246,7 +246,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'489',
 	'Mayotte',
@@ -254,7 +254,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -265,7 +265,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'498',
 	'Montenegro',
@@ -273,7 +273,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -284,7 +284,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'693',
 	'Sao Bartolomeu',
@@ -292,7 +292,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -303,7 +303,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'698',
 	'Sao Martinho, Ilha De (Parte Francesa)',
@@ -311,7 +311,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -322,7 +322,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'699',
 	'Sao Martinho, Ilha De (Parte Holandesa)',
@@ -330,7 +330,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -341,7 +341,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'737',
 	'Servia',
@@ -349,7 +349,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -360,7 +360,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'760',
 	'Sudao Do Sul',
@@ -368,7 +368,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -379,7 +379,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'755',
 	'Svalbard E Jan Mayen',
@@ -387,7 +387,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -398,7 +398,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'781',
 	'Terras Austrais Francesas',
@@ -406,7 +406,7 @@ INSERT INTO esocial_pais (
 	NULL
 );
 
-INSERT INTO esocial_pais (
+INSERT INTO srh.esocial_pais (
 	id,
 	codigo,
 	descricao,
@@ -417,7 +417,7 @@ INSERT INTO esocial_pais (
 		SELECT
 			MAX(id) + 1
 		FROM
-			esocial_pais
+			srh.esocial_pais
 	),
 	'895',
 	'Zona Do Canal Do Panama',
@@ -425,4 +425,4 @@ INSERT INTO esocial_pais (
 	to_date('27/06/2016')
 );
 
-COMMIT;
+
