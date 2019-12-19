@@ -22,20 +22,12 @@
 			}
 		</script>
 		
-		<style>
-			.formularios fieldset {
-				padding: 5px;
-				min-height: 30px;
-				margin-right: 20px;
-    			width: 407px;
-    			margin-bottom: 20px;
-    			float: left;
-			}
-			
+		<style>			
 			fieldset td {
 				float: left;
 				margin: 5px;
 				width: 100%;
+				font-size: 12px;
 			}
 			fieldset td label{
 				vertical-align: top;	
@@ -53,132 +45,136 @@
 		<h:form id="form" styleClass="formularios">
 			
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+						
+			<div class="box-100" style="display: inline-block;">
 			
-			<div class="input-box box-10">
-				<label for="">Matrícula</label>
-				<div class="conteiner">
-					<h:inputText id="matricula"
-								 name="matricula"
-								 styleClass="maskMatricula"
-								 value="#{relatorioFeriasListBean.matricula}" >
-            			<a4j:ajax event="change" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
-        			</h:inputText>
+				<div class="input-box box-10">
+					<label for="">Matrícula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 styleClass="maskMatricula"
+									 value="#{relatorioFeriasListBean.matricula}" >
+	            			<a4j:ajax event="change" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
+	        			</h:inputText>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-15">
-				<label for="">CPF</label>
-				<div class="conteiner">
-					<h:inputText id="cpf" 
-								 name="cpf"
-								 maxlength="14"
-								 styleClass="maskCpf"
-								 converter="cpfConverter"
-								 value="#{relatorioFeriasListBean.cpf}" >
-						<a4j:ajax event="change" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
-					</h:inputText>
+	
+				<div class="input-box box-15">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 value="#{relatorioFeriasListBean.cpf}" >
+							<a4j:ajax event="change" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
+						</h:inputText>
+					</div>
 				</div>
-			</div>
-
-			<div class="input-box box-38">
-				<label for="">Nome</label>
-				<div class="conteiner">
-					<h:inputText id="nomeCompletoPessoa"
-								 name="nomeCompletoPessoa"
-								 value="#{relatorioFeriasListBean.nome}" />
+	
+				<div class="input-box box-45">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{relatorioFeriasListBean.nome}" />
+					</div>
 				</div>
+	
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18 mg-bottom-20">Pesquisar</a>			
+						
 			</div>
-
-			<a id="form:Pesquisar" 
-			   href="#" 
-			   onclick="openwindow()" 
-			   class="bt-padrao fl mg-top-18">Pesquisar</a>
-			
-			
-			<fieldset class="conteiner">
-
-				<legend>Tipo</legend>
-				
-				<div class="conteiner">
+						
+			<div class="box-35 mg-right-15 fl" style="display: inline-block;">
+				<fieldset>	
+					<legend>Tipo</legend>					
 					<h:selectManyCheckbox  value="#{relatorioFeriasListBean.tiposFerias}" >			
 						<f:selectItems id="siTipoFeroas" value="#{relatorioFeriasListBean.comboTipoFerias}"  
 							var="tipoFerias" itemValue="#{tipoFerias.id}" itemLabel="#{tipoFerias.descricao}"  />
-					</h:selectManyCheckbox >
-				</div>
+					</h:selectManyCheckbox >					
+				</fieldset>
+			</div>
+			
+			<div class="box-60 fl" style="display: inline-block;">			
+			
+				<div class="input-box box-15">
+					<label for="">Ano Referência</label>
+					<div class="conteiner">
+						<h:inputText id="anoReferencia" 
+									 name="anoReferencia"
+									 value="#{relatorioFeriasListBean.anoReferencia}" 
+									 maxlength="4"
+									 onkeyup="SoNumeros(this)">
+						</h:inputText>
+					</div>
+				</div>			
 				
-			</fieldset>
-			
-			<div class="input-box box-10">
-				<label for="">Ano Referência</label>
-				<div class="conteiner">
-					<h:inputText id="anoReferencia" 
-								 name="anoReferencia"
-								 value="#{relatorioFeriasListBean.anoReferencia}" 
-								 maxlength="4"
-								 onkeyup="SoNumeros(this)">
-					</h:inputText>
-				</div>
-			</div>			
-			
-			<div class="input-box box-10">
-				<label for="">Data Início</label>
-				<div class="conteiner">
-					<h:inputText id="dataInicio" 
-								 name="dataInicio"
-								 styleClass="maskData" 
-								 converter="dateConverter"
-								 value="#{relatorioFeriasListBean.inicio}" 
-								 maxlength="10" />
-				</div>
-			</div>
-
-			<div class="input-box box-10">
-				<label for="">Data Fim</label>
-				<div class="conteiner">
-					<h:inputText id="dataFim" 
-								 name="dataFim" 
-								 styleClass="maskData"
-								 converter="dateConverter"
-								 value="#{relatorioFeriasListBean.fim}" 
-								 maxlength="10" />
-				</div>
-			</div>
-			
-			<div class="select-box box-30">
-				<label>Tipo Ocupação</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="cmbTipoOcupacao" value="#{relatorioFeriasListBean.tipoOcupacao}" converter="entityConverter">
-						<f:selectItem itemLabel="TODOS" />
-						<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}"  />
-					</h:selectOneMenu>
-				</div>
-			</div>			
-			
-			<div id="div1" class="select-box box-42">
-				<h:outputLabel id="lblSetor" value="Setor"/>
-				<div id="div2" class="conteiner">
-					<h:selectOneMenu id="cmbSetor" 
-							 value="#{relatorioFeriasListBean.setor}" converter="entityConverter">
-						<f:selectItem id="siSelecione1" itemLabel="Todos..." />
-						<f:selectItems id="siSetor" value="#{relatorioFeriasListBean.comboSetor}" 
-							var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
-					</h:selectOneMenu>
-				</div>
-			</div>			
-			
-			<div class="radios-group box-16">
-				<label for="">Formato</label>
-				<div class="conteiner">
-					<div class="radio-box">
-						<h:selectOneRadio id="formato" value="#{relatorioFeriasListBean.formato}">
-							<f:selectItem itemLabel="PDF" itemValue="1" />
-							<f:selectItem itemLabel="XLS" itemValue="2" />									
-						</h:selectOneRadio>
+				<div class="input-box box-15">
+					<label for="">Data Início</label>
+					<div class="conteiner">
+						<h:inputText id="dataInicio" 
+									 name="dataInicio"
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{relatorioFeriasListBean.inicio}" 
+									 maxlength="10" />
 					</div>
 				</div>
-			</div>			
+	
+				<div class="input-box box-15">
+					<label for="">Data Fim</label>
+					<div class="conteiner">
+						<h:inputText id="dataFim" 
+									 name="dataFim" 
+									 styleClass="maskData"
+									 converter="dateConverter"
+									 value="#{relatorioFeriasListBean.fim}" 
+									 maxlength="10" />
+					</div>
+				</div>
+				
+				<div class="select-box box-55">
+					<label>Tipo Ocupação</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="cmbTipoOcupacao" value="#{relatorioFeriasListBean.tipoOcupacao}" converter="entityConverter">
+							<f:selectItem itemLabel="TODOS" />
+							<f:selectItems value="#{relatorioDemonstrativoCargoBean.comboTipoOcupacao}" var="tipoOcupacao" itemValue="#{tipoOcupacao}" itemLabel="#{tipoOcupacao.descricao}"  />
+						</h:selectOneMenu>
+					</div>
+				</div>			
+				
+				<div id="div1" class="select-box box-45">
+					<h:outputLabel id="lblSetor" value="Setor"/>
+					<div id="div2" class="conteiner">
+						<h:selectOneMenu id="cmbSetor" 
+								 value="#{relatorioFeriasListBean.setor}" converter="entityConverter">
+							<f:selectItem id="siSelecione1" itemLabel="Todos..." />
+							<f:selectItems id="siSetor" value="#{relatorioFeriasListBean.comboSetor}" 
+								var="setor" itemValue="#{setor}" itemLabel="#{setor.nome}"  />
+						</h:selectOneMenu>
+					</div>
+				</div>			
+				
+				<div class="radios-group box-30">
+					<label for="">Formato</label>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectOneRadio id="formato" value="#{relatorioFeriasListBean.formato}">
+								<f:selectItem itemLabel="PDF" itemValue="1" />
+								<f:selectItem itemLabel="XLS" itemValue="2" />									
+							</h:selectOneRadio>
+						</div>
+					</div>
+				</div>			
 			
-			<div style="margin-top:230px;">
+			</div>
+			
+			<div class="box-100" style="display: inline-block;">
 	 			<h:commandButton id="Relatório"
 	 							 value="Relatório"
 								 action="#{relatorioFeriasListBean.relatorio}" 

@@ -112,11 +112,6 @@
 
 			</div>
 
-			<h:commandButton 
-				id="limpaTela" 
-				value="Limpar"
-				action="listar"
-				styleClass="bt-padrao fr mg-right-15" />
 
 			<h:commandButton 
 				id="incluir" 
@@ -124,6 +119,12 @@
 				action="incluirAlterar"
 				styleClass="bt-padrao fr mg-right-15"
 				rendered="#{LoginBean.anyGranted('ROLE_CARGO_INSERIR')}" />
+			<h:commandButton 
+				id="limpaTela" 
+				value="Limpar"
+				action="listar"
+				styleClass="bt-padrao fr mg-right-15" />
+				
 		</h:form>
 
 	</ui:define>

@@ -87,13 +87,7 @@
 								 action="#{nomeacaoServidorListBean.relatorio}"
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 style="margin-left: 10px"
-								 render="messages" />
-				<h:commandButton id="limpar"
-								 name="limpar"
-								 action="#{nomeacaoServidorListBean.limpar}"
-								 value="Limpar"
-								 styleClass="bt-padrao fl mg-top-18 mg-left-10" />
-								 
+								 render="messages" />								 
 			</ui:fragment>					 
 
 			<div class="tabela-dados">
@@ -198,6 +192,13 @@
 							 action="incluir"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_INSERIR')}"/>
+			
+			<h:commandButton id="limpar"
+								 name="limpar"
+								 action="listar"
+								 value="Limpar"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}"/>				 
 			
 			<h:commandButton id="relatorio2"
 								 value="Relatório"

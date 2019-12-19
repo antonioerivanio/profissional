@@ -21,7 +21,8 @@ public class RepresentacaoValor extends BasicEntity<Long> implements Serializabl
 	@Column(name = "ID", nullable=false)
 	private Long id;
 
-    @ManyToOne
+    // FIXME Mapeamento não existe 
+	@ManyToOne
 	@JoinColumn(name = "IDREPRESENTACAOCARGO")
     private RepresentacaoCargo representacaoCargo;
 

@@ -2,8 +2,7 @@
 	padding: 0;
 	margin: 0;
 	font-family: arial;
-	/* font-size: 12px; */
-	/*   color: #505050; */
+	color: #303030;
 }
 
 select, option, input, textarea {
@@ -494,10 +493,14 @@ img.ambiente {
     font-size: 28px;
 }
 
+.bem-vindo p {
+	color: #505050;
+}
+
 .titulo-pagina {
 	color: #1c5ba7;
 	background-color: #f6f6f6;
-	margin-bottom: 13px;
+	margin-bottom: 20px;
 	border-radius: 4px;
 }
 
@@ -682,6 +685,10 @@ img.ambiente {
 
 .formularios .radio-box table {
 	border-spacing: 0;
+}
+
+.formularios .radio-box {
+	font-size: 12px;
 }
 
 .formularios .select-box .conteiner {
@@ -1512,4 +1519,13 @@ img.ambiente {
 	text-decoration: none;
 	font-weight: bold;
 	color: #1c5ba7;
+}
+
+.swal2-icon .swal2-icon-content {
+	color: inherit;
+}
+
+.swal2-icon {
+	width: 88px;
+    height: 88px;
 }

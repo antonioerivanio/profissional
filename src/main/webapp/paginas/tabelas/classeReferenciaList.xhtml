@@ -105,16 +105,16 @@
 				
 			</div>
 
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="listar"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />
 			<h:commandButton id="incluir" 
 							 value="Incluir"
 							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15"
 							 rendered="#{LoginBean.anyGranted('ROLE_CLASSE_REFERENCIA_CARGO_INSERIR')}"  />
+			<h:commandButton id="limpaTela"
+							 value="Limpar"
+							 action="listar"
+							 styleClass="bt-padrao fr mg-right-15" 
+							 />
 
 		</h:form>
 
