@@ -28,7 +28,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_FERIAS", schema="SRH")
+@Table(name="TB_FERIAS", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Ferias extends BasicEntity<Long> implements Serializable {
 
     @Id

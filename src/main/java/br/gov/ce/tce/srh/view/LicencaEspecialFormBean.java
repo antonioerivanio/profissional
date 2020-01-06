@@ -2,6 +2,8 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -14,15 +16,9 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.LicencaEspecialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC035_Manter Período de Licença Especial
-* 
-* @since   : Out 27, 2011, 10:59:22 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("licencaEspecialFormBean")
-@Scope("session")
+@Scope("view")
 public class LicencaEspecialFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalCursoGraduacaoFormBean.class);
@@ -32,7 +28,6 @@ public class LicencaEspecialFormBean implements Serializable {
 
 	@Autowired
 	private FuncionalService funcionalService;
-
 
 	// entidades das telas
 	private LicencaEspecial entidade = new LicencaEspecial();	
@@ -45,54 +40,34 @@ public class LicencaEspecialFormBean implements Serializable {
 
 	private boolean alterar = false;
 
+	@PostConstruct
+	public void init() {
+		LicencaEspecial flashParameter = (LicencaEspecial)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new LicencaEspecial());
 
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		this.alterar = true;
-
-		this.nome = entidade.getPessoal().getNomeCompleto();
-		this.anoInicial = entidade.getAnoinicial();
-		this.anoFinal = entidade.getAnofinal();
-
-		try {
-
-			Funcional funcional = funcionalService.getByPessoaAtivo( entidade.getPessoal().getId() );
-			
-			if (funcional != null)
-				this.matricula = funcional.getMatricula();
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
+		if(this.entidade.getId() != null) {
 		
-		return "incluirAlterar";
+			this.alterar = true;
+	
+			this.nome = entidade.getPessoal().getNomeCompleto();
+			this.anoInicial = entidade.getAnoinicial();
+			this.anoFinal = entidade.getAnofinal();
+	
+			try {
+	
+				Funcional funcional = funcionalService.getByPessoaAtivo( entidade.getPessoal().getId() );
+				
+				if (funcional != null)
+					this.matricula = funcional.getMatricula();
+	
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
+		}
 	}
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	
+	public void salvar() {
 
 		try {
 
@@ -112,14 +87,8 @@ public class LicencaEspecialFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Limpar dados
-	 */	
 	private void limpar() {
 
 		this.alterar = false;
@@ -132,10 +101,6 @@ public class LicencaEspecialFormBean implements Serializable {
 		this.anoFinal = null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {

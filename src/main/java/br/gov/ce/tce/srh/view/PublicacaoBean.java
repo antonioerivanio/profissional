@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -38,15 +38,9 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
-* Use case : SRH_UC029_Manter Documento Publicação
-* 
-* @since   : Out 21, 2011, 10:10:50 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("publicacaoBean")
-@Scope("session")
+@Scope("view")
 public class PublicacaoBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PublicacaoBean.class);
@@ -62,11 +56,6 @@ public class PublicacaoBean implements Serializable {
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private TipoDocumento tipoDocumento;
@@ -85,40 +74,28 @@ public class PublicacaoBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Publicacao> pagedList = new ArrayList<Publicacao>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
+	@PostConstruct
+	public void init() {
+		Publicacao flashParameter = (Publicacao)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Publicacao());
+		
 		try {
-
-			this.esfera = getEntidade().getTipoDocumento().getEsfera();
-			this.comboTipoDocumento = this.getTipoDocumentoByEsfera();
-			
+			if(this.entidade.getId() != null) {
+				this.esfera = getEntidade().getTipoDocumento().getEsfera();
+				this.comboTipoDocumento = this.getTipoDocumentoByEsfera();				
+			}			
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -134,7 +111,6 @@ public class PublicacaoBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -146,16 +122,9 @@ public class PublicacaoBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -176,17 +145,14 @@ public class PublicacaoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -204,15 +170,9 @@ public class PublicacaoBean implements Serializable {
 		}
 
 		setEntidade( new Publicacao() );
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Carregar o tipo de documento
-	 * 
-	 * @param event
-	 */
 	public void carregaTipoDocumento() {
 		this.comboTipoDocumento = null;
 		getTipoDocumentoByEsfera();
@@ -233,12 +193,6 @@ public class PublicacaoBean implements Serializable {
         return this.comboTipoDocumento;
 	}
 
-
-	/**
-	 * Combo Tipo Documento
-	 * 
-	 * @return
-	 */
 	public List<TipoDocumento> getComboTipoDocumentoConsulta() {
 
         try {
@@ -254,13 +208,6 @@ public class PublicacaoBean implements Serializable {
         return this.comboTipoDocumentoConsulta;
 	}
 
-
-	/**
-	 * Upload da foto
-	 * 
-	 * @throws IOException 
-	 * 
-	 */
 	private void upload() {
 
 		// criando nome do arquivo baseado na data
@@ -308,13 +255,7 @@ public class PublicacaoBean implements Serializable {
 
 	}
 
-
-	/**
-	 * Abrir o arquivo
-	 * 
-	 * @return
-	 */
-	public String abrirArquivo() {
+	public void abrirArquivo() {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();  
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();  
@@ -358,16 +299,9 @@ public class PublicacaoBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 	
 		try {
 
@@ -384,23 +318,8 @@ public class PublicacaoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	public String limpaTela() {	
-		setEntidade(new Publicacao());
-		return "listar";
-	}
-	
-	public String limpaForm() {
-		setEntidade(new Publicacao());
-		return "publicacaoForm";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public List<TipoDocumento> getComboTipoDocumento() {return comboTipoDocumento;}
 
 	public TipoDocumento getTipoDocumento() {return tipoDocumento;}
@@ -414,33 +333,18 @@ public class PublicacaoBean implements Serializable {
 
 	public List<Publicacao> getLista(){return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new Publicacao() );
-			comboTipoDocumento = null;
-			comboTipoDocumentoConsulta = null;
-			tipoDocumento = new TipoDocumento();
-			lista = new ArrayList<Publicacao>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
 	public UploadedFile getArquivo() {return arquivo;}
 	public void setArquivo(UploadedFile arquivo) {this.arquivo = arquivo;}
 
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Publicacao>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -21,15 +23,9 @@ import br.gov.ce.tce.srh.service.TipoMovimentoService;
 import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC034_Manter Exoneração do Servidor
-* 
-* @since   : Dez 19, 2011, 17:59:02 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("exoneracaoFormBean")
-@Scope("session")
+@Scope("view")
 public class ExoneracaoFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ExoneracaoFormBean.class);
@@ -58,15 +54,13 @@ public class ExoneracaoFormBean implements Serializable {
 	List<TipoMovimento> comboTipoMovimento;
 	
 	private boolean existeFeriasPosterior = false;
+	@PostConstruct
+	public void init() {		
+		setFuncional((Funcional)FacesUtil.getFlashParameter("funcional"));
+		setRepresentacao((RepresentacaoFuncional)FacesUtil.getFlashParameter("representacao"));
+	}
 
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -92,16 +86,8 @@ public class ExoneracaoFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Tipo Publicacao
-	 * 
-	 * @return
-	 */
 	public List<TipoPublicacao> getComboTipoPublicacao() {
 
 		try {
@@ -117,12 +103,6 @@ public class ExoneracaoFormBean implements Serializable {
 		return this.comboTipoPublicacao;
 	}
 
-
-	/**
-	 * Combo Tipo Movimento Saida
-	 * 
-	 * @return
-	 */
 	public List<TipoMovimento> getComboTipoMovimentoSaida() {
 
 		try {
@@ -137,7 +117,6 @@ public class ExoneracaoFormBean implements Serializable {
 
 		return this.comboTipoMovimento;
 	}
-	
 	
 	public void verificaFeriasPosterior(){
 		
@@ -157,13 +136,8 @@ public class ExoneracaoFormBean implements Serializable {
 			e.printStackTrace();
 			this.existeFeriasPosterior = false;
 		}		
-		
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Funcional getFuncional() {return funcional;}
 	public void setFuncional(Funcional funcional) {this.funcional = funcional;}
 
@@ -171,8 +145,6 @@ public class ExoneracaoFormBean implements Serializable {
 	public void setRepresentacao(RepresentacaoFuncional representacao) {this.representacao = representacao;}
 
 	public boolean isExisteFeriasPosterior() {return existeFeriasPosterior;}
-	public void setExisteFeriasPosterior(boolean existeFeriasPosterior) {this.existeFeriasPosterior = existeFeriasPosterior;}
-	
-	
+	public void setExisteFeriasPosterior(boolean existeFeriasPosterior) {this.existeFeriasPosterior = existeFeriasPosterior;}	
 
 }

@@ -12,11 +12,7 @@
 	<ui:define name="content">
 
 		<style>
-		    .formularios fieldset,
-		    .box-border {		       
-		        min-height: 75px;
-		    }
-		    .fichaAntigaLink{
+		   .fichaAntigaLink{
 		    	font-size: 12px;
 			    font-weight: bold;
 			    color: #505050;
@@ -32,6 +28,15 @@
 				background: white;
 				color: #999;
 		    }
+		    .foto-pessoal {
+		    	position: absolute;
+			    right: 70px;
+			    top: 20px;
+			    cursor: pointer;
+		    }
+		    .foto-pessoal img {
+		    	max-width: 136px;
+		    }
 		</style>		
 
 		<div class="titulo-pagina">
@@ -42,7 +47,8 @@
 				
 		<span class="label-campos-obrigarotios"><i>* Campos Obrigatórios</i></span>
 		
-		<!-- <ui:fragment rendered="#{pessoaBean.ehServidor()}" >
+		<!--  
+		                 				 style="height: 150px; width: 107px; margin-bottom: 10px;"<ui:fragment rendered="#{pessoaBean.ehServidor()}" >
 			<div class="mensagem-alerta">
 				<p><b>Importante!</b> Caso verifique alguma discrepância nos dados cadastrais não editáveis, favor entrar em contato com a Gerência de Atos Funcionais.</p>
 			</div>				
@@ -56,10 +62,10 @@
 
 			<rich:tabPanel switchType="client">
 			
-				<rich:tab label="Dados Pessoais">					
+				<rich:tab header="Dados Pessoais">					
 								
 					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
-						<div class="select-box box-20">
+						<div class="select-box box-25">
 							<label for="">Categoria *</label>
 							<div class="conteiner">
 								<h:selectOneMenu id="categoria"
@@ -77,23 +83,24 @@
 						</div>					
 					</ui:fragment>
 					
-					<div class="box-20" style="position: absolute; right: 40px; top: 40px;">
-						<a4j:mediaOutput element="img" cacheable="false" session="false"
-		                 				 createContent="#{pessoaBean.geraFoto}" mimeType="image/jpeg"  
-		                 				 id="imagem1" style="height: 150px; width: 107px; margin-bottom: 10px;" />
-						<br />						
-						
-						<t:inputFileUpload id="foto"		
-			            	      		   value="#{pessoaBean.foto}"
-			                	  		   storage="file"
-			                  			   valueChangeListener="#{pessoaBean.uploadFoto}"
-			                  			   onchange="submit()"
-			                  			   rendered="#{pessoaBean.temPermisssaoParaAlterar()}" />			                  			   
-			                  			   
-					</div>					
-		
+					<div class="foto-pessoal">
+						<label for="">Foto</label>
+						<div>
+							<a4j:mediaOutput element="img"
+			                 				 createContent="#{imageBean.geraFoto}" 
+			                 				 mimeType="image/jpeg"
+			                 				 onclick="document.getElementById('form:fotoUpload').click()" />
+							<t:inputFileUpload 	id="fotoUpload"
+												style="display: none"		
+				            	      		    value="#{pessoaBean.foto}"
+				                	  		    storage="file"
+				                  			    valueChangeListener="#{pessoaBean.uploadFoto}"
+				                  			    onchange="submit()"
+				                  			    rendered="#{pessoaBean.temPermisssaoParaAlterar()}" />
+						</div>			                  			   
+					</div>		
 					
-					<div class="input-box box-54 clr">
+					<div class="input-box box-60 clr">
 						<label for="">Nome *</label>
 						<div class="conteiner">
 							<h:inputText id="nomeCompleto"
@@ -114,7 +121,7 @@
 						</div>
 					</div>
 		
-					<div class="input-box box-37">
+					<div class="input-box box-40">
 						<label for="">Nome Mãe</label>
 						<div class="conteiner">
 							<h:inputText id="nomeMae"
@@ -124,7 +131,7 @@
 						</div>
 					</div>
 		
-					<div class="input-box box-37">
+					<div class="input-box box-40">
 						<label for="">Nome Pai</label>
 						<div class="conteiner">
 							<h:inputText id="nomePai"
@@ -134,7 +141,7 @@
 						</div>
 					</div>									
 		
-					<div class="select-box box-10 clr">
+					<div class="select-box box-15 clr">
 						<label for="sexo">Sexo *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="sexo" 
@@ -159,7 +166,7 @@
 						</div>
 					</div>										
 					
-					<div class="select-box box-14">
+					<div class="select-box box-20">
 						<label for="">País Nascimento *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="paisNascto"
@@ -176,7 +183,7 @@
 						</div>
 					</div>					
 					
-					<div class="select-box box-14">
+					<div class="select-box box-20">
 						<label for="">País Nacionalidade *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="paisNac"
@@ -194,7 +201,7 @@
 						</div>
 					</div>		
 		
-					<div class="select-box box-10">
+					<div class="select-box box-15">
 						<label for="">UF *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="uf"
@@ -207,14 +214,13 @@
 							  					var="uf"
 							  					itemValue="#{uf}"
 							  					itemLabel="#{uf.id}"/>
-							  	<a4j:support id="comboUfAction" 
-							  	             event="onchange"							  	            
-							  	             reRender="municipioNaturalidade" />
+							  	<a4j:ajax 	 event="change"							  	            
+							  	             render="municipioNaturalidade" />
 							</h:selectOneMenu>
 						</div>
 					</div>
 					
-					<div class="select-box box-16">
+					<div class="select-box box-20">
 						<label for="">Naturalidade *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="municipioNaturalidade"
@@ -232,7 +238,7 @@
 					</div>
 					
 					
-					<div class="select-box box-20 clr">
+					<div class="select-box box-25 clr">
 						<label for="">Estado Civil</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="estadoCivil" 
@@ -249,7 +255,7 @@
 						</div>
 					</div>
 		
-					<div class="select-box box-24">
+					<div class="select-box box-20">
 						<label for="">Escolaridade *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="escolaridade"
@@ -266,9 +272,9 @@
 						</div>
 					</div>
 					
-					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
+					<ui:fragment class="box-55" rendered="#{not pessoaBean.ehServidor()}">
 					
-						<div class="input-box box-74">
+						<div class="input-box box-45">
 							<label for="">Nome Social</label>
 							<div class="conteiner">
 								<h:inputText id="nomeSocial"
@@ -278,7 +284,7 @@
 							</div>
 						</div>
 						
-						<div class="input-box box-12">
+						<div class="input-box box-10">
 							<label for="">Data Óbito</label>
 							<div class="conteiner">
 								<h:inputText id="dataObito" 
@@ -287,7 +293,11 @@
 											 value="#{pessoaBean.entidade.obito}"  
 											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
 							</div>
-						</div>										
+						</div>
+						
+					</ui:fragment>										
+					
+					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
 			
 						<fieldset class="clr">
 		
@@ -316,7 +326,7 @@
 				</rich:tab>
 	
 	
-				<rich:tab label="Característica">
+				<rich:tab header="Característica">
 					
 					<div class="select-box box-22">
 						<label for="">Raça/Cor *</label>
@@ -368,7 +378,7 @@
 				</rich:tab>
 	
 				
-				<rich:tab label="Endereço">
+				<rich:tab header="Endereço">
 				
 					<div class="input-box box-10">
 						<label for="">CEP *</label>
@@ -378,10 +388,9 @@
 										 styleClass="maskCep"
 										 value="#{pessoaBean.entidade.cep}" 
 										 disabled="#{not pessoaBean.podeAlterar()}">
-								<a4j:support id="cepAction" 
-							  	             event="onblur"
-							  	             action="#{pessoaBean.buscarCep()}"
-							  	             reRender="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
+								<a4j:ajax 	 event="blur"
+							  	             listener="#{pessoaBean.buscarCep()}"
+							  	             render="tpLograd, endereco, bairro, ufEndereco, municipioEndereco" />
 							</h:inputText>			 
 						</div>
 					</div>
@@ -457,9 +466,8 @@
 							  					var="ufEndereco"
 							  					itemValue="#{ufEndereco}"
 							  					itemLabel="#{ufEndereco.id}"/>
-							  	<a4j:support id="comboUfEnderecoAction" 
-							  	             event="onchange"							  	            
-							  	             reRender="municipioEndereco" />
+							  	<a4j:ajax    event="change"							  	            
+							  	             render="municipioEndereco" />
 							</h:selectOneMenu>
 						</div>
 					</div>							
@@ -483,7 +491,7 @@
 				
 				</rich:tab>
 				
-				<rich:tab label="Contato">
+				<rich:tab header="Contato">
 				
 					<div class="input-box box-20">
 						<label for="">Telefone</label>
@@ -530,7 +538,7 @@
 				</rich:tab>
 	
 		
-				<rich:tab label="Documentos">
+				<rich:tab header="Documentos">
 				
 					<div class="input-box box-25">
 						<label for="">CPF *</label>
@@ -857,7 +865,7 @@
 				
 				</rich:tab>
 	
-				<rich:tab label="Dados Bancários" rendered="#{not pessoaBean.ehServidor()}">
+				<rich:tab header="Dados Bancários" rendered="#{not pessoaBean.ehServidor()}">
 				
 					<div class="radios-group box-25">
 						<h3>Tipo</h3>
@@ -898,7 +906,7 @@
 				</rich:tab>				
 			
 			
-				<rich:tab label="Dependentes" rendered="#{pessoaBean.ehAlteracao()}">
+				<rich:tab header="Dependentes" rendered="#{pessoaBean.ehAlteracao()}">
 				
 					<ui:fragment rendered="#{pessoaBean.temPermisssaoParaAlterar()}">
 						<div class="input-box box-25">
@@ -1019,50 +1027,18 @@
 			<div class="bt-conteiner">				
 				
 				<ui:fragment rendered="#{pessoaBean.cadastroAindaNaoFinalizado()}">
-					<a onclick="Richfaces.showModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr">Finalizar</a>
+					<a onclick="finalizaRecadastramento();" href="#" class="bt-padrao fr">Finalizar</a>
+					<a4j:jsFunction name="finalizarRecadastramento" action="#{pessoaBean.salvar(true)}" render="form">
+					</a4j:jsFunction> 
 				</ui:fragment>
 				
 				<ui:fragment rendered="#{pessoaBean.podeAlterar()}">								
-					<h:commandButton id="salvar" action="#{pessoaBean.salvar(false)}" value="Salvar" styleClass="bt-padrao fr mg-right-10"  />				
-					<a href="/srh/paginas/cadastros/pessoaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+					<h:commandButton id="salvar" action="#{pessoaBean.salvar(false)}" value="Salvar" styleClass="bt-padrao fr mg-right-10"  />
 				</ui:fragment>
 				
 				<a href="/srh/paginas/cadastros/pessoaList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 				
-			</div>
-			
-			<rich:modalPanel id="finalizaRecadastramento" resizeable="false" height="450" width="620">
-					            
-	            <f:facet name="header" class="header">
-	            	<span>Finalizar o Cadastro</span>
-	            </f:facet>
-										
-				<div class="sessao-expirada-msg">
-					<span class="sessao-expirada-text">
-						<b>ATENÇÃO!</b>
-						Esclarecemos que ao finalizar o recadastramento, você não poderá editar seus dados por meio do SRH. 
-						Você pode utilizar indistintamente a opção salvar, e só partir para a ação de finalizar, quando efetivamente 
-						tiver encerrado todas as suas informações do recadastramento. 
-						Caso esteja seguro que efetivamente finalizou o cadastro, leia o texto abaixo e clique na opção [Confirmar].
-						<br /><br />
-						<b>DECLARO</b> serem verdadeiras as informações constantes do presente 
-						formulário, comprometendo-me a comunicar ao Tribunal de Contas do Estado Ceará qualquer alteração ocorrida 
-						após a finalização do recadastramento e apresentar documentos complementares solicitados 
-						pela Gerência de Atos Funcionais.					
-					</span>									
-				</div>
-				
-				
-				<div class="modal-actions">													
-					<h:commandButton id="confirmar" 
-						action="#{pessoaBean.salvar(true)}"						
-						onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" 
-						value="Confirmar" 
-						styleClass="bt-padrao fr mg-zero" />
-					<a onclick="Richfaces.hideModalPanel('finalizaRecadastramento');" href="#" class="bt-padrao fr mg-zero mg-right-10">Cancelar</a>
-				</div>							
-				
-			</rich:modalPanel>
+			</div>			
 			
 		</h:form>
 

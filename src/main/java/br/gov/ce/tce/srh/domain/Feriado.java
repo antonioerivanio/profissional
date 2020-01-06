@@ -12,7 +12,7 @@ import javax.persistence.TemporalType;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "TB_FERIADO", schema = "SRH")
+@Table(name = "TB_FERIADO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Feriado extends BasicEntity<Long> implements Serializable{
 
 	@Id

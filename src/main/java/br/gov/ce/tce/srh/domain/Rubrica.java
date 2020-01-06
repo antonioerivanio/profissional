@@ -6,16 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Referente a tabela: TB_RUBRICA
- * 
- * @since   : Set 1, 2011, 10:40:00 AM
- * @author  : robstownholanda@ivia.com.br
- *
- */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_RUBRICA", schema="SRH")
+@Table(name="TB_RUBRICA", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Rubrica extends BasicEntity<Long> implements Serializable {
 
 	@Id
@@ -35,57 +28,153 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 	private String descricao;
 
 	@Column(name="EMPRESTIMO")
-	private boolean emprestimo;
+	private Boolean emprestimo;
 
 	@Column(name="CONSIGNACAO")
-	private boolean consignacao;
+	private Boolean consignacao;
 
 	@Column(name="SUPSEC")
-	private boolean supsec;
+	private Boolean supsec;
 
 	@Column(name="IRRF")
-	private boolean irrf;
+	private Boolean irrf;
 
 	@Column(name="VERBA_EXTRA")
-	private boolean verbaExtra;
+	private Boolean verbaExtra;
 
 	@Column(name="VERIFICATETO")
-	private boolean verificaTeto;
-
-
-	public String getCodigo() {return codigo;}
-	public void setCodigo(String codigo) {this.codigo = codigo;}
-
-	public Long getOrdem() {return ordem;}
-	public void setOrdem(Long ordem) {this.ordem = ordem;}
-
-	public String getTipo() {return tipo;}
-	public void setTipo(String tipo) {this.tipo = tipo;}
-
-	public String getDescricao() {return descricao;}
-	public void setDescricao(String descricao) {this.descricao = descricao;}
-
-	public boolean isEmprestimo() {return emprestimo;}
-	public void setEmprestimo(boolean emprestimo) {this.emprestimo = emprestimo;}
-
-	public boolean isConsignacao() {return consignacao;}
-	public void setConsignacao(boolean consignacao) {this.consignacao = consignacao;}
-
-	public boolean isSupsec() {return supsec;}
-	public void setSupsec(boolean supsec) {this.supsec = supsec;}
-
-	public boolean isIrrf() {return irrf;	}
-	public void setIrrf(boolean irrf) {this.irrf = irrf;}
-
-	public boolean isVerbaExtra() {return verbaExtra;}
-	public void setVerbaExtra(boolean verbaExtra) {this.verbaExtra = verbaExtra;}
-
-	public boolean isVerificaTeto() {return verificaTeto;}
-	public void setVerificaTeto(boolean verificaTeto) {this.verificaTeto = verificaTeto;}
+	private Boolean verificaTeto;
 	
-	@Override
-	public Long getId() {return this.id;}
-	@Override
-	public void setId(Long id) {this.id = id;}
+	@Column(name="AGRUPADESCONTO")
+	private Boolean agrupaDesconto;
+
+	@Column(name="PROPTERLABOREM")
+	private Boolean propterlaborem ;
+
+	@Column(name="VERBAPREVIDENCIA")
+	private Boolean verbaPrevidencia;
+
+	@Column(name="AUXILIO")
+	private Boolean auxilio;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public Long getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(Long ordem) {
+		this.ordem = ordem;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public Boolean getEmprestimo() {
+		return emprestimo;
+	}
+
+	public void setEmprestimo(Boolean emprestimo) {
+		this.emprestimo = emprestimo;
+	}
+
+	public Boolean getConsignacao() {
+		return consignacao;
+	}
+
+	public void setConsignacao(Boolean consignacao) {
+		this.consignacao = consignacao;
+	}
+
+	public Boolean getSupsec() {
+		return supsec;
+	}
+
+	public void setSupsec(Boolean supsec) {
+		this.supsec = supsec;
+	}
+
+	public Boolean getIrrf() {
+		return irrf;
+	}
+
+	public void setIrrf(Boolean irrf) {
+		this.irrf = irrf;
+	}
+
+	public Boolean getVerbaExtra() {
+		return verbaExtra;
+	}
+
+	public void setVerbaExtra(Boolean verbaExtra) {
+		this.verbaExtra = verbaExtra;
+	}
+
+	public Boolean getVerificaTeto() {
+		return verificaTeto;
+	}
+
+	public void setVerificaTeto(Boolean verificaTeto) {
+		this.verificaTeto = verificaTeto;
+	}
+
+	public Boolean getAgrupaDesconto() {
+		return agrupaDesconto;
+	}
+
+	public void setAgrupaDesconto(Boolean agrupaDesconto) {
+		this.agrupaDesconto = agrupaDesconto;
+	}
+
+	public Boolean getPropterlaborem() {
+		return propterlaborem;
+	}
+
+	public void setPropterlaborem(Boolean propterlaborem) {
+		this.propterlaborem = propterlaborem;
+	}
+
+	public Boolean getVerbaPrevidencia() {
+		return verbaPrevidencia;
+	}
+
+	public void setVerbaPrevidencia(Boolean verbaPrevidencia) {
+		this.verbaPrevidencia = verbaPrevidencia;
+	}
+
+	public Boolean getAuxilio() {
+		return auxilio;
+	}
+
+	public void setAuxilio(Boolean auxilio) {
+		this.auxilio = auxilio;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}	
 	
 }

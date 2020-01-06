@@ -17,7 +17,7 @@ import br.gov.ce.tce.srh.domain.BasicEntity;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_PARAMETRO", schema="SRH")
+@Table(name="TB_PARAMETRO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Parametro extends BasicEntity<Long> implements Serializable {
 
 	@Id

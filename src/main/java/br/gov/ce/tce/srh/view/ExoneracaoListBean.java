@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,15 +16,9 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC034_Manter Exoneração do Servidor
-* 
-* @since   : Dez 19, 2011, 17:09:00 
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("exoneracaoListBean")
-@Scope("session")
+@Scope("view")
 public class ExoneracaoListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ExoneracaoListBean.class);
@@ -36,11 +28,6 @@ public class ExoneracaoListBean implements Serializable {
 
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -53,20 +40,12 @@ public class ExoneracaoListBean implements Serializable {
 
 	private Funcional entidade;
 	private Long tipo;
+	private RepresentacaoFuncional representacao;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
-
-			passouConsultar = true;
-
+			
 			// validando campos da entidade
 			if ( getEntidade() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
@@ -101,18 +80,18 @@ public class ExoneracaoListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String exonerarCargoEfetivo() {
+		FacesUtil.setFlashParameter("funcional", getEntidade());        
+        return "exonerarCargoEfetivo";
+	}
+	
+	public String exonerarRepresentacao() {
+		FacesUtil.setFlashParameter("representacao", getRepresentacao());        
+        return "exonerarRepresentacao";
 	}
 
-	public String limpaTela() {
-		setEntidade(new Funcional());
-		return "listar";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -173,19 +152,7 @@ public class ExoneracaoListBean implements Serializable {
 	public Funcional getEntidade() {return entidade;}
 	public void setEntidade(Funcional entidade) {this.entidade = entidade;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( null );
-			matricula = new String();
-			cpf = new String();
-			nome = new String();
-			tipo = null;
-			listaEfetivo = null;
-			listaRepresentacao = null;
-		}
-		passouConsultar = false;
-		return form;
-	}
+	public RepresentacaoFuncional getRepresentacao() {return representacao;}
+	public void setRepresentacao(RepresentacaoFuncional representacao) {this.representacao = representacao;}	
 
 }

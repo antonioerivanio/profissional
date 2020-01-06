@@ -7,9 +7,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
+
 
 @Entity
-@Table(name="PERMISSAO", schema="SCA")
+@Table(name="PERMISSAO", schema=DatabaseMetadata.SCHEMA_SCA)
 public class Permissao {
 
 	@Id

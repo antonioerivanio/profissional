@@ -551,6 +551,12 @@ public class SRHUtils {
 		return mf.valueToString(texto);  		
 	}
 	
+	public static String formatarHora(String texto) throws ParseException {
+		MaskFormatter mf = new MaskFormatter("##:##");
+		mf.setValueContainsLiteralCharacters(false);
+		return mf.valueToString(texto);  		
+	}
+	
 	public static String formatarProcesso(String processo) throws ParseException {
 		MaskFormatter mf = new MaskFormatter("#####/####-##");
 		mf.setValueContainsLiteralCharacters(false);

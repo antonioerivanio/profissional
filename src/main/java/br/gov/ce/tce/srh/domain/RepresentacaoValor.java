@@ -12,23 +12,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- * Referente a tabela: TB_REPRESENTACAOVALOR
- * 
- * @since   : Out 20, 2011, 10:11:33 AM
- * @author  : robstownholanda@ivia.com.br
- *
- */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_REPRESENTACAOVALOR", schema="SRH")
+@Table(name="TB_REPRESENTACAOVALOR", schema=DatabaseMetadata.SCHEMA_SRH)
 public class RepresentacaoValor extends BasicEntity<Long> implements Serializable {
 
 	@Id
 	@Column(name = "ID", nullable=false)
 	private Long id;
 
-    @ManyToOne
+    // FIXME Mapeamento não existe 
+	@ManyToOne
 	@JoinColumn(name = "IDREPRESENTACAOCARGO")
     private RepresentacaoCargo representacaoCargo;
 

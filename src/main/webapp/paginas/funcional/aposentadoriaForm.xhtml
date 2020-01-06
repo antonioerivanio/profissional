@@ -9,25 +9,13 @@
 	xmlns:rich="http://richfaces.org/rich">
 
 	<ui:define name="content">
-
-		<style>
-		.formularios fieldset,.box-border {
-			border: 1px solid #c6c6c6;
-			padding: 15px 15px 0px 15px;
-			padding-right: 0;
-			overflow: auto;
-			margin-bottom: 10px;
-			min-height: 100px;
-		}
-		</style>
-
 		<script>
 			function openwindow() {
 				nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
 					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}
 			
@@ -97,9 +85,9 @@
 									 styleClass="maskMatricula"									 
 									 disabled="#{aposentadoriaFormBean.alterar or (not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR'))}"
 									 value="#{aposentadoriaFormBean.matricula}">
-							<a4j:support event="onblur"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, mensagemRepresentacao"
-										 ajaxSingle="true" />
+							<a4j:ajax event="blur"
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf, mensagemRepresentacao"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -261,12 +249,11 @@
 									 value="#{aposentadoriaFormBean.entidade.dataInicioBeneficio}" 
 									 maxlength="10"
 									 disabled="#{not LoginBean.anyGranted('ROLE_APOSENTADORIA_INSERIR,ROLE_APOSENTADORIA_ALTERAR')}">
-							<a4j:support rendered = "#{not aposentadoriaFormBean.alterar}"
-										 id="dataInicioBeneficioChange" 
-										 event="onchange" 
-										 action="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
-										 reRender="mensagemLotacao" 
-										 ajaxSingle="true" />			 
+							<a4j:ajax rendered = "#{not aposentadoriaFormBean.alterar}"
+										 event="change" 
+										 listener="#{aposentadoriaFormBean.atualizaMensagemLotacao()}"
+										 render="mensagemLotacao" 
+										 execute="@this" />			 
 						</h:inputText>
 					</div>
 				</div>
@@ -323,9 +310,7 @@
 					value="Salvar" 
 					action="#{aposentadoriaFormBean.salvar}" 
 					styleClass="bt-padrao fr" 
-					onclick="return confirmaAposentadoria();"  />						
-				
-				<a href="/srh/paginas/funcional/aposentadoriaForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+					onclick="return confirmaAposentadoria();"  />
 			
 			</ui:fragment>
 			

@@ -14,7 +14,7 @@ import org.hibernate.envers.NotAudited;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "TB_CATEGORIASETORPESSOAL", schema = "SRH")
+@Table(name = "TB_CATEGORIASETORPESSOAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class CategoriaSetorPessoal extends BasicEntity<Long> implements
 		Serializable {
 

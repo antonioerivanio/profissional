@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,15 +21,9 @@ import br.gov.ce.tce.srh.service.AreaSetorService;
 import br.gov.ce.tce.srh.service.CompetenciaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC003_Manter Competências do Setor
-* 
-* @since   : Aug 31, 2011, 10:44:18 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("areaSetorCompetenciaFormBean")
-@Scope("session")
+@Scope("view")
 public class AreaSetorCompetenciaFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(AreaSetorCompetenciaFormBean.class);
@@ -53,41 +49,13 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
 	private List<Setor> comboSetor;
 	private List<Competencia> comboCompetencia;
 
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		setSetor( new Setor() );
-		setEntidade( new AreaSetorCompetencia() );
-		comboSetor = null;
-		comboCompetencia = null;
-		return "incluirAlterar";
+	@PostConstruct
+	public void init() {
+		AreaSetorCompetencia flashParameter = (AreaSetorCompetencia)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new AreaSetorCompetencia());
 	}
 
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-		comboSetor = null;
-		comboCompetencia = null;
-		this.setor = entidade.getAreaSetor().getSetor();
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -106,16 +74,8 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo setor
-	 * 
-	 * @return
-	 */
 	public List<Setor> getComboSetor() {
 
 		try {
@@ -131,12 +91,6 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
 		return this.comboSetor;
 	}
 
-
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
 	public void carregaArea() {
 		getEntidade().setAreaSetor(new AreaSetor());
 	}
@@ -157,12 +111,6 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
 		return null;
 	}
 
-
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public List<Competencia> getComboCompetencia() {
 
         try {
@@ -178,16 +126,6 @@ public class AreaSetorCompetenciaFormBean implements Serializable {
         return this.comboCompetencia;
 	}
 	
-	public String limpaTela() {
-		setEntidade(new AreaSetorCompetencia());
-		setSetor(new Setor());
-		return null;
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public AreaSetorCompetencia getEntidade() {return entidade;}
 	public void setEntidade(AreaSetorCompetencia entidade) {this.entidade = entidade;}
 

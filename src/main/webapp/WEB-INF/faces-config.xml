@@ -11,6 +11,10 @@
 		</resource-bundle>
 		
 		<message-bundle>messages</message-bundle>
+		
+		<locale-config>
+			<default-locale>pt_BR</default-locale>
+		</locale-config>
 
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 
@@ -27,6 +31,10 @@
 		<converter-class>br.gov.ce.tce.srh.converter.DateConverter</converter-class>
 	</converter>
 	<converter>
+		<converter-id>vigenciaConverter</converter-id>
+		<converter-class>br.gov.ce.tce.srh.converter.VigenciaConverter</converter-class>
+	</converter>
+	<converter>
 		<converter-id>entityConverter</converter-id>
 		<converter-class>br.gov.ce.tce.srh.converter.EntityConverter</converter-class>
 	</converter>
@@ -37,6 +45,10 @@
 	<converter>
 		<converter-id>processoConverter</converter-id>
 		<converter-class>br.gov.ce.tce.srh.converter.ProcessoConverter</converter-class>
+	</converter>	
+	<converter>
+		<converter-id>horaConverter</converter-id>
+		<converter-class>br.gov.ce.tce.srh.converter.HoraConverter</converter-class>
 	</converter>
 
 
@@ -173,6 +185,102 @@
 			<to-view-id>/paginas/tabelas/cargoForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Empregador -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/empregadorList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/empregadorList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/empregadorForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Estabelecimento -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estabelecimentoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estabelecimentoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/estabelecimentoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Lotação tributaria -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/lotacaoTributariaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/lotacaoTributariaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/lotacaoTributariaForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Rubrica eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/rubricaESocialTCEList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/rubricaESocialTCEList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/rubricaESocialTCEForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Horários/Turnos de trabalho -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/horario-turnos-trabalho/gradeHorarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Carreira -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/carreiraList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/carreiraList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/carreiraForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Ambiente de Trabalho -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/ambienteTrabalhoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/ambienteTrabalhoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/ambienteTrabalhoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- Processo -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/processoESocialList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/processoESocialList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/processoESocialForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>	
 	<!-- Cargo Comissionado -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/cargoComissionadoList.xhtml</from-view-id>
@@ -483,18 +591,26 @@
 		<navigation-case>
 			<from-outcome>login</from-outcome>
 			<to-view-id>/login.xhtml</to-view-id>
-		</navigation-case>
+			<redirect />
+		</navigation-case>		
 	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/home.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>loginInvalido</from-outcome>
 			<to-view-id>/login.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>erro</from-outcome>
+			<to-view-id>/erro.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>		
 	</navigation-rule>
 	<!-- Motivo Dependencia -->
 	<navigation-rule>
@@ -845,15 +961,7 @@
 			<from-outcome>incluirAlterar</from-outcome>
 			<to-view-id>/paginas/cadastros/dependenteForm.xhtml</to-view-id>
 		</navigation-case>
-	</navigation-rule>
-	<!-- Servidor por Setor -->
-	<navigation-rule>
-		<from-view-id>/paginas/relatorios/servidorList.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>listar</from-outcome>
-			<to-view-id>/paginas/relatorios/servidorList.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
+	</navigation-rule>	
 	<!-- Relatório de servidores por sexo e aniversariantes -->
 	<navigation-rule>
 		<from-view-id>/paginas/relatorios/relatorioServidorList.xhtml</from-view-id>

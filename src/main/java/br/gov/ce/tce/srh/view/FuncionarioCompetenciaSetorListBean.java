@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -32,15 +30,9 @@ import br.gov.ce.tce.srh.service.CompetenciaGraduacaoService;
 import br.gov.ce.tce.srh.service.FuncionalAreaSetorService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC038_Consultar Servidor por Competência e Setor
-* 
-* @since   : Dez 19, 2011, 17:09:00 AM
-* @author  : wesllhey.holanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("funcionarioCompetenciaSetorListBean")
-@Scope("session")
+@Scope("view")
 public class FuncionarioCompetenciaSetorListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FuncionarioCompetenciaSetorListBean.class);
@@ -66,11 +58,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 	
 	@Autowired 
 	private CompetenciaGraduacaoService competenciaGraduacaoService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
+	
 
 	// entidades das telas
 	private Setor setor;
@@ -80,6 +68,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 	private Date dataFinal;
 
 	private List<ServidorCompetencia> listaServidorCompetencia = new ArrayList<ServidorCompetencia>();
+	private ServidorCompetencia servidorCompetencia = new ServidorCompetencia();
 
 	// combos
 	private List<Setor> comboSetor;
@@ -95,12 +84,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 	private CompetenciaCurso competenciaCurso = new CompetenciaCurso();
 	
 	
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -121,8 +105,6 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			passouConsultar = true;
-
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
@@ -130,7 +112,6 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		return "listar";
 		
 	}
 
@@ -260,12 +241,12 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 		}
 
 	}
-
-	/**
-	 * Combo Setor
-	 * 
-	 * @return
-	 */
+	
+	public String visualizar() {
+		FacesUtil.setFlashParameter("entidade", getServidorCompetencia());        
+        return "incluirAlterar";
+	}
+	
 	public List<Setor> getComboSetor() {
 
         try {
@@ -282,11 +263,6 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 	}
 
 
-	/**
-	 * Combo Area
-	 * 
-	 * @return
-	 */
 	public void carregaArea() {
 		lista = new ArrayList<AreaSetorCompetencia>();
 		this.areaSetor = new AreaSetor();
@@ -306,43 +282,12 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 		}
 
 		return null;
-	}
+	}	
 
-	public String limpaTela() {
-		setEntidade(new AreaSetorCompetencia());
-		return "listar";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public AreaSetorCompetencia getEntidade() {return entidade;}
 	public void setEntidade(AreaSetorCompetencia entidade) {this.entidade = entidade;}
 
-	public List<AreaSetorCompetencia> getLista() {return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar && lista != null) {
-			lista = null;
-			setor = null;
-			areaSetor = null;
-			comboSetor = null;
-
-			listaServidorCompetencia = new ArrayList<ServidorCompetencia>();
-			atestoPessoa = new AtestoPessoa();
-			competenciaCurso = new CompetenciaCurso();
-			competenciaGraduacao = new CompetenciaGraduacao();
-			dataInicio = null;
-			dataFinal = null;
-		
-		}
-		passouConsultar = false;
-		return form;
-	}
-
-	
-	
+	public List<AreaSetorCompetencia> getLista() {return lista;}	
 	
 	public Setor getSetor() {return setor;}
 	public void setSetor(Setor setor) {this.setor = setor;}
@@ -371,6 +316,7 @@ public class FuncionarioCompetenciaSetorListBean implements Serializable {
 	public Date getDataFinal() {return dataFinal;}
 	public void setDataFinal(Date dataFinal) {this.dataFinal = dataFinal;}
 
-
+	public ServidorCompetencia getServidorCompetencia() {return servidorCompetencia;}
+	public void setServidorCompetencia(ServidorCompetencia servidorCompetencia) {this.servidorCompetencia = servidorCompetencia;}	
 	
 }

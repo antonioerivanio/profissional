@@ -15,7 +15,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "TB_FUNCIONALAREASETOR", schema = "SRH")
+@Table(name = "TB_FUNCIONALAREASETOR", schema=DatabaseMetadata.SCHEMA_SRH)
 public class FuncionalAreaSetor {
 
 	@EmbeddedId

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,15 +22,9 @@ import br.gov.ce.tce.srh.service.OcupacaoService;
 import br.gov.ce.tce.srh.service.SimboloService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC006_Manter Classe e Referência do Cargo
-* 
-* @since   : Sep 14, 2011, 11:02:06 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("classeReferenciaFormBean")
-@Scope("session")
+@Scope("view")
 public class ClasseReferenciaFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(ClasseReferenciaFormBean.class);
@@ -55,48 +51,30 @@ public class ClasseReferenciaFormBean implements Serializable {
 	private List<Ocupacao> comboCargo;
 	private List<Simbolo> comboSimbolo;
 	private List<Escolaridade> comboEscolaridade;
-
-
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		alterar = false;
-		limpar(alterar);
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		try {
-			alterar = true;
-			limpar(alterar);
-			this.cargo = this.getEntidade().getSimbolo().getOcupacao();
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
+	
+	@PostConstruct
+	private void init() {		
+		ClasseReferencia flashParameter = (ClasseReferencia)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new ClasseReferencia());
 		
-		return "incluirAlterar";
-	}
+		if (entidade.getId() == null) {
+			alterar = false;
+			limpar(alterar);
+		} else {
+			try {
+				alterar = true;
+				limpar(alterar);
+				this.cargo = this.getEntidade().getSimbolo().getOcupacao();
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
+			
+		}
+    }
+	
+	public void salvar() {
 
 		try {
 			
@@ -114,16 +92,8 @@ public class ClasseReferenciaFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Cargo
-	 * 
-	 * @return
-	 */
 	public List<Ocupacao> getComboCargo() {
 
 		try {
@@ -146,12 +116,6 @@ public class ClasseReferenciaFormBean implements Serializable {
 		return this.comboCargo;
 	}
 
-
-	/**
-	 * Combo Simbolo
-	 * 
-	 * @return
-	 */
 	public void carregaSimbolo() {
 		this.comboSimbolo = null;
 	}
@@ -172,12 +136,6 @@ public class ClasseReferenciaFormBean implements Serializable {
 		return this.comboSimbolo;
 	}
 
-
-	/**
-	 * Combo Escolaridade
-	 * 
-	 * @return
-	 */
 	public List<Escolaridade> getComboEscolaridade() {
 
 		try {
@@ -193,10 +151,6 @@ public class ClasseReferenciaFormBean implements Serializable {
 		return this.comboEscolaridade;
 	}
 
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar(boolean alterar) {
 
 		if (!alterar)
@@ -208,10 +162,6 @@ public class ClasseReferenciaFormBean implements Serializable {
 		this.comboEscolaridade = null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public ClasseReferencia getEntidade() {return entidade;}
 	public void setEntidade(ClasseReferencia entidade) {this.entidade = entidade;}
 

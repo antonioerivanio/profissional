@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_FOLHA", schema="SRH")
+@Table(name="TB_FOLHA", schema=DatabaseMetadata.SCHEMA_SRH)
 @NamedQueries({
     @NamedQuery(name = "Folha.getMaxId", query = "SELECT max(f.id) FROM Folha f "),
     @NamedQuery(name = "Folha.getByCodigo", query = "SELECT f FROM Folha f WHERE upper( f.codigo ) = :codigo"),

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoalCursoProfissional;
-import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
+import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CursoServidorService;
@@ -30,7 +30,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
 @Component("cursoServidorListBean")
-@Scope("session")
+@Scope("view")
 public class CursoServidorListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(CursoServidorListBean.class);
@@ -45,17 +45,13 @@ public class CursoServidorListBean implements Serializable {
 	private RelatorioUtil relatorioUtil;
 	
 	@Autowired
-	private AuthenticationService authenticationService;	
-
-
-	private HtmlForm form;
-	private boolean passouConsultar = false;
+	private AuthenticationService authenticationService;
 
 	private String matricula = new String();
 	private String cpf = new String();
 	private String nome = new String();
 
-	private EnumTipoCursoProfissional tipoCurso;
+	private TipoCursoProfissional tipoCurso;
 	private boolean areaAtuacao;
 	private boolean somenteCargaHoraria;
 	private boolean somenteCursoGraduacao;
@@ -75,8 +71,14 @@ public class CursoServidorListBean implements Serializable {
 	private Date inicio;
 	private Date fim;
 
+	@PostConstruct
+	public void init() {		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());						
+		}
+	}
 	
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -103,9 +105,7 @@ public class CursoServidorListBean implements Serializable {
 			
 			labelTotalCargaHoraria = "Total Carga Horária:";
 			
-			flagRegistroInicial = -1;
-			
-			passouConsultar = true;
+			flagRegistroInicial = -1;			
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -116,12 +116,10 @@ public class CursoServidorListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
 
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -184,8 +182,6 @@ public class CursoServidorListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório de Curso Servidor. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
 	public String limpaTela() {
@@ -212,9 +208,7 @@ public class CursoServidorListBean implements Serializable {
 		fim = null;
 	}
 	
-	/**
-	 * Gets and Sets
-	 */
+	
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !matricula.equals("") && !matricula.equals(this.matricula) ) {
@@ -268,8 +262,8 @@ public class CursoServidorListBean implements Serializable {
 		}
 	}
 	
-	public List<EnumTipoCursoProfissional> getComboTipoCurso() {
-		return Arrays.asList(EnumTipoCursoProfissional.values());
+	public List<TipoCursoProfissional> getComboTipoCurso() {
+		return Arrays.asList(TipoCursoProfissional.values());
 	}
 
 	public String getNome() {return nome;}
@@ -296,8 +290,8 @@ public class CursoServidorListBean implements Serializable {
 	public Date getFim() {return fim;}
 	public void setFim(Date fim) {this.fim = fim;}
 
-	public EnumTipoCursoProfissional getTipoCurso() {return tipoCurso;}
-	public void setTipoCurso(EnumTipoCursoProfissional tipoCurso) {	this.tipoCurso = tipoCurso;}
+	public TipoCursoProfissional getTipoCurso() {return tipoCurso;}
+	public void setTipoCurso(TipoCursoProfissional tipoCurso) {	this.tipoCurso = tipoCurso;}
 	
 	public boolean isSomenteCargaHoraria() {return this.somenteCargaHoraria;}
 	public void setSomenteCargaHoraria(boolean somenteCargaHoraria) {this.somenteCargaHoraria = somenteCargaHoraria;}
@@ -349,24 +343,6 @@ public class CursoServidorListBean implements Serializable {
 	}
 	
 	
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());						
-		} 
-		if (!passouConsultar) {
-			setCursoProfissional( new CursoProfissional() );
-			this.matricula = new String();
-			this.cpf = new String();
-			this.nome = new String();
-			limparListas();
-			limpar();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-	
 	//PAGINAÇÃO
 	private void limparListas() {		
 		dataModel = new PagedListDataModel();
@@ -393,8 +369,7 @@ public class CursoServidorListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
 
 }

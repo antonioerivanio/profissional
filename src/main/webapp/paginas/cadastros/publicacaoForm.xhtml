@@ -29,8 +29,6 @@
 				</div>
 			</div>
 
-			<br/><br/><br/><br/><br/>
-
 			<div class="radios-group box-50">
 				<h3>Esfera *</h3>
 				<div class="conteiner">
@@ -39,11 +37,10 @@
 						<f:selectItem id="federal" itemLabel="Federal" itemValue="1" />
 						<f:selectItem id="estadual" itemLabel="Estadual" itemValue="2" />
 						<f:selectItem id="municipal" itemLabel="Municipal" itemValue="3" />
-						<a4j:support id="carregaTipoDocumento"
-					  				 event="onclick" 
-					  				 ajaxSingle="true"	
-					  				 action="#{publicacaoBean.carregaTipoDocumento}"
-					  				 reRender="tipoDocumento"/>
+						<a4j:ajax 	 event="click" 
+					  				 execute="@this"	
+					  				 listener="#{publicacaoBean.carregaTipoDocumento}"
+					  				 render="tipoDocumento"/>
 					</h:selectOneRadio>
 					</div>
 				</div>
@@ -64,8 +61,6 @@
 					</h:selectOneMenu>
 				</div>
 			</div>
-
-			<br/><br/><br/><br/><br/>
 
 			<div class="input-box box-15">
 				<label for="">Numero *</label>
@@ -159,12 +154,7 @@
 			</fieldset>
 
 			<h:commandButton id="salvar" value="Salvar" action="#{publicacaoBean.salvar}" styleClass="bt-padrao fr" />
-			<a href="/srh/paginas/cadastros/publicacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<h:commandButton id="limpaTela"
-							 value="Limpar"
-							 action="#{publicacaoBean.limpaForm}"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 />
+			<a href="/srh/paginas/cadastros/publicacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>			
 
 		</h:form>
 

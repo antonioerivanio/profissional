@@ -9,19 +9,6 @@
  	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
-
-		<style>
-		    .formularios fieldset,
-		    .box-border {
-		        border: 1px solid #c6c6c6;
-		        padding: 15px 15px 0px 15px;
-		        padding-right: 0;
-		        overflow: auto;
-		        margin-bottom: 10px;
-		        min-height: 100px;
-		    }
-		</style>
-
 		<script>
 		function openwindow()
 		{
@@ -29,7 +16,7 @@
 			if (nome.length > 2) {
 				window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 		}
 		</script>
@@ -60,8 +47,9 @@
 					<h:inputText id="nomeCompletoPessoa"
 								 name="nomeCompletoPessoa"
 								 disabled="#{pessoalCursoGraduacaoFormBean.alterar}"
-								 value="#{pessoalCursoGraduacaoFormBean.nome}" />
-					<a4j:support event="onchange" reRender="mae, cpf, rg, rgEmissor, rgUf, idPessoa" ajaxSingle="true" />
+								 value="#{pessoalCursoGraduacaoFormBean.nome}">
+						<a4j:ajax event="change" render="mae, cpf, rg, rgEmissor, rgUf, idPessoa" execute="@this" />
+					</h:inputText>	
 				</div>
 			</div>
 
@@ -315,13 +303,14 @@
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
-                        <h:commandLink id="excluir"
+                        <a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{pessoalCursoGraduacaoFormBean.excluirCompetencia}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="alertaExclusao()" 
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{pessoalCursoGraduacaoFormBean.competenciaGraduacao}" value="#{item}" />
-                        </h:commandLink>
+                        </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{pessoalCursoGraduacaoFormBean.excluirCompetencia}" render="form"/>
                     </h:column>
 
     			</h:dataTable>
@@ -332,7 +321,6 @@
 
 			<h:commandButton action="#{pessoalCursoGraduacaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/cadastros/pessoaCursoGraduacaoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/cadastros/pessoaCursoGraduacaoForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
 

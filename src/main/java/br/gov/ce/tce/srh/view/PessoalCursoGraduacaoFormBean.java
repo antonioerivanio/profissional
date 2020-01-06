@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -25,15 +27,9 @@ import br.gov.ce.tce.srh.service.PessoalCursoAcademicaService;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : SRH_UC024_Manter Graduação da Pessoa
-* 
-* @since   : Nov 15, 2011, 10:09:22 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("pessoalCursoGraduacaoFormBean")
-@Scope("session")
+@Scope("view")
 public class PessoalCursoGraduacaoFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalCursoGraduacaoFormBean.class);
@@ -79,56 +75,34 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
 	private List<Instituicao> comboInstituicao;
 	private List<Competencia> comboCompetencia;
 
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		this.alterar = false;
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-
-		this.alterar = true;
-
+	@PostConstruct
+	public void init() {
+		PessoalCursoAcademica flashParameter = (PessoalCursoAcademica)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new PessoalCursoAcademica());
+		
 		try {
-
-			// pegando os dados do servidor
-			this.idPessoa = getEntidade().getPessoal().getId();
-			this.nome = getEntidade().getPessoal().getNomeCompleto();
-
-			// pegando a lista de competencias
-			this.inicioCompetencia =  getEntidade().getDataConclusao();
-			listaCompetencias = competenciaGraduacaoService.findByPessoaCurso(getEntidade().getPessoal().getId(), getEntidade().getCursoAcademica().getId());
-			/*if ( this.listaCompetencias.size() > 0 )
-				this.inicioCompetencia = listaCompetencias.get(0).getInicioCompetencia();*/
-				
+			
+			if(this.entidade.getPk() != null) {			
+				this.alterar = true;
+	
+				// pegando os dados do servidor
+				this.idPessoa = getEntidade().getPessoal().getId();
+				this.nome = getEntidade().getPessoal().getNomeCompleto();
+	
+				// pegando a lista de competencias
+				this.inicioCompetencia =  getEntidade().getDataConclusao();
+				listaCompetencias = competenciaGraduacaoService.findByPessoaCurso(getEntidade().getPessoal().getId(), getEntidade().getCursoAcademica().getId());
+				/*if ( this.listaCompetencias.size() > 0 )
+					this.inicioCompetencia = listaCompetencias.get(0).getInicioCompetencia();*/
+			}	
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 			
@@ -148,16 +122,8 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Combo Curso
-	 * 
-	 * @return
-	 */
 	public List<CursoAcademica> getComboCurso() {
 
         try {
@@ -174,12 +140,6 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
     	return this.comboCurso;
 	}
 
-
-	/**
-	 * Combo Instituicao
-	 * 
-	 * @return
-	 */
 	public List<Instituicao> getComboInstituicao() {
 
         try {
@@ -204,12 +164,6 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
         return this.comboInstituicao;
 	}
 
-
-	/**
-	 * Combo Competencia
-	 * 
-	 * @return
-	 */
 	public List<Competencia> getComboCompetencia() {
 
 		try {
@@ -226,38 +180,32 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
         return this.comboCompetencia;
 	}
 
-
-	/**
-	 * Adicionar Competencia
-	 * 
-	 * @return
-	 */
-	public String addCompetencia() {
+	public void addCompetencia() {
 
 		try {
 
 			// validando se a pessoa foi selecionada
 			if ( getEntidade().getPessoal() == null || getEntidade().getPessoal().getId().equals(0l) ) {
 				FacesUtil.addErroMessage("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
-				return null;			
+				return;			
 			}
 
 			// validando se o curso foi selecionado
 			if ( this.entidade.getCursoAcademica() == null ) {
 				FacesUtil.addErroMessage("O curso é obrigatório.");
-				return null;
+				return;
 			}
 
 			// validando se a data de inicio da competencia foi preenchida
 			if ( this.inicioCompetencia == null ) {
 				FacesUtil.addErroMessage("A data de conclusão do curso é obrigatória.");
-				return null;
+				return;
 			}
 
 			// validando o campo obrigatorio competencia
 			if ( this.competenciaGraduacao.getCompetencia() == null ) {
 				FacesUtil.addErroMessage("A competência é obrigatória.");
-				return null;
+				return;
 			}
 
 			// verificando se a competencia ja foi cadatrada para a mesma pessoa
@@ -265,7 +213,7 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
 				if (item.getCompetencia().getId().equals(this.competenciaGraduacao.getCompetencia().getId())
 						&& item.getPessoal().getId().equals(getEntidade().getPessoal().getId())) {
 					FacesUtil.addErroMessage("A competência já esta na lista para esse servidor.");
-					return null;
+					return;
 				}
 			}
 
@@ -284,17 +232,9 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
         	FacesUtil.addErroMessage("Erro ao adicionar a Competência. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Excluir a competencia
-	 * 
-	 * @return
-	 */
-	public String excluirCompetencia() {
+	public void excluirCompetencia() {
 
 		try {
 			
@@ -306,14 +246,8 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
         	FacesUtil.addErroMessage("Erro ao remover a Competência. Operação cancelada.");
         	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	/**
-	 * Limpar dados
-	 */
 	private void limpar() {
 
 		this.idPessoa = new Long(0);
@@ -335,10 +269,6 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
 		this.comboCompetencia = null;
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public Long getIdPessoa() {return idPessoa;}
 	public void setIdPessoa(Long idPessoa) {
 		if ( !this.idPessoa.equals( idPessoa ) ) {
@@ -371,7 +301,6 @@ public class PessoalCursoGraduacaoFormBean implements Serializable {
 	public List<CompetenciaGraduacao> getListaCompetencias() {return listaCompetencias;}
 
 	public boolean isAlterar() {return alterar;}
-
 
 	public List<PessoalCursoAcademica> getListaPessoalCursoAcademica() {return listaPessoalCursoAcademica;}
 	public void setListaPessoalCursoAcademica(List<PessoalCursoAcademica> listaPessoalCursoAcademica) {this.listaPessoalCursoAcademica = listaPessoalCursoAcademica;}

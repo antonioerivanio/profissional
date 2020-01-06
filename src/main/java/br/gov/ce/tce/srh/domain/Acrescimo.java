@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_ACRESCIMO", schema="SRH")
+@Table(name="TB_ACRESCIMO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Acrescimo extends BasicEntity<Long> implements Serializable {
 
     @Id

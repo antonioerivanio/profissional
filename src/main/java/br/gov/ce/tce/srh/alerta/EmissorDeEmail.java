@@ -43,7 +43,7 @@ public class EmissorDeEmail {
 			email.addTo(this.email);
 //			email.addBcc("felipe.augusto@tce.ce.gov.br");
 						
-			URL url = new URL("file:///"+ context.getServerRootUrl() + "img" + File.separator + "logo-srh.png");
+			URL url = new URL("file:///"+ context.getServerRootUrl() + "img" + File.separator + "logo-srh.svg");
 			String cid = email.embed(url, "logoSRH");
 			mensagem += "<img src=\"cid:"+ cid +"\" alt=\"SRH - Sistema de Recursos Humanos\" "
 					+ " style=\"position: relative; left: -20px; max-width: 70%;\" >";			

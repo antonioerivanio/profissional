@@ -12,7 +12,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_RECADASTRAMENTO", schema="SRH")
+@Table(name="TB_RECADASTRAMENTO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Recadastramento extends BasicEntity<Long> implements Serializable {
 
     @Id

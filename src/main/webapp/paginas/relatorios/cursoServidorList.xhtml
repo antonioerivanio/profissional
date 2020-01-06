@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -16,7 +16,7 @@
 				if (nome.length > 2) {
 					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome + "&amp;find=all","mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}			
 			
@@ -24,28 +24,7 @@
 				document.getElementById('form:somenteCargaHoraria').checked = false;
 				document.getElementById('form:somenteCursoGraduacao').checked = false;
 			}			
-		</script>
-		
-		<style>
-	        .tooltip {
-	            background-color: rgb(243, 242, 242);
-			    border-width: 1px;
-			    padding: 10px;
-			    border-radius: 5px;
-			    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.51);
-	        }
-	        .rich-panel-body {
-	        	padding: 0px; 
-	        }
-	        .rich-panel {
-	        	border-style: none;
-    			padding: 0px;
-    			background-color:#ffffff;
-	        }
-	        .rich-tool-tip{
-	        	border-color: #195297;
-	        }
-    	</style>
+		</script>	
 
 		<div class="titulo-pagina">
 
@@ -53,7 +32,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{cursoServidorListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
@@ -69,7 +48,7 @@
 									 styleClass="maskMatricula"
 									 value="#{cursoServidorListBean.matricula}"
 									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" ajaxSingle="true" />
+	            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa, matricula, somenteCargaHoraria" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -84,7 +63,7 @@
 									 converter="cpfConverter"
 									 value="#{cursoServidorListBean.cpf}"
 									 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}" >
-							<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" ajaxSingle="true" />
+							<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa, cpf, somenteCargaHoraria" execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -112,23 +91,23 @@
 					<div class="radios-group box-15">
 						<rich:panel id="richpane1l">
 					        <label for="form:somenteCargaHoraria">Somente Carga Horária</label>
-					        <rich:toolTip id="tooltip1" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+					        <rich:tooltip id="tooltip1" followMouse="true" direction="topRight" showDelay="100" styleClass="tooltip">
 						            <span style="white-space:nowrap">
 						                Marcar essa opção somente para relatório consolidado <br />
 						                com cargas horárias atingidas por cada servidor do TCE. 
 						            </span>
-					      	</rich:toolTip>
+					      	</rich:tooltip>
 					      	<div class="conteiner">
 						      	<div class="radio-box">
 									<h:selectBooleanCheckbox
 										id="somenteCargaHoraria"
 										value="#{cursoServidorListBean.somenteCargaHoraria}"
 										disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
-											<a4j:support id="somenteCargaHorariaClick" 
-											 event="onclick"
-											 action="#{cursoServidorListBean.somenteCargaHorariaAction}"
-											 ajaxSingle="true" 
-											 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCursoGraduacao, consultar" />
+											<a4j:ajax
+											 event="click"
+											 listener="#{cursoServidorListBean.somenteCargaHorariaAction}"
+											 execute="@this" 
+											 render="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCursoGraduacao, consultar" />
 									</h:selectBooleanCheckbox>
 								</div>
 							</div>
@@ -138,23 +117,23 @@
 					<div class="radios-group box-15">
 						<rich:panel id="richpanel2">
 					        <label for="form:somenteCursoGraduacao">Somente Curso Graduação</label>
-					        <rich:toolTip id="toolti2" followMouse="true" direction="top-right" showDelay="100" styleClass="tooltip">
+					        <rich:tooltip id="toolti2" followMouse="true" direction="topRight" showDelay="100" styleClass="tooltip">
 						            <span style="white-space:nowrap">
 						                Marcar essa opção somente para relatório consolidado <br />
 						                com cursos de graduação de cada servidor do TCE. 
 						            </span>
-					      	</rich:toolTip>
+					      	</rich:tooltip>
 					      	<div class="conteiner">
 						      	<div class="radio-box">
 									<h:selectBooleanCheckbox
 										id="somenteCursoGraduacao"
 										value="#{cursoServidorListBean.somenteCursoGraduacao}"
 										disabled="#{cursoServidorListBean.somenteCargaHoraria}">
-											<a4j:support id="somenteCursoGraduacaoClick" 
-											 event="onclick"
-											 action="#{cursoServidorListBean.somenteCursoGraduacaoAction}"
-											 ajaxSingle="true" 
-											 reRender="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCargaHoraria, dataInicio, dataFim, atuacao, posGraduacao, profissional, consultar"
+											<a4j:ajax 
+											 event="click"
+											 listener="#{cursoServidorListBean.somenteCursoGraduacaoAction}"
+											 execute="@this" 
+											 render="messages, cpf, nomeCompletoPessoa, matricula, lista, scroller, somenteCargaHoraria, dataInicio, dataFim, atuacao, posGraduacao, profissional, consultar"
 											 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});" />
 									</h:selectBooleanCheckbox>
 								</div>
@@ -217,11 +196,10 @@
 					  					itemValue="#{tipo}"
 					  					itemLabel="#{tipo.descricao}"/>					
 						
-						<a4j:support id="tipoCursoChange" 
-											 event="onchange"
-											 action="#{cursoServidorListBean.tipoCursoAction}"
-											 ajaxSingle="true" 
-											 reRender="somentePosGraduacao, messages, lista, scroller" />
+						<a4j:ajax event="change"
+											 listener="#{cursoServidorListBean.tipoCursoAction}"
+											 execute="@this" 
+											 render="somentePosGraduacao, messages, lista, scroller" />
 						
 					</h:selectOneMenu>    
 				</div>
@@ -236,11 +214,10 @@
 							value="#{cursoServidorListBean.somentePosGraduacao}"
 							disabled="#{cursoServidorListBean.somenteCursoGraduacao}">
 							
-							<a4j:support id="somentePosGraduacaoClick" 
-											 event="onclick"
-											 action="#{cursoServidorListBean.somentePosGraduacaoAction}"
-											 ajaxSingle="true" 
-											 reRender="tipoCurso, messages, lista, scroller" />
+							<a4j:ajax event="click"
+											 listener="#{cursoServidorListBean.somentePosGraduacaoAction}"
+											 execute="@this" 
+											 render="tipoCurso, messages, lista, scroller" />
 							
 						</h:selectBooleanCheckbox>
 					</div>
@@ -251,7 +228,7 @@
 							 value="Consultar"
 							 action="#{cursoServidorListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"
+							 render="scroller,lista"
 							 disabled="#{cursoServidorListBean.somenteCargaHoraria or cursoServidorListBean.somenteCursoGraduacao}"/>
 			
 			<h:commandButton id="relatorio"
@@ -327,7 +304,7 @@
 
 				</rich:dataTable>
 				
-				<rich:datascroller  id="scroller" 
+				<rich:dataScroller  id="scroller" 
 									for="lista" 
 									stepControls="hide" 
 									renderIfSinglePage="false" 

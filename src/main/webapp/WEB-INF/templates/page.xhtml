@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br" lang="pt-br" 
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -8,12 +8,15 @@
  	xmlns:a4j="http://richfaces.org/a4j" 
 	xmlns:sec="http://www.springframework.org/security/facelets/tags"  >
 
-    <head>
+    <h:head>
    		<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1" />
    		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
    	    <title>SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceará</title>
-        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/geral.css?v=#{dateGetTime}" />
-        <link rel="shortcut icon" href="/srh/favicon.ico" />
+        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/sweetalert2.min.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/geral.css?v=#{dateGetTime}"/>
+        <link rel="shortcut icon" href="/srh/favicon.ico"/>
+        <script type="text/javascript" src="/srh/js/sweetalert2.min.js"/>
+        <script type="text/javascript" src="/srh/js/sweetAlertSRH.js"/>
         <script type="text/javascript" src="/srh/js/jquery-1.6.2.min.js"/>
         <script type="text/javascript" src="/srh/js/tce-js-effects.js"/>
         <script type="text/javascript" src="/srh/js/jquery.maskMoney.js"/>
@@ -22,35 +25,22 @@
         <script type="text/javascript" src="/srh/js/util.js"/>
         <script type="text/javascript" src="/srh/js/licencaForm.js"/>
         <script type="text/javascript" src="/srh/js/feriasForm.js"/>
-        <script type="text/javascript" src="/srh/js/sessaoUtil.js?v=#{dateGetTime}"></script>
-
-        <script type="application/x-javascript">
-        	jQuery.noConflict();
-            jQuery(document).ready(function($) {
-                $("#myTable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});                
-            });
-        </script>
-
-		<style>
-		.infoMessage {
-		     color: blue;
-		     font-weight: bold;
-		     margin-left: 12px; 
-		     margin-bottom: 20px;
-		}
-		.errorMessage {
-		     color: red;
-		     font-weight: bold;
-		     margin-left: 12px; 
-		     margin-bottom: 20px;
-		}
-		</style>      
-        
-    </head>
+        <script type="text/javascript" src="/srh/js/sessaoUtil.js?v=#{dateGetTime}"/>
+ 	</h:head>
     
-    <body>
+    <h:body>
 
     	<f:view>
+    		
+    		<h:outputScript>
+		        function customFilter(subString, value) {
+		            if (subString.length >= 1) {
+		                if (value.indexOf(subString) != -1)
+		                    return true;
+		            } else
+		                return false;
+		        };
+		    </h:outputScript>
 
 	        <div class="geral">
 	
@@ -70,41 +60,7 @@
 	
 	                <div class="corpo">
 	
-	                    <div class="corpo-conteiner">
-	                    
-	                    	<rich:modalPanel id="modalRenovaSessao" resizeable="false" height="220" width="620">
-					            
-					            <f:facet name="header" class="header">
-					                <span>Renovação de sessão</span>
-					            </f:facet>
-								
-								<div class="sessao-expirada-msg">
-									<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão irá expirar em alguns instantes. Clique em OK para renová-la.</span>				
-								</div>
-								
-								<div class="modal-actions">						
-									<a href="#" onclick="dontKeepSession();" class="bt-padrao bt-dialog-sessao">Cancelar</a>
-									<a href="#" onclick="keepSession();" class="bt-padrao bt-dialog-sessao">OK</a>
-								</div>							
-								
-							</rich:modalPanel>
-							
-							<rich:modalPanel id="modalRedirecionaLogin" resizeable="false" height="220" width="620">
-					            
-					            <f:facet name="header" class="header">
-					                <span>Fazer novo login</span>
-					            </f:facet>
-														
-								<div class="sessao-expirada-msg">
-									<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão expirou. Clique em OK para fazer um novo login.</span>				
-								</div>
-								
-								
-								<div class="modal-actions">													
-									<a href="#{request.contextPath}/login.faces" class="bt-padrao bt-dialog-sessao">OK</a>
-								</div>							
-								
-							</rich:modalPanel>
+	                    <div class="corpo-conteiner">	
 	
 		          			<ui:insert name="content">
 								conteudo da pagina!!!
@@ -124,17 +80,20 @@
 	
 	        </div>
 	
-			<!-- Modal Loading -->
-			<rich:modalPanel id="panel_loading" autosized="true" >
-				<h:graphicImage id="icone-aguarde" url="/img/loading.gif" style="border:0px; vertical-align: middle;" />
-				<rich:spacer id="icone-aguarde-spacer" width="20" />
-				<center><h:outputText value="Aguarde..." /></center>
-			</rich:modalPanel>
-	
-			<a4j:status id="loading" onstart="Richfaces.showModalPanel('panel_loading')" onstop="Richfaces.hideModalPanel('panel_loading')" />
-
+			<!-- Modal Loading --> 			
+ 			<rich:popupPanel id="panel_loading" autosized="true" top="#{top}" width="#{width}">
+				<h:panelGrid columns="1">
+					<h:graphicImage url="/img/loading.gif" style="border:0px; vertical-align: middle;" />
+					<h:outputText style="text-align: center; display: block;" value="Aguarde..." />
+				</h:panelGrid>
+			</rich:popupPanel>
+		
+			<a4j:status 
+				onstart="#{rich:component('panel_loading')}.show()"
+				onstop="#{rich:component('panel_loading')}.hide()" />				
+ 			
     	</f:view>
-
-    </body>
+    	
+    </h:body>
     
 </html>    

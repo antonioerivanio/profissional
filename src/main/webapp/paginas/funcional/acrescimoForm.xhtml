@@ -9,19 +9,6 @@
  	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
-
-		<style>
-		    .formularios fieldset,
-		    .box-border {
-		        border: 1px solid #c6c6c6;
-		        padding: 15px 15px 0px 15px;
-		        padding-right: 0;
-		        overflow: auto;
-		        margin-bottom: 10px;
-		        min-height: 100px;
-		    }
-		</style>
-
 		<script type="text/javascript" charset="ISO-8859-1">
 		function openwindow()
 		{	
@@ -29,7 +16,7 @@
 			if (nome.length > 2) {
 				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 		}
 		</script>
@@ -49,9 +36,7 @@
 				<br/>
 
             	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
-
-				<h:inputHidden id="alterar" disabled="true" value="#{acrescimoFormBean.alterar}" />
-
+            	
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
 					<div class="conteiner">
@@ -61,10 +46,9 @@
 									 styleClass="maskMatricula"
 									 disabled="#{acrescimoFormBean.alterar}"
 									 value="#{acrescimoFormBean.matricula}">
-							<a4j:support event="onchange"
-										 focus="tipoFerias"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 ajaxSingle="true" />
+							<a4j:ajax event="change"
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -79,10 +63,12 @@
 					</div>
 				</div>
 
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindow()"
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				<ui:fragment rendered="#{!acrescimoFormBean.alterar}">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()"
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</ui:fragment>
 	
 				<div class="input-box box-100">
 					<label for="">Mãe</label>
@@ -156,7 +142,7 @@
 									 converter="dateConverter"
 									 value="#{acrescimoFormBean.inicio}"
 									 maxlength="10" >
-							<a4j:support event="onchange" focus="fim" reRender="qtdeDias, messages" ajaxSingle="true"/>		 
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
@@ -169,7 +155,7 @@
 									 converter="dateConverter"
 									 value="#{acrescimoFormBean.fim}"
 									 maxlength="10" >
-							<a4j:support event="onchange" focus="qtdeDias" reRender="qtdeDias, messages" ajaxSingle="true"/>
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>
 						</h:inputText>
 					</div>
 				</div>
@@ -178,11 +164,10 @@
 					<label for="">Dias</label>
 					<div class="conteiner">
 						<h:inputText id="qtdeDias" value="#{acrescimoFormBean.entidade.qtdeDias}">
-							<a4j:support event="onchange" 
-										action="#{acrescimoFormBean.apagaDatas()}" 
-										focus="descricao" 
-										reRender="inicio, fim, messages" 
-										ajaxSingle="true"
+							<a4j:ajax event="change" 
+										listener="#{acrescimoFormBean.apagaDatas()}"										 
+										render="inicio, fim, messages" 
+										execute="@this"
 										oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"/>
 						</h:inputText>  
 					</div>
@@ -201,17 +186,8 @@
 
 			<h:commandButton action="#{acrescimoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/funcional/acrescimoList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/funcional/acrescimoForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
-
-		<script>
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}	
-		}
-		</script>
 
 	</ui:define>
 </ui:composition>

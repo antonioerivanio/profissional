@@ -15,12 +15,36 @@
 
 		<intercept-url pattern="/home.faces" access="ROLE_TABELAS,ROLE_CADASTROS,ROLE_FUNCIONAL,ROLE_RELATORIO_CONSULTA,ROLE_RELATORIO" />
 
-
-
+		<intercept-url pattern="/paginas/esocial/**" access="ROLE_ESOCIAL" />
+	
 		<!-- TABELAS -->
 		       
         <intercept-url pattern="/paginas/tabelas/cargoList.faces" access="ROLE_CARGO" />
         <intercept-url pattern="/paginas/tabelas/cargoForm.faces" access="ROLE_CARGO" />
+        
+        <intercept-url pattern="/paginas/tabelas/empregadorList.faces" access="ROLE_ESOCIAL" />
+        <intercept-url pattern="/paginas/tabelas/empregadorForm.faces" access="ROLE_ESOCIAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/estabelecimentoList.faces" access="ROLE_ESOCIAL" />
+        <intercept-url pattern="/paginas/tabelas/estabelecimentoForm.faces" access="ROLE_ESOCIAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/lotacaoTributariaList.faces" access="ROLE_ESOCIAL" />
+        <intercept-url pattern="/paginas/tabelas/lotacaoTributariaForm.faces" access="ROLE_ESOCIAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/rubricaESocialTCEList.faces" access="ROLE_ESOCIAL" />
+        <intercept-url pattern="/paginas/tabelas/rubricaESocialTCEForm.faces" access="ROLE_ESOCIAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/carreiraList.faces" access="ROLE_ESOCIAL" />        
+        <intercept-url pattern="/paginas/tabelas/carreiraForm.faces" access="ROLE_ESOCIAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/ambienteTrabalhoList.faces" access="ROLE_ESOCIAL" />
+        <intercept-url pattern="/paginas/tabelas/ambienteTrabalhoForm.faces" access="ROLE_ESOCIAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/processoESocialList.faces" access="ROLE_ESOCIAL" />
+        <intercept-url pattern="/paginas/tabelas/processoESocialForm.faces" access="ROLE_ESOCIAL" />
+        
+        <intercept-url pattern="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.faces" access="ROLE_ESOCIAL" />
+        <intercept-url pattern="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioForm.faces" access="ROLE_ESOCIAL" />
 		
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoList.faces" access="ROLE_ESPECIALIDADE_CARGO" />
         <intercept-url pattern="/paginas/tabelas/especialidadeCargoForm.faces" access="ROLE_ESPECIALIDADE_CARGO" />
@@ -100,7 +124,7 @@
         <intercept-url pattern="/paginas/tabelas/tipoDocumentoList.faces" access="ROLE_TIPO_DOCUMENTO" />
         <intercept-url pattern="/paginas/tabelas/tipoDocumentoForm.faces" access="ROLE_TIPO_DOCUMENTO" />
 
-		<intercept-url pattern="/paginas/tabelas/*" access="ROLE_TABELAS" />
+		<intercept-url pattern="/paginas/tabelas/**" access="ROLE_TABELAS" />
 
 
 		<!-- CADASTRO -->
@@ -242,16 +266,16 @@
 	
 	
 	<!-- SCA - DESENVOLVIMENTO -->
-	<!--
+	
 	<authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
     </authentication-manager>	
-	-->
+	
 	
 <!--***********************************************************************************************************************************************************-->	
 		
 	<!-- AD - PRODUÇÃO -->
-	
+	<!-- 
 	<beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
         <beans:constructor-arg value="tce.ce.gov.br" />
         <beans:constructor-arg value="ldap://tce.ce.gov.br:389/"/> 
@@ -262,6 +286,6 @@
 	
 	<authentication-manager alias="authenticationManager">
 	    <authentication-provider ref="ldapActiveDirectoryAuthProvider" />
-	</authentication-manager>
+	</authentication-manager> -->
 	
 </beans:beans>

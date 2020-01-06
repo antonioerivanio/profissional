@@ -8,13 +8,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -34,7 +33,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("consultarAuditoriaBean")
-@Scope("session")
+@Scope("view")
 public class ConsultarAuditoriaBean implements Serializable{
 	
 	static Logger logger = Logger.getLogger(ConsultarAuditoriaBean.class);
@@ -50,8 +49,6 @@ public class ConsultarAuditoriaBean implements Serializable{
 	
 	@Autowired
 	private FuncionalService funcionalService;
-	
-	private HtmlForm form;
 
 	private Revisao revisaoConsulta = new Revisao();
 	
@@ -70,41 +67,40 @@ public class ConsultarAuditoriaBean implements Serializable{
 //	PAGINAÇÃO - INICIO
 	
 	private int count = 0;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Revisao> pagedList = new ArrayList<Revisao>();
 	private int flagRegistroInicial = 0;
 	
 //	PAGINAÇÃO - FIM	
 	
-	public String consultar() {
+	public void consultar() {
 		try {
 			
 			this.limparListas();
 			
 			if (this.entidade == null || this.entidade.equals("")){
 				FacesUtil.addErroMessage("A tabela é obrigatória.");
-				return null;
-			}
+			} else {				
+				this.count = this.auditoriaService.count(this.revisaoConsulta);
+				
+				if(this.count == 0){
+					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+					logger.info("Nenhum registro foi encontrado.");
+				}
+				
+				this.flagRegistroInicial = -1;			}
 			
-			this.count = this.auditoriaService.count(this.revisaoConsulta);
-
-			if(this.count == 0){
-				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-				logger.info("Nenhum registro foi encontrado.");
-			}
-			
-			this.flagRegistroInicial = -1;
 						
 		} catch (SRHRuntimeException e) {
 			this.limparListas();
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		return null;
 	}
 	
 	
@@ -244,60 +240,25 @@ public class ConsultarAuditoriaBean implements Serializable{
 	public HttpSession getSession() {return (HttpSession) getFacesContext().getExternalContext().getSession(false);}
 	
 	public HttpServletRequest getRequestSession() {return (HttpServletRequest) getFacesContext().getExternalContext().getRequest();}
-	
-	
-	/**
-	 * Obtém o usuário logado na sessão
-	 * @return
-	 */
+		
 	public Usuario getUsuarioLogado() {
 		return SRHUtils.getUsuarioLogado();
-	}
-	
-	
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-
-		limpar();
-
-		return form;
-	}
-	
-	
-	public String limpar(){
-
-		revisaoConsulta = new Revisao();
-		
-		tipoRevisao = null;
-		usuario = null;
-		pessoal = null;
-		entidade = null;
-		atributo = null;		
-		
-		tiposRevisao = null;
-		usuarios = null;
-		pessoais = null;
-		entidades = null;
-		
-		limparListas();
-		
-		return null;
-	}	
+	}		
 
 	
 //	PAGINAÇÃO	
 	
 	public void limparListas() {
 		count = 0;
-		dataTable = new HtmlDataTable();		
+		dataTable = new UIDataTable();		
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Revisao>();
 		flagRegistroInicial = 0;		
 	}
 
 	
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 	
 	
 	public PagedListDataModel getDataModel() {

@@ -8,8 +8,7 @@
  	  xmlns:a4j="http://richfaces.org/a4j"
  	  xmlns:rich="http://richfaces.org/rich" >
 
-	<ui:define name="content">
-	
+	<ui:define name="content">	
 		<script>
 			function openwindow() {
 				
@@ -17,7 +16,7 @@
 				if (nome.length > 2) {
 					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}			
 
@@ -30,7 +29,6 @@
 		<style type="text/css" >
 		    .formularios fieldset,
 		    .box-border {		        
-		        min-height: 100px;
 		        min-width: 100%;		        
 		    }			
 		</style>
@@ -52,15 +50,14 @@
 
 			<rich:tabPanel switchType="client">
 			
-				<rich:tab label="Admissão">				
-	
-					
+				<rich:tab header="Admissão">
+				
+					<br />						
 		            
 		            <div class="conteiner">
 		       			<h:inputHidden 
 							id="idPessoa"
 							value="#{nomeacaoServidorFormBean.pessoa}">
-							<a4j:support event="onchange" reRender="nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf" ajaxSingle="true" />
 						</h:inputHidden>
 					</div>
 		
@@ -226,7 +223,7 @@
 							   					var="tipoFolha"
 							   					itemValue="#{tipoFolha}"
 							   					itemLabel="#{tipoFolha.descricao}"/>
-							   	<a4j:support event="onchange" focus="tipoOcupacao" ajaxSingle="true" />
+							   	<a4j:ajax event="change" execute="@this" />
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -261,7 +258,7 @@
 	
 				</rich:tab>
 	
-				<rich:tab label="Cargo / Função">
+				<rich:tab header="Cargo / Função">
 		
 					<br/>				
 		
@@ -279,12 +276,10 @@
 							  					itemValue="#{tipoOcupacao}"
 							  					itemLabel="#{tipoOcupacao.descricao}"/>
 		
-							    <a4j:support id="carregaCargoFuncao"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 focus="tipoCargoFuncao"
-							  				 action="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
-							  				 reRender="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, regime, salario"/>
+							    <a4j:ajax event="change" 
+							  				 execute="@this"
+							  				 listener="#{nomeacaoServidorFormBean.carregaCargoFuncao}"
+							  				 render="tipoFolha, tipoCargoFuncao, proporcionalidade, previdencia, abonoPrevidenciario, SupSecIntegral, regime, salario"/>
 		
 							</h:selectOneMenu>
 						</div>
@@ -304,12 +299,10 @@
 							   				   itemValue="#{tipoCargoFuncao}"
 							   				   itemLabel="#{tipoCargoFuncao.nomenclatura} - #{tipoCargoFuncao.descricaoSituacao}"/>
 							   				   
-							    <a4j:support id="carregaClasseReferencia"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 focus="tipoClasseReferencia"
-							  				 action="#{nomeacaoServidorFormBean.carregaClasseReferenciaEhEspecialidadeCargo}"
-							  				 reRender="tipoClasseReferencia,especialidadeCargo"/>
+							    <a4j:ajax event="change" 
+							  				 execute="@this"
+							  				 listener="#{nomeacaoServidorFormBean.carregaClasseReferenciaEhEspecialidadeCargo}"
+							  				 render="tipoClasseReferencia,especialidadeCargo"/>
 							  				 
 							</h:selectOneMenu>
 						</div>
@@ -346,12 +339,10 @@
 							   				   itemValue="#{especialidadeCargo}"
 							   				   itemLabel="#{especialidadeCargo.especialidade.descricao}"/>
 							   				   
-								<a4j:support id="carregaOrientacaoCargo"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 focus="tipoOrientacaoCargo"
-							  				 action="#{nomeacaoServidorFormBean.carregaOrientacaoCargo}"
-							  				 reRender="orientacaoCargo"/>
+								<a4j:ajax event="change" 
+							  				 execute="@this"
+							  				 listener="#{nomeacaoServidorFormBean.carregaOrientacaoCargo}"
+							  				 render="orientacaoCargo"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -405,11 +396,10 @@
 							   				   itemValue="#{vinculo}"
 							   				   itemLabel="#{vinculo.descricao}"/>
 							   				   
-				   				<a4j:support id="carregaOrgaoEhSalario"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 action="#{nomeacaoServidorFormBean.carregaOrgaoEhSalario}"
-							  				 reRender="orgaoOrigem,salario"/>
+				   				<a4j:ajax event="change" 
+							  				 execute="@this"	
+							  				 listener="#{nomeacaoServidorFormBean.carregaOrgaoEhSalario}"
+							  				 render="orgaoOrigem,salario"/>
 							  				 
 							</h:selectOneMenu>
 						</div>
@@ -417,7 +407,7 @@
 				
 				</rich:tab>
 				
-				<rich:tab label="Info. Folha Pagamento">
+				<rich:tab header="Info. Folha Pagamento">
 		
 					<br/>
 	
@@ -506,11 +496,10 @@
 								   				   itemValue="#{cbo1}"
 								   				   itemLabel="#{cbo1.codigo} - #{cbo1.descricao}"/>
 								   				   
-							    <a4j:support id="carregaCbo2"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 action="#{nomeacaoServidorFormBean.carregaCbo2}"
-							  				 reRender="cbo2"/>
+							    <a4j:ajax event="change" 
+							  				 execute="@this"	
+							  				 listener="#{nomeacaoServidorFormBean.carregaCbo2}"
+							  				 render="cbo2"/>
 		
 								</h:selectOneMenu>
 							</div>
@@ -529,11 +518,10 @@
 								   				   itemValue="#{cbo2}"
 								   				   itemLabel="#{cbo2.codigo} - #{cbo2.descricao}"/>
 		
-							    <a4j:support id="carregaCbo3"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 action="#{nomeacaoServidorFormBean.carregaCbo3}"
-							  				 reRender="cbo3"/>
+							    <a4j:ajax event="change" 
+							  				 execute="@this"	
+							  				 listener="#{nomeacaoServidorFormBean.carregaCbo3}"
+							  				 render="cbo3"/>
 		
 								</h:selectOneMenu>
 							</div>
@@ -552,11 +540,10 @@
 								   				   itemValue="#{cbo3}"
 								   				   itemLabel="#{cbo3.codigo} - #{cbo3.descricao}"/>
 		
-							    <a4j:support id="carregaCbo4"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 action="#{nomeacaoServidorFormBean.carregaCbo4}"
-							  				 reRender="cbo4"/>
+							    <a4j:ajax event="change" 
+							  				 execute="@this"	
+							  				 listener="#{nomeacaoServidorFormBean.carregaCbo4}"
+							  				 render="cbo4"/>
 		
 								</h:selectOneMenu>
 							</div>
@@ -605,11 +592,10 @@
 							   				   itemValue="#{leiIncorporacao}"
 							   				   itemLabel="#{leiIncorporacao.descricao}"/>
 							   				   
-							    <a4j:support id="carregaQtdQuintos"
-							  				 event="onchange" 
-							  				 ajaxSingle="true"	
-							  				 action="#{nomeacaoServidorFormBean.carregaQtdQuintos}"
-							  				 reRender="qtdQuintos"/>
+							    <a4j:ajax event="change" 
+							  				 execute="@this"	
+							  				 listener="#{nomeacaoServidorFormBean.carregaQtdQuintos}"
+							  				 render="qtdQuintos"/>
 							  				 
 							</h:selectOneMenu>
 						</div>
@@ -639,11 +625,10 @@
 								<f:selectItem itemLabel="SUPSEC" itemValue="2" id="supsec"/>
 								<f:selectItem itemLabel="INSS" itemValue="3" id="inss"/>
 								<f:selectItem itemLabel="SEM PREVIDÊNCIA" itemValue="4" id="semprev"/>
-								<a4j:support id="carregaPrevidenciaSupSec" 
-										 	 event="onclick" 
-										 	 ajaxSingle="true"
-										 	 action="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}"
-										 	 reRender="abonoPrevidenciario,SupSecIntegral"/>
+								<a4j:ajax event="click" 
+										 	 execute="@this"
+										 	 listener="#{nomeacaoServidorFormBean.carregaPrevidenciaSupSec}"
+										 	 render="abonoPrevidenciario,SupSecIntegral"/>
 							</h:selectOneRadio>
 							</div>
 						</div>
@@ -732,13 +717,10 @@
 			<div style="margin-top: 14px;">
 				
 				<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO_ALTERAR')}">
-					<h:commandButton action="#{nomeacaoServidorFormBean.alterar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
-					<a href="/srh/paginas/funcional/nomeacaoServidorList.faces" class="bt-voltar fr mg-right-10">Limpar</a>			
+					<h:commandButton action="#{nomeacaoServidorFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" disabled="#{not nomeacaoServidorFormBean.exibirTodosOsCampos}"/>
 				</ui:fragment>
 				
-				<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/nomeacaoServidorList.faces" immediate="true">
-					<f:setPropertyActionListener target="#{nomeacaoServidorListBean.passouConsultar}" value="true"/>
-				</h:commandButton>				
+				<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/nomeacaoServidorList.faces"/>
 					
 			</div>	
 		

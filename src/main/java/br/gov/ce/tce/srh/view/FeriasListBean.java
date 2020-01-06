@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +23,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
- * Use case : SRH_UC037_Manter Férias
- * 
- * @since   : Jan 10, 2012, 5:33:11 PM
- * @author  : joel.barbosa@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("feriasListBean")
-@Scope("session")
+@Scope("view")
 public class FeriasListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(FeriasListBean.class);
@@ -49,10 +42,6 @@ public class FeriasListBean implements Serializable {
 	@Autowired
 	private AuthenticationService authenticationService;
 
-
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	private String matricula = new String();
 	private String cpf = new String();
 	private String nome = new String();
@@ -65,9 +54,17 @@ public class FeriasListBean implements Serializable {
 	private List<Ferias> pagedList = new ArrayList<Ferias>();
 	private int registroInicial = 0;
 	private Integer pagina = 1;
+	
+	@PostConstruct
+	public void init() {		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());				
+			consultar();
+		}	
+	}
 
 
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -84,8 +81,6 @@ public class FeriasListBean implements Serializable {
 			}
 
 			registroInicial = -1;
-			
-			passouConsultar = true;
 
 		} catch(SRHRuntimeException e) {
 			limparListas();
@@ -96,12 +91,14 @@ public class FeriasListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
-
 	
-	public String excluir() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void excluir() {
 
 		try {
 
@@ -121,11 +118,10 @@ public class FeriasListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -144,15 +140,8 @@ public class FeriasListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório das Férias. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	public String limpaTela() {
-		setEntidade(new Ferias());
-		return "listar";
-	}
-	
 	public String getMatricula() {return matricula;	}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -198,37 +187,7 @@ public class FeriasListBean implements Serializable {
 
 		}
 	}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {								
-				setCpf(authenticationService.getUsuarioLogado().getCpf());				
-				count = feriasService.count( getEntidade().getFuncional().getPessoal().getId() );
-				limparListas();
-				registroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			setEntidade( new Ferias() );
-			matricula = new String();
-			nome = new String();
-			cpf = new String();
-			lista = new ArrayList<Ferias>();
-			limparListas();
-			registroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
+	
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
 
@@ -264,18 +223,7 @@ public class FeriasListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
-
-
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
+	
 }

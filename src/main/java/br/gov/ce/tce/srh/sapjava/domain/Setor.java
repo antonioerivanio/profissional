@@ -10,6 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import br.gov.ce.tce.srh.domain.BasicEntity;
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
 
 /**
  * Referente a tabela: SETOR
@@ -19,7 +20,7 @@ import br.gov.ce.tce.srh.domain.BasicEntity;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="SETOR", schema="SAPJAVA")
+@Table(name="SETOR", schema=DatabaseMetadata.SCHEMA_SAP)
 @NamedQueries({@NamedQuery(name = "Setor.findAll", query = "SELECT s FROM Setor s WHERE s.tipo = 1 ORDER BY s.nome "), 
 				@NamedQuery(name="Setor.findTodosAtivos", query="SELECT s FROM Setor s WHERE s.tipo = 1 and s.ativo = 1 order by s.nome" )})
 public class Setor extends BasicEntity<Long> implements Serializable {

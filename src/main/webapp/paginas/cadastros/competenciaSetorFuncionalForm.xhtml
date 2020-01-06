@@ -14,7 +14,7 @@
 			<h2>Cadastro de Competência Setor Funcional</h2>
 
 		</div>
-		<h:form id="form" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios">
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
 			<div class="select-box box-25">
@@ -25,11 +25,10 @@
 					  	<f:selectItem id="selecioneTipo" itemLabel="Todos..." itemValue="0" />					  	
 						<f:selectItem id="siComportamental" itemLabel="Comportamental" itemValue="2" />
 						<f:selectItem id="siTecnica" itemLabel="Técnica" itemValue="1" />
-						<a4j:support id="carregaCompetencia"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"
-					  				 action="#{competenciaSetorFuncionalFormBean.carregaCompetencia}"	
-					  				 reRender="competencia"/>
+						<a4j:ajax 	 event="change" 
+					  				 execute="@this"
+					  				 listener="#{competenciaSetorFuncionalFormBean.carregaCompetencia}"	
+					  				 render="competencia"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -64,11 +63,10 @@
 					  					var="setor"
 					  					itemValue="#{setor}"
 					  					itemLabel="#{setor.nome}"/>
-						<a4j:support id="carregaCategoria"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"
-					  				 action="#{competenciaSetorFuncionalFormBean.carregaCategoria}"	
-					  				 reRender="categoria"/>
+						<a4j:ajax 	 event="change" 
+					  				 execute="@this"
+					  				 listener="#{competenciaSetorFuncionalFormBean.carregaCategoria}"	
+					  				 render="categoria"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -134,10 +132,7 @@
 					</div>
 				</div>			
 			<h:commandButton action="#{competenciaSetorFuncionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10"  />
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/competenciaSetorFuncionalList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{competenciaSetorFuncionalListBean.passouConsultar}" value="true"/>
-			</h:commandButton>			
-			<a href="/srh/paginas/cadastros/competenciaSetorFuncionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10" action="/paginas/cadastros/competenciaSetorFuncionalList.faces" />
 		</h:form>
 	</ui:define>
 </ui:composition>

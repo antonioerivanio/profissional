@@ -22,7 +22,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_AVERBACAO", schema="SRH")
+@Table(name="TB_AVERBACAO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Averbacao extends BasicEntity<Long> implements Serializable {
 
     @Id

@@ -17,7 +17,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
 @Component("LoginBean")
-@Scope("request")
+@Scope("session")
 public class LoginBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(LoginBean.class);
@@ -68,7 +68,7 @@ public class LoginBean implements Serializable {
 
 	public String logout() {
 		authenticationService.logout();
-		return "/login.faces?faces-redirect=true";
+		return "login";
 	}
 
 	public String getLoginUsuarioLogado() {
@@ -123,7 +123,7 @@ public class LoginBean implements Serializable {
 		for (GrantedAuthority permissao : authenticationService.getUsuarioLogado().getAuthorities()) {
 			
 			for (String grant : listaGrants) {
-				if (permissao.getAuthority().equals(grant))
+				if (permissao.getAuthority().trim().equals(grant.trim()))
 					return true;				
 			}
 

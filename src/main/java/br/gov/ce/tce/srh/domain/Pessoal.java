@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
-import br.gov.ce.tce.srh.enums.EnumCategoriaCNH;
+import br.gov.ce.tce.srh.enums.CategoriaCNH;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
@@ -30,7 +30,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_PESSOAL", schema="SRH")
+@Table(name="TB_PESSOAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	@Id
@@ -216,7 +216,7 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Column(name="CATEGORIACNH")
 	@Enumerated(EnumType.STRING)
-	private EnumCategoriaCNH categoriaCNH;	
+	private CategoriaCNH categoriaCNH;	
 
 	@Column(name="NRCTPS")
 	private String nrCTPS;
@@ -488,8 +488,8 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	public Date getDataPrimeiraCNH() { return dataPrimeiraCNH; }
 	public void setDataPrimeiraCNH(Date dataPrimeiraCNH) { this.dataPrimeiraCNH = dataPrimeiraCNH; }
 
-	public EnumCategoriaCNH getCategoriaCNH() { return categoriaCNH; }
-	public void setCategoriaCNH(EnumCategoriaCNH categoriaCNH) { this.categoriaCNH = categoriaCNH; }
+	public CategoriaCNH getCategoriaCNH() { return categoriaCNH; }
+	public void setCategoriaCNH(CategoriaCNH categoriaCNH) { this.categoriaCNH = categoriaCNH; }
 
 	public String getTelefoneAlternativo() { return telefoneAlternativo; }
 	public void setTelefoneAlternativo(String telefoneAlternativo) { this.telefoneAlternativo = telefoneAlternativo; }

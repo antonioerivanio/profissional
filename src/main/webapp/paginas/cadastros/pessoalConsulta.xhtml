@@ -5,36 +5,19 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
 
 		<style>
-			body {min-width: 500px}
-		    .formularios fieldset,
-		    .box-border {
-		        border: 1px solid #c6c6c6;
-		        padding: 15px 15px 0px 15px;
-		        padding-right: 0;
-		        overflow: auto;
-		        margin-bottom: 10px;
-		        min-height: 100px;
-		    }
-		    .rich-table-cell {
-				position: relative;				
-		    }
-		    .rich-table-cell label {
-				position: absolute;
-				top: 0;
-				left: 0;
-				height: 100%;
-				width: 100%;
-				display: block;
-		    }
-		    .rich-table-cell label:hover {
-		    	cursor: pointer;
-		    }
+			body {
+				min-width: 500px;
+			}
+			.geral{
+				min-height: auto;
+    			min-width: auto;
+			}
 		</style>
 
 		<script>
@@ -74,7 +57,7 @@
 
 		</div>
 
-		<h:form id="form" binding="#{pessoalConsultaBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios">
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 

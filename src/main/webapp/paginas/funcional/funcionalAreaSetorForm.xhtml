@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+ 	  xmlns:rich="http://richfaces.org/rich"
  	  xmlns:a4j="http://richfaces.org/a4j" >
 
 	<ui:define name="content">
@@ -16,7 +16,7 @@
 			if (nome.length > 2) {
 				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 		}
 		</script>
@@ -27,22 +27,19 @@
 
 		</div>
 
-		<h:form id="form" binding="#{funcionalAreaSetorFormBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<h:inputHidden id="passouConsulta" disabled="true" value="#{funcionalAreaSetorFormBean.passouConsultar}" />
-
 			<div class="input-box box-10">
 				<label for="">Matricula</label>
 				<div class="conteiner">
 					<h:inputText id="matricula"
 								 name="matricula"
 								 maxlength="6"
-								 disabled="#{funcionalAreaSetorFormBean.passouConsultar}"
 								 styleClass="maskMatricula"
 								 value="#{funcionalAreaSetorFormBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onblur" focus="nomeCompletoPessoa" reRender="messages, nomeCompletoPessoa" ajaxSingle="true"/>
+            			<a4j:ajax event="blur" render="messages, nomeCompletoPessoa" execute="@this"/>
         			</h:inputText>
 				</div>
 			</div>
@@ -52,7 +49,6 @@
 				<div class="conteiner">
 					<h:inputText id="nomeCompletoPessoa"
 								 name="nomeCompletoPessoa"
-								 disabled="#{funcionalAreaSetorFormBean.passouConsultar}"
 								 value="#{funcionalAreaSetorFormBean.nome}" />
 				</div>
 			</div>
@@ -66,18 +62,16 @@
 							 name="consultar"
 							 action="#{funcionalAreaSetorFormBean.consultar}"
 							 value="Consultar"
-							 rendered="#{!funcionalAreaSetorFormBean.passouConsultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" />
 
 			<h:commandButton id="limpar"
 							 name="limpar"
-							 action="#{funcionalAreaSetorFormBean.limparForm}"
+							 action="funcionalAreaSetorForm"
 							 value="Limpar"
-							 rendered="#{funcionalAreaSetorFormBean.passouConsultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" />
 
-			<!--  dados da area e do setor do funcionario -->
-			<h:panelGroup rendered="#{funcionalAreaSetorFormBean.passouConsultar}" >
+			
+			<h:panelGroup>
 		
 				<div class="select-box box-38">
 					<label for="">Setor</label>
@@ -92,11 +86,10 @@
 						  					var="setor"
 						  					itemValue="#{setor}"
 						  					itemLabel="#{setor.nome}"/>	
-						  <a4j:support id="carregaArea" 
-					  					 event="onchange" 
-					  					 ajaxSingle="true"
-					  					 action="#{funcionalAreaSetorFormBean.carregaArea}"
-					  				 	 reRender="area"/>								 
+						  <a4j:ajax event="change" 
+					  					 execute="@this"
+					  					 listener="#{funcionalAreaSetorFormBean.carregaArea}"
+					  				 	 render="area"/>								 
 				        </h:selectOneMenu>
 					</div>
 				</div>
@@ -136,7 +129,7 @@
 	                   
 	                   <h:column id="col11" headerClass="cel-50">
 	                        <f:facet name="header">
-	                          Area
+	                          Área
 	                        </f:facet>
 	                        <h:outputText id="item4" value="#{item.areaSetor.descricao}" />
 	                    </h:column>
@@ -145,12 +138,14 @@
 	                        <f:facet name="header">
 	                            EXCLUIR
 	                        </f:facet>
-	                        <h:commandLink id="excluir"
+	                        <a4j:commandLink id="excluir"
 	                        			   value="Excluir"
 	                        			   action="#{funcionalAreaSetorFormBean.excluir}" 
-	                        			   styleClass="ico-delete" >
+	                        			   styleClass="ico-delete" 
+	                        			   execute="@this"
+                        			   	   render="form">
 	                            <f:setPropertyActionListener target="#{funcionalAreaSetorFormBean.entidade}" value="#{item}" />
-	                        </h:commandLink>
+	                        </a4j:commandLink>
 	                    </h:column>
 	
 					</rich:dataTable>
@@ -159,15 +154,6 @@
 			</h:panelGroup>
 
 		</h:form>
-
-		<script>
-		// quando for carregar
-		if (document.getElementById('form:passouConsulta') != null) {
-			if (document.getElementById('form:passouConsulta').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}
-		}
-		</script>
-
+		
 	</ui:define>
 </ui:composition>

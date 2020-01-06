@@ -22,7 +22,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_PESSOALCURSO", schema="SRH")
+@Table(name="TB_PESSOALCURSO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class PessoalCursoAcademica implements Serializable {
 
     @EmbeddedId

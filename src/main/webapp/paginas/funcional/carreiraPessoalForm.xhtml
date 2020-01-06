@@ -9,18 +9,6 @@
 	xmlns:rich="http://richfaces.org/rich">
 
 	<ui:define name="content">
-	
-		<style>
-		.formularios fieldset,.box-border {
-			border: 1px solid #c6c6c6;
-			padding: 15px 15px 0px 15px;
-			padding-right: 0;
-			overflow: auto;
-			margin-bottom: 15px;
-			min-height: 100px;
-		}
-		</style>
-
 		<script>
 		function openwindowServidor()
 		{
@@ -28,7 +16,7 @@
 			if (nome.length > 2) {
 				window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 		}
 		</script>
@@ -59,7 +47,7 @@
 									 converter="cpfConverter"
 									 disabled="#{carreiraPessoalBean.alterar or ( not LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') ) }"
 									 value="#{carreiraPessoalBean.cpf}" >
-							<a4j:support id="cpfChange" event="onblur" focus="nomeCompletoPessoa" reRender="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " ajaxSingle="true" />
+							<a4j:ajax event="blur" render="nomeCompletoPessoa, messages, ocupacao, dataInicioCarreira " execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -97,12 +85,11 @@
 											var="carreira"
 											itemValue="#{carreira}"
 											itemLabel="#{carreira.descricao}"/>
-							<a4j:support id="atualizaInicioCarreira"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{carreiraPessoalBean.atualizaDatasCarreira}"
+							<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{carreiraPessoalBean.atualizaDatasCarreira}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 reRender="dataInicioCarreira, dataFimCarreira" />
+					  				 render="dataInicioCarreira, dataFimCarreira" />
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -151,12 +138,11 @@
 					  						var="ocupacao"
 					  						itemValue="#{ocupacao}"
 					  						itemLabel="#{ocupacao.nomenclatura}"/>
-					  		<a4j:support id="atualizaInicioCargo"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{carreiraPessoalBean.atualizaInicioCargo}"
+					  		<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{carreiraPessoalBean.atualizaInicioCargo}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 reRender="dataInicioCargoAtual" />
+					  				 render="dataInicioCargoAtual" />
 						</h:selectOneMenu>    
 					</div>
 				</div>
@@ -191,15 +177,7 @@
 			
 						
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_CARREIRA_PESSOAL_INSERIR,ROLE_CARREIRA_PESSOAL_ALTERAR') }">	
-				<h:commandButton action="#{carreiraPessoalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
-				
-				<ui:fragment rendered="#{!carreiraPessoalBean.alterar}">
-					<h:commandButton id="limpaTela" value="Limpar" action="#{carreiraPessoalBean.limpaForm}" styleClass="bt-padrao fr mg-right-10" />
-				</ui:fragment>
-				
-				<ui:fragment rendered="#{carreiraPessoalBean.alterar}">
-					<a href="/srh/paginas/funcional/carreiraPessoalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>				
-				</ui:fragment>				
+				<h:commandButton action="#{carreiraPessoalBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			</ui:fragment>
 							 
 			<a href="/srh/paginas/funcional/carreiraPessoalList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>

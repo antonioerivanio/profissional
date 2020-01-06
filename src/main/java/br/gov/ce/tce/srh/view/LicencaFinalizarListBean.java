@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -20,15 +18,9 @@ import br.gov.ce.tce.srh.service.TipoLicencaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 
-/**
-* Use case : SRH_UC036_Lançar Licença
-* 
-* @since   : Nov 15, 2011, 10:03:00 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("licencaFinalizarListBean")
-@Scope("session")
+@Scope("view")
 public class LicencaFinalizarListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(LicencaFinalizarListBean.class);
@@ -39,11 +31,6 @@ public class LicencaFinalizarListBean implements Serializable {
 	@Autowired
 	private TipoLicencaService tipoLicencaService;
 
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-	
 	// parametro da tela de consulta
 	private String nome = new String();
 
@@ -54,7 +41,7 @@ public class LicencaFinalizarListBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<Licenca> pagedList = new ArrayList<Licenca>(); 
 	private int flagRegistroInicial = -1;
@@ -63,15 +50,7 @@ public class LicencaFinalizarListBean implements Serializable {
 	private List<TipoLicenca> comboTipoLicenca;
 	private List<TipoLicenca> tipoLicencaList;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
-
+	public void consultar() {
 		try {
 
 			// validando campos da entidade
@@ -93,7 +72,6 @@ public class LicencaFinalizarListBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -104,17 +82,9 @@ public class LicencaFinalizarListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro de conexão com a base de dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 	
-	
-	/**
-	 * Finalizar Licença
-	 * 
-	 * @return
-	 */
-	public String finalizar() {
+	public void finalizar() {
 
 		try {
 			
@@ -132,15 +102,9 @@ public class LicencaFinalizarListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
-	
 
-	/**
-	 * Combo Tipo Licenca
-	 * 
-	 * @return
-	 */
 	public List<TipoLicenca> getComboTipoLicenca() {
 
 		try {
@@ -162,16 +126,6 @@ public class LicencaFinalizarListBean implements Serializable {
 		return this.comboTipoLicenca;
 	}
 
-
-	public String limpaTela() {
-		setEntidade(new Licenca());
-		return "listar";
-	}
-	
-	/**
-	 * Gets and Sets
-	 */
-	
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
 
@@ -186,40 +140,15 @@ public class LicencaFinalizarListBean implements Serializable {
 
 	public List<Licenca> getLista() {return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
-
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new Licenca() );
-			setTipoLicenca( null );
-			this.nome = new String();
-			this.lista = new ArrayList<Licenca>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
-
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<Licenca>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +26,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC036_Lançar Licença
-* 
-* @since   : Nov 15, 2011, 10:03:00 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("licencaListBean")
-@Scope("session")
+@Scope("view")
 public class LicencaListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(LicencaListBean.class);
@@ -53,11 +47,6 @@ public class LicencaListBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -78,15 +67,16 @@ public class LicencaListBean implements Serializable {
 
 	// combo
 	private List<TipoLicenca> comboTipoLicenca;
+	
+	@PostConstruct
+	public void init() {		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());								
+			consultar();
+		}
+	}
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 			
@@ -107,8 +97,6 @@ public class LicencaListBean implements Serializable {
 			}
 
 			registroInicial = -1;
-			
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -119,17 +107,14 @@ public class LicencaListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro de conexão com a base de dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 			
@@ -149,15 +134,9 @@ public class LicencaListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 	
-
-	/**
-	 * Combo Tipo Licenca
-	 * 
-	 * @return
-	 */
 	public List<TipoLicenca> getComboTipoLicenca() {
 
 		try {
@@ -173,13 +152,7 @@ public class LicencaListBean implements Serializable {
 		return this.comboTipoLicenca;
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -205,19 +178,8 @@ public class LicencaListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório de Licença. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-
-	public String limpaTela() {
-		setEntidade(new Licenca());
-		return "listar";
-	}
-	
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -277,48 +239,6 @@ public class LicencaListBean implements Serializable {
 
 	public List<Licenca> getLista() {return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public boolean isPassouConsultar() {
-		return passouConsultar;
-	}
-
-
-	public void setPassouConsultar(boolean passouConsultar) {
-		this.passouConsultar = passouConsultar;
-	}
-
-
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {								
-				setCpf(authenticationService.getUsuarioLogado().getCpf());								
-				count = licencaService.count(getEntidade().getPessoal().getId());
-				limparListas();
-				registroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			setEntidade( new Licenca() );
-			setTipoLicenca( null );
-			this.matricula = new String();
-			this.cpf = new String();
-			this.nome = new String();
-			this.lista = new ArrayList<Licenca>();
-			limparListas();
-			registroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
-
 	//PAGINAÇÃO
 	private void limparListas() {
 		dataModel = new PagedListDataModel();
@@ -351,7 +271,6 @@ public class LicencaListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}
-	
+	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
 }

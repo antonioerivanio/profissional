@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -24,15 +24,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC028_Manter Cargo de Representação por Valor
-* 
-* @since   : Out 20, 2011, 14:47:10 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("representacaoValorBean")
-@Scope("session")
+@Scope("view")
 public class RepresentacaoValorBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(RepresentacaoValorBean.class);
@@ -45,11 +39,6 @@ public class RepresentacaoValorBean implements Serializable {
 
 	@Autowired
 	private RelatorioUtil relatorioUtil;
-	
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametro da tela de consulta
 	private RepresentacaoCargo cargo;
@@ -63,23 +52,27 @@ public class RepresentacaoValorBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<RepresentacaoValor> pagedList = new ArrayList<RepresentacaoValor>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	@PostConstruct
+	public void init() {		
+		RepresentacaoValor flashParameter = (RepresentacaoValor)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new RepresentacaoValor());
+		comboCargo = null;
+		cargo = null;
+		lista = new ArrayList<RepresentacaoValor>();
+		limparListas();
+		flagRegistroInicial = 0;
+	}
+	
+	
+	public void consultar() {
 
 		try {
 
-			// validando campos da cosnulta
 			if ( this.cargo == null )
 				throw new SRHRuntimeException("Selecione um cargo.");
 
@@ -91,7 +84,6 @@ public class RepresentacaoValorBean implements Serializable {
 			}
 
 			flagRegistroInicial = -1;
-			passouConsultar = true;
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -102,17 +94,9 @@ public class RepresentacaoValorBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -131,17 +115,14 @@ public class RepresentacaoValorBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -161,15 +142,9 @@ public class RepresentacaoValorBean implements Serializable {
 		setEntidade( new RepresentacaoValor() );
 		this.comboCargo = null;
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Combo Cargo
-	 * 
-	 * @return
-	 */
 	public List<RepresentacaoCargo> getComboCargo() {
 
         try {
@@ -185,14 +160,7 @@ public class RepresentacaoValorBean implements Serializable {
 		return this.comboCargo;
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 * 
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 
@@ -217,18 +185,8 @@ public class RepresentacaoValorBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return null;
 	}
 	
-	public String limpaTela() {
-		this.cargo = new RepresentacaoCargo();
-		this.comboCargo = null;
-		return "listar";
-	}
-
-	/**
-	 * Gets and Sets
-	 */
 	public RepresentacaoCargo getCargo() {return cargo;}
 	public void setCargo(RepresentacaoCargo cargo) {this.cargo = cargo;}
 
@@ -236,30 +194,16 @@ public class RepresentacaoValorBean implements Serializable {
 	public void setEntidade(RepresentacaoValor entidade) {this.entidade = entidade;}
 
 	public List<RepresentacaoValor> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new RepresentacaoValor() );
-			comboCargo = null;
-			cargo = null;
-			lista = new ArrayList<RepresentacaoValor>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<RepresentacaoValor>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

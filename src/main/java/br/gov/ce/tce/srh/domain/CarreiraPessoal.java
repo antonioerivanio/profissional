@@ -14,11 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import br.gov.ce.tce.srh.enums.EnumCarreira;
+import br.gov.ce.tce.srh.enums.Carreira;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="TB_CARREIRAPESSOAL", schema="SRH")
+@Table(name="TB_CARREIRAPESSOAL", schema=DatabaseMetadata.SCHEMA_SRH)
 public class CarreiraPessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Id
@@ -31,7 +31,7 @@ public class CarreiraPessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Column(name = "IDCARREIRA")
 	@Enumerated(EnumType.ORDINAL)
-    private EnumCarreira carreira;
+    private Carreira carreira;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="DTINICIOCARREIRA")
@@ -61,8 +61,8 @@ public class CarreiraPessoal extends BasicEntity<Long> implements Serializable {
 	public Pessoal getPessoal() {return pessoal;}
 	public void setPessoal(Pessoal pessoal) {this.pessoal = pessoal;}
 	
-	public EnumCarreira getCarreira() {return this.carreira;}
-	public void setCarreira(EnumCarreira carreira) {this.carreira = carreira;}
+	public Carreira getCarreira() {return this.carreira;}
+	public void setCarreira(Carreira carreira) {this.carreira = carreira;}
 	
 	public Date getInicioCarreira() {return inicioCarreira;}
 	public void setInicioCarreira(Date inicioCarreira) {this.inicioCarreira = inicioCarreira;}

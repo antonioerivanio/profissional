@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_TIPOMOVIMENTO", schema="SRH")
+@Table(name="TB_TIPOMOVIMENTO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class TipoMovimento extends BasicEntity<Long> implements Serializable {
 	
 	public static final Long ENQUADRAMENTO_PCC = 11l;

@@ -17,7 +17,7 @@
 				if (nome.length > 2) {
 					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}
 		</script>
@@ -28,7 +28,7 @@
 
 		</div>
 
-         <h:form id="form" binding="#{relatorioDependenteBean.form}" styleClass="formularios">
+         <h:form id="form" styleClass="formularios">
 
 			<br/>
 
@@ -43,7 +43,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{relatorioDependenteBean.cpf}"	>
-						<a4j:support id="cpfChange" event="onblur" reRender="messages,cpf,nomeCompletoPessoa,tipoDependencia,prev,ir,sf,univ" ajaxSingle="true" />
+						<a4j:ajax event="blur" render="messages,cpf,nomeCompletoPessoa,tipoDependencia,prev,ir,sf,univ" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -63,7 +63,7 @@
 			   class="bt-padrao fl mg-top-18">Pesquisar</a>			
 	
 				
-			<div class="select-box box-55">
+			<div class="select-box box-50">
 				<label for="">Tipo Dependência</label>
 				<div class="conteiner">
 					<h:selectOneMenu id="tipoDependencia"

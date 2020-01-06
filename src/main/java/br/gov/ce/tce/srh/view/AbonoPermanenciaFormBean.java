@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,7 +22,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("abonoPermanenciaFormBean")
-@Scope("session")
+@Scope("view")
 public class AbonoPermanenciaFormBean implements Serializable{
 	
 	static Logger logger = Logger.getLogger(AbonoPermanenciaFormBean.class);
@@ -43,39 +45,28 @@ public class AbonoPermanenciaFormBean implements Serializable{
 	private Pessoal pessoal;
 	private String nrProcesso = new String();
 	private Funcional funcional;
-	
-	
+		
 	private boolean alterar = false;
 	
-	public String prepareIncluir() {
-		limpar();
-		this.alterar = false;
-		return "incluirAlterar";
-	}
-	
-	
-	public String prepareAlterar() {
-
-		this.alterar = true;
-
+	@PostConstruct
+	public void init() {
+		AbonoPermanencia flashParameter = (AbonoPermanencia)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new AbonoPermanencia());
 		try {
-			
-			nome = entidade.getFuncional().getPessoal().getNomeCompleto();
-			setCpf(entidade.getFuncional().getPessoal().getCpf());
-			nrProcesso = entidade.getProcessoFormatoTela();
-			funcional = entidade.getFuncional();			
-			
+			if(this.entidade.getId() != null) {
+				this.alterar = true;
+				nome = entidade.getFuncional().getPessoal().getNomeCompleto();
+				setCpf(entidade.getFuncional().getPessoal().getCpf());
+				nrProcesso = entidade.getProcessoFormatoTela();
+				funcional = entidade.getFuncional();
+			}			
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
-	}
+	}	
 	
-	
-	public String salvar() {
-
+	public void salvar() {
 		try {
 			
 			entidade.setProcesso(this.nrProcesso);
@@ -98,10 +89,7 @@ public class AbonoPermanenciaFormBean implements Serializable{
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
-	}
-	
+	}	
 	
 	public List<Funcional> getComboFuncional() {
 

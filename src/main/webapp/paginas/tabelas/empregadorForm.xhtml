@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+		<script>
+			function openwindowServidor()
+			{
+				nome = document.getElementById('form:nomeCompletoPessoa').value;
+				if (nome.length > 2) {
+					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+				} else {
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
+				}
+			}
+		</script>		
+
+		<div class="titulo-pagina">
+
+			<h2>Cadastro de Empregador TCE</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios">			
+		
+			<ui:include src="../../WEB-INF/templates/esocial-legenda.xhtml" />
+
+			<div class="corpo-formulario">
+			
+				<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+								
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações de identificação" />
+                </ui:include>								
+
+				<div class="input-box box-10">
+					<label for="">ID <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:inputText disabled="true" value="#{empregadorFormBean.entidade.id}" />
+					</div>
+				</div>
+				
+				<div class="select-box box-20">
+					<label for="">Tipo de inscrição * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="tpInsc"
+							value="#{empregadorFormBean.entidade.tipoInscricao}" 
+							required="true"
+							requiredMessage="O tipo de inscrição é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneTpInsc" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboTipoInscricao"
+								value="#{empregadorFormBean.comboTipoInscricao}" 
+								var="tipoInscricao"
+								itemLabel="#{tipoInscricao}" 
+								itemValue="#{tipoInscricao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+
+				<div class="input-box box-20">
+					<label for="">Número de inscrição * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="nrInsc" 
+							value="#{empregadorFormBean.entidade.cnpj}" 
+							maxlength="15"
+							required="true" 
+							requiredMessage="O número de inscrição é obrigatório."
+							disabled="true" />
+					</div>
+				</div>
+				
+				<ui:include src="../../WEB-INF/templates/esocial-vigencia.xhtml">
+                    <ui:param name="vigencia" value="#{empregadorFormBean.entidade.esocialVigencia}" />
+                </ui:include>
+
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações do Empregador" />
+                </ui:include>
+
+				<div class="input-box box-30">
+					<label for="">Nome do órgão * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="nmRazao"
+							value="#{empregadorFormBean.entidade.nomeOrgao}" 
+							maxlength="100"
+							required="true" 
+							requiredMessage="O nome do órgão é obrigatório."
+							disabled="true" />
+					</div>
+				</div>
+				
+				<div class="select-box box-35">
+					<label for="">Classificação tributária * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="classTrib"
+							value="#{empregadorFormBean.entidade.classificacaoTributaria}" 
+							required="true"
+							requiredMessage="A classificação tributária é obrigatória."
+							disabled="true">
+							<f:selectItem id="selecioneClassTrib" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboClassTrib"
+								value="#{empregadorFormBean.comboClassificacaoTributaria}" 
+								var="classTrib"
+								itemLabel="#{classTrib.codigo} - #{classTrib.descricao}" 
+								itemValue="#{classTrib}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="select-box box-35">
+					<label for="">Natureza jurídica * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="natJurid"
+							value="#{empregadorFormBean.entidade.naturezaJuridica}" 
+							required="true"
+							requiredMessage="A natureza jurídica é obrigatória."
+							disabled="true">
+							<f:selectItem id="selecioneNatJurid" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboNatJurid"
+								value="#{empregadorFormBean.comboNaturezaJuridica}" 
+								var="natJurid"
+								itemLabel="#{natJurid.codigo} - #{natJurid.descricao}" 
+								itemValue="#{natJurid}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="select-box box-10 clr-l">
+					<label for="">Indicativo de cooperativa * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indCoop"
+							value="#{empregadorFormBean.entidade.cooperativa}" 
+							required="true"
+							requiredMessage="O indicativo de cooperativa é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneIndCoop" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndCoop"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="select-box box-10">
+					<label for="">Indicativo de construtora * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indConstr"
+							value="#{empregadorFormBean.entidade.construtora}" 
+							required="true"
+							requiredMessage="O indicativo de construtora é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneIndConstr" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndConstr"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="select-box box-15">
+					<label for="">Indicativo de <br /> desoneração da folha * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indDesFolha"
+							value="#{empregadorFormBean.entidade.desoneracaoFolha}" 
+							required="true"
+							requiredMessage="O indicativo de desoneração da folha é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneIndDesFolha" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndDesFolha"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="select-box box-15">
+					<label for="">Optante por registro eletrônico * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indOptRegEletron"
+							value="#{empregadorFormBean.entidade.registroEmpregados}" 
+							required="true"
+							requiredMessage="Optante por registro eletrônico é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneIndOptRegEletron" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndOptRegEletron"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="select-box box-15">
+					<label for="">Indicativo de entidade educativa * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indEntEd"
+							value="#{empregadorFormBean.entidade.entidadeEducativa}" 
+							required="true"
+							requiredMessage="O indicativo de entidade educativa é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneIndEntEd" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndEntEd"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>				
+				
+				<div class="select-box box-20">
+					<label for="">Indicativo de empresa de trabalho temporário * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indEtt"
+							value="#{empregadorFormBean.entidade.trabalhoTemporario}" 
+							required="true"
+							requiredMessage="O indicativo de empresa de trabalho temporário é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneIndEtt" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndEtt"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+					
+				<div class="clr">	
+					<div class="input-box box-50">
+						<label for="">Contato <span class="identificador-esocial">e</span></label>
+						<div class="conteiner">
+							<h:inputText id="nomeCompletoPessoa"
+										 name="nomeCompletoPessoa"							
+										 value="#{empregadorFormBean.nomeContato}" />						
+						</div>
+					</div>
+	
+					<a id="pesquisarContato" 
+					   href="#" 
+					   onclick="openwindowServidor()" 
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				   
+				   	<h:inputHidden id="idPessoa" value="#{empregadorFormBean.idContato}" /> 
+			   	
+			   	</div>			   	
+			   	
+			   	<div class="select-box box-20 clr">
+					<label for="">O Órgão Público é o Ente Federativo Responsável? * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="ideEFR"
+							value="#{empregadorFormBean.entidade.enteFederativo}" 
+							required="true"
+							requiredMessage="Ente federativo é obrigatório."
+							disabled="true">
+							<f:selectItem id="selecioneIdeEFR" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIdeEFR"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>			   	
+			   	
+			   	<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações relativas ao Ente Federativo Responsável" />
+                </ui:include>			   	
+			   
+			   	<div class="input-box box-15">
+					<label for="">CNPJ * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="cnpjEFR"
+							value="#{empregadorFormBean.entidade.enteFederativoCnpj}" 
+							maxlength="14" 
+							disabled="true"/>
+					</div>
+				</div>
+				
+				<div class="input-box box-15">
+					<label for="">Nome * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="nmEnte"
+							value="#{empregadorFormBean.entidade.enteFederativoNome}" 
+							maxlength="100" 
+							disabled="true"/>
+					</div>
+				</div>				
+				
+				<div class="input-box box-20">
+					<label for="">UF * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="enteUf"
+							value="#{empregadorFormBean.entidade.enteFederativoUf}" 
+							maxlength="2" 
+							disabled="true"/>
+					</div>
+				</div>				
+				
+				<div class="select-box box-15">
+					<label for="">Ente possui RPPS * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indRPPS"
+							value="#{empregadorFormBean.entidade.enteFederativo}"
+							disabled="true">
+							<f:selectItem id="selecioneIndRPPS" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndRPPS"
+								value="#{empregadorFormBean.comboSimNao}" 
+								var="simNao"
+								itemLabel="#{simNao.descricao}" 
+								itemValue="#{simNao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="select-box box-15">
+					<label for="">Subteto * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="enteSubteto"
+							value="#{empregadorFormBean.entidade.subteto}"
+							disabled="true">
+							<f:selectItem id="selecioneEnteSubteto" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboEnteSubteto"
+								value="#{empregadorFormBean.comboSubteto}" 
+								var="subteto"
+								itemLabel="#{subteto.codigo} - #{subteto.descricao}" 
+								itemValue="#{subteto}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="input-box box-15">
+					<label for="">Valor do subteto * <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:inputText 
+							id="vrSubteto"
+							name="vrSubteto"
+							maxlength="14"
+							value="#{empregadorFormBean.entidade.valorSubteto}"
+							styleClass="maskSalario">
+							<f:convertNumber type="currency" currencySymbol="R$" locale="pt_br"/>
+						</h:inputText>	            			
+					</div>
+				</div>
+				
+				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
+                    <ui:param name="subtitulo" value="Informações complementares" />
+                </ui:include>
+				
+				<div class="select-box box-15">
+					<label for="">Situação Pessoa Jurídica <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<h:selectOneMenu 
+							id="indSitPJ"
+							value="#{empregadorFormBean.entidade.situacaoPj}"
+							disabled="true">
+							<f:selectItem id="selecioneIndSitPJ" itemLabel="Selecione..." />
+							<f:selectItems 
+								id="comboIndSitPJ"
+								value="#{empregadorFormBean.comboSituacaoPj}" 
+								var="situacao"
+								itemLabel="#{situacao.codigo} - #{situacao.descricao}" 
+								itemValue="#{situacao}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+
+			</div>
+			
+			<h:commandButton value="Salvar" action="#{empregadorFormBean.salvar}" styleClass="bt-padrao fr" rendered="#{true}"/>			
+
+			<a href="/srh/paginas/tabelas/empregadorList.faces" class="bt-padrao fr mg-right-10">Voltar</a>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -9,26 +9,13 @@
  	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
-
-		<style>
-		    .formularios fieldset,
-		    .box-border {
-		        border: 1px solid #c6c6c6;
-		        padding: 15px 15px 0px 15px;
-		        padding-right: 0;
-		        overflow: auto;
-		        margin-bottom: 10px;
-		        min-height: 100px;
-		    }
-		</style>
-
 		<script>
 			function openwindow() {
 				nome = document.getElementById('form:nomeCompletoPessoa').value;
 				if (nome.length > 2) {
 					window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}
 		</script>
@@ -65,11 +52,10 @@
 							  					var="area"
 							  					itemValue="#{area}"
 							  					itemLabel="#{area.descricao}"/>
-						  		<a4j:support id="carregaCurso" 
-						  					 event="onchange" 
-						  					 ajaxSingle="true"
-						  					 action="#{pessoalCursoProfissionalFormBean.carregaCurso}"
-						  				 	 reRender="curso"/>
+						  		<a4j:ajax 	 event="change" 
+						  					 execute="@this"
+						  					 listener="#{pessoalCursoProfissionalFormBean.carregaCurso}"
+						  				 	 render="curso"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -87,11 +73,10 @@
 							  					var="curso"
 							  					itemValue="#{curso}"
 							  					itemLabel="#{curso.descricao}"/>
-						  		<a4j:support id="carregaInstituicao" 
-						  					 event="onchange" 
-						  					 ajaxSingle="true"
-						  					 action="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
-						  				 	 reRender="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
+						  		<a4j:ajax 	 event="change" 
+						  					 execute="@this"
+						  					 listener="#{pessoalCursoProfissionalFormBean.carregaInstituicao}"
+						  				 	 render="instituicao, inicio, fim, cargaHoraria, tipoCurso, treinamento, presencial, listaCompetencias, listaServidores"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
@@ -257,13 +242,14 @@
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
-                        <h:commandLink id="excluir"
+                        <a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{pessoalCursoProfissionalFormBean.excluirCompetencia}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="alertaExclusao()"
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{pessoalCursoProfissionalFormBean.competenciaCurso}" value="#{item}" />
-                        </h:commandLink>
+                        	<a4j:jsFunction name="excluir" action="#{pessoalCursoProfissionalFormBean.excluirCompetencia}" render="form"/>
+                        </a4j:commandLink>
                     </h:column>
 
     			</h:dataTable>
@@ -288,7 +274,7 @@
 									 name="matricula"
 									 styleClass="maskMatricula"
 									 value="#{pessoalCursoProfissionalFormBean.matricula}" >
-	            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="cpf, nomeCompletoPessoa, matricula" ajaxSingle="true" />
+	            			<a4j:ajax event="change" render="cpf, nomeCompletoPessoa, matricula" execute="@this" />
 	        			</h:inputText>
 					</div>
 				</div>
@@ -301,7 +287,7 @@
 								 maxlength="14"
 								 styleClass="maskCpf"
 								 value="#{pessoalCursoProfissionalFormBean.cpf}" >
-            			<a4j:support event="onchange" focus="nomeCompletoPessoa" reRender="matricula, nomeCompletoPessoa, cpf" ajaxSingle="true" />
+            			<a4j:ajax event="change" render="matricula, nomeCompletoPessoa, cpf" execute="@this" />
         			</h:inputText>
 
 				</div>
@@ -379,13 +365,14 @@
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
-                        <h:commandLink id="excluir"
+                        <a4j:commandLink id="excluir"
                         			   value="Excluir"
-                        			   action="#{pessoalCursoProfissionalFormBean.excluirServidor}"
                         			   styleClass="ico-delete"
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="alertaExclusao2()" 
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{pessoalCursoProfissionalFormBean.entidade}" value="#{item}" />
-                        </h:commandLink>
+                        	<a4j:jsFunction name="excluir2" action="#{pessoalCursoProfissionalFormBean.excluirServidor}" render="form"/>
+                        </a4j:commandLink>
                     </h:column>
 
     			</h:dataTable>
@@ -396,7 +383,6 @@
 
 			<h:commandButton action="#{pessoalCursoProfissionalFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<a href="/srh/paginas/cadastros/pessoaCursoProfissionalList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
-			<a href="/srh/paginas/cadastros/pessoaCursoProfissionalForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
 
 		</h:form>
 

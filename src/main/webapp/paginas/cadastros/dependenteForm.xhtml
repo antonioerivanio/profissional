@@ -17,7 +17,7 @@
 				if (nome.length > 2) {
 					window.open("/srh/paginas/cadastros/pessoalConsulta.faces?flServidor=1&amp;nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 				} else {
-					alert('Digite pelo menos 3 caracteres para a pesquisa');
+					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
 			}
 		</script>
@@ -45,8 +45,9 @@
 					<h:inputText id="nomeCompletoPessoa"
 								 name="nomeCompletoPessoa"
 								 disabled="#{(not LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')) or dependenteFormBean.alterar }"								
-								 value="#{dependenteFormBean.nomeResponsavel}" />
-					<a4j:support event="onchange" reRender="idResponsavel" ajaxSingle="true" />
+								 value="#{dependenteFormBean.nomeResponsavel}">
+						<a4j:ajax event="change" render="idResponsavel" execute="@this" />
+					</h:inputText>	
 				</div>
 			</div>
 
@@ -87,10 +88,10 @@
 					  					var="tipoDependencia"
 					  					itemValue="#{tipoDependencia}"
 					  					itemLabel="#{tipoDependencia.descricao}"/>
-					  	<a4j:support event="onchange" 
-					  	             action="#{dependenteFormBean.tipoDependenciaSelecionado}"
-					  	             reRender="tipoDuracao, universitario" 
-					  	             ajaxSingle="true" />
+					  	<a4j:ajax event="change" 
+					  	             listener="#{dependenteFormBean.tipoDependenciaSelecionado}"
+					  	             render="tipoDuracao, universitario" 
+					  	             execute="@this" />
 					</h:selectOneMenu>
 				</div>
 			</div>
@@ -109,10 +110,10 @@
 					  					var="motivo"
 					  					itemValue="#{motivo}"
 					  					itemLabel="#{motivo.descricao}"/>
-					  	<a4j:support event="onchange" 
-					  	             action="#{dependenteFormBean.motivoInicioSelecionado}"
-					  	             reRender="tipoDuracao" 
-					  	             ajaxSingle="true" 
+					  	<a4j:ajax event="change" 
+					  	             listener="#{dependenteFormBean.motivoInicioSelecionado}"
+					  	             render="tipoDuracao" 
+					  	             execute="@this" 
 					  	             rendered="#{!dependenteFormBean.alterar}" />
 					</h:selectOneMenu>
 				</div>
@@ -248,8 +249,7 @@
 			
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE_INSERIR,ROLE_DEPENDENTE_ALTERAR')}">
-				<h:commandButton action="#{dependenteFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />			
-				<a href="/srh/paginas/cadastros/dependenteForm.faces" class="bt-voltar fr mg-right-10">Limpar</a>
+				<h:commandButton action="#{dependenteFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
 			</ui:fragment>	
 			
 			<a href="/srh/paginas/cadastros/dependenteList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>

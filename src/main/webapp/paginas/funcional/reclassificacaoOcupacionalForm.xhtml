@@ -10,17 +10,6 @@
 
 	<ui:define name="content">
 
-		<style>
-		.formularios fieldset,.box-border {
-			border: 1px solid #c6c6c6;
-			padding: 15px 15px 0px 15px;
-			padding-right: 0;
-			overflow: auto;
-			margin-bottom: 10px;
-			min-height: 100px;
-		}
-		</style>
-
 		<div class="titulo-pagina">
 
 			<h2>Reclassificação Ocupacional do Servidor</h2>
@@ -135,11 +124,10 @@
 						  					itemValue="#{tipoOcupacao}"
 						  					itemLabel="#{tipoOcupacao.descricao}"/>
 						  					
-						  	<a4j:support id="carregaCargoFuncao"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCargoFuncao}"
-					  				 reRender="tipoCargoFuncao"/>
+						  	<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCargoFuncao}"
+					  				 render="tipoCargoFuncao"/>
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -158,11 +146,10 @@
 						   				   itemValue="#{tipoCargoFuncao}"
 						   				   itemLabel="#{tipoCargoFuncao.nomenclatura}"/>
 						   				   
-				  			<a4j:support id="carregaClasseReferencia"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaClasseReferencia}"
-					  				 reRender="tipoClasseReferencia"/>
+				  			<a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaClasseReferencia}"
+					  				 render="tipoClasseReferencia"/>
 						</h:selectOneMenu>
 					</div>
 				</div>
@@ -205,11 +192,10 @@
 						   				   itemValue="#{cbo1}"
 						   				   itemLabel="#{cbo1.codigo} - #{cbo1.descricao}"/>
 						   				   
-					    <a4j:support id="carregaCbo2"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo2}"
-					  				 reRender="cbo2"/>
+					    <a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCbo2}"
+					  				 render="cbo2"/>
 
 						</h:selectOneMenu>
 					</div>
@@ -227,11 +213,10 @@
 						   				   itemValue="#{cbo2}"
 						   				   itemLabel="#{cbo2.codigo} - #{cbo2.descricao}"/>
 
-					    <a4j:support id="carregaCbo3"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo3}"
-					  				 reRender="cbo3"/>
+					    <a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCbo3}"
+					  				 render="cbo3"/>
 
 						</h:selectOneMenu>
 					</div>
@@ -249,11 +234,10 @@
 						   				   itemValue="#{cbo3}"
 						   				   itemLabel="#{cbo3.codigo} - #{cbo3.descricao}"/>
 
-					    <a4j:support id="carregaCbo4"
-					  				 event="onchange" 
-					  				 ajaxSingle="true"	
-					  				 action="#{reclassificacaoOcupacionalFormBean.carregaCbo4}"
-					  				 reRender="cbo4"/>
+					    <a4j:ajax event="change" 
+					  				 execute="@this"	
+					  				 listener="#{reclassificacaoOcupacionalFormBean.carregaCbo4}"
+					  				 render="cbo4"/>
 
 						</h:selectOneMenu>
 					</div>
@@ -361,7 +345,7 @@
 									 maxlength="10"
 									 value="#{reclassificacaoOcupacionalFormBean.entidade.doeNomeacao}" 
 									 disabled="#{not reclassificacaoOcupacionalFormBean.exibirTodosOsCampos}">
-							<a4j:support event="onchange" ajaxSingle="true"/> 
+							<a4j:ajax event="change" execute="@this"/> 
 						</h:inputText>
 					</div>
 				</div>
@@ -399,14 +383,6 @@
 			<a href="/srh/paginas/funcional/reclassificacaoOcupacionalList.faces" class="bt-voltar fr mg-right-10">Voltar</a>
 
 		</h:form>
-
-		<script>
-		if (document.getElementById('form:alterar') != null) {
-			if (document.getElementById('form:alterar').value == 'true') {
-				document.getElementById('form:Pesquisar').style.visibility='hidden';
-			}	
-		}
-		</script>
 
 	</ui:define>
 </ui:composition>

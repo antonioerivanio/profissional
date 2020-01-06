@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_TIPOPUBLICACAO", schema="SRH")
+@Table(name="TB_TIPOPUBLICACAO", schema=DatabaseMetadata.SCHEMA_SRH)
 public class TipoPublicacao extends BasicEntity<Long> implements Serializable {
 
 	@Id

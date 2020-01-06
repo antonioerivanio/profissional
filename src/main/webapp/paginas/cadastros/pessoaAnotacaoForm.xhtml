@@ -9,25 +9,13 @@
 	xmlns:rich="http://richfaces.org/rich">
 
 	<ui:define name="content">
-
-		<style>
-		.formularios fieldset,.box-border {
-			border: 1px solid #c6c6c6;
-			padding: 15px 15px 0px 15px;
-			padding-right: 0;
-			overflow: auto;
-			margin-bottom: 10px;
-			min-height: 100px;
-		}
-		</style>
-
 		<script>
 		function openwindow() {
 			nome = document.getElementById('form:nomeCompletoPessoa').value;
 			if (nome.length > 2) {
 				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome + "&amp;find=all","mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}			
 		}
 		</script>
@@ -59,10 +47,9 @@
 									 styleClass="maskMatricula"
 									 disabled="#{funcionalAnotacaoBean.alterar or ( not LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') ) }"
 									 value="#{funcionalAnotacaoBean.matricula}">
-							<a4j:support event="onchange"
-										 focus="setor"
-										 reRender="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 ajaxSingle="true" />
+							<a4j:ajax event="change"
+										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+										 execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -173,8 +160,7 @@
 			</fieldset>
 
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR_INSERIR,ROLE_ANOTACAO_SERVIDOR_ALTERAR') }">	
-				<h:commandButton action="#{funcionalAnotacaoBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />			
-				<h:commandButton id="limpaTela" value="Limpar" action="#{funcionalAnotacaoBean.limpaForm}" styleClass="bt-padrao fr mg-right-10" />
+				<h:commandButton action="#{funcionalAnotacaoBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			</ui:fragment>				 
 			<a href="/srh/paginas/cadastros/pessoaAnotacaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 

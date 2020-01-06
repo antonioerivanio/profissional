@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @Component("relatorioDemonstrativoCargoBean")
-@Scope("session")
+@Scope("view")
 public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 
 	private static final long serialVersionUID = 2375679883082367578L;
@@ -31,37 +31,26 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 	private RelatorioUtil relatorioUtil;
 	
 	@Autowired
-	private TipoOcupacaoService tipoOcupacaoService;
-	
-	
-	private HtmlForm form;
-	
+	private TipoOcupacaoService tipoOcupacaoService;	
+		
 	private Boolean ativoPortal;
 	private Boolean ativoPortalAbaQuantitativo;
 	private Boolean quantitativoDetalhado;
 	private Integer tipoDeQuantitativo;
 	private TipoOcupacao tipoOcupacao;
 	private List<TipoOcupacao> comboTipoOcupacao;
-	private Integer ordem;
+	private Integer ordem;		
 		
-		
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
+	@PostConstruct
+	public void init() {
 		ativoPortal = true;
 		ativoPortalAbaQuantitativo = true;
 		quantitativoDetalhado = false;
-		tipoDeQuantitativo = 1;
-		tipoOcupacao = null;
-		comboTipoOcupacao = null;
+		tipoDeQuantitativo = 1;		
 		ordem = 1;
-		return form;
 	}	
-	
-	public String limpar() {
-		return "listar";
-	}
 		
-	public String relatorioDemonstrativoDeCargos() {
+	public void relatorioDemonstrativoDeCargos() {
 
 		try {
 
@@ -95,11 +84,9 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String relatorioQuantitativoDeCargos() {
+	public void relatorioQuantitativoDeCargos() {
 
 		try {
 
@@ -128,8 +115,6 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	public List<TipoOcupacao> getComboTipoOcupacao() {

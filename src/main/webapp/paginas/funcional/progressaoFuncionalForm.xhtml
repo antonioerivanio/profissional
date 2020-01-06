@@ -11,18 +11,6 @@
 
 	<ui:define name="content">
 
-		<style>
-		    .formularios fieldset,
-		    .box-border {
-		        border: 1px solid #c6c6c6;
-		        padding: 15px 15px 0px 15px;
-		        padding-right: 0;
-		        overflow: auto;
-		        margin-bottom: 10px;
-		        min-height: 100px;
-		    }
-		</style>
-
 		<div class="titulo-pagina">
 
 			<h2>Progressão Funcional do Servidor</h2>
@@ -126,8 +114,6 @@
 			</fieldset>
 
 			
-
-			<!-- Progressão Funcional -->
 			<fieldset>
 
 				<legend>Progressão Funcional</legend>
@@ -250,10 +236,7 @@
 						action="#{progressaoFuncionalFormBean.salvar}"											
 						value="Salvar" styleClass="bt-padrao fr"/>
 			</ui:fragment>			
-			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/progressaoFuncionalList.faces" immediate="true">
-				<f:setPropertyActionListener target="#{progressaoFuncionalListBean.passouConsultar}" value="true"/>
-			</h:commandButton>
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/progressaoFuncionalList.faces" />
 
 		</h:form>
 

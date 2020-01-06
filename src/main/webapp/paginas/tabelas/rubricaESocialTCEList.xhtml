@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Rubrica ESocial</h2>
+
+		</div>
+
+		<h:form 
+			id="form" 
+			styleClass="formularios">
+
+			<h:messages 
+				id="messages" 
+				infoClass="infoMessage"
+				errorClass="errorMessage" />
+
+			<div class="input-box box-50">
+				<label for="descricao">Descrição da Rubrica TCE</label>
+				<div class="conteiner">
+					<h:inputText 
+						id="nome" 
+						maxlength="100" 
+						value="#{rubricaESocialTCEListBean.descricao}" />
+				</div>
+			</div>
+
+			<h:commandButton 
+				id="consultar" 
+				value="Consultar"
+				action="#{rubricaESocialTCEListBean.consultar}"
+				styleClass="bt-padrao fl mg-top-18 mg-left-10"
+				render="scroller,listaRubrica"
+				/>
+
+			<div class="tabela-dados">
+
+				<rich:dataTable 
+					id="listaRubrica" 
+					var="item"
+					rows="#{rubricaESocialTCEListBean.dataModel.pageSize}"
+					value="#{rubricaESocialTCEListBean.dataModel}">
+
+
+					<rich:column id="col1" headerClass="cel-10">
+						<f:facet name="header">
+                           ID
+                        </f:facet>
+						<center>
+							<h:outputText id="item1" value="#{item.id}"/>
+						</center>
+					</rich:column>
+
+					<rich:column id="col2" headerClass="cel-15">
+						<f:facet name="header">
+                           Rubrica TCE
+                        </f:facet>
+						<center>
+							<h:outputText id="item2" value="#{item.rubrica.descricao}"/>
+						</center>
+					</rich:column>
+					
+					<rich:column id="col3" headerClass="cel-30">
+						<f:facet name="header">
+                           Rubrica eSocial
+                        </f:facet>
+						<center>
+							<h:outputText id="item3" value="#{item.rubricaESocial.descricao}"/>
+						</center>
+					</rich:column>
+					
+					<rich:column id="col4" headerClass="cel-10">
+						<f:facet name="header">
+                           Tabela
+                        </f:facet>
+						<center>
+							<h:outputText id="item4" value="#{item.tabela.descricao}" />
+						</center>
+					</rich:column>
+					
+					<ui:include src="../../WEB-INF/templates/esocial-vigencia-coluna.xhtml" />				
+
+					<rich:column id="col8" rendered="#{true}" headerClass="cel-10">
+						<f:facet name="header">
+                            EDITAR
+                        </f:facet>
+						<h:commandLink 
+							id="editar" 
+							value="Editar"
+							action="#{rubricaESocialTCEListBean.editar}"
+							styleClass="ico-editar">
+							<f:setPropertyActionListener target="#{rubricaESocialTCEListBean.entidade}" value="#{item}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column id="col9"
+						rendered="#{false}">
+						<f:facet name="header">
+                            EXCLUIR
+                        </f:facet>						
+						<a4j:commandLink 
+							id="excluir" 
+							value="Excluir" 
+							styleClass="ico-delete"
+							onclick="alertaExclusao()"							
+							execute="@this">							
+							<f:setPropertyActionListener target="#{rubricaESocialTCEListBean.entidade}" value="#{item}" />
+						</a4j:commandLink>
+						<a4j:jsFunction name="excluir" action="#{rubricaESocialTCEListBean.excluir}" render="form"/>
+					</rich:column>
+
+				</rich:dataTable>
+				 <rich:dataScroller 
+						id="scroller" 
+						for="listaRubrica"
+						stepControls="hide" 
+						renderIfSinglePage="false"
+						page="#{rubricaESocialTCEListBean.pagina}" />
+				
+
+			</div>
+
+			
+			<h:commandButton 
+				id="incluir" 
+				value="Incluir"
+				action="incluirAlterar"
+				styleClass="bt-padrao fr mg-right-15"
+				rendered="#{true}" />
+			<h:commandButton 
+				id="limpaTela" 
+				value="Limpar"
+				action="listar"
+				styleClass="bt-padrao fr mg-right-15" />
+		</h:form>
+
+	</ui:define>
+</ui:composition>

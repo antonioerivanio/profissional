@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -23,15 +21,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC024_Manter Graduação da Pessoa
-* 
-* @since   : Nov 15, 2011, 10:03:00 AM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("pessoalCursoGraduacaoListBean")
-@Scope("session")
+@Scope("view")
 public class PessoalCursoGraduacaoListBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(PessoalCursoGraduacaoListBean.class);
@@ -45,11 +37,6 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 	@Autowired
 	private RelatorioUtil relatorioUtil;
 	
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
-
 	// parametros da tela de consulta
 	private String cpf = new String();
 	private String nome = new String();
@@ -60,19 +47,12 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 
 	//paginação
 	private int count;
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<PessoalCursoAcademica> pagedList = new ArrayList<PessoalCursoAcademica>();
 	private int flagRegistroInicial = 0;
 
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
@@ -87,8 +67,7 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 				logger.info("Nenhum registro foi encontrado.");
 			}
 
-			flagRegistroInicial = -1;
-			passouConsultar = true;
+			flagRegistroInicial = -1;		
 
 		} catch (SRHRuntimeException e) {
 			limparListas();
@@ -99,17 +78,14 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
+	}
+	
+	public void excluir() {
 
 		try {
 
@@ -126,16 +102,10 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
-
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	
+	public void relatorio() {
 
 		try {
 			
@@ -155,19 +125,8 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
-	public String limpaTela() {
-		setEntidade(new PessoalCursoAcademica());
-		return "listar";
-	}
-
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {
 		if ( !this.cpf.equals(cpf) ) {
@@ -199,29 +158,15 @@ public class PessoalCursoGraduacaoListBean implements Serializable {
 
 	public List<PessoalCursoAcademica> getLista() {return lista;}
 
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		if (!passouConsultar) {
-			setEntidade( new PessoalCursoAcademica() );
-			this.cpf = new String();
-			this.nome = new String();
-			this.lista = new ArrayList<PessoalCursoAcademica>();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
 	//PAGINAÇÃO
 	private void limparListas() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<PessoalCursoAcademica>(); 
 	}
 
-	public HtmlDataTable getDataTable() {return dataTable;}
-	public void setDataTable(HtmlDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {return dataTable;}
+	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {

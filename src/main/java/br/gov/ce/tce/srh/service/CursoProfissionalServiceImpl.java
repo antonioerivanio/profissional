@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.CursoProfissionalDAO;
 import br.gov.ce.tce.srh.domain.CursoProfissional;
-import br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional;
+import br.gov.ce.tce.srh.enums.TipoCursoProfissional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -59,12 +59,12 @@ public class CursoProfissionalServiceImpl implements CursoProfissionalService {
 				int qtdeDias = SRHUtils.dataDiff(entidade.getInicio(), entidade.getFim());
 				
 				
-				if( entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.ESPECIALIZACAO) && qtdeDias < 90 ) {
+				if( entidade.getPosGraduacao().equals(TipoCursoProfissional.ESPECIALIZACAO) && qtdeDias < 90 ) {
 					
 					throw new SRHRuntimeException("O período deve ter no mínimo 90 dias para cursos de especialização.");
 				
-				} else if ( (entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.MESTRADO)
-								|| entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.DOUTORADO)) 
+				} else if ( (entidade.getPosGraduacao().equals(TipoCursoProfissional.MESTRADO)
+								|| entidade.getPosGraduacao().equals(TipoCursoProfissional.DOUTORADO)) 
 						&& qtdeDias < 365){
 					
 					throw new SRHRuntimeException("O período deve ter no mínimo 365 dias para cursos de mestrado e doutorado.");
@@ -90,7 +90,7 @@ public class CursoProfissionalServiceImpl implements CursoProfissionalService {
 		}		
 		
 		
-		if ( entidade.getPosGraduacao().equals(EnumTipoCursoProfissional.ESPECIALIZACAO) && entidade.getCargaHoraria() < 360 ){
+		if ( entidade.getPosGraduacao().equals(TipoCursoProfissional.ESPECIALIZACAO) && entidade.getCargaHoraria() < 360 ){
 			throw new SRHRuntimeException("A carga horária mínima para cursos de pós-graduação é de 360 horas.");
 		}		
 		

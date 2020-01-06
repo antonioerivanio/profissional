@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_PESSOALCURSOPROF", schema="SRH")
+@Table(name="TB_PESSOALCURSOPROF", schema=DatabaseMetadata.SCHEMA_SRH)
 public class PessoalCursoProfissional implements Serializable {
 
     @EmbeddedId

@@ -39,7 +39,7 @@ public class TipoBeneficioDAOImpl implements TipoBeneficioDAO {
 	@Override
 	public TipoBeneficio salvar(TipoBeneficio entidade) {
 
-		if (entidade.getId() == null || entidade.getId().equals(0l)) {
+		if (entidade.getId() == null) {
 			entidade.setId(getMaxId());
 		}
 

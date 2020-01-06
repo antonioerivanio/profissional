@@ -3,6 +3,8 @@ package br.gov.ce.tce.srh.view;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -25,10 +27,10 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("aposentadoriaFormBean")
-@Scope("session")
+@Scope("view")
 public class AposentadoriaFormBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(FeriasFormBean.class);
+	static Logger logger = Logger.getLogger(AposentadoriaFormBean.class);
 
 	@Autowired
 	private AposentadoriaService aposentadoriaService;
@@ -60,32 +62,30 @@ public class AposentadoriaFormBean implements Serializable {
 
 	private List<TipoBeneficio> comboTipoBeneficio;
 	private List<TipoPublicacao> comboTipoPublicacao;
-
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	public String prepareAlterar() {
-
-		this.alterar = true;
-
+	
+	@PostConstruct
+	public void init() {
+		Aposentadoria flashParameter = (Aposentadoria)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Aposentadoria());
+		
 		try {
-			
-			this.matricula = entidade.getFuncional().getMatricula();
-			this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
-			
-			atualizaMensagemRepresentacao();
+			if(this.entidade.getId() != null) { 
+				this.alterar = true;
+				
+				this.matricula = entidade.getFuncional().getMatricula();
+				this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
+				
+				atualizaMensagemRepresentacao();
+			}	
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return "incluirAlterar";
 	}	
 	
-	public String salvar() {
+	public void salvar() {
 		
 		try {		
 
@@ -102,8 +102,6 @@ public class AposentadoriaFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}	
 	
 	

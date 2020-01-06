@@ -6,11 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.component.html.HtmlForm;
-
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
@@ -25,8 +22,7 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
 @Component("categoriaFuncionalListBean")
-@Scope("session")
-@ManagedBean
+@Scope("view")
 public class CategoriaFuncionalListBean implements Serializable {
 	
 	static Logger logger = Logger.getLogger(CategoriaFuncionalListBean.class);
@@ -44,11 +40,10 @@ public class CategoriaFuncionalListBean implements Serializable {
 	private boolean passouConsultar = false;
 	private int flagRegistroInicial = 0;
 	private List<CategoriaFuncional> pagedList = new ArrayList<CategoriaFuncional>();
-	private HtmlDataTable dataTable = new HtmlDataTable();
+	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
-	private HtmlForm form;
 	
-	public String consultar(){
+	public void consultar(){
 		try {
 			count = cadastroCategoriaFuncionalService.count(categoriaFuncional.getDescricao());
 			if(count == 0 ){
@@ -68,16 +63,13 @@ public class CategoriaFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", categoriaFuncional);        
+        return "incluirAlterar";
+	}
 		
-		return "listar";
-	}
-	
-	public String limpaTela(){
-		setCategoriaFuncional(new CategoriaFuncional());
-		limparLista();
-		return "listar";
-	}
-	
 	public String mostarAtiva(Long ativa){
 		String status = "";
 		if(ativa == 1L){
@@ -88,7 +80,7 @@ public class CategoriaFuncionalListBean implements Serializable {
 		return status;
 	}
 	
-	public String excluir(){
+	public void excluir(){
 		try {
 			cadastroCategoriaFuncionalService.excluir(categoriaFuncional);
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
@@ -108,10 +100,10 @@ public class CategoriaFuncionalListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
-		return consultar();
+		consultar();
 	}
 	
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
 			if(count == 0)
@@ -129,8 +121,6 @@ public class CategoriaFuncionalListBean implements Serializable {
 			FacesUtil.addErroMessage("Erro na geração do Relatório das Ferias. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 	
 	
@@ -176,17 +166,17 @@ public class CategoriaFuncionalListBean implements Serializable {
 	}
 
 
-	public HtmlDataTable getDataTable() {
+	public UIDataTable getDataTable() {
 		return dataTable;
 	}
 
 
-	public void setDataTable(HtmlDataTable dataTable) {
+	public void setDataTable(UIDataTable dataTable) {
 		this.dataTable = dataTable;
 	}
 	//PAGINAÇÃO
 	private void limparLista() {
-		dataTable = new HtmlDataTable();
+		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
 		pagedList = new ArrayList<CategoriaFuncional>(); 
 	}
@@ -210,19 +200,4 @@ public class CategoriaFuncionalListBean implements Serializable {
 		this.dataModel = dataModel;
 	}
 
-
-	public HtmlForm getForm() {
-		if(!passouConsultar){
-			setCategoriaFuncional(new CategoriaFuncional());
-			limparLista();
-			flagRegistroInicial = 0;
-		}
-		passouConsultar = false;
-		return form;
-	}
-
-
-	public void setForm(HtmlForm form) {
-		this.form = form;
-	}
 }

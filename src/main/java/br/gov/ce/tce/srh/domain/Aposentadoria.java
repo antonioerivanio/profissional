@@ -19,7 +19,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_APOSENTADORIA", schema="SRH")
+@Table(name="TB_APOSENTADORIA", schema=DatabaseMetadata.SCHEMA_SRH)
 public class Aposentadoria extends BasicEntity<Long> implements Serializable {
 
     @Id

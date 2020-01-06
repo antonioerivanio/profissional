@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "TB_CATEGORIAFUNCIONAL", schema = "SRH")
+@Table(name = "TB_CATEGORIAFUNCIONAL", schema=DatabaseMetadata.SCHEMA_SRH)
 @NamedQueries({ @NamedQuery(name = "CategoriaFuncional.findAll", query = "SELECT c FROM CategoriaFuncional c ORDER BY c.descricao ") })
 public class CategoriaFuncional extends BasicEntity<Long> implements
 		Serializable {

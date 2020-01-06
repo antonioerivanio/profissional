@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import br.gov.ce.tce.srh.domain.BasicEntity;
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
 
 /**
  * Referente a tabela: ENTIDADE
@@ -20,7 +21,7 @@ import br.gov.ce.tce.srh.domain.BasicEntity;
  */
 @Entity
 @SuppressWarnings("serial")
-@Table(name="ENTIDADE", schema="SAPJAVA")
+@Table(name="ENTIDADE", schema=DatabaseMetadata.SCHEMA_SAP)
 public class Entidade extends BasicEntity<Long> implements Serializable {
 
 	@Id

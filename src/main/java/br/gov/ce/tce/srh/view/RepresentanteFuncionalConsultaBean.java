@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
@@ -16,15 +16,9 @@ import br.gov.ce.tce.srh.domain.RepresentacaoFuncional;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
-/**
-* Use case : 
-* 
-* @since   : Jan 17, 2011, 12:20:12 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("representanteFuncionalConsultaBean")
-@Scope("session")
+@Scope("view")
 public class RepresentanteFuncionalConsultaBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(RepresentanteFuncionalConsultaBean.class);
@@ -32,13 +26,10 @@ public class RepresentanteFuncionalConsultaBean implements Serializable {
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
 	
-	// controle de acesso do formulario
-	private HtmlForm form;
-
 	// entidades das telas
-	private List<RepresentacaoFuncional> lista;
+	private List<RepresentacaoFuncional> lista = new ArrayList<RepresentacaoFuncional>();;
 
-
+	@PostConstruct
 	private void consultar() {
 
 		try {
@@ -85,12 +76,5 @@ public class RepresentanteFuncionalConsultaBean implements Serializable {
 	}
 
 	public List<RepresentacaoFuncional> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		lista = new ArrayList<RepresentacaoFuncional>();
-		consultar();
-		return form;
-	}
 
 }

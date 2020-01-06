@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,16 +22,9 @@ import br.gov.ce.tce.srh.service.TipoPublicacaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-/**
- * Use case : SRH_UC037_Manter Férias
- * 
- * @since   : Jan 10, 2012, 5:33:11 PM
- * @author  : joel.barbosa@ivia.com.br
- *
- */
 @SuppressWarnings("serial")
 @Component("feriasFormBean")
-@Scope("session")
+@Scope("view")
 public class FeriasFormBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FeriasFormBean.class);
@@ -60,37 +55,34 @@ public class FeriasFormBean implements Serializable {
 	private List<TipoFerias> comboTipoFerias;
 	private List<TipoPublicacao> comboTipoPublicacao;
 
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
-	}
-
-	public String prepareAlterar() {
-
-		this.alterar = true;
+	@PostConstruct
+	public void init() {
+		Ferias flashParameter = (Ferias)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Ferias());
 
 		try {
+			if(this.entidade.getId() != null) {
+				
+				this.alterar = true;
 			
-			this.matricula = entidade.getFuncional().getMatricula();
-			this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
-
-			this.inicial = entidade.getInicio();
-			this.fim = entidade.getFim();
-			
-			if(entidade.getTipoFerias().consideraSomenteQtdeDias())
-				bloquearDatas = true;
-			else
-				bloquearDatas = false;
-
+				this.matricula = entidade.getFuncional().getMatricula();
+				this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
+	
+				this.inicial = entidade.getInicio();
+				this.fim = entidade.getFim();
+				
+				if(entidade.getTipoFerias().consideraSomenteQtdeDias())
+					bloquearDatas = true;
+				else
+					bloquearDatas = false;
+			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "incluirAlterar";
 	}	
 	
-	public String salvar() {
+	public void salvar() {
 		
 		try {
 
@@ -110,8 +102,6 @@ public class FeriasFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		return null;
 	}
 	
 	public List<TipoFerias> getComboTipoFerias() {

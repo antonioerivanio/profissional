@@ -6,7 +6,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
  	  xmlns:c="http://java.sun.com/jsp/jstl/core"
  	  xmlns:a4j="http://richfaces.org/a4j"
- 	  xmlns:rich="http://richfaces.ajax4jsf.org/rich" >
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
@@ -17,7 +17,7 @@
 			if (nome.length > 2) {
 				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
 			} else {
-				alert('Digite pelo menos 3 caracteres para a pesquisa');
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 			}
 		}
 		</script>
@@ -28,19 +28,19 @@
 
 		</div>
 
-		<h:form id="form" binding="#{licencaEspecialListBean.form}" styleClass="formularios box-border">
+		<h:form id="form" styleClass="formularios">
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 
 			<div class="input-box box-10">
-				<label for="">Matricula</label>
+				<label for="">Matrícula</label>
 				<div class="conteiner">
 					<h:inputText id="matricula"
 								 name="matricula"
 								 maxlength="6"
 								 styleClass="maskMatricula"
 								 value="#{licencaEspecialListBean.matricula}" >
-            			<a4j:support id="matriculaChange" event="onchange" focus="cpf" reRender="messages, cpf, nomeCompletoPessoa" ajaxSingle="true" />
+            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
         			</h:inputText>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 								 styleClass="maskCpf"
 								 converter="cpfConverter"
 								 value="#{licencaEspecialListBean.cpf}" >
-						<a4j:support id="cpfChange" event="onchange" focus="nomeCompletoPessoa" reRender="messages, matricula, nomeCompletoPessoa" ajaxSingle="true" />
+						<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 					</h:inputText>
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 							 value="Consultar"
 							 action="#{licencaEspecialListBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-							 reRender="scroller,lista"/>
+							 render="scroller,lista"/>
 			<h:commandButton id="Relatório"
 							 value="Relatório"
 							 action="#{licencaEspecialListBean.relatorio}" 
@@ -139,36 +139,37 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{licencaEspecialFormBean.prepareAlterar}"
+                       				  action="#{licencaEspecialListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{licencaEspecialFormBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{licencaEspecialListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
                 	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ESPECIAL_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
-                        <h:commandLink id="excluir"
-                        			   value="Excluir"
-                        			   action="#{licencaEspecialListBean.excluir}" 
+                        <a4j:commandLink id="excluir"
+                        			   value="Excluir" 
                         			   styleClass="ico-delete" 
-                        			   onclick="var x= confirm('Deseja realmente excluir o registro?');if(!x){return false;}" >
+                        			   onclick="alertaExclusao()" 
+                        			   execute="@this">
                             <f:setPropertyActionListener target="#{licencaEspecialListBean.entidade}" value="#{item}" />
-                        </h:commandLink>
+                        </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{licencaEspecialListBean.excluir}" render="form"/>
                     </h:column>
 
 				</rich:dataTable>
-				<rich:datascroller id="scroller" for="lista" stepControls="hide" align="center" rendered="#{licencaEspecialListBean.pagedList.size() > 0}"/>
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>
 			</div>
 
 			<h:commandButton id="incluir" 
 							 value="Incluir"
-							 action="#{licencaEspecialFormBean.prepareIncluir}"
+							 action="incluirAlterar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 rendered="#{LoginBean.anyGranted('ROLE_LICENCA_ESPECIAL_INSERIR')}"/>
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
-							 action="#{licencaEspecialListBean.limpaTela}"
+							 action="listar"
 							 styleClass="bt-padrao fr mg-right-15" 
 							 />				 
 

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.html.HtmlForm;
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,9 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
-/**
-* Use case : SRH_UC046_Manter Anotacoes do Servidor
-* 
-* @since   : Mar 3, 2012, 17:00:00 PM
-* @author  : robstownholanda@ivia.com.br
-*/
 @SuppressWarnings("serial")
 @Component("funcionalAnotacaoBean")
-@Scope("session")
+@Scope("view")
 public class FuncionalAnotacaoBean implements Serializable {
 
 	static Logger logger = Logger.getLogger(FuncionalAnotacaoBean.class);
@@ -47,11 +41,6 @@ public class FuncionalAnotacaoBean implements Serializable {
 	
 	@Autowired
 	private AuthenticationService authenticationService;
-
-
-	// controle de acesso do formulario
-	private HtmlForm form;
-	private boolean passouConsultar = false;
 
 	// parametros da tela de consulta
 	private String matricula = new String();
@@ -71,41 +60,27 @@ public class FuncionalAnotacaoBean implements Serializable {
 	private int flagRegistroInicial;
 	private Integer pagina = 1;
 
-
-	/**
-	 * Realizar antes de carregar tela incluir
-	 * 
-	 * @return
-	 */
-	public String prepareIncluir() {
-		limpar();
-		return "incluirAlterar";
+	@PostConstruct
+	public void init() {
+		FuncionalAnotacao flashParameter = (FuncionalAnotacao)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new FuncionalAnotacao());		
+		
+		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultar();
+		}
+		
+		if(this.entidade.getId() != null) {			
+			this.alterar = true;
+		}
 	}
 
-
-	/**
-	 * Realizar antes de carregar tela alterar
-	 * 
-	 * @return
-	 */
-	public String prepareAlterar() {
-		this.alterar = true;
-		return "incluirAlterar";
-	}
-
-
-	/**
-	 * Realizar Consulta
-	 * 
-	 * @return
-	 */
-	public String consultar() {
+	public void consultar() {
 
 		try {
 
 			limparListas();			
 			
-			// validando campos da entidade
 			if ( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
@@ -118,8 +93,6 @@ public class FuncionalAnotacaoBean implements Serializable {
 			
 			flagRegistroInicial = -1;
 			
-			passouConsultar = true;
-
 		} catch (SRHRuntimeException e) {
 			limparListas();
 			FacesUtil.addErroMessage(e.getMessage());
@@ -129,17 +102,9 @@ public class FuncionalAnotacaoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return "listar";
 	}
 
-
-	/**
-	 * Realizar salvar
-	 * 
-	 * @return
-	 */
-	public String salvar() {
+	public void salvar() {
 
 		try {
 
@@ -156,17 +121,14 @@ public class FuncionalAnotacaoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
+	}
+	
+	public String editar() {
+		FacesUtil.setFlashParameter("entidade", getEntidade());        
+        return "incluirAlterar";
 	}
 
-
-	/**
-	 * Realizar Exclusao
-	 * 
-	 * @return
-	 */
-	public String excluir() {
+	public void excluir() {
 
 		try {
 
@@ -183,20 +145,13 @@ public class FuncionalAnotacaoBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return consultar();
+		consultar();
 	}
 
-
-	/**
-	 * Emitir Relatorio
-	 * 
-	 * @return
-	 */
-	public String relatorio() {
+	public void relatorio() {
 
 		try {
-
-			// validando campos da entidade
+			
 			if ( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
@@ -214,23 +169,8 @@ public class FuncionalAnotacaoBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-
-		return null;
 	}
 
-	public String limpaTela() {
-		limpar();
-		return "listar";
-	}
-	
-	public String limpaForm() {
-		limpar();
-		return "pessoaAnotacaoForm";
-	}
-
-	/**
-	 * Limpar form
-	 */
 	private void limpar() {
 		setEntidade( new FuncionalAnotacao() );
 		this.alterar = false;
@@ -240,10 +180,6 @@ public class FuncionalAnotacaoBean implements Serializable {
 		this.lista = new ArrayList<FuncionalAnotacao>();
 	}
 
-
-	/**
-	 * Gets and Sets
-	 */
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
 		if ( !this.matricula.equals(matricula) ) {
@@ -296,44 +232,7 @@ public class FuncionalAnotacaoBean implements Serializable {
 	public FuncionalAnotacao getEntidade() {return entidade;}
 	public void setEntidade(FuncionalAnotacao entidade) {this.entidade = entidade;}
 
-	public List<FuncionalAnotacao> getLista(){return lista;}
-
-	public void setForm(HtmlForm form) {this.form = form;}
-	public HtmlForm getForm() {
-		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			
-			try {
-				
-				limparListas();
-				
-				setCpf(authenticationService.getUsuarioLogado().getCpf());				
-				
-				count = funcionalAnotacaoService.count( getEntidade().getFuncional().getPessoal().getId() );				
-				
-				if (count == 0) {
-					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-					logger.info("Nenhum registro foi encontrado.");
-				}	
-				
-				flagRegistroInicial = -1;				
-				
-			} catch (Exception e) {
-				limparListas();
-				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}			
-			
-		}else if (!passouConsultar) {
-			limpar();
-			limparListas();
-			flagRegistroInicial = 0;
-		}
-		
-		passouConsultar = false;
-		
-		return form;
-	}
+	public List<FuncionalAnotacao> getLista(){return lista;}	
 
 	public boolean isAlterar() {return alterar;}
 	

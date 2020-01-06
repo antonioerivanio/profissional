@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -8,31 +8,24 @@
 	xmlns:rich="http://richfaces.org/rich" 
 >
 
-    <head>
+    <h:head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-16" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />        
         <title>SRH - Sistema de Recursos Humanos do Tribunal de Contas do Ceara</title>
-        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/geral.css?v=#{dateGetTime}" />
         <link rel="shortcut icon" href="/srh/favicon.ico" />
+        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/sweetalert2.min.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="/srh/css/geral.css?v=#{dateGetTime}" />
+        <script type="text/javascript" src="/srh/js/sweetalert2.min.js"/>
+        <script type="text/javascript" src="/srh/js/sweetAlertSRH.js"/>
         <script type="text/javascript" src="/srh/js/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="/srh/js/tce-js-effects.js"></script>
         <script type="text/javascript" src="/srh/js/jquery.maskMoney.js"></script>
         <script type="text/javascript" src="/srh/js/jquery.tablesorter.min.js"></script>
         <script type="text/javascript" src="/srh/js/jquery.maskedinput-1.3.js"></script>
         <script type="text/javascript" src="/srh/js/sessaoUtil.js?v=#{dateGetTime}"></script>
-        <script type="text/javascript" src="/srh/js/util.js"></script>
-
-        <script type="application/x-javascript">
-
-        	jQuery.noConflict();
-            jQuery(document).ready(function($) {
-                $("#myTable").tablesorter({sortList:[[0,0]], widgets: ['zebra']});                
-            });
-
-        </script>
-        <link rel="SHORTCUT ICON" href="/srh/favicon.ico" />        
-    </head>
-    <body>
+        <script type="text/javascript" src="/srh/js/util.js"></script>                       
+    </h:head>
+    <h:body>
 
 	<f:view>
 
@@ -54,68 +47,28 @@
 
                 <div class="corpo">
 
-                    <div class="corpo-conteiner" >
-                    
-                    	<rich:modalPanel id="modalRenovaSessao" resizeable="false" height="220" width="620">
-				            
-				            <f:facet name="header" class="header">
-				                <span>Renovação de sessão</span>
-				            </f:facet>
-							
-							<div class="sessao-expirada-msg">
-								<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão irá expirar em alguns instantes. Clique em OK para renová-la.</span>				
-							</div>
-							
-							<div class="modal-actions">						
-								<a href="#" onclick="dontKeepSession();" class="bt-padrao bt-dialog-sessao">Cancelar</a>
-								<a href="#" onclick="keepSession();" class="bt-padrao bt-dialog-sessao">OK</a>
-							</div>							
-							
-						</rich:modalPanel>
-						
-						<rich:modalPanel id="modalRedirecionaLogin" resizeable="false" height="220" width="620">
-				            
-				            <f:facet name="header" class="header">
-				                <span>Fazer novo login</span>
-				            </f:facet>
-													
-							<div class="sessao-expirada-msg">
-								<span class="sessao-expirada-text"><b>Atenção!</b> Sua sessão expirou. Clique em OK para fazer um novo login.</span>				
-							</div>
-							
-							
-							<div class="modal-actions">													
-								<a href="#{request.contextPath}/login.faces" class="bt-padrao bt-dialog-sessao">OK</a>
-							</div>							
-							
-						</rich:modalPanel>
+                    <div class="corpo-conteiner bem-vindo">                       
+                        
+                   		<img src="img/bem-vindo.svg" alt="Ambiente de homologação" title="Ambiente de homologação" />
+                   		
+                   		<h2>Bem vindo!</h2>
+                   		
+                   		<p>Bem vindo ao Sistema de Recursos Humanos <br/>do Tribunal de Contas do Estado do Ceará.</p>	
 
-                        <div class="titulo-pagina center">
-
-                            <h2>
-                            	Bem-vindo ao Sistema de Recursos Humanos do Tribunal de Contas do Ceará
-                            </h2>
-
-                        </div>
-
-                        <div class="box-border" style="padding: 20px">
-
-                            <!-- <div class="welcome-col">
-                                <h2>Aviso!</h2>
-                               	<br />
-                                <p>
-                                   	Prezado(a) Servidor(a), de acordo com a Portaria nº 691/2018, publicada no DOE/TCE-CE em 26/09/2018, 
-	                                fica instituída a atualização obrigatória dos dados cadastrais de todos os servidores do TCE, 
-	                                no período de <b>15/10/2018 a 14/11/2018</b>.
-                                </p>
-                                <br />
-                                <p>
-                                	Para realizar o recadastramento acesse: "Cadastros" -> "Pessoal" -> "Dados Cadastrais", 
-	                                ou clique <b><a href="/srh/paginas/cadastros/pessoaList.faces">aqui</a></b>.
-	                             </p>
-                            </div> -->
-
-                        </div>
+                       <!-- <div class="welcome-col">
+                           <h2>Aviso!</h2>
+                          	<br />
+                           <p>
+                              	Prezado(a) Servidor(a), de acordo com a Portaria nº 691/2018, publicada no DOE/TCE-CE em 26/09/2018, 
+                            fica instituída a atualização obrigatória dos dados cadastrais de todos os servidores do TCE, 
+                            no período de <b>15/10/2018 a 14/11/2018</b>.
+                           </p>
+                           <br />
+                           <p>
+                           	Para realizar o recadastramento acesse: "Cadastros" -> "Pessoal" -> "Dados Cadastrais", 
+                            ou clique <b><a href="/srh/paginas/cadastros/pessoaList.faces">aqui</a></b>.
+                         </p>
+                       </div> -->                       
 
                     </div>
 
@@ -133,5 +86,5 @@
 
 	</f:view>
 
-    </body>
+    </h:body>
 </html>
