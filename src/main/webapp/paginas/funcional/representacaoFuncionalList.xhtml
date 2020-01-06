@@ -200,7 +200,7 @@
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 
 								 value="Incluir" 
-								 action="#{representacaoFuncionalFormBean.prepareIncluir}" 
+								 action="incluirAlterar" 
 								 styleClass="bt-padrao fr mg-right-15"
 								 rendered="#{LoginBean.anyGranted('ROLE_REPRESENTACAO_FUNCIONAL_INSERIR')}" />
 								 
