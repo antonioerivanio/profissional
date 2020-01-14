@@ -19,7 +19,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
-import org.hibernate.EntityMode;
 import org.hibernate.Session;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
@@ -134,7 +133,7 @@ public class AuditoriaDAOImpl implements AuditoriaDAO {
 			}
 		});
 		for (ClassMetadata classMetadata : classesMetadata.values()) {
-			Class<?> entidade = classMetadata.getMappedClass(EntityMode.POJO);			
+			Class<?> entidade = classMetadata.getMappedClass();			
 			if (entidade.isAnnotationPresent(Audited.class)) {
 				entidadesAuditadas.add(entidade);
 			}

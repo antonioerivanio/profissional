@@ -46,7 +46,7 @@ public class EmissorDeEmail {
 			URL url = new URL("file:///"+ context.getServerRootUrl() + "img" + File.separator + "logo-srh.png");
 			String cid = email.embed(url, "logoSRH");
 			mensagem += "<img src=\"cid:"+ cid +"\" alt=\"SRH - Sistema de Recursos Humanos\" "
-					+ " style=\"position: relative; left: -20px; max-width: 70%;\" >";			
+					+ " style=\"position: relative; left: -20px; width: 400px; max-width: 70%;\" >";			
 			
 			email.setHtmlMsg(mensagem);
 			email.send();
