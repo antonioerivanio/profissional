@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.PessoalCursoAcademicaDAO;
 import br.gov.ce.tce.srh.domain.CompetenciaGraduacao;
 import br.gov.ce.tce.srh.domain.PessoalCursoAcademica;
+import br.gov.ce.tce.srh.domain.PessoalCursoAcademicaPk;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
@@ -37,6 +38,10 @@ public class PessoalCursoAcademicaServiceImpl implements PessoalCursoAcademicaSe
 		// validando dados obrigatorios.
 		validarDados(pessoalCursoAcademica, listaCompetencias, inicioCompetencia);
 
+		if(pessoalCursoAcademica.getPk() == null) {
+			pessoalCursoAcademica.setPk(new PessoalCursoAcademicaPk());
+		}
+		
 		pessoalCursoAcademica.getPk().setPessoal( pessoalCursoAcademica.getPessoal().getId() );
 		pessoalCursoAcademica.getPk().setCursoAcademico( pessoalCursoAcademica.getCursoAcademica().getId() );
 
