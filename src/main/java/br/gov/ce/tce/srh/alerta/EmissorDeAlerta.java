@@ -75,8 +75,9 @@ public class EmissorDeAlerta {
 
 			for (Ferias ferias : feriasList) {
 
-				// Se não for férias de membros
-				if (ferias.getFuncional().getOcupacao().getTipoOcupacao().getId() != 1L) {
+				// Se não for férias de exonerados nem de membros
+				if (ferias.getFuncional().getSaida() == null
+						&& ferias.getFuncional().getOcupacao().getTipoOcupacao().getId() != 1L) {
 
 					Date dataDoAlerta = this.dataDoAlerta(ferias.getInicio());
 
