@@ -267,15 +267,9 @@ body {
 
 img.ambiente {
 	position: absolute;
-    right: 245px;
-    bottom: 36px;
-
-}
-
-.login-topo img.ambiente {
-	position: absolute;
-    right: 10px;
-    bottom: 10px;
+    left: 10px;
+    top: 10px;
+    width: 160px;
 }
 
 .topo .login-box {
