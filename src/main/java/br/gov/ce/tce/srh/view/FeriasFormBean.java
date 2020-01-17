@@ -110,8 +110,11 @@ public class FeriasFormBean implements Serializable {
 	
 	public String voltar() {
 		if (entidade.getId() != null) {
+			if (!alterar) {
+				pagina = 1;				
+			}
+			
 			matriculaConsulta = matricula;
-			pagina = 1;
 		}
 		
 		FacesUtil.setFlashParameter("matricula", matriculaConsulta);
