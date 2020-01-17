@@ -44,6 +44,7 @@ public class FeriasFormBean implements Serializable {
 	private Ferias entidade = new Ferias();
 
 	private String matricula = new String();
+	private String matriculaConsulta = new String();
 	private String nome = new String();
 
 	private Date inicial;
@@ -54,12 +55,16 @@ public class FeriasFormBean implements Serializable {
 
 	private List<TipoFerias> comboTipoFerias;
 	private List<TipoPublicacao> comboTipoPublicacao;
+	
+	private Integer pagina = 1;
 
 	@PostConstruct
 	public void init() {
-		Ferias flashParameter = (Ferias)FacesUtil.getFlashParameter("entidade");
+		Ferias flashParameter = (Ferias) FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Ferias());
-
+		this.pagina = (Integer) FacesUtil.getFlashParameter("pagina");
+		this.matriculaConsulta = (String) FacesUtil.getFlashParameter("matricula");
+		
 		try {
 			if(this.entidade.getId() != null) {
 				
@@ -90,7 +95,6 @@ public class FeriasFormBean implements Serializable {
 			this.entidade.setFim(this.fim);
 
 			feriasService.salvar(entidade);
-			limpar();
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -102,6 +106,17 @@ public class FeriasFormBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
+	}
+	
+	public String voltar() {
+		if (entidade.getId() != null) {
+			matriculaConsulta = matricula;
+			pagina = 1;
+		}
+		
+		FacesUtil.setFlashParameter("matricula", matriculaConsulta);
+		FacesUtil.setFlashParameter("pagina", pagina);
+        return "listar";
 	}
 	
 	public List<TipoFerias> getComboTipoFerias() {
@@ -132,32 +147,14 @@ public class FeriasFormBean implements Serializable {
 		}
 
 		return this.comboTipoPublicacao;
-	}
-
-	private void limpar() {
-
-		this.alterar = false;
-
-		setEntidade(new Ferias());
-		getEntidade().setPeriodo(1l);
-
-		this.matricula = new String();
-		this.nome = new String();
-		
-		this.inicial = null;
-		this.fim = null;
-		this.bloquearDatas = false;
-
-		this.comboTipoFerias = null;
-		this.comboTipoPublicacao = null;
-	}
+	}	
 	
 	public Ferias getEntidade() { return entidade; }
 	public void setEntidade(Ferias entidade) { this.entidade = entidade; }
 
 	public String getMatricula() {return matricula;}
 	public void setMatricula(String matricula) {
-		if ( !this.matricula.equals(matricula) ) {
+		if ( matricula != null && (this.matricula == null || !this.matricula.equals(matricula)) ) {
 			this.matricula = matricula;
 
 			try {

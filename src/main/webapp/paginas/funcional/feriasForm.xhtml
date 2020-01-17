@@ -28,7 +28,7 @@
 
 		</div>
 
-		<h:form id="form" styleClass="formularios">
+		<h:form id="form" styleClass="formularios" >
 
 			<fieldset>
 
@@ -48,8 +48,8 @@
 									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
 									 value="#{feriasFormBean.matricula}">
 							<a4j:ajax event="change"
-										 render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
-										 execute="@this" />
+									  render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+									  execute="@this" />
 						</h:inputText>
 					</div>
 				</div>
@@ -279,10 +279,19 @@
 			</div>
 			
 			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
-				<h:commandButton action="#{feriasFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" onclick="return validarFerias()"  />
+				<a4j:commandLink id="salvar"
+	                 			 value="Salvar"
+	                 			 onclick="validarFerias()"
+	                 			 styleClass="bt-padrao fr">                     
+                </a4j:commandLink>
+                <a4j:jsFunction name="salvar" 
+                				action="#{feriasFormBean.salvar}" 
+                				execute="form" 
+                				render="messages"
+                				/>
 			</ui:fragment>
 			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="/paginas/funcional/feriasList.faces" />
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{feriasFormBean.voltar}" />
 
 		</h:form>
 

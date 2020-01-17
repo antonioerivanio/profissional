@@ -505,6 +505,13 @@
 			<to-view-id>/paginas/funcional/feriasForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/feriasForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/feriasList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Funcional Setor -->
 	<navigation-rule>
 		<from-view-id>/paginas/funcional/funcionalSetorList.xhtml</from-view-id>
