@@ -58,11 +58,18 @@ public class FeriasListBean implements Serializable {
 	@PostConstruct
 	public void init() {		
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());				
-			consultar();
-		}	
+			setCpf(authenticationService.getUsuarioLogado().getCpf());
+			consultarAutomaticamente();
+		} else {
+			setMatricula((String) FacesUtil.getFlashParameter("matricula"));
+			pagina = (Integer) FacesUtil.getFlashParameter("pagina");
+			pagina = pagina == null ? 1 : pagina;
+			
+			if (getMatricula() != null) {
+				consultarAutomaticamente();
+			}
+		}		
 	}
-
 
 	public void consultar() {
 
@@ -93,8 +100,23 @@ public class FeriasListBean implements Serializable {
 		}
 	}
 	
+	private void consultarAutomaticamente() {
+		try {		
+			count = feriasService.count( this.entidade.getFuncional().getPessoal().getId() );
+			registroInicial = -1;
+		} catch (Exception e) {}
+	}
+	
 	public String editar() {
-		FacesUtil.setFlashParameter("entidade", getEntidade());        
+		FacesUtil.setFlashParameter("entidade", getEntidade());
+		FacesUtil.setFlashParameter("matricula", matricula);
+		FacesUtil.setFlashParameter("pagina", pagina);
+        return "incluirAlterar";
+	}
+	
+	public String incluir() {
+		FacesUtil.setFlashParameter("matricula", matricula);
+		FacesUtil.setFlashParameter("pagina", pagina);
         return "incluirAlterar";
 	}
 	
@@ -144,7 +166,7 @@ public class FeriasListBean implements Serializable {
 
 	public String getMatricula() {return matricula;	}
 	public void setMatricula(String matricula) {
-		if ( !this.matricula.equals(matricula) ) {
+		if ( matricula != null && (this.matricula == null || !this.matricula.equals(matricula)) ) {
 			this.matricula = matricula;
 
 			try {

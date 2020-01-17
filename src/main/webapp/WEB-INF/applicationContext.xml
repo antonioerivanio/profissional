@@ -50,10 +50,8 @@
 		<property name="maxIdleTime" value="${database.maxIdleTime}" />
 		<property name="maxConnectionAge" value="${database.maxConnectionAge}" />
 		<property name="maxIdleTimeExcessConnections" value="${database.maxIdleTimeExcessConnections}" />
-		<property name="idleConnectionTestPeriod" value="${database.idleConnectionTestPeriod}" />
-		<property name="preferredTestQuery" value="${database.preferredTestQuery}" />
-		<property name="testConnectionOnCheckin" value="${database.testConnectionOnCheckin}" />
 		<property name="testConnectionOnCheckout" value="${database.testConnectionOnCheckout}" />
+		<property name="checkoutTimeout" value="${database.checkoutTimeout}" />
 	</bean>
 
 	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />

@@ -45,7 +45,7 @@ public class ImageBean implements Serializable {
 			Parametro parametro = parametroService.getByNome("pathImageSRH");
 
 			if (parametro == null)
-				throw new SRHRuntimeException("Parametro do caminho da imagem nao encontrado na tabela SAPJAVA.FWPARAMETER");
+				throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SAPJAVA.FWPARAMETER");
 
 			// pegando a foto
 			InputStream in = null;

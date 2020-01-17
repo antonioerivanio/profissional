@@ -518,42 +518,45 @@ public class PessoaBean implements Serializable {
 
 	public void uploadFoto(ValueChangeEvent event) {
 
-		// criando nome da foto
-		SimpleDateFormat formato = new SimpleDateFormat("yyyyMMddHHMMss");
-		String nomeDoArquivo = formato.format(new Date());
-
-		try {
-
-			// pegando o caminho do arquivo no servidor
-			Parametro parametro = parametroService.getByNome("pathImageSRH");
-
-			if (parametro == null)
-				throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
-
-			// setando o nome da foto
-			setFoto((UploadedFile) event.getNewValue());
-			nomeDoArquivo = SRHUtils.getNomeArquivo(foto.getName()) + "-" + nomeDoArquivo + SRHUtils.getTipoArquivo(foto.getName());
-			getEntidade().setFoto(nomeDoArquivo);
-			imageBean.setFoto(nomeDoArquivo);
-
-			// gravando em disco
-			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFoto());
-			FileOutputStream fop;
-
-			fop = new FileOutputStream(file);
-			fop.write(foto.getBytes());
-			fop.flush();
-			fop.close();
-
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage("Erro na gravação da foto do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (FileNotFoundException e) {
-			FacesUtil.addErroMessage("Erro na gravação da foto do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (IOException e) {
-			FacesUtil.addErroMessage("Erro na gravação da foto do servidor.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		if (event.getNewValue() != null) {
+		
+			// criando nome da foto
+			SimpleDateFormat formato = new SimpleDateFormat("yyyyMMddHHMMss");
+			String nomeDoArquivo = formato.format(new Date());
+	
+			try {
+	
+				// pegando o caminho do arquivo no servidor
+				Parametro parametro = parametroService.getByNome("pathImageSRH");
+	
+				if (parametro == null)
+					throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
+	
+				// setando o nome da foto
+				setFoto((UploadedFile) event.getNewValue());
+				nomeDoArquivo = SRHUtils.getNomeArquivo(foto.getName()) + "-" + nomeDoArquivo + SRHUtils.getTipoArquivo(foto.getName());
+				getEntidade().setFoto(nomeDoArquivo);
+				imageBean.setFoto(nomeDoArquivo);
+	
+				// gravando em disco
+				java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFoto());
+				FileOutputStream fop;
+	
+				fop = new FileOutputStream(file);
+				fop.write(foto.getBytes());
+				fop.flush();
+				fop.close();
+	
+			} catch (SRHRuntimeException e) {
+				FacesUtil.addErroMessage("Erro na gravação da foto do servidor.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			} catch (FileNotFoundException e) {
+				FacesUtil.addErroMessage("Erro na gravação da foto do servidor.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			} catch (IOException e) {
+				FacesUtil.addErroMessage("Erro na gravação da foto do servidor.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
 		}
 
 	}	

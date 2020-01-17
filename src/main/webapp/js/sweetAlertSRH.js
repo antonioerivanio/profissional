@@ -5,6 +5,7 @@ function alerta(mensagem){
 	  confirmButtonColor: '#195297'
 	});
 }
+
 function alertaExclusao() {	
 	Swal.fire({
 	  title: 'Deseja realmente excluir o registro?',
@@ -21,6 +22,7 @@ function alertaExclusao() {
 		} 
 	});
 }
+
 //usado em telas com mais de uma chamada a função excluir
 function alertaExclusao2() {	
 	Swal.fire({
@@ -112,4 +114,30 @@ function finalizaRecadastramento() {
 			finalizarRecadastramento();			
 		} 
 	});
+}
+
+function validarFerias() {
+	
+	var dataPublicacao = document.getElementById('form:dataPublicacao').value;
+	var dataDoAto = document.getElementById('form:dataDoAto').value;
+	
+	if(dataPublicacao == "" || dataDoAto == ""){
+		Swal.fire({
+			title: 'Atenção!',
+			icon: 'warning',
+			text: 'Não foi preenchida a data de publicação oficial e/ou a data do ato. Deseja prosseguir a gravação?',
+			confirmButtonText: 'Confirmar',
+			cancelButtonText: 'Cancelar',
+			showCancelButton: true,
+			reverseButtons: true,
+			focusConfirm: false,
+			confirmButtonColor: '#195297'
+		}).then((result) => {
+			if(result.value){
+				salvar();			
+			} 
+		});		
+	} else {
+		salvar();
+	}
 }

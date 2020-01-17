@@ -1,5 +1,5 @@
 jQuery.noConflict();
-jQuery(document).ready(function($) {
+jQuery(document).ready(function($) {	
     
     //  INICIO EFEITOS MENU PRINCIPAL
     
@@ -43,36 +43,35 @@ jQuery(document).ready(function($) {
     
     //  FIM EFEITOS MENU PRINCIPAL    
    
+    aplicarMascaras($);	    
     
-    // INICIO MASCARAS
+});
 
-    $(".maskData").mask("99/99/9999",{placeholder:" "});  // DATA
-    $(".maskVigencia").mask("99/9999",{placeholder:" "});  // VIGÊNCIA ESOCIAL
-    $(".maskCpf").mask("999.999.999-99",{placeholder:" "});  // CPF
-    $(".maskPasep").mask("999.99999.99/9",{placeholder:" "});  // PASEP
-    $(".maskAgencia").mask("9999-9",{placeholder:" "});  // AGENCIA
-    $(".maskConta").mask("9999999-9",{placeholder:" "});  // CONTA
-    $(".maskCep").mask("99999-999",{placeholder:" "});  // CEP    
-	$(".maskTelefone").mask("(99)99999999?9",{placeholder:" "}); // TELEFONE    
-    $(".maskCelular").mask("(99)99999-9999",{placeholder:" "});  // CELULAR
-    $(".maskMatricula").mask("9999-9",{placeholder:" "});  // MATRICULA
-    $(".maskMotorVeiculo").mask("9.9",{placeholder:" "});  // MOTOR VEICULO
-    $(".maskPlacaVeiculo").mask("aaa-9999",{placeholder:" "});  // PLACA VEICULO
-    $(".maskProcesso").mask("99999/9999-9",{placeholder:" "});  // NUMERO DO PROCESSO
-    $(".maskQtdQuintos").mask("9",{placeholder:" "});  // QTD QUINTOS
-    $(".maskSalario").maskMoney({
+function aplicarMascaras(jQuery) {
+	jQuery(".maskData").mask("99/99/9999",{placeholder:" "});  // DATA
+	jQuery(".maskVigencia").mask("99/9999",{placeholder:" "});  // VIGÊNCIA ESOCIAL
+	jQuery(".maskCpf").mask("999.999.999-99",{placeholder:" "});  // CPF
+	jQuery(".maskPasep").mask("999.99999.99/9",{placeholder:" "});  // PASEP
+	jQuery(".maskAgencia").mask("9999-9",{placeholder:" "});  // AGENCIA
+	jQuery(".maskConta").mask("9999999-9",{placeholder:" "});  // CONTA
+	jQuery(".maskCep").mask("99999-999",{placeholder:" "});  // CEP    
+	jQuery(".maskTelefone").mask("(99)99999999?9",{placeholder:" "}); // TELEFONE    
+	jQuery(".maskCelular").mask("(99)99999-9999",{placeholder:" "});  // CELULAR
+	jQuery(".maskMatricula").mask("9999-9",{placeholder:" "});  // MATRICULA
+	jQuery(".maskMotorVeiculo").mask("9.9",{placeholder:" "});  // MOTOR VEICULO
+	jQuery(".maskPlacaVeiculo").mask("aaa-9999",{placeholder:" "});  // PLACA VEICULO
+	jQuery(".maskProcesso").mask("99999/9999-9",{placeholder:" "});  // NUMERO DO PROCESSO
+	jQuery(".maskQtdQuintos").mask("9",{placeholder:" "});  // QTD QUINTOS
+	jQuery(".maskSalario").maskMoney({
     	symbol:'R$ ',
     	showSymbol:true,
     	symbolStay: true,
     	decimal:',', 
     	thousands:'.',
     	precision: 2});  // SALARIO
-    $(".maskFap").maskMoney({
+	jQuery(".maskFap").maskMoney({
     	decimal:',', 
     	precision: 4});
-    $(".maskNoDocumento").mask("9999/9999",{placeholder:" "});  // NUMERO DO DOCUMENTO
-    $(".maskHora").mask("99:99", {placeholder:" "}); // HORA
-
-    // FIM MASCARAS
-    
-});
+	jQuery(".maskNoDocumento").mask("9999/9999",{placeholder:" "});  // NUMERO DO DOCUMENTO
+	jQuery(".maskHora").mask("99:99", {placeholder:" "}); // HORA
+}
