@@ -268,16 +268,16 @@
 	
 	
 	<!-- SCA - DESENVOLVIMENTO -->
-	
+	<!-- 
 	<authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
     </authentication-manager>	
-	
+	 -->
 	
 <!--***********************************************************************************************************************************************************-->	
 		
 	<!-- AD - PRODUÇÃO -->
-	<!-- 
+	
 	<beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
         <beans:constructor-arg value="tce.ce.gov.br" />
         <beans:constructor-arg value="ldap://tce.ce.gov.br:389/"/> 
@@ -289,5 +289,5 @@
 	<authentication-manager alias="authenticationManager">
 	    <authentication-provider ref="ldapActiveDirectoryAuthProvider" />
 	</authentication-manager>
-	 -->
+	
 </beans:beans>
