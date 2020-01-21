@@ -66,7 +66,9 @@ public class FeriasFormBean implements Serializable {
 		this.matriculaConsulta = (String) FacesUtil.getFlashParameter("matricula");
 		
 		try {
-			if(this.entidade.getId() != null) {
+			if(this.entidade.getId() == null) {
+				this.entidade.setPeriodo(1L);
+			} else {
 				
 				this.alterar = true;
 			
