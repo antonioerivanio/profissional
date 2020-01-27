@@ -31,6 +31,7 @@ import br.gov.ce.tce.srh.service.FeriasService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.LicencaEspecialService;
 import br.gov.ce.tce.srh.service.LicencaService;
+import br.gov.ce.tce.srh.to.TempoServico;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -120,7 +121,23 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			if (getEntidade() == null)
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
-			this.entidade = funcionalService.getById( this.entidade.getId() );
+			calcularTempoServico(this.entidade.getId());
+		
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {			
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		
+	}
+	
+	public void calcularTempoServico(Long idFuncional) {
+
+		try {			
+
+			this.entidade = funcionalService.getById(idFuncional);
 
 			this.totalDia = new Long(0);
 			this.ano = new Long(0);
@@ -299,7 +316,8 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 		} catch (SRHRuntimeException e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (Exception e) {			
+		} catch (Exception e) {		
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -343,6 +361,37 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");			
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
+	
+	public void listagemTodosServidores() {
+
+		try {
+			
+			List<Funcional> ativos = this.funcionalService.findAllAtivos();
+			List<TempoServico> tempos = new ArrayList<TempoServico>();
+			
+			for (Funcional funcional : ativos) {
+				calcularTempoServico(funcional.getId());
+				tempos.add(new TempoServico(
+						funcional.getPessoal().getNomeCompleto(), 
+						funcional.getMatricula(), 
+						this.totalDia, 
+						this.ano, 
+						this.mes, 
+						this.dia));
+			}
+			
+			setEntidade(new Funcional());
+			
+			relatorioUtil.relatorio("emitirContagemTempoServicoListagem.jasper", new HashMap<String, Object>(), "listagemTempoServico.pdf", tempos);
+
+		} catch (SRHRuntimeException e) {			
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {			
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");			
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
