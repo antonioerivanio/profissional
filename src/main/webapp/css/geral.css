@@ -102,6 +102,10 @@ textarea:disabled, input:not
 .mg-bottom-15 {
 	margin-bottom: 15px !important;
 }
+
+.mg-bottom-20 {
+	margin-bottom: 20px !important;
+}
 /* FIM MARGENS UTEIS */
 
 /* FIM CLASSES UTEIS */
@@ -1131,6 +1135,18 @@ img.ambiente {
 
 .bt-conteiner {
 	margin-top: 15px;
+}
+
+.link-padrao {
+	text-decoration: none;
+    color: #1c5ba7;
+    font-weight: bold;
+    text-transform: lowercase;
+    font-size: 14px;
+}
+
+.link-padrao:hover {
+    color: inherit;
 }
 /* FIM BOTOES */
 
