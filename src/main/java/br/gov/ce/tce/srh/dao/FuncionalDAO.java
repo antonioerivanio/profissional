@@ -176,6 +176,7 @@ public class FuncionalDAO {
 					+ "FROM Funcional f "
 					+ "WHERE f.saida IS NULL "
 					+ "AND f.status = 1 "
+					+ "AND f.setor.id != 113 "
 					+ "ORDER BY f.pessoal.nome", Funcional.class);
 			return query.getResultList();
 		} catch (NoResultException e) {

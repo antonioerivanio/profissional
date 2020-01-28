@@ -2,6 +2,8 @@
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -383,6 +385,12 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 						this.mes, 
 						this.dia));
 			}
+			
+			Collections.sort(tempos, new Comparator<TempoServico> () {
+				public int compare(TempoServico t1, TempoServico t2) { 
+			        return t2.getTotalDias().compareTo(t1.getTotalDias()); 
+			    }
+			});
 			
 			setEntidade(new Funcional());
 			

@@ -86,11 +86,12 @@
 							 action="#{emitirContagemTempoServicoListBean.relatorio}" 
 							 value="Relatório" 
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10"/>
-			<h:commandButton id="listagemTodosServidores"
+			<h:commandLink id="listagemTodosServidores"
 							 name="listagemTodosServidores"
 							 action="#{emitirContagemTempoServicoListBean.listagemTodosServidores}" 
-							 value="Listagem" 
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10"/>				 
+							 value="Listagem com o tempo de todos os servidores ativos" 
+							 styleClass="link-padrao fr mg-bottom-20"
+							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}"/>				 
 							 
 
 			<div class="tabela-dados">
@@ -141,7 +142,7 @@
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
 							 action="#{emitirContagemTempoServicoListBean.limpaTela}"
-							 styleClass="bt-padrao fr mg-right-15"
+							 styleClass="bt-padrao fr"
 							 rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" 
 							 />		
 
