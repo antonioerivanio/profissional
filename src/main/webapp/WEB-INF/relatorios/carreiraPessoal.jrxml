@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2017-11-14T17:47:40 -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="carreiraPessoal" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92bf3391-7934-4a3b-b02a-02b9619fa9e5">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -31,7 +30,7 @@
 	</queryString>
 	<field name="pessoal" class="br.gov.ce.tce.srh.domain.Pessoal"/>
 	<field name="inicioCarreira" class="java.util.Date"/>
-	<field name="carreira" class="br.gov.ce.tce.srh.enums.EnumCarreira"/>
+	<field name="carreira" class="br.gov.ce.tce.srh.enums.Carreira"/>
 	<pageHeader>
 		<band height="86">
 			<image>
@@ -41,7 +40,7 @@
 			<staticText>
 				<reportElement x="-20" y="42" width="595" height="20" forecolor="#0F2E52" uuid="66561d8c-399b-4df9-8624-bb40b5b1013a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="CustomSans" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Relatório de Carreira Pessoal]]></text>
 			</staticText>
@@ -66,21 +65,21 @@
 			<staticText>
 				<reportElement x="306" y="2" width="142" height="18" forecolor="#FFFFFF" uuid="36297588-a0e4-4c4e-b6cc-3578487c4587"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CARREIRA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="1" y="2" width="299" height="18" forecolor="#FFFFFF" uuid="ca06f32b-139a-429b-a9e9-06d8f9eb9344"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOME]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="455" y="2" width="100" height="18" forecolor="#FFFFFF" uuid="abb4e224-55ba-4fd2-b4ab-3238e5e67fee"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INÍCIO]]></text>
 			</staticText>
@@ -96,19 +95,25 @@
 			</rectangle>
 			<textField>
 				<reportElement x="306" y="1" width="142" height="16" uuid="b86ef9fb-4b57-463c-a09a-10166fb9f6d5"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{carreira}.getDescricao()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1" y="1" width="299" height="16" uuid="15627ed5-ed83-447c-9885-0c96fb4fc7ab">
 					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 				</reportElement>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{pessoal}.getNomeCompleto()]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="455" y="1" width="100" height="16" uuid="946f96b2-c9f1-4359-b588-9f6b1a6f30a5"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{inicioCarreira}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -125,12 +130,16 @@
 				<reportElement x="1" y="3" width="555" height="16" uuid="7dd26698-d736-4f84-a892-036d18a0caa9">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="531" y="3" width="25" height="16" uuid="a59ee90d-554b-4933-a6b8-2815d220b2cd"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
@@ -141,7 +150,9 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
@@ -152,7 +163,9 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>

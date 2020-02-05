@@ -91,14 +91,14 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 			<staticText>
 				<reportElement x="0" y="42" width="802" height="20" forecolor="#0F2E52" uuid="bbf9269d-2601-46f6-ab75-d6c95458114f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="CustomSans" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Relatório de Curso por Servidor]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement isPrintRepeatedValues="false" x="6" y="88" width="796" height="18" uuid="1bb7bd8c-43ed-427b-a31a-00b312dc6b62"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-					<font size="12" isBold="true"/>
+					<font fontName="CustomSans" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NOMECOMPLETO} + ( $F{CARGOEFETIVO} == null ? "" : " - " + $F{CARGOEFETIVO} )
 + ( $F{CARGOCOMISSAO} == null ? "" : " - " + $F{CARGOCOMISSAO} + ( $F{SIMBOLO} == null? "" : " " + $F{SIMBOLO} ) )]]></textFieldExpression>
@@ -108,7 +108,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<printWhenExpression><![CDATA[$F{MATRICULA} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-					<font size="12" isBold="true"/>
+					<font fontName="CustomSans" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["MATRÍCULA: " + $F{MATRICULA}]]></textFieldExpression>
 			</textField>
@@ -117,7 +117,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<printWhenExpression><![CDATA[$F{LOTACAO} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-					<font size="12" isBold="true"/>
+					<font fontName="CustomSans" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["LOTAÇÃO ATUAL: " + $F{LOTACAO}]]></textFieldExpression>
 			</textField>
@@ -126,7 +126,7 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<printWhenExpression><![CDATA[$F{CURSOSGRADUACAO} != null]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Middle" markup="none">
-					<font size="12" isBold="true"/>
+					<font fontName="CustomSans" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["CURSOS DE GRADUAÇÃO: " + $F{CURSOSGRADUACAO}]]></textFieldExpression>
 			</textField>
@@ -140,42 +140,42 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 			<staticText>
 				<reportElement x="479" y="0" width="70" height="18" forecolor="#FFFFFF" uuid="ca49e95e-ef99-49f0-a4cb-912c42def065"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
+					<font fontName="CustomSans" size="11" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ INICIO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="550" y="0" width="70" height="18" forecolor="#FFFFFF" uuid="1f368acf-7b66-4bf4-a415-c14190eec1c9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FIM]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="351" y="0" width="120" height="18" forecolor="#FFFFFF" uuid="44d3db84-8b10-46c8-8d6b-4d1c602c081a"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
+					<font fontName="CustomSans" size="11" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[ÁREA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="3" y="0" width="340" height="18" forecolor="#FFFFFF" uuid="5ab161a5-9265-4b85-b7d8-f1618ddef604"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CURSO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="621" y="0" width="42" height="18" forecolor="#FFFFFF" uuid="5cb20f18-8c9b-4704-87cd-c8ac3f161627"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true" isItalic="false"/>
+					<font fontName="CustomSans" size="11" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[C. H.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="671" y="0" width="130" height="18" forecolor="#FFFFFF" uuid="12e63a1c-12cd-4dc0-80fa-270aabe0a480"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TIPO]]></text>
 			</staticText>
@@ -190,33 +190,45 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 			</rectangle>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="3" y="1" width="340" height="16" uuid="2d91540e-e95f-4443-b100-32b27c3be093"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{CURSO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="479" y="1" width="70" height="16" uuid="b8bd302c-fcd5-497e-a5a8-6cec3706eca2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="550" y="1" width="70" height="16" uuid="a22a9a91-726c-4321-ab9b-2181853e865e"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="351" y="1" width="120" height="16" uuid="907339d2-3cc8-4034-8f19-ca56efdd0889"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{AREA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0" isBlankWhenNull="true">
 				<reportElement x="621" y="1" width="42" height="16" uuid="396dbe01-e9e3-4192-b746-8f3facfe9915"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{CARGAHORARIA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="671" y="0" width="130" height="16" uuid="68074a3a-5cb5-434e-ac15-7953560cd06f"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[br.gov.ce.tce.srh.enums.EnumTipoCursoProfissional.values()[$F{TIPOCURSO}].getDescricao()]]></textFieldExpression>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[br.gov.ce.tce.srh.enums.TipoCursoProfissional.values()[$F{TIPOCURSO}].getDescricao()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -227,12 +239,16 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 			</line>
 			<staticText>
 				<reportElement x="198" y="3" width="361" height="16" uuid="6ff490f7-2dfc-4549-958c-be8a461dbd22"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="773" y="3" width="30" height="16" uuid="b823017e-4cfa-4837-96d8-fd1c0d0ef895"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
@@ -243,7 +259,9 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
@@ -254,7 +272,9 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>
@@ -264,35 +284,43 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 			<staticText>
 				<reportElement x="608" y="19" width="143" height="18" uuid="abc4e213-9167-4173-9b50-5be5a031b41f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL CARGA HORÁRIA:]]></text>
 			</staticText>
 			<textField pattern="###0">
 				<reportElement x="756" y="1" width="45" height="18" uuid="bd936ba5-7417-4304-b42e-54ccbda0571e"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{TOTAL_CURSO}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
 				<reportElement x="756" y="19" width="45" height="18" uuid="453d50be-3fb0-498f-a715-1968890f73b1"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{TOTAL_CARGAHORARIA}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="598" y="1" width="153" height="18" uuid="f5974c81-c09e-4a62-a31a-26d776f23876"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="CustomSans" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[QUANTIDADE DE CURSOS:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="47" width="803" height="16" uuid="58508ca5-b03c-40ae-b681-bfb976d0c9af"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
 				<reportElement key="textField-5" x="773" y="47" width="30" height="16" uuid="6de627e2-380c-441f-bb80-df3b3084247c"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
@@ -303,7 +331,9 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
@@ -314,7 +344,9 @@ ORDER BY TB_CURSOPROFISSIONAL.INICIO DESC]]>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<line>
