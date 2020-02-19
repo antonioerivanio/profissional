@@ -32,7 +32,7 @@ public class LicencaEspecialFormBean implements Serializable {
 	// entidades das telas
 	private LicencaEspecial entidade = new LicencaEspecial();	
 
-	private String matricula;
+	private String matricula = new String();;
 	private String nome = new String();
 
 	private Long anoInicial;
