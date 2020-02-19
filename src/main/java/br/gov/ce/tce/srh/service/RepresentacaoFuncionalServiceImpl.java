@@ -86,13 +86,14 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		validarLimitePessoas(entidade);
 		
 		
-		if(atualizaIdRepresentacaoCargo(entidade)){
-
-			Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
-			funcional.setIdRepresentacaoCargo(entidade.getRepresentacaoCargo().getId());
-			funcionalDAO.salvar(funcional);
+		Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
 		
+		if(atualizaIdRepresentacaoCargo(entidade)){
+			funcional.setIdRepresentacaoCargo(entidade.getRepresentacaoCargo().getId());
+		} else {
+			funcional.setIdRepresentacaoCargo(null);
 		}
+		funcionalDAO.salvar(funcional);
 		
 		// persistindo
 		dao.salvar(entidade);
