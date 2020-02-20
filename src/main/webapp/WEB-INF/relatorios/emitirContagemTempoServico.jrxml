@@ -238,7 +238,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="90">
+		<band height="90" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="4" width="802" height="1" uuid="10bb67fc-1827-4c7c-aefc-479e19486630"/>
 			</line>
@@ -309,7 +309,7 @@
 				<textFieldExpression><![CDATA[$P{dia}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="90">
+		<band height="90" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="5" width="802" height="1" uuid="9e73b05a-4332-48f3-b32c-fa2738a37192"/>
 			</line>
@@ -443,7 +443,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType="Prevent">
+		<band height="90" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{listaFerias}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1" uuid="98901805-3ab4-44af-977d-67a875933e76"/>
@@ -513,7 +513,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType="Prevent">
+		<band height="90" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{listaLicencaEspecial}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1" uuid="2cd3f8dc-d438-429c-92fb-cfcdad385fff"/>
@@ -596,7 +596,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType="Prevent">
+		<band height="90" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{listaAverbacao}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1" uuid="07895aec-e3a9-4b89-b1f4-fc37e8f92dd4"/>
@@ -718,7 +718,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType="Prevent">
+		<band height="90" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{listaAcrescimo}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1" uuid="fe2c097d-52fb-4355-9082-98c08ca0af11"/>
@@ -801,7 +801,7 @@
 				</jr:list>
 			</componentElement>
 		</band>
-		<band height="90" splitType="Prevent">
+		<band height="90" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{listaDeducao}.getRecordCount() > 0]]></printWhenExpression>
 			<line>
 				<reportElement x="0" y="5" width="802" height="1" uuid="765bc3df-12bd-48bd-8080-5d54f92310dd"/>

@@ -220,9 +220,10 @@ public class LicencaEspecialServiceImpl implements LicencaEspecialService {
 			throw new SRHRuntimeException("O ano inicial de ser superior a 1934");
 		}
 
-		if(anoFinal > 1999) {
-			throw new SRHRuntimeException("O ano final deve ser menor que 2000");
-		}
+		// TODO Validação removida temporariamente
+//		if(anoFinal > 1999) {
+//			throw new SRHRuntimeException("O ano final deve ser menor que 2000");
+//		}
 
 		if( (anoFinal - anoInicial != 5) && (anoFinal - anoInicial != 10) ) {
 			throw new SRHRuntimeException("Ano final deve ter um intervalo do ano inicial de 5 ou 10 anos");
