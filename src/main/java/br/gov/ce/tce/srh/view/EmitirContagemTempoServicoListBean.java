@@ -331,7 +331,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 
 		try {
 
-			if( getListaFuncional().size() == 0 )
+			if( this.listaFuncional == null || this.listaFuncional.isEmpty())
 				throw new SRHRuntimeException("Dados insuficientes para gerar o relatório.");
 
 			Map<String, Object> parametros = new HashMap<String, Object>();
@@ -363,6 +363,7 @@ public class EmitirContagemTempoServicoListBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");			
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
