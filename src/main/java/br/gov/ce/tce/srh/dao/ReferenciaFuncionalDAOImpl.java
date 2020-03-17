@@ -94,7 +94,7 @@ public class ReferenciaFuncionalDAOImpl implements ReferenciaFuncionalDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<ReferenciaFuncional> search(Long idPessoa, int first, int rows) {
-		Query query = entityManager.createQuery("Select rf from ReferenciaFuncional rf where rf.funcional.pessoal.id = :idPessoa order by rf.inicio desc ");
+		Query query = entityManager.createQuery("Select rf from ReferenciaFuncional rf where rf.funcional.pessoal.id = :idPessoa order by rf.inicio desc, rf.id desc ");
 		query.setParameter("idPessoa", idPessoa);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);

@@ -1,6 +1,5 @@
 package br.gov.ce.tce.srh.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.RepresentacaoCargoDAO;
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
-import br.gov.ce.tce.srh.domain.Evento;
-import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.domain.RepresentacaoCargo;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
-import br.gov.ce.tce.srh.enums.TipoNotificacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 @Service("representacaoCargoService")
@@ -25,11 +21,11 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 	@Autowired
 	private ESocialEventoVigenciaService esocialEventoVigenciaService;
 
-	@Autowired
-	private EventoService eventoService;
-
-	@Autowired
-	private NotificacaoService notificacaoService;
+//	@Autowired
+//	private EventoService eventoService;
+//
+//	@Autowired
+//	private NotificacaoService notificacaoService;
 
 	@Override
 	@Transactional
@@ -49,20 +45,20 @@ public class RepresentacaoCargoServiceImpl implements RepresentacaoCargoService 
 		dao.salvar(entidade);
 
 		// salvando notificação
-		Evento evento = this.eventoService.getById(TipoEventoESocial.S1040.getCodigo());
-		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial());
-		if (notificacao == null) {
-			notificacao = new Notificacao();
-			notificacao.setDescricao("Evento S1040 com pendência de envio.");
-			notificacao.setData(new Date());
-			notificacao.setTipo(TipoNotificacao.N);
-			notificacao.setEvento(evento);
-			notificacao.setReferencia(entidade.getReferenciaESocial());
-		} else {
-			notificacao.setData(new Date());
-		}
-
-		this.notificacaoService.salvar(notificacao);
+//		Evento evento = this.eventoService.getById(TipoEventoESocial.S1040.getCodigo());
+//		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferenciaESocial());
+//		if (notificacao == null) {
+//			notificacao = new Notificacao();
+//			notificacao.setDescricao("Evento S1040 com pendência de envio.");
+//			notificacao.setData(new Date());
+//			notificacao.setTipo(TipoNotificacao.N);
+//			notificacao.setEvento(evento);
+//			notificacao.setReferencia(entidade.getReferenciaESocial());
+//		} else {
+//			notificacao.setData(new Date());
+//		}
+//
+//		this.notificacaoService.salvar(notificacao);
 
 	}
 

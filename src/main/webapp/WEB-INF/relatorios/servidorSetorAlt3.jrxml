@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="servidorSetor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="servidorSetor" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b9ce6faa-f63f-4748-b7bc-0e64d553d1a6">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -59,40 +60,40 @@ $P!{FILTRO}]]>
 		<groupHeader>
 			<band height="44">
 				<textField isBlankWhenNull="true">
-					<reportElement isPrintRepeatedValues="false" x="6" y="6" width="286" height="16"/>
+					<reportElement isPrintRepeatedValues="false" x="6" y="6" width="286" height="16" uuid="c04aef61-d628-41cc-b04a-49d159adf540"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="CustomSans" size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{NOMESETOR}]]></textFieldExpression>
 				</textField>
 				<rectangle>
-					<reportElement x="0" y="26" width="555" height="18" backcolor="#195297"/>
+					<reportElement x="0" y="26" width="555" height="18" backcolor="#195297" uuid="79be4e24-b012-408c-b0ba-3d3a990fd87e"/>
 				</rectangle>
 				<staticText>
-					<reportElement x="499" y="26" width="55" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="499" y="26" width="55" height="18" forecolor="#FFFFFF" uuid="96534a2f-c0e4-44e9-80fb-48f67e76f58c"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Arial" size="11" isBold="true"/>
+						<font fontName="CustomSans" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[SIMBOLO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="2" y="26" width="200" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="2" y="26" width="200" height="18" forecolor="#FFFFFF" uuid="81c7f13e-0768-4f25-ac23-ffd71ad224f5"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="11" isBold="true"/>
+						<font fontName="CustomSans" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[NOME]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="348" y="26" width="150" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="348" y="26" width="150" height="18" forecolor="#FFFFFF" uuid="52b1a911-91de-488f-96c2-cae8d1353fc4"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Arial" size="11" isBold="true"/>
+						<font fontName="CustomSans" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[REPRESENTAÇÃO]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="204" y="26" width="140" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="204" y="26" width="140" height="18" forecolor="#FFFFFF" uuid="882a72ea-09dd-4057-ad92-8f1b6a7ab21e"/>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Arial" size="11" isBold="true"/>
+						<font fontName="CustomSans" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[CARGO]]></text>
 				</staticText>
@@ -101,14 +102,16 @@ $P!{FILTRO}]]>
 		<groupFooter>
 			<band height="28">
 				<textField>
-					<reportElement x="521" y="6" width="34" height="18"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<reportElement x="521" y="6" width="34" height="18" uuid="5c19d38a-2eb9-40e2-b590-08b6c16266d9"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="CustomSans"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$V{Setor_COUNT}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="403" y="6" width="112" height="18" forecolor="#000000"/>
+					<reportElement x="403" y="6" width="112" height="18" forecolor="#000000" uuid="f25aa496-2b55-471f-9d06-f672f8cc13ca"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+						<font fontName="CustomSans" size="10" isBold="true"/>
 					</textElement>
 					<text><![CDATA[TOTAL DO SETOR:]]></text>
 				</staticText>
@@ -121,66 +124,74 @@ $P!{FILTRO}]]>
 	<title>
 		<band height="110">
 			<rectangle>
-				<reportElement x="1" y="0" width="554" height="79" forecolor="#CCCCCC"/>
+				<reportElement x="1" y="0" width="554" height="79" forecolor="#CCCCCC" uuid="1572df62-b311-42af-b04f-69d0f9edaa01"/>
 			</rectangle>
 			<image>
-				<reportElement x="1" y="14" width="554" height="65"/>
+				<reportElement x="1" y="14" width="554" height="65" uuid="2acaacaf-5262-4e60-b380-6893cb340732"/>
 				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="390" y="-11" width="168" height="54"/>
+				<reportElement x="390" y="-11" width="168" height="54" uuid="76171528-e2b0-4b2b-8d46-59d240968f08"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="6" y="5" width="130" height="29"/>
+				<reportElement x="6" y="5" width="130" height="29" uuid="49691e73-0c01-4651-959e-1bf8d201d09b"/>
 				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="41" width="555" height="20" forecolor="#0F2E52"/>
+				<reportElement x="0" y="41" width="555" height="20" forecolor="#0F2E52" uuid="7ef4c89a-72c7-480c-bb04-882d42f7846a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
+					<font fontName="CustomSans" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Relatório por Setor]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement isPrintRepeatedValues="false" x="6" y="87" width="547" height="16"/>
+				<reportElement isPrintRepeatedValues="false" x="6" y="87" width="547" height="16" uuid="2f590110-6fbc-45ee-b1b7-e076b0aa82c2"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="12" isBold="false" pdfFontName="Helvetica"/>
+					<font fontName="CustomSans" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["VÍNCULO: " +
 ( $P{VINCULO} == 6 ? "OCUPANTES SOMENTE CARGO COMISSIONADO" :
     "" )]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="109" width="554" height="1"/>
+				<reportElement x="0" y="109" width="554" height="1" uuid="d1de3ea4-a22e-415d-b6d9-532878a04fe1"/>
 			</line>
 		</band>
 	</title>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF" uuid="b93b1f18-f317-4fc9-a381-a40ae08bb775">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="348" y="0" width="150" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<reportElement stretchType="RelativeToTallestObject" x="348" y="0" width="150" height="16" uuid="a1f10208-d90a-4c88-8d8e-2757d1d4879d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{REPRESENTACAO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="499" y="0" width="55" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement stretchType="RelativeToTallestObject" x="499" y="0" width="55" height="16" uuid="ad8f2ba7-86b3-43ad-a326-879a3e3f4581"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{SIMBOLO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="200" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="200" height="16" uuid="f5c33681-300f-43cb-bf56-12b7b2b510b3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="204" y="0" width="140" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<reportElement stretchType="RelativeToTallestObject" x="204" y="0" width="140" height="16" uuid="b3f7e6c1-cad9-4d26-abca-24854f3c3e0d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -191,38 +202,46 @@ $P!{FILTRO}]]>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<line>
-				<reportElement x="1" y="2" width="554" height="1"/>
+				<reportElement x="1" y="2" width="554" height="1" uuid="5dc3e669-ddb1-4252-b23e-5346e331e5dc"/>
 			</line>
 			<staticText>
-				<reportElement x="146" y="3" width="267" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="146" y="3" width="267" height="16" uuid="5d797f77-0c9e-4e12-8e9c-1bf750e1ac8b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="524" y="3" width="30" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<reportElement key="textField-5" x="524" y="3" width="30" height="16" uuid="329f9b51-335e-42b6-8632-28c4f930ea55"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="430" y="3" width="90" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="430" y="3" width="90" height="16" forecolor="#000000" uuid="7f48f7cf-e993-4524-97e1-28933c47290c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
+				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000" uuid="9ec47d12-ec5b-4eda-8242-5585b1d5c005"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 		</band>
@@ -230,39 +249,47 @@ $P!{FILTRO}]]>
 	<lastPageFooter>
 		<band height="20">
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="2" y="3" width="100" height="16" forecolor="#000000"/>
+				<reportElement key="textField-5" x="2" y="3" width="100" height="16" forecolor="#000000" uuid="d213a968-8a40-480e-8d57-474ec43fa42e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="523" y="3" width="30" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<reportElement key="textField-5" x="523" y="3" width="30" height="16" uuid="7e025f2c-345d-4ae2-80d9-6c2dc401a2d1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="429" y="3" width="90" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="429" y="3" width="90" height="16" forecolor="#000000" uuid="9f6c438a-a703-4de2-b825-64d3a04101ed"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="145" y="3" width="267" height="16"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="145" y="3" width="267" height="16" uuid="524b5c4a-554b-417f-9912-1857a6b705af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<line>
-				<reportElement x="1" y="2" width="554" height="1"/>
+				<reportElement x="1" y="2" width="554" height="1" uuid="5430f946-0ecf-4a25-87bf-e640fce17dd3"/>
 			</line>
 		</band>
 	</lastPageFooter>
@@ -270,18 +297,20 @@ $P!{FILTRO}]]>
 		<band height="55" splitType="Stretch">
 			<printWhenExpression><![CDATA[$V{QNTSETOR} > 1]]></printWhenExpression>
 			<line>
-				<reportElement x="1" y="20" width="554" height="1"/>
+				<reportElement x="1" y="20" width="554" height="1" uuid="631e89ff-7a2e-4c86-8cec-1d154baa8e57"/>
 			</line>
 			<staticText>
-				<reportElement x="379" y="27" width="136" height="18" forecolor="#000000"/>
+				<reportElement x="379" y="27" width="136" height="18" forecolor="#000000" uuid="e1d8f616-df5d-46c3-9212-53d735ace485"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="CustomSans" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="521" y="27" width="34" height="18"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<reportElement x="521" y="27" width="34" height="18" uuid="582e5152-cbac-48fe-bdac-2354c0e6f5e9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="CustomSans"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>

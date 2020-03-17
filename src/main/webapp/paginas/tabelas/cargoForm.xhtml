@@ -35,12 +35,12 @@
 				</div>
 				
 				<div class="input-box box-15">
-					<label for="">Código * <span class="identificador-esocial">e</span></label>
+					<label for="">Código <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="codigoEsocial"
 							value="#{cargoFormBean.entidade.codigoEsocial}" 
 							maxlength="30"
-							required="true"
+							required="false"
 							requiredMessage="O código é obrigatório." />
 					</div>
 				</div>
@@ -63,20 +63,20 @@
 				</div>
 				
 				<div class="input-box box-10">
-					<label for="">CBO * <span class="identificador-esocial">e</span></label>
+					<label for="">CBO <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText id="cbo" value="#{cargoFormBean.entidade.cbo}"
-							maxlength="6" required="true" requiredMessage="O CBO é obrigatório."
+							maxlength="6" required="false" requiredMessage="O CBO é obrigatório."
 							onkeyup="mantemSomenteNumeros(this)"  />
 					</div>
 				</div>
 				
 				<div class="select-box box-15">
-					<label for="">Acumulação * <span class="identificador-esocial">e</span></label>
+					<label for="">Acumulação <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="acumulacao" 
-							required="true" 
+							required="false" 
 							requiredMessage="A acumulação é obrigatória."
 							value="#{cargoFormBean.entidade.tipoAcumulacao}">
 							<f:selectItem id="selecioneAcumulacao" itemLabel="Selecione..." />
@@ -91,11 +91,11 @@
 				</div>
 
 				<div class="select-box box-30">
-					<label for="">Contagem Especial * <span class="identificador-esocial">e</span></label>
+					<label for="">Contagem Especial <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="contagemEsp" 
-							required="true" 
+							required="false" 
 							requiredMessage="A contagem especial é obrigatória."
 							value="#{cargoFormBean.entidade.tempoEspecial}">
 							<f:selectItem id="selecioneContagemEsp" itemLabel="Selecione..." />
@@ -110,11 +110,11 @@
 				</div>
 				
 				<div class="select-box box-20">
-					<label for="">Dedicação Exclusiva * <span class="identificador-esocial">e</span></label>
+					<label for="">Dedicação Exclusiva <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="dedex" 
-							required="true" 
+							required="false" 
 							requiredMessage="A dedicação exclusiva é obrigatória."
 							value="#{cargoFormBean.entidade.dedicacaoExclusiva}">
 							<f:selectItem id="dedex0" itemLabel="Selecione..." itemValue="" />
@@ -130,17 +130,17 @@
 					<legend>Lei <span class="identificador-esocial">e</span></legend>
 
 					<div class="input-box box-30">
-						<label for="">Lei *</label>
+						<label for="">Lei </label>
 						<div class="conteiner">
-							<h:inputText id="numerolei" required="true" requiredMessage="A lei é obrigatória."
+							<h:inputText id="numerolei" required="false" requiredMessage="A lei é obrigatória."
 								value="#{cargoFormBean.entidade.lei}" maxlength="12"/>
 						</div>
 					</div>
 
 					<div class="input-box box-30">
-						<label for="">Data *</label>
+						<label for="">Data </label>
 						<div class="conteiner">
-							<h:inputText id="dataLei" styleClass="maskData" required="true" 
+							<h:inputText id="dataLei" styleClass="maskData" required="false" 
 								requiredMessage="A data é obrigatória."
 								converter="dateConverter"
 								value="#{cargoFormBean.entidade.dataLei}" maxlength="10">
@@ -149,9 +149,9 @@
 					</div>
 
 					<div class="select-box box-40">
-						<label for="">Situação *</label>
+						<label for="">Situação </label>
 						<div class="conteiner">
-							<h:selectOneMenu id="situacaoLei" required="true" requiredMessage="A situação é obrigatória."
+							<h:selectOneMenu id="situacaoLei" required="false" requiredMessage="A situação é obrigatória."
 								value="#{cargoFormBean.entidade.situacaoLei}" >
 								<f:selectItem id="selecioneSituacaoLei"
 									itemLabel="Selecione..." />

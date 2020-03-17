@@ -38,6 +38,12 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 	
 	@Autowired
 	private OcupacaoService ocupacaoService;
+	
+	@Autowired
+	private SituacaoService situacaoService;
+	
+	@Autowired
+	private FolhaService folhaService;
 		
 	@Override
 	@Transactional
@@ -68,16 +74,16 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 		if (entidade.getTipoMovimentoSaida().getId() == 26L) {
 
 			entidade.setStatus(5L);
-			entidade.getFolha().setId(7L);
-			if (entidade.getOcupacao().getId() == 8L)
-				entidade.getFolha().setId(6L);
+			entidade.setFolha(this.folhaService.findById(7L));
+			if (entidade.getOcupacao().getId() == 8L) {
+				entidade.setFolha(this.folhaService.findById(6L));
+			}	
 			
 		} else {
-			//Id=8 é referente a situação exonerado
-			entidade.getSituacao().setId(8L);
+			//Id=8 é referente a situação exonerado			
+			entidade.setSituacao(this.situacaoService.findById(8L));			
 			entidade.setAtipoFp(false);
-		}
-		
+		}		
 
 		entidade.setSetor(setorService.getById(113L));
 		entidade.setIdSetorDesignado(null);
@@ -85,9 +91,9 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 		
 		entidade.setTipoMovimentoSaida(tipoMovimentoService.getById(entidade.getTipoMovimentoSaida().getId()));
 				
-		if(entidade.getTipoMovimentoSaida().getIdSituacao() != null)			
-			entidade.getSituacao().setId(entidade.getTipoMovimentoSaida().getIdSituacao());	
-        
+		if(entidade.getTipoMovimentoSaida().getIdSituacao() != null) {
+			entidade.setSituacao(this.situacaoService.findById(entidade.getTipoMovimentoSaida().getIdSituacao()));			
+		}        
 		
 		//Alteração 19/09/2013 - Gravando a data fim no Tb_FuncionalSetor - Evitar problema de "Existe lotação ativa para esse Servidor"
 		FuncionalSetor funcionalSetor = funcionalSetorService.getAtivoByFuncional(entidade.getId());
@@ -95,12 +101,11 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 			funcionalSetor.setDataFim(entidade.getSaida());
 			
 			String novaObservacao = funcionalSetor.getObservacao() + " Exonerado(a) em " + new SimpleDateFormat("dd/MM/yyyy").format(entidade.getSaida()) + ".";
-			if (novaObservacao.length() <= 500)
+			if (novaObservacao.length() <= 500) {
 				funcionalSetor.setObservacao(novaObservacao);
-			
+			}				
 			funcionalSetorService.salvar(funcionalSetor);
-		}
-		
+		}		
 		
 		// Decrementar a coluna QUANTIDADE da tabela TB_OCUPACAO quando for lançada uma exoneração de cargo extinto ao vagar
 		if(entidade.getOcupacao().getSituacao().intValue() == 2) {
@@ -111,8 +116,7 @@ public class ExoneracaoFuncionalServiceImpl implements ExoneracaoFuncionalServic
 				entidade.getOcupacao().setQuantidade(Long.valueOf(--quantidade));
 				ocupacaoService.salvar(entidade.getOcupacao());
 			}
-		}
-		
+		}		
 		
 		// persistindo
 		funcionalService.salvar(entidade);
