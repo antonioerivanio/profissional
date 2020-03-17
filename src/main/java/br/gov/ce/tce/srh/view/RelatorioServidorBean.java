@@ -81,20 +81,19 @@ public class RelatorioServidorBean  implements Serializable  {
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND TOC.ID = 1 ");
-				filtro.append("ORDER BY O.ORDEMOCUPACAO, S.NRORDEMSETORFOLHA, P.NOMECOMPLETO");
+				filtro.append("ORDER BY O.ORDEMOCUPACAO, S.NRORDEMSETORFOLHA, S.NMSETOR, P.NOMECOMPLETO");
 			}else if(vinculo == 2){ // SERVIDORES ATIVOS
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("AND TOC.ID IN (2, 3, 6) ");
-//				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, RC.SIMBOLO, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, RC.SIMBOLO, P.NOMECOMPLETO");
 			}else if(vinculo == 3){ // SERVIDORES EFETIVOS
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND O.SITUACAO < 3 ");
 				filtro.append("AND (TOC.ID = 2) ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, F.IDFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, F.IDFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 4){ // SERVIDORES INATIVOS
 				filtro.append("AND F.STATUS = 5 ");
 				filtro.append("AND P.DATAOBITO IS NULL ");
@@ -104,23 +103,23 @@ public class RelatorioServidorBean  implements Serializable  {
 				filtro.append("AND F.STATUS = 1 ");					
 				filtro.append("AND RF.ID IS NOT NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 6){ // OCUPANTES SOMENTE CARGO COMISSIONADO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND RF.ID IS NOT NULL ");
 				filtro.append("AND TOC.ID = 6 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}else if(vinculo == 7){ // ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 5 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, P.NOMECOMPLETO");
 			}else if(vinculo == 8){ // ESTAGIÁRIOS NÍVEL MÉDIO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 4 ");
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, P.NOMECOMPLETO");
 			}else if(vinculo == 9){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");	
@@ -130,7 +129,7 @@ public class RelatorioServidorBean  implements Serializable  {
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS < 3 ");
 				filtro.append("AND O.SITUACAO < 3 ");				 
-				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
+				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, O.ORDEMOCUPACAO, P.NOMECOMPLETO");
 			}
 			
 			parametros.put("FILTRO", filtro.toString());
