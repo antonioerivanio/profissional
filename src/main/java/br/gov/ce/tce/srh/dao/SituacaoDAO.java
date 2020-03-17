@@ -10,15 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Situacao;
 
-/**
-*
-* @author robstown
-* 
-*/
 @Repository
-public class SituacaoDAOImpl implements SituacaoDAO {
+public class SituacaoDAO {
 
-	static Logger logger = Logger.getLogger(SituacaoDAOImpl.class);
+	static Logger logger = Logger.getLogger(SituacaoDAO.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -26,8 +21,7 @@ public class SituacaoDAOImpl implements SituacaoDAO {
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
-
-	@Override
+	
 	public Situacao getById(Long id) {
 		return entityManager.find(Situacao.class, id);
 	}

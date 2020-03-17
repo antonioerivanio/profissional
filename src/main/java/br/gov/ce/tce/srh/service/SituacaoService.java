@@ -8,19 +8,16 @@ import org.springframework.stereotype.Service;
 import br.gov.ce.tce.srh.dao.SituacaoDAO;
 import br.gov.ce.tce.srh.domain.Situacao;
 
-/**
- * 
- * @author robstown
- *
- */
-@Service("situacaoServiceImpl")
-public class SituacaoServiceImpl implements SituacaoService {
+@Service("situacaoService")
+public class SituacaoService {
 
 	@Autowired
 	private SituacaoDAO dao;
 
+	public Situacao findById(Long id) {
+		return dao.getById(id);
+	}
 
-	@Override
 	public List<Situacao> findAll() {
 		return dao.findAll();
 	}

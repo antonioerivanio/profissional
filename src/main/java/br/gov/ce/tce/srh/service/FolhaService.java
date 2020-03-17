@@ -10,19 +10,16 @@ import br.gov.ce.tce.srh.dao.FolhaDAO;
 import br.gov.ce.tce.srh.domain.Folha;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
-/**
- * 
- * @author robstown
- *
- */
 @Service("folhaService")
-public class FolhaServiceImpl implements FolhaService {
+public class FolhaService {
 
 	@Autowired
 	private FolhaDAO dao;
+	
+	public Folha findById(Long id) {
+		return dao.getById(id);
+	}
 
-
-	@Override
 	@Transactional
 	public void salvar(Folha entidade) throws SRHRuntimeException {
 
@@ -38,36 +35,27 @@ public class FolhaServiceImpl implements FolhaService {
 		dao.salvar(entidade);
 	}
 
-
-	@Override
 	@Transactional
 	public void excluir(Folha entidade) {
 		dao.excluir(entidade);
 	}
 
-
-	@Override
 	public int count(String descricao) {
 		return dao.count(descricao);
 	}
 
-
-	@Override
 	public List<Folha> search(String descricao, int first, int rows) {
 		return dao.search(descricao, first, rows);
 	}
 
-
-	@Override
 	public List<Folha> findByAtivo(Boolean ativo) {
 		return dao.findByAtivo(ativo);
 	}
 	
-	@Override
+	
 	public Folha getByCodigo(String codigo) {
 		return dao.getByCodigo(codigo);
 	}
-
 
 	/**
 	 * Regra de Negocio: 
@@ -91,8 +79,6 @@ public class FolhaServiceImpl implements FolhaService {
 		
 	}
 
-
-	public void setDAO(FolhaDAO folhaDAO) {this.dao = folhaDAO;}
-	
+	public void setDAO(FolhaDAO folhaDAO) {this.dao = folhaDAO;}	
 
 }
