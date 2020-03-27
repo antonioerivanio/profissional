@@ -15,7 +15,6 @@ import br.gov.ce.tce.srh.dao.FeriasDAO;
 import br.gov.ce.tce.srh.domain.Ferias;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("feriasService")
 public class FeriasServiceImpl implements FeriasService {
@@ -34,7 +33,7 @@ public class FeriasServiceImpl implements FeriasService {
 				
 		validaDataInicial(entidade);
 		
-		validaAnoReferencia (entidade);
+		validaAnoReferencia(entidade);
 
 		validaDatasEAnoReferencia(entidade);		
 
@@ -388,14 +387,28 @@ public class FeriasServiceImpl implements FeriasService {
 
 	private void validaDiasDeFruicaoNoAno(Ferias entidade) {
 				
-		Calendar dataInicio = new GregorianCalendar();
-		dataInicio.setTime(entidade.getInicio());
-				
-		List<Ferias> feriasList = dao.findFruicaoByPessoalEAno(
-				entidade.getFuncional().getPessoal().getId(), 
-				Integer.toString(dataInicio.get(GregorianCalendar.YEAR)));
-		
-//		SRHUtils.dataDiff(dataLow, dataHigh)		
+		if (entidade.getTipoFerias().getId() == 1L || entidade.getTipoFerias().getId() == 3L) {			
+			Calendar dataInicio = new GregorianCalendar();
+			dataInicio.setTime(entidade.getInicio());
+			
+			List<Ferias> feriasList = dao.findFruicaoByPessoalEAno(
+					entidade.getFuncional().getPessoal().getId(), 
+					Integer.toString(dataInicio.get(GregorianCalendar.YEAR)));
+			
+			
+			Long qtdeDiasDeFruicao = entidade.getQtdeDias();
+			for (Ferias ferias : feriasList) {
+				if (ferias.getId().equals(entidade.getId())) {
+					continue;
+				}
+				qtdeDiasDeFruicao += ferias.getQtdeDias();
+			}
+			
+			if (qtdeDiasDeFruicao > 60) {
+				throw new SRHRuntimeException("Foi excedido o limite de 60 dias de fruição de férias para o exercíco de " 
+						+ dataInicio.get(GregorianCalendar.YEAR) + ".");
+			}
+		}
 		
 	}
 	

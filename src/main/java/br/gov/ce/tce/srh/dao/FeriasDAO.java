@@ -139,7 +139,7 @@ public class FeriasDAO {
 				+ "ORDER BY f.inicio";
 		
 		TypedQuery<Ferias> query = entityManager.createQuery(consulta, Ferias.class);
-		query.setParameter("inicio", idPessoal);
+		query.setParameter("pessoal", idPessoal);
 		query.setParameter("ano", ano);	
 		
 		return query.getResultList();
