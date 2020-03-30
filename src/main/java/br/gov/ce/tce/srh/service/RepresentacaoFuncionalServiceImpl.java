@@ -37,8 +37,7 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	@Override
 	@Transactional
 	public void salvar(RepresentacaoFuncional entidade) throws SRHRuntimeException {
-
-		// validando dados obrigatorios.
+		
 		validarDados(entidade);
 
 		/*
@@ -51,22 +50,11 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 //					throw new SRHRuntimeException("Inclusão não permitida, quando tipo nomeação for titular, o setor deve ser o mesmo do funcionario.");
 //		}
 
-		/*
-		 * Regra
-		 * 
-		 * Não serão permitidas alterações nos registros que possuem data fim preenchidas.
-		 * 
-		 */
-		if ( entidade.getFim() != null )
+		
+		if ( entidade.getFim() != null ) {
 			throw new SRHRuntimeException("Alteração não permitida para esta representação, pois não está ativa.");
+		}		
 		
-		
-		/*
-		 * Regra
-		 * 
-		 * So nao pode ter representacao quem for do tipo ocupacao Membro.
-		 * 
-		 */
 		if(entidade.getId() == null 
 				&& entidade.getFuncional().getOcupacao() != null 
 				&& entidade.getFuncional().getOcupacao().getTipoOcupacao() != null 
@@ -80,115 +68,85 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 //			throw new SRHRuntimeException("O Inicio da Vigência deve ser maior que a data de exercicio do servidor.");
 
 		
-		validarRepresentacaoAnterior(entidade);		
-
+		validarRepresentacaoAnterior(entidade);	
 		
-		validarLimitePessoas(entidade);
+		validarLimitePessoas(entidade);		
 		
-		
-		Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
-		
-		if(atualizaIdRepresentacaoCargo(entidade)){
-			funcional.setIdRepresentacaoCargo(entidade.getRepresentacaoCargo().getId());
-		} else {
-			funcional.setIdRepresentacaoCargo(null);
-		}
-		funcionalDAO.salvar(funcional);
-		
-		// persistindo
 		dao.salvar(entidade);
+		
+		atualizarRepresentacaoCargoNoFuncional(entidade);
 	}
-
 
 	@Override
 	@Transactional
 	public void excluir(RepresentacaoFuncional entidade) {
 		
-		if ( entidade.getFim() != null )
+		if ( entidade.getFim() != null ) {
 			throw new SRHRuntimeException("A representação não pode ser excluída pois já foi exonerada.");
+		}		
 		
-		if ( atualizaIdRepresentacaoCargo(entidade) ){
-			
-			Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
-			funcional.setIdRepresentacaoCargo(null);
-			funcionalDAO.salvar(funcional);
+		dao.excluir(entidade);				
 		
-		}
+		atualizarRepresentacaoCargoNoFuncional(entidade);
 		
-		
-		dao.excluir(entidade);
 	}
-
 
 	@Override
 	@Transactional
 	public void exonerar(RepresentacaoFuncional entidade) throws SRHRuntimeException {
 
-		List<RepresentacaoFuncional> representacaoFuncionalList = dao.findByFuncional(entidade.getFuncional().getId());
+		List<RepresentacaoFuncional> representacoes = dao.findByFuncional(entidade.getFuncional().getId());
 		
 		Long ultimoTitular = null;
-		Long ultimoSubstituicao = null;
+		Long ultimoSubstituto = null;
 		Long ultimoDesignado = null;
 		
-		for (RepresentacaoFuncional representacaoFuncional : representacaoFuncionalList) {
-			if (ultimoTitular == null && representacaoFuncional.getTipoNomeacao() == 1){
-				ultimoTitular = representacaoFuncional.getId();
-			} else if (ultimoSubstituicao == null && representacaoFuncional.getTipoNomeacao() == 2){
-				ultimoSubstituicao = representacaoFuncional.getId();
-			} else if (ultimoDesignado == null && representacaoFuncional.getTipoNomeacao() == 3){
-				ultimoDesignado = representacaoFuncional.getId();
+		for (RepresentacaoFuncional representacao : representacoes) {
+			if (ultimoTitular == null && representacao.getTipoNomeacao() == 1){
+				ultimoTitular = representacao.getId();
+			} else if (ultimoSubstituto == null && representacao.getTipoNomeacao() == 2){
+				ultimoSubstituto = representacao.getId();
+			} else if (ultimoDesignado == null && representacao.getTipoNomeacao() == 3){
+				ultimoDesignado = representacao.getId();
 			}
 		}
 		
-		if(!entidade.getId().equals(ultimoTitular) && !entidade.getId().equals(ultimoSubstituicao) && !entidade.getId().equals(ultimoDesignado))
+		if(!entidade.getId().equals(ultimoTitular) && !entidade.getId().equals(ultimoSubstituto) && !entidade.getId().equals(ultimoDesignado)) {
 			throw new SRHRuntimeException("Exoneração não permitida. Para cada tipo de nomeação, somente o último registro de Representação pode ser exonerado/editado.");
-		
-		validarExoneracao(entidade);
-
-		if(atualizaIdRepresentacaoCargo(entidade)){
-			
-			Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
-			funcional.setIdRepresentacaoCargo(null);
-			funcionalDAO.salvar(funcional);
-		
 		}
 		
+		validarExoneracao(entidade);
 		
 		entidade.setAtivo(false);
 		dao.salvar(entidade);
 		
+		atualizarRepresentacaoCargoNoFuncional(entidade);
 	}
-
 
 	@Override
 	public int count(Long pessoal) {
 		return dao.count(pessoal);
 	}
 
-
 	@Override
 	public List<RepresentacaoFuncional> search(Long pessoal, int first, int rows) {
 		return dao.search(pessoal, first, rows);
 	}
 
-
 	@Override
 	public RepresentacaoFuncional getByid(Long id) {
 		return dao.getById(id);
 	}
-
 	
 	@Override
 	public List<RepresentacaoFuncional> getByMatricula(String matricula) {
 		return dao.getByMatricula(matricula);
 	}
 
-
 	@Override
 	public List<RepresentacaoFuncional> getByCpf(String cpf) {
 		return dao.getByCpf(cpf);
 	}
-
 
 	@Override
 	public List<RepresentacaoFuncional> findByNome(String nome) {
@@ -199,7 +157,6 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 	public List<RepresentacaoFuncional> findByUsuarioLogado(Usuario usuarioLogado) {
 		return dao.findByUsuarioLogado(usuarioLogado);
 	}
-
 
 	@Override
 	public List<RepresentacaoFuncional> findByNomeSetor(String nome, Long idSetor) {
@@ -231,13 +188,10 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 		return false;
 	}
 
-
 	@Override
 	public List<RepresentacaoFuncional> findByFuncional(Long idFuncional) {
 		return dao.findByFuncional(idFuncional);
 	}
-
-
 
 	/**
 	 * Validar:
@@ -290,7 +244,6 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 			throw new SRHRuntimeException("O Tipo Nomeação é obrigatório.");
 
 	}
-
 
 	/**
 	 * Regra de Negocio:
@@ -375,7 +328,6 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 	}
 
-	
 	/**
 	 * Regra de Negocio:
 	 * 
@@ -411,34 +363,33 @@ public class RepresentacaoFuncionalServiceImpl implements RepresentacaoFuncional
 
 	}
 	
-	
-	/**
-	 * Regra de Negocio:
-	 * 
-	 * 1. Ao nomear ou exonerar 1-TITULAR, o campo IDREPRESENTACAOCARGO da TB_FUNCIONAL deverá ser atualizado.
-	 * 2. Ao nomear ou exonerar 2-SUBSTITUTO, não alterar o campo IDREPRESENTACAOCARGO da TB_FUNCIONAL;
-	 * 3. Ao nomear ou exonerar 3-DESIGNADO, atualizar o campo IDREPRESENTACAOCARGO da TB_FUNCIONAL se quem estiver sendo nomeado/exonerado não for titular de outro cargo;
-	 *	
-	 * 
-	 * @param entidade
-	 * 
-	 */
-	private boolean atualizaIdRepresentacaoCargo(RepresentacaoFuncional entidade) {
-
-		if(entidade.getTipoNomeacao() == 1){ // TITULAR
-			return true;		
-		}else if(entidade.getTipoNomeacao() == 2){ // SUBSTITUICAO
-			return false;
-		}else if(entidade.getTipoNomeacao() == 3){ // DESIGNADO
-			RepresentacaoFuncional representacao = dao.getByFuncionalTipo( entidade.getFuncional().getId(), 1L ); // TITULAR
-			if(representacao == null){
-				return true;
-			}			
-		}
+	private void atualizarRepresentacaoCargoNoFuncional(RepresentacaoFuncional entidade) {
 		
-		return false;
-
+		Funcional funcional = funcionalDAO.getById(entidade.getFuncional().getId());
+		
+		RepresentacaoFuncional representacaoPrincipalDoFuncional = this.representacaoPrincipalDoFuncional(funcional.getId());
+		
+		if (representacaoPrincipalDoFuncional == null){			
+			funcional.setIdRepresentacaoCargo(null);
+			funcionalDAO.salvar(funcional);		
+		} else if (!representacaoPrincipalDoFuncional.getRepresentacaoCargo().getId().equals(funcional.getIdRepresentacaoCargo())){
+			funcional.setIdRepresentacaoCargo(representacaoPrincipalDoFuncional.getRepresentacaoCargo().getId());
+			funcionalDAO.salvar(funcional);
+		}
 	}
 	
+	private RepresentacaoFuncional representacaoPrincipalDoFuncional(Long idFuncional) {
+		RepresentacaoFuncional titular = dao.getByFuncionalTipo(idFuncional, 1L);
+		if (titular != null) {
+			return titular;
+		}
+		
+		RepresentacaoFuncional designado = dao.getByFuncionalTipo(idFuncional, 3L);
+		if (designado != null) {
+			return designado;
+		}
+		
+		return null;
+	}
 
 }
