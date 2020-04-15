@@ -387,26 +387,30 @@ public class FeriasServiceImpl implements FeriasService {
 
 	private void validaDiasDeFruicaoNoAno(Ferias entidade) {
 				
-		if (entidade.getTipoFerias().getId() == 1L || entidade.getTipoFerias().getId() == 3L) {			
-			Calendar dataInicio = new GregorianCalendar();
-			dataInicio.setTime(entidade.getInicio());
-			
-			List<Ferias> feriasList = dao.findFruicaoByPessoalEAno(
-					entidade.getFuncional().getPessoal().getId(), 
-					Integer.toString(dataInicio.get(GregorianCalendar.YEAR)));
-			
-			
-			Long qtdeDiasDeFruicao = entidade.getQtdeDias();
-			for (Ferias ferias : feriasList) {
-				if (ferias.getId().equals(entidade.getId())) {
-					continue;
+		// Regra não aplicável para os cargo 8, 9, 10 (Conselheiro, Auditor, Procurador)
+		if ( entidade.getFuncional().getOcupacao().getId() < 8 || entidade.getFuncional().getOcupacao().getId() > 10 ) {								
+					
+			if (entidade.getTipoFerias().getId() == 1L || entidade.getTipoFerias().getId() == 3L) {			
+				Calendar dataInicio = new GregorianCalendar();
+				dataInicio.setTime(entidade.getInicio());
+				
+				List<Ferias> feriasList = dao.findFruicaoByPessoalEAno(
+						entidade.getFuncional().getPessoal().getId(), 
+						Integer.toString(dataInicio.get(GregorianCalendar.YEAR)));
+				
+				
+				Long qtdeDiasDeFruicao = entidade.getQtdeDias();
+				for (Ferias ferias : feriasList) {
+					if (ferias.getId().equals(entidade.getId())) {
+						continue;
+					}
+					qtdeDiasDeFruicao += ferias.getQtdeDias();
 				}
-				qtdeDiasDeFruicao += ferias.getQtdeDias();
-			}
-			
-			if (qtdeDiasDeFruicao > 60) {
-				throw new SRHRuntimeException("Foi excedido o limite de 60 dias de fruição de férias para o exercíco de " 
-						+ dataInicio.get(GregorianCalendar.YEAR) + ".");
+				
+				if (qtdeDiasDeFruicao > 60) {
+					throw new SRHRuntimeException("Foi excedido o limite de 60 dias de fruição de férias para o exercíco de " 
+							+ dataInicio.get(GregorianCalendar.YEAR) + ".");
+				}
 			}
 		}
 		
