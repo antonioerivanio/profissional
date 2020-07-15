@@ -76,11 +76,13 @@ public class RelatorioServidorBean  implements Serializable  {
 			if(this.setor != null){
 				filtro.append("AND S.IDSETOR = " + this.setor.getId() + " ");
 			}
-			
+						
 			if(vinculo == 1){ // MEMBROS
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 1 ");
 				filtro.append("AND TOC.ID = 1 ");
+				filtro.append("AND F.IDSITUACAO < 4 ");
+				filtro.append("AND F.ATIVOFP = 1 ");
 				filtro.append("ORDER BY O.ORDEMOCUPACAO, S.NRORDEMSETORFOLHA, S.NMSETOR, P.NOMECOMPLETO");
 			}else if(vinculo == 2){ // SERVIDORES ATIVOS
 				filtro.append("AND F.DATASAIDA IS NULL ");
@@ -114,17 +116,27 @@ public class RelatorioServidorBean  implements Serializable  {
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 5 ");
+				filtro.append("AND F.ATIVOFP = 1 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, P.NOMECOMPLETO");
 			}else if(vinculo == 8){ // ESTAGIÁRIOS NÍVEL MÉDIO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS = 2 ");
 				filtro.append("AND TOC.ID = 4 ");
+				filtro.append("AND F.ATIVOFP = 1 ");
 				filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, P.NOMECOMPLETO");
 			}else if(vinculo == 9){ // CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND O.SITUACAO < 3 ");	
 				filtro.append("AND TOC.ID = 8 ");
+				filtro.append("AND F.ATIVOFP = 1 ");
 				filtro.append("ORDER BY P.NOMECOMPLETO");
+			}else if(vinculo == 10){ // CONSELHEIROS EM DISPONIBILIDADE
+					filtro.append("AND F.DATASAIDA IS NULL ");
+					filtro.append("AND F.STATUS = 1 ");
+					filtro.append("AND O.ID = 8 ");
+					filtro.append("AND F.IDSITUACAO = 14 ");
+					filtro.append("AND F.ATIVOFP = 1 ");
+					filtro.append("ORDER BY S.NRORDEMSETORFOLHA, S.NMSETOR, P.NOMECOMPLETO");	
 			}else{
 				filtro.append("AND F.DATASAIDA IS NULL ");
 				filtro.append("AND F.STATUS < 3 ");
