@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="quantitativoCargoComplemento" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="quantitativoCargoComplemento" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2b442299-0605-4669-8bb9-2d85029acd8a">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -36,52 +37,59 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO]]>
 	<field name="CARGO" class="java.lang.String"/>
 	<field name="OCUPADOS" class="java.lang.Integer"/>
 	<columnHeader>
-		<band height="20">
+		<band height="40">
 			<rectangle>
-				<reportElement x="0" y="2" width="555" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
+				<reportElement x="0" y="22" width="555" height="18" isRemoveLineWhenBlank="true" backcolor="#195297" uuid="ee9ee2ae-2587-4fb4-88cb-dcda4fcc87ee"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="431" y="2" width="124" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="431" y="22" width="124" height="18" forecolor="#FFFFFF" uuid="819c2937-f92b-4f7d-a0f7-898605a1e41f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OCUPADOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="2" width="203" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="2" y="22" width="203" height="18" forecolor="#FFFFFF" uuid="ff7b63f0-011b-4f9f-9fe8-c91f63fc3240"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TIPO OCUPAÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="206" y="2" width="225" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="206" y="22" width="225" height="18" forecolor="#FFFFFF" uuid="5d567e0c-6941-400d-8031-32bfe5866f70"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CARGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="555" height="20" uuid="3c4219cf-fe8f-4e73-ae89-c340f2c6c753"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[QUANTITATIVO COMPLEMENTAR]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF" uuid="5c7e3ca4-4f69-418e-8964-317eeb42b8a3">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="3" y="1" width="202" height="16"/>
+				<reportElement x="3" y="1" width="202" height="16" uuid="3849d8a2-f5bf-4a85-b6c7-72e6e7849765"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{TIPO_OCUPACAO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="206" y="1" width="225" height="16"/>
+				<reportElement x="206" y="1" width="225" height="16" uuid="c3942392-073d-404e-912a-04f060fea6ca"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="431" y="1" width="124" height="16"/>
+				<reportElement x="431" y="1" width="124" height="16" uuid="b6500091-841c-4a4f-80a8-9354a3d386d6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{OCUPADOS}]]></textFieldExpression>
 			</textField>

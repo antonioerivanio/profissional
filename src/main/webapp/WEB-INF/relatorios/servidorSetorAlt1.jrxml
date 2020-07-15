@@ -36,10 +36,8 @@ FROM SRH.TB_FUNCIONAL F
 	LEFT JOIN SRH.TB_REPRESENTACAOCARGO RC ON RF.IDREPRESENTACAOCARGO = RC.ID
 
 
-WHERE 	F.ATIVOFP = 1
-        AND F.IDSITUACAO < 4
-
-
+WHERE 1 = 1
+       
 $P!{FILTRO}]]>
 	</queryString>
 	<field name="NOMESETOR" class="java.lang.String"/>
@@ -140,7 +138,8 @@ $P!{FILTRO}]]>
 ( $P{VINCULO} == 1 ? "MEMBROS" :
     ( $P{VINCULO} == 7 ? "ESTAGIÁRIOS NÍVEL UNIVERSITÁRIO" :
         ( $P{VINCULO} == 8 ? "ESTAGIÁRIOS NÍVEL MÉDIO" :
-            ( $P{VINCULO} == 9 ? "CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO" : "" )) ) )]]></textFieldExpression>
+            ( $P{VINCULO} == 9 ? "CESSÃO DE SERVIDOR SEM NENHUMA REMUNERAÇÃO" : 
+            	( $P{VINCULO} == 10 ? "CONSELHEIROS EM DISPONIBILIDADE" : "" )  ) ) ) )]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="109" width="554" height="1" uuid="19f54d5f-6137-4bfb-b297-83a2402dfe85"/>

@@ -66,7 +66,7 @@ public class RelatorioDemonstrativoCargoBean  implements Serializable  {
 			parametros.put("FILTRO", filtro.toString());
 						
 			if(ordem == 1){
-				parametros.put("ORDEM", " ORDER BY O.ORDEMOCUPACAO, P.NOMECOMPLETO ");
+				parametros.put("ORDEM", " ORDER BY O.ORDEMOCUPACAO, CARGO, P.NOMECOMPLETO ");
 			}else if (ordem == 2){
 				parametros.put("ORDEM", " ORDER BY P.NOMECOMPLETO ");
 			}			

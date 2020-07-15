@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demonstrativoDeTodosOsCargos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="demonstrativoDeTodosOsCargos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8d62dd49-8397-492f-a1eb-930b69f49832">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -23,7 +24,7 @@
 		<![CDATA[SELECT DISTINCT P.NOMECOMPLETO nomeCompleto,
                 F.MATRICULA matricula,
                 S.NMSETOR nomeSetor,
-                O.NOMENCLATURA cargo,
+                DECODE(F.IDSITUACAO, 14, O.NOMENCLATURA || ' em disponibilidade', O.NOMENCLATURA) cargo,
                 O.ORDEMOCUPACAO,
                 decode(CR.REFERENCIA, null, ' ', 'REF-' || TRIM(TO_CHAR(CR.REFERENCIA,'00'))) referencia,
                 RC.NOMENCLATURA representacao,
@@ -40,7 +41,7 @@ FROM SRH.TB_FUNCIONAL F
 
 
 WHERE   F.ATIVOFP = 1
-        AND F.IDSITUACAO < 4
+        AND F.IDSITUACAO in (1, 2, 3, 5, 7, 14)
         AND F.DATASAIDA IS NULL
         AND F.STATUS < 3
         AND O.SITUACAO < 3
@@ -58,19 +59,19 @@ $P!{ORDEM}]]>
 	<title>
 		<band height="79">
 			<image>
-				<reportElement x="1" y="14" width="554" height="65"/>
+				<reportElement x="1" y="14" width="554" height="65" uuid="62c6663f-6e62-4d00-8610-0224b9575a83"/>
 				<imageExpression><![CDATA[$P{BACK}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="631" y="-11" width="168" height="54"/>
+				<reportElement x="631" y="-11" width="168" height="54" uuid="73a49138-9125-4eb8-aa38-3b3fc621480a"/>
 				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="6" y="5" width="130" height="29"/>
+				<reportElement x="6" y="5" width="130" height="29" uuid="9794d5c0-18e5-474d-952a-6031201c24de"/>
 				<imageExpression><![CDATA[$P{LOGO_TCE}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="0" y="41" width="799" height="20" forecolor="#0F2E52"/>
+				<reportElement x="0" y="41" width="799" height="20" forecolor="#0F2E52" uuid="abe29254-8311-4fc8-8fe5-b7fd977c71f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -81,45 +82,45 @@ $P!{ORDEM}]]>
 	<columnHeader>
 		<band height="19">
 			<rectangle>
-				<reportElement x="0" y="1" width="802" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
+				<reportElement x="0" y="1" width="802" height="18" isRemoveLineWhenBlank="true" backcolor="#195297" uuid="e1c07f8b-ba5f-4cb1-aede-daa769f9d027"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="291" y="1" width="208" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="291" y="1" width="208" height="18" forecolor="#FFFFFF" uuid="b858efbd-7828-42d8-b065-6a22a3c13701"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CARGO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="1" width="215" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="2" y="1" width="215" height="18" forecolor="#FFFFFF" uuid="104357b8-25df-448f-8581-60ee50250cee"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="217" y="1" width="74" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="217" y="1" width="74" height="18" forecolor="#FFFFFF" uuid="fc837571-b8da-42e2-b9ac-7659bf863791"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[MATRÍCULA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="499" y="1" width="76" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="499" y="1" width="76" height="18" forecolor="#FFFFFF" uuid="1420f177-1c58-4677-b6a9-8f87853e8fc2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[REFERÊNCIA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="575" y="1" width="150" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="575" y="1" width="150" height="18" forecolor="#FFFFFF" uuid="5d02b5ea-9904-4db4-93dd-a42862f74d8c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[REPRESENTAÇÃO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="725" y="1" width="77" height="18" forecolor="#FFFFFF"/>
+				<reportElement x="725" y="1" width="77" height="18" forecolor="#FFFFFF" uuid="11f20749-da44-442b-b0ac-5f528c30ec7f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
@@ -130,39 +131,39 @@ $P!{ORDEM}]]>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="1" width="802" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="1" width="802" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF" uuid="d0927dd0-b5b4-4119-8fb9-6aae8ed56554">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="217" y="0" width="74" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="217" y="0" width="74" height="16" uuid="b73dc0e8-f2ec-4122-9c3b-5ad550e6bc50"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{MATRICULA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="215" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="2" y="0" width="215" height="16" uuid="f8385a44-ca17-47cb-a27b-614d14580707"/>
 				<box leftPadding="2" rightPadding="5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="291" y="0" width="208" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="291" y="0" width="208" height="16" uuid="2662d063-a028-4c1a-b035-7e65f5db6367"/>
 				<box leftPadding="10" rightPadding="2"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="499" y="0" width="76" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="499" y="0" width="76" height="16" uuid="29b7ad91-5bcb-42f6-be98-b0c6fc7a9659"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{REFERENCIA}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="725" y="0" width="77" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="725" y="0" width="77" height="16" uuid="b5714053-60e9-4aae-a6bb-a92ae29e74d8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{SIMBOLO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="575" y="0" width="150" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="575" y="0" width="150" height="16" uuid="9df0af75-357c-4a36-b8ba-fbdc4f2ea2ef"/>
 				<box leftPadding="2" rightPadding="5"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{REPRESENTACAO}]]></textFieldExpression>
@@ -172,20 +173,20 @@ $P!{ORDEM}]]>
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="2" width="802" height="1"/>
+				<reportElement x="0" y="2" width="802" height="1" uuid="7d908d1c-8584-4b58-8127-f4138d493f97"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="3" width="802" height="16"/>
+				<reportElement x="0" y="3" width="802" height="16" uuid="c330809d-ee11-4ce0-a668-f749817328d8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="781" y="3" width="20" height="16"/>
+				<reportElement key="textField-5" x="781" y="3" width="20" height="16" uuid="56944068-3fe6-42c9-9821-62fd8d43e2c3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="688" y="3" width="90" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="688" y="3" width="90" height="16" forecolor="#000000" uuid="84c1a476-5c47-4a6a-9d83-5549e41355b6"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -196,7 +197,7 @@ $P!{ORDEM}]]>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
+				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000" uuid="d4367484-0345-4daa-ad82-7c2ea815bc39"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -211,7 +212,7 @@ $P!{ORDEM}]]>
 	<lastPageFooter>
 		<band height="20">
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000"/>
+				<reportElement key="textField-5" x="3" y="3" width="100" height="16" forecolor="#000000" uuid="103d702a-3c05-462d-8de1-56d54632b8a0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -222,12 +223,12 @@ $P!{ORDEM}]]>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement key="textField-5" x="781" y="3" width="20" height="16"/>
+				<reportElement key="textField-5" x="781" y="3" width="20" height="16" uuid="6b962d63-6ca0-40b9-9b7b-da572305f2a9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-4" x="688" y="3" width="90" height="16" forecolor="#000000"/>
+				<reportElement key="textField-4" x="688" y="3" width="90" height="16" forecolor="#000000" uuid="de891266-6c67-444a-8638-478af2853af8"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -238,26 +239,26 @@ $P!{ORDEM}]]>
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="3" width="802" height="16"/>
+				<reportElement x="0" y="3" width="802" height="16" uuid="1e012d08-38ff-4836-be05-64d75ca306b9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[@Copyright - Secretaria de Tecnologia da Informação]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="2" width="802" height="1"/>
+				<reportElement x="0" y="2" width="802" height="1" uuid="ba0601ee-cd8c-402e-864d-8c34dbad8c55"/>
 			</line>
 		</band>
 	</lastPageFooter>
 	<summary>
 		<band height="38">
 			<textField>
-				<reportElement x="768" y="10" width="34" height="20"/>
+				<reportElement x="768" y="10" width="34" height="20" uuid="ada15b81-d19a-4300-9dd3-d50f954a776a"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="689" y="10" width="76" height="20" forecolor="#000000"/>
+				<reportElement x="689" y="10" width="76" height="20" forecolor="#000000" uuid="0af5154d-5b11-42b5-b65b-26de34b5d38c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>

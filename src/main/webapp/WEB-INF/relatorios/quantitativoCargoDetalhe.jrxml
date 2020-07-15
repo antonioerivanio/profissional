@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="quantitativoCargoDetalhe" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="quantitativoCargoDetalhe" pageWidth="555" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b5b99f3c-3da1-4a3c-abc5-681c41b2a416">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -7,22 +8,77 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT  TB_TIPOOCUPACAO.ID ID,
-        TB_TIPOOCUPACAO.DESCRICAO TIPO_OCUPACAO,
-        TB_OCUPACAO.NOMENCLATURA CARGO,
-        TB_FUNCIONAL.NOME,
-        TB_FUNCIONAL.MATRICULA
-
-FROM        srh.TB_TIPOOCUPACAO
-INNER JOIN  srh.TB_OCUPACAO        ON TB_TIPOOCUPACAO.ID = TB_OCUPACAO.TIPOOCUPACAO
-INNER JOIN  srh.TB_FUNCIONAL       ON TB_OCUPACAO.ID = TB_FUNCIONAL.IDOCUPACAO
-
-WHERE TB_FUNCIONAL.IDSITUACAO IN (1, 2, 3, 5, 7)
-      AND TB_FUNCIONAL.DATASAIDA IS NULL
-      AND TB_FUNCIONAL.STATUS IN (1, 2)
-      $P!{FILTRO}
-
-ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_FUNCIONAL.NOME]]>
+		<![CDATA[( SELECT
+    tb_tipoocupacao.id           id,
+    tb_tipoocupacao.descricao    tipo_ocupacao,
+    tb_ocupacao.nomenclatura     cargo,
+    tb_funcional.idsituacao,
+    tb_funcional.nome,
+    tb_funcional.matricula,
+    tb_ocupacao.ordemocupacao
+FROM
+         srh.tb_tipoocupacao
+    INNER JOIN srh.tb_ocupacao ON tb_tipoocupacao.id = tb_ocupacao.tipoocupacao
+    INNER JOIN srh.tb_funcional ON tb_ocupacao.id = tb_funcional.idocupacao
+WHERE
+    tb_funcional.idsituacao IN (
+        1,
+        2,
+        3,
+        5,
+        7
+    )
+    AND tb_funcional.datasaida IS NULL
+    AND tb_funcional.status IN (
+        1,
+        2
+    )
+    $P!{FILTRO}
+)
+UNION
+( SELECT
+    tb_tipoocupacao.id           id,
+    tb_tipoocupacao.descricao    tipo_ocupacao,
+    tb_ocupacao.nomenclatura || ' em disponibilidade'    cargo,
+    tb_funcional.idsituacao,
+    tb_funcional.nome,
+    tb_funcional.matricula,
+    tb_ocupacao.ordemocupacao
+FROM
+         srh.tb_tipoocupacao
+    INNER JOIN srh.tb_ocupacao ON tb_tipoocupacao.id = tb_ocupacao.tipoocupacao
+    INNER JOIN srh.tb_funcional ON tb_ocupacao.id = tb_funcional.idocupacao
+WHERE
+    tb_funcional.idsituacao = 14
+    AND tb_funcional.datasaida IS NULL
+    AND tb_funcional.status IN (
+        1,
+        2
+    )
+    $P!{FILTRO}
+)
+UNION
+( SELECT
+    0               id,
+    'Comissionado'  tipo_ocupacao,
+    'Comissionado'  cargo,
+    0               situacao,
+    tb_funcional.nome,
+    tb_funcional.matricula,
+    6.1          AS ordemocupacao
+FROM
+         srh.tb_representacaofuncional
+    INNER JOIN srh.tb_funcional ON tb_representacaofuncional.idfuncional = tb_funcional.id
+WHERE
+    tb_representacaofuncional.fim IS NULL
+    AND tb_representacaofuncional.tiponomeacao = 1
+    AND tb_funcional.flportaltransparencia = 1
+    $P!{FILTRO}
+)
+ORDER BY
+    ordemocupacao,
+    cargo,
+    nome]]>
 	</queryString>
 	<field name="ID" class="java.lang.Integer"/>
 	<field name="TIPO_OCUPACAO" class="java.lang.String"/>
@@ -34,31 +90,33 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_FUNCIONAL.NOME]]>
 		<groupHeader>
 			<band height="50">
 				<rectangle>
-					<reportElement x="1" y="32" width="555" height="18" isRemoveLineWhenBlank="true" backcolor="#195297"/>
+					<reportElement x="1" y="32" width="555" height="18" isRemoveLineWhenBlank="true" backcolor="#195297" uuid="830d4f63-b744-4ade-ad3c-85543abe9295"/>
 				</rectangle>
 				<staticText>
-					<reportElement x="430" y="32" width="125" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="430" y="32" width="125" height="18" forecolor="#FFFFFF" uuid="ee7f5f9f-6b8f-47d3-923c-7a082972b578"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[MATRÍCULA]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="3" y="32" width="427" height="18" forecolor="#FFFFFF"/>
+					<reportElement x="3" y="32" width="427" height="18" forecolor="#FFFFFF" uuid="d55c2500-b29b-4b30-92bc-f22a71024732"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[NOME]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement x="47" y="9" width="509" height="18"/>
+					<reportElement x="47" y="9" width="509" height="18" uuid="b1085312-07df-4150-bab1-1583dd295d1e"/>
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{CARGO}  + " (" + $F{TIPO_OCUPACAO} + ")"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{CARGO}  + ("Comissionado".equalsIgnoreCase($F{TIPO_OCUPACAO}) 
+	|| "Ocupante somente Cargo Comissionado".equalsIgnoreCase($F{TIPO_OCUPACAO}) ?  "" :  " (" + $F{TIPO_OCUPACAO} + ")"
+)]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="1" y="9" width="46" height="18" forecolor="#000000"/>
+					<reportElement x="1" y="9" width="46" height="18" forecolor="#000000" uuid="2472e3a6-5e52-449d-8892-69437f2e1369"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
@@ -69,14 +127,14 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_FUNCIONAL.NOME]]>
 		<groupFooter>
 			<band height="27">
 				<textField>
-					<reportElement x="522" y="7" width="33" height="16"/>
+					<reportElement x="522" y="7" width="33" height="16" uuid="d4bf3c9a-36d9-4325-8dfd-c7f7398b2a6f"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="11"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{CARGO_COUNT}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="469" y="7" width="48" height="16" forecolor="#000000"/>
+					<reportElement x="469" y="7" width="48" height="16" forecolor="#000000" uuid="d27ca93f-f389-40d8-9039-8c39378ca88e"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
@@ -88,17 +146,17 @@ ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_FUNCIONAL.NOME]]>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF">
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF" uuid="bb06f70d-c60b-4e7d-926d-004f8c464862">
 					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
 				</reportElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="3" y="1" width="427" height="16"/>
+				<reportElement x="3" y="1" width="427" height="16" uuid="0bde1709-90cc-4661-8b60-dab32ae6c946"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="430" y="1" width="125" height="16"/>
+				<reportElement x="430" y="1" width="125" height="16" uuid="05a67fb8-50d5-457a-94a2-e67324b74cb5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{MATRICULA}]]></textFieldExpression>
 			</textField>
