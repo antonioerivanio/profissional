@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.AbonoPermanencia;
 import br.gov.ce.tce.srh.domain.Pessoal;
+import br.gov.ce.tce.srh.enums.StatusFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.AbonoPermanenciaService;
@@ -48,6 +49,7 @@ public class AbonoPermanenciaListBean implements Serializable {
 	private String cpf = new String();
 	private String nome = new String();
 	private Pessoal pessoal;
+	private Boolean servidorAtivo;
 	
 	// entidades das telas
 	private AbonoPermanencia entidade = new AbonoPermanencia();
@@ -60,7 +62,8 @@ public class AbonoPermanenciaListBean implements Serializable {
 	private Integer pagina = 1;
 	
 	@PostConstruct
-	public void init() {		
+	public void init() {
+		servidorAtivo = false;
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 			setCpf(authenticationService.getUsuarioLogado().getCpf());
 			consultar();
@@ -215,6 +218,18 @@ public class AbonoPermanenciaListBean implements Serializable {
 		List<AbonoPermanencia> abonos = new ArrayList<>();
 		if (this.pessoal == null) {
 			abonos = abonoPermanenciaService.findAll();
+			
+			if(servidorAtivo) {
+				List<AbonoPermanencia> abonoPermanenciaList = new ArrayList<>();
+				
+				for (AbonoPermanencia abonoPermanencia : abonos) {
+					if(!StatusFuncional.INATIVO.getId().equals(abonoPermanencia.getFuncional().getStatus())) {
+						abonoPermanenciaList.add(abonoPermanencia);
+					}
+				}	
+				abonos = abonoPermanenciaList;
+			}
+			
 		} else {
 			AbonoPermanencia abono = abonoPermanenciaService.getByPessoalId(this.pessoal.getId());
 			if (abono != null)
@@ -223,5 +238,15 @@ public class AbonoPermanenciaListBean implements Serializable {
 		
 		return abonos;
 	}
+
+	public Boolean getServidorAtivo() {
+		return servidorAtivo;
+	}
+
+	public void setServidorAtivo(Boolean servidorAtivo) {
+		this.servidorAtivo = servidorAtivo;
+	}
+	
+	
 
 }
