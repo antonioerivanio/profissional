@@ -57,22 +57,29 @@
 					</div>
 				</div>
 	
+				<br/>
 	
-				<a id="form:Pesquisar" 
-				   href="#" 
-				   onclick="openwindowServidor()" 
-				   class="bt-padrao fl mg-top-18">Pesquisar</a>
-	
-				<h:commandButton id="consultar"
-								 value="Consultar"
-								 action="#{abonoPermanenciaListBean.consultar}"
-								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-								 render="scroller,lista"/>
-				<h:commandButton id="relatorio"
-								 value="Relatório"
-								 action="#{abonoPermanenciaListBean.relatorio}" 
-								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-								 style="margin-left: 10px" />
+				<div class="radios-group box-35">						
+					<h:selectBooleanCheckbox id="servidorAtivo" value="#{abonoPermanenciaListBean.servidorAtivo}" style="float:left; margin-right: 5px;"/>
+					<label style="float:left;" for="form:servidorAtivo">Somente Funcional Ativo</label>											
+				</div>
+				
+				<div class="fr">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindowServidor()" 
+					   class="bt-padrao fl">Pesquisar</a>
+		
+					<h:commandButton id="consultar"
+									 value="Consultar"
+									 action="#{abonoPermanenciaListBean.consultar}"
+									 styleClass="bt-padrao fl mg-left-10" 
+									 render="scroller,lista"/>
+					<h:commandButton id="relatorio"
+									 value="Relatório"
+									 action="#{abonoPermanenciaListBean.relatorio}" 
+									 styleClass="bt-padrao fl mg-left-10" />
+				</div>
 								 
 			</ui:fragment>
 

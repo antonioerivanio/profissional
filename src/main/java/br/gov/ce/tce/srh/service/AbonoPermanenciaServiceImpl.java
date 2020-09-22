@@ -81,23 +81,36 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 				throw new SRHRuntimeException("O Servidor já possui Abono de Permanência cadastrado.");
 		}
 		
-		if(entidade.getProcesso() == null || entidade.getProcesso().isEmpty()) {
-			throw new SRHRuntimeException("O processo é obrigatório.");
-		}
-		
-		corrigeNumeroProcesso(entidade);
-		
-		if (!SRHUtils.validarProcesso( entidade.getProcesso() ) ) {
-			throw new SRHRuntimeException("O número do processo informado é inválido.");
-		}
 		
 		if(entidade.getDataImplantacao() == null) {
 			throw new SRHRuntimeException("A data de implantação é obrigatório.");
 		}
 		
-		if(entidade.getDataImplantacao().before(entidade.getFuncional().getExercicio())
-				&& !entidade.getFuncional().isProvenienteDoTCM()) {
-			throw new SRHRuntimeException("A data de implantação não pode ser menor do que a data de exercício do funcional selecionado.");		
+		if(entidade.getFuncional().isProvenienteDoTCM()) {
+			
+			if(!entidade.getDataImplantacao().before(entidade.getFuncional().getExercicio())) {			
+				
+				if(entidade.getProcesso() == null || entidade.getProcesso().isEmpty()) {
+					throw new SRHRuntimeException("O processo é obrigatório.");
+				}
+			}
+			
+		} else {			
+			if(entidade.getProcesso() == null || entidade.getProcesso().isEmpty()) {
+				throw new SRHRuntimeException("O processo é obrigatório.");
+			}			
+			
+			if(entidade.getDataImplantacao().before(entidade.getFuncional().getExercicio())) {			
+				throw new SRHRuntimeException("A data de implantação não pode ser menor do que a data de exercício do funcional selecionado.");	
+			}
+		}		
+		
+		if(entidade.getProcesso() != null && !entidade.getProcesso().isEmpty()) {
+			corrigeNumeroProcesso(entidade);
+			
+			if (!SRHUtils.validarProcesso( entidade.getProcesso() ) ) {
+				throw new SRHRuntimeException("O número do processo informado é inválido.");
+			}
 		}
 		
 		if(entidade.getFuncional().getSaida() != null && entidade.getDataImplantacao().after(entidade.getFuncional().getSaida())) {
