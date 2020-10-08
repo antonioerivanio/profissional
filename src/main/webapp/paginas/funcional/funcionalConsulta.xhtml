@@ -64,9 +64,7 @@
 
 		<h:form id="form" styleClass="formularios">
 
-			<h:messages infoClass="infoMessage" errorClass="errorMessage" />			
-            
-            <div class="tabela-dados">
+			<div class="tabela-dados">
 			
 				<rich:dataTable id="lista" value="#{funcionalConsultaBean.lista}" var="item">			                   	
 					
@@ -99,6 +97,8 @@
 				</rich:dataTable>
 
 			</div>
+			
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
 		</h:form>
 

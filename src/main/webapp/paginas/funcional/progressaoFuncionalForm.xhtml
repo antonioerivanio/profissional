@@ -225,7 +225,7 @@
 						<h:inputTextarea id="observacao"
 										 disabled="#{not LoginBean.anyGranted('ROLE_PROGRESSAO_INSERIR,ROLE_PROGRESSAO_ALTERAR')}"
 										 value="#{progressaoFuncionalFormBean.entidade.descricao}"
-										 onkeyup="this.value = this.value.substring(0, 199);" />
+										 onkeyup="this.value = this.value.substring(0, 1999);" />
 					</div>
 				</div>
 
