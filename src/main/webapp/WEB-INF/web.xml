@@ -68,21 +68,7 @@
 	<context-param>
 		<param-name>org.richfaces.enableControlSkinning</param-name>
 		<param-value>false</param-value>
-	</context-param>
-	
-	
-	<filter>
-		<filter-name>MyFacesExtensionsFilter</filter-name>
-		<filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
-		<init-param>
-			<param-name>maxFileSize</param-name>
-			<param-value>20m</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>MyFacesExtensionsFilter</filter-name>
-		<servlet-name>Faces Servlet</servlet-name>
-	</filter-mapping>
+	</context-param>	
 	
 	<context-param>
 		<param-name>timezone</param-name>
@@ -124,6 +110,16 @@
     <context-param>
         <param-name>org.richfaces.resourceOptimization.enabled</param-name>
         <param-value>true</param-value>
+    </context-param>
+        
+	<context-param>
+	    <param-name>org.richfaces.fileUpload.createTempFiles</param-name>
+	    <param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.richfaces.fileUpload.maxRequestSize</param-name>
+		<param-value>100000000</param-value>
     </context-param>
     
     <context-param>

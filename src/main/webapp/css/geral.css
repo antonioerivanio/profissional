@@ -10,8 +10,7 @@ select, option, input, textarea {
 	background-color: #ffffff;
 }
 
-textarea:disabled, input:not 
-	 ([type] ):disabled, input[type="color" i]:disabled, input[type="date"
+textarea:disabled, input:not([type]):disabled, input[type="color" i]:disabled, input[type="date"
 	i]:disabled, input[type="datetime" i]:disabled, input[type="datetime-local"
 	i]:disabled, input[type="email" i]:disabled, input[type="month" i]:disabled,
 	input[type="password" i]:disabled, input[type="number" i]:disabled,
@@ -301,11 +300,6 @@ img.ambiente {
 	color: #505050;
 }
 
-.topo .login-box p, .topo .login-box span.user {
-	/* text-transform: capitalize; */
-	
-}
-
 .topo .login-box a span {
 	color: #1c5ba7;
 	text-transform: uppercase;
@@ -417,10 +411,6 @@ img.ambiente {
 	display: none;
 }
 
-.menu-principal ul ul ul li {
-	
-}
-
 .menu-principal ul ul ul li a {
 	color: #888;
 	background: none !important;
@@ -434,16 +424,16 @@ img.ambiente {
 
 /* INICIO TELA INICIAL */
 .welcome-col {
-	padding: 20px;
+	margin-top: 10px;
+	padding: 10px 15px;
 	background-color: #e4f1ff;
-	margin-bottom: 1rem;
 	border: 1px solid #b8daff;
 	border-radius: .25rem;
 	color: #004085;
 }
 
 .welcome-col * {
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .welcome-col p {
@@ -519,7 +509,7 @@ img.ambiente {
 	color: #856404;
 	background-color: #fff3cd;
 	position: relative;
-	padding: 1em 1.5em;
+	padding: 0.5em 1em;
 	margin-bottom: 1em;
 	margin-top: 1em;
 	border: 1px solid #ffeeba;
@@ -708,6 +698,7 @@ img.ambiente {
 .formularios .select-box select:disabled, .formularios .input-box input:disabled
 	{
 	background-color: #efefef;
+	opacity: 0.9;
 }
 
 .formularios .select-box option {
@@ -1131,6 +1122,61 @@ img.ambiente {
 
 .bt-padrao:hover, .bt-voltar:hover {
 	background: #10396c;
+}
+
+.bt-upload {
+	font-size: 13px;
+    font-weight: bold;
+    color: #195297;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    text-transform: lowercase;
+    transition: all 0.2s ease;
+    padding: 10px;
+    padding-left: 40px;
+    border: 1px solid;
+    border-radius: 4px;
+    position: relative;
+}
+
+.bt-upload:before {
+	background: url(../img/ic_cloud_upload_24px.svg) no-repeat;
+    background-size: 24px auto;
+    display: block;
+    width: 25px;
+    height: 20px;
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 9px;
+}
+
+.bt-upload:hover {
+	background: #f5f7fb;
+}
+
+
+.link-arquivo{
+   	font-size: 12px;
+    font-weight: bold;
+    color: #08309c;
+   	margin-left: 10px;
+    text-decoration: none;
+    position: relative;
+    padding-left: 30px;
+}
+
+.link-arquivo:before {
+	background: url(../img/ic_file_upload_48px.svg) no-repeat;
+    background-size: 15px auto;
+    display: block;
+    width: 20px;
+    height: 20px;
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 1px;
 }
 
 .bt-conteiner {

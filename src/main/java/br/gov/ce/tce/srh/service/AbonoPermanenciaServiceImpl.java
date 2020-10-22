@@ -129,10 +129,11 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 	
 	/**
 	 * A data de implantação do abono de permanência nunca poderá ser inferior a 31/12/2003 (EC 41/2003)
+	 * Mudança da regra: 04/07/2003, data que foram implementadas requisições para o Abono de acordo com a Emenda Constitucional nº 56/2004
 	 */
 	private Date inicioMinimoAbonoPermanencia() {
 		Calendar dtInicio = new GregorianCalendar();
-		dtInicio.set(2003, 11, 31, 0, 0, 0);
+		dtInicio.set(2003, 6, 4, 0, 0, 0);
 		Date time = dtInicio.getTime();
 		return SRHUtils.removeHorasDaData(time);
 	}
