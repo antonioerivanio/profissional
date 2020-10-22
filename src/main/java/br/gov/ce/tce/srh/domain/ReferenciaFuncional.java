@@ -56,7 +56,7 @@ public class ReferenciaFuncional extends BasicEntity<Long> implements Serializab
 	@JoinColumn(name = "IDTIPOPUBLICACAO", nullable = true)
 	private TipoPublicacao tipoPublicacao;
 	
-	@Column(name="DESCRICAO", nullable = false, length = 200)
+	@Column(name="DESCRICAO", nullable = false, length = 2000)
 	private String descricao;	
 	
 	@Temporal(TemporalType.DATE)

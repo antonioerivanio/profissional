@@ -692,6 +692,10 @@ public class SRHUtils {
 		
 		return false;
 		
-	}	
+	}
+	
+	public static boolean anoExercicioValido(Integer ano) {		
+		return ano > 1900;
+	}
 
 }

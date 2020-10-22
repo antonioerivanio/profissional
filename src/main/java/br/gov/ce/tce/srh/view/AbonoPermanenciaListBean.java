@@ -223,7 +223,9 @@ public class AbonoPermanenciaListBean implements Serializable {
 				List<AbonoPermanencia> abonoPermanenciaList = new ArrayList<>();
 				
 				for (AbonoPermanencia abonoPermanencia : abonos) {
-					if(!StatusFuncional.INATIVO.getId().equals(abonoPermanencia.getFuncional().getStatus())) {
+					if(!StatusFuncional.INATIVO.getId().equals(abonoPermanencia.getFuncional().getStatus())
+							&& abonoPermanencia.getFuncional().getSaida() == null) {
+						
 						abonoPermanenciaList.add(abonoPermanencia);
 					}
 				}	

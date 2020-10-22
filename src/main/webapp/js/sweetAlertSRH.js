@@ -88,10 +88,12 @@ function modalRedirecionaLogin() {
 
 function finalizaRecadastramento() {
 	Swal.fire({
-		title: 'Informações sobre o período de vigência',
+		title: 'Informações sobre o recadastramento',
 		icon: 'info',
 		confirmButtonColor: '#195297',
+		confirmButtonText: 'Confirmar',
 		showCancelButton: true,
+		cancelButtonText: 'Cancelar',
 		allowOutsideClick: false,
 		reverseButtons: true,
 		width: 700,
@@ -99,14 +101,14 @@ function finalizaRecadastramento() {
 			content: 'modalInstrucoesVigencia'
 		  },
 		html: '<span>'
-			+ '<b>ATENÇÃO!</b> Esclarecemos que ao finalizar o recadastramento, você não poderá editar seus dados por meio do SRH.' 
-			+ 'Você pode utilizar indistintamente a opção salvar, e só partir para a ação de finalizar, quando efetivamente' 
-			+ 'tiver encerrado todas as suas informações do recadastramento.' 
+			+ '<br /><b>ATENÇÃO!</b> Esclarecemos que ao finalizar o recadastramento, você não poderá editar seus dados por meio do SRH.' 
+			+ 'Você pode utilizar indistintamente a opção salvar, e só partir para a ação de finalizar, quando efetivamente ' 
+			+ 'tiver encerrado todas as suas informações do recadastramento. ' 
 			+ 'Caso esteja seguro que efetivamente finalizou o cadastro, leia o texto abaixo e clique na opção [Confirmar].'
 			+ '<br /><br />'
-			+ '<b>DECLARO</b> serem verdadeiras as informações constantes do presente' 
-			+ 'formulário, comprometendo-me a comunicar ao Tribunal de Contas do Estado Ceará qualquer alteração ocorrida' 
-			+ 'após a finalização do recadastramento e apresentar documentos complementares solicitados' 
+			+ '<b>DECLARO</b> serem verdadeiras as informações constantes do presente ' 
+			+ 'formulário, comprometendo-me a comunicar ao Tribunal de Contas do Estado Ceará qualquer alteração ocorrida ' 
+			+ 'após a finalização do recadastramento e apresentar documentos complementares solicitados ' 
 			+ 'pela Gerência de Atos Funcionais.'					
 		+ '</span>'
 	}).then((result) => {

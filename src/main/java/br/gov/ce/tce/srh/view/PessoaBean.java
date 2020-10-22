@@ -14,18 +14,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.apache.myfaces.custom.fileupload.UploadedFile;
+import org.richfaces.event.FileUploadEvent;
+import org.richfaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.dao.DeclaracaoBensDAO;
+import br.gov.ce.tce.srh.domain.DeclaracaoBens;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Escolaridade;
 import br.gov.ce.tce.srh.domain.EstadoCivil;
@@ -119,6 +122,9 @@ public class PessoaBean implements Serializable {
 	
 	@Autowired
 	private ImageBean imageBean; 
+	
+	@Autowired
+	private DeclaracaoBensDAO declaracaoBensDAO;
 
 	private Boolean podeAlterar = null;
 	private Boolean ehServidor = null;
@@ -133,6 +139,8 @@ public class PessoaBean implements Serializable {
 	private List<Dependente> dependentes = new ArrayList<Dependente>();
 	private PessoalRecadastramento pessoalRecadastramento;
 	private Recadastramento recadastramento;
+	private List<DeclaracaoBens> declaracaoBensList = new ArrayList<DeclaracaoBens>();
+	private List<DeclaracaoBens> declaracaoBensListExcluir = new ArrayList<DeclaracaoBens>();
 
 	private UploadedFile foto;
 	private UploadedFile ficha;
@@ -146,6 +154,8 @@ public class PessoaBean implements Serializable {
 	private List<TipoLogradouro> comboTipoLogradouro;
 	private List<Municipio> comboMunicipioNaturalidade;
 	private List<Municipio> comboMunicipioEndereco;
+	
+	private Parametro pathDeclaracaoBensSRH;
 
 	// paginação
 	private int count;
@@ -159,42 +169,44 @@ public class PessoaBean implements Serializable {
 	private void init() {
 		Pessoal flashParameter = (Pessoal)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Pessoal());		
-		imageBean.setFoto(null);
-		
-		if(this.entidade.getId() != null) {		
-			try {
-				if (ehServidor()) {
-					this.entidade = pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf());
-					try {
-						count = pessoalService.count(authenticationService.getUsuarioLogado());
-						limparListas();
-						flagRegistroInicial = -1;
+		imageBean.setFoto(null);		
+			
+		try {
+			if (ehServidor()) {
+				this.entidade = pessoalService.getByCpf(authenticationService.getUsuarioLogado().getCpf());
+				try {
+					count = pessoalService.count(authenticationService.getUsuarioLogado());
+					limparListas();
+					flagRegistroInicial = -1;
 
-					} catch (Exception e) {
-						limparListas();
-						FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-						logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-					}					
-					
-				} else {
-					this.entidade = pessoalService.getById(this.entidade.getId());
-				}			
+				} catch (Exception e) {
+					limparListas();
+					FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+					logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+				}					
 				
-				if (ehServidor() || ehProprioCadastro())
-					verificaRecadastramento();
-				
-				atualizaNaturalidade();						
-				
-				buscarCep();
-				
-				dependentes = dependenteService.findByResponsavel(entidade.getId());
-				
-				imageBean.setFoto(this.entidade.getFoto());				
-	
-			} catch (Exception e) {
-				FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
+			} else if(this.entidade.getId() != null) {				
+				this.entidade = pessoalService.getById(this.entidade.getId());				
+			}			
+			
+			if (ehServidor() || ehProprioCadastro()) {
+				verificaRecadastramento();
+			}	
+			
+			atualizaNaturalidade();						
+			
+			buscarCep();
+			
+			this.dependentes = dependenteService.findByResponsavel(entidade.getId());
+			this.declaracaoBensList = declaracaoBensDAO.getByPessoalId(entidade.getId());			
+			
+			imageBean.setFoto(this.entidade.getFoto());
+			
+			this.pathDeclaracaoBensSRH = parametroService.getByNome("pathDeclaracaoBensSRH");
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
 	}
@@ -231,6 +243,8 @@ public class PessoaBean implements Serializable {
 				getPessoalRecadastramento().setStatus(1);
 				recadastramentoAtivo = false;				
 			}
+			
+			salvarDeclaracoes();
 			
 			atualizaRecadastramento();			
 
@@ -516,9 +530,9 @@ public class PessoaBean implements Serializable {
 		return null;
 	}
 
-	public void uploadFoto(ValueChangeEvent event) {
+	public void uploadFoto(FileUploadEvent event) {
 
-		if (event.getNewValue() != null) {
+		if (event.getUploadedFile() != null) {
 		
 			// criando nome da foto
 			SimpleDateFormat formato = new SimpleDateFormat("yyyyMMddHHMMss");
@@ -533,17 +547,17 @@ public class PessoaBean implements Serializable {
 					throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
 	
 				// setando o nome da foto
-				setFoto((UploadedFile) event.getNewValue());
+				setFoto(event.getUploadedFile());
 				nomeDoArquivo = SRHUtils.getNomeArquivo(foto.getName()) + "-" + nomeDoArquivo + SRHUtils.getTipoArquivo(foto.getName());
 				getEntidade().setFoto(nomeDoArquivo);
 				imageBean.setFoto(nomeDoArquivo);
 	
 				// gravando em disco
-				java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFoto());
+				File file = new File(parametro.getValor() + getEntidade().getFoto());
 				FileOutputStream fop;
 	
 				fop = new FileOutputStream(file);
-				fop.write(foto.getBytes());
+				fop.write(foto.getData());
 				fop.flush();
 				fop.close();
 	
@@ -561,7 +575,7 @@ public class PessoaBean implements Serializable {
 
 	}	
 
-	public void uploadFicha(ValueChangeEvent event) {
+	public void uploadFicha(FileUploadEvent event) {
 
 		try {
 
@@ -573,15 +587,15 @@ public class PessoaBean implements Serializable {
 						"Parâmetro do caminho da ficha não encontrado na tabela SRH.TB_PARAMETRO");
 
 			// setando o nome da ficha
-			setFicha((UploadedFile) event.getNewValue());
+			setFicha(event.getUploadedFile());
 			getEntidade().setFicha(new File(ficha.getName()).getName());
 
 			// gravando em disco
-			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getFicha());
+			File file = new File(parametro.getValor() + getEntidade().getFicha());
 			FileOutputStream fop;
 
 			fop = new FileOutputStream(file);
-			fop.write(ficha.getBytes());
+			fop.write(ficha.getData());
 			fop.flush();
 			fop.close();
 
@@ -617,6 +631,92 @@ public class PessoaBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 	}
+	
+	public void uploadDeclaracaoBens(FileUploadEvent event) {
+
+		try {
+			
+			if (this.pathDeclaracaoBensSRH == null) {
+				throw new SRHRuntimeException("Parâmetro do caminho da declaração de bens não encontrado na tabela SRH.TB_PARAMETRO");
+			}
+				
+			UploadedFile arquivo = event.getUploadedFile();
+			String nomeArquivo = arquivo.getName();
+			
+			DeclaracaoBens declaracao = new DeclaracaoBens();			
+			declaracao.setNomeArquivo(nomeArquivo);
+			declaracao.setCaminho(this.entidade.getId() + File.separator + UUID.randomUUID() + nomeArquivo.substring(nomeArquivo.lastIndexOf('.'), nomeArquivo.length()));
+			declaracao.setPessoal(this.entidade);		
+			
+			File diretorio = new File(this.pathDeclaracaoBensSRH.getValor() + this.entidade.getId());
+			diretorio.mkdirs();
+			
+			File file = new File(this.pathDeclaracaoBensSRH.getValor() + declaracao.getCaminho());			
+			FileOutputStream fop = new FileOutputStream(file);
+			fop.write(arquivo.getData());
+			fop.flush();
+			fop.close();
+			
+			this.declaracaoBensList.add(0, declaracao);
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage("Erro na gravação da declaração do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (FileNotFoundException e) {
+			FacesUtil.addErroMessage("Erro na gravação da declaração do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (IOException e) {
+			FacesUtil.addErroMessage("Erro na gravação da declaração do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+	}
+	
+	public void abrirDeclaracao(String caminho) {
+		try {
+			
+			Parametro parametro = parametroService.getByNome("pathDeclaracaoBensSRH");
+			String caminhoDeclaracao = parametro.getValor() + caminho;
+			InputStream in = new FileInputStream(caminhoDeclaracao);
+			byte[] declaracaoBytes = IOUtils.toByteArray(in);
+			relatorioUtil.openPdf(declaracaoBytes, caminhoDeclaracao);
+
+		} catch (FileNotFoundException e) {
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu algum erro na geração do arquivo. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
+	
+	public void excluirDeclaracao(DeclaracaoBens declaracao) {		
+		this.declaracaoBensListExcluir.add(declaracao);
+		this.declaracaoBensList.remove(declaracao);
+	}	
+	
+	private void salvarDeclaracoes() {
+	
+		for(DeclaracaoBens declaracao: this.declaracaoBensList) {
+			
+			if(declaracao.getExercicio() == null || !SRHUtils.anoExercicioValido(declaracao.getExercicio())) {
+				throw new SRHRuntimeException("Declaração " + declaracao.getNomeArquivo() + " com exercício inválido");
+			}			
+			
+			if(declaracao.getAnoCalendario() == null || !SRHUtils.anoExercicioValido(declaracao.getAnoCalendario())) {
+				throw new SRHRuntimeException("Declaração " + declaracao.getNomeArquivo() + " com ano calendário inválido");
+			}
+			
+			this.declaracaoBensDAO.salvar(declaracao);
+		}
+		
+		for(DeclaracaoBens declaracao: this.declaracaoBensListExcluir) {
+			this.declaracaoBensDAO.excluir(declaracao);
+		}		
+		
+	}	
 
 	public void formularioDependentes() {
 		try {
@@ -757,6 +857,14 @@ public class PessoaBean implements Serializable {
 
 	public void setRelatorioUtil(RelatorioUtil relatorioUtil) {
 		this.relatorioUtil = relatorioUtil;
+	}
+
+	public List<DeclaracaoBens> getDeclaracaoBensList() {
+		return declaracaoBensList;
+	}	
+
+	public List<DeclaracaoBens> getDeclaracaoBensListExcluir() {
+		return declaracaoBensListExcluir;
 	}
 
 	// PAGINAÇÃO

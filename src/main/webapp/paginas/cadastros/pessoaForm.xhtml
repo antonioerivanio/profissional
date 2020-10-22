@@ -12,31 +12,23 @@
 	<ui:define name="content">
 
 		<style>
-		   .fichaAntigaLink{
-		    	font-size: 12px;
-			    font-weight: bold;
-			    color: #505050;
-			   	margin-left: 10px;
-			    text-decoration: none;
-		    }
-		    input[type='file']{
-		    	border: 1px solid #c6c6c6;
-    			padding: 4px 5px;
-    			margin-bottom: 10px;
-    			max-width: 100%;
-				box-sizing: border-box;
-				background: white;
-				color: #999;
-		    }
-		    .foto-pessoal {
-		    	position: absolute;
-			    right: 70px;
-			    top: 20px;
+		    .foto-pessoal {		    	
 			    cursor: pointer;
 		    }
 		    .foto-pessoal img {
 		    	max-width: 136px;
-		    }
+		    }	 
+		    .exercicioInput{		    
+		        font-size: 12px;
+			    color: #343434;
+			    border: 0;
+			    width: 100%;
+			    padding: 8px 6px;
+			    box-sizing: border-box;
+			    border-radius: 4px;
+			    text-align: right;
+			    border: 1px solid #c5c5c5;		    
+		    }		    
 		</style>		
 
 		<div class="titulo-pagina">
@@ -47,99 +39,109 @@
 				
 		<span class="label-campos-obrigarotios"><i>* Campos Obrigatórios</i></span>
 		
-		<!--  
-		                 				 style="height: 150px; width: 107px; margin-bottom: 10px;"<ui:fragment rendered="#{pessoaBean.ehServidor()}" >
+		<ui:fragment rendered="#{pessoaBean.ehServidor()}" >
 			<div class="mensagem-alerta">
 				<p><b>Importante!</b> Caso verifique alguma discrepância nos dados cadastrais não editáveis, favor entrar em contato com a Gerência de Atos Funcionais.</p>
 			</div>				
-		</ui:fragment> -->
+		</ui:fragment>
 		
 		<a4j:outputPanel ajaxRendered="true" >
-            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+            <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 		</a4j:outputPanel>
 
-         <h:form id="form" styleClass="formularios" enctype="multipart/form-data">
+         <h:form id="form" styleClass="formularios">
 
 			<rich:tabPanel switchType="client">
 			
 				<rich:tab header="Dados Pessoais">					
 								
-					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
-						<div class="select-box box-25">
-							<label for="">Categoria *</label>
-							<div class="conteiner">
-								<h:selectOneMenu id="categoria"
-												 converter="entityConverter" 
-												 value="#{pessoaBean.entidade.categoria}"
-												 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
-								  	<f:selectItem id="selecioneCategoria" itemLabel="Selecione..."/>
-								  	<f:selectItems 	id="comboCategoria"
-								  					value="#{pessoaBean.comboCategoria}"
-								  					var="categoria"
-								  					itemValue="#{categoria}"
-								  					itemLabel="#{categoria.nome}"/>
-								</h:selectOneMenu>
+					<div style="width: 100%; margin-bottom: 15px;">					
+						<span>					
+							<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
+								<div class="select-box box-25">
+									<label for="">Categoria *</label>
+									<div class="conteiner">
+										<h:selectOneMenu id="categoria"
+														 converter="entityConverter" 
+														 value="#{pessoaBean.entidade.categoria}"
+														 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
+										  	<f:selectItem id="selecioneCategoria" itemLabel="Selecione..."/>
+										  	<f:selectItems 	id="comboCategoria"
+										  					value="#{pessoaBean.comboCategoria}"
+										  					var="categoria"
+										  					itemValue="#{categoria}"
+										  					itemLabel="#{categoria.nome}"/>
+										</h:selectOneMenu>
+									</div>
+								</div>					
+							</ui:fragment>								
+							
+							<div class="input-box box-60 clr">
+								<label for="">Nome *</label>
+								<div class="conteiner">
+									<h:inputText id="nomeCompleto"
+												 value="#{pessoaBean.entidade.nomeCompleto}"
+												 maxlength="70" 
+												 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>    
+								</div>
 							</div>
-						</div>					
-					</ui:fragment>
-					
-					<div class="foto-pessoal">
-						<label for="">Foto</label>
-						<div>
-							<a4j:mediaOutput element="img"
-			                 				 createContent="#{imageBean.geraFoto}" 
-			                 				 mimeType="image/jpeg"
-			                 				 onclick="document.getElementById('form:fotoUpload').click()" />
-							<t:inputFileUpload 	id="fotoUpload"
-												style="display: none"		
-				            	      		    value="#{pessoaBean.foto}"
-				                	  		    storage="file"
-				                  			    valueChangeListener="#{pessoaBean.uploadFoto}"
-				                  			    onchange="submit()"
-				                  			    rendered="#{pessoaBean.temPermisssaoParaAlterar()}" />
-						</div>			                  			   
-					</div>		
-					
-					<div class="input-box box-60 clr">
-						<label for="">Nome *</label>
-						<div class="conteiner">
-							<h:inputText id="nomeCompleto"
-										 value="#{pessoaBean.entidade.nomeCompleto}"
-										 maxlength="70" 
-										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>    
-						</div>
-					</div>
-					
-					
-					<div class="input-box box-20">
-						<label for="">Abreviatura</label>
-						<div class="conteiner">
-							<h:inputText id="abreviatura"
-										 value="#{pessoaBean.entidade.abreviatura}"
-										 maxlength="25" 
-										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
-						</div>
-					</div>
-		
-					<div class="input-box box-40">
-						<label for="">Nome Mãe</label>
-						<div class="conteiner">
-							<h:inputText id="nomeMae"
-										 maxlength="60"
-										 value="#{pessoaBean.entidade.nomeMae}" 
-										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
-						</div>
-					</div>
-		
-					<div class="input-box box-40">
-						<label for="">Nome Pai</label>
-						<div class="conteiner">
-							<h:inputText id="nomePai"
-										 maxlength="60"
-										 value="#{pessoaBean.entidade.nomePai}" 
-										 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
-						</div>
-					</div>									
+							
+							
+							<div class="input-box box-20">
+								<label for="">Abreviatura</label>
+								<div class="conteiner">
+									<h:inputText id="abreviatura"
+												 value="#{pessoaBean.entidade.abreviatura}"
+												 maxlength="25" 
+												 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
+								</div>
+							</div>
+				
+							<div class="input-box box-40">
+								<label for="">Nome Mãe</label>
+								<div class="conteiner">
+									<h:inputText id="nomeMae"
+												 maxlength="60"
+												 value="#{pessoaBean.entidade.nomeMae}" 
+												 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
+								</div>
+							</div>
+				
+							<div class="input-box box-40">
+								<label for="">Nome Pai</label>
+								<div class="conteiner">
+									<h:inputText id="nomePai"
+												 maxlength="60"
+												 value="#{pessoaBean.entidade.nomePai}" 
+												 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}"/>
+								</div>
+							</div>								
+						</span>	
+						<span style="display: flex; justify-content: center;">
+							<div class="foto-pessoal">
+								<label for="">Foto</label>
+								<div>
+									<a4j:mediaOutput id="fotoPessoal"
+													 element="img"
+					                 				 createContent="#{imageBean.geraFoto}" 
+					                 				 mimeType="image/jpeg"
+					                 				 onclick="document.querySelector('.fotoUpload input').click()" />
+						           <rich:fileUpload id="fotoUpload"
+						           		 styleClass="fotoUpload"	
+										 style="display: none"										 
+										 fileUploadListener="#{pessoaBean.uploadFoto}"
+										 maxFilesQuantity="1"										
+										 immediateUpload="true"
+										 acceptedTypes = "png, jpg"
+										 ontyperejected="alerta('Somente arquivos PNG e JPG são aceitos.');"
+										 onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');"
+										 rendered="#{pessoaBean.temPermisssaoParaAlterar()}">
+										<a4j:ajax event="uploadcomplete" execute="@none" render="form:fotoUpload, form:fotoPessoal, messages"/>	 
+									</rich:fileUpload>
+								</div>			                  			   
+							</div>	
+						</span>
+					</div>							
 		
 					<div class="select-box box-15 clr">
 						<label for="sexo">Sexo *</label>
@@ -244,7 +246,7 @@
 							<h:selectOneMenu id="estadoCivil" 
 											 converter="entityConverter"
 											 value="#{pessoaBean.entidade.estadoCivil}"
-											 disabled="#{not pessoaBean.podeAlterar()}">
+											 disabled="#{not pessoaBean.temPermisssaoParaAlterar()}">
 							  	<f:selectItem id="selecioneEstadoCivil" itemLabel="Selecione..."/>
 							  	<f:selectItems 	id="comboEstadoCivil" 
 							  					value="#{pessoaBean.comboEstadoCivil}"
@@ -299,20 +301,31 @@
 					
 					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
 			
-						<fieldset class="clr">
+						<fieldset class="clr" style="display: flex; align-items: center; padding-bottom: 10px;">
 		
 							<legend>Ficha Antiga</legend>
 							
-							<ui:fragment rendered="#{pessoaBean.temPermisssaoParaAlterar()}">	
-								<t:inputFileUpload id="ficha"								   						
-					            	      		   value="#{pessoaBean.ficha}"
-					                	  		   storage="file" size="20"
-					                  			   valueChangeListener="#{pessoaBean.uploadFicha}"
-					                  			   disabled="#{not pessoaBean.temPermisssaoParaAlterar()}" />
+							<ui:fragment rendered="#{pessoaBean.temPermisssaoParaAlterar()}">
+					           	<rich:fileUpload id="fileUploadFicha"
+										 styleClass="fileUploadFicha"
+										 style="display: none"										 
+										 fileUploadListener="#{pessoaBean.uploadFicha}"
+										 acceptedTypes = "pdf"
+										 ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
+										 maxFilesQuantity="1"										
+										 immediateUpload="true"
+										 onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');"
+										 >
+									<a4j:ajax event="uploadcomplete" execute="@none" render="form:fileUploadFicha, messages"/>
+								</rich:fileUpload>
+								
+								<span class="bt-upload fl" onclick="document.querySelector('.fileUploadFicha input').click()">
+									Selecionar arquivo
+								</span>
 				            </ui:fragment>      			   
 				                  			   
 							<h:commandLink 	id="fichaAntiga"
-											styleClass="fichaAntigaLink"
+											styleClass="link-arquivo"
 			               				  	value="Clique aqui para visualizar"
 			               				  	action="#{pessoaBean.fichaAntiga}"
 			               				  	target="_blank"
@@ -1000,7 +1013,7 @@
 									<h:selectBooleanCheckbox id="depIR" value="#{dependente.depIr}" disabled="true" />
 								</center>							
 							</h:column>												
-						</rich:dataTable>
+						</rich:dataTable>						
 						
 						<br />
 						
@@ -1021,6 +1034,91 @@
 	
 				</rich:tab>
 				
+				
+				<rich:tab header="Declaração de Bens e Valores" rendered="#{pessoaBean.entidade.cpf != null}">										
+					
+					<ui:fragment rendered="#{pessoaBean.podeAlterar()}">	
+						<rich:fileUpload id="fileUploadDeclaracao"
+										 styleClass="fileUploadDeclaracao"
+										 style="display: none"										 
+										 fileUploadListener="#{pessoaBean.uploadDeclaracaoBens}"
+										 acceptedTypes = "pdf"
+										 ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
+										 maxFilesQuantity="1"										
+										 immediateUpload="true"
+										 onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');"
+										 >
+							<a4j:ajax event="uploadcomplete" execute="@none" render="form:fileUploadDeclaracao, form:listaDeclaracaoBens, messages"/>
+						</rich:fileUpload>
+						
+						<span class="bt-upload fl mg-bottom-15" onclick="document.querySelector('.fileUploadDeclaracao input').click()">
+							Adicionar declaração
+						</span>						   			   
+				    </ui:fragment>	  	
+					
+					<div class="tabela-dados">			
+					
+						<rich:dataTable id="listaDeclaracaoBens"
+										var="declaracao"
+										value="#{pessoaBean.declaracaoBensList}"
+										noDataLabel="Nenhuma declaração adicionada"	>
+										
+							<h:column id="col1ld" headerClass="cel-80">
+								<f:facet name="header">
+									Declaração
+								</f:facet>
+								<h:commandLink styleClass="link-arquivo"
+			               				  	value="#{declaracao.nomeArquivo}"
+			               				  	action="#{pessoaBean.abrirDeclaracao(declaracao.caminho)}"
+			               				  	target="_blank" />							
+							</h:column>
+							<h:column id="col2ld" headerClass="cel-15">
+								<f:facet name="header">
+									Exercício
+								</f:facet>	
+								<center>
+									<h:inputText class="exercicioInput" 
+												 size="4" 
+												 maxlength="4"
+											 	 value="#{declaracao.exercicio}"
+											     disabled="#{not pessoaBean.podeAlterar()}">
+										<rich:placeholder value="informe o exercício" />
+										<a4j:ajax/>
+									</h:inputText>
+								</center>							
+							</h:column>
+							<h:column id="col3ld" headerClass="cel-15">
+								<f:facet name="header">
+									Ano Calendário
+								</f:facet>	
+								<center>
+									<h:inputText class="exercicioInput" 
+												 size="4" 
+												 maxlength="4"
+											 	 value="#{declaracao.anoCalendario}"
+											     disabled="#{not pessoaBean.podeAlterar()}">
+										<rich:placeholder value="informe o ano calendário" />
+										<a4j:ajax/>
+									</h:inputText>
+								</center>							
+							</h:column>							
+							<h:column id="col4ld" headerClass="cel-10">
+								<f:facet name="header">
+									Excluir
+								</f:facet>
+								<a4j:commandLink value="Excluir"                        			   
+	                        			   styleClass="ico-delete"
+	                        			   execute="@this"
+	                        			   action="#{pessoaBean.excluirDeclaracao(declaracao)}"
+	                        			   render="listaDeclaracaoBens"
+	                        			   />					
+							</h:column>							
+																										
+						</rich:dataTable>		 
+					
+					</div>
+	
+				</rich:tab>
 			
 			</rich:tabPanel>	
 			
