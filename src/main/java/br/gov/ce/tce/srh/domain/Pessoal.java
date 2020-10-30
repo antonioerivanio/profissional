@@ -44,7 +44,7 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "IDESTADOCIVIL")	
 	private EstadoCivil estadoCivil;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "IDRACA")	
 	private Raca raca;
@@ -269,6 +269,9 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	@Column(name="TELEFONEALTERNATIVO")
 	private String telefoneAlternativo;		
 		
+	@ManyToOne
+	@JoinColumn(name = "IDTIPODEFICIENCIA")	
+	private TipoDeficiencia tipoDeficiencia;
 	
 	public Pessoal(){
 		//seguindo padrao Java Beans...
@@ -502,6 +505,9 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 
 	public Uf getUfCTPS() { return ufCTPS; }
 	public void setUfCTPS(Uf ufCTPS) { this.ufCTPS = ufCTPS; }
+	
+	public TipoDeficiencia getTipoDeficiencia() { return tipoDeficiencia; }
+	public void setTipoDeficiencia(TipoDeficiencia tipoDeficiencia) { this.tipoDeficiencia = tipoDeficiencia; }
 
 	@Override
 	public Long getId() {return this.id;}

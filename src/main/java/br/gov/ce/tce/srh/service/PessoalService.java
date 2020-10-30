@@ -155,6 +155,9 @@ public class PessoalService {
 			if( entidade.getEscolaridade() == null )
 				throw new SRHRuntimeException("A Escolaridade é obrigatória.");
 			
+			if( entidade.getTipoDeficiencia() == null )
+				throw new SRHRuntimeException("O Tipo Deficiência é obrigatório.");
+			
 			if ( entidade.getRaca() == null )
 				throw new SRHRuntimeException("A Raça/Cor é obrigatória.");
 						

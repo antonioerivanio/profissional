@@ -28,6 +28,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.dao.DeclaracaoBensDAO;
+import br.gov.ce.tce.srh.dao.TipoDeficienciaDAO;
 import br.gov.ce.tce.srh.domain.DeclaracaoBens;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Escolaridade;
@@ -40,6 +41,7 @@ import br.gov.ce.tce.srh.domain.PessoalCategoria;
 import br.gov.ce.tce.srh.domain.PessoalRecadastramento;
 import br.gov.ce.tce.srh.domain.Raca;
 import br.gov.ce.tce.srh.domain.Recadastramento;
+import br.gov.ce.tce.srh.domain.TipoDeficiencia;
 import br.gov.ce.tce.srh.domain.TipoLogradouro;
 import br.gov.ce.tce.srh.domain.Uf;
 import br.gov.ce.tce.srh.enums.CategoriaCNH;
@@ -125,6 +127,9 @@ public class PessoaBean implements Serializable {
 	
 	@Autowired
 	private DeclaracaoBensDAO declaracaoBensDAO;
+	
+	@Autowired
+	private TipoDeficienciaDAO tipoDeficienciaDAO;
 
 	private Boolean podeAlterar = null;
 	private Boolean ehServidor = null;
@@ -154,6 +159,7 @@ public class PessoaBean implements Serializable {
 	private List<TipoLogradouro> comboTipoLogradouro;
 	private List<Municipio> comboMunicipioNaturalidade;
 	private List<Municipio> comboMunicipioEndereco;
+	private List<TipoDeficiencia> comboTipoDeficiencia;
 	
 	private Parametro pathDeclaracaoBensSRH;
 
@@ -497,6 +503,21 @@ public class PessoaBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		return comboMunicipioNaturalidade;
+	}
+	
+	public List<TipoDeficiencia> getComboTipoDeficiencia() {
+		try {
+
+			if (this.comboTipoDeficiencia == null) {
+				this.comboTipoDeficiencia = tipoDeficienciaDAO.findAll();				
+			}
+
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar o campo tipo deficiência. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return this.comboTipoDeficiencia;
 	}
 
 	public String relatorio() {
