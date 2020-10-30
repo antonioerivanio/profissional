@@ -257,7 +257,7 @@
 						</div>
 					</div>
 		
-					<div class="select-box box-20">
+					<div class="select-box box-40">
 						<label for="">Escolaridade *</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="escolaridade"
@@ -270,6 +270,23 @@
 							  					var="escolaridade"
 							  					itemValue="#{escolaridade}"
 							  					itemLabel="#{escolaridade.descricao}"/>
+							</h:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="select-box box-35">
+						<label for="">Tipo Deficiência *</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="tipoDeficiencia"
+											 converter="entityConverter"
+											 value="#{pessoaBean.entidade.tipoDeficiencia}"
+											 disabled="#{not pessoaBean.podeAlterar()}">
+							  	<f:selectItem id="selecioneTipoDeficiencia" itemLabel="Selecione..."/>
+							  	<f:selectItems 	id="comboTipoDeficiencia" 
+							  					value="#{pessoaBean.comboTipoDeficiencia}"
+							  					var="tipoDeficiencia"
+							  					itemValue="#{tipoDeficiencia}"
+							  					itemLabel="#{tipoDeficiencia.id} - #{tipoDeficiencia.descricao}"/>
 							</h:selectOneMenu>
 						</div>
 					</div>
