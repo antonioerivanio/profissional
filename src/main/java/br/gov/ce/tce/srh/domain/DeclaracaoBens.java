@@ -18,12 +18,12 @@ import org.hibernate.envers.Audited;
 @Audited
 @SuppressWarnings("serial")
 @Table(name="TB_DECLARACAOBENS", schema=DatabaseMetadata.SCHEMA_SRH)
-@SequenceGenerator(name="SEQ_DECLARACAOBENS", sequenceName="SEQ_DECLARACAOBENS", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
+@SequenceGenerator(name="SQ_DECLARACAOBENS", sequenceName="SQ_DECLARACAOBENS", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
 public class DeclaracaoBens extends BasicEntity<Long> implements Serializable {
 	
 	@Id
 	@Column(name="ID")
-	@GeneratedValue(strategy = GenerationType.AUTO, generator="SEQ_DECLARACAOBENS")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator="SQ_DECLARACAOBENS")
 	private Long id;
 	
 	@Column(name="CAMINHO")
