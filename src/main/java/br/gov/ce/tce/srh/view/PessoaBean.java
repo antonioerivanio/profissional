@@ -243,14 +243,14 @@ public class PessoaBean implements Serializable {
 
 		try {
 
-			entidade = pessoalService.salvar(entidade);		
+			entidade = pessoalService.salvar(entidade);			
+			
+			salvarDeclaracoes();
 			
 			if(finalizar) {
 				getPessoalRecadastramento().setStatus(1);
 				recadastramentoAtivo = false;				
 			}
-			
-			salvarDeclaracoes();
 			
 			atualizaRecadastramento();			
 
