@@ -1080,6 +1080,14 @@
 										value="#{pessoaBean.declaracaoBensList}"
 										noDataLabel="Nenhuma declaração adicionada"	>
 										
+							<h:column id="col0ld" headerClass="cel-80">
+								<f:facet name="header">
+									ID
+								</f:facet>
+								<center>
+									<h:outputText value="#{declaracao.id}" />							
+								</center>
+							</h:column>							
 							<h:column id="col1ld" headerClass="cel-80">
 								<f:facet name="header">
 									Declaração
@@ -1123,12 +1131,14 @@
 								<f:facet name="header">
 									Excluir
 								</f:facet>
-								<a4j:commandLink value="Excluir"                        			   
+								<a4j:commandLink id="excluir" 
+											value="Excluir"                        			   
 	                        			   styleClass="ico-delete"
-	                        			   execute="@this"
-	                        			   action="#{pessoaBean.excluirDeclaracao(declaracao)}"
-	                        			   render="listaDeclaracaoBens"
-	                        			   />					
+	                        			   onclick="alertaExclusao();"
+	                        			   execute="@this">
+	                        		<f:setPropertyActionListener target="#{pessoaBean.declaracao}" value="#{declaracao}" />
+	                        	</a4j:commandLink>
+	                        	<a4j:jsFunction name="excluir" action="#{pessoaBean.excluirDeclaracao()}" render="listaDeclaracaoBens"/> 					
 							</h:column>							
 																										
 						</rich:dataTable>		 

@@ -302,6 +302,13 @@ public class SRHUtils {
 	 public static Date getAgora() {
 		 return new Date();
 	 }
+	 
+	 public static int getAnoCorrente() {		 
+		GregorianCalendar hoje = new GregorianCalendar();		
+		hoje.setTime(new Date());
+
+		return hoje.get(Calendar.YEAR);		 
+	 }
 	
 	/** 
 	 * Metodo que valida CPF.
