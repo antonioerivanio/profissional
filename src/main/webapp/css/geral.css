@@ -270,10 +270,17 @@ body {
 
 img.ambiente {
 	position: absolute;
-    left: 10px;
-    top: 10px;
+    right: 195px;
+    top: 24px;
     width: 160px;
 }
+
+.login-topo img.ambiente {
+	position: absolute;
+    right: 6px;
+    top: 55px;
+    width: 160px;
+} 
 
 .topo .login-box {
 	position: absolute;
@@ -525,7 +532,7 @@ img.ambiente {
 	font-weight: bold;
 	margin-left: 12px;
 	margin-bottom: 20px;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .errorMessage {
@@ -533,7 +540,7 @@ img.ambiente {
 	font-weight: bold;
 	margin-left: 12px;
 	margin-bottom: 20px;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .col-50 {

@@ -27,7 +27,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.dao.DeclaracaoBensDAO;
 import br.gov.ce.tce.srh.dao.TipoDeficienciaDAO;
 import br.gov.ce.tce.srh.domain.DeclaracaoBens;
 import br.gov.ce.tce.srh.domain.Dependente;
@@ -48,6 +47,7 @@ import br.gov.ce.tce.srh.enums.CategoriaCNH;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CEPService;
+import br.gov.ce.tce.srh.service.DeclaracaoBensService;
 import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.EscolaridadeService;
 import br.gov.ce.tce.srh.service.EstadoCivilService;
@@ -126,7 +126,7 @@ public class PessoaBean implements Serializable {
 	private ImageBean imageBean; 
 	
 	@Autowired
-	private DeclaracaoBensDAO declaracaoBensDAO;
+	private DeclaracaoBensService declaracaoBensService;
 	
 	@Autowired
 	private TipoDeficienciaDAO tipoDeficienciaDAO;
@@ -169,7 +169,8 @@ public class PessoaBean implements Serializable {
 	private List<Pessoal> pagedList = new ArrayList<Pessoal>();
 	private int flagRegistroInicial = 0;
 	private Integer pagina = 1;
-
+	
+	private DeclaracaoBens declaracao;
 	
 	@PostConstruct
 	private void init() {
@@ -204,7 +205,7 @@ public class PessoaBean implements Serializable {
 			buscarCep();
 			
 			this.dependentes = dependenteService.findByResponsavel(entidade.getId());
-			this.declaracaoBensList = declaracaoBensDAO.getByPessoalId(entidade.getId());			
+			this.declaracaoBensList = declaracaoBensService.getByPessoalId(entidade.getId());			
 			
 			imageBean.setFoto(this.entidade.getFoto());
 			
@@ -247,6 +248,8 @@ public class PessoaBean implements Serializable {
 			
 			salvarDeclaracoes();
 			
+			this.declaracaoBensList = declaracaoBensService.getByPessoalId(entidade.getId());
+			
 			if(finalizar) {
 				getPessoalRecadastramento().setStatus(1);
 				recadastramentoAtivo = false;				
@@ -265,6 +268,10 @@ public class PessoaBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
+	}
+
+	private void salvarDeclaracoes() {
+		this.declaracaoBensService.salvarDeclaracoes(this.declaracaoBensList, this.podeAlterar() && this.ehServidor());
 	}
 	
 	public String editar() {
@@ -664,7 +671,7 @@ public class PessoaBean implements Serializable {
 			UploadedFile arquivo = event.getUploadedFile();
 			String nomeArquivo = arquivo.getName();
 			
-			DeclaracaoBens declaracao = new DeclaracaoBens();			
+			DeclaracaoBens declaracao = new DeclaracaoBens();
 			declaracao.setNomeArquivo(nomeArquivo);
 			declaracao.setCaminho(this.entidade.getId() + File.separator + UUID.randomUUID() + nomeArquivo.substring(nomeArquivo.lastIndexOf('.'), nomeArquivo.length()));
 			declaracao.setPessoal(this.entidade);		
@@ -713,32 +720,22 @@ public class PessoaBean implements Serializable {
 		}
 	}
 	
-	public void excluirDeclaracao(DeclaracaoBens declaracao) {		
-		this.declaracaoBensListExcluir.add(declaracao);
-		this.declaracaoBensList.remove(declaracao);
-	}	
-	
-	private void salvarDeclaracoes() {
-	
-		for(DeclaracaoBens declaracao: this.declaracaoBensList) {
-			
-			if(declaracao.getExercicio() == null || !SRHUtils.anoExercicioValido(declaracao.getExercicio())) {
-				throw new SRHRuntimeException("Declaração " + declaracao.getNomeArquivo() + " com exercício inválido");
-			}			
-			
-			if(declaracao.getAnoCalendario() == null || !SRHUtils.anoExercicioValido(declaracao.getAnoCalendario())) {
-				throw new SRHRuntimeException("Declaração " + declaracao.getNomeArquivo() + " com ano calendário inválido");
+	public void excluirDeclaracao() {		
+		try {
+			if(this.declaracao.getId() != null && this.declaracao.getId() != 0) {				
+				this.declaracaoBensService.excluir(this.declaracao);
 			}
 			
-			this.declaracaoBensDAO.salvar(declaracao);
+			this.declaracaoBensList.remove(this.declaracao);
+			
+			this.declaracao = null;
+		
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Não foi possível excluir a declaração.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		for(DeclaracaoBens declaracao: this.declaracaoBensListExcluir) {
-			this.declaracaoBensDAO.excluir(declaracao);
-		}		
-		
-	}	
-
+	}
+	
 	public void formularioDependentes() {
 		try {
 
@@ -886,6 +883,14 @@ public class PessoaBean implements Serializable {
 
 	public List<DeclaracaoBens> getDeclaracaoBensListExcluir() {
 		return declaracaoBensListExcluir;
+	}	
+	
+	public DeclaracaoBens getDeclaracao() {
+		return declaracao;
+	}
+
+	public void setDeclaracao(DeclaracaoBens declaracao) {
+		this.declaracao = declaracao;
 	}
 
 	// PAGINAÇÃO
@@ -934,7 +939,7 @@ public class PessoaBean implements Serializable {
 
 	private int getPrimeiroDaPagina() {
 		return dataModel.getPageSize() * (pagina - 1);
-	}
+	}	
 
 	// FIM PAGINAÇÃO
 
