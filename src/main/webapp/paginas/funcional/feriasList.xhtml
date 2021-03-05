@@ -21,6 +21,13 @@
 			}
 		}
 		</script>
+		
+		<style>
+			.destaque {
+				color: red;
+				font-weight: bold;
+			}
+		</style>
 
 		<div class="titulo-pagina">
 			<h2>Consultar Periodos de Férias</h2>
@@ -84,7 +91,7 @@
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 style="margin-left: 10px" />
 							 
-			</ui:fragment>
+			</ui:fragment>			
 			
 			<div class="tabela-dados">
 
@@ -123,7 +130,9 @@
                             Início
                         </f:facet>
                         <center>
-                        	<h:outputText id="item4" value="#{item.inicio}" styleClass="cel-25" >
+                        	<h:outputText id="item4" 
+                        		value="#{item.inicio}" 
+                        		styleClass="cel-25 #{ feriasListBean.isDataFutura(item.inicio, item.tipoFerias) ? 'destaque' : ''}" >
                         		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
@@ -133,7 +142,8 @@
                             Final
                         </f:facet>
                         <center>
-                        	<h:outputText id="item5" value="#{item.fim}" styleClass="cel-25" >
+                        	<h:outputText id="item5" value="#{item.fim}" 
+                        		styleClass="cel-25 #{ feriasListBean.isDataFutura(item.fim, item.tipoFerias) ? 'destaque' : ''}" >
                         		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
@@ -187,6 +197,8 @@
 									renderIfSinglePage="false"
 									page="#{feriasListBean.pagina}" />
 			</div>
+			
+			<div style="float: left; font-size: 12px; font-style: italic;">Em <span class="destaque">vermelho</span>, estão destacadas datas futuras de início ou fim de fruição</div>
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 

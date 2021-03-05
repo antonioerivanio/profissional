@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Ferias;
+import br.gov.ce.tce.srh.domain.TipoFerias;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.FeriasService;
@@ -247,5 +249,9 @@ public class FeriasListBean implements Serializable {
 	
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
+	
+	public boolean isDataFutura(Date data, TipoFerias tipoFerias) {
+		return (tipoFerias.getId() == 1 || tipoFerias.getId() == 3) && !data.before(new Date());
+	}
 	
 }

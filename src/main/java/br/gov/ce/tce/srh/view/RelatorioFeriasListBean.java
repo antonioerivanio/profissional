@@ -77,6 +77,8 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	//entidades das telas
 	private List<RelatorioFerias> lista;
+	private Integer mes;
+	private Integer ano;
 
 	// combos
 	private List<Setor> comboSetor;
@@ -392,5 +394,35 @@ public class RelatorioFeriasListBean implements Serializable {
 
 	public String getNome() {return nome;}
 	public void setNome(String nome) {this.nome = nome;}
+	
+	
+	public void relatorioFeriasAlteradas() {
+
+		try {
+			
+			if(ano == null || ano <= 0 || mes == null || mes == 0) {
+				throw new SRHRuntimeException("Informe valores válidos para os campos Ano e Mês.");
+			}
+			
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("ANO", ano);
+			parametros.put("MES", mes);
+			
+			relatorioUtil.relatorioXls("ferias_alteradas_no_mes.jasper", parametros, "ferias_alteradas_no_mes.xls");
+		
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		
+	}
+	
+	public Integer getMes() {return mes;}
+	public void setMes(Integer mes) {this.mes = mes;}	
+	public Integer getAno() {return ano;}
+	public void setAno(Integer ano) {this.ano = ano;}
 
 }

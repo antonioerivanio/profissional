@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ferias_alteradas_no_mes" pageWidth="1684" pageHeight="1191" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1684" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0717bff0-3f60-48f9-a184-baccfe9bc1a0">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="267"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="728"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORACLE_SRH_HOM"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="521"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="469"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="ANO" class="java.lang.Integer"/>
+	<parameter name="MES" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+    p.nomecompleto       nome,
+    func.matricula       matricula,
+    (
+        SELECT
+            s.nmsetor
+        FROM
+            srh.tb_funcionalsetor   fs
+            INNER JOIN sapjava.setor           s ON fs.idsetor = s.idsetor
+        WHERE
+            fs.idfuncional = func.id
+            AND fs.data_inicio <= rev.data_auditoria
+            AND ( fs.data_fim >= rev.data_auditoria
+                  OR fs.data_fim IS NULL )
+    ) setor,
+    tf.descricao         tipo_ferias,
+    fer.anoreferencia    ano_referencia,
+    fer.periodo,
+    fer.inicio           inicio,
+    fer.fim              fim,
+    fer.qtdedias         total_dias,
+    fer.obs              observacao,
+    CASE fer.tipo_revisao
+        WHEN 0   THEN
+            'Inclusão'
+        WHEN 1   THEN
+            'Alteração'
+        WHEN 2   THEN
+            'Exclusão'
+    END operacao,
+    fer.id               id_ferias,
+    rev.cd_revisao,
+    rev.data_auditoria   data_operacao,
+    u.nome               usuario_responsavel
+FROM
+    srh.tb_ferias_aud   fer
+    INNER JOIN (
+        SELECT
+            r.*
+        FROM
+            srh.tb_revisao r
+            INNER JOIN (
+                SELECT
+                    f.id,
+                    MAX(f.cd_revisao) cd_revisao
+                FROM
+                    srh.tb_ferias_aud   f
+                    INNER JOIN srh.tb_revisao      rev ON f.cd_revisao = rev.cd_revisao
+                WHERE
+                    EXTRACT(YEAR FROM rev.data_auditoria) = $P!{ANO}
+                    AND EXTRACT(MONTH FROM rev.data_auditoria) = $P!{MES}
+                GROUP BY
+                    f.id
+                ORDER BY
+                    f.id
+            ) max_cod ON r.cd_revisao = max_cod.cd_revisao
+    ) rev ON fer.cd_revisao = rev.cd_revisao
+    INNER JOIN sca.usuario         u ON rev.cd_usuario = u.id
+    INNER JOIN srh.tb_tipoferias   tf ON fer.tipoferias = tf.id
+    INNER JOIN srh.tb_funcional    func ON fer.idfuncional = func.id
+    INNER JOIN srh.tb_ocupacao     oc ON func.idocupacao = oc.id
+    INNER JOIN srh.tb_pessoal      p ON func.idpessoal = p.id
+WHERE
+    oc.tipoocupacao <> 1 -- DIFERENTE DE MEMBRO
+ORDER BY
+    p.nomecompleto,
+    rev.data_auditoria]]>
+	</queryString>
+	<field name="NOME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME"/>
+	</field>
+	<field name="MATRICULA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MATRICULA"/>
+	</field>
+	<field name="SETOR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SETOR"/>
+	</field>
+	<field name="TIPO_FERIAS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TIPO_FERIAS"/>
+	</field>
+	<field name="ANO_REFERENCIA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="ANO_REFERENCIA"/>
+	</field>
+	<field name="PERIODO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="PERIODO"/>
+	</field>
+	<field name="INICIO" class="java.util.Date">
+		<property name="com.jaspersoft.studio.field.label" value="INICIO"/>
+	</field>
+	<field name="FIM" class="java.util.Date">
+		<property name="com.jaspersoft.studio.field.label" value="FIM"/>
+	</field>
+	<field name="TOTAL_DIAS" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_DIAS"/>
+	</field>
+	<field name="OBSERVACAO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OBSERVACAO"/>
+	</field>
+	<field name="OPERACAO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OPERACAO"/>
+	</field>
+	<field name="ID_FERIAS" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="ID_FERIAS"/>
+	</field>
+	<field name="CD_REVISAO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="CD_REVISAO"/>
+	</field>
+	<field name="DATA_OPERACAO" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="DATA_OPERACAO"/>
+	</field>
+	<field name="USUARIO_RESPONSAVEL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="USUARIO_RESPONSAVEL"/>
+	</field>
+	<title>
+		<band height="20">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="260" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="60fc4689-c929-42c6-bf54-b0b91b5640aa"/>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="260" y="0" width="80" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="b36c5e05-56d0-4e9b-9857-668d1581e703"/>
+				<text><![CDATA[MATRÍCULA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="340" y="0" width="204" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="cb874b8f-e56d-419d-bd34-b8bea44db4b7"/>
+				<text><![CDATA[SETOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="544" y="0" width="140" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="f13fd226-e65b-4a43-b871-798935025ba3"/>
+				<text><![CDATA[TIPO DE FÉRIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="684" y="0" width="60" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="1a64f69d-cf96-4fa6-8e74-6cd6713be4cd"/>
+				<text><![CDATA[ANO REF.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="744" y="0" width="60" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="e4806fc4-e9de-4d10-9fdd-53e00629ce14"/>
+				<text><![CDATA[PERÍODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="804" y="0" width="60" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="b183fdd6-ba5e-45e4-9601-12972522fdd4"/>
+				<text><![CDATA[INÍCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="864" y="0" width="60" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="03e6a86c-8de6-4c00-8b25-59a99891281c"/>
+				<text><![CDATA[FIM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="924" y="0" width="70" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="482c6690-a0b0-4ac9-9b0e-282c1b70970f"/>
+				<text><![CDATA[TOTAL DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="994" y="0" width="350" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="003d5992-ed37-4a24-93f0-734e22b0ccc9"/>
+				<text><![CDATA[OBSERVAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="1344" y="0" width="70" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="763d06bf-cc41-484c-9636-5f968153c1d6"/>
+				<text><![CDATA[OPERAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="1414" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="a52c1600-5f23-418c-a70d-6d7badfc7129"/>
+				<text><![CDATA[DATA OPERAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="1524" y="0" width="160" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="cdf18f87-3eb8-4c84-9597-581584cf0c3b"/>
+				<text><![CDATA[USUÁRIO RESPONSÁVEL]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="260" height="30" uuid="ab83f970-84dd-48fc-ab1a-f78453066ee1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="260" y="0" width="80" height="30" uuid="b05546a6-44bb-43c0-a49f-54b80990d4ce">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{MATRICULA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="340" y="0" width="204" height="30" uuid="02a241c9-2469-43b7-9edf-88c7623e8142">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{SETOR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="544" y="0" width="140" height="30" uuid="3c1308f5-fa75-4200-9661-8a0b5186edb5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{TIPO_FERIAS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="684" y="0" width="60" height="30" uuid="994af957-cb9d-4ff8-ae8d-62f7cd30757d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ANO_REFERENCIA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="744" y="0" width="60" height="30" uuid="cf649b70-ed98-4295-8e33-b08eeb093cd6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{PERIODO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="804" y="0" width="60" height="30" uuid="10994b60-3d28-40bc-a631-b783fded0161">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="864" y="0" width="60" height="30" uuid="0d43c58c-d00c-4575-9ad6-376d574bb29c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="924" y="0" width="70" height="30" uuid="5eb19778-573d-46f3-abcd-3b3880cfaf67">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{TOTAL_DIAS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="994" y="0" width="350" height="30" uuid="fb26feaa-f3b8-42ad-8624-48125e9439fd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{OBSERVACAO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="1344" y="0" width="70" height="30" uuid="4e8ff6e4-fccd-4a74-9a6c-e2ccd2bfee24">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{OPERACAO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="1414" y="0" width="110" height="30" uuid="ff96c0c7-6119-406b-aab6-d54d0eb48327">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{DATA_OPERACAO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="1524" y="0" width="160" height="30" uuid="37c3f587-91f9-449a-8afa-45c95826ba8f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{USUARIO_RESPONSAVEL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
