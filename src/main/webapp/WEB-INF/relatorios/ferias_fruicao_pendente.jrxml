@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ferias_fruicao_pendente" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0717bff0-3f60-48f9-a184-baccfe9bc1a0">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="267"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="728"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORACLE_SRH_HOM"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="636"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="352"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="ORIGEM" class="java.lang.String"/>
+	<parameter name="ANO_REF" class="java.lang.Long"/>
+	<parameter name="PERIODO_INICIO" class="java.lang.String"/>
+	<parameter name="PERIODO_FIM" class="java.lang.String"/>
+	<parameter name="FILTRO_FERIAS" class="java.lang.String"/>
+	<parameter name="FILTRO_ORIGEM" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+    *
+FROM
+    (
+        SELECT
+            nome,
+            CASE
+                WHEN id_pessoal IN (
+                    SELECT
+                        idpessoal
+                    FROM
+                        srh.tb_funcional
+                    WHERE
+                            dataexercicio = '21/08/2017'
+                        AND idtipomovimentoentrada IN ( 3, 43 )
+                ) THEN
+                    'TCM'
+                ELSE
+                    'TCE'
+            END origem,
+            ano_referencia,
+            dias_fruicao
+        FROM
+            (
+                SELECT
+                    p.id                   id_pessoal,
+                    p.nomecompleto         nome,
+                    fe.anoreferencia       ano_referencia,
+                    SUM(fe.qtdedias)       dias_fruicao
+                FROM
+                         srh.tb_ferias fe
+                    INNER JOIN srh.tb_tipoferias    tfe ON fe.tipoferias = tfe.id
+                    INNER JOIN srh.tb_funcional     fu ON fe.idfuncional = fu.id
+                    INNER JOIN srh.tb_pessoal       p ON fu.idpessoal = p.id
+                    INNER JOIN srh.tb_ocupacao      o ON fu.idocupacao = o.id
+                WHERE
+                    fe.tipoferias IN ( 1, 3 )                    
+                    AND fu.datasaida IS NULL
+                    AND fu.status <> 5
+                    AND o.tipoocupacao <> 1
+                    AND o.situacao < 3
+                    $P!{FILTRO_FERIAS}                    
+                GROUP BY
+                    p.id,
+                    p.nomecompleto,
+                    fe.anoreferencia,
+                    fe.periodo
+            )
+        WHERE
+            dias_fruicao < 30
+        ORDER BY
+            nome,
+            ano_referencia
+    )
+WHERE 1=1
+     $P!{FILTRO_ORIGEM}]]>
+	</queryString>
+	<field name="NOME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="NOME"/>
+	</field>
+	<field name="ORIGEM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ORIGEM"/>
+	</field>
+	<field name="ANO_REFERENCIA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="ANO_REFERENCIA"/>
+	</field>
+	<field name="DIAS_FRUICAO" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="DIAS_FRUICAO"/>
+	</field>
+	<title>
+		<band height="100">
+			<textField>
+				<reportElement x="0" y="0" width="595" height="20" isRemoveLineWhenBlank="true" uuid="9a8b6ad5-89b2-4572-89fb-518f2217555f">
+					<printWhenExpression><![CDATA[$P{ORIGEM} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["<b>ORIGEM:</b> " + $P{ORIGEM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="595" height="20" isRemoveLineWhenBlank="true" uuid="601d7ba7-dbd9-483f-a8c2-2732697dc42c">
+					<printWhenExpression><![CDATA[$P{ANO_REF} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["<b>ANO REF.:</b> " + $P{ANO_REF}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="595" height="20" isRemoveLineWhenBlank="true" uuid="15e4fd60-d3cd-4f57-a517-cb15c3fd5a78">
+					<printWhenExpression><![CDATA[$P{PERIODO_INICIO} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["<b>PERÍODO INÍCIO:</b> " + $P{PERIODO_INICIO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="80" width="325" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="60fc4689-c929-42c6-bf54-b0b91b5640aa"/>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="325" y="80" width="90" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="b36c5e05-56d0-4e9b-9857-668d1581e703"/>
+				<text><![CDATA[ORIGEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="415" y="80" width="90" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="1a64f69d-cf96-4fa6-8e74-6cd6713be4cd"/>
+				<text><![CDATA[ANO REF.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="505" y="80" width="90" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="482c6690-a0b0-4ac9-9b0e-282c1b70970f"/>
+				<text><![CDATA[DIAS FRUIÇÃO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="60" width="595" height="20" isRemoveLineWhenBlank="true" uuid="b6804608-c446-47b3-b60b-ab26bb978683">
+					<printWhenExpression><![CDATA[$P{PERIODO_FIM} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["<b>PERÍODO FIM:</b> " + $P{PERIODO_FIM}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="325" height="25" uuid="ab83f970-84dd-48fc-ab1a-f78453066ee1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="325" y="0" width="90" height="25" uuid="b05546a6-44bb-43c0-a49f-54b80990d4ce">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ORIGEM}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="415" y="0" width="90" height="25" uuid="994af957-cb9d-4ff8-ae8d-62f7cd30757d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ANO_REFERENCIA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="505" y="0" width="90" height="25" uuid="5eb19778-573d-46f3-abcd-3b3880cfaf67">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{DIAS_FRUICAO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -239,7 +239,7 @@
 								 
 				</rich:tab>
 				
-				<rich:tab id="tab5" header="Histórico cadastral">
+				<rich:tab id="tab2" header="Histórico cadastral">
 				
 					<div class="input-box box-10" style="clear:both">
 						<label for="">Ano</label>
@@ -278,6 +278,63 @@
 					
 					<h:commandButton value="Gerar relatório" id="relatorioFeriasAlteradas"
 									 action="#{relatorioFeriasListBean.relatorioFeriasAlteradas}" 
+		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10" /> 			
+ 					
+				</rich:tab>
+				
+				<rich:tab id="tab3" header="Fruição Pendente">
+				
+					<div class="select-box box-16">
+						<label for="mes">Origem</label>
+						<div class="conteiner">
+							<h:selectOneMenu id="tab3origem" value="#{relatorioFeriasFruicaoPendenteBean.origem}">							  
+								<f:selectItem id="tab3origem0" itemLabel="Selecione..."/>
+								<f:selectItem id="tab3origem1" itemLabel="TCE" itemValue="TCE"/>
+								<f:selectItem id="tab3origem2" itemLabel="TCM" itemValue="TCM" />																									
+							</h:selectOneMenu>
+						</div>
+					</div>
+					
+					<div class="input-box box-15">
+							<label for="">Ano Referência</label>
+							<div class="conteiner">
+								<h:inputText id="tab3anoRef" 
+											 name="tab3anoRef"
+											 value="#{relatorioFeriasFruicaoPendenteBean.anoReferencia}" 
+											 maxlength="4"
+										 	 size="4">
+								</h:inputText>
+							</div>
+						</div>			
+						
+						<div class="input-box box-15">
+							<label for="">Período Início</label>
+							<div class="conteiner">
+								<h:inputText id="tab3periodoInicio" 
+											 name="tab3periodoInicio"
+											 styleClass="maskData" 
+											 converter="dateConverter"
+											 value="#{relatorioFeriasFruicaoPendenteBean.inicio}" 
+											 maxlength="10" />
+							</div>
+						</div>
+			
+						<div class="input-box box-15">
+							<label for="">Período Fim</label>
+							<div class="conteiner">
+								<h:inputText id="tab3periodoFim" 
+											 name="tab3periodoFim" 
+											 styleClass="maskData"
+											 converter="dateConverter"
+											 value="#{relatorioFeriasFruicaoPendenteBean.fim}" 
+											 maxlength="10" />
+							</div>
+						</div>
+		
+					<br /><br /><br /><br /><br />
+					
+					<h:commandButton value="Gerar relatório" id="tab3relatorioFeriasFruicaoPendente"
+									 action="#{relatorioFeriasFruicaoPendenteBean.relatorio}" 
 		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10" /> 			
  					
 				</rich:tab>
