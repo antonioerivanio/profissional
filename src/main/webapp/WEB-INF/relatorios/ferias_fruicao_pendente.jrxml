@@ -37,7 +37,7 @@ FROM
                     FROM
                         srh.tb_funcional
                     WHERE
-                            dataexercicio = '21/08/2017'
+                            TO_DATE(TO_CHAR(dataexercicio, 'dd/MM/yyyy'), 'dd/MM/yyyy') = TO_DATE('21/08/2017', 'dd/MM/yyyy')
                         AND idtipomovimentoentrada IN ( 3, 43 )
                 ) THEN
                     'TCM'
