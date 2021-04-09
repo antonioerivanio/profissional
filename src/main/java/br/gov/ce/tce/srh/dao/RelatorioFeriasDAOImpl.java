@@ -27,21 +27,21 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 	}
 	
 	@Override
-	public int getCountFindByParameter(Funcional funcional, Setor setor,	List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
-		return count(getQueryFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao));
+	public int getCountFindByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, String origem) {
+		return count(getQueryFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, origem));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RelatorioFerias> findByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, int firstResult, int maxResults) {		
-		Query query = entityManager.createNativeQuery(getQueryFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao), "RelatorioFerias"); 
+	public List<RelatorioFerias> findByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, String origem, int firstResult, int maxResults) {		
+		Query query = entityManager.createNativeQuery(getQueryFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, origem), "RelatorioFerias"); 
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);		
 		return query.getResultList();
 	}
 	
 
-	private String getQueryFindByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao) {
+	private String getQueryFindByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, String origem) {
 		
 		StringBuilder sql = new StringBuilder();
 
@@ -98,6 +98,16 @@ public class RelatorioFeriasDAOImpl implements RelatorioFeriasDAO {
 		
 		if (tipoOcupacao != null) {
 			sql.append("and TB_OCUPACAO.TIPOOCUPACAO = " + tipoOcupacao.getId());
+		}
+		
+		if(origem != null && !origem.isEmpty()) {
+			if(origem.equals("TCM")) {
+				sql.append("and TB_FUNCIONAL.idpessoal IN " );
+			} else {
+				sql.append("and TB_FUNCIONAL.idpessoal NOT IN ");
+			}
+			sql.append("( SELECT idpessoal FROM srh.tb_funcional WHERE TO_DATE(TO_CHAR(dataexercicio, 'dd/MM/yyyy'), 'dd/MM/yyyy') = TO_DATE('21/08/2017', 'dd/MM/yyyy') ");
+			sql.append(" AND idtipomovimentoentrada IN ( 3, 43 ) ) ");
 		}
 		
 		// Se for escolhido o tipo ocupação Membros

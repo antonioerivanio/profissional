@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="feriasSetorXLS" pageWidth="1200" pageHeight="40" orientation="Landscape" columnWidth="1200" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
-	<parameter name="IDSETORFILTRO" class="java.lang.Long" isForPrompting="false">
-		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
-	</parameter>
-	<parameter name="SETORFILTRO" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
-	</parameter>
-	<parameter name="TIPOSFERIASFILTRO" class="java.lang.String">
-		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
-	</parameter>
-	<parameter name="INICIOFILTRO" class="java.lang.String">
-		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
-	</parameter>
-	<parameter name="FIMFILTRO" class="java.lang.String">
-		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
-	</parameter>
-	<parameter name="BACK" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\diego\\work2\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="LOGO" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\diego\\work2\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
-	</parameter>
-	<parameter name="LOGO_TCE" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\diego\\work2\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
-	</parameter>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="feriasSetorXLS" pageWidth="1700" pageHeight="1500" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1700" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="10014d52-0a56-4e1d-b8da-a19974dbc607">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="267"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="728"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORACLE_SRH_HOM"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="521"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="469"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="IDSETORFILTRO" class="java.lang.Long"/>
+	<parameter name="SETORFILTRO" class="java.lang.String"/>
+	<parameter name="TIPOSFERIASFILTRO" class="java.lang.String"/>
+	<parameter name="INICIOFILTRO" class="java.lang.String"/>
+	<parameter name="FIMFILTRO" class="java.lang.String"/>
 	<parameter name="PARAMWHERE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT DISTINCT rownum idnum,
@@ -36,6 +30,7 @@
 	TB_FERIAS.INICIO inicio,
 	TB_FERIAS.FIM fim,
 	TB_FERIAS.QTDEDIAS qtdeDias,
+	TB_FERIAS.OBS,
 	tb_tipoferias.DESCRICAO tipoFerias,
 	TB_OCUPACAO.ORDEMOCUPACAO
 	FROM SRH.TB_FERIAS
@@ -53,95 +48,92 @@ $P!{PARAMWHERE}]]>
 	<field name="TIPOFERIAS" class="java.lang.String"/>
 	<field name="QTDEDIAS" class="java.lang.Long"/>
 	<field name="PERIODO" class="java.lang.Long"/>
+	<field name="OBS" class="java.lang.String"/>
 	<title>
 		<band height="20">
 			<staticText>
-				<reportElement x="400" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ANO REF.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="560" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[INÍCIO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="640" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[FIM]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="800" y="0" width="400" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[TIPO]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="0" width="400" height="20" forecolor="#000000"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
+				<reportElement mode="Opaque" x="0" y="0" width="400" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="574d2918-8929-4a51-a553-302953e5d937"/>
 				<text><![CDATA[NOME]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="720" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
+				<reportElement mode="Opaque" x="400" y="0" width="80" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="3cabd867-3b79-4dbc-887d-4227865ca701"/>
+				<text><![CDATA[ANO REF.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="480" y="0" width="80" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="9faae1ce-272d-40c5-989e-0842f067b79d"/>
+				<text><![CDATA[PERÍODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="560" y="0" width="80" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="4a87ffc2-2a15-4545-9ab3-a0c8ccf83e56"/>
+				<text><![CDATA[INÍCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="640" y="0" width="80" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="ece6484d-0371-462e-ab5c-3144b02cf274"/>
+				<text><![CDATA[FIM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="720" y="0" width="80" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="1d4c1c41-e4fc-4a17-9906-166df9db3d9e"/>
 				<text><![CDATA[DIAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="480" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PERÍODO]]></text>
+				<reportElement mode="Opaque" x="800" y="0" width="400" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="b4c60078-6a0a-4eae-90c5-bba96cc36470"/>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="1200" y="0" width="500" height="20" forecolor="#FFFFFF" backcolor="#000080" uuid="67301fdd-bb03-46f5-ae1c-73458712f5bc"/>
+				<text><![CDATA[OBSERVAÇÃO]]></text>
 			</staticText>
 		</band>
 	</title>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="400" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="560" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="800" y="0" width="400" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{TIPOFERIAS}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="640" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="0" width="400" height="20" forecolor="#000000"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="400" height="20" uuid="9987e034-31bf-4901-b0ba-3a3d888e3863">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
 				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="480" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="400" y="0" width="80" height="20" uuid="6769d181-a58a-47cd-b377-11ba9969b97f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ANOREFERENCIA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="480" y="0" width="80" height="20" uuid="eca17cdf-2ded-4ac5-857f-5edced005aed">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
 				<textFieldExpression><![CDATA[$F{PERIODO}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="720" y="0" width="80" height="20" forecolor="#000000"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="560" y="0" width="80" height="20" uuid="375f0682-978d-415b-8757-95d59e067d3c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="640" y="0" width="80" height="20" uuid="9e7c27db-8db0-42a2-b8d1-b6b2b0c64127">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="720" y="0" width="80" height="20" uuid="bce59cb1-9d7d-49a5-a99b-9c610d75baee">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
 				<textFieldExpression><![CDATA[$F{QTDEDIAS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="800" y="0" width="400" height="20" uuid="20b14f8a-4ab7-4f5f-984a-0cc504b24c1f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{TIPOFERIAS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="1200" y="0" width="500" height="20" uuid="717adbb4-ff27-4f70-b59d-cc1b6b574a51">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57344f7-7f3d-4a95-a8f4-3a2aff6a4a7c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{OBS}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

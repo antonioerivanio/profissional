@@ -118,6 +118,7 @@ public class RelatorioUtil {
 		configuration.setDetectCellType(true);
 		configuration.setWhitePageBackground(false);
 		configuration.setRemoveEmptySpaceBetweenRows(true);
+		configuration.setRemoveEmptySpaceBetweenColumns(true);
 		
 		exporterXLS.setConfiguration(configuration);
 		

@@ -164,6 +164,17 @@
 							</div>
 						</div>			
 						
+						<div class="select-box box-25">
+							<label for="tab1origem">Origem</label>
+							<div class="conteiner">
+								<h:selectOneMenu id="tab1origem" value="#{relatorioFeriasListBean.origem}">							  
+									<f:selectItem id="tab1origem0" itemLabel="Selecione..."/>
+									<f:selectItem id="tab1origem1" itemLabel="TCE" itemValue="TCE"/>
+									<f:selectItem id="tab1origem2" itemLabel="TCM" itemValue="TCM" />																									
+								</h:selectOneMenu>
+							</div>
+						</div>
+						
 						<div class="radios-group box-30">
 							<label for="">Formato</label>
 							<div class="conteiner">
@@ -285,7 +296,7 @@
 				<rich:tab id="tab3" header="Fruição Pendente">
 				
 					<div class="select-box box-16">
-						<label for="mes">Origem</label>
+						<label for="tab3origem">Origem</label>
 						<div class="conteiner">
 							<h:selectOneMenu id="tab3origem" value="#{relatorioFeriasFruicaoPendenteBean.origem}">							  
 								<f:selectItem id="tab3origem0" itemLabel="Selecione..."/>

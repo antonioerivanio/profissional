@@ -9,6 +9,6 @@ import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 
 public interface RelatorioFeriasService {
-	public abstract int getCountFindByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao);
-	public abstract List<RelatorioFerias> findByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, int firstResult, int maxResults);	
+	public abstract int getCountFindByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, String origem);
+	public abstract List<RelatorioFerias> findByParameter(Funcional funcional, Setor setor, List<String> tiposFerias, Date inicio, Date fim, Long anoReferencia, TipoOcupacao tipoOcupacao, String origem, int firstResult, int maxResults);	
 }

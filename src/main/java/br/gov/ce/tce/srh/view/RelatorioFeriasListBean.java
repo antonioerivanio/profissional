@@ -74,6 +74,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	private String cpf = new String();
 	private String nome = new String();
 	private Funcional funcional;
+	private String origem = new String();
 
 	//entidades das telas
 	private List<RelatorioFerias> lista;
@@ -98,7 +99,7 @@ public class RelatorioFeriasListBean implements Serializable {
 
 		try {
 			
-			count = relatorioFeriasService.getCountFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao);
+			count = relatorioFeriasService.getCountFindByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, origem);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -177,6 +178,16 @@ public class RelatorioFeriasListBean implements Serializable {
 				paramWhere.append("and TB_OCUPACAO.TIPOOCUPACAO = " + tipoOcupacao.getId());
 			}
 			
+			if(origem != null && !origem.isEmpty()) {
+				if(origem.equals("TCM")) {
+					paramWhere.append("and TB_FUNCIONAL.idpessoal IN " );
+				} else {
+					paramWhere.append("and TB_FUNCIONAL.idpessoal NOT IN ");
+				}
+				paramWhere.append("( SELECT idpessoal FROM srh.tb_funcional WHERE TO_DATE(TO_CHAR(dataexercicio, 'dd/MM/yyyy'), 'dd/MM/yyyy') = TO_DATE('21/08/2017', 'dd/MM/yyyy') ");
+				paramWhere.append(" AND idtipomovimentoentrada IN ( 3, 43 ) ) ");
+			}
+			
 			// Se for escolhido o tipo ocupação Membros
 			if (tipoOcupacao != null && tipoOcupacao.getId().intValue() == 1)			
 				paramWhere.append(" ORDER BY TB_OCUPACAO.ORDEMOCUPACAO, TB_PESSOAL.NOMECOMPLETO, TB_FERIAS.ANOREFERENCIA DESC, TB_FERIAS.INICIO DESC ");
@@ -227,7 +238,7 @@ public class RelatorioFeriasListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(relatorioFeriasService.findByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(relatorioFeriasService.findByParameter(funcional, setor, tiposFerias, inicio, fim, anoReferencia, tipoOcupacao, origem, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -424,5 +435,8 @@ public class RelatorioFeriasListBean implements Serializable {
 	public void setMes(Integer mes) {this.mes = mes;}	
 	public Integer getAno() {return ano;}
 	public void setAno(Integer ano) {this.ano = ano;}
+	public String getOrigem() {return origem;}
+	public void setOrigem(String origem) {this.origem = origem;}
+	
 
 }
