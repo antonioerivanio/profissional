@@ -52,6 +52,10 @@ public class RelatorioServidorBean  implements Serializable  {
 	private Date inicio;
 	private Date fim;
 	
+	//dias no setor
+	private Date inicioNoSetor;
+	private Date fimNoSetor;
+	
 	@PostConstruct
 	public void init() {
 		ativoPortal = true;
@@ -257,7 +261,29 @@ public class RelatorioServidorBean  implements Serializable  {
 			e.printStackTrace();
 		}
 
+	}	
+	
+	public void relatorioDiasNoSetor() {
+
+		try {
+			
+			Map<String, Object> parametros = new HashMap<String, Object>();			
+			parametros.put("INICIO_PERIODO", SRHUtils.formataData(SRHUtils.FORMATO_DATA, inicioNoSetor));
+			parametros.put("FIM_PERIODO", SRHUtils.formataData(SRHUtils.FORMATO_DATA, fimNoSetor));			
+			
+			relatorioUtil.relatorio("servidorDiasNoSetor.jasper", parametros, "periodoDeLotacao.pdf");
+		
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro na geração do Relatório. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
+	
 	
 	public List<Setor> getComboSetor() {
 		try {
@@ -289,6 +315,10 @@ public class RelatorioServidorBean  implements Serializable  {
 	public Date getInicio() {return inicio;}
 	public void setInicio(Date inicio) {this.inicio = inicio;}
 	public Date getFim() {return fim;}
-	public void setFim(Date fim) {this.fim = fim;}			
+	public void setFim(Date fim) {this.fim = fim;}
+	public Date getInicioNoSetor() {return inicioNoSetor;}
+	public void setInicioNoSetor(Date inicioNoSetor) {this.inicioNoSetor = inicioNoSetor;}
+	public Date getFimNoSetor() {return fimNoSetor;}
+	public void setFimNoSetor(Date fimNoSetor) {this.fimNoSetor = fimNoSetor;}	
 
 }

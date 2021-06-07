@@ -19,7 +19,7 @@
 		
 		<div class="titulo-pagina"><h2>Relatório de Servidores</h2></div>
 		
-		<br />
+		<span class="label-campos-obrigarotios"><i>* Campos Obrigatórios</i></span>		
 		
 		<h:form id="form" styleClass="formularios">
 
@@ -185,6 +185,50 @@
 					
 					<h:commandButton value="Gerar relatório" id="relatorioFalecidos"
 									 action="#{relatorioServidorBean.relatorioFalecidos}" 
+		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10" /> 			
+ 					
+				</rich:tab>
+			
+				<rich:tab id="tab5" header="Período de lotação">
+					
+					<fieldset class="conteiner">
+						
+						<legend>Período</legend>
+					
+						<div class="input-box box-50" style="clear:both">
+							<label for="">Início *</label>
+							<div class="conteiner">
+								<h:inputText id="dataInicioNoSetor" 
+											 name="dataInicioNoSetor"
+											 styleClass="maskData" 
+											 converter="dateConverter"
+											 value="#{relatorioServidorBean.inicioNoSetor}" 
+											 maxlength="10"
+											 required="true"
+											 requiredMessage="Informe o início do período"
+											  />
+							</div>
+						</div>
+			
+						<div class="input-box box-50">
+							<label for="">Fim *</label>
+							<div class="conteiner">
+								<h:inputText id="dataFimNoSetor" 
+											 name="dataFimNoSetor" 
+											 styleClass="maskData"
+											 converter="dateConverter"
+											 value="#{relatorioServidorBean.fimNoSetor}" 
+											 maxlength="10" 
+											 required="true"
+											 requiredMessage="Informe o fim do período"
+											 />
+							</div>
+						</div>					
+		
+					</fieldset>					
+					
+					<h:commandButton value="Gerar relatório" id="relatorioDiasNoSetor"
+									 action="#{relatorioServidorBean.relatorioDiasNoSetor}" 
 		 							 styleClass="bt-padrao fr mg-top-25 mg-right-10" /> 			
  					
 				</rich:tab>
