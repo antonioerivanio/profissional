@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -324,6 +325,29 @@ public class FuncionalDAO {
 		TypedQuery<Funcional> query = entityManager.createQuery("SELECT f FROM Funcional f WHERE f.pessoal.id = :idPessoal order by f.id " + orderBy, Funcional.class);
 		query.setParameter("idPessoal", idPessoal);
 		return query.getResultList();
+	}
+	
+	public int countResponsavelSetor(long idFuncional, Long idSetor) {
+		
+		try {			
+			String queryString = "SELECT count(*) FROM srh.TB_RESPONSAVELSETOR WHERE FLCHEFEATIVO = 1 AND (IDCHEFE = :idFuncional OR IDCHEFEIMEDIATO = :idFuncional)"; 
+			
+			if(idSetor != null) {
+				queryString += " AND IDSETOR = :idSetor";
+			}
+			
+			Query query = entityManager.createNativeQuery(queryString);
+			
+			query.setParameter("idFuncional", idFuncional);
+			
+			if(idSetor != null) {
+				query.setParameter("idSetor", idSetor);
+			}
+			
+			return ((BigDecimal) query.getSingleResult()).intValue();
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 }
