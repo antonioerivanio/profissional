@@ -267,6 +267,14 @@ public class RelatorioServidorBean  implements Serializable  {
 
 		try {
 			
+			if(inicioNoSetor == null) {
+				throw new SRHRuntimeException("Informe o início do período");
+			}
+			
+			if(fimNoSetor == null) {
+				throw new SRHRuntimeException("Informe o fim do período");
+			}
+			
 			Map<String, Object> parametros = new HashMap<String, Object>();			
 			parametros.put("INICIO_PERIODO", SRHUtils.formataData(SRHUtils.FORMATO_DATA, inicioNoSetor));
 			parametros.put("FIM_PERIODO", SRHUtils.formataData(SRHUtils.FORMATO_DATA, fimNoSetor));			
