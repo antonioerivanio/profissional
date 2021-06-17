@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import br.gov.ce.tce.srh.domain.BasicEntity;
-
 /**
  * Referente a tabela: FWPARAMETER
  * 

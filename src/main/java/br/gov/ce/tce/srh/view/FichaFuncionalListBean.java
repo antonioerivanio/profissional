@@ -101,16 +101,19 @@ public class FichaFuncionalListBean implements Serializable {
 			// pegando o caminho do arquivo no servidor
 	        Parametro parametro = parametroService.getByNome("pathImageSRH");
 
+	        InputStream in = null;
 			try {
 				
 				if ( entidade.getPessoal().getFoto() != null && !entidade.getPessoal().getFoto().equals("") ) {
-					new FileInputStream( parametro.getValor() + entidade.getPessoal().getFoto() );
+					in = new FileInputStream( parametro.getValor() + entidade.getPessoal().getFoto() );
 					imagemPessoa = parametro.getValor() + entidade.getPessoal().getFoto();
 				}
 
 			} catch (FileNotFoundException e) {
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 				imagemPessoa = parametro.getValor() + "semfoto.png";
+			} finally {
+				IOUtils.closeQuietly(in);				
 			}
 
 			String filtro = " where f.matricula = '" + getEntidade().getMatricula() + "' ";
