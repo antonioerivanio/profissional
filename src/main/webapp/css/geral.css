@@ -1592,3 +1592,41 @@ img.ambiente {
 	width: 88px;
     height: 88px;
 }
+input.rf-insp-inp[type="text"] {
+    background: none !important;
+    font-size: 12px !important;
+	color: #343434 !important;
+	height: 30px !important;  
+	padding-left: 6px !important;
+}   
+
+.rf-insp {
+	border: 1px solid #c5c5c5;
+    border-radius: 4px;
+	vertical-align: top;
+	height: 30px;
+} 
+
+.rf-insp-dec, .rf-insp-inc, .rf-insp-dec-dis, .rf-insp-inc-dis {
+	height: 15px !important;
+}
+
+.rf-insp-btns {
+	background: #ccc !important;
+}
+
+.rf-dt-ftr-c {
+	color: inherit !important;
+    background-color: #eee !important;
+    font-size: 12px !important;
+}
+
+.houtput-disabled {
+	font-size: 12px;
+    color: #343434;
+    padding: 8px 6px;
+    display: block;
+    background: #f1f1f1;
+    border-radius: 4px;
+    opacity: 0.9;
+}

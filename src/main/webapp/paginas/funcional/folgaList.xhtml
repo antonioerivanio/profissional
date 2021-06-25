@@ -30,7 +30,7 @@
 		</style>
 
 		<div class="titulo-pagina">
-			<h2>Consultar Períodos de Férias</h2>
+			<h2>Consultar Folgas</h2>
 		</div>
 
 		<h:form id="form" styleClass="formularios">
@@ -46,7 +46,7 @@
 									 name="matricula"
 									 maxlength="6"
 									 styleClass="maskMatricula"
-									 value="#{feriasListBean.matricula}" >
+									 value="#{folgaListBean.matricula}" >
 	            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
 	        			</h:inputText>
 					</div>
@@ -60,7 +60,7 @@
 									 maxlength="14"
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
-									 value="#{feriasListBean.cpf}" >
+									 value="#{folgaListBean.cpf}" >
 							<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 						</h:inputText>
 					</div>
@@ -71,7 +71,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa"
 									 name="nomeCompletoPessoa"
-									 value="#{feriasListBean.nome}" />
+									 value="#{folgaListBean.nome}" />
 					</div>
 				</div>
 	
@@ -82,14 +82,14 @@
 	
 				<h:commandButton id="consultar"
 								 value="Consultar"
-								 action="#{feriasListBean.consultar}"
+								 action="#{folgaListBean.consultar}"
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 render="scroller,lista"/>
-				<h:commandButton id="relatorio"
+				<!-- <h:commandButton id="relatorio"
 								 value="Relatório"
-								 action="#{feriasListBean.relatorio}" 
+								 action="#{folgaListBean.relatorio}" 
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
-								 style="margin-left: 10px" />
+								 style="margin-left: 10px" /> -->
 							 
 			</ui:fragment>			
 			
@@ -97,86 +97,94 @@
 
 				<rich:dataTable id="lista" 
 								var="item" 
-								rows="#{feriasListBean.dataModel.pageSize}"
-								value="#{feriasListBean.dataModel}" 
+								rows="#{folgaListBean.dataModel.pageSize}"
+								value="#{folgaListBean.dataModel}" 
 								>
 
-               		<h:column id="col1" headerClass="cel-25">
+               		<!-- <h:column id="col1" headerClass="cel-25">
                         <f:facet name="header">
                             Cargo
                         </f:facet>
                         <h:outputText id="item2" value="#{item.funcional.ocupacao.nomenclatura}" styleClass="cel-25" />
-                    </h:column>
-                    <h:column id="col2">
+                    </h:column> -->
+                    <h:column id="col2" headerClass="cel-15">
                         <f:facet name="header">
-                            TIPO FÉRIAS
+                            Tipo
                         </f:facet>
-						<h:outputText id="item1" value="#{item.tipoFerias.descricao}" />
+						<h:outputText id="item1" value="#{item.tipoFolga.descricao}" styleClass="cel-15" />
                     </h:column>
-               		<h:column id="col3" headerClass="cel-25">
+               		<h:column id="col3" headerClass="cel-50">
                         <f:facet name="header">
-                            Referência
+                            Descrição
                         </f:facet>
-                        <center><h:outputText id="item3" value="#{item.anoReferencia}" styleClass="cel-25" /></center>
+                        <h:outputText id="item3" value="#{item.descricao}" styleClass="cel-50" />
                     </h:column>
-                    <h:column id="col31" headerClass="cel-25">
+                    <h:column id="col31" headerClass="cel-15">
                         <f:facet name="header">
-                            Período
+                            Saldo inicial
                         </f:facet>
-                        <center><h:outputText id="item31" value="#{item.periodo}" styleClass="cel-25" /></center>
+                        <center>
+                        	<h:outputText id="item31" value="#{item.saldoInicial}" styleClass="cel-15" >
+                        		<f:convertNumber type="number" locale="pt_br" />
+                        	</h:outputText>
+                        </center>
                     </h:column>
-               		<h:column id="col4" headerClass="cel-25">
+               		<!-- <h:column id="col4" headerClass="cel-25">
                         <f:facet name="header">
                             Início
                         </f:facet>
                         <center>
                         	<h:outputText id="item4" 
                         		value="#{item.inicio}" 
-                        		styleClass="cel-25 #{ feriasListBean.isDataFutura(item.inicio, item.tipoFerias) ? 'destaque' : ''}" >
+                        		styleClass="cel-25 #{ folgaListBean.isDataFutura(item.inicio, item.tipoFerias) ? 'destaque' : ''}" >
                         		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
-                    </h:column>
-                	<h:column id="col5" headerClass="cel-25">
+                    </h:column> -->
+                	<!-- <h:column id="col5" headerClass="cel-25">
                         <f:facet name="header">
                             Final
                         </f:facet>
                         <center>
                         	<h:outputText id="item5" value="#{item.fim}" 
-                        		styleClass="cel-25 #{ feriasListBean.isDataFutura(item.fim, item.tipoFerias) ? 'destaque' : ''}" >
+                        		styleClass="cel-25 #{ folgaListBean.isDataFutura(item.fim, item.tipoFerias) ? 'destaque' : ''}" >
                         		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
-                    </h:column>
-                	<h:column id="col6" headerClass="cel-25">
+                    </h:column> -->
+                	<h:column id="col6" headerClass="cel-15">
                         <f:facet name="header">
-                            Dias
+                            Saldo final
                         </f:facet>
-                        <center><h:outputText id="item6" value="#{item.qtdeDias}" styleClass="cel-25" /></center>
+                        <center>
+                        	<h:outputText id="item6" value="#{item.saldoFinal}" styleClass="cel-15" >
+                        		<f:convertNumber type="number" locale="pt_br" />
+                        	</h:outputText>
+                        </center>
                     </h:column> 
-                    <h:column id="col7" rendered="#{not LoginBean.anyGranted('ROLE_FERIAS_ALTERAR')}">
+                    <h:column id="col7" rendered="#{not LoginBean.anyGranted('ROLE_FOLGA_ALTERAR')}">
                         <f:facet name="header">
                             DETALHAR
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{feriasListBean.editar}"
+                       				  action="#{folgaListBean.editar}"
                        				  styleClass="ico-detail" >
-                            <f:setPropertyActionListener target="#{feriasListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{folgaListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>     
-               		<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_FERIAS_ALTERAR')}">
+               		<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_FOLGA_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{feriasListBean.editar}"
+                       				  action="#{folgaListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{feriasListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{folgaListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_FERIAS_EXCLUIR')}">
+                	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_FOLGA_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -185,27 +193,36 @@
                         			   styleClass="ico-delete" 
                         			   onclick="alertaExclusao()"
                         			   execute="@this">
-                            <f:setPropertyActionListener target="#{feriasListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{folgaListBean.entidade}" value="#{item}" />
                         </a4j:commandLink>
-                        <a4j:jsFunction name="excluir" action="#{feriasListBean.excluir}" render="form"/>
+                        <a4j:jsFunction name="excluir" action="#{folgaListBean.excluir}" render="form"/>
                     </h:column>
+                    
+                    <f:facet name="footer">						
+	                	<span style="float: right;">
+		                	Saldo total: 
+		                	<h:outputText value="#{folgaListBean.saldoTotal}">
+		                        <f:convertNumber type="number" locale="pt_br"  />
+		                    </h:outputText>			                					
+	                	</span>
+					</f:facet>
 
 				</rich:dataTable>
 				<rich:dataScroller 	id="scroller" 
 									for="lista" 
 									stepControls="hide"									
 									renderIfSinglePage="false"
-									page="#{feriasListBean.pagina}" />
+									page="#{folgaListBean.pagina}" />
 			</div>
 			
-			<div style="float: left; font-size: 12px; font-style: italic;">Em <span class="destaque">vermelho</span>, estão destacadas datas futuras de início ou fim de fruição</div>
+			<!-- <div style="float: left; font-size: 12px; font-style: italic;">Em <span class="destaque">vermelho</span>, estão destacadas datas futuras de início ou fim de fruição</div> -->
 
 			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 
 								 value="Incluir"
-								 action="#{feriasListBean.incluir}"
+								 action="#{folgaListBean.incluir}"
 								 styleClass="bt-padrao fr mg-right-15" 
-								 rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR')}"/>
+								 rendered="#{LoginBean.anyGranted('ROLE_FOLGA_INSERIR')}"/>
 				<h:commandButton id="limpaTela"
 								 value="Limpar"
 								 action="listar"
@@ -213,11 +230,11 @@
 								 />
 			</ui:fragment>
 			
-			<h:commandButton id="relatorio2"
+			<!-- <h:commandButton id="relatorio2"
 								 value="Relatório"
-								 action="#{feriasListBean.relatorio}" 
+								 action="#{folgaListBean.relatorio}" 
 								 styleClass="bt-padrao fr mg-right-15" 
-								 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />				 
+								 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" /> -->				 
 
 		</h:form>
 		
