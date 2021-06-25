@@ -121,4 +121,8 @@ public class FuncionalService {
 		return dao.findAllAtivos();
 	}
 	
+	public int countResponsavelSetor(long idFuncional, Long idSetor) {
+		return dao.countResponsavelSetor(idFuncional, idSetor);
+	}
+	
 }

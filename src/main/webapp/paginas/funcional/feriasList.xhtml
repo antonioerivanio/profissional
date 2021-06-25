@@ -37,7 +37,7 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment rendered="#{feriasListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 			
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
@@ -52,19 +52,21 @@
 					</div>
 				</div>
 	
-				<div class="input-box box-15">
-					<label for="">CPF</label>
-					<div class="conteiner">
-						<h:inputText id="cpf" 
-									 name="cpf"
-									 maxlength="14"
-									 styleClass="maskCpf"
-									 converter="cpfConverter"
-									 value="#{feriasListBean.cpf}" >
-							<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
-						</h:inputText>
+				<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+					<div class="input-box box-15" >
+						<label for="">CPF</label>
+						<div class="conteiner">
+							<h:inputText id="cpf" 
+										 name="cpf"
+										 maxlength="14"
+										 styleClass="maskCpf"
+										 converter="cpfConverter"
+										 value="#{feriasListBean.cpf}" >
+								<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
+							</h:inputText>
+						</div>
 					</div>
-				</div>
+				</ui:fragment>
 	
 				<div class="input-box box-38">
 					<label for="">Nome</label>
@@ -200,7 +202,7 @@
 			
 			<div style="float: left; font-size: 12px; font-style: italic;">Em <span class="destaque">vermelho</span>, estão destacadas datas futuras de início ou fim de fruição</div>
 
-			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment rendered="#{feriasListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 
 								 value="Incluir"
 								 action="#{feriasListBean.incluir}"
@@ -217,7 +219,7 @@
 								 value="Relatório"
 								 action="#{feriasListBean.relatorio}" 
 								 styleClass="bt-padrao fr mg-right-15" 
-								 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" />				 
+								 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR') and not feriasListBean.chefe}" />				 
 
 		</h:form>
 		
