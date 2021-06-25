@@ -18,7 +18,8 @@ public class FolgaService {
 	
 	@Transactional
 	public Folga salvar(Folga entidade) {
-		if(entidade.getId() == null) {
+		
+		if(entidade.getDebitos() == null || entidade.getDebitos().size() == 0) {
 			entidade.setSaldoFinal(entidade.getSaldoInicial());
 		}
 		
