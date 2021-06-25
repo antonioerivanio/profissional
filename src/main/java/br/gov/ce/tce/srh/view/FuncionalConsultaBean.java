@@ -40,11 +40,7 @@ public class FuncionalConsultaBean implements Serializable {
 			String nome = facesContext.getExternalContext().getRequestParameterMap().get("nome");
 			String find = facesContext.getExternalContext().getRequestParameterMap().get("find");
 		
-			if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-				
-				lista = funcionalService.findByUsuariologado(authenticationService.getUsuarioLogado());
-			
-			} else if (find!=null && find.equals("all")){
+			if (find!=null && find.equals("all")){
 				
 				lista = funcionalService.findAllByNome(nome);
 			

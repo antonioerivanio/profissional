@@ -57,11 +57,21 @@ public class FeriasListBean implements Serializable {
 	private int registroInicial = 0;
 	private Integer pagina = 1;
 	
+	private boolean chefe;
+	private Long idFuncionalChefe = null;
+	
 	@PostConstruct
 	public void init() {		
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());
-			consultarAutomaticamente();
+			setCpf(authenticationService.getUsuarioLogado().getCpf());			
+			consultarAutomaticamente();		
+			
+			int countResponsavelSetor = funcionalService.countResponsavelSetor(getEntidade().getFuncional().getId(), null);
+			chefe = countResponsavelSetor > 0;
+			if(chefe) {
+				idFuncionalChefe = getEntidade().getFuncional().getId();
+			}
+		
 		} else {
 			setMatricula((String) FacesUtil.getFlashParameter("matricula"));
 			pagina = (Integer) FacesUtil.getFlashParameter("pagina");
@@ -81,6 +91,8 @@ public class FeriasListBean implements Serializable {
 
 			if( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
+			
+			validarPermissaoDeConsulta();			
 
 			count = feriasService.count( getEntidade().getFuncional().getPessoal().getId() );
 
@@ -99,6 +111,18 @@ public class FeriasListBean implements Serializable {
 			limparListas();
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
+
+	private void validarPermissaoDeConsulta() {
+		if(chefe && !getEntidade().getFuncional().getId().equals(idFuncionalChefe)) {				
+			int countResponsavelSetor = funcionalService.countResponsavelSetor(
+					idFuncionalChefe, 
+					getEntidade().getFuncional().getSetor().getId());
+			
+			if (countResponsavelSetor == 0) {
+				throw new SRHRuntimeException("Não foi possível acessar os dados de férias do funcionário selecionado.");						
+			}				
 		}
 	}
 	
@@ -152,6 +176,8 @@ public class FeriasListBean implements Serializable {
 			if( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
 
+			validarPermissaoDeConsulta();
+			
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("FILTRO", this.entidade.getFuncional().getPessoal().getId().toString());
 
@@ -253,5 +279,9 @@ public class FeriasListBean implements Serializable {
 	public boolean isDataFutura(Date data, TipoFerias tipoFerias) {
 		return (tipoFerias.getId() == 1 || tipoFerias.getId() == 3) && !data.before(new Date());
 	}
+
+	public boolean isChefe() {
+		return chefe;
+	}	
 	
 }
