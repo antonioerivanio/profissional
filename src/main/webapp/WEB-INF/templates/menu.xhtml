@@ -417,6 +417,12 @@
 									Férias </a>
                             </li>
                         </ui:fragment>
+                        <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FOLGA')}">
+                            <li>
+                                <a href="/srh/paginas/funcional/folgaList.faces">
+									Folga </a>
+                            </li>
+                        </ui:fragment>                        
                         <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNCIONAL_LICENCA')}">
                             <li class="third-menu">
                                 <a href="#" title=""> Licença </a>
