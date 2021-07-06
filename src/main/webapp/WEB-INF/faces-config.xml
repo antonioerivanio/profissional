@@ -512,6 +512,25 @@
 			<to-view-id>/paginas/funcional/feriasList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<!-- Folga -->
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/folgaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/folgaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/funcional/folgaForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/folgaForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/folgaList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	<!-- Funcional Setor -->
 	<navigation-rule>
 		<from-view-id>/paginas/funcional/funcionalSetorList.xhtml</from-view-id>
