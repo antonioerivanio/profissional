@@ -4,9 +4,9 @@ public enum TipoInscricao {
 	
 	CNPJ(1),
 	CPF(2),
-	CAEPF(3),
-	CNO(4),
-	CGC(5);
+	//CAEPF(3),
+	CNO(4)/*,
+	CGC(5) */;
 	
 	private Integer codigo;
 
