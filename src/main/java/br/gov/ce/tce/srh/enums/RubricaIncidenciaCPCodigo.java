@@ -15,8 +15,8 @@ public enum RubricaIncidenciaCPCodigo {
 	RICP16("16", "Exclusiva do segurado - 13º salário", RubricaIncidenciaCPTipo.BASE),
 	RICP21("21", "Salário maternidade mensal pago pelo Empregador", RubricaIncidenciaCPTipo.BASE),
 	RICP22("22", "Salário maternidade - 13º Salário, pago pelo Empregador", RubricaIncidenciaCPTipo.BASE),
-	RICP23("23", "Auxilio doença mensal - Regime Próprio de Previdência Social", RubricaIncidenciaCPTipo.BASE),
-	RICP24("24", "Auxilio doença 13º salário doença - Regime próprio de previdência social", RubricaIncidenciaCPTipo.BASE),
+	/* RICP23("23", "Auxilio doença mensal - Regime Próprio de Previdência Social", RubricaIncidenciaCPTipo.BASE), */
+	/* RICP24("24", "Auxilio doença 13º salário doença - Regime próprio de previdência social", RubricaIncidenciaCPTipo.BASE), */
 	RICP25("25", "Salário maternidade mensal pago pelo INSS", RubricaIncidenciaCPTipo.BASE),
 	RICP26("26", "Salário maternidade - 13º salário, pago pelo INSS", RubricaIncidenciaCPTipo.BASE),
 	RICP31("31", "Mensal", RubricaIncidenciaCPTipo.CONTRIBUICAO),
@@ -24,7 +24,7 @@ public enum RubricaIncidenciaCPCodigo {
 	RICP34("34", "SEST", RubricaIncidenciaCPTipo.CONTRIBUICAO),
 	RICP35("35", "SENAT", RubricaIncidenciaCPTipo.CONTRIBUICAO),
 	RICP51("51", "Salário-família", RubricaIncidenciaCPTipo.OUTROS),
-	RICP61("61", "Complemento de salário-mínimo - Regime próprio de previdência social", RubricaIncidenciaCPTipo.OUTROS),
+	/* RICP61("61", "Complemento de salário-mínimo - Regime próprio de previdência social", RubricaIncidenciaCPTipo.OUTROS), */
 	RICP91("91", "Mensal", RubricaIncidenciaCPTipo.SUSPENSAO),
 	RICP92("92", "13º Salário", RubricaIncidenciaCPTipo.SUSPENSAO),
 	RICP93("93", "Salário maternidade", RubricaIncidenciaCPTipo.SUSPENSAO),

@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.enums.Subteto;
 import br.gov.ce.tce.srh.enums.TipoInscricao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.EmpregadorService;
-import br.gov.ce.tce.srh.service.PessoalService;
+//import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
@@ -34,8 +34,8 @@ public class EmpregadorFormBean implements Serializable {
 	@Autowired
 	private EmpregadorService service;
 	
-	@Autowired
-	private PessoalService pessoalService;
+//	@Autowired
+//	private PessoalService pessoalService;
 
 	private Empregador entidade;	
 	private Long idContato;
@@ -46,10 +46,10 @@ public class EmpregadorFormBean implements Serializable {
 		Empregador flashParameter = (Empregador)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Empregador());
 		
-		if (entidade.getContato() != null) {			
-			idContato = entidade.getContato().getId();
-			nomeContato = entidade.getContato().getNomeCompleto();
-		}
+//		if (entidade.getContato() != null) {			
+//			idContato = entidade.getContato().getId();
+//			nomeContato = entidade.getContato().getNomeCompleto();
+//		}
 		
 		if(entidade.getEsocialVigencia() == null) {
 			entidade.setEsocialVigencia(new ESocialEventoVigencia());
@@ -118,17 +118,17 @@ public class EmpregadorFormBean implements Serializable {
 		return idContato;
 	}
 
-	public void setIdContato(Long idContato) {
-		if ( idContato != null && (this.idContato == null || !this.idContato.equals(idContato)) ) {
-			this.idContato = idContato;
-			try {
-				entidade.setContato(pessoalService.getById(this.idContato));
-			} catch (Exception e) {
-				FacesUtil.addInfoMessage("Erro ao carregar o contato. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: "+ e.getMessage());
-			}			
-		}
-	}
+//	public void setIdContato(Long idContato) {
+//		if ( idContato != null && (this.idContato == null || !this.idContato.equals(idContato)) ) {
+//			this.idContato = idContato;
+//			try {
+//				entidade.setContato(pessoalService.getById(this.idContato));
+//			} catch (Exception e) {
+//				FacesUtil.addInfoMessage("Erro ao carregar o contato. Operação cancelada.");
+//				logger.fatal("Ocorreu o seguinte erro: "+ e.getMessage());
+//			}			
+//		}
+//	}
 
 	public String getNomeContato() {
 		return nomeContato;
