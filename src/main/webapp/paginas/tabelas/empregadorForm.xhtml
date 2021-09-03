@@ -9,7 +9,7 @@
 	xmlns:rich="http://richfaces.org/rich">
 
 	<ui:define name="content">
-		<script>
+		<!-- <script>
 			function openwindowServidor()
 			{
 				nome = document.getElementById('form:nomeCompletoPessoa').value;
@@ -18,8 +18,7 @@
 				} else {
 					alerta('Digite pelo menos 3 caracteres para a pesquisa.');
 				}
-			}
-		</script>		
+		</script> -->		
 
 		<div class="titulo-pagina">
 
@@ -89,7 +88,7 @@
                 </ui:include>
 
 				<div class="input-box box-30">
-					<label for="">Nome do órgão * <span class="identificador-esocial">e</span></label>
+					<label for="">Nome do órgão * </label>
 					<div class="conteiner">
 						<h:inputText 
 							id="nmRazao"
@@ -121,7 +120,7 @@
 					</div>
 				</div>
 				
-				<div class="select-box box-35">
+				<!-- <div class="select-box box-35">
 					<label for="">Natureza jurídica * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
@@ -139,7 +138,7 @@
 								itemValue="#{natJurid}" />
 						</h:selectOneMenu>
 					</div>
-				</div>
+				</div> -->
 				
 				<div class="select-box box-10 clr-l">
 					<label for="">Indicativo de cooperativa * <span class="identificador-esocial">e</span></label>
@@ -261,7 +260,7 @@
 					</div>
 				</div>
 					
-				<div class="clr">	
+				<!-- <div class="clr">	
 					<div class="input-box box-50">
 						<label for="">Contato <span class="identificador-esocial">e</span></label>
 						<div class="conteiner">
@@ -278,9 +277,9 @@
 				   
 				   	<h:inputHidden id="idPessoa" value="#{empregadorFormBean.idContato}" /> 
 			   	
-			   	</div>			   	
+			   	</div>	 -->		   	
 			   	
-			   	<div class="select-box box-20 clr">
+			   	<!-- <div class="select-box box-20 clr">
 					<label for="">O Órgão Público é o Ente Federativo Responsável? * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
@@ -298,7 +297,7 @@
 								itemValue="#{simNao}" />
 						</h:selectOneMenu>
 					</div>
-				</div>			   	
+				</div> -->			   	
 			   	
 			   	<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
                     <ui:param name="subtitulo" value="Informações relativas ao Ente Federativo Responsável" />
@@ -315,7 +314,7 @@
 					</div>
 				</div>
 				
-				<div class="input-box box-15">
+				<!-- <div class="input-box box-15">
 					<label for="">Nome * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText 
@@ -324,9 +323,9 @@
 							maxlength="100" 
 							disabled="true"/>
 					</div>
-				</div>				
+				</div> -->				
 				
-				<div class="input-box box-20">
+				<!-- <div class="input-box box-20">
 					<label for="">UF * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText 
@@ -335,9 +334,9 @@
 							maxlength="2" 
 							disabled="true"/>
 					</div>
-				</div>				
+				</div> -->				
 				
-				<div class="select-box box-15">
+				<!-- <div class="select-box box-15">
 					<label for="">Ente possui RPPS * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
@@ -353,9 +352,9 @@
 								itemValue="#{simNao}" />
 						</h:selectOneMenu>
 					</div>
-				</div>
+				</div> -->
 				
-				<div class="select-box box-15">
+				<!-- <div class="select-box box-15">
 					<label for="">Subteto * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
@@ -371,9 +370,9 @@
 								itemValue="#{subteto}" />
 						</h:selectOneMenu>
 					</div>
-				</div>
+				</div> -->
 				
-				<div class="input-box box-15">
+				<!-- <div class="input-box box-15">
 					<label for="">Valor do subteto * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:inputText 
@@ -385,13 +384,13 @@
 							<f:convertNumber type="currency" currencySymbol="R$" locale="pt_br"/>
 						</h:inputText>	            			
 					</div>
-				</div>
+				</div> -->
 				
 				<ui:include src="../../WEB-INF/templates/subtitulo.xhtml">
                     <ui:param name="subtitulo" value="Informações complementares" />
                 </ui:include>
 				
-				<div class="select-box box-15">
+				<!-- <div class="select-box box-15">
 					<label for="">Situação Pessoa Jurídica <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<h:selectOneMenu 
@@ -407,7 +406,7 @@
 								itemValue="#{situacao}" />
 						</h:selectOneMenu>
 					</div>
-				</div>
+				</div> -->
 
 			</div>
 			
