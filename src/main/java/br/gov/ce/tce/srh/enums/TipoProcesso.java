@@ -4,8 +4,8 @@ public enum TipoProcesso {
 	
 	ADMINISTRATIVO(1, "Administrativo"),
 	JUDICIAL(2, "Judicial"),
-	NB_INSS(3, "Número de Benefício (NB) do INSS"),
-	FAP(4, "Processo FAP");
+	/* NB_INSS(3, "Número de Benefício (NB) do INSS"), */
+	FAP(4, "Processo FAP de exercício anterior a 2019");
 	
 	private Integer codigo;
 	private String descricao;
