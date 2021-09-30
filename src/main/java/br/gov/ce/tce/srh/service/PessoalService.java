@@ -129,6 +129,10 @@ public class PessoalService {
 		if( entidade.getPaisNacionalidade() == null )
 			throw new SRHRuntimeException("O País Nacionalidade é obrigatório.");
 		
+		if(entidade.getPossuiVinculoSocietario() == null) {
+			throw new SRHRuntimeException("É necessário informar se você possui Vínculo Societário.");
+		}
+		
 		// Se país de nascimento for Brasil
 		if ( entidade.getPaisNascimento().getId().equals(1L) ) {
 			

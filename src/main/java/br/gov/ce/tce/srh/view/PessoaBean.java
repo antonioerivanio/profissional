@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -28,6 +29,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.dao.TipoDeficienciaDAO;
+import br.gov.ce.tce.srh.domain.ComprovanteVinculoSocietario;
 import br.gov.ce.tce.srh.domain.DeclaracaoBens;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Escolaridade;
@@ -47,6 +49,7 @@ import br.gov.ce.tce.srh.enums.CategoriaCNH;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CEPService;
+import br.gov.ce.tce.srh.service.ComprovanteVinculoSocietarioService;
 import br.gov.ce.tce.srh.service.DeclaracaoBensService;
 import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.EscolaridadeService;
@@ -129,6 +132,9 @@ public class PessoaBean implements Serializable {
 	private DeclaracaoBensService declaracaoBensService;
 	
 	@Autowired
+	private ComprovanteVinculoSocietarioService comprovanteVinculoSocietarioService;
+	
+	@Autowired
 	private TipoDeficienciaDAO tipoDeficienciaDAO;
 
 	private Boolean podeAlterar = null;
@@ -146,6 +152,8 @@ public class PessoaBean implements Serializable {
 	private Recadastramento recadastramento;
 	private List<DeclaracaoBens> declaracaoBensList = new ArrayList<DeclaracaoBens>();
 	private List<DeclaracaoBens> declaracaoBensListExcluir = new ArrayList<DeclaracaoBens>();
+	private List<ComprovanteVinculoSocietario> comprovanteVinculoSocietarioList = new ArrayList<ComprovanteVinculoSocietario>();
+	private List<ComprovanteVinculoSocietario> comprovanteVinculoSocietarioListExcluir = new ArrayList<ComprovanteVinculoSocietario>();
 
 	private UploadedFile foto;
 	private UploadedFile ficha;
@@ -162,6 +170,7 @@ public class PessoaBean implements Serializable {
 	private List<TipoDeficiencia> comboTipoDeficiencia;
 	
 	private Parametro pathDeclaracaoBensSRH;
+	private Parametro pathComprovanteVinculoSocietarioSRH;
 
 	// paginação
 	private int count;
@@ -171,6 +180,7 @@ public class PessoaBean implements Serializable {
 	private Integer pagina = 1;
 	
 	private DeclaracaoBens declaracao;
+	private ComprovanteVinculoSocietario comprovante;
 	
 	@PostConstruct
 	private void init() {
@@ -205,11 +215,13 @@ public class PessoaBean implements Serializable {
 			buscarCep();
 			
 			this.dependentes = dependenteService.findByResponsavel(entidade.getId());
-			this.declaracaoBensList = declaracaoBensService.getByPessoalId(entidade.getId());			
+			this.declaracaoBensList = declaracaoBensService.getByPessoalId(entidade.getId());
+			this.comprovanteVinculoSocietarioList = comprovanteVinculoSocietarioService.getByPessoalId(entidade.getId());
 			
 			imageBean.setFoto(this.entidade.getFoto());
 			
 			this.pathDeclaracaoBensSRH = parametroService.getByNome("pathDeclaracaoBensSRH");
+			this.pathComprovanteVinculoSocietarioSRH = parametroService.getByNome("pathComprovanteVinculoSocietarioSRH");
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -218,6 +230,10 @@ public class PessoaBean implements Serializable {
 		
 	}
 
+	public void teste() {
+		System.out.println(this.entidade.getPossuiVinculoSocietario());
+	}
+	
 	public void consultar() {
 
 		try {
@@ -247,8 +263,10 @@ public class PessoaBean implements Serializable {
 			entidade = pessoalService.salvar(entidade);			
 			
 			salvarDeclaracoes();
+			salvarComprovantes();
 			
 			this.declaracaoBensList = declaracaoBensService.getByPessoalId(entidade.getId());
+			this.comprovanteVinculoSocietarioList = comprovanteVinculoSocietarioService.getByPessoalId(entidade.getId());
 			
 			if(finalizar) {
 				getPessoalRecadastramento().setStatus(1);
@@ -272,6 +290,10 @@ public class PessoaBean implements Serializable {
 
 	private void salvarDeclaracoes() {
 		this.declaracaoBensService.salvarDeclaracoes(this.declaracaoBensList, this.podeAlterar() && this.ehServidor());
+	}
+	
+	private void salvarComprovantes() {
+		this.comprovanteVinculoSocietarioService.salvarComprovantes(this.comprovanteVinculoSocietarioList);
 	}
 	
 	public String editar() {
@@ -736,6 +758,85 @@ public class PessoaBean implements Serializable {
 		}
 	}
 	
+	public boolean possuiVinculo() {
+		
+		if(this.entidade.getPossuiVinculoSocietario() != null)
+			return this.entidade.getPossuiVinculoSocietario() == 1 ? true : false;
+		return false;
+	}
+	
+	public void uploadComprovanteVinculoSocietario(FileUploadEvent event) {
+		try {
+			if (this.pathComprovanteVinculoSocietarioSRH == null) {
+				throw new SRHRuntimeException("Parâmetro do caminho do comprovante de vínculo não encontrado na tabela SRH.TB_PARAMETRO");
+			}
+				
+			UploadedFile arquivo = event.getUploadedFile();
+			String nomeArquivo = arquivo.getName();
+			
+			ComprovanteVinculoSocietario comprovante = new ComprovanteVinculoSocietario();
+			comprovante.setNomeArquivo(nomeArquivo);
+			comprovante.setCaminho(this.entidade.getId() + File.separator  + UUID.randomUUID() + nomeArquivo.substring(nomeArquivo.lastIndexOf('.'), nomeArquivo.length()));
+			comprovante.setPessoal(this.entidade);		
+			
+			File diretorio = new File(this.pathComprovanteVinculoSocietarioSRH.getValor() + this.entidade.getId());
+			diretorio.mkdirs();
+			
+			File file = new File(this.pathComprovanteVinculoSocietarioSRH.getValor() + declaracao.getCaminho());			
+			FileOutputStream fop = new FileOutputStream(file);
+			fop.write(arquivo.getData());
+			fop.flush();
+			fop.close();
+			
+			this.comprovanteVinculoSocietarioList.add(0, comprovante);
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage("Erro na gravação do comprovante de vínculo do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (FileNotFoundException e) {
+			FacesUtil.addErroMessage("Erro na gravação do comprovante de vínculo do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (IOException e) {
+			FacesUtil.addErroMessage("Erro na gravação do comprovante de vínculo do servidor.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
+	
+	public void abrirComprovante(String caminho) {
+		try {
+			Parametro parametro = parametroService.getByNome("pathComprovanteVinculoSocietarioSRH");
+			String caminhoComprovante = parametro.getValor() + caminho;
+			InputStream in = new FileInputStream(caminhoComprovante);
+			byte[] declaracaoBytes = IOUtils.toByteArray(in);
+			relatorioUtil.openPdf(declaracaoBytes, caminhoComprovante);
+
+		} catch (FileNotFoundException e) {
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu algum erro na geração do arquivo. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
+	
+	public void excluirComprovante() {
+		try {
+			if(this.comprovante.getId() != null && this.comprovante.getId() != 0) {
+				this.comprovanteVinculoSocietarioService.excluir(this.comprovante);
+			}
+			
+			this.comprovanteVinculoSocietarioList.remove(this.comprovante);
+			
+			this.comprovante = null;
+		
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Não foi possível excluir o comprovante de vínculo.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
+	
 	public void formularioDependentes() {
 		try {
 
@@ -883,14 +984,30 @@ public class PessoaBean implements Serializable {
 
 	public List<DeclaracaoBens> getDeclaracaoBensListExcluir() {
 		return declaracaoBensListExcluir;
-	}	
+	}
 	
+	public List<ComprovanteVinculoSocietario> getComprovanteVinculoSocietarioList() {
+		return comprovanteVinculoSocietarioList;
+	}
+
+	public List<ComprovanteVinculoSocietario> getComprovanteVinculoSocietarioListExcluir() {
+		return comprovanteVinculoSocietarioListExcluir;
+	}
+
 	public DeclaracaoBens getDeclaracao() {
 		return declaracao;
 	}
 
 	public void setDeclaracao(DeclaracaoBens declaracao) {
 		this.declaracao = declaracao;
+	}
+
+	public ComprovanteVinculoSocietario getComprovante() {
+		return comprovante;
+	}
+
+	public void setComprovante(ComprovanteVinculoSocietario comprovante) {
+		this.comprovante = comprovante;
 	}
 
 	// PAGINAÇÃO
