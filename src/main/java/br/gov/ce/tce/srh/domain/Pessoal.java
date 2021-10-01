@@ -274,7 +274,7 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	private TipoDeficiencia tipoDeficiencia;
 	
 	@Column(name="FLPOSSUIVINCULOSOCIETARIO")
-	private Integer possuiVinculoSocietario;
+	private String possuiVinculoSocietario;
 	
 	public Pessoal(){
 		//seguindo padrao Java Beans...
@@ -512,12 +512,12 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	public TipoDeficiencia getTipoDeficiencia() { return tipoDeficiencia; }
 	public void setTipoDeficiencia(TipoDeficiencia tipoDeficiencia) { this.tipoDeficiencia = tipoDeficiencia; }
 
-	public Integer getPossuiVinculoSocietario() {
+	public String getPossuiVinculoSocietario() {
 		return possuiVinculoSocietario;
 	}
 
 
-	public void setPossuiVinculoSocietario(Integer possuiVinculoSocietario) {
+	public void setPossuiVinculoSocietario(String possuiVinculoSocietario) {
 		this.possuiVinculoSocietario = possuiVinculoSocietario;
 	}
 

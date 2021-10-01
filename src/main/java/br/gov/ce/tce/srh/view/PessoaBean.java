@@ -229,10 +229,6 @@ public class PessoaBean implements Serializable {
 		}
 		
 	}
-
-	public void teste() {
-		System.out.println(this.entidade.getPossuiVinculoSocietario());
-	}
 	
 	public void consultar() {
 
@@ -293,7 +289,14 @@ public class PessoaBean implements Serializable {
 	}
 	
 	private void salvarComprovantes() {
-		this.comprovanteVinculoSocietarioService.salvarComprovantes(this.comprovanteVinculoSocietarioList);
+		if(this.entidade.getPossuiVinculoSocietario().equals("S")) {
+			if(this.comprovanteVinculoSocietarioList.isEmpty()) {
+				throw new SRHRuntimeException("Você informou que possui vínculo societário e deve adicionar o respectivo comprovante.");
+			}
+			else {
+				this.comprovanteVinculoSocietarioService.salvarComprovantes(this.comprovanteVinculoSocietarioList);
+			}
+		}
 	}
 	
 	public String editar() {
@@ -759,9 +762,8 @@ public class PessoaBean implements Serializable {
 	}
 	
 	public boolean possuiVinculo() {
-		
 		if(this.entidade.getPossuiVinculoSocietario() != null)
-			return this.entidade.getPossuiVinculoSocietario() == 1 ? true : false;
+			return this.entidade.getPossuiVinculoSocietario().equals("S") ? true : false;
 		return false;
 	}
 	
@@ -782,7 +784,7 @@ public class PessoaBean implements Serializable {
 			File diretorio = new File(this.pathComprovanteVinculoSocietarioSRH.getValor() + this.entidade.getId());
 			diretorio.mkdirs();
 			
-			File file = new File(this.pathComprovanteVinculoSocietarioSRH.getValor() + declaracao.getCaminho());			
+			File file = new File(this.pathComprovanteVinculoSocietarioSRH.getValor() + comprovante.getCaminho());
 			FileOutputStream fop = new FileOutputStream(file);
 			fop.write(arquivo.getData());
 			fop.flush();

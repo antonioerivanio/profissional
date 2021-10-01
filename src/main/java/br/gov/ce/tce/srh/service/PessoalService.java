@@ -24,7 +24,7 @@ public class PessoalService {
 		
 		SRHUtils.trimReflective(entidade);
 
-		validarDados(entidade);		
+		validarDados(entidade);
 		
 		verificandoCPFexiste( entidade );
 				
@@ -110,7 +110,6 @@ public class PessoalService {
 
 
 	private void validarDados(Pessoal entidade) {
-
 		if(entidade.getCategoria() == null)
 			throw new SRHRuntimeException("A Categoria é obrigatória.");
 			
@@ -128,10 +127,6 @@ public class PessoalService {
 		
 		if( entidade.getPaisNacionalidade() == null )
 			throw new SRHRuntimeException("O País Nacionalidade é obrigatório.");
-		
-		if(entidade.getPossuiVinculoSocietario() == null) {
-			throw new SRHRuntimeException("É necessário informar se você possui Vínculo Societário.");
-		}
 		
 		// Se país de nascimento for Brasil
 		if ( entidade.getPaisNascimento().getId().equals(1L) ) {
@@ -205,7 +200,11 @@ public class PessoalService {
 			if ( entidade.getCategoria().getId().equals(1L) ) {
 				
 				if( entidade.getPasep() == null || entidade.getPasep().isEmpty() )
-					throw new SRHRuntimeException("O PIS/PASEP é obrigatório.");			
+					throw new SRHRuntimeException("O PIS/PASEP é obrigatório.");
+				
+				if(entidade.getPossuiVinculoSocietario() == null || entidade.getPossuiVinculoSocietario().isEmpty()) {
+					throw new SRHRuntimeException("É necessário informar se você possui Vínculo Societário.");
+				}
 			}
 			
 			if( entidade.getPasep() != null && !entidade.getPasep().isEmpty() ) {
