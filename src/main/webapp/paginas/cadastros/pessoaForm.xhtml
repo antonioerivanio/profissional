@@ -1185,7 +1185,7 @@
 							</div>
 							
 							<span class="bt-upload fl mg-bottom-15" onclick="document.querySelector('.fileUploadComprovanteVinculoSocietario input').click()">
-								Adicionar comprovante
+								Adicionar Contrato Social
 							</span>						   			   
 						</ui:fragment>
 					    
@@ -1196,7 +1196,7 @@
 						<rich:dataTable id="listaComprovanteVinculoSocietario"
 										var="comprovante"
 										value="#{pessoaBean.comprovanteVinculoSocietarioList}"
-										noDataLabel="Nenhum comprovante de vínculo societário adicionado">
+										noDataLabel="Nenhum contrato social adicionado">
 										
 							<h:column id="col0ld" headerClass="cel-80">
 								<f:facet name="header">
@@ -1208,7 +1208,7 @@
 							</h:column>							
 							<h:column id="col1ld" headerClass="cel-80">
 								<f:facet name="header">
-									Comprovante de Vínculo
+									Contrato Social
 								</f:facet>
 								<h:commandLink styleClass="link-arquivo"
 			               				  	value="#{comprovante.nomeArquivo}"
