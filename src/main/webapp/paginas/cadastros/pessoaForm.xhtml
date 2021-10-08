@@ -1146,6 +1146,95 @@
 					</div>
 	
 				</rich:tab>
+				
+				<rich:tab header="Vínculo Societário">
+					<a4j:outputPanel id="controlPanel">
+						<ui:fragment rendered="#{pessoaBean.podeAlterar()}">
+							<div class="radios-group radio-group-comprovante-vinculo">
+								<h3>Participa de diretoria, gerência, administração, conselho técnico ou administrativo de empresa ou sociedades mercantis? *</h3>
+								<div class="conteiner box-15">
+									<div class="radio-box">
+									<h:selectOneRadio 	id="possuiVinculoSocietario"
+														value="#{pessoaBean.entidade.possuiVinculoSocietario}"
+														disabled="#{not pessoaBean.podeAlterar()}">
+										<f:selectItem id="sim" itemLabel="Sim" itemValue="S" />
+										<f:selectItem id="nao" itemLabel="Não" itemValue="N" />
+										<a4j:ajax event="change" render="controlPanel :btnUploadComprovante" />
+									</h:selectOneRadio>
+									</div>
+								</div>
+							</div>
+						</ui:fragment>
+						
+						<br />
+						
+						<ui:fragment id="btnUploadComprovante" rendered="#{pessoaBean.possuiVinculo()}">
+							<div>
+								<rich:fileUpload id="fileUploadComprovanteVinculoSocietario"
+												 styleClass="fileUploadComprovanteVinculoSocietario"
+												 style="display: none"
+												 fileUploadListener="#{pessoaBean.uploadComprovanteVinculoSocietario}"
+												 acceptedTypes = "pdf"
+												 ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
+												 maxFilesQuantity="1"
+												 immediateUpload="true"
+												 onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');"
+												 >
+									<a4j:ajax event="uploadcomplete" execute="@none" render="form:fileUploadComprovanteVinculoSocietario, form:listaComprovanteVinculoSocietario, messages"/>
+								</rich:fileUpload>
+							</div>
+							
+							<span class="bt-upload fl mg-bottom-15" onclick="document.querySelector('.fileUploadComprovanteVinculoSocietario input').click()">
+								Adicionar Contrato Social
+							</span>						   			   
+						</ui:fragment>
+					    
+				    </a4j:outputPanel>
+					
+					<div class="tabela-dados">
+					
+						<rich:dataTable id="listaComprovanteVinculoSocietario"
+										var="comprovante"
+										value="#{pessoaBean.comprovanteVinculoSocietarioList}"
+										noDataLabel="Nenhum contrato social adicionado">
+										
+							<h:column id="col0ld" headerClass="cel-80">
+								<f:facet name="header">
+									ID
+								</f:facet>
+								<center>
+									<h:outputText value="#{comprovante.id}" />							
+								</center>
+							</h:column>							
+							<h:column id="col1ld" headerClass="cel-80">
+								<f:facet name="header">
+									Contrato Social
+								</f:facet>
+								<h:commandLink styleClass="link-arquivo"
+			               				  	value="#{comprovante.nomeArquivo}"
+			               				  	action="#{pessoaBean.abrirComprovante(comprovante.caminho)}"
+			               				  	target="_blank" />							
+							</h:column>
+							
+												
+							<h:column id="col4ld" headerClass="cel-10" rendered="#{pessoaBean.podeAlterar()}">
+								<f:facet name="header">
+									Excluir
+								</f:facet>
+								<a4j:commandLink id="excluir" 
+											value="Excluir"                        			   
+	                        			   styleClass="ico-delete"
+	                        			   onclick="alertaExclusao();"
+	                        			   execute="@this">
+	                        		<f:setPropertyActionListener target="#{pessoaBean.comprovante}" value="#{comprovante}" />
+	                        	</a4j:commandLink>
+	                        	<a4j:jsFunction name="excluir" action="#{pessoaBean.excluirComprovante()}" render="listaComprovanteVinculoSocietario"/> 					
+							</h:column>							
+																										
+						</rich:dataTable>		 
+					
+					</div>
+				</rich:tab>
 			
 			</rich:tabPanel>	
 			

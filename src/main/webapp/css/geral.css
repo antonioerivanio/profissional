@@ -591,6 +591,10 @@ img.ambiente {
 	padding: 0 5px;
 }
 
+.formularios .radio-group-comprovante-vinculo {
+	float: none;
+}
+
 .formularios .input-box, .formularios .textarea-box, .formularios .radios-group,
 	.formularios .checkbox-group, .formularios .select-box {
 	float: left;
