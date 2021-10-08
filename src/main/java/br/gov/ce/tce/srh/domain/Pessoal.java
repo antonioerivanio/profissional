@@ -273,6 +273,9 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	@JoinColumn(name = "IDTIPODEFICIENCIA")	
 	private TipoDeficiencia tipoDeficiencia;
 	
+	@Column(name="FLPOSSUIVINCULOSOCIETARIO")
+	private String possuiVinculoSocietario;
+	
 	public Pessoal(){
 		//seguindo padrao Java Beans...
 	}
@@ -508,6 +511,16 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	
 	public TipoDeficiencia getTipoDeficiencia() { return tipoDeficiencia; }
 	public void setTipoDeficiencia(TipoDeficiencia tipoDeficiencia) { this.tipoDeficiencia = tipoDeficiencia; }
+
+	public String getPossuiVinculoSocietario() {
+		return possuiVinculoSocietario;
+	}
+
+
+	public void setPossuiVinculoSocietario(String possuiVinculoSocietario) {
+		this.possuiVinculoSocietario = possuiVinculoSocietario;
+	}
+
 
 	@Override
 	public Long getId() {return this.id;}
