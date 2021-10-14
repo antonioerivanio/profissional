@@ -78,6 +78,15 @@ public class RubricaDAO {
 		}
 	}
 
+	public Rubrica getById(Long id) {
+		try {
+			Query query = entityManager.createQuery("Select r from Rubrica r where r.id = :id");
+			query.setParameter("id", id);
+			return (Rubrica) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
 	public Rubrica getByDescricao(String descricao) {
 		try {

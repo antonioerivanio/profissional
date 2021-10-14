@@ -164,6 +164,7 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 	}
 	
 	public String getReferenciaESocial() {
+		//return this.getCodigo();
 		return this.rubrica.getCodigo() + "-" + this.tabela.getCodigo();
 	}
 

@@ -51,6 +51,10 @@ public class RubricaService {
 		return dao.findAll();
 	}
 
+	public Rubrica findById(Long id) {
+		return dao.getById(id);
+	}
+
 
 	/**
 	 * Regra de Negocio: 
