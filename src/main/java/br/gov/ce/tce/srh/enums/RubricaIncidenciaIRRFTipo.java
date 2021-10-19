@@ -4,7 +4,8 @@ import java.util.List;
 
 public enum RubricaIncidenciaIRRFTipo {
 	
-	INCIDENCIA_TRIBUTARIA ("Código de incidência tributária da rubrica para o IRRF"),
+	//INCIDENCIA_TRIBUTARIA ("Código de incidência tributária da rubrica para o IRRF"),
+	INCIDENCIA_TRIBUTARIA ("Outros"),
 	BASE_DE_CALCULO ("Rendimentos tributáveis - base de cálculo do IRRF"),
 	RETENCOES ("Retenções do IRRF efetuadas"),
 	DEDUCOES ("Deduções da base de cálculo do IRRF"),

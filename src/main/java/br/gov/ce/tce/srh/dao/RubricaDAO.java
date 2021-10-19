@@ -63,7 +63,7 @@ public class RubricaDAO {
 	}
 	
 	public List<Rubrica> findAll() {
-		TypedQuery<Rubrica> query = entityManager.createQuery("Select r from Rubrica r ORDER BY r.descricao ", Rubrica.class);
+		TypedQuery<Rubrica> query = entityManager.createQuery("Select r from Rubrica r WHERE r.ativa=true ORDER BY r.descricao ", Rubrica.class);
 		return query.getResultList();
 	}
 
