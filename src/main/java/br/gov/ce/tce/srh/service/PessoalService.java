@@ -201,10 +201,7 @@ public class PessoalService {
 				
 				if( entidade.getPasep() == null || entidade.getPasep().isEmpty() )
 					throw new SRHRuntimeException("O PIS/PASEP é obrigatório.");
-				
-				if(entidade.getPossuiVinculoSocietario() == null || entidade.getPossuiVinculoSocietario().isEmpty()) {
-					throw new SRHRuntimeException("É necessário informar se você possui Vínculo Societário.");
-				}
+
 			}
 			
 			if( entidade.getPasep() != null && !entidade.getPasep().isEmpty() ) {

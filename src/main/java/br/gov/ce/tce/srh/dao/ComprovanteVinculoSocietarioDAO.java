@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -36,10 +37,17 @@ public class ComprovanteVinculoSocietarioDAO {
 	}
 	
 	public List<ComprovanteVinculoSocietario> getByPessoalId(Long id) {
-		return entityManager.createQuery("Select c from ComprovanteVinculoSocietario c "
-				+ "JOIN c.pessoal p where p.id = :id "
-				+ "ORDER BY c.nomeArquivo", ComprovanteVinculoSocietario.class)
-				.setParameter("id", id)
-				.getResultList();
+		
+		try {
+			TypedQuery<ComprovanteVinculoSocietario> query = entityManager.createQuery("Select c from ComprovanteVinculoSocietario c "
+					+ "JOIN c.pessoal p where p.id = :id "
+					+ "ORDER BY c.nomeArquivo", ComprovanteVinculoSocietario.class)
+					.setParameter("id", id);				
+			
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
+		
 	}	
 }
