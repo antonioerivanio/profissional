@@ -156,7 +156,7 @@ public class ProcessoESocial extends BasicEntity<Long> implements Serializable {
 	}
 	
 	public String getReferenciaESocial() {
-		return this.numero;
+		return this.getTipoProcesso().getCodigo() + "-" + this.numero;
 	}
 
 }

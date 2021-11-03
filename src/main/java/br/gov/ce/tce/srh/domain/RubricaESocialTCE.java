@@ -52,8 +52,8 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 	@Column(name="CODIGOFGTS")
 	private String codigoFgts;
 	
-	@Column(name="CODIGOSINDICATO")
-	private String codigoSindicato;	
+//	@Column(name="CODIGOSINDICATO")
+//	private String codigoSindicato;	
 	
 	@Column(name="OBSERVACAO")
 	private String observacao;
@@ -138,14 +138,14 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 			this.codigoFgts = codigoFgts.getCodigo();
 	}
 
-	public RubricaIncidenciaSIND getCodigoSindicato() {
-		return RubricaIncidenciaSIND.getByCodigo(codigoSindicato);
-	}
-
-	public void setCodigoSindicato(RubricaIncidenciaSIND codigoSindicato) {
-		if(codigoSindicato != null)
-			this.codigoSindicato = codigoSindicato.getCodigo();
-	}
+//	public RubricaIncidenciaSIND getCodigoSindicato() {
+//		return RubricaIncidenciaSIND.getByCodigo(codigoSindicato);
+//	}
+//
+//	public void setCodigoSindicato(RubricaIncidenciaSIND codigoSindicato) {
+//		if(codigoSindicato != null)
+//			this.codigoSindicato = codigoSindicato.getCodigo();
+//	}
 
 	public ESocialEventoVigencia getEsocialVigencia() {
 		return esocialVigencia;
@@ -164,6 +164,7 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 	}
 	
 	public String getReferenciaESocial() {
+		//return this.getCodigo();
 		return this.rubrica.getCodigo() + "-" + this.tabela.getCodigo();
 	}
 

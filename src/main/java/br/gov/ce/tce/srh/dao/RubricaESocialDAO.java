@@ -28,7 +28,7 @@ public class RubricaESocialDAO {
 	}
 	
 	public List<RubricaESocial> findAll(){
-		TypedQuery<RubricaESocial> query = entityManager.createQuery("Select e from RubricaESocial e order by e.id", RubricaESocial.class);
+		TypedQuery<RubricaESocial> query = entityManager.createQuery("Select e from RubricaESocial e where emUso=true order by e.id", RubricaESocial.class);
 		return query.getResultList(); 
 	}
 

@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.gov.ce.tce.srh.dao.RubricaDAO;
 import br.gov.ce.tce.srh.dao.RubricaESocialTCEDAO;
+import br.gov.ce.tce.srh.dao.RubricaESocialTabelaDAO;
 import br.gov.ce.tce.srh.domain.ESocialEventoVigencia;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.domain.RubricaESocialTCE;
+import br.gov.ce.tce.srh.domain.RubricaESocialTabela;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -31,13 +34,23 @@ public class RubricaESocialTCEService{
 	@Autowired
 	private NotificacaoService notificacaoService;
 
+	@Autowired
+	private RubricaService rubricaService;
+
+	@Autowired
+	private RubricaESocialTabelaService rubricaESocialTabelaService;
+
+
 	@Transactional
 	public RubricaESocialTCE salvar(RubricaESocialTCE entidade) {		
 		
 		validaCamposObrigatorios(entidade);
 		
+		String codigoRubrica = rubricaService.findById(entidade.getRubrica().getId()).getCodigo();
+		String codigoTabela = rubricaESocialTabelaService.getById(entidade.getTabela().getId()).getCodigo();
+
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
-		vigencia.setReferencia(entidade.getCodigo());
+		vigencia.setReferencia(codigoRubrica + "-" + codigoTabela);
 		vigencia.setTipoEvento(TipoEventoESocial.S1010);
 		esocialEventoVigenciaService.salvar(vigencia);
 		

@@ -63,7 +63,7 @@ public class RubricaDAO {
 	}
 	
 	public List<Rubrica> findAll() {
-		TypedQuery<Rubrica> query = entityManager.createQuery("Select r from Rubrica r ORDER BY r.descricao ", Rubrica.class);
+		TypedQuery<Rubrica> query = entityManager.createQuery("Select r from Rubrica r WHERE r.ativa=true ORDER BY r.descricao ", Rubrica.class);
 		return query.getResultList();
 	}
 
@@ -78,6 +78,15 @@ public class RubricaDAO {
 		}
 	}
 
+	public Rubrica getById(Long id) {
+		try {
+			Query query = entityManager.createQuery("Select r from Rubrica r where r.id = :id");
+			query.setParameter("id", id);
+			return (Rubrica) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 
 	public Rubrica getByDescricao(String descricao) {
 		try {

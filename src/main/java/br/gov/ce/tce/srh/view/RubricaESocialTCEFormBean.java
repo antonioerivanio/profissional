@@ -112,9 +112,9 @@ public class RubricaESocialTCEFormBean implements Serializable {
 		return Arrays.asList(RubricaIncidenciaFGTS.values());
 	}
 	
-	public List<RubricaIncidenciaSIND> getComboCodigoSindicato() {
-		return Arrays.asList(RubricaIncidenciaSIND.values());
-	}
+//	public List<RubricaIncidenciaSIND> getComboCodigoSindicato() {
+//		return Arrays.asList(RubricaIncidenciaSIND.values());
+//	}
 	
 	public RubricaESocialTCE getEntidade() {
 		return entidade;
