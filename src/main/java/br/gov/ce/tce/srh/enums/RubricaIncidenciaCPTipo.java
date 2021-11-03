@@ -4,7 +4,7 @@ import java.util.List;
 
 public enum RubricaIncidenciaCPTipo {
 	
-	NAO_EH_BASE ("Código de incidência tributária da rubrica para a Previdência Social"),
+	NAO_EH_BASE ("Não é base de cálculo"),
 	BASE ("Base de cálculo das contribuições sociais - Salário de Contribuição"),
 	CONTRIBUICAO ("Contribuição descontada do Segurado sobre salário de contribuição"),
 	OUTROS ("Outros"),

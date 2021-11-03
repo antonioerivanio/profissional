@@ -44,7 +44,7 @@ public class ProcessoESocialService {
 		validaCamposObrigatorios(entidade);
 
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
-		vigencia.setReferencia(entidade.getNumero());
+		vigencia.setReferencia(entidade.getTipoProcesso().getCodigo() + "-" + entidade.getNumero());
 		vigencia.setTipoEvento(TipoEventoESocial.S1070);
 		esocialEventoVigenciaService.salvar(vigencia);
 
@@ -95,7 +95,7 @@ public class ProcessoESocialService {
 					+ " deve possuir 20 (vinte) algarismos.");
 		}
 
-		if (entidade.getTipoProcesso() == TipoProcesso.NB_INSS && !(entidade.getNumero().length() == 10)) {
+		/* if (entidade.getTipoProcesso() == TipoProcesso.NB_INSS && !(entidade.getNumero().length() == 10)) {
 			throw new SRHRuntimeException(
 					"Processo do tipo " + TipoProcesso.NB_INSS.getDescricao() + " deve possuir 10 (vinte) algarismos.");
 		}
@@ -103,7 +103,7 @@ public class ProcessoESocialService {
 		if (entidade.getTipoProcesso() == TipoProcesso.FAP && !(entidade.getNumero().length() == 16)) {
 			throw new SRHRuntimeException("Processo do tipo " + TipoProcesso.NB_INSS.getDescricao()
 					+ " deve possuir 16 (dezesseis) algarismos. Regra de validação.");
-		}
+		} */
 
 	}
 

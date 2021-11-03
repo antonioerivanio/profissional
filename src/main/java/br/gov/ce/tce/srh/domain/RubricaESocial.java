@@ -24,6 +24,9 @@ public class RubricaESocial extends BasicEntity<Long> implements Serializable {
 
 	@Column(name="DESCRICAO")
 	private String descricao;
+
+	@Column(name="FLUSOTCE")
+	private boolean emUso;
 	
 	public Long getId() {
 		return id;
@@ -55,6 +58,14 @@ public class RubricaESocial extends BasicEntity<Long> implements Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}	
+	}
+
+	public boolean isEmUso() {
+		return this.emUso;
+	}
+
+	public void setDescricao(boolean emUso) {
+		this.emUso = emUso;
+	}
 
 }
