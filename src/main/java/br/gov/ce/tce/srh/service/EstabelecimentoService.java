@@ -34,12 +34,18 @@ public class EstabelecimentoService {
 	@Transactional
 	public Estabelecimento salvar(Estabelecimento entidade) {
 
-		validar(entidade);
+		//validar(entidade);
 
 		ESocialEventoVigencia vigencia = entidade.getEsocialVigencia();
 		vigencia.setReferencia(entidade.getNumeroInscricao());
 		vigencia.setTipoEvento(TipoEventoESocial.S1005);
 		esocialEventoVigenciaService.salvar(vigencia);
+		
+		if(entidade.getRat() == null || entidade.getRat() == 0) {
+			entidade.setRat(null);
+			entidade.setRatAjustado(null);
+			entidade.setFap(null);
+		}
 
 		entidade = dao.salvar(entidade);
 
