@@ -314,6 +314,34 @@
 							</div>
 						</div>
 						
+						<div class="radios-group box-15">
+							<h3>Ingressou por cotas? *</h3>
+							<div class="conteiner">
+								<div class="radio-box">
+								<h:selectOneRadio 	id="ingressouPorCotas" 
+													value="#{pessoaBean.entidade.ingressouPorCotas}" 
+													disabled="#{not pessoaBean.podeAlterar()}">
+									<f:selectItem id="simCotas" itemLabel="Sim" itemValue="S" />
+									<f:selectItem id="naoCotas" itemLabel="Não" itemValue="N" />
+								</h:selectOneRadio>
+								</div>
+							</div>
+						</div>
+						
+						<div class="radios-group box-15">
+							<h3>É readaptado? *</h3>
+							<div class="conteiner">
+								<div class="radio-box">
+								<h:selectOneRadio 	id="isReadaptado" 
+													value="#{pessoaBean.entidade.isReadaptado}" 
+													disabled="#{not pessoaBean.podeAlterar()}">
+									<f:selectItem id="simReadaptado" itemLabel="Sim" itemValue="S" />
+									<f:selectItem id="naoReadaptado" itemLabel="Não" itemValue="N" />
+								</h:selectOneRadio>
+								</div>
+							</div>
+						</div>
+						
 					</ui:fragment>										
 					
 					<ui:fragment rendered="#{not pessoaBean.ehServidor()}">
