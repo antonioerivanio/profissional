@@ -95,9 +95,7 @@
 					<div class="conteiner">
 						<h:selectOneMenu 
 							id="aliqRat"
-							value="#{estabelecimentoFormBean.entidade.rat}" 
-							required="true"
-							requiredMessage="A alíquota RAT é obrigatória.">
+							value="#{estabelecimentoFormBean.entidade.rat}" >
 							<f:selectItem id="aliqRatSelecione" itemLabel="Selecione..." />
 							<f:selectItem id="aliqRat1" itemLabel="1%" itemValue="1" />
 							<f:selectItem id="aliqRat2" itemLabel="2%" itemValue="2"/>
@@ -117,8 +115,6 @@
 						<h:inputText 
 							id="fap"
 							value="#{estabelecimentoFormBean.entidade.fap}"							
-							required="true" 
-							requiredMessage="O FAP é obrigatório."
 							styleClass="maskFap"
 							>
 							<f:convertNumber type="number" maxFractionDigits="4" maxIntegerDigits="1" locale="pt_br"/>
