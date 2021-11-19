@@ -157,11 +157,11 @@ public class PessoalService {
 			if( entidade.getTipoDeficiencia() == null )
 				throw new SRHRuntimeException("O Tipo Deficiência é obrigatório.");
 			
-			if(entidade.getIngressouPorCotas() == null || entidade.getIngressouPorCotas().isEmpty())
-				throw new SRHRuntimeException("É necessário informar se você entrou por cotas.");
+			/*if(entidade.getIngressouPorCotas() == null || entidade.getIngressouPorCotas().isEmpty())
+				throw new SRHRuntimeException("É necessário informar se você entrou por cotas.");*/
 			
-			if(entidade.getIsReadaptado() == null || entidade.getIsReadaptado().isEmpty())
-				throw new SRHRuntimeException("É necessário informar se você é readaptado.");
+			/*if(entidade.getIsReadaptado() == null || entidade.getIsReadaptado().isEmpty())
+				throw new SRHRuntimeException("É necessário informar se você é readaptado.");*/
 			
 			if ( entidade.getRaca() == null )
 				throw new SRHRuntimeException("A Raça/Cor é obrigatória.");
