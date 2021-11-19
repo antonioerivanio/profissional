@@ -276,6 +276,12 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	@Column(name="FLPOSSUIVINCULOSOCIETARIO")
 	private String possuiVinculoSocietario;
 	
+	@Column(name="FLINGRESSOUPORCOTAS")
+	private String ingressouPorCotas;
+	
+	@Column(name="FLREADAPTADO")
+	private String isReadaptado;
+	
 	public Pessoal(){
 		//seguindo padrao Java Beans...
 	}
@@ -512,15 +518,14 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	public TipoDeficiencia getTipoDeficiencia() { return tipoDeficiencia; }
 	public void setTipoDeficiencia(TipoDeficiencia tipoDeficiencia) { this.tipoDeficiencia = tipoDeficiencia; }
 
-	public String getPossuiVinculoSocietario() {
-		return possuiVinculoSocietario;
-	}
+	public String getPossuiVinculoSocietario() { return possuiVinculoSocietario; }
+	public void setPossuiVinculoSocietario(String possuiVinculoSocietario) { this.possuiVinculoSocietario = possuiVinculoSocietario; }
 
+	public String getIngressouPorCotas() { return ingressouPorCotas; }
+	public void setIngressouPorCotas(String ingressouPorCotas) { this.ingressouPorCotas = ingressouPorCotas; }
 
-	public void setPossuiVinculoSocietario(String possuiVinculoSocietario) {
-		this.possuiVinculoSocietario = possuiVinculoSocietario;
-	}
-
+	public String getIsReadaptado() { return isReadaptado; }
+	public void setIsReadaptado(String isReadaptado) { this.isReadaptado = isReadaptado; }
 
 	@Override
 	public Long getId() {return this.id;}

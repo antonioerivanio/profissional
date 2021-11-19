@@ -257,7 +257,6 @@ public class PessoaBean implements Serializable {
 		try {
 			// Se for Servidor Público
 			if ( entidade.getCategoria().getId().equals(1L) ) {
-
 				if(entidade.getPossuiVinculoSocietario() == null || entidade.getPossuiVinculoSocietario().isEmpty()) {
 					throw new SRHRuntimeException("É necessário informar se você possui Vínculo Societário.");
 				}
