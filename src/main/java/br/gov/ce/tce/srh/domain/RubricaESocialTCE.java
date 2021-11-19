@@ -62,7 +62,7 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
 	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 		
-	@Column(name="FLINCIDENCIDETETO")
+	@Column(name="FLINCIDETETO")
 	private Integer incideTeto;
 	
 	public Long getId() {
