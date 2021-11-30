@@ -373,10 +373,10 @@ public class PessoaBean implements Serializable {
 
 		return podeAlterar;
 	}
-
+	// Alteração para o perfil consulta ser igual ao do servidor
 	public boolean ehServidor() {
 		if (ehServidor == null)
-			ehServidor = authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR");
+			ehServidor = (authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR") || authenticationService.getUsuarioLogado().hasAuthority("ROLE_CONSULTA_CADASTRO_PESSOAL"));
 		return ehServidor;
 	}
 	
