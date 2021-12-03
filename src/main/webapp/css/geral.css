@@ -660,6 +660,7 @@ img.ambiente {
 	border-radius: 4px;
 }
 
+
 .formularios .radios-group .radio-box, .formularios .checkbox-group .checkbox-box
 	{
 	overflow: auto;
@@ -749,6 +750,31 @@ img.ambiente {
 	text-indent: -9000px;
 	margin-top: 5px;
 }
+
+
+
+
+
+
+
+
+
+
+
+/*
+.formularios .input-box, .formularios .textarea-box, .formularios .radios-group,
+	.formularios .checkbox-group, .formularios .select-box {
+	
+	float: left;
+	min-height: 35px;
+	width: 100%;
+	position: relative;
+	margin-bottom: 20px;
+}
+
+*/
+
+
 
 .tabela-dados {
 	clear: both;

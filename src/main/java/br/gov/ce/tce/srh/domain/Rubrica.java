@@ -45,6 +45,9 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 	@Column(name="VERIFICATETO")
 	private Boolean verificaTeto;
 	
+	@Column(name="FLINCIDETETO")
+	private Boolean incideTeto;
+	
 	@Column(name="AGRUPADESCONTO")
 	private Boolean agrupaDesconto;
 
@@ -143,7 +146,16 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 	public void setVerificaTeto(Boolean verificaTeto) {
 		this.verificaTeto = verificaTeto;
 	}
+	
+	
+	public Boolean getIncideTeto() {
+		return incideTeto;
+	}
 
+	public void setIncideTeto(Boolean incideTeto) {
+		this.incideTeto = incideTeto;
+	}
+		
 	public Boolean getAgrupaDesconto() {
 		return agrupaDesconto;
 	}
@@ -176,11 +188,7 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 		this.auxilio = auxilio;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public Boolean isAtiva() {
+	public Boolean getAtiva() {
 		return ativa;
 	}
 
@@ -188,4 +196,11 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 		this.ativa = ativa;
 	}
 	
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Boolean isAtiva() {
+		return ativa;
+	}
 }
