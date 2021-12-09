@@ -53,19 +53,19 @@
                         <f:facet name="header">
                             CNPJ
                         </f:facet>
-                        <center><h:outputText id="itemesco" name="itemesco" value="#{item.cnpj}" styleClass="cel-50" /></center>
+                        <center><h:outputText id="itemcnpj" name="itemcnpj" value="#{item.cnpj}" styleClass="cel-50" /></center>
                     </h:column>
  					<h:column id="col3" headerClass="cel-25">
                         <f:facet name="header">
                             RAZÃO SOCIAL
                         </f:facet>
-                        <center><h:outputText id="itemrais" name="itemesco" value="#{item.razaoSocial}" styleClass="cel-25" /></center>
+                        <center><h:outputText id="itemrazaosocial" name="itemrazaosocial" value="#{item.razaoSocial}" styleClass="cel-25" /></center>
                     </h:column>
                     	<h:column id="col4" headerClass="cel-50">
                         <f:facet name="header">
                             NOME FANTASIA
                         </f:facet>
-                        <center><h:outputText id="itemesco" name="itemesco" value="#{item.nomeFantasia}" styleClass="cel-50" /></center>
+                        <center><h:outputText id="itemnomefantasia" name="itemnomefantasia" value="#{item.nomeFantasia}" styleClass="cel-50" /></center>
                     </h:column>
                 	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOAJURIDICA_ALTERAR')}">
                         <f:facet name="header">
