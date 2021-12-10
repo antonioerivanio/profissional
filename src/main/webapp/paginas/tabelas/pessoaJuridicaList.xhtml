@@ -20,14 +20,46 @@
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
-			<div class="input-box box-75">
-				<label for="">Pessoa Jurídica</label>
+			<div class="input-box box-20">
+				<label for="">CNPJ</label>
 				<div class="conteiner">
 					<h:inputText id="cnpj" 
 								 name="cnpj" 
+								 maxlength="14"
 								 value="#{pessoaJuridicaBean.cnpj}" />
+					
 				</div>
 			</div>
+			
+			 
+			<div class="input-box box-30">
+				<label for="">Razão Social</label>
+				<div class="conteiner">
+					<h:inputText id="razaoSocial"
+								 name="razaoSocial" />
+								<!--  value="#{pessoaJuridicaBean.razaoSocial}" /> -->
+				</div>
+			</div>
+			
+			
+			
+			<div class="input-box box-30">
+				<label for="">Nome de Fantasia</label>
+				<div class="conteiner">
+					<h:inputText id="nomeFantasia"
+								 name="nomeFantasia" />
+								<!--  value="#{pessoaJuridicaBean.nomeFantasia}" /> -->
+				</div>
+			</div>
+			
+			
+			 
+			 
+			 
+			 
+			 
+			 
+			
 
 			<h:commandButton id="consultar"
 							 name="consultar"
@@ -35,39 +67,35 @@
 							 action="#{pessoaJuridicaBean.consultar}"
 							 styleClass="bt-padrao fl mg-top-18" 
 							 render="scroller,lista"/>
-			<h:commandButton id="relatorio" 
-							 value="Relatório" 
-							 action="#{pessoaJuridicaBean.relatorio}"
-							 styleClass="bt-padrao fl mg-top-18 mg-left-10" style="margin-left: 10px" />
-
+			
 			<div class="tabela-dados">
 
 				<rich:dataTable id="lista" value="#{pessoaJuridicaBean.dataModel}" var="item" rows="10" binding="#{pessoaJuridicaBean.dataTable}">
- 					<h:column id="col1">
+ 					<h:column id="col1" headerClass="cel-5">
                         <f:facet name="header">
                             ID
                         </f:facet>
-                        <center><h:outputText id="itemordem" name="itemordem" value="#{item.id}" /></center>
+                        <center><h:outputText id="itemordem" name="itemordem" value="#{item.id}" styleClass="cel-5" /></center>
                     </h:column>
- 					<h:column id="col2" headerClass="cel-50">
+ 					<h:column id="col2" headerClass="cel-15">
                         <f:facet name="header">
                             CNPJ
                         </f:facet>
-                        <center><h:outputText id="itemcnpj" name="itemcnpj" value="#{item.cnpj}" styleClass="cel-50" /></center>
+                        <center><h:outputText id="itemcnpj" name="itemcnpj" value="#{item.cnpj}" styleClass="cel-15" /></center>
                     </h:column>
- 					<h:column id="col3" headerClass="cel-25">
+ 					<h:column id="col3" headerClass="cel-30">
                         <f:facet name="header">
                             RAZÃO SOCIAL
                         </f:facet>
                         <center><h:outputText id="itemrazaosocial" name="itemrazaosocial" value="#{item.razaoSocial}" styleClass="cel-25" /></center>
                     </h:column>
-                    	<h:column id="col4" headerClass="cel-50">
+                    	<h:column id="col4" headerClass="cel-30">
                         <f:facet name="header">
                             NOME FANTASIA
                         </f:facet>
                         <center><h:outputText id="itemnomefantasia" name="itemnomefantasia" value="#{item.nomeFantasia}" styleClass="cel-50" /></center>
                     </h:column>
-                	<h:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOAJURIDICA_ALTERAR')}">
+                	<h:column id="col5" > <!-- rendered="#{LoginBean.anyGranted('ROLE_PESSOAJURIDICA_ALTERAR')}"> -->
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -79,7 +107,7 @@
                             <f:setPropertyActionListener target="#{pessoaJuridicaBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOAJURIDICA_EXCLUIR')}">
+                	<h:column id="col6" > <!-- rendered="#{LoginBean.anyGranted('ROLE_PESSOAJURIDICA_EXCLUIR')}"> -->
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -101,9 +129,11 @@
 			<h:commandButton id="incluir" 
 							 value="Incluir"
 							 action="incluirAlterar"
-							 styleClass="bt-padrao fr mg-right-15" 
-							 rendered="#{LoginBean.anyGranted('ROLE_PESSOAJURIDICA_INSERIR')}"/>
+							 styleClass="bt-padrao fr mg-right-15"  />
+							 <!-- rendered="#{LoginBean.anyGranted('ROLE_PESSOAJURIDICA_INSERIR')}" -->
+							
 							 
+			
 			<h:commandButton id="limpaTela"
 							 value="Limpar"
 							 action="listar"

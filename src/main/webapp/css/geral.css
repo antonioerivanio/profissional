@@ -810,6 +810,10 @@ img.ambiente {
 	width: 10%;
 }
 
+.tabela-dados th.cel-5, .tabela-dados td.cel-5 {
+	width: 5%;
+}
+
 .tabela-dados td.ico-cell, .tabela-dados th.ico-cell {
 	width: 50px;
 	padding: 11px 10px;

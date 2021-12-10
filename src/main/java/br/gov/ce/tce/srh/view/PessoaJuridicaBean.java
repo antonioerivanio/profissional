@@ -45,7 +45,9 @@ public class PessoaJuridicaBean implements Serializable {
 
 	// parametro da tela de consulta
 	private String cnpj = new String();
-
+	private String razaoSocial = new String();
+	
+	
 	// entidades das telas
 	private List<PessoaJuridica> lista = new ArrayList<PessoaJuridica>();
 	private PessoaJuridica entidade = new PessoaJuridica();
@@ -81,6 +83,30 @@ public class PessoaJuridicaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
+		
+		
+		
+		try {
+
+			count = pessoaJuridicaService.count( this.razaoSocial );
+			
+			if (count == 0) {
+				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+				logger.info("Nenhum registro foi encontrado.");
+			}
+
+			flagRegistroInicial = -1;
+
+		} catch (Exception e) {
+			limparListas();
+			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		
+		
+		
+		
+		
 	}
 
 	public void salvar() {

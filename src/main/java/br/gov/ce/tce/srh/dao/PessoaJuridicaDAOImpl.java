@@ -55,7 +55,7 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 	@Override
 	public int count(String cnpj) {
 		Query query = entityManager
-				.createQuery("Select count (e) from PessoaJuridica e where cnpj ) LIKE :cnpj ORDER BY e.razaoSocial");
+				.createQuery("Select count (e) from PessoaJuridica e where e.cnpj LIKE :cnpj ORDER BY e.razaoSocial");
 		query.setParameter("cnpj", cnpj);
 		return ((Long) query.getSingleResult()).intValue();
 	}
@@ -64,7 +64,7 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 	@SuppressWarnings("unchecked")
 	public List<PessoaJuridica> search(String cnpj, int first, int rows) {
 		Query query = entityManager
-				.createQuery("Select e from PessoaJuridica e where cnpj ) LIKE :cnpj ORDER BY e.razaoSocial");
+				.createQuery("Select e from PessoaJuridica e where e.cnpj LIKE :cnpj ORDER BY e.razaoSocial");
 		query.setParameter("cnpj", cnpj);
 		query.setFirstResult(first);
 		query.setMaxResults(rows);

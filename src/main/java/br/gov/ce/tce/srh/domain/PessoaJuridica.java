@@ -31,7 +31,7 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 	@Column(name = "RAZAOSOCIAL", nullable = false)
 	private String razaoSocial;
 
-	@Column(name = "NOMEFANTASIA")
+	@Column(name = "NOMEFANTASIA", nullable = false)
 	private String nomeFantasia;
 
 	public PessoaJuridica() {
