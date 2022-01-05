@@ -25,6 +25,35 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 	private PessoaJuridicaDAO dao;
 	
 	
+
+	/**
+	 * Regra de Negocio: 
+	 * 
+	 * Verifica se existe na base o CNPJ, razão social ou o nome de fantasia.
+	 * 
+	 * @throws SRHRuntimeException
+	 * 
+	 */
+	private void verificandoSeEntidadeExiste(PessoaJuridica entidade) throws SRHRuntimeException {
+		
+		// verificando cnpj
+		PessoaJuridica entidadeJaExiste = dao.getBycnpj(entidade.getCnpj());
+		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
+			throw new SRHRuntimeException("CNPJ já cadastrado. Operação cancelada.");
+		
+		// verificando razão social
+		entidadeJaExiste = dao.getByrazaoSocial(entidade.getRazaoSocial());
+		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
+			throw new SRHRuntimeException("Razão Social já cadastrada. Operação cancelada.");
+		
+		// verificando nome de fantasia
+		entidadeJaExiste = dao.getBynomeFantasia(entidade.getNomeFantasia());
+		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
+			throw new SRHRuntimeException("Nome Fantasia já cadastrada. Operação cancelada.");
+	}
+	
+
+	
 	@Override
 	@Transactional
 	public void salvar(PessoaJuridica entidade) throws SRHRuntimeException {
@@ -36,11 +65,12 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 		 */
 		verificandoSeEntidadeExiste(entidade);
 		
+		
 		// persistindo
 		dao.salvar(entidade);
 		
 	}
-	
+
 	
 	@Override
 	@Transactional
@@ -50,16 +80,15 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 	
 	
 	@Override
-	public int count(String cnpj) {
-		return dao.count(cnpj);
+	public int count(String cnpj, String razaoSocial, String nomeFantasia) {
+		return dao.count(cnpj, razaoSocial, nomeFantasia);
 	}
 	
 	
 	@Override
-	public List<PessoaJuridica> search(String cnpj, int first, int rows) {
-		return dao.search(cnpj, first, rows);
+	public List<PessoaJuridica> search(String cnpj, String razaoSocial, String nomeFantasia, int first, int rows) {
+		return dao.search(cnpj, razaoSocial, nomeFantasia, first, rows);
 	}
-
 
 	@Override
 	public List<PessoaJuridica> findAll() {
@@ -67,27 +96,6 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 	}
 	
 		
-	/**
-	 * Regra de Negocio: 
-	 * 
-	 * Verifica se existe na base o CNPJ ou a razão social.
-	 * 
-	 * @throws SRHRuntimeException
-	 * 
-	 */
-	private void verificandoSeEntidadeExiste(PessoaJuridica entidade) throws SRHRuntimeException {
-
-		// verificando cnpj
-		PessoaJuridica entidadeJaExiste = dao.getBycnpj(entidade.getCnpj());
-		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("CNPJ já cadastrado. Operação cancelada.");
-
-		// verificando razão social
-		entidadeJaExiste = dao.getByrazaoSocial(entidade.getRazaoSocial());
-		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Razão Social já cadastrada. Operação cancelada.");
-	}
-	
 	
 	public void setDao(PessoaJuridicaDAO pessoaJuridicaDao) {this.dao = pessoaJuridicaDao;}	
 }

@@ -15,8 +15,8 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 public interface PessoaJuridicaService {
 	
-	public int count(String cnpj);
-	public List<PessoaJuridica> search(String cnpj, int first, int rows);
+	public int count(String cnpj, String razaoSocial, String nomeFantasia);
+	public List<PessoaJuridica> search(String cnpj, String razaoSocial, String nomeFantasia, int first, int rows);
 	
 	public void salvar(PessoaJuridica entidade) throws SRHRuntimeException;
 	public void excluir(PessoaJuridica entidade);

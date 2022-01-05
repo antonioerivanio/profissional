@@ -2,9 +2,7 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -20,57 +18,50 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
-import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
  * Referente a tabela: TB_PESSOAJURIDICA
  * 
- * @since  : Dez 08, 2021, 10:41:00 AM
+ * @since : Dez 08, 2021, 10:41:00 AM
  * @author : marcelo.viana@tce.ce.gov.br
  *
  */
 
-@SuppressWarnings("serial")
 @Component("pessoaJuridicaBean")
 @Scope("view")
-public class PessoaJuridicaBean implements Serializable {
-	
+public class PessoaJuridicaBean extends SRHUtils implements Serializable {
+
+	private static final long serialVersionUID = 4322801258398227080L;
+
 	static Logger logger = Logger.getLogger(PessoaJuridicaBean.class);
 
 	@Autowired
 	private PessoaJuridicaService pessoaJuridicaService;
-	
-	@Autowired
-	private RelatorioUtil relatorioUtil;
 
-	// parametro da tela de consulta
-	private String cnpj = new String();
-	private String razaoSocial = new String();
-	
-	
 	// entidades das telas
 	private List<PessoaJuridica> lista = new ArrayList<PessoaJuridica>();
 	private PessoaJuridica entidade = new PessoaJuridica();
 
-	//paginação
+	// paginação
 	private int count;
 	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
 	private List<PessoaJuridica> pagedList = new ArrayList<PessoaJuridica>();
 	private int flagRegistroInicial = 0;
-	
+
 	@PostConstruct
 	private void init() {
-		PessoaJuridica flashParameter = (PessoaJuridica)FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new PessoaJuridica());			
-    }
+		PessoaJuridica flashParameter = (PessoaJuridica) FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new PessoaJuridica());
+	}
 
 	public void consultar() {
 
 		try {
 
-			count = pessoaJuridicaService.count( this.cnpj );
-			
+			count = pessoaJuridicaService.count(entidade.getCnpj(), entidade.getRazaoSocial(), entidade.getNomeFantasia());
+
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
 				logger.info("Nenhum registro foi encontrado.");
@@ -83,120 +74,101 @@ public class PessoaJuridicaBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-		
-		
-		
-		try {
+	}
 
-			count = pessoaJuridicaService.count( this.razaoSocial );
-			
-			if (count == 0) {
-				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-				logger.info("Nenhum registro foi encontrado.");
-			}
-
-			flagRegistroInicial = -1;
-
-		} catch (Exception e) {
-			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+	private boolean verificaCNPJ(String cnpj) {
+		if (SRHUtils.isCNPJ(entidade.getCnpj())) {
+			return true;
+		} else {
+			FacesUtil.addErroMessage("CNPJ inválido.");
+			return false;
 		}
-		
-		
-		
-		
-		
 	}
 
 	public void salvar() {
 
-		try {
+			try {
+				if (verificaCNPJ(entidade.getCnpj())) {
+					
+					entidade.setCnpj(removerMascara(entidade.getCnpj()));
+					pessoaJuridicaService.salvar(entidade);
+					setEntidade(new PessoaJuridica());
 
-			pessoaJuridicaService.salvar( entidade );
-			setEntidade( new PessoaJuridica() );
-
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
-
-		} catch (SRHRuntimeException e) {
-			FacesUtil. addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());	
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+					FacesUtil.addInfoMessage("Operação realizada com sucesso.");
+					logger.info("Operação realizada com sucesso.");
+				}
+				
+			} catch (SRHRuntimeException e) {
+				FacesUtil.addErroMessage(e.getMessage());
+				logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
 		}
-	}
+
 	
 	public String editar() {
-		FacesUtil.setFlashParameter("entidade", getEntidade());        
-        return "incluirAlterar";
+		FacesUtil.setFlashParameter("entidade", getEntidade());
+		return "incluirAlterar";
 	}
 
 	public void excluir() {
 
 		try {
 
-			pessoaJuridicaService.excluir( entidade );
+			pessoaJuridicaService.excluir(entidade);
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
 
 		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclusão não poderá ser realizada.");
-			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
+			FacesUtil.addErroMessage(
+					"Existem registros filhos utilizando o registro selecionado. Exclusão não poderá ser realizada.");
+			logger.error("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		setEntidade( new PessoaJuridica() );
+		setEntidade(new PessoaJuridica());
 		consultar();
 	}
 
-	public void relatorio() {
 
-		try {
-
-			Map<String, Object> parametros = new HashMap<String, Object>();
-
-			if (this.cnpj != null && !this.cnpj.equalsIgnoreCase("")) {
-				String filtro = "where upper( cnpj ) like '%" + this.cnpj + "%' ";
-				parametros.put("FILTRO", filtro);
-			}
-
-			relatorioUtil.relatorio("pessoaJuridica.jasper", parametros, "PessoaJuridica.pdf");
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
+	public PessoaJuridica getEntidade() {
+		return entidade;
 	}
 
-		public String getCnpj() {return cnpj;}
-	public void setCnpj(String cnpj) {this.cnpj = cnpj;}
+	public void setEntidade(PessoaJuridica pessoaJuridica) {
+		this.entidade = pessoaJuridica;
+	}
 
-	public PessoaJuridica getEntidade() {return entidade;}
-	public void setEntidade(PessoaJuridica pessoaJuridica) {this.entidade = pessoaJuridica;}
+	public List<PessoaJuridica> getLista() {
+		return lista;
+	}
 
-	public List<PessoaJuridica> getLista(){return lista;}
-
-		
-	//PAGINAÇÃO
+	// PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<PessoaJuridica>(); 
-	}	
+		pagedList = new ArrayList<PessoaJuridica>();
+	}
 
-	public UIDataTable getDataTable() {return dataTable;}
-	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
+	public UIDataTable getDataTable() {
+		return dataTable;
+	}
+
+	public void setDataTable(UIDataTable dataTable) {
+		this.dataTable = dataTable;
+	}
 
 	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
+		if (flagRegistroInicial != getDataTable().getFirst()) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(pessoaJuridicaService.search(cnpj, getDataTable().getFirst(), getDataTable().getRows()));
-			if(count != 0){
+			setPagedList(pessoaJuridicaService.search(entidade.getCnpj(), entidade.getRazaoSocial(), entidade.getNomeFantasia(), getDataTable().getFirst(),
+					getDataTable().getRows()));
+			if (count != 0) {
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
 				limparListas();
@@ -205,7 +177,12 @@ public class PessoaJuridicaBean implements Serializable {
 		return dataModel;
 	}
 
-	public List<PessoaJuridica> getPagedList() {return pagedList;}
-	public void setPagedList(List<PessoaJuridica> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINAÇÃO
+	public List<PessoaJuridica> getPagedList() {
+		return pagedList;
+	}
+
+	public void setPagedList(List<PessoaJuridica> pagedList) {
+		this.pagedList = pagedList;
+	}
+	// FIM PAGINAÇÃO
 }

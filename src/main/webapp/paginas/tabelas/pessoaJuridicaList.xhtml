@@ -26,7 +26,8 @@
 					<h:inputText id="cnpj" 
 								 name="cnpj" 
 								 maxlength="14"
-								 value="#{pessoaJuridicaBean.cnpj}" />
+								 styleClass="maskCnpj"
+								 value="#{pessoaJuridicaBean.entidade.cnpj}" />
 					
 				</div>
 			</div>
@@ -36,8 +37,8 @@
 				<label for="">Razão Social</label>
 				<div class="conteiner">
 					<h:inputText id="razaoSocial"
-								 name="razaoSocial" />
-								<!--  value="#{pessoaJuridicaBean.razaoSocial}" /> -->
+								 name="razaoSocial"
+								 value="#{pessoaJuridicaBean.entidade.razaoSocial}" />
 				</div>
 			</div>
 			
@@ -47,19 +48,11 @@
 				<label for="">Nome de Fantasia</label>
 				<div class="conteiner">
 					<h:inputText id="nomeFantasia"
-								 name="nomeFantasia" />
-								<!--  value="#{pessoaJuridicaBean.nomeFantasia}" /> -->
+								 name="nomeFantasia"
+								 value="#{pessoaJuridicaBean.entidade.nomeFantasia}" />
 				</div>
 			</div>
-			
-			
-			 
-			 
-			 
-			 
-			 
-			 
-			
+
 
 			<h:commandButton id="consultar"
 							 name="consultar"

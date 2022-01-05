@@ -17,9 +17,10 @@ import javax.persistence.Table;
  */
 
 @Entity
-@SuppressWarnings("serial")
 @Table(name = "TB_PESSOAJURIDICA", schema = DatabaseMetadata.SCHEMA_SRH)
 public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "ID")

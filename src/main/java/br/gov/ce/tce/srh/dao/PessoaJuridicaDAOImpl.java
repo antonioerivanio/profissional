@@ -33,7 +33,7 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 	}
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from PessoaJuridica e ");
+		Query query = entityManager.createQuery("Select max(pj.id) from PessoaJuridica pj ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
@@ -48,33 +48,92 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 
 	@Override
 	public void excluir(PessoaJuridica entidade) {
-		entityManager.createQuery("DELETE FROM PessoaJuridica e WHERE e.id=:id").setParameter("id", entidade.getId())
+		entityManager.createQuery("DELETE FROM PessoaJuridica pj WHERE pj.id=:id ").setParameter("id", entidade.getId())
 				.executeUpdate();
 	}
 
 	@Override
-	public int count(String cnpj) {
-		Query query = entityManager
-				.createQuery("Select count (e) from PessoaJuridica e where e.cnpj LIKE :cnpj ORDER BY e.razaoSocial");
-		query.setParameter("cnpj", cnpj);
+	public int count(String cnpj, String razaoSocial, String nomeFantasia) {
+		StringBuilder consulta = new StringBuilder("Select count (pj) FROM PessoaJuridica pj WHERE 1=1 ");
+
+		if (cnpj != null && !cnpj.isEmpty()) {
+			consulta.append(" AND pj.cnpj LIKE :cnpj ");
+		}
+
+		if (razaoSocial != null && !razaoSocial.isEmpty()) {
+			consulta.append(" AND pj.razaoSocial LIKE :razaoSocial ");
+		}
+
+		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+			consulta.append(" AND pj.nomeFantasia LIKE :nomeFantasia ");
+		}
+
+		consulta.append(" ORDER BY pj.razaoSocial");
+
+		Query query = entityManager.createQuery(consulta.toString());
+
+		if (cnpj != null && !cnpj.isEmpty()) {
+			query.setParameter("cnpj", "%" + cnpj + "%");
+		}
+		
+		if (razaoSocial != null && !razaoSocial.isEmpty()) {
+			query.setParameter("razaoSocial", "%" + razaoSocial.toUpperCase() + "%");
+		}
+		
+		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+			query.setParameter("nomeFantasia", "%" + nomeFantasia.toUpperCase() + "%");
+		}
+		
+
 		return ((Long) query.getSingleResult()).intValue();
 	}
 
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoaJuridica> search(String cnpj, int first, int rows) {
-		Query query = entityManager
-				.createQuery("Select e from PessoaJuridica e where e.cnpj LIKE :cnpj ORDER BY e.razaoSocial");
-		query.setParameter("cnpj", cnpj);
+	public List<PessoaJuridica> search(String cnpj, String razaoSocial, String nomeFantasia, int first, int rows) {
+		StringBuilder consulta = new StringBuilder("Select pj FROM PessoaJuridica pj WHERE 1=1 ");
+
+		if (cnpj != null && !cnpj.isEmpty()) {
+			consulta.append(" AND pj.cnpj LIKE :cnpj ");
+		}
+
+		if (razaoSocial != null && !razaoSocial.isEmpty()) {
+			consulta.append(" AND pj.razaoSocial LIKE :razaoSocial ");
+		}
+		
+		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+			consulta.append(" AND pj.nomeFantasia LIKE :nomeFantasia ");
+		}
+		
+		consulta.append(" ORDER BY pj.razaoSocial");
+
+		Query query = entityManager.createQuery(consulta.toString());
+
+		if (cnpj != null && !cnpj.isEmpty()) {
+			query.setParameter("cnpj", "%" + cnpj + "%");
+		}
+
+		if (razaoSocial != null && !razaoSocial.isEmpty()) {
+			query.setParameter("razaoSocial", "%" + razaoSocial.toUpperCase() + "%");
+		}
+		
+		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+			query.setParameter("nomeFantasia", "%" + nomeFantasia.toUpperCase() + "%");
+		}
+
 		query.setFirstResult(first);
 		query.setMaxResults(rows);
 		return query.getResultList();
 	}
 
+
 	@Override
 	public PessoaJuridica getBycnpj(String cnpj) {
+
 		try {
-			Query query = entityManager.createQuery("Select e from PessoaJuridica e where e.cnpj = :cnpj ");
+			Query query = entityManager.createQuery("Select pj from PessoaJuridica pj where pj.cnpj = :cnpj ");
 			query.setParameter("cnpj", cnpj);
 			return (PessoaJuridica) query.getSingleResult();
 		} catch (NoResultException e) {
@@ -85,8 +144,21 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 	@Override
 	public PessoaJuridica getByrazaoSocial(String razaoSocial) {
 		try {
-			Query query = entityManager.createQuery("Select e from PessoaJuridica e where e.razaoSocial = :razaoSocial ");
+			Query query = entityManager
+					.createQuery("Select pj from PessoaJuridica pj where pj.razaoSocial = :razaoSocial ");
 			query.setParameter("razaoSocial", razaoSocial.toUpperCase());
+			return (PessoaJuridica) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public PessoaJuridica getBynomeFantasia(String nomeFantasia) {
+		try {
+			Query query = entityManager
+					.createQuery("Select pj from PessoaJuridica pj where pj.nomeFantasia = :nomeFantasia ");
+			query.setParameter("nomeFantasia", nomeFantasia.toUpperCase());
 			return (PessoaJuridica) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
@@ -96,6 +168,6 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<PessoaJuridica> findAll() {
-		return entityManager.createQuery("SELECT e FROM PessoaJuridica e ORDER BY e.id").getResultList();
+		return entityManager.createQuery("SELECT pj FROM PessoaJuridica pj ORDER BY pj.id").getResultList();
 	}
 }

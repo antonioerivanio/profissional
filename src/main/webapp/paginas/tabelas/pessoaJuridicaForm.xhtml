@@ -28,33 +28,36 @@
 				</div>
 			</div>
 
-			<div class="input-box box-90">
+			<div class="input-box box-20">
 				<label for="">CNPJ *</label>
 				<div class="conteiner">
 					<h:inputText id="cnpj"
+								 styleClass="maskCnpj"
 								 value="#{pessoaJuridicaBean.entidade.cnpj}"
 								 required="true"
 								 requiredMessage="O CNPJ é obrigatório."
-								 maxlength="14" />    
+								 maxlength="14"/>    
 				</div>
 			</div>
 
-			<div class="textarea-box box-100">
-				<label for="">Razão Social</label>
+			<div class="input-box box-35">
+				<label for="">Razão Social *</label>
 				<div class="conteiner">
-					<h:inputTextarea id="razaoSocial"
+					<h:inputText id="razaoSocial"
 									 value="#{pessoaJuridicaBean.entidade.razaoSocial}"
-									 onkeyup="this.value = this.value.substring(0, 99);" />
+									 required="true"
+									 requiredMessage="A razão social é obrigatório." />
+									 <!-- onkeyup="this.value = this.value.substring(0, 99);" -->
 				</div>
 			</div>
 
-			<div class="input-box box-10">
+			<div class="input-box box-35">
 				<label for="">Nome de Fantasia *</label>
 				<div class="conteiner">
 					<h:inputText id="nomeFantasia"
 								 value="#{pessoaJuridicaBean.entidade.nomeFantasia}"
 								 required="true"
-								 requiredMessage="O nome de Fantasia é obrigatório."
+								 requiredMessage="O nome de fantasia é obrigatório."
 								 maxlength="250"  />    
 				</div>
 			</div>
