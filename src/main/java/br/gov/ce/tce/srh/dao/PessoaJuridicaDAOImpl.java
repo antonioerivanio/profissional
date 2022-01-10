@@ -54,72 +54,70 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 
 	@Override
 	public int count(String cnpj, String razaoSocial, String nomeFantasia) {
+		System.out.println("CHEGOU AQUI2: ------->>>" + cnpj + razaoSocial + nomeFantasia);
 		StringBuilder consulta = new StringBuilder("Select count (pj) FROM PessoaJuridica pj WHERE 1=1 ");
 
-		if (cnpj != null && !cnpj.isEmpty()) {
-			consulta.append(" AND pj.cnpj LIKE :cnpj ");
+		if (cnpj != null && !(cnpj.isEmpty())) {
+			consulta.append("AND pj.cnpj LIKE :cnpj ");
 		}
 
-		if (razaoSocial != null && !razaoSocial.isEmpty()) {
-			consulta.append(" AND pj.razaoSocial LIKE :razaoSocial ");
+		if (razaoSocial != null && !(razaoSocial.isEmpty())) {
+			consulta.append("AND pj.razaoSocial LIKE :razaoSocial ");
 		}
 
-		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
-			consulta.append(" AND pj.nomeFantasia LIKE :nomeFantasia ");
+		if (nomeFantasia != null && !(nomeFantasia.isEmpty())) {
+			consulta.append("AND pj.nomeFantasia LIKE :nomeFantasia ");
 		}
 
-		consulta.append(" ORDER BY pj.razaoSocial");
+		consulta.append("ORDER BY pj.razaoSocial");
 
 		Query query = entityManager.createQuery(consulta.toString());
 
-		if (cnpj != null && !cnpj.isEmpty()) {
+		if (cnpj != null && !(cnpj.isEmpty())) {
 			query.setParameter("cnpj", "%" + cnpj + "%");
 		}
-		
-		if (razaoSocial != null && !razaoSocial.isEmpty()) {
+
+		if (razaoSocial != null && !(razaoSocial.isEmpty())) {
 			query.setParameter("razaoSocial", "%" + razaoSocial.toUpperCase() + "%");
 		}
-		
-		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+
+		if (nomeFantasia != null && !(nomeFantasia.isEmpty())) {
 			query.setParameter("nomeFantasia", "%" + nomeFantasia.toUpperCase() + "%");
 		}
-		
 
 		return ((Long) query.getSingleResult()).intValue();
 	}
 
-	
-	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<PessoaJuridica> search(String cnpj, String razaoSocial, String nomeFantasia, int first, int rows) {
 		StringBuilder consulta = new StringBuilder("Select pj FROM PessoaJuridica pj WHERE 1=1 ");
 
-		if (cnpj != null && !cnpj.isEmpty()) {
+		if (cnpj != null && !(cnpj.isEmpty())) {
 			consulta.append(" AND pj.cnpj LIKE :cnpj ");
 		}
 
-		if (razaoSocial != null && !razaoSocial.isEmpty()) {
+		if (razaoSocial != null && !(razaoSocial.isEmpty())) {
 			consulta.append(" AND pj.razaoSocial LIKE :razaoSocial ");
 		}
-		
-		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+
+		if (nomeFantasia != null && !(nomeFantasia.isEmpty())) {
 			consulta.append(" AND pj.nomeFantasia LIKE :nomeFantasia ");
 		}
-		
+
 		consulta.append(" ORDER BY pj.razaoSocial");
 
 		Query query = entityManager.createQuery(consulta.toString());
 
-		if (cnpj != null && !cnpj.isEmpty()) {
+		if (cnpj != null && !(cnpj.isEmpty())) {
 			query.setParameter("cnpj", "%" + cnpj + "%");
 		}
 
-		if (razaoSocial != null && !razaoSocial.isEmpty()) {
+		if (razaoSocial != null && !(razaoSocial.isEmpty())) {
 			query.setParameter("razaoSocial", "%" + razaoSocial.toUpperCase() + "%");
 		}
-		
-		if (nomeFantasia != null && !nomeFantasia.isEmpty()) {
+
+		if (nomeFantasia != null && !(nomeFantasia.isEmpty())) {
 			query.setParameter("nomeFantasia", "%" + nomeFantasia.toUpperCase() + "%");
 		}
 
@@ -127,7 +125,6 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 		query.setMaxResults(rows);
 		return query.getResultList();
 	}
-
 
 	@Override
 	public PessoaJuridica getBycnpj(String cnpj) {

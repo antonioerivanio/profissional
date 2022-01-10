@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.PessoaJuridicaDAO;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 /**
  * Referente a tabela: TB_PESSOAJURIDICA
@@ -81,13 +82,13 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 	
 	@Override
 	public int count(String cnpj, String razaoSocial, String nomeFantasia) {
-		return dao.count(cnpj, razaoSocial, nomeFantasia);
+		return dao.count(SRHUtils.removerMascara(cnpj), razaoSocial, nomeFantasia);
 	}
 	
 	
 	@Override
 	public List<PessoaJuridica> search(String cnpj, String razaoSocial, String nomeFantasia, int first, int rows) {
-		return dao.search(cnpj, razaoSocial, nomeFantasia, first, rows);
+		return dao.search(SRHUtils.removerMascara(cnpj), razaoSocial, nomeFantasia, first, rows);
 	}
 
 	@Override

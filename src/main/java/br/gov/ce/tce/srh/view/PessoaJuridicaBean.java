@@ -30,7 +30,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Component("pessoaJuridicaBean")
 @Scope("view")
-public class PessoaJuridicaBean extends SRHUtils implements Serializable {
+public class PessoaJuridicaBean implements Serializable {
 
 	private static final long serialVersionUID = 4322801258398227080L;
 
@@ -43,6 +43,13 @@ public class PessoaJuridicaBean extends SRHUtils implements Serializable {
 	private List<PessoaJuridica> lista = new ArrayList<PessoaJuridica>();
 	private PessoaJuridica entidade = new PessoaJuridica();
 
+	
+	private String cnpj = new String();
+	private String razaoSocial = new String();
+	private String nomeFantasia = new String();
+	
+	
+	
 	// paginação
 	private int count;
 	private UIDataTable dataTable = new UIDataTable();
@@ -59,8 +66,8 @@ public class PessoaJuridicaBean extends SRHUtils implements Serializable {
 	public void consultar() {
 
 		try {
-
-			count = pessoaJuridicaService.count(entidade.getCnpj(), entidade.getRazaoSocial(), entidade.getNomeFantasia());
+System.out.println("CHEGOU AQUI: ------->>>" + cnpj + razaoSocial + nomeFantasia);
+			count = pessoaJuridicaService.count(cnpj, razaoSocial, nomeFantasia);
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -90,7 +97,9 @@ public class PessoaJuridicaBean extends SRHUtils implements Serializable {
 			try {
 				if (verificaCNPJ(entidade.getCnpj())) {
 					
-					entidade.setCnpj(removerMascara(entidade.getCnpj()));
+					entidade.setCnpj(SRHUtils.removerMascara(entidade.getCnpj()));
+					entidade.setRazaoSocial(entidade.getRazaoSocial().toUpperCase());
+					entidade.setNomeFantasia(entidade.getNomeFantasia().toUpperCase());
 					pessoaJuridicaService.salvar(entidade);
 					setEntidade(new PessoaJuridica());
 
@@ -166,7 +175,7 @@ public class PessoaJuridicaBean extends SRHUtils implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if (flagRegistroInicial != getDataTable().getFirst()) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(pessoaJuridicaService.search(entidade.getCnpj(), entidade.getRazaoSocial(), entidade.getNomeFantasia(), getDataTable().getFirst(),
+			setPagedList(pessoaJuridicaService.search(cnpj, razaoSocial, nomeFantasia, getDataTable().getFirst(),
 					getDataTable().getRows()));
 			if (count != 0) {
 				dataModel = new PagedListDataModel(getPagedList(), count);
@@ -185,4 +194,28 @@ public class PessoaJuridicaBean extends SRHUtils implements Serializable {
 		this.pagedList = pagedList;
 	}
 	// FIM PAGINAÇÃO
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getRazaoSocial() {
+		return razaoSocial;
+	}
+
+	public void setRazaoSocial(String razaoSocial) {
+		this.razaoSocial = razaoSocial;
+	}
+
+	public String getNomeFantasia() {
+		return nomeFantasia;
+	}
+
+	public void setNomeFantasia(String nomeFantasia) {
+		this.nomeFantasia = nomeFantasia;
+	}
 }
