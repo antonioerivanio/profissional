@@ -54,7 +54,6 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 
 	@Override
 	public int count(String cnpj, String razaoSocial, String nomeFantasia) {
-		System.out.println("CHEGOU AQUI2: ------->>>" + cnpj + razaoSocial + nomeFantasia);
 		StringBuilder consulta = new StringBuilder("Select count (pj) FROM PessoaJuridica pj WHERE 1=1 ");
 
 		if (cnpj != null && !(cnpj.isEmpty())) {

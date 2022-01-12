@@ -34,6 +34,4 @@ public class CNPJConverter implements Converter {
 
 		return "";
 	}
-
-
 }

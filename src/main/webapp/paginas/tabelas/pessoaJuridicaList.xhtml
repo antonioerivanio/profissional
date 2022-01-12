@@ -74,7 +74,11 @@
                         <f:facet name="header">
                             CNPJ
                         </f:facet>
-                        <center><h:outputText id="itemcnpj" name="itemcnpj" value="#{item.cnpj}" styleClass="cel-15" /></center>
+                        <center><h:outputText id="itemcnpj" name="itemcnpj" value="#{item.cnpj}" styleClass="cel-15" >
+							<f:converter converterId="cnpjConverter" />
+							</h:outputText>                        
+                        </center>
+                         
                     </h:column>
  					<h:column id="col3" headerClass="cel-30">
                         <f:facet name="header">

@@ -66,7 +66,6 @@ public class PessoaJuridicaBean implements Serializable {
 	public void consultar() {
 
 		try {
-System.out.println("CHEGOU AQUI: ------->>>" + cnpj + razaoSocial + nomeFantasia);
 			count = pessoaJuridicaService.count(cnpj, razaoSocial, nomeFantasia);
 
 			if (count == 0) {
