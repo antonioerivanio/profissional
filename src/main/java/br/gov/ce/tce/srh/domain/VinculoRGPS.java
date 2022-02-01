@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -50,8 +49,8 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	@Column(name = "FIM")
 	private Date fim;
 	
-	@ManyToMany
-	@Column(name = "IDUSUARIO")
+	@ManyToOne
+	@JoinColumn(name = "IDUSUARIO")
 	private Usuario usuario;
 
 	@Override

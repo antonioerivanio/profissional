@@ -37,7 +37,7 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<ui:fragment rendered="#{feriasListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment rendered="#{vinculoRGPSListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 			
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
@@ -46,7 +46,7 @@
 									 name="matricula"
 									 maxlength="6"
 									 styleClass="maskMatricula"
-									 value="#{feriasListBean.matricula}" >
+									 value="#{VinculoRGPSListBean.matricula}" >
 	            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
 	        			</h:inputText>
 					</div>
@@ -61,7 +61,7 @@
 										 maxlength="14"
 										 styleClass="maskCpf"
 										 converter="cpfConverter"
-										 value="#{feriasListBean.cpf}" >
+										 value="#{VinculoRGPSListBean.cpf}" >
 								<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 							</h:inputText>
 						</div>
@@ -73,7 +73,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa"
 									 name="nomeCompletoPessoa"
-									 value="#{feriasListBean.nome}" />
+									 value="#{VinculoRGPSListBean.nome}" />
 					</div>
 				</div>
 	
@@ -84,7 +84,7 @@
 	
 				<h:commandButton id="consultar"
 								 value="Consultar"
-								 action="#{feriasListBean.consultar}"
+								 action="#{VinculoRGPSListBean.consultar}"
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 render="scroller,lista"/>
 				
@@ -95,27 +95,27 @@
 
 				<rich:dataTable id="lista" 
 								var="item" 
-								rows="#{feriasListBean.dataModel.pageSize}"
-								value="#{feriasListBean.dataModel}" 
+								rows="#{vinculoRGPSListBean.dataModel.pageSize}"
+								value="#{vinculoRGPSListBean.dataModel}" 
 								>
 
                		<h:column id="col1" headerClass="cel-15">
                         <f:facet name="header">
                             CNPJ
                         </f:facet>
-                        <h:outputText id="item2" value="#{item.funcional.ocupacao.nomenclatura}" styleClass="cel-15" />
+                        <h:outputText id="item2" value="#{pessoaJuridica.cnpj}" styleClass="cel-15" />
                     </h:column>
                     <h:column id="col2">
                         <f:facet name="header">
                             Nome da Empresa
                         </f:facet>
-						<h:outputText id="item1" value="#{item.tipoFerias.descricao}" />
+						<h:outputText id="item1" value="#{pessoaJuridica.razaoSocial}" />
                     </h:column>
                		<h:column id="col3" headerClass="cel-25">
                         <f:facet name="header">
                             Valor
                         </f:facet>
-                        <center><h:outputText id="item3" value="#{item.anoReferencia}" styleClass="cel-25" /></center>
+                        <center><h:outputText id="item3" value="#{vinculoRGPS.valorOutraEmpresa}" styleClass="cel-25" /></center>
                     </h:column>
                    	<h:column id="col4" headerClass="cel-25">
                         <f:facet name="header">
@@ -124,7 +124,7 @@
                         <center>
                         	<h:outputText id="item4" 
                         		value="#{item.inicio}" 
-                        		styleClass="cel-25 #{ feriasListBean.isDataFutura(item.inicio, item.tipoFerias) ? 'destaque' : ''}" >
+                        		styleClass="cel-25 #{ vinculoRGPSListBean.isDataFutura(item.inicio) ? 'destaque' : ''}" >
                         		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
@@ -135,23 +135,23 @@
                         </f:facet>
                         <center>
                         	<h:outputText id="item5" value="#{item.fim}" 
-                        		styleClass="cel-25 #{ feriasListBean.isDataFutura(item.fim, item.tipoFerias) ? 'destaque' : ''}" >
+                        		styleClass="cel-25 #{ vinculoRGPSListBean.isDataFutura(item.fim) ? 'destaque' : ''}" >
                         		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
                     </h:column>
-               		<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_FERIAS_ALTERAR')}">
+               		<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_VINCULORGPS_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{feriasListBean.editar}"
+                       				  action="#{vinculoRGPSListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{feriasListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{vinculoRGPSListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_FERIAS_EXCLUIR')}">
+                	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_VINCULORGPS_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -160,9 +160,9 @@
                         			   styleClass="ico-delete" 
                         			   onclick="alertaExclusao()"
                         			   execute="@this">
-                            <f:setPropertyActionListener target="#{feriasListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{vinculoRGPSListBean.entidade}" value="#{item}" />
                         </a4j:commandLink>
-                        <a4j:jsFunction name="excluir" action="#{feriasListBean.excluir}" render="form"/>
+                        <a4j:jsFunction name="excluir" action="#{vinculoRGPSListBean.excluir}" render="form"/>
                     </h:column>
 
 				</rich:dataTable>
@@ -170,27 +170,21 @@
 									for="lista" 
 									stepControls="hide"									
 									renderIfSinglePage="false"
-									page="#{feriasListBean.pagina}" />
+									page="#{vinculoRGPSListBean.pagina}" />
 			</div>
 			
-			<div style="float: left; font-size: 12px; font-style: italic;">Em <span class="destaque">vermelho</span>, estão destacadas datas futuras de início ou fim de fruição</div>
-
-			<ui:fragment rendered="#{feriasListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment rendered="#{vinculoRGPSListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 
 								 value="Incluir"
-								 action="#{feriasListBean.incluir}"
+								 action="#{vinculoRGPSListBean.incluir}"
 								 styleClass="bt-padrao fr mg-right-15" 
-								 rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR')}"/>
+								 rendered="#{LoginBean.anyGranted('ROLE_VINCULORGPS_INSERIR')}"/>
 				<h:commandButton id="limpaTela"
 								 value="Limpar"
 								 action="listar"
 								 styleClass="bt-padrao fr mg-right-15" 
 								 />
 			</ui:fragment>
-			
-					 
-
 		</h:form>
-		
 	</ui:define>
 </ui:composition>

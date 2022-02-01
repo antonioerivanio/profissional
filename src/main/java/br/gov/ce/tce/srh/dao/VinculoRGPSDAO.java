@@ -46,9 +46,10 @@ public class VinculoRGPSDAO {
 	}
 
 	public int count(Long idPessoal) {
-		Query query = entityManager.createQuery("SELECT count (v) FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal order by v.anoReferencia desc, v.inicio desc ");
+		Query query = entityManager.createQuery("SELECT count (v) FROM VinculoRGPS v WHERE v.funcional.id = :pessoal order by v.inicio desc ");
 		query.setParameter("pessoal", idPessoal);
-		return ((Long) query.getSingleResult()).intValue();
+		int i = ((Long) query.getSingleResult()).intValue();
+		return i;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -56,7 +57,7 @@ public class VinculoRGPSDAO {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT v FROM VinculoRGPS v ");
 		sql.append("         WHERE v.funcional.pessoal.id = :pessoal ");
-		sql.append("         ORDER BY  v.anoReferencia desc, v.inicio DESC ");
+		sql.append("         ORDER BY v.inicio DESC ");
 		Query query = entityManager.createQuery(sql.toString());
 		query.setParameter("pessoal", idPessoal);
 		query.setFirstResult(first);
@@ -66,7 +67,7 @@ public class VinculoRGPSDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<VinculoRGPS> findByPessoal(Long idPessoal) {
-		Query query = entityManager.createQuery("SELECT v FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal order by v.anoReferencia desc, v.inicio desc ");
+		Query query = entityManager.createQuery("SELECT v FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal order by v.inicio desc ");
 		query.setParameter("pessoal", idPessoal);
 		return query.getResultList();
 	}
@@ -78,25 +79,7 @@ public class VinculoRGPSDAO {
 		return (VinculoRGPS) query.getSingleResult();
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<VinculoRGPS> findByPessoalPeriodoReferencia(Long idPessoal, Long periodo, Long anoReferencia, Long tipo) {
-		Query query = entityManager.createQuery("SELECT v FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal AND v.periodo = :periodo AND v.anoReferencia = :ano AND v.tipoVinculoRGPS.id = :tipo");
-		query.setParameter("pessoal", idPessoal);
-		query.setParameter("periodo", periodo);
-		query.setParameter("ano", anoReferencia);
-		query.setParameter("tipo", tipo);
-		return query.getResultList();
-	}
 	
-	@SuppressWarnings("unchecked")
-	public List<VinculoRGPS> findByPessoalPeriodoReferencia(Long idPessoal, Long periodo, Long anoReferencia) {
-		Query query = entityManager.createQuery("SELECT v FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal AND v.periodo = :periodo AND v.anoReferencia = :ano");
-		query.setParameter("pessoal", idPessoal);
-		query.setParameter("periodo", periodo);
-		query.setParameter("ano", anoReferencia);
-		return query.getResultList();
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<VinculoRGPS> findByPessoalTipo(Long idPessoal, Long tipo) {
 		Query query = entityManager.createQuery("SELECT v FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal AND v.tipoVinculoRGPS.id = :tipo");
@@ -143,7 +126,5 @@ public class VinculoRGPSDAO {
 		query.setParameter("ano", ano);	
 		
 		return query.getResultList();
-	
 	}
-
 }

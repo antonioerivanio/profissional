@@ -45,8 +45,8 @@
 									 name="matricula"
 									 maxlength="6"
 									 styleClass="maskMatricula"									 
-									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
-									 value="#{feriasFormBean.matricula}">
+									 disabled="#{VinculoRGPSFormBean.alterar}"
+									 value="#{VinculoRGPSFormBean.matricula}">
 							<a4j:ajax event="change"
 									  render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 									  execute="@this" />
@@ -59,12 +59,12 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa" 
 									 name="nomeCompletoPessoa"
-									 disabled="#{feriasFormBean.alterar or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}"
-									 value="#{feriasFormBean.nome}" />
+									 disabled="#{VinculoRGPSFormBean.alterar}"
+									 value="#{VinculoRGPSFormBean.nome}" />
 					</div>
 				</div>
 
-				<ui:fragment rendered="#{!feriasFormBean.alterar and LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
+				<ui:fragment rendered="#{!VinculoRGPSFormBean.alterar}">
 					<a id="form:Pesquisar" 
 					   href="#" 
 					   onclick="openwindow()"
@@ -80,7 +80,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 disabled="true"
-									 value="#{feriasFormBean.entidade.funcional.pessoal.cpf}" />
+									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.cpf}" />
 					</div>
 				</div>
 
@@ -90,7 +90,7 @@
 						<h:inputText id="rg" 
 									 maxlength="15"
 									 disabled="true"
-									 value="#{feriasFormBean.entidade.funcional.pessoal.rg}" />
+									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.rg}" />
 					</div>
 				</div>
 
@@ -100,7 +100,7 @@
 						<h:inputText id="rgEmissor" 
 									 maxlength="10"
 									 disabled="true"
-									 value="#{feriasFormBean.entidade.funcional.pessoal.emissorRg}" />
+									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.emissorRg}" />
 					</div>
 				</div>
 
@@ -110,7 +110,7 @@
 						<h:inputText id="rgUf" 
 									 maxlength="2"
 									 disabled="true"
-									 value="#{feriasFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
+									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
 					</div>
 				</div>
 
@@ -127,21 +127,19 @@
 				<div class="select-box box-50">
 					<label for="">Empresas Cadastradas *</label>
 					<div class="conteiner">
-						<h:selectOneMenu id="tipoFerias"
+						<h:selectOneMenu id="empresasCadastradas"
 										 converter="entityConverter"
-										 value="#{feriasFormBean.entidade.tipoFerias}"
-										 disabled="#{not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}" >
-							<f:selectItem id="selecioneTipoFerias" itemLabel="Selecione..." itemValue="" />
-					  		<f:selectItems 	id="comboTipoFerias" 
-					  						value="#{feriasFormBean.comboTipoFerias}"
-					  						var="tipoFerias"
-					  						itemValue="#{tipoFerias}"
-					  						itemLabel="#{tipoFerias.descricao}"/>					  						
+										 value="#{VinculoRGPSFormBean.entidade.pessoaJuridica.razaoSocial}" >
+							<f:selectItem id="selecioneEmpresaCadastrada" itemLabel="Selecione..." itemValue="" />
+					  		<f:selectItems 	id="comboEmpresasCadastradas" 
+					  						value="#{VinculoRGPSFormBean.comboEmpresasCadastradas}"
+					  						var="empresasCadastradas"
+					  						itemValue="#{empresasCadastradas}"
+					  						itemLabel="#{pessoaJuridica.razaoSocial}"/>					  						
 					  		<a4j:ajax event="change" 
 					  				 execute="@this"	
-					  				 listener="#{feriasFormBean.atualizaBloqueioDeDatas}"
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 render="inicio,fim,qtdeDias"/>				
+					  				 render="inicio,fim"/>				
 						</h:selectOneMenu>    
 					</div>
 				</div>
@@ -152,10 +150,9 @@
 						<h:inputText id="inicio" 
 									 styleClass="maskData" 
 									 converter="dateConverter"
-									 value="#{feriasFormBean.inicial}"
+									 value="#{VinculoRGPSFormBean.inicial}"
 									 maxlength="10"
-									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
+									 disabled="#{VinculoRGPSFormBean.bloquearDatas}" >
 						</h:inputText>
 					</div>
 				</div>
@@ -166,10 +163,9 @@
 						<h:inputText id="fim" 
 									 styleClass="maskData"
 									 converter="dateConverter"
-									 value="#{feriasFormBean.fim}"
+									 value="#{VinculoRGPSFormBean.fim}"
 									 maxlength="10"
-									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>
+									 disabled="#{VinculoRGPSFormBean.bloquearDatas}" >
 						</h:inputText>			  
 					</div>
 				</div>
@@ -180,10 +176,9 @@
 						<h:inputText id="valor" 
 									 styleClass="maskSalario"
 									 converter="dateConverter"
-									 value="#{feriasFormBean.fim}"
+									 value="#{VinculoRGPSFormBean.fim}"
 									 maxlength="15"
-									 disabled="#{feriasFormBean.bloquearDatas or (not LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR'))}" >
-							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>
+									 disabled="#{VinculoRGPSFormBean.bloquearDatas}" >
 						</h:inputText>			  
 					</div>
 				</div>
@@ -196,17 +191,15 @@
 	                 			 styleClass="bt-padrao fr">                     
                 </a4j:commandLink>
                 <a4j:jsFunction name="salvar" 
-                				action="#{feriasFormBean.salvar}" 
+                				action="#{VinculoRGPSFormBean.salvar}" 
                 				execute="form" 
                 				render="messages"
                 				/>
 			</ui:fragment>
 			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{feriasFormBean.voltar}" />
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{VinculoRGPSFormBean.voltar}" />
 
 		</h:form>
 
 	</ui:define>
 </ui:composition>
-		
-	

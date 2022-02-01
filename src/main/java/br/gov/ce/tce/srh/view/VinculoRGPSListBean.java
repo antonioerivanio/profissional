@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
-@Component("feriasListBean")
+@Component("VinculoRGPSListBean")
 @Scope("view")
 public class VinculoRGPSListBean implements Serializable {
 	
@@ -39,6 +39,7 @@ public class VinculoRGPSListBean implements Serializable {
 	private String matricula = new String();
 	private String cpf = new String();
 	private String nome = new String();
+	
 
 	private List<VinculoRGPS> lista;
 	private VinculoRGPS entidade = new VinculoRGPS();

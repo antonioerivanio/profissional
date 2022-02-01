@@ -11,19 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.VinculoRGPS;
-import br.gov.ce.tce.srh.domain.TipoVinculoRGPS;
-import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.VinculoRGPSService;
 import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.service.TipoVinculoRGPSService;
-import br.gov.ce.tce.srh.service.TipoPublicacaoService;
+import br.gov.ce.tce.srh.service.PessoaJuridicaService;
+import br.gov.ce.tce.srh.service.VinculoRGPSService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
-@Component("feriasFormBean")
+@Component("vinculoRGPSFormBean")
 @Scope("view")
 public class VinculoRGPSFormBean implements Serializable {
 
@@ -31,6 +29,9 @@ public class VinculoRGPSFormBean implements Serializable {
 
 	@Autowired
 	private VinculoRGPSService VinculoRGPSService;
+	
+	@Autowired
+	private PessoaJuridicaService pessoaJuridicaService;
 
 	@Autowired
 	private FuncionalService funcionalService;
@@ -47,7 +48,7 @@ public class VinculoRGPSFormBean implements Serializable {
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
 
-	private List<TipoVinculoRGPS> comboTipoVinculoRGPS;
+	private List<PessoaJuridica> comboEmpresasCadastradas;
 	
 	private Integer pagina = 1;
 
@@ -58,28 +59,28 @@ public class VinculoRGPSFormBean implements Serializable {
 		this.pagina = (Integer) FacesUtil.getFlashParameter("pagina");
 		this.matriculaConsulta = (String) FacesUtil.getFlashParameter("matricula");
 		
-		try {
-			if(this.entidade.getId() == null) {
-				this.entidade.setPeriodo(1L);
-			} else {
-				
-				this.alterar = true;
-			
-				this.matricula = entidade.getFuncional().getMatricula();
-				this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
-	
-				this.inicial = entidade.getInicio();
-				this.fim = entidade.getFim();
-				
-				if(entidade.getTipoVinculoRGPS().consideraSomenteQtdeDias())
-					bloquearDatas = true;
-				else
-					bloquearDatas = false;
-			}
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
+//		try {
+//			if(this.entidade.getId() == null) {
+//				this.entidade.setPeriodo(1L);
+//			} else {
+//				
+//				this.alterar = true;
+//			
+//				this.matricula = entidade.getFuncional().getMatricula();
+//				this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
+//	
+//				this.inicial = entidade.getInicio();
+//				this.fim = entidade.getFim();
+//				
+//				if(entidade.getTipoVinculoRGPS().consideraSomenteQtdeDias())
+//					bloquearDatas = true;
+//				else
+//					bloquearDatas = false;
+//			}
+//		} catch (Exception e) {
+//			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+//			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+//		}
 	}	
 	
 	public void salvar() {
@@ -117,34 +118,19 @@ public class VinculoRGPSFormBean implements Serializable {
         return "listar";
 	}
 	
-	public List<TipoVinculoRGPS> getComboTipoVinculoRGPS() {
+	public List<PessoaJuridica> getComboEmpresasCadastradas() {
 
 		try {
 
-			if ( this.comboTipoVinculoRGPS == null )
-				this.comboTipoVinculoRGPS = tipoVinculoRGPSService.findAll();
-
-		} catch (Exception e) {
-			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de ferias. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		return this.comboTipoVinculoRGPS;
-	}
-	
-	public List<TipoPublicacao> getComboTipoPublicacao() {
-
-		try {
-
-			if ( this.comboTipoPublicacao == null )
-				this.comboTipoPublicacao = tipoPublicacaoService.findAll();
+			if ( this.comboEmpresasCadastradas == null )
+				this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
 
 		} catch (Exception e) {
 			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		return this.comboTipoPublicacao;
+		return this.comboEmpresasCadastradas;
 	}	
 	
 	public VinculoRGPS getEntidade() { return entidade; }
@@ -178,13 +164,11 @@ public class VinculoRGPSFormBean implements Serializable {
 	public Date getInicial() {return inicial;}
 	public void setInicial(Date inicial) {
 		this.inicial = inicial;
-		atualizaQtdeDias();
 	}
 
 	public Date getFim() { return fim; }
 	public void setFim(Date fim) {
 		this.fim = fim;
-		atualizaQtdeDias();
 	}	
 	
 	public boolean isBloquearDatas() {return bloquearDatas;}
@@ -194,28 +178,6 @@ public class VinculoRGPSFormBean implements Serializable {
 		
 		this.inicial = null;
 		this.fim = null;
-		this.entidade.setQtdeDias(null);
 		this.bloquearDatas = false;
-		
-		if ( entidade.getTipoVinculoRGPS() != null && entidade.getTipoVinculoRGPS().consideraSomenteQtdeDias() ) {
-			this.bloquearDatas = true;
-		}	
 	}
-	
-	private void atualizaQtdeDias(){
-		try {
-			
-			if( this.inicial != null && this.fim != null )
-				entidade.setQtdeDias( (long) SRHUtils.dataDiff( this.inicial, this.fim ));
-		
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu um erro na atualização da quantidade de dias. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-		
-	}
-	
 }
