@@ -95,6 +95,8 @@ public class VinculoRGPSListBean implements Serializable {
 			}
 
 			registroInicial = -1;
+			
+			getDataModel();
 
 		} catch(SRHRuntimeException e) {
 			limparListas();

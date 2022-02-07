@@ -56,7 +56,7 @@ public class VinculoRGPSDAO {
 	public List<VinculoRGPS> search(Long idPessoal, int first, int rows) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT v FROM VinculoRGPS v ");
-		sql.append("         WHERE v.funcional.pessoal.id = :pessoal ");
+		sql.append("         WHERE v.funcional.id = :pessoal ");
 		sql.append("         ORDER BY v.inicio DESC ");
 		Query query = entityManager.createQuery(sql.toString());
 		query.setParameter("pessoal", idPessoal);
