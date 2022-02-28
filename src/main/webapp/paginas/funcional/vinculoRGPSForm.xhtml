@@ -45,8 +45,8 @@
 									 name="matricula"
 									 maxlength="6"
 									 styleClass="maskMatricula"									 
-									 disabled="#{VinculoRGPSFormBean.alterar}"
-									 value="#{VinculoRGPSFormBean.matricula}">
+									 disabled="#{vinculoRGPSFormBean.alterar}"
+									 value="#{vinculoRGPSFormBean.matricula}">
 							<a4j:ajax event="change"
 									  render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
 									  execute="@this" />
@@ -59,12 +59,12 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa" 
 									 name="nomeCompletoPessoa"
-									 disabled="#{VinculoRGPSFormBean.alterar}"
-									 value="#{VinculoRGPSFormBean.nome}" />
+									 disabled="#{vinculoRGPSFormBean.alterar}"
+									 value="#{vinculoRGPSFormBean.nome}" />
 					</div>
 				</div>
 
-				<ui:fragment rendered="#{!VinculoRGPSFormBean.alterar}">
+				<ui:fragment rendered="#{!vinculoRGPSFormBean.alterar}">
 					<a id="form:Pesquisar" 
 					   href="#" 
 					   onclick="openwindow()"
@@ -80,7 +80,7 @@
 									 styleClass="maskCpf"
 									 converter="cpfConverter"
 									 disabled="true"
-									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.cpf}" />
+									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.cpf}" />
 					</div>
 				</div>
 
@@ -90,7 +90,7 @@
 						<h:inputText id="rg" 
 									 maxlength="15"
 									 disabled="true"
-									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.rg}" />
+									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.rg}" />
 					</div>
 				</div>
 
@@ -100,7 +100,7 @@
 						<h:inputText id="rgEmissor" 
 									 maxlength="10"
 									 disabled="true"
-									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.emissorRg}" />
+									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.emissorRg}" />
 					</div>
 				</div>
 
@@ -110,7 +110,7 @@
 						<h:inputText id="rgUf" 
 									 maxlength="2"
 									 disabled="true"
-									 value="#{VinculoRGPSFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
+									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
 					</div>
 				</div>
 
@@ -129,13 +129,13 @@
 					<div class="conteiner">
 						<h:selectOneMenu id="empresasCadastradas"
 										 converter="entityConverter"
-										 value="#{VinculoRGPSFormBean.entidade.pessoaJuridica.razaoSocial}" >
+										 value="#{vinculoRGPSFormBean.entidade.pessoaJuridica}" >
 							<f:selectItem id="selecioneEmpresaCadastrada" itemLabel="Selecione..." itemValue="" />
 					  		<f:selectItems 	id="comboEmpresasCadastradas" 
-					  						value="#{VinculoRGPSFormBean.comboEmpresasCadastradas}"
+					  						value="#{vinculoRGPSFormBean.comboEmpresasCadastradas}"
 					  						var="empresasCadastradas"
 					  						itemValue="#{empresasCadastradas}"
-					  						itemLabel="#{pessoaJuridica.razaoSocial}"/>					  						
+					  						itemLabel="#{empresasCadastradas.razaoSocial}"/>					  						
 					  		<a4j:ajax event="change" 
 					  				 execute="@this"	
 					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
@@ -150,9 +150,9 @@
 						<h:inputText id="inicio" 
 									 styleClass="maskData" 
 									 converter="dateConverter"
-									 value="#{VinculoRGPSFormBean.inicial}"
+									 value="#{vinculoRGPSFormBean.inicial}"
 									 maxlength="10"
-									 disabled="#{VinculoRGPSFormBean.bloquearDatas}" >
+									 disabled="#{vinculoRGPSFormBean.bloquearDatas}" >
 						</h:inputText>
 					</div>
 				</div>
@@ -163,9 +163,9 @@
 						<h:inputText id="fim" 
 									 styleClass="maskData"
 									 converter="dateConverter"
-									 value="#{VinculoRGPSFormBean.fim}"
+									 value="#{vinculoRGPSFormBean.fim}"
 									 maxlength="10"
-									 disabled="#{VinculoRGPSFormBean.bloquearDatas}" >
+									 disabled="#{vinculoRGPSFormBean.bloquearDatas}" >
 						</h:inputText>			  
 					</div>
 				</div>
@@ -176,9 +176,9 @@
 						<h:inputText id="valor" 
 									 styleClass="maskSalario"
 									 converter="dateConverter"
-									 value="#{VinculoRGPSFormBean.fim}"
+									 value="#{vinculoRGPSFormBean.fim}"
 									 maxlength="15"
-									 disabled="#{VinculoRGPSFormBean.bloquearDatas}" >
+									 disabled="#{vinculoRGPSFormBean.bloquearDatas}" >
 						</h:inputText>			  
 					</div>
 				</div>
@@ -191,13 +191,13 @@
 	                 			 styleClass="bt-padrao fr">                     
                 </a4j:commandLink>
                 <a4j:jsFunction name="salvar" 
-                				action="#{VinculoRGPSFormBean.salvar}" 
+                				action="#{vinculoRGPSFormBean.salvar}" 
                 				execute="form" 
                 				render="messages"
                 				/>
 			</ui:fragment>
 			
-			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{VinculoRGPSFormBean.voltar}" />
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{vinculoRGPSFormBean.voltar}" />
 
 		</h:form>
 

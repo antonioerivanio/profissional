@@ -21,7 +21,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 @SuppressWarnings("serial")
-@Component("VinculoRGPSListBean")
+@Component("vinculoRGPSListBean")
 @Scope("view")
 public class VinculoRGPSListBean implements Serializable {
 	

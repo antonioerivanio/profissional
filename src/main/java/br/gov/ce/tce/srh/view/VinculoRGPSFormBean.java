@@ -18,7 +18,6 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.service.VinculoRGPSService;
 import br.gov.ce.tce.srh.util.FacesUtil;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("vinculoRGPSFormBean")
@@ -58,29 +57,20 @@ public class VinculoRGPSFormBean implements Serializable {
 		setEntidade(flashParameter != null ? flashParameter : new VinculoRGPS());
 		this.pagina = (Integer) FacesUtil.getFlashParameter("pagina");
 		this.matriculaConsulta = (String) FacesUtil.getFlashParameter("matricula");
+		this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
 		
-//		try {
-//			if(this.entidade.getId() == null) {
-//				this.entidade.setPeriodo(1L);
-//			} else {
-//				
-//				this.alterar = true;
-//			
-//				this.matricula = entidade.getFuncional().getMatricula();
-//				this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();
-//	
-//				this.inicial = entidade.getInicio();
-//				this.fim = entidade.getFim();
-//				
-//				if(entidade.getTipoVinculoRGPS().consideraSomenteQtdeDias())
-//					bloquearDatas = true;
-//				else
-//					bloquearDatas = false;
-//			}
-//		} catch (Exception e) {
-//			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
-//			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-//		}
+		try {
+			if(this.entidade.getId() != null) {					
+				this.alterar = true;
+				this.matricula = entidade.getFuncional().getMatricula();
+				this.nome = entidade.getFuncional().getPessoal().getNomeCompleto();	
+				this.inicial = entidade.getInicio();
+				this.fim = entidade.getFim();							
+			}
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
 	}	
 	
 	public void salvar() {

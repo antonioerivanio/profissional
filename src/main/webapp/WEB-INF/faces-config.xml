@@ -1035,5 +1035,25 @@
 			<to-view-id>/paginas/relatorios/relatorioDependente.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- Vinculo RGPS -->
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/vinculoRGPSList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/vinculoRGPSList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/funcional/vinculoRGPSForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/vinculoRGPSForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/vinculoRGPSList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

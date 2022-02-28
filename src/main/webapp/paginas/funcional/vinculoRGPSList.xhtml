@@ -46,7 +46,7 @@
 									 name="matricula"
 									 maxlength="6"
 									 styleClass="maskMatricula"
-									 value="#{VinculoRGPSListBean.matricula}" >
+									 value="#{vinculoRGPSListBean.matricula}" >
 	            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
 	        			</h:inputText>
 					</div>
@@ -61,7 +61,7 @@
 										 maxlength="14"
 										 styleClass="maskCpf"
 										 converter="cpfConverter"
-										 value="#{VinculoRGPSListBean.cpf}" >
+										 value="#{vinculoRGPSListBean.cpf}" >
 								<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
 							</h:inputText>
 						</div>
@@ -73,7 +73,7 @@
 					<div class="conteiner">
 						<h:inputText id="nomeCompletoPessoa"
 									 name="nomeCompletoPessoa"
-									 value="#{VinculoRGPSListBean.nome}" />
+									 value="#{vinculoRGPSListBean.nome}" />
 					</div>
 				</div>
 	
@@ -84,7 +84,7 @@
 	
 				<h:commandButton id="Consultar"
 								 value="Consultar"
-								 action="#{VinculoRGPSListBean.consultar}"
+								 action="#{vinculoRGPSListBean.consultar}"
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 render="scroller,lista"/>
 				
