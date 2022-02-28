@@ -237,7 +237,7 @@ public class VinculoRGPSListBean implements Serializable {
 				limparListas();
 			}
 		}
-		return dataModel;
+ 		return dataModel;
 	}
 
 	public List<VinculoRGPS> getPagedList() {return pagedList;}

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -11,6 +12,7 @@ import javax.persistence.TypedQuery;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.VinculoRGPS;
 
 @Repository
@@ -46,7 +48,7 @@ public class VinculoRGPSDAO {
 	}
 
 	public int count(Long idPessoal) {
-		Query query = entityManager.createQuery("SELECT count (v) FROM VinculoRGPS v WHERE v.funcional.id = :pessoal order by v.inicio desc ");
+		Query query = entityManager.createQuery("SELECT count (v) FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal order by v.inicio desc ");
 		query.setParameter("pessoal", idPessoal);
 		int i = ((Long) query.getSingleResult()).intValue();
 		return i;
@@ -54,15 +56,19 @@ public class VinculoRGPSDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<VinculoRGPS> search(Long idPessoal, int first, int rows) {
-		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT v FROM VinculoRGPS v ");
-		sql.append("         WHERE v.funcional.id = :pessoal ");
-		sql.append("         ORDER BY v.inicio DESC ");
-		Query query = entityManager.createQuery(sql.toString());
-		query.setParameter("pessoal", idPessoal);
-		query.setFirstResult(first);
-		query.setMaxResults(rows);
-		return query.getResultList();
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append(" SELECT v FROM VinculoRGPS v ");
+			sql.append("         WHERE v.funcional.pessoal.id = :pessoal ");
+			sql.append("         ORDER BY v.inicio DESC ");
+			Query query = entityManager.createQuery(sql.toString());
+			query.setParameter("pessoal", idPessoal);
+			query.setFirstResult(first);
+			query.setMaxResults(rows);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

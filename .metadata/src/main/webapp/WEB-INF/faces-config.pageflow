@@ -54,8 +54,17 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/exoneracaoList.xhtml" x="122" y="10546" id="pf1506619748905103" referenceLink="//@navigationRule.36/@fromViewId|" outlinks="pf1506619748905104 pf1506619748905105 pf1506619748905106" inlinks="pf1506619748905104" path="/paginas/funcional/exoneracaoList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/exoneracaoCargoEfetivo.xhtml" x="338" y="10354" id="pf1506619748905107" referenceLink="//@navigationRule.36/@navigationCase.1/@toViewId|" inlinks="pf1506619748905105" path="/paginas/funcional/exoneracaoCargoEfetivo.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/exoneracaoRepresentacao.xhtml" x="338" y="10738" id="pf1506619748905108" referenceLink="//@navigationRule.36/@navigationCase.2/@toViewId|" inlinks="pf1506619748905106" path="/paginas/funcional/exoneracaoRepresentacao.xhtml"/>
+  
+  
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/feriasList.xhtml" x="122" y="11122" id="pf1506619748905109" referenceLink="//@navigationRule.41/@navigationCase.0/@toViewId|" outlinks="pf1506619748905110 pf1506619748905111" inlinks="pf1506619748905110 pf15791986377040" path="/paginas/funcional/feriasList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/feriasForm.xhtml" x="338" y="11122" id="pf1506619748905112" referenceLink="//@navigationRule.40/@navigationCase.1/@toViewId|" outlinks="pf15791986377040" inlinks="pf1506619748905111" path="/paginas/funcional/feriasForm.xhtml"/>
+  
+  <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/vinculoRGPSList.xhtml" x="122" y="11122" id="abc01" referenceLink="//@navigationRule.41/@navigationCase.0/@toViewId|" outlinks="abc03 abc04" inlinks="abc03 abc05" path="/paginas/funcional/vinculoRGPSList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/vinculoRGPSForm.xhtml" x="338" y="11122" id="abc02" referenceLink="//@navigationRule.40/@navigationCase.1/@toViewId|" outlinks="abc05" inlinks="abc04" path="/paginas/funcional/vinculoRGPSForm.xhtml"/>
+  
+  
+  
+    
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/funcionalSetorList.xhtml" x="122" y="11506" id="pf1506619748905113" referenceLink="//@navigationRule.40/@fromViewId|" outlinks="pf1506619748905114 pf1506619748905115" inlinks="pf1506619748905114" path="/paginas/funcional/funcionalSetorList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/funcionalSetorForm.xhtml" x="338" y="11506" id="pf1506619748905116" referenceLink="//@navigationRule.40/@navigationCase.1/@toViewId|" inlinks="pf1506619748905115" path="/paginas/funcional/funcionalSetorForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/abonoPermanenciaList.xhtml" x="122" y="11890" id="pf1506619748905117" referenceLink="//@navigationRule.41/@fromViewId|" outlinks="pf1506619748905118 pf1506619748905119" inlinks="pf1506619748905118" path="/paginas/funcional/abonoPermanenciaList.xhtml"/>
@@ -152,6 +161,11 @@
   <nodes xsi:type="pageflow:PFPage" name="erro.xhtml" x="554" y="14770" id="pf15791986377052" referenceLink="//@navigationRule.48/@navigationCase.2/@toViewId|" inlinks="pf15791986377041" path="/erro.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/foList.xhtml" id="pf16243666239210" referenceLink="//@navigationRule.41/@navigationCase.0/@toViewId|" outlinks="pf16243666239211 pf16243666239212" inlinks="pf16243666239211 pf16243666239213" path="/paginas/funcional/folgaList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/folgaForm.xhtml" id="pf16243666239214" referenceLink="//@navigationRule.41/@fromViewId|" outlinks="pf16243666239213" inlinks="pf16243666239212" path="/paginas/funcional/folgaForm.xhtml"/>
+  
+  
+  
+  
+  
   <links id="pf15066197489043" target="pf15066197489054" source="pf15066197488961" outcome="incluirAlterar"/>
   <links id="pf15066197489057" target="pf15066197489058" source="pf15066197489055" outcome="incluirAlterar"/>
   <links id="pf150661974890511" target="pf150661974890512" source="pf15066197489059" outcome="incluirAlterar"/>
@@ -177,7 +191,22 @@
   <links id="pf1506619748905101" target="pf1506619748905102" source="pf150661974890599" outcome="incluirAlterar"/>
   <links id="pf1506619748905105" target="pf1506619748905107" source="pf1506619748905103" outcome="exonerarCargoEfetivo"/>
   <links id="pf1506619748905106" target="pf1506619748905108" source="pf1506619748905103" outcome="exonerarRepresentacao"/>
+  
+  
+  
   <links id="pf1506619748905111" target="pf1506619748905112" source="pf1506619748905109" outcome="incluirAlterar"/>
+  
+  
+  
+  <links id="abc04" target="abc02" source="abc01" outcome="incluirAlterar"/>
+  
+  
+  
+  
+  
+  
+  
+  
   <links id="pf1506619748905115" target="pf1506619748905116" source="pf1506619748905113" outcome="incluirAlterar"/>
   <links id="pf1506619748905119" target="pf1506619748905120" source="pf1506619748905117" outcome="incluirAlterar"/>
   <links id="pf1506619748906123" target="pf1506619748906124" source="pf1506619748906121" outcome="incluirAlterar"/>
@@ -376,6 +405,22 @@
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
+  
+  casa1
+  <links id="abc03" target="abc01" source="abc01" outcome="listar">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <links id="pf1506619748905114" target="pf1506619748905113" source="pf1506619748905113" outcome="listar">
     <bendPoints d1Height="-36" d2Height="-36"/>
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
@@ -622,6 +667,9 @@
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
   <links id="pf15791986377040" target="pf1506619748905109" source="pf1506619748905112" outcome="listar"/>
+  
+  <links id="abc05" target="abc01" source="abc02" outcome="listar"/>
+  
   <links id="pf16243666239211" target="pf16243666239210" source="pf16243666239210" outcome="listar"/>
   <links id="pf16243666239212" target="pf16243666239214" source="pf16243666239210" outcome="incluirAlterar"/>
   <links id="pf16243666239213" target="pf16243666239210" source="pf16243666239214" outcome="listar"/>
