@@ -183,20 +183,8 @@
 					</div>
 				</div>
 			</fieldset> 
-
-			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
-				<a4j:commandLink id="salvar"
-	                 			 value="Salvar"
-	                 			 onclick="validarFerias()"
-	                 			 styleClass="bt-padrao fr">                     
-                </a4j:commandLink>
-                <a4j:jsFunction name="salvar" 
-                				action="#{vinculoRGPSFormBean.salvar}" 
-                				execute="form" 
-                				render="messages"
-                				/>
-			</ui:fragment>
 			
+			<h:commandButton action="#{vinculoRGPSFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />
 			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{vinculoRGPSFormBean.voltar}" />
 
 		</h:form>

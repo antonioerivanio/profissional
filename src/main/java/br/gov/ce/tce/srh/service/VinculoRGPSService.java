@@ -19,7 +19,7 @@ public interface VinculoRGPSService {
 	
 	public VinculoRGPS findMaisRecenteByPessoal(Long idPessoal);
 	
-	public List<VinculoRGPS> findByInicioETipo(Date inicio, List<Long> tiposId);
+	public List<VinculoRGPS> findByInicio(Date inicio, List<Long> tiposId);
 	public List<VinculoRGPS> findByInicioETipo(Date inicio, Date fim, List<Long> tiposId);
 	
 }

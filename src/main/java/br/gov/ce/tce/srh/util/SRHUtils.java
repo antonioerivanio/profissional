@@ -613,6 +613,7 @@ public class SRHUtils {
 			string = string.replace("/", "");
 			string = string.replace("(", "");
 			string = string.replace(")", "");
+			string = string.replace("R$", "");
 		}
 		return string;
 	}

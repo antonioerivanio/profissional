@@ -18,6 +18,7 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.service.VinculoRGPSService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("vinculoRGPSFormBean")
@@ -79,6 +80,8 @@ public class VinculoRGPSFormBean implements Serializable {
 
 			this.entidade.setInicio(this.inicial);
 			this.entidade.setFim(this.fim);
+			String valor = SRHUtils.removerMascara(entidade.getValorOutraEmpresa().toString());
+			entidade.setValorOutraEmpresa(Double.valueOf(valor));
 
 			VinculoRGPSService.salvar(entidade);
 

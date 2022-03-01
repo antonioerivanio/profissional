@@ -71,8 +71,8 @@ public class VinculoRGPSServiceImpl implements VinculoRGPSService {
 	public void setDAO(VinculoRGPSDAO dao){this.dao = dao;}
 
 	@Override
-	public List<VinculoRGPS> findByInicioETipo(Date inicio, List<Long> tiposId) {
-		return dao.findByInicioETipo(inicio, tiposId);
+	public List<VinculoRGPS> findByInicio(Date inicio, List<Long> tiposId) {
+		return dao.findByInicio(inicio, tiposId);
 	}
 	
 	@Override

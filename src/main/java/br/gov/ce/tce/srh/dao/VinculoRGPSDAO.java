@@ -95,7 +95,7 @@ public class VinculoRGPSDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<VinculoRGPS> findByInicioETipo(Date inicio, List<Long> tiposId) {
+	public List<VinculoRGPS> findByInicio(Date inicio, List<Long> tiposId) {
 		
 		String consulta = "SELECT v FROM VinculoRGPS v WHERE v.inicio = :inicio AND v.tipoVinculoRGPS.id in :tiposId ";
 		
