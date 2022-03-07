@@ -60,8 +60,11 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 	
 	@OneToOne
 	@JoinColumn(name = "IDESOCIALVIGENCIA")
-	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();	
-
+	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
+		
+	@Column(name="FLINCIDETETO")
+	private Integer incideTeto;
+	
 	public Long getId() {
 		return id;
 	}
@@ -167,5 +170,15 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 		//return this.getCodigo();
 		return this.rubrica.getCodigo() + "-" + this.tabela.getCodigo();
 	}
+
+	public Integer getIncideTeto() {
+		return incideTeto;
+	}
+
+	public void setIncideTeto(Integer incideTeto) {
+		this.incideTeto = incideTeto;
+	}
+	
+	
 
 }

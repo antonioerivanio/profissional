@@ -275,8 +275,8 @@
 	<authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
     </authentication-manager>	
-	
-	
+
+		
 <!--***********************************************************************************************************************************************************-->	
 		
 	<!-- AD - PRODUÇÃO -->
@@ -291,6 +291,8 @@
 	
 	<authentication-manager alias="authenticationManager">
 	    <authentication-provider ref="ldapActiveDirectoryAuthProvider" />
+
 	</authentication-manager> 
 	-->
+
 </beans:beans>

@@ -62,6 +62,9 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 
 	@Column(name="FLATIVA")
 	private Boolean ativa;
+	
+	@Column(name="FLINCIDETETO")
+	private Integer incideTeto;
 
 	public Long getId() {
 		return id;
@@ -195,6 +198,14 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 	public void setAtiva(Boolean ativa) {
 		this.ativa = ativa;
 	}
+
+	public Integer getIncideTeto() {
+		return incideTeto;
+	}
+
+	public void setIncideTeto(Integer incideTeto) {
+		this.incideTeto = incideTeto;
+	}		
 	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
