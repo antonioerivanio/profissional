@@ -1055,5 +1055,26 @@
 			<to-view-id>/paginas/funcional/vinculoRGPSList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- Admissao eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/admissaoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/admissaoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/admissaoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/admissaoForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/admissaoList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 
 </faces-config>

@@ -124,5 +124,9 @@ public class FuncionalService {
 	public int countResponsavelSetor(long idFuncional, Long idSetor) {
 		return dao.countResponsavelSetor(idFuncional, idSetor);
 	}
+
+	public List<Funcional> findServidoresEvento2200() {		
+		return dao.findServidoresEvento2200();
+	}
 	
 }
