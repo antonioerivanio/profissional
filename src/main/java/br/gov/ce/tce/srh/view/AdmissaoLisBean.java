@@ -16,7 +16,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Admissao;
-import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AdmissaoESocialTCEService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -60,7 +59,7 @@ public class AdmissaoLisBean implements Serializable {
 
 		try {
 
-			count = admissaoESocialTCEService.count( this.nome,this.cpf );
+			count = admissaoESocialTCEService.count( this.nome, this.cpf );
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
