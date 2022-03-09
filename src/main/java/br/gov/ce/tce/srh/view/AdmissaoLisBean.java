@@ -16,7 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Admissao;
-import br.gov.ce.tce.srh.service.AdmissaoESocialTCEService;
+import br.gov.ce.tce.srh.service.AdmissaoEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -29,7 +29,7 @@ public class AdmissaoLisBean implements Serializable {
 	static Logger logger = Logger.getLogger(AdmissaoLisBean.class);
 
 	@Autowired
-	private AdmissaoESocialTCEService admissaoESocialTCEService;
+	private AdmissaoEsocialService admissaoESocialTCEService;
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;

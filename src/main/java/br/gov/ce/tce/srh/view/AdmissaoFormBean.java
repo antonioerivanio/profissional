@@ -13,9 +13,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.Admissao;
+import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.AdmissaoESocialTCEService;
+import br.gov.ce.tce.srh.service.AdmissaoEsocialService;
+import br.gov.ce.tce.srh.service.DependenteEsocialTCEService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -28,7 +30,9 @@ public class AdmissaoFormBean implements Serializable {
 	static Logger logger = Logger.getLogger(AdmissaoFormBean.class);
 
 	@Autowired
-	private AdmissaoESocialTCEService admissaoESocialTCEService;
+	private AdmissaoEsocialService admissaoEsocialService;
+	@Autowired
+	private DependenteEsocialTCEService dependenteEsocialTCEService;
 	
 	@Autowired
 	private FuncionalService funcionalService;
@@ -40,6 +44,7 @@ public class AdmissaoFormBean implements Serializable {
 	private List<Funcional> servidorEnvioList;
 	private Funcional servidorFuncional;
 	private Admissao entidade = new Admissao();
+	private List<DependenteEsocial> dependentesList;
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -57,7 +62,8 @@ public class AdmissaoFormBean implements Serializable {
 		if(servidorFuncional != null) {
 			try {
 				boolean possuiCargo = representacaoFuncionalService.temAtivaByPessoal(servidorFuncional.getId());
-				entidade =  admissaoESocialTCEService.getEventoS2200ByServidor(servidorFuncional, possuiCargo);
+				entidade =  admissaoEsocialService.getEventoS2200ByServidor(servidorFuncional, possuiCargo);
+				dependentesList = dependenteEsocialTCEService.findByIdfuncional(servidorFuncional.getId());
 	
 			} catch (Exception e) {		
 				e.printStackTrace();
@@ -74,7 +80,11 @@ public class AdmissaoFormBean implements Serializable {
 
 		try {
 			if(entidade.getId().equals(new Long(0))) {
-				admissaoESocialTCEService.salvar(entidade);
+				admissaoEsocialService.salvar(entidade);
+				
+				if(dependentesList != null && dependentesList.isEmpty()) {
+					dependenteEsocialTCEService.salvar(dependentesList);
+				}
 			}
 			setEntidade( new Admissao() );
 

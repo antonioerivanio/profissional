@@ -15,9 +15,9 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
-public class AdmissaoESocialTCEDAO {
+public class AdmissaoEsocialDAO {
 
-	static Logger logger = Logger.getLogger(AdmissaoESocialTCEDAO.class);
+	static Logger logger = Logger.getLogger(AdmissaoEsocialDAO.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;

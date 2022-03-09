@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.Length;
-//import javax.validation.constraints.NotNull;
+
 
 @Entity
 @SuppressWarnings("serial")
