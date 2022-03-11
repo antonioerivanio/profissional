@@ -31,6 +31,7 @@ public class FuncionalDAO {
 	
 	@Autowired
 	private PessoalService pessoalService;
+
 	
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
@@ -358,6 +359,21 @@ public class FuncionalDAO {
 					+ "AND f.status = 1 "
 					+ "AND f.ocupacao.id not in (14,15) "
 					+ "AND f.id  NOT IN (SELECT a.funcional.id FROM Admissao a) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public List<Funcional> findEstagiariosEventos2300() {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.saida IS NULL "
+					+ "AND f.status = 2 "
+					+ "AND f.ocupacao.id in (14,15) "
+					+ "AND f.id  NOT IN (SELECT e.funcional.id FROM EstagiarioESocial e) "
 					+ "ORDER BY f.nome", Funcional.class);
 			return query.getResultList();
 		} catch (NoResultException e) {

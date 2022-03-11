@@ -7,37 +7,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.gov.ce.tce.srh.dao.AdmissaoEsocialDAO;
-import br.gov.ce.tce.srh.domain.Admissao;
+import br.gov.ce.tce.srh.dao.EstagiarioESocialDAO;
+import br.gov.ce.tce.srh.domain.EstagiarioESocial;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
 
-@Service("admissaoESocialService")
-public class AdmissaoEsocialService{
+@Service("estagiarioESocialService")
+public class EstagiarioESocialService {
 
 	@Autowired
-	private AdmissaoEsocialDAO dao;
-		
+	private EstagiarioESocialDAO estagiarioESocialDAO;
+
 	@Autowired
 	private EventoService eventoService;
-
+	
 	@Autowired
 	private NotificacaoService notificacaoService;
+	
+	public int count(String nome, String cpf) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@Transactional
-	public Admissao salvar(Admissao entidade) {		
-				
-		entidade = dao.salvar(entidade);
+	public void excluir(EstagiarioESocial entidade) {
+		estagiarioESocialDAO.excluir(entidade);
+		
+	}
+
+	public List<EstagiarioESocial> search(String nome, String cpf, int first, int rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public EstagiarioESocial salvar(EstagiarioESocial entidade) {
+		
+		
+		entidade = estagiarioESocialDAO.salvar(entidade);
 
 		// salvando notificação
-		Evento evento = this.eventoService.getById(TipoEventoESocial.S2200.getCodigo());
+		Evento evento = this.eventoService.getById(TipoEventoESocial.S2300.getCodigo());
 		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferencia());
 		if (notificacao == null) {
 			notificacao = new Notificacao();
-			notificacao.setDescricao("Evento S2200 com pendência de envio.");
+			notificacao.setDescricao("Evento S2300 com pendência de envio.");
 			notificacao.setData(new Date());
 			notificacao.setTipo(TipoNotificacao.N);
 			notificacao.setEvento(evento);
@@ -49,27 +65,11 @@ public class AdmissaoEsocialService{
 		this.notificacaoService.salvar(notificacao);
 
 		return entidade;
-	}		
+		
+	}
 
-	@Transactional
-	public void excluir(Admissao entidade) {
-		dao.excluir(entidade);
-	}	
-
-	public Admissao getById(Long id) {
-		return dao.getById(id);
-	}	
-	
-	public int count(String nome, String cpf) {
-		return dao.count(nome, cpf);
+	public EstagiarioESocial getEventoS2300ByEstagiario(Funcional estagiarioFuncional) {
+		return estagiarioESocialDAO.getEventoS2300ByEstagiario(estagiarioFuncional);
 	}
 	
-	public List<Admissao> search(String nome, String cpf, Integer first, Integer rows) {
-		return dao.search(nome, cpf, first, rows);
-	}
-
-	public Admissao getEventoS2200ByServidor(Funcional servidorFuncional, boolean possuiCargo) {	
-		return dao.getEventoS2200ByServidor(servidorFuncional, possuiCargo);
-	}
-
 }

@@ -128,5 +128,9 @@ public class FuncionalService {
 	public List<Funcional> findServidoresEvento2200() {		
 		return dao.findServidoresEvento2200();
 	}
+
+	public List<Funcional> findEstagiarioservidoresEvento2300() {
+		return dao.findEstagiariosEventos2300();
+	}
 	
 }

@@ -43,6 +43,7 @@ public class NotificacaoDAO {
 		 * entidade.setId(getMaxId()); }
 		 */
 
+		entityManager.detach(entidade);
 		return entityManager.merge(entidade);
 	}
 	
