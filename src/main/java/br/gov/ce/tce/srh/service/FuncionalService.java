@@ -133,4 +133,8 @@ public class FuncionalService {
 		return dao.findBeneficiariosEvento2400();
 	}
 	
+	public List<Funcional> findEstagiarioservidoresEvento2300() {
+		return dao.findEstagiariosEventos2300();
+	}
+	
 }

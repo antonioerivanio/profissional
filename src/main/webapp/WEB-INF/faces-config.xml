@@ -1076,6 +1076,7 @@
 		</navigation-case>
 	</navigation-rule>
 	
+
 	<!-- Beneficiario eSocial/TCE -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/beneficiarioList.xhtml</from-view-id>
@@ -1093,6 +1094,26 @@
 		<navigation-case>
 			<from-outcome>listar</from-outcome>
 			<to-view-id>/paginas/tabelas/beneficiarioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Estagiario eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estagiarioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estagiarioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/estagiarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estagiarioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estagiarioList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	

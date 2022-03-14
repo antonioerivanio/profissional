@@ -31,6 +31,7 @@
 	<class>br.gov.ce.tce.srh.domain.Especialidade</class>
 	<class>br.gov.ce.tce.srh.domain.EspecialidadeCargo</class>
 	<class>br.gov.ce.tce.srh.domain.EstadoCivil</class>
+	<class>br.gov.ce.tce.srh.domain.EstagiarioESocial</class>
 	<class>br.gov.ce.tce.srh.domain.Ferias</class>
 	<class>br.gov.ce.tce.srh.domain.Folha</class>
 	<class>br.gov.ce.tce.srh.domain.Funcional</class>
