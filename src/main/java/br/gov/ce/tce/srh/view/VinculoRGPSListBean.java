@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.VinculoRGPS;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
@@ -50,30 +51,12 @@ public class VinculoRGPSListBean implements Serializable {
 	private int registroInicial = 0;
 	private Integer pagina = 1;
 	
-	private boolean chefe;
-	private Long idFuncionalChefe = null;
+	
 	
 	@PostConstruct
 	public void init() {		
-		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
-			setCpf(authenticationService.getUsuarioLogado().getCpf());			
-			consultarAutomaticamente();		
-			
-			int countResponsavelSetor = funcionalService.countResponsavelSetor(getEntidade().getFuncional().getId(), null);
-			chefe = countResponsavelSetor > 0;
-			if(chefe) {
-				idFuncionalChefe = getEntidade().getFuncional().getId();
-			}
-		
-		} else {
-			setMatricula((String) FacesUtil.getFlashParameter("matricula"));
-			pagina = (Integer) FacesUtil.getFlashParameter("pagina");
-			pagina = pagina == null ? 1 : pagina;
-			
-			if (getMatricula() != null) {
-				consultarAutomaticamente();
-			}
-		}		
+		VinculoRGPS flashParameter = (VinculoRGPS)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new VinculoRGPS());			
 	}
 
 	public void consultar() {
@@ -81,13 +64,12 @@ public class VinculoRGPSListBean implements Serializable {
 		try {
 			
 			limparListas();
-
-			if( getEntidade().getFuncional() == null )
-				throw new SRHRuntimeException("Selecione um funcionário.");
-			
-			validarPermissaoDeConsulta();			
-
-			count = vinculoRGPSService.count( getEntidade().getFuncional().getPessoal().getId() );
+			Long idPessoal = null;
+			if( getEntidade().getFuncional() != null ) {
+				idPessoal = getEntidade().getFuncional().getPessoal().getId();
+			}
+				
+			count = vinculoRGPSService.count( idPessoal );
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -107,25 +89,6 @@ public class VinculoRGPSListBean implements Serializable {
 			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
-	}
-
-	private void validarPermissaoDeConsulta() {
-		if(chefe && !getEntidade().getFuncional().getId().equals(idFuncionalChefe)) {				
-			int countResponsavelSetor = funcionalService.countResponsavelSetor(
-					idFuncionalChefe, 
-					getEntidade().getFuncional().getSetor().getId());
-			
-			if (countResponsavelSetor == 0) {
-				throw new SRHRuntimeException("Não foi possível acessar os dados de Vinculo RGPS do funcionário selecionado.");						
-			}				
-		}
-	}
-	
-	private void consultarAutomaticamente() {
-		try {		
-			count = vinculoRGPSService.count( this.entidade.getFuncional().getPessoal().getId() );
-			registroInicial = -1;
-		} catch (Exception e) {}
 	}
 	
 	public String editar() {
@@ -230,7 +193,11 @@ public class VinculoRGPSListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( registroInicial != getPrimeiroDaPagina() ) {
 			registroInicial = getPrimeiroDaPagina();
-			setPagedList(vinculoRGPSService.search(getEntidade().getFuncional().getPessoal().getId(), registroInicial, dataModel.getPageSize()));
+			Long idPessoal = null;
+			if( getEntidade().getFuncional() != null ) {
+				idPessoal = getEntidade().getFuncional().getPessoal().getId();
+			}
+			setPagedList(vinculoRGPSService.search(idPessoal, registroInicial, dataModel.getPageSize()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -246,11 +213,10 @@ public class VinculoRGPSListBean implements Serializable {
 	public Integer getPagina() {return pagina;}
 	public void setPagina(Integer pagina) {this.pagina = pagina;}
 	
+	
 	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
 	//FIM PAGINAÇÃO
 	
-	public boolean isChefe() {
-		return chefe;
-	}	
+	
 	
 }

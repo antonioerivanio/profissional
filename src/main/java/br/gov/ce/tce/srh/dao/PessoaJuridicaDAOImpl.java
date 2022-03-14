@@ -166,4 +166,16 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 	public List<PessoaJuridica> findAll() {
 		return entityManager.createQuery("SELECT pj FROM PessoaJuridica pj ORDER BY pj.id").getResultList();
 	}
+
+	@Override
+	public PessoaJuridica findById(Long id) {
+		try {
+			Query query = entityManager
+					.createQuery("Select pj from PessoaJuridica pj where pj.id = :id ");
+			query.setParameter("id", id);
+			return (PessoaJuridica) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 }

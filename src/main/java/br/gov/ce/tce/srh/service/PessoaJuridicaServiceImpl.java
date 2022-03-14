@@ -98,5 +98,12 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 	
 		
 	
-	public void setDao(PessoaJuridicaDAO pessoaJuridicaDao) {this.dao = pessoaJuridicaDao;}	
+	public void setDao(PessoaJuridicaDAO pessoaJuridicaDao) {this.dao = pessoaJuridicaDao;}
+
+
+
+	@Override
+	public PessoaJuridica findById(Long id) {
+		return dao.findById(id);
+	}	
 }

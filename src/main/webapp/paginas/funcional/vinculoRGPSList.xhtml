@@ -37,7 +37,7 @@
 
 			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<ui:fragment rendered="#{vinculoRGPSListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment>
 			
 				<div class="input-box box-10">
 					<label for="">Matrícula</label>
@@ -52,7 +52,7 @@
 					</div>
 				</div>
 	
-				<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+				<ui:fragment>
 					<div class="input-box box-15" >
 						<label for="">CPF</label>
 						<div class="conteiner">
@@ -101,9 +101,9 @@
 
                		<h:column id="col1" headerClass="cel-15">
                         <f:facet name="header">
-                            CNPJ
+                            Servidor
                         </f:facet>
-                        <h:outputText id="item2" value="#{item.pessoaJuridica.cnpj}" styleClass="cel-15" />
+                        <h:outputText id="item2" value="#{item.funcional.nome}" styleClass="cel-15" />
                     </h:column>
                     <h:column id="col2">
                         <f:facet name="header">
@@ -115,7 +115,7 @@
                         <f:facet name="header">
                             Valor
                         </f:facet>
-                        <center><h:outputText id="item3" value="#{item.valorOutraEmpresa}" styleClass="cel-25" /></center>
+                        <center><h:outputText id="item3" value="#{item.valorOutraEmpresaStr}" styleClass="cel-25" /></center>
                     </h:column>
                    	<h:column id="col4" headerClass="cel-25">
                         <f:facet name="header">
@@ -123,8 +123,7 @@
                         </f:facet>
                         <center>
                         	<h:outputText id="item4" 
-                        		value="#{item.inicio}" 
-                        		styleClass="cel-25 #{ vinculoRGPSListBean.isDataFutura(item.inicio) ? 'destaque' : ''}" >
+                        		value="#{item.inicio}"  >
                         		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
@@ -134,8 +133,7 @@
                             Final
                         </f:facet>
                         <center>
-                        	<h:outputText id="item5" value="#{item.fim}" 
-                        		styleClass="cel-25 #{ vinculoRGPSListBean.isDataFutura(item.fim) ? 'destaque' : ''}" >
+                        	<h:outputText id="item5" value="#{item.fim}">
                         		<f:convertDateTime id="convFim" type="date" pattern="dd/MM/yyyy" />
                         	</h:outputText>
                         </center>
@@ -173,7 +171,7 @@
 									page="#{vinculoRGPSListBean.pagina}" />
 			</div>
 			
-			<ui:fragment rendered="#{vinculoRGPSListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment>
 				<h:commandButton id="incluir" 
 								 value="Incluir"
 								 action="#{vinculoRGPSListBean.incluir}"

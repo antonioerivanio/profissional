@@ -124,7 +124,7 @@
 
 				<br/>
 
-				<div class="select-box box-50">
+				<!-- <div class="select-box box-50">
 					<label for="">Empresas Cadastradas *</label>
 					<div class="conteiner">
 						<h:selectOneMenu id="empresasCadastradas"
@@ -142,7 +142,23 @@
 					  				 render="inicio,fim"/>				
 						</h:selectOneMenu>    
 					</div>
+				</div> -->
+				
+				<div class="select-box box-65">
+				<label for="">Empresa Vinculada *</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="empresaVinculada"									
+									 converter="entityConverter" 
+									 value="#{vinculoRGPSFormBean.pessoaJuridica}">
+					  	<f:selectItem id="empresaServidor" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboEmpresa"
+					  					value="#{vinculoRGPSFormBean.comboEmpresasCadastradas}"
+					  					var="empresa"
+					  					itemValue="#{empresa}"
+					  					itemLabel="#{empresa.razaoSocial}"/>
+					</h:selectOneMenu>
 				</div>
+			</div>
 
 				<div class="input-box box-15 clr">
 					<label for="">Data Inicial</label>
@@ -174,9 +190,8 @@
 					<label for="">Valor</label>
 					<div class="conteiner">
 						<h:inputText id="valor" 
-									 styleClass="maskSalario"
-									 converter="dateConverter"
-									 value="#{vinculoRGPSFormBean.fim}"
+									 styleClass="maskSalario"									 
+									 value="#{vinculoRGPSFormBean.entidade.valorOutraEmpresaStr}"
 									 maxlength="15"
 									 disabled="#{vinculoRGPSFormBean.bloquearDatas}" >
 						</h:inputText>			  
@@ -184,19 +199,9 @@
 				</div>
 			</fieldset> 
 
-			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FERIAS_INSERIR,ROLE_FERIAS_ALTERAR')}">
-				<a4j:commandLink id="salvar"
-	                 			 value="Salvar"
-	                 			 onclick="validarFerias()"
-	                 			 styleClass="bt-padrao fr">                     
-                </a4j:commandLink>
-                <a4j:jsFunction name="salvar" 
-                				action="#{vinculoRGPSFormBean.salvar}" 
-                				execute="form" 
-                				render="messages"
-                				/>
-			</ui:fragment>
 			
+			
+			<h:commandButton action="#{vinculoRGPSFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
 			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{vinculoRGPSFormBean.voltar}" />
 
 		</h:form>

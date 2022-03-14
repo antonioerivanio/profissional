@@ -48,6 +48,7 @@ public class VinculoRGPSFormBean implements Serializable {
 	private boolean alterar = false;
 
 	private List<PessoaJuridica> comboEmpresasCadastradas;
+	private PessoaJuridica pessoaJuridica;
 	
 	private Integer pagina = 1;
 
@@ -75,22 +76,27 @@ public class VinculoRGPSFormBean implements Serializable {
 	
 	public void salvar() {
 		
-		try {
-
-			this.entidade.setInicio(this.inicial);
-			this.entidade.setFim(this.fim);
-
-			VinculoRGPSService.salvar(entidade);
-
-			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
-			logger.info("Operação realizada com sucesso.");
-			
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		if(pessoaJuridica != null) {
+			try {
+	
+				this.entidade.setInicio(this.inicial);
+				this.entidade.setFim(this.fim);
+	
+				VinculoRGPSService.salvar(entidade);
+	
+				FacesUtil.addInfoMessage("Operação realizada com sucesso.");
+				logger.info("Operação realizada com sucesso.");
+				
+			} catch (SRHRuntimeException e) {
+				FacesUtil.addErroMessage(e.getMessage());
+				logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+			} catch (Exception e) {
+				FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+			}
+		}
+		else {
+			FacesUtil.addErroMessage("A Empresa Vinculada é um campo obrigatório");
 		}
 	}
 	
@@ -161,6 +167,14 @@ public class VinculoRGPSFormBean implements Serializable {
 		this.fim = fim;
 	}	
 	
+	public PessoaJuridica getPessoaJuridica() {
+		return pessoaJuridica;
+	}
+
+	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
+		this.pessoaJuridica = pessoaJuridica;
+	}
+
 	public boolean isBloquearDatas() {return bloquearDatas;}
 	public boolean isAlterar() {return alterar;}
 			

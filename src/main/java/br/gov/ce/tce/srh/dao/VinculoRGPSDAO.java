@@ -48,8 +48,18 @@ public class VinculoRGPSDAO {
 	}
 
 	public int count(Long idPessoal) {
-		Query query = entityManager.createQuery("SELECT count (v) FROM VinculoRGPS v WHERE v.funcional.pessoal.id = :pessoal order by v.inicio desc ");
-		query.setParameter("pessoal", idPessoal);
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT count (v) FROM VinculoRGPS v ");
+		sql.append("  WHERE  1=1 ");		
+		if(idPessoal != null) {
+			sql.append("     and   v.funcional.pessoal.id = :pessoal ");
+		}
+		Query query = entityManager.createQuery(sql.toString());
+		
+		if(idPessoal != null) {
+			query.setParameter("pessoal", idPessoal);
+		}
 		int i = ((Long) query.getSingleResult()).intValue();
 		return i;
 	}
@@ -59,10 +69,16 @@ public class VinculoRGPSDAO {
 		try {
 			StringBuffer sql = new StringBuffer();
 			sql.append(" SELECT v FROM VinculoRGPS v ");
-			sql.append("         WHERE v.funcional.pessoal.id = :pessoal ");
+			sql.append("  WHERE  1=1 ");			
+			if(idPessoal != null) {
+				sql.append("  and v.funcional.pessoal.id = :pessoal ");
+			}
 			sql.append("         ORDER BY v.inicio DESC ");
 			Query query = entityManager.createQuery(sql.toString());
-			query.setParameter("pessoal", idPessoal);
+			
+			if(idPessoal != null) {
+				query.setParameter("pessoal", idPessoal);
+			}
 			query.setFirstResult(first);
 			query.setMaxResults(rows);
 			return query.getResultList();

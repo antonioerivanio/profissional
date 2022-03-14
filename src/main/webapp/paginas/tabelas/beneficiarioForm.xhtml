@@ -12,7 +12,7 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Cadastro de Admissao ESocial</h2>
+			<h2>Cadastro do Beneficiario ESocial</h2>
 
 		</div>
 
@@ -24,42 +24,27 @@
 
 			<fieldset>		
 			<div class="select-box box-65">
-				<label for="">Servidor *</label>
+				<label for="">Beneficiario *</label>
 				<div class="conteiner">
-					<h:selectOneMenu id="servidor"									
+					<h:selectOneMenu id="beneficiarioID"									
 									 converter="entityConverter" 
-									 value="#{admissaoFormBean.servidorFuncional}">
-					  	<f:selectItem id="selecioneServidor" itemLabel="Selecione..."/>
-					  	<f:selectItems 	id="comboServidor"
-					  					value="#{admissaoFormBean.servidorEnvioList}"
+									 value="#{beneficiarioFormBean.beneficiarioFuncional}">
+					  	<f:selectItem id="selecioneBeneficiario" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboBeneficiario"
+					  					value="#{beneficiarioFormBean.beneficiarioEnvioList}"
 					  					var="servidor"
 					  					itemValue="#{servidor}"
 					  					itemLabel="#{servidor.nome}"/>
 					</h:selectOneMenu>
 				</div>
 			</div>
-				<h:commandButton action="#{admissaoFormBean.consultar}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
-				<div class="select-box box-65">
-				<label for="">Empresa Vinculada *</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="empresaVinculada"									
-									 converter="entityConverter" 
-									 value="#{vinculoRGPSFormBean.pessoaJuridica}">
-					  	<f:selectItem id="empresaServidor" itemLabel="Selecione..."/>
-					  	<f:selectItems 	id="comboEmpresa"
-					  					value="#{vinculoRGPSFormBean.comboEmpresasCadastradas}"
-					  					var="empresa"
-					  					itemValue="#{empresa}"
-					  					itemLabel="#{empresa.razaoSocial}"/>
-					</h:selectOneMenu>
-				</div>
-			</div>
+			<h:commandButton action="#{beneficiarioFormBean.consultar}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
 			</fieldset>
 			
 			
 			<fieldset>
 
-				<legend>Dados Evento S-2200</legend>
+				<legend>Dados Evento S-2400</legend>
 
 				<br/>
 
@@ -72,7 +57,7 @@
 								<h:inputText id="tpInsc" 
 											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.tpInsc}" />
+											 value="#{beneficiarioFormBean.tpInsc}" />
 							</div>
 						</div>
 
@@ -82,7 +67,7 @@
 								<h:inputText id="nrInsc" 
 											 maxlength="10"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.nrInsc}" />
+											 value="#{beneficiarioFormBean.nrInsc}" />
 							</div>
 						</div>
 				</fieldset>
@@ -95,7 +80,7 @@
 								<h:inputText id="cpf" 
 											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.cpfTrab}" />
+											 value="#{beneficiarioFormBean.entidade.cpfTrab}" />
 							</div>
 						</div>
 
@@ -105,55 +90,7 @@
 								<h:inputText id="nmTrab" 
 											 maxlength="10"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.nmTrab}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">sexo</label>
-							<div class="conteiner">
-								<h:inputText id="sexo" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.sexo}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">racaCor</label>
-							<div class="conteiner">
-								<h:inputText id="racaCor" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.racaCor}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">estCiv</label>
-							<div class="conteiner">
-								<h:inputText id="estCiv" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.estCiv}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">grauInstr</label>
-							<div class="conteiner">
-								<h:inputText id="grauInstr" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.grauInstr}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-8">
-							<label for="">nmSoc</label>
-							<div class="conteiner">
-								<h:inputText id="nmSoc" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.nmSoc}" />
+											 value="#{beneficiarioFormBean.entidade.nmTrab}" />
 							</div>
 						</div>
 						
@@ -163,223 +100,144 @@
 								<h:inputText id="dtNascto" 
 											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.dtNascto}" />
+											 value="#{beneficiarioFormBean.entidade.dtNascto}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-8">
+							<label for="">sexo</label>
+							<div class="conteiner">
+								<h:inputText id="sexo" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficiarioFormBean.entidade.sexo}" />
 							</div>
 						</div>
 
 						<div class="input-box box-8">
-							<label for="">paisNascto</label>
+							<label for="">racaCor</label>
 							<div class="conteiner">
-								<h:inputText id="paisNascto" 
+								<h:inputText id="racaCor" 
 											 maxlength="10"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.paisNascto}" />
+											 value="#{beneficiarioFormBean.entidade.racaCor}" />
+							</div>
+						</div>
+						<div class="input-box box-8">
+							<label for="">estCiv</label>
+							<div class="conteiner">
+								<h:inputText id="estCiv" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficiarioFormBean.entidade.estCiv}" />
 							</div>
 						</div>
 						
 						<div class="input-box box-8">
-							<label for="">paisNac</label>
+							<label for="">dtIncFisMen</label>
 							<div class="conteiner">
-								<h:inputText id="paisNac" 
-											 maxlength="10"
+								<h:inputText id="dtIncFisMen" 
+											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.paisNac}" />
+											 value="#{beneficiarioFormBean.entidade.dtIncFisMen}" />
 							</div>
 						</div>
 						
 						<div class="input-box box-15">
-							<label for="">fonePrinc</label>
+							<label for="">dtInicio</label>
 							<div class="conteiner">
-								<h:inputText id="fonePrinc" 
-											 maxlength="10"
+								<h:inputText id="dtInicio" 
+											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.fonePrinc}" />
+											 value="#{beneficiarioFormBean.entidade.dtInicio}" />
 							</div>
 						</div>
-						
-						<div class="input-box box-30">
-							<label for="">emailPrinc</label>
-							<div class="conteiner">
-								<h:inputText id="emailPrinc" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.emailPrinc}" />
-							</div>
-						</div>
+											
 					
 				</fieldset>
 				
 				<fieldset>
-					<legend>vinculo:</legend>
-						<div class="input-box box-15">
-							<label for="">matricula</label>
+					<legend>endereço:</legend>
+						<div class="input-box box-8">
+							<label for="">tpLograd</label>
 							<div class="conteiner">
-								<h:inputText id="matricula" 
+								<h:inputText id="tpLograd" 
 											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.matricula}" />
+											 value="#{beneficiarioFormBean.entidade.tpLograd}" />
 							</div>
 						</div>
 
-						<div class="input-box box-8">
-							<label for="">tpRegTrab</label>
+						<div class="input-box box-40">
+							<label for="">dscLograd</label>
 							<div class="conteiner">
-								<h:inputText id="tpRegTrab" 
+								<h:inputText id="dscLograd" 
 											 maxlength="10"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.tpRegTrab}" />
+											 value="#{beneficiarioFormBean.entidade.dscLograd}" />
 							</div>
 						</div>
 						<div class="input-box box-8">
-							<label for="">tpRegPrev</label>
+							<label for="">nrLograd</label>
 							<div class="conteiner">
-								<h:inputText id="tpRegPrev" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.tpRegPrev}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">cadIni</label>
-							<div class="conteiner">
-								<h:inputText id="cadIni" 
+								<h:inputText id="nrLograd" 
 											 maxlength="10"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.cadIni}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">tpProv</label>
-							<div class="conteiner">
-								<h:inputText id="tpProv" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.tpProv}" />
-							</div>
-						</div>
-
-						<div class="input-box box-15">
-							<label for="">dtExercicio</label>
-							<div class="conteiner">
-								<h:inputText id="dtExercicio" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.dtExercicio}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-8">
-							<label for="">tpPlanRP</label>
-							<div class="conteiner">
-								<h:inputText id="tpPlanRP" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.tpPlanRP}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-8">
-							<label for="">indTetoRGPS</label>
-							<div class="conteiner">
-								<h:inputText id="indTetoRGPS" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.indTetoRGPS}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">indAbonoPerm</label>
-							<div class="conteiner">
-								<h:inputText id="indAbonoPerm" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.indAbonoPerm}" />
+											 value="#{beneficiarioFormBean.entidade.nrLograd}" />
 							</div>
 						</div>
 						
 						<div class="input-box box-15">
-							<label for="">dtIniAbono</label>
+							<label for="">complemento</label>
 							<div class="conteiner">
-								<h:inputText id="dtIniAbono" 
-											 maxlength="10"
+								<h:inputText id="complemento" 
+											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.dtIniAbono}" />
+											 value="#{beneficiarioFormBean.entidade.complemento}" />
 							</div>
 						</div>
-						
-						<div class="input-box box-25">
-							<label for="">nmCargo</label>
+						<div class="input-box box-15">
+							<label for="">bairro</label>
 							<div class="conteiner">
-								<h:inputText id="nmCargo" 
+								<h:inputText id="bairro" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficiarioFormBean.entidade.bairro}" />
+							</div>
+						</div>
+
+						<div class="input-box box-15">
+							<label for="">cep</label>
+							<div class="conteiner">
+								<h:inputText id="cep" 
 											 maxlength="10"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.nmCargo}" />
+											 value="#{beneficiarioFormBean.entidade.cep}" />
 							</div>
 						</div>
 						
 						<div class="input-box box-15">
-							<label for="">dtIngrCargo</label>
+							<label for="">codMunic</label>
 							<div class="conteiner">
-								<h:inputText id="dtIngrCargo" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.dtIngrCargo}" />
-							</div>
-						</div>
-						<div class="input-box box-15">
-							<label for="">acumCargo</label>
-							<div class="conteiner">
-								<h:inputText id="nmFuncao" 
+								<h:inputText id="codMunic" 
 											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.nmFuncao}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">acumCargo</label>
-							<div class="conteiner">
-								<h:inputText id="acumCargo" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.acumCargo}" />
+											 value="#{beneficiarioFormBean.entidade.codMunic}" />
 							</div>
 						</div>
 						<div class="input-box box-8">
-							<label for="">codCateg</label>
+							<label for="">uf</label>
 							<div class="conteiner">
-								<h:inputText id="codCateg" 
+								<h:inputText id="uf" 
 											 maxlength="15"
 											 disabled="true"
-											 value="#{admissaoFormBean.entidade.codCateg}" />
+											 value="#{beneficiarioFormBean.entidade.uf}" />
 							</div>
 						</div>
 
-						<div class="input-box box-12">
-							<label for="">cbocargo</label>
-							<div class="conteiner">
-								<h:inputText id="cbocargo" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.CBOCargo}" />
-							</div>
-						</div>
-						<div class="input-box box-12">
-							<label for="">cbofuncao</label>
-							<div class="conteiner">
-								<h:inputText id="cbofuncao" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{admissaoFormBean.entidade.CBOFuncao}" />
-							</div>
-						</div>
-			
-					
 				</fieldset>
 				
-					<fieldset>
+				<fieldset>
 
 				<legend>Dependentes</legend>
 
@@ -389,8 +247,8 @@
 						
 					<rich:dataTable id="listaDependenteId"
 									var="dep"
-									value="#{admissaoFormBean.dependentesList}"
-									noDataLabel="Nenhum dependente lançado"	>
+									value="#{beneficiarioFormBean.dependentesList}"
+									noDataLabel="Nenhum débito lançado"	>
 									
 						<h:column id="col1" headerClass="cel-15">
 							<f:facet name="header">
@@ -474,16 +332,17 @@
 				
 				</div>
 			
-			</fieldset>	
+			</fieldset>			
+				
 				
 
 			</fieldset>
 			
 			
 			
-			<h:commandButton action="#{admissaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			<h:commandButton action="#{beneficiarioFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
 			
-			<a href="/srh/paginas/tabelas/admissaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			<a href="/srh/paginas/tabelas/beneficiarioList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

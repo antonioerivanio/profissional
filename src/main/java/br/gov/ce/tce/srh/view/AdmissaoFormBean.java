@@ -15,10 +15,12 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AdmissaoEsocialService;
 import br.gov.ce.tce.srh.service.DependenteEsocialTCEService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -38,6 +40,8 @@ public class AdmissaoFormBean implements Serializable {
 	private FuncionalService funcionalService;
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
+	@Autowired
+	private PessoaJuridicaService pessoaJuridicaService;
 	
 
 	// entidades das telas
@@ -45,6 +49,8 @@ public class AdmissaoFormBean implements Serializable {
 	private Funcional servidorFuncional;
 	private Admissao entidade = new Admissao();
 	private List<DependenteEsocial> dependentesList;
+	private List<PessoaJuridica> comboEmpresasCadastradas;
+	private PessoaJuridica pessoaJuridica;
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -55,6 +61,7 @@ public class AdmissaoFormBean implements Serializable {
 		Admissao flashParameter = (Admissao)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Admissao());
 		this.servidorEnvioList = funcionalService.findServidoresEvento2200();
+		this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
 		
     }	
 	
@@ -123,6 +130,31 @@ public class AdmissaoFormBean implements Serializable {
 
 	public void setServidorFuncional(Funcional servidorFuncional) {
 		this.servidorFuncional = servidorFuncional;
+	}	
+
+	public List<DependenteEsocial> getDependentesList() {
+		return dependentesList;
+	}
+
+	public void setDependentesList(List<DependenteEsocial> dependentesList) {
+		this.dependentesList = dependentesList;
+	}
+	
+
+	public List<PessoaJuridica> getComboEmpresasCadastradas() {
+		return comboEmpresasCadastradas;
+	}
+
+	public void setComboEmpresasCadastradas(List<PessoaJuridica> comboEmpresasCadastradas) {
+		this.comboEmpresasCadastradas = comboEmpresasCadastradas;
+	}
+
+	public PessoaJuridica getPessoaJuridica() {
+		return pessoaJuridica;
+	}
+
+	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
+		this.pessoaJuridica = pessoaJuridica;
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}

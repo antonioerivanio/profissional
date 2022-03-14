@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,11 +12,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 import br.gov.ce.tce.srh.sca.domain.Usuario;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
@@ -38,8 +41,8 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	@JoinColumn(name = "IDTIPOESOCIAL")
 	private Long tipoEsocial;
 	
-	@JoinColumn(name = "VALOROUTRAEMPRESA")
-	private Double valorOutraEmpresa;
+	@Column(name="VALOROUTRAEMPRESA")
+	private BigDecimal valorOutraEmpresa;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "INICIO")
@@ -52,6 +55,9 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "IDUSUARIO")
 	private Usuario usuario;
+	
+	@Transient
+	private String valorOutraEmpresaStr;
 
 	@Override
 	public Long getId() {
@@ -87,13 +93,28 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 		this.tipoEsocial = tipoEsocial;
 	}
 
-	public Double getValorOutraEmpresa() {
+	public BigDecimal getValorOutraEmpresa() {
 		return valorOutraEmpresa;
 	}
 
-	public void setValorOutraEmpresa(Double valorOutraEmpresa) {
+	public void setValorOutraEmpresa(BigDecimal valorOutraEmpresa) {
 		this.valorOutraEmpresa = valorOutraEmpresa;
 	}
+	
+	public String getValorOutraEmpresaStr() {
+		if(getValorOutraEmpresa() != null){
+			return valorOutraEmpresaStr = getValorOutraEmpresa().toString();
+		}
+		return valorOutraEmpresaStr;
+	}
+
+	public void setValorOutraEmpresaStr(String valorOutraEmpresaStr) {
+		this.valorOutraEmpresaStr = valorOutraEmpresaStr;
+		if(((valorOutraEmpresaStr != null && !valorOutraEmpresaStr.equals("")))){
+			setValorOutraEmpresa(SRHUtils.valorMonetarioStringParaBigDecimal(valorOutraEmpresaStr));
+		}
+	}
+
 
 	public Date getInicio() {
 		return inicio;

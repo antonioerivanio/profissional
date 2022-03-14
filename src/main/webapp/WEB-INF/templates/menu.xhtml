@@ -18,6 +18,45 @@
 								não periódicos</a></li></ul></li><ul class="sub-menu"><li><a href="/srh/paginas/esocial/eventos.faces">Eventos
 								periódicos</a></li></ul></li>-->
             </ui:fragment>
+            <!-- MENU FOLHA -->
+           <!--  <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS_FOLHA')}">
+                <li id="menu-folha">
+                    <a id="link-menu-folha" href="#">Folha</a>
+                     <ul class="sub-sub-menu">
+                                    <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_FOLHA')}">
+                                        <li>
+                                            <a href="/srh/paginas/tabelas/tipoFolhaList.faces">
+												Tipo de Folha </a>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RUBRICA')}">
+                                        <li>
+                                            <a href="/srh/paginas/tabelas/rubricaList.faces">
+												Rubrica </a>
+                                        </li>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESOCIAL')}">
+                                        <li>
+                                            <a href="/srh/paginas/tabelas/rubricaESocialTCEList.faces">
+												Rubrica eSocial </a>
+                                        </li>
+                                    </ui:fragment>
+                                     <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TIPO_FOLHA')}">
+                                        <li>
+                                            <a href="/srh/paginas/tabelas/pessoaJuridicaList.faces">
+												Pessoa Jurídica </a>
+                                        </li>
+                                         <li>
+                                            <a href="/srh/paginas/funcional/vinculoRGPSList.faces">
+												Vínculo RGPS </a>
+                                        </li>
+                                    </ui:fragment>
+                                </ul>
+                </li>-->
+                <!--<ul class="sub-menu"><li><a href="/srh/paginas/esocial/eventos.faces">Eventos
+								não periódicos</a></li></ul></li><ul class="sub-menu"><li><a href="/srh/paginas/esocial/eventos.faces">Eventos
+								periódicos</a></li></ul></li>-->
+            <!-- </ui:fragment>-->
             <!-- MENU TABELAS -->
             <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS')}">
                 <li id="menu-tabelas">
@@ -93,7 +132,7 @@
 									Estabelecimento </a>
                             </li>
                         </ui:fragment>
-                        <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS_FOLHA')}">
+                         <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS_FOLHA')}">
                             <li class="third-menu">
                                 <a href="#" title=""> Folha </a>
                                 <ul class="sub-sub-menu">
@@ -101,6 +140,10 @@
                                         <li>
                                             <a href="/srh/paginas/tabelas/tipoFolhaList.faces">
 												Tipo de Folha </a>
+                                        </li>
+                                        <li>
+                                            <a href="/srh/paginas/funcional/vinculoRGPSList.faces">
+												Vínculo RGPS </a>
                                         </li>
                                     </ui:fragment>
                                     <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_RUBRICA')}">
@@ -117,7 +160,7 @@
                                     </ui:fragment>
                                 </ul>
                             </li>
-                        </ui:fragment>                        
+                        </ui:fragment>                       
                         <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS_FORMACAO_ACADEMICA')}">
                             <li class="third-menu">
                                 <a href="#" title=""> Formação Acadêmica </a>
@@ -260,6 +303,12 @@
                                 <a href="/srh/paginas/tabelas/processoESocialList.faces">
 									Processo </a>
                             </li>
+                        </ui:fragment>
+                         <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESOCIAL')}">
+                             <li>
+                                 <a href="/srh/paginas/tabelas/pessoaJuridicaList.faces">
+									Pessoa Jurídica </a>
+                             </li>
                         </ui:fragment>
                         <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_TABELAS_REPRESENTACAO')}">
                             <li class="third-menu">

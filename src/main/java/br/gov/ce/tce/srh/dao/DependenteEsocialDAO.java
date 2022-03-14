@@ -73,7 +73,7 @@ public class DependenteEsocialDAO {
 		sql.append(" 'N' AS INC_TRAB, ");
 		sql.append(" 'N' AS INC_FIS_MEN, ");
 		sql.append(" trim(to_char(tb_tipodependencia.codigoesocial,'00')) AS TP_DEP, ");
-		sql.append(" :idFuncional AS ID_S2200_ADMISSAO   ");                                                                                                                                                                                                                                                                                                                    
+		sql.append(" :idFuncional AS IDFUNCIONAL   ");                                                                                                                                                                                                                                                                                                                    
 		sql.append(" FROM srh.tb_dependente ");
 		sql.append(" INNER JOIN srh.tb_pessoal ON srh.tb_dependente.idpessoaldep = srh.tb_pessoal.id ");
 		sql.append(" INNER JOIN srh.tb_tipodependencia ON srh.tb_dependente.idtipodependencia = srh.tb_tipodependencia.id ");

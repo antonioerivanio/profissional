@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,10 +16,10 @@ import javax.persistence.Table;
  */
 
 @Entity
+@SuppressWarnings("serial")
 @Table(name = "TB_PESSOAJURIDICA", schema = DatabaseMetadata.SCHEMA_SRH)
 public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	
 
 	@Id
 	@Column(name = "ID")
@@ -77,21 +76,5 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 		this.nomeFantasia = nomeFantasia;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(cnpj, id, nomeFantasia, razaoSocial);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PessoaJuridica other = (PessoaJuridica) obj;
-		return Objects.equals(cnpj, other.cnpj) && Objects.equals(id, other.id)
-				&& Objects.equals(nomeFantasia, other.nomeFantasia) && Objects.equals(razaoSocial, other.razaoSocial);
-	}
+	
 }

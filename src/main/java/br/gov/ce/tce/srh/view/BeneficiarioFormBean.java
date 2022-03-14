@@ -39,10 +39,12 @@ public class BeneficiarioFormBean implements Serializable {
 	
 
 	// entidades das telas
-	private List<Funcional> servidorEnvioList;
-	private Funcional servidorFuncional;
+	private List<Funcional> beneficiarioEnvioList;
+	private Funcional beneficiarioFuncional;
 	private Beneficiario entidade = new Beneficiario();
 	private List<DependenteEsocial> dependentesList;
+	private String tpInsc;
+	private String nrInsc;
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -52,15 +54,17 @@ public class BeneficiarioFormBean implements Serializable {
 	private void init() {
 		Beneficiario flashParameter = (Beneficiario)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Beneficiario());
-		this.servidorEnvioList = funcionalService.findServidoresEvento2200();
+		this.beneficiarioEnvioList = funcionalService.findBeneficiariosEvento2400();
 		
     }	
 	
 	public void consultar() {
-		if(servidorFuncional != null) {
-			try {				
-				entidade =  beneficiariooEsocialService.getEventoS2400ByServidor(servidorFuncional);
-				dependentesList = dependenteEsocialTCEService.findByIdfuncional(servidorFuncional.getId());
+		if(beneficiarioFuncional != null) {
+			try {		
+				tpInsc = "1";
+				nrInsc = "09499757";
+				entidade =  beneficiariooEsocialService.getEventoS2400ByServidor(beneficiarioFuncional);
+				dependentesList = dependenteEsocialTCEService.findByIdfuncional(beneficiarioFuncional.getId());
 	
 			} catch (Exception e) {		
 				e.printStackTrace();
@@ -106,20 +110,45 @@ public class BeneficiarioFormBean implements Serializable {
 	public Beneficiario getEntidade() {return entidade;}
 	public void setEntidade(Beneficiario entidade) {this.entidade = entidade;}
 
-	public List<Funcional> getServidorEnvioList() {
-		return servidorEnvioList;
+
+	public List<Funcional> getBeneficiarioEnvioList() {
+		return beneficiarioEnvioList;
 	}
 
-	public void setServidorEnvioList(List<Funcional> servidorEnvioList) {
-		this.servidorEnvioList = servidorEnvioList;
+	public void setBeneficiarioEnvioList(List<Funcional> beneficiarioEnvioList) {
+		this.beneficiarioEnvioList = beneficiarioEnvioList;
 	}
 
-	public Funcional getServidorFuncional() {
-		return servidorFuncional;
+	public Funcional getBeneficiarioFuncional() {
+		return beneficiarioFuncional;
+	}	
+
+	public String getTpInsc() {
+		return tpInsc;
 	}
 
-	public void setServidorFuncional(Funcional servidorFuncional) {
-		this.servidorFuncional = servidorFuncional;
+	public void setTpInsc(String tpInsc) {
+		this.tpInsc = tpInsc;
+	}
+
+	public String getNrInsc() {
+		return nrInsc;
+	}
+
+	public void setNrInsc(String nrInsc) {
+		this.nrInsc = nrInsc;
+	}
+
+	public void setBeneficiarioFuncional(Funcional beneficiarioFuncional) {
+		this.beneficiarioFuncional = beneficiarioFuncional;
+	}
+
+	public List<DependenteEsocial> getDependentesList() {
+		return dependentesList;
+	}
+
+	public void setDependentesList(List<DependenteEsocial> dependentesList) {
+		this.dependentesList = dependentesList;
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}

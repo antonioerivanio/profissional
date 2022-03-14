@@ -22,4 +22,5 @@ public interface PessoaJuridicaService {
 	public void excluir(PessoaJuridica entidade);
 	
 	public List<PessoaJuridica> findAll();
+	public PessoaJuridica findById(Long parseLong);
 }

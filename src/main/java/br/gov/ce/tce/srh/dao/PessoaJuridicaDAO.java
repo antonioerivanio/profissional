@@ -24,6 +24,7 @@ public interface PessoaJuridicaDAO {
 	public PessoaJuridica getBynomeFantasia(String nomeFantasia);
 
 	public List<PessoaJuridica> findAll();
+	public PessoaJuridica findById(Long id);
 	
 
 }
