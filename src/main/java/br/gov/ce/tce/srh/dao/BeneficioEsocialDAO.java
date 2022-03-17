@@ -10,14 +10,14 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import br.gov.ce.tce.srh.domain.Beneficiario;
+import br.gov.ce.tce.srh.domain.Beneficio;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
-public class BeneficiarioEsocialDAO {
+public class BeneficioEsocialDAO {
 
-	static Logger logger = Logger.getLogger(BeneficiarioEsocialDAO.class);
+	static Logger logger = Logger.getLogger(BeneficioEsocialDAO.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -27,11 +27,11 @@ public class BeneficiarioEsocialDAO {
 	}
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from Beneficiario e ");
+		Query query = entityManager.createQuery("Select max(e.id) from Beneficio e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
-	public Beneficiario salvar(Beneficiario entidade) {
+	public Beneficio salvar(Beneficio entidade) {
 
 		if (entidade.getId() == null || entidade.getId().equals(0l)) {
 			entidade.setId(getMaxId());
@@ -40,20 +40,20 @@ public class BeneficiarioEsocialDAO {
 		return entityManager.merge(entidade);
 	}
 
-	public void excluir(Beneficiario entidade) {
+	public void excluir(Beneficio entidade) {
 		entidade = entityManager.merge(entidade);
 		entityManager.remove(entidade);
 	}
 
-	public Beneficiario getById(Long id) {
-		return entityManager.find(Beneficiario.class, id);
+	public Beneficio getById(Long id) {
+		return entityManager.find(Beneficio.class, id);
 	}
 	
 	public int count(String nome, String cpf) {
 		
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(b) FROM Beneficiario b inner join b.funcional f WHERE 1=1 ");
+		sql.append(" Select count(b) FROM Beneficio b inner join b.funcional f WHERE 1=1 ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -76,11 +76,11 @@ public class BeneficiarioEsocialDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Beneficiario> search(String nome, String cpf, Integer first, Integer rows) {
+	public List<Beneficio> search(String nome, String cpf, Integer first, Integer rows) {
 
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT b FROM Beneficiario b inner join fetch b.funcional f WHERE 1=1 ");
+		sql.append("  SELECT b FROM Beneficio b inner join fetch b.funcional f WHERE 1=1 ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -108,18 +108,18 @@ public class BeneficiarioEsocialDAO {
 		return query.getResultList();
 	}
 
-	public Beneficiario getEventoS2400ByServidor(Funcional servidorFuncional) {
+	public Beneficio getEventoS2410ByServidor(Funcional servidorFuncional) {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS2400(), Beneficiario.class);
+			Query query = entityManager.createNativeQuery(getSQLEventoS2410(), Beneficio.class);
 			query.setParameter("idFuncional",servidorFuncional.getId() );
-			return (Beneficiario) query.getSingleResult();
+			return (Beneficio) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 
 	}	
 	
-	public String getSQLEventoS2400() {
+	public String getSQLEventoS2410() {
 		StringBuffer sql = new StringBuffer();
 	
 		sql.append(" SELECT 0 as id, ");

@@ -12,24 +12,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.Beneficiario;
+import br.gov.ce.tce.srh.domain.Beneficio;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.BeneficiarioEsocialService;
+import br.gov.ce.tce.srh.service.BeneficioEsocialService;
 import br.gov.ce.tce.srh.service.DependenteEsocialTCEService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
-@Component("beneficiarioFormBean")
+@Component("beneficioFormBean")
 @Scope("view")
-public class BeneficiarioFormBean implements Serializable {
+public class BeneficioFormBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(BeneficiarioFormBean.class);
+	static Logger logger = Logger.getLogger(BeneficioFormBean.class);
 
 	@Autowired
-	private BeneficiarioEsocialService beneficiariooEsocialService;
+	private BeneficioEsocialService beneficiooEsocialService;
 	@Autowired
 	private DependenteEsocialTCEService dependenteEsocialTCEService;
 	
@@ -41,7 +41,7 @@ public class BeneficiarioFormBean implements Serializable {
 	// entidades das telas
 	private List<Funcional> beneficiarioEnvioList;
 	private Funcional beneficiarioFuncional;
-	private Beneficiario entidade = new Beneficiario();
+	private Beneficio entidade = new Beneficio();
 	private List<DependenteEsocial> dependentesList;
 	private String tpInsc;
 	private String nrInsc;
@@ -49,13 +49,13 @@ public class BeneficiarioFormBean implements Serializable {
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
-	private List<Beneficiario> pagedList = new ArrayList<Beneficiario>();
+	private List<Beneficio> pagedList = new ArrayList<Beneficio>();
 	
 	@PostConstruct
 	private void init() {
-		Beneficiario flashParameter = (Beneficiario)FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new Beneficiario());
-		this.beneficiarioEnvioList = funcionalService.findBeneficiariosEvento2400();
+		Beneficio flashParameter = (Beneficio)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new Beneficio());
+		this.beneficiarioEnvioList = funcionalService.findBeneficiariosEvento2410();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
 			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
 			beneficiarioFuncional = getEntidade().getFuncional();
@@ -69,7 +69,7 @@ public class BeneficiarioFormBean implements Serializable {
 			try {		
 				tpInsc = "1";
 				nrInsc = "09499757";
-				entidade =  beneficiariooEsocialService.getEventoS2400ByServidor(beneficiarioFuncional);
+				entidade =  beneficiooEsocialService.getEventoS2410ByServidor(beneficiarioFuncional);
 				dependentesList = dependenteEsocialTCEService.findByIdfuncional(beneficiarioFuncional.getId());
 	
 			} catch (Exception e) {		
@@ -87,13 +87,13 @@ public class BeneficiarioFormBean implements Serializable {
 
 		try {
 			if(beneficiarioFuncional != null) {
-				beneficiariooEsocialService.salvar(entidade);
+				beneficiooEsocialService.salvar(entidade);
 				
 				if(dependentesList != null && !dependentesList.isEmpty()) {
 					dependenteEsocialTCEService.salvar(dependentesList);
 				}
 			}
-			//setEntidade( new Beneficiario() );
+			//setEntidade( new Beneficio() );
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -114,8 +114,8 @@ public class BeneficiarioFormBean implements Serializable {
 	}
 	
 
-	public Beneficiario getEntidade() {return entidade;}
-	public void setEntidade(Beneficiario entidade) {this.entidade = entidade;}
+	public Beneficio getEntidade() {return entidade;}
+	public void setEntidade(Beneficio entidade) {this.entidade = entidade;}
 
 
 	public List<Funcional> getBeneficiarioEnvioList() {
@@ -126,7 +126,7 @@ public class BeneficiarioFormBean implements Serializable {
 		this.beneficiarioEnvioList = beneficiarioEnvioList;
 	}
 
-	public Funcional getBeneficiarioFuncional() {
+	public Funcional getbeneficiarioFuncional() {
 		return beneficiarioFuncional;
 	}	
 
@@ -148,6 +148,10 @@ public class BeneficiarioFormBean implements Serializable {
 
 	public void setBeneficiarioFuncional(Funcional beneficiarioFuncional) {
 		this.beneficiarioFuncional = beneficiarioFuncional;
+	}
+
+	public Funcional getBeneficiarioFuncional() {
+		return beneficiarioFuncional;
 	}
 
 	public List<DependenteEsocial> getDependentesList() {
@@ -172,8 +176,8 @@ public class BeneficiarioFormBean implements Serializable {
 
 	
 
-	public List<Beneficiario> getPagedList() {return pagedList;}
-	public void setPagedList(List<Beneficiario> pagedList) {this.pagedList = pagedList;}
+	public List<Beneficio> getPagedList() {return pagedList;}
+	public void setPagedList(List<Beneficio> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
 
 }

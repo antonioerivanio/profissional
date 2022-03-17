@@ -1,5 +1,7 @@
 package br.gov.ce.tce.srh.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.domain.EstagiarioESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
 public class EstagiarioESocialDAO {
@@ -49,7 +52,7 @@ public class EstagiarioESocialDAO {
 		sql.append("   NULL                  AS OCORRENCIA_COD_ESTADO, ");
 		sql.append("    tb_pessoal.cpf as CPF_TRAB, ");
 		sql.append(" 	tb_pessoal.datanascimento AS dt_nasc, ");
-		sql.append("    tb_pessoal.nomepesquisa as NM_TRAB, ");
+		sql.append("    tb_pessoal.nome as NM_TRAB, ");
 		sql.append("    tb_funcional.id as IDFUNCIONAL, ");
 		sql.append("    tb_pessoal.sexo as SEXO, ");
 		sql.append("    tb_pessoal.idraca as RACA_COR, ");
@@ -63,7 +66,7 @@ public class EstagiarioESocialDAO {
 		sql.append("    tb_pessoal.numero as NR_LOGRAD, ");
 		sql.append("    tb_pessoal.complemento as COMPLEMENTO, ");
 		sql.append("    tb_pessoal.bairro as BAIRRO, ");
-		sql.append("    tb_pessoal.cep as CEP, ");
+		sql.append("    TRIM(' ' from tb_pessoal.cep) as CEP, ");
 		sql.append("    tb_municipio.cod_municipio as COD_MUNIC_END, ");
 		sql.append("    tb_municipio.uf as UF_END, ");
 		sql.append("    tb_pessoal.email as EMAIL_PRINC, ");
@@ -133,5 +136,63 @@ public class EstagiarioESocialDAO {
 	private Long getMaxId() {
 		Query query = entityManager.createQuery("Select max(e.id) from EstagiarioESocial e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
+	}
+
+	public int count(String nome, String cpf) {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" Select count(e) FROM EstagiarioESocial e inner join e.funcional f WHERE 1=1 ");
+
+		if (nome != null && !nome.isEmpty()) {
+			sql.append("  and upper( f.nome ) like :nome ");
+		}
+		
+		if (cpf != null && !cpf.isEmpty()) {
+			sql.append("  AND f.cpf = :cpf ");
+		}
+						
+		Query query = entityManager.createQuery(sql.toString());
+
+		if (nome != null && !nome.isEmpty()) {
+			query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		}
+		
+		if (cpf != null && !cpf.isEmpty()) {
+			query.setParameter("cpf", SRHUtils.removerMascara( cpf ));
+		}
+		return ((Long) query.getSingleResult()).intValue();
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<EstagiarioESocial> search(String nome, String cpf, Integer first, Integer rows) {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append("  SELECT e FROM EstagiarioESocial e inner join fetch e.funcional f WHERE 1=1 ");
+
+		if (nome != null && !nome.isEmpty()) {
+			sql.append("  and upper( f.nome ) like :nome ");
+		}
+		
+		if (cpf != null && !cpf.isEmpty())
+			sql.append("  AND f.cpf = :cpf ");
+
+		sql.append("  ORDER BY f.nome ");
+
+		Query query = entityManager.createQuery(sql.toString());
+
+		if (nome != null && !nome.isEmpty()) {
+			query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		}
+		
+		if (cpf != null && !cpf.isEmpty()) {
+			query.setParameter("cpf", SRHUtils.removerMascara( cpf ));
+		}
+		if (first != null && first >= 0)
+			query.setFirstResult(first);
+		if (rows != null && rows > 0)
+			query.setMaxResults(rows);
+
+		return query.getResultList();
 	}
 }

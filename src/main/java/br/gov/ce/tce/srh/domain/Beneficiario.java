@@ -45,7 +45,7 @@ public class Beneficiario extends BasicEntity<Long> implements Serializable{
 	@Column(name = "EST_CIV")
 	private Byte estCiv;
 	
-	@Column(name = "DT_NASC")
+	@Column(name = "DT_NASCTO")
 	@Temporal(TemporalType.DATE)
 	private Date dtNascto;
 	

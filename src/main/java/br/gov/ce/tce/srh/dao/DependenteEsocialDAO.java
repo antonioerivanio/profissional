@@ -3,17 +3,13 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
-import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
 public class DependenteEsocialDAO {
@@ -82,6 +78,13 @@ public class DependenteEsocialDAO {
 		sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
 	    
 	    return sql.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<DependenteEsocial> findDependenteEsocialByIdfuncional(Long idFuncional) {
+		Query query = entityManager.createQuery("Select e from DependenteEsocial e where e.funcional.id = :idFuncional", DependenteEsocial.class);
+		query.setParameter("idFuncional",idFuncional );
+		return query.getResultList();
 	}
 
 }

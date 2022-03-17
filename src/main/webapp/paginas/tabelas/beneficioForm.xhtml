@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Cadastro do Beneficiario ESocial</h2>
+
+		</div>
+
+         <h:form id="form" styleClass="formularios">
+
+			<br/>
+
+            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<fieldset>		
+			<div class="select-box box-65">
+				<label for="">Beneficiario *</label>
+				<div class="conteiner">
+					<h:selectOneMenu id="beneficiarioID"									
+									 converter="entityConverter" 
+									 rendered="#{!beneficioFormBean.emEdicao}"
+									 value="#{beneficioFormBean.beneficiarioFuncional}">
+					  	<f:selectItem id="selecioneBeneficiario" itemLabel="Selecione..."/>
+					  	<f:selectItems 	id="comboBeneficiario"
+					  					value="#{beneficioFormBean.beneficiarioEnvioList}"
+					  					var="servidor"
+					  					itemValue="#{servidor}"
+					  					itemLabel="#{servidor.nome}"/>
+					</h:selectOneMenu>
+				</div>
+				<div class="input-box box-40">						
+						<div class="conteiner">
+							<h:inputText id="nomeEdicao" 
+										 maxlength="10"
+										 disabled="true"
+										 rendered="#{beneficioFormBean.emEdicao}"
+										 value="#{beneficioFormBean.beneficiarioFuncional.nome}" />
+						</div>
+				</div>
+			</div>
+			<h:commandButton action="#{beneficioFormBean.consultar}" rendered="#{!beneficioFormBean.emEdicao}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
+			</fieldset>
+			
+			
+			<fieldset>
+
+				<legend>Dados Evento S-2410</legend>
+
+				<br/>
+
+            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+				<fieldset>
+					<legend>ideEmpregador:</legend>
+						<div class="input-box box-10">
+							<label for="">tpInsc</label>
+							<div class="conteiner">
+								<h:inputText id="tpInsc" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.tpInsc}" />
+							</div>
+						</div>
+
+						<div class="input-box box-25">
+							<label for="">nrInsc</label>
+							<div class="conteiner">
+								<h:inputText id="nrInsc" 
+											 maxlength="10"
+											 disabled="true"
+											 value="#{beneficioFormBean.nrInsc}" />
+							</div>
+						</div>
+				</fieldset>
+				
+				<fieldset>
+					<legend>beneficiario:</legend>
+						<div class="input-box box-15">
+							<label for="">cpfBenef</label>
+							<div class="conteiner">
+								<h:inputText id="cpfBenef" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.cpfBenef}" />
+							</div>
+						</div>
+
+						<div class="input-box box-40">
+							<label for="">matricula</label>
+							<div class="conteiner">
+								<h:inputText id="matricula" 
+											 maxlength="10"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.matricula}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">cnpjOrigem</label>
+							<div class="conteiner">
+								<h:inputText id="cnpjOrigem" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.cnpjOrigem}" />
+							</div>
+						</div>
+					</fieldset>
+					
+					<fieldset>
+						<legend>infoBenInicio:</legend>	
+						<div class="input-box box-8">
+							<label for="">cadIni</label>
+							<div class="conteiner">
+								<h:inputText id="cadIni" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.cadIni}" />
+							</div>
+						</div>
+
+						<div class="input-box box-8">
+							<label for="">indSitBenef</label>
+							<div class="conteiner">
+								<h:inputText id="indSitBenef" 
+											 maxlength="10"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.indSitBenef}" />
+							</div>
+						</div>
+						<div class="input-box box-8">
+							<label for="">nrBeneficio</label>
+							<div class="conteiner">
+								<h:inputText id="nrBeneficio" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.nrBeneficio}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">dtIniBeneficio</label>
+							<div class="conteiner">
+								<h:inputText id="dtIniBeneficio" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.dtIniBeneficio}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">dtPublic</label>
+							<div class="conteiner">
+								<h:inputText id="dtPublic" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.dtPublic}" />
+							</div>
+						</div>
+											
+					
+				</fieldset>
+				
+				<fieldset>
+					<legend>dadosBeneficio:</legend>
+						<div class="input-box box-8">
+							<label for="">tpBeneficio</label>
+							<div class="conteiner">
+								<h:inputText id="tpBeneficio" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.tpBeneficio}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-8">
+							<label for="">tpPlanRP</label>
+							<div class="conteiner">
+								<h:inputText id="tpPlanRP" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.tpPlanRP}" />
+							</div>
+						</div>
+
+						<div class="input-box box-40">
+							<label for="">dsc</label>
+							<div class="conteiner">
+								<h:inputText id="dsc" 
+											 maxlength="10"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.dsc}" />
+							</div>
+						</div>
+						<div class="input-box box-8">
+							<label for="">indDecJud</label>
+							<div class="conteiner">
+								<h:inputText id="indDecJud" 
+											 maxlength="10"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.indDecJud}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-15">
+							<label for="">tpPenMorte</label>
+							<div class="conteiner">
+								<h:inputText id="tpPenMorte" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.tpPenMorte}" />
+							</div>
+						</div>
+					</fieldset>
+			
+					<fieldset>
+						<legend>instPenMorte:</legend>
+						
+						<div class="input-box box-15">
+							<label for="">cpfInst</label>
+							<div class="conteiner">
+								<h:inputText id="cpfInst" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.cpfInst}" />
+							</div>
+						</div>
+
+						<div class="input-box box-15">
+							<label for="">dtInst</label>
+							<div class="conteiner">
+								<h:inputText id="dtInst" 
+											 maxlength="10"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.dtInst}" />
+							</div>
+						</div>
+					</fieldset>
+			
+					<fieldset>
+					<legend>sucessaoBenef:</legend>
+						<div class="input-box box-15">
+							<label for="">cnpjOrgaoAnt</label>
+							<div class="conteiner">
+								<h:inputText id="cnpjOrgaoAnt" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.cnpjOrgaoAnt}" />
+							</div>
+						</div>
+						<div class="input-box box-8">
+							<label for="">nrBeneficioAnt</label>
+							<div class="conteiner">
+								<h:inputText id="nrBeneficioAntSuc" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.nrBeneficioAntSuc}" />
+							</div>
+						</div>
+						<div class="input-box box-15">
+							<label for="">dtTransf</label>
+							<div class="conteiner">
+								<h:inputText id="dtTransf" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.dtTransf}" />
+							</div>
+						</div>
+						<div class="input-box box-15">
+							<label for="">observacao</label>
+							<div class="conteiner">
+								<h:inputText id="observacao" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.observacaoMud}" />
+							</div>
+						</div>
+
+				</fieldset>
+				
+				<fieldset>
+					<legend>mudancaCPF:</legend>
+					<div class="input-box box-15">
+							<label for="">cpfAnt</label>
+							<div class="conteiner">
+								<h:inputText id="cpfAnt" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.cpfAnt}" />
+							</div>
+						</div>
+						<div class="input-box box-8">
+							<label for="">nrBeneficioAnt</label>
+							<div class="conteiner">
+								<h:inputText id="nrBeneficioAntMud" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.nrBeneficioAntMud}" />
+							</div>
+						</div>
+						<div class="input-box box-15">
+							<label for="">dtAltCPF</label>
+							<div class="conteiner">
+								<h:inputText id="dtAltCPF" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.dtAltCPF}" />
+							</div>
+						</div>
+						<div class="input-box box-15">
+							<label for="">observacao</label>
+							<div class="conteiner">
+								<h:inputText id="observacaoMud" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.observacaoMud}" />
+							</div>
+						</div>
+				
+				</fieldset>
+				<fieldset>
+					<legend>infoBenTermino:</legend>
+					
+					<div class="input-box box-15">
+							<label for="">dtTermBeneficio</label>
+							<div class="conteiner">
+								<h:inputText id="dtTermBeneficio" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.dtTermBeneficio}" />
+							</div>
+						</div>
+						<div class="input-box box-15">
+							<label for="">mtvTermino</label>
+							<div class="conteiner">
+								<h:inputText id="mtvTermino" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{beneficioFormBean.entidade.mtvTermino}" />
+							</div>
+						</div>
+				
+				</fieldset>
+
+			</fieldset>
+			
+			
+			
+			<h:commandButton action="#{beneficioFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			
+			<a href="/srh/paginas/tabelas/beneficiarioList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+
+		</h:form>
+
+		<script>
+			if (document.getElementById('form:alterar') != null) {
+				if (document.getElementById('form:alterar').value == 'true') {
+					document.getElementById('form:PesquisarServidor').style.visibility='hidden';				
+				}	
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

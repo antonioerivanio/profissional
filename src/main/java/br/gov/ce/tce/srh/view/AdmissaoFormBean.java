@@ -15,12 +15,10 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AdmissaoEsocialService;
 import br.gov.ce.tce.srh.service.DependenteEsocialTCEService;
 import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -40,8 +38,6 @@ public class AdmissaoFormBean implements Serializable {
 	private FuncionalService funcionalService;
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
-	@Autowired
-	private PessoaJuridicaService pessoaJuridicaService;
 	
 
 	// entidades das telas
@@ -49,8 +45,8 @@ public class AdmissaoFormBean implements Serializable {
 	private Funcional servidorFuncional;
 	private Admissao entidade = new Admissao();
 	private List<DependenteEsocial> dependentesList;
-	private List<PessoaJuridica> comboEmpresasCadastradas;
-	private PessoaJuridica pessoaJuridica;
+	boolean emEdicao = false;
+	
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -61,8 +57,11 @@ public class AdmissaoFormBean implements Serializable {
 		Admissao flashParameter = (Admissao)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Admissao());
 		this.servidorEnvioList = funcionalService.findServidoresEvento2200();
-		this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
-		
+		if(getEntidade() != null && getEntidade().getFuncional() != null) {
+			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
+			servidorFuncional = getEntidade().getFuncional();
+			emEdicao = true;
+		}
     }	
 	
 	public void consultar() {
@@ -83,17 +82,17 @@ public class AdmissaoFormBean implements Serializable {
 		}
 	}
 
-	public void salvar() {
+	public void salvarEvento() {
 
 		try {
-			if(entidade.getId().equals(new Long(0))) {
+			if(servidorFuncional != null) {
 				admissaoEsocialService.salvar(entidade);
 				
-				if(dependentesList != null && dependentesList.isEmpty()) {
+				if(dependentesList != null && !dependentesList.isEmpty()) {
 					dependenteEsocialTCEService.salvar(dependentesList);
 				}
 			}
-			setEntidade( new Admissao() );
+			//setEntidade( new Admissao() );
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
@@ -102,13 +101,14 @@ public class AdmissaoFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 	}
 	
 	public String editar() {
-		FacesUtil.setFlashParameter("entidade", getEntidade());        
+		FacesUtil.setFlashParameter("entidade", getEntidade());  
         return "incluirAlterar";
 	}
 	
@@ -140,21 +140,12 @@ public class AdmissaoFormBean implements Serializable {
 		this.dependentesList = dependentesList;
 	}
 	
-
-	public List<PessoaJuridica> getComboEmpresasCadastradas() {
-		return comboEmpresasCadastradas;
+	public boolean isEmEdicao() {
+		return emEdicao;
 	}
 
-	public void setComboEmpresasCadastradas(List<PessoaJuridica> comboEmpresasCadastradas) {
-		this.comboEmpresasCadastradas = comboEmpresasCadastradas;
-	}
-
-	public PessoaJuridica getPessoaJuridica() {
-		return pessoaJuridica;
-	}
-
-	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
-		this.pessoaJuridica = pessoaJuridica;
+	public void setEmEdicao(boolean emEdicao) {
+		this.emEdicao = emEdicao;
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}
