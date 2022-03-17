@@ -26,6 +26,22 @@ public class EstagiarioESocialService {
 	
 	@Autowired
 	private NotificacaoService notificacaoService;
+	
+	public int count(String nome, String cpf) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Transactional
+	public void excluir(EstagiarioESocial entidade) {
+		estagiarioESocialDAO.excluir(entidade);
+		
+	}
+
+	public List<EstagiarioESocial> search(String nome, String cpf, int first, int rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public EstagiarioESocial salvar(EstagiarioESocial entidade) {
 		
@@ -50,24 +66,6 @@ public class EstagiarioESocialService {
 
 		return entidade;
 		
-	}
-	
-	@Transactional
-	public void excluir(EstagiarioESocial entidade) {
-		estagiarioESocialDAO.excluir(entidade);
-		
-	}
-	
-	public EstagiarioESocial getById(Long id) {
-		return estagiarioESocialDAO.getById (id);
-	}	
-	
-	public int count(String nome, String cpf) {
-		return estagiarioESocialDAO.count(nome, cpf);
-	}
-
-	public List<EstagiarioESocial> search(String nome, String cpf, int first, int rows) {
-		return estagiarioESocialDAO.search(nome, cpf, first, rows);
 	}
 
 	public EstagiarioESocial getEventoS2300ByEstagiario(Funcional estagiarioFuncional) {
