@@ -396,4 +396,18 @@ public class FuncionalDAO {
 		}
 	}
 
+	public List<Funcional> findBeneficiariosEvento2410() {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.status = 5"				 
+					+ "AND f.id  IN (SELECT b.funcional.id FROM Beneficiario b) "
+					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficio b) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
 }

@@ -32,14 +32,23 @@ public class DependenteEsocialTCEService{
 	}	
 	
 	public List<DependenteEsocial> findByIdfuncional(Long idFuncional) {
-		return dao.findByIdfuncional(idFuncional);
+		List<DependenteEsocial> depentendes = dao.findByIdfuncional(idFuncional);
+		for (DependenteEsocial dependenteEsocial : depentendes) {
+			dependenteEsocial.setId(null);
+		}
+		return depentendes;
 	}
 
+	@Transactional
 	public void salvar(List<DependenteEsocial> dependentesList) {
 		for (DependenteEsocial dependenteEsocial : dependentesList) {
 			salvar(dependenteEsocial);
 		}
 		
+	}
+
+	public List<DependenteEsocial> findDependenteEsocialByIdfuncional(Long idFuncional) {
+		return dao.findDependenteEsocialByIdfuncional(idFuncional);
 	}
 
 	

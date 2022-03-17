@@ -28,6 +28,7 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="servidor"									
 									 converter="entityConverter" 
+									 rendered="#{!admissaoFormBean.emEdicao}"
 									 value="#{admissaoFormBean.servidorFuncional}">
 					  	<f:selectItem id="selecioneServidor" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboServidor"
@@ -37,23 +38,19 @@
 					  					itemLabel="#{servidor.nome}"/>
 					</h:selectOneMenu>
 				</div>
-			</div>
-				<h:commandButton action="#{admissaoFormBean.consultar}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
-				<div class="select-box box-65">
-				<label for="">Empresa Vinculada *</label>
-				<div class="conteiner">
-					<h:selectOneMenu id="empresaVinculada"									
-									 converter="entityConverter" 
-									 value="#{vinculoRGPSFormBean.pessoaJuridica}">
-					  	<f:selectItem id="empresaServidor" itemLabel="Selecione..."/>
-					  	<f:selectItems 	id="comboEmpresa"
-					  					value="#{vinculoRGPSFormBean.comboEmpresasCadastradas}"
-					  					var="empresa"
-					  					itemValue="#{empresa}"
-					  					itemLabel="#{empresa.razaoSocial}"/>
-					</h:selectOneMenu>
+				<div class="input-box box-40">						
+						<div class="conteiner">
+							<h:inputText id="nomeEdicao" 
+										 maxlength="10"
+										 disabled="true"
+										 rendered="#{admissaoFormBean.emEdicao}"
+										 value="#{admissaoFormBean.servidorFuncional.nome}" />
+						</div>
 				</div>
+				
 			</div>
+				<h:commandButton action="#{admissaoFormBean.consultar}" value="Consultar"  rendered="#{!admissaoFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" />
+				
 			</fieldset>
 			
 			
@@ -329,7 +326,7 @@
 							</div>
 						</div>
 						<div class="input-box box-15">
-							<label for="">acumCargo</label>
+							<label for="">nmFuncao</label>
 							<div class="conteiner">
 								<h:inputText id="nmFuncao" 
 											 maxlength="15"
@@ -481,7 +478,7 @@
 			
 			
 			
-			<h:commandButton action="#{admissaoFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			<h:commandButton action="#{admissaoFormBean.salvarEvento}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
 			
 			<a href="/srh/paginas/tabelas/admissaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 

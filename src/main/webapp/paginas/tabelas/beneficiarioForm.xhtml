@@ -28,6 +28,7 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="beneficiarioID"									
 									 converter="entityConverter" 
+									 rendered="#{!beneficiarioFormBean.emEdicao}"
 									 value="#{beneficiarioFormBean.beneficiarioFuncional}">
 					  	<f:selectItem id="selecioneBeneficiario" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboBeneficiario"
@@ -37,8 +38,17 @@
 					  					itemLabel="#{servidor.nome}"/>
 					</h:selectOneMenu>
 				</div>
+				<div class="input-box box-40">						
+						<div class="conteiner">
+							<h:inputText id="nomeEdicao" 
+										 maxlength="10"
+										 disabled="true"
+										 rendered="#{beneficiarioFormBean.emEdicao}"
+										 value="#{beneficiarioFormBean.beneficiarioFuncional.nome}" />
+						</div>
+				</div>
 			</div>
-			<h:commandButton action="#{beneficiarioFormBean.consultar}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
+			<h:commandButton action="#{beneficiarioFormBean.consultar}" rendered="#{!beneficiarioFormBean.emEdicao}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
 			</fieldset>
 			
 			

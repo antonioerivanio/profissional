@@ -28,6 +28,7 @@
 				<div class="conteiner">
 					<h:selectOneMenu id="servidor"									
 									 converter="entityConverter" 
+									 rendered="#{!estagiarioFormBean.emEdicao}"
 									 value="#{estagiarioFormBean.estagiarioFuncional}">
 					  	<f:selectItem id="selecioneServidor" itemLabel="Selecione..."/>
 					  	<f:selectItems 	id="comboServidor"
@@ -37,8 +38,17 @@
 					  					itemLabel="#{servidor.nome}"/>
 					</h:selectOneMenu>
 				</div>
+				<div class="input-box box-40">						
+						<div class="conteiner">
+							<h:inputText id="nomeEdicao" 
+										 maxlength="10"
+										 disabled="true"
+										 rendered="#{estagiarioFormBean.emEdicao}"
+										 value="#{estagiarioFormBean.estagiarioFuncional.nome}" />
+						</div>
+				</div>
 			</div>
-			<h:commandButton action="#{estagiarioFormBean.consultar}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
+			<h:commandButton action="#{estagiarioFormBean.consultar}" rendered="#{!estagiarioFormBean.emEdicao}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
 			</fieldset>
 			
 			
@@ -486,7 +496,7 @@
 			
 			<h:commandButton action="#{estagiarioFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
 			
-			<a href="/srh/paginas/tabelas/admissaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			<a href="/srh/paginas/tabelas/estagiarioList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

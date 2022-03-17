@@ -45,6 +45,7 @@ public class EstagiarioFormBean implements Serializable {
 	private Funcional estagiarioFuncional;
 	private EstagiarioESocial entidade = new EstagiarioESocial();
 	private List<DependenteEsocial> dependentesList;
+	boolean emEdicao = false;
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -55,6 +56,11 @@ public class EstagiarioFormBean implements Serializable {
 		EstagiarioESocial flashParameter = (EstagiarioESocial)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new EstagiarioESocial());
 		this.servidorEnvioList = funcionalService.findEstagiarioservidoresEvento2300();
+		if(getEntidade() != null && getEntidade().getFuncional() != null) {
+			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
+			estagiarioFuncional = getEntidade().getFuncional();
+			emEdicao = true;
+		}
 		
     }	
 	
@@ -78,10 +84,10 @@ public class EstagiarioFormBean implements Serializable {
 	public void salvar() {
 
 		try {
-			if(entidade.getId().equals(new Long(0))) {
+			if(estagiarioFuncional != null) {
 				estagiarioESocialService.salvar(entidade);
 				
-				if(dependentesList != null && dependentesList.isEmpty()) {
+				if(dependentesList != null && !dependentesList.isEmpty()) {
 					dependenteEsocialTCEService.salvar(dependentesList);
 				}
 			}
@@ -134,6 +140,15 @@ public class EstagiarioFormBean implements Serializable {
 
 	public void setEstagiarioFuncional(Funcional estagiarioFuncional) {
 		this.estagiarioFuncional = estagiarioFuncional;
+	}
+	
+
+	public boolean isEmEdicao() {
+		return emEdicao;
+	}
+
+	public void setEmEdicao(boolean emEdicao) {
+		this.emEdicao = emEdicao;
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}

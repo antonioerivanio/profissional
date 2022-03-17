@@ -69,6 +69,7 @@ public class EstagiarioListBean {
 				flagRegistroInicial = -1;
 
 			} catch (Exception e) {
+				e.printStackTrace();
 				limparListas();
 				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
