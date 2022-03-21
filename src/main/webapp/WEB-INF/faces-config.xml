@@ -1117,6 +1117,26 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<!-- Afastamento eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/afastamentoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/afastamentoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/afastamentoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/afastamentoForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/afastamentoList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 	<!-- Beneficio eSocial/TCE -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/beneficioList.xhtml</from-view-id>
