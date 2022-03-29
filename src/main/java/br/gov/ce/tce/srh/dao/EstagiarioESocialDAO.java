@@ -126,11 +126,9 @@ public class EstagiarioESocialDAO {
 			entidade.setId(getMaxId());
 		}
 
-
 		entityManager.detach(entidade);
 		
 		return entityManager.merge(entidade);
-
 	}
 	
 	private Long getMaxId() {
