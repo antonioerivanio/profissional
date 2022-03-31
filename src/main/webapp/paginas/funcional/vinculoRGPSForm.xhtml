@@ -48,7 +48,7 @@
 									 disabled="#{vinculoRGPSFormBean.alterar}"
 									 value="#{vinculoRGPSFormBean.matricula}">
 							<a4j:ajax event="change"
-									  render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+									  render="messages, nomeCompletoPessoa, tipoOcupacao cpf, tipoCargoFuncao, tipoCargoFuncao"
 									  execute="@this" />
 						</h:inputText>
 					</div>
@@ -73,44 +73,32 @@
 	
 
 				<div class="input-box box-25">
-					<label for="">CPF</label>
+					<label for="">Tipo Ocupação</label>
 					<div class="conteiner">
-						<h:inputText id="cpf" 
-									 maxlength="14"
-									 styleClass="maskCpf"
-									 converter="cpfConverter"
+						<h:inputText id="tipoOcupacao" 
+									 maxlength="15"								
 									 disabled="true"
-									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.cpf}" />
+									 value="#{vinculoRGPSFormBean.entidade.funcional.ocupacao.tipoOcupacao.descricao}" />
 					</div>
 				</div>
 
 				<div class="input-box box-25">
-					<label for="">RG</label>
+					<label for="">Cargo/Função</label>
 					<div class="conteiner">
-						<h:inputText id="rg" 
+						<h:inputText id="tipoCargoFuncao" 
 									 maxlength="15"
 									 disabled="true"
-									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.rg}" />
+									 value="#{vinculoRGPSFormBean.entidade.funcional.ocupacao.nomenclatura}" />
 					</div>
 				</div>
 
 				<div class="input-box box-25">
-					<label for="">Emissor</label>
+					<label for="">Vínculo</label>
 					<div class="conteiner">
-						<h:inputText id="rgEmissor" 
-									 maxlength="10"
+						<h:inputText id="vinculo" 
+									 maxlength="15"
 									 disabled="true"
-									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.emissorRg}" />
-					</div>
-				</div>
-
-				<div class="input-box box-25">
-					<label for="">UF</label>
-					<div class="conteiner">
-						<h:inputText id="rgUf" 
-									 maxlength="2"
-									 disabled="true"
-									 value="#{vinculoRGPSFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
+									 value="#{vinculoRGPSFormBean.entidade.funcional.vinculo.descricao}" />
 					</div>
 				</div>
 
@@ -124,25 +112,25 @@
 
 				<br/>
 
-				<!-- <div class="select-box box-50">
-					<label for="">Empresas Cadastradas *</label>
+			<div class="select-box box-30">
+					<label for="">Outra Fonte de Renumeração:* </label>
 					<div class="conteiner">
-						<h:selectOneMenu id="empresasCadastradas"
-										 converter="entityConverter"
-										 value="#{vinculoRGPSFormBean.entidade.pessoaJuridica}" >
-							<f:selectItem id="selecioneEmpresaCadastrada" itemLabel="Selecione..." itemValue="" />
-					  		<f:selectItems 	id="comboEmpresasCadastradas" 
-					  						value="#{vinculoRGPSFormBean.comboEmpresasCadastradas}"
-					  						var="empresasCadastradas"
-					  						itemValue="#{empresasCadastradas}"
-					  						itemLabel="#{empresasCadastradas.razaoSocial}"/>					  						
-					  		<a4j:ajax event="change" 
-					  				 execute="@this"	
-					  				 oncomplete="jQuery('.maskData').mask('99/99/9999',{placeholder:' '});"
-					  				 render="inicio,fim"/>				
-						</h:selectOneMenu>    
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="350"
+							id="tipo"
+							value="#{vinculoRGPSFormBean.codigoTipoVinculoRGPS}">							
+							<f:selectItems 
+								id="comboTipo"
+								value="#{vinculoRGPSFormBean.comboTipoVinculoRGPS}" 
+								var="tipo"
+								itemLabel="#{tipo.codigo} - #{tipo.descricao}" 
+								itemValue="#{tipo}" />
+						</rich:select>
 					</div>
-				</div> -->
+				</div>
 				
 				<div class="select-box box-65">
 				<label for="">Empresa Vinculada *</label>
@@ -159,9 +147,10 @@
 					</h:selectOneMenu>
 				</div>
 			</div>
+			
 
 				<div class="input-box box-15 clr">
-					<label for="">Data Inicial</label>
+					<label for="">Data Inicial*</label>
 					<div class="conteiner">
 						<h:inputText id="inicio" 
 									 styleClass="maskData" 
@@ -187,13 +176,12 @@
 				</div>
 				
 				<div class="input-box box-15">
-					<label for="">Valor</label>
+					<label for="">Valor*</label>
 					<div class="conteiner">
 						<h:inputText id="valor" 
 									 styleClass="maskSalario"									 
-									 value="#{vinculoRGPSFormBean.entidade.valorOutraEmpresaStr}"
-									 maxlength="15"
-									 disabled="#{vinculoRGPSFormBean.bloquearDatas}" >
+									 value="#{vinculoRGPSFormBean.valorOutraEmpresaStr}"
+									 maxlength="15" >
 						</h:inputText>			  
 					</div>
 				</div>

@@ -29,7 +29,7 @@ public class BeneficioLisBean implements Serializable {
 	static Logger logger = Logger.getLogger(BeneficioLisBean.class);
 
 	@Autowired
-	private BeneficioEsocialService BeneficioEsocialService;
+	private BeneficioEsocialService beneficioEsocialService;
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
@@ -59,7 +59,7 @@ public class BeneficioLisBean implements Serializable {
 
 		try {
 
-			count = BeneficioEsocialService.count( this.nome, this.cpf );
+			count = beneficioEsocialService.count( this.nome, this.cpf );
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -84,7 +84,7 @@ public class BeneficioLisBean implements Serializable {
 
 		try {
 
-			BeneficioEsocialService.excluir(entidade);
+			beneficioEsocialService.excluir(entidade);
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -157,7 +157,7 @@ public class BeneficioLisBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(BeneficioEsocialService.search(this.nome, this.cpf, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(beneficioEsocialService.search(this.nome, this.cpf, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

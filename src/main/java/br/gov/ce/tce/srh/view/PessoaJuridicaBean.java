@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -38,6 +39,8 @@ public class PessoaJuridicaBean implements Serializable {
 
 	@Autowired
 	private PessoaJuridicaService pessoaJuridicaService;
+	@Autowired
+	private AuthenticationService authenticationService;
 
 	// entidades das telas
 	private List<PessoaJuridica> lista = new ArrayList<PessoaJuridica>();
@@ -99,6 +102,8 @@ public class PessoaJuridicaBean implements Serializable {
 					entidade.setCnpj(SRHUtils.removerMascara(entidade.getCnpj()));
 					entidade.setRazaoSocial(entidade.getRazaoSocial().toUpperCase());
 					entidade.setNomeFantasia(entidade.getNomeFantasia().toUpperCase());
+					entidade.setUsuarioInclusao(authenticationService.getUsuarioLogado());
+					this.entidade.setDataAlteracao(SRHUtils.getDataHoraAtual());
 					pessoaJuridicaService.salvar(entidade);
 					setEntidade(new PessoaJuridica());
 

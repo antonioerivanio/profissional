@@ -72,7 +72,7 @@ public class EstagiarioESocialDAO {
 		sql.append("    tb_pessoal.email as EMAIL_PRINC, ");
 		sql.append("    '0'||tb_funcional.matricula as MATRICULA, ");
 		sql.append("    tb_funcional.dataexercicio as DT_INICIO, ");
-		sql.append("    tb_funcional.idocupacao as NIV_ESTAGIO, ");
+		sql.append("    2 as NIV_ESTAGIO, ");
 		sql.append("    tb_ocupacao.nomenclatura as NM_CARGO, ");
 		sql.append("    tb_ocupacao.cbo as CBO_CARGO, ");
 		sql.append("    fp_cadastro.vpad as VR_SAL_FX, ");
@@ -87,7 +87,7 @@ public class EstagiarioESocialDAO {
 		sql.append("	901 AS COD_CATEG, ");
 		sql.append("	5 AS UND_SAL_FIXO, ");
 		sql.append("	'N' AS NAT_ESTAGIO, ");
-		sql.append("	0 AS CNPJ_INST_ENSINO,  ");
+		sql.append("	'07954514042120' AS CNPJ_INST_ENSINO,  ");
 		sql.append("	tb_funcional.datasaida AS DT_TERMINO, ");
 		sql.append("	ADD_MONTHS(tb_funcional.dataexercicio,12) AS DT_PREV_TERM ");
 		sql.append("FROM   srh.tb_funcional ");

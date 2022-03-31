@@ -99,11 +99,11 @@
 								value="#{vinculoRGPSListBean.dataModel}" 
 								>
 
-               		<h:column id="col1" headerClass="cel-15">
+               		<h:column id="col1" headerClass="cel-25">
                         <f:facet name="header">
                             Servidor
                         </f:facet>
-                        <h:outputText id="item2" value="#{item.funcional.nome}" styleClass="cel-15" />
+                        <h:outputText id="item2" value="#{item.funcional.nome}" styleClass="cel-25" />
                     </h:column>
                     <h:column id="col2">
                         <f:facet name="header">
@@ -115,7 +115,10 @@
                         <f:facet name="header">
                             Valor
                         </f:facet>
-                        <center><h:outputText id="item3" value="#{item.valorOutraEmpresaStr}" styleClass="cel-25" /></center>
+                        <center><h:outputText id="item3" value="#{item.valorOutraEmpresa}" >
+                        	<f:convertNumber currencySimbol="R$" type="currency" />
+                        </h:outputText>
+                        </center>
                     </h:column>
                    	<h:column id="col4" headerClass="cel-25">
                         <f:facet name="header">
@@ -138,7 +141,7 @@
                         	</h:outputText>
                         </center>
                     </h:column>
-               		<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_VINCULORGPS_ALTERAR')}">
+               		<h:column id="col8" >
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -149,7 +152,7 @@
                             <f:setPropertyActionListener target="#{vinculoRGPSListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col9" rendered="#{LoginBean.anyGranted('ROLE_VINCULORGPS_EXCLUIR')}">
+                	<h:column id="col9" >
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>

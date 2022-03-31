@@ -39,7 +39,7 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	private PessoaJuridica pessoaJuridica;
 
 	@JoinColumn(name = "IDTIPOESOCIAL")
-	private Long tipoEsocial;
+	private Integer tipoEsocial;
 	
 	@Column(name="VALOROUTRAEMPRESA")
 	private BigDecimal valorOutraEmpresa;
@@ -53,11 +53,13 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	private Date fim;
 	
 	@ManyToOne
-	@JoinColumn(name = "IDUSUARIO")
+	@JoinColumn(name = "IDUSUARIOINCLUSAO")
 	private Usuario usuario;
 	
-	@Transient
-	private String valorOutraEmpresaStr;
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATAALTERACAO")
+    private Date dataAlteracao;
+	
 
 	@Override
 	public Long getId() {
@@ -85,11 +87,11 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 		this.pessoaJuridica = pessoaJuridica;
 	}
 
-	public Long getTipoEsocial() {
+	public Integer getTipoEsocial() {
 		return tipoEsocial;
 	}
 
-	public void setTipoEsocial(Long tipoEsocial) {
+	public void setTipoEsocial(Integer tipoEsocial) {
 		this.tipoEsocial = tipoEsocial;
 	}
 
@@ -99,20 +101,6 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 
 	public void setValorOutraEmpresa(BigDecimal valorOutraEmpresa) {
 		this.valorOutraEmpresa = valorOutraEmpresa;
-	}
-	
-	public String getValorOutraEmpresaStr() {
-		if(getValorOutraEmpresa() != null){
-			return valorOutraEmpresaStr = getValorOutraEmpresa().toString();
-		}
-		return valorOutraEmpresaStr;
-	}
-
-	public void setValorOutraEmpresaStr(String valorOutraEmpresaStr) {
-		this.valorOutraEmpresaStr = valorOutraEmpresaStr;
-		if(((valorOutraEmpresaStr != null && !valorOutraEmpresaStr.equals("")))){
-			setValorOutraEmpresa(SRHUtils.valorMonetarioStringParaBigDecimal(valorOutraEmpresaStr));
-		}
 	}
 
 
@@ -139,4 +127,13 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public Date getDataAlteracao() {
+		return dataAlteracao;
+	}
+
+	public void setDataAlteracao(Date dataAlteracao) {
+		this.dataAlteracao = dataAlteracao;
+	}	
+	
 }

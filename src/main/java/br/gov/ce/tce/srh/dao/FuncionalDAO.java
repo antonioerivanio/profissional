@@ -287,7 +287,7 @@ public class FuncionalDAO {
 	
 	
 	public List<Funcional> findByNome(String nome) {
-		TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.setor) "
+		TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.setor, f.ocupacao, f.vinculo) "
 																+ "FROM Funcional f "
 																+ "WHERE upper( f.nomePesquisa ) like :nome "
 																+ "AND f.saida IS NULL "

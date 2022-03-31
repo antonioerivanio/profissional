@@ -27,7 +27,9 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 public class SRHUtils {
 	
-	public static final String FORMATO_DATA = "dd/MM/yyyy"; 
+	public static final String FORMATO_DATA = "dd/MM/yyyy";
+	
+	public static final String FORMATO_DATA_HORA = "dd/MM/yyyy HH:mm:ss";
 	
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	
@@ -304,6 +306,20 @@ public class SRHUtils {
 		 return new Date();
 	 }
 	 
+	 public static Date getDataHoraAtual() {	
+		 Date dataHoraAtual = new Date();
+		 String datahora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(dataHoraAtual);
+		 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+					 
+		 try {
+			 Date dataFormatada = formato.parse(datahora); 
+			return dataFormatada;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}		 
+	 }
+	 
 	 public static int getAnoCorrente() {		 
 		GregorianCalendar hoje = new GregorianCalendar();		
 		hoje.setTime(new Date());
@@ -527,10 +543,25 @@ public class SRHUtils {
 	public static BigDecimal valorMonetarioStringParaBigDecimal(String valorMonetarioString) {
 		String r = "";
 		for (int i = 0; i < valorMonetarioString.length(); i++) {
-			if (valorMonetarioString.charAt(i) != ',' && valorMonetarioString.charAt(i) != '.')
+			if (valorMonetarioString.charAt(i) != ',' && valorMonetarioString.charAt(i) != '.'&& valorMonetarioString.charAt(i) != 'R'&& valorMonetarioString.charAt(i) != '$')
 				r += valorMonetarioString.charAt(i);
 		}
 		return new BigDecimal(new BigDecimal(r).doubleValue()/100).setScale(2, RoundingMode.HALF_EVEN);
+	}
+	
+	public static BigDecimal valorMonetarioStringParaBigDecimal2(String valorMonetarioString) {
+		String valor = "";
+		for (int i = 0; i < valorMonetarioString.length(); i++) {
+			if ( valorMonetarioString.charAt(i) != '.'&& valorMonetarioString.charAt(i) != 'R'&& valorMonetarioString.charAt(i) != '$')
+				valor += valorMonetarioString.charAt(i);
+		}
+		valor = valor.replace(",", ".");
+		 // Creating a Double Object 
+        Double d = new Double(valor); 
+
+        /// Assigning the bigdecimal value of ln to b 
+        BigDecimal b = BigDecimal.valueOf(d); 
+		return b;
 	}
 	
 	public static Boolean validarPisPasep(String pisPasep){

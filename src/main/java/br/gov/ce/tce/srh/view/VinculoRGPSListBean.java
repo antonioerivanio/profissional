@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.VinculoRGPS;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;

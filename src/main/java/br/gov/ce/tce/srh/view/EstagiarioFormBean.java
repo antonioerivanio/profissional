@@ -108,6 +108,7 @@ public class EstagiarioFormBean implements Serializable {
 	}
 	
 	public String editar() {
+		consultar();
 		FacesUtil.setFlashParameter("entidade", getEntidade());        
         return "incluirAlterar";
 	}

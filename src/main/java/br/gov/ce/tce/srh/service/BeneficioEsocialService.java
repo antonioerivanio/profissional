@@ -70,8 +70,19 @@ public class BeneficioEsocialService{
 		return dao.search(nome, cpf, first, rows);
 	}
 
-	public Beneficio getEventoS2410ByServidor(Funcional servidorFuncional) {	
-		return dao.getEventoS2410ByServidor(servidorFuncional);
+	public Beneficio getEventoS2410ByServidor(Funcional servidorFuncional) {
+		Beneficio beneficio = dao.getEventoS2410ByServidor(servidorFuncional);
+		beneficio.setNrBeneficio(getNumeroBenecio(beneficio));
+		return beneficio;
+	}
+
+	private String getNumeroBenecio(Beneficio beneficio) {
+		StringBuffer numero = new StringBuffer();		
+		numero.append("TCE");
+		numero.append("0"+dao.getMaxId());
+		numero.append(beneficio.getTpBeneficio());
+		numero.append(beneficio.getCpfBenef());
+		return numero.toString();
 	}
 
 }

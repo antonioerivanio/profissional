@@ -26,7 +26,7 @@ public class BeneficioEsocialDAO {
 		this.entityManager = entityManager;
 	}
 
-	private Long getMaxId() {
+	public Long getMaxId() {
 		Query query = entityManager.createQuery("Select max(e.id) from Beneficio e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
@@ -121,45 +121,54 @@ public class BeneficioEsocialDAO {
 	
 	public String getSQLEventoS2410() {
 		StringBuffer sql = new StringBuffer();
-	
-		sql.append(" SELECT 0 as id, ");
-		sql.append("  f.id idfuncional, ");
-		sql.append(" f.id||'-'||o.id AS referencia, ");
-		sql.append(" p.nome AS NM_BENEFIC, ");
-		sql.append(" p.cpf AS CPF_BENEF, ");
-		sql.append("  p.sexo, ");
-		sql.append(" p.idraca AS RACA_COR, ");
-		sql.append(" ec.codigoesocial AS EST_CIV, ");
-		sql.append(" p.datanascimento as DT_NASCTO, ");
-		sql.append(" tl.codigo as TP_LOGRAD, ");
-		sql.append(" p.endereco AS dsc_lograd, ");
-		sql.append(" p.numero as NR_LOGRAD, ");
-		sql.append(" p.complemento, ");
-		sql.append(" p.bairro, ");
-		sql.append(" TRIM(' ' from p.cep) as CEP, ");
-		sql.append(" m.cod_municipio AS COD_MUNIC_END, ");
-		sql.append(" m.uf as UF_END, ");
-		sql.append(" c.atoaposentadoria as DT_INICIO, ");
-		sql.append(" 'N' AS INC_FIS_MEN, ");
-		sql.append("  NULL as DT_INC_FIS_MEN, ");
-		sql.append("  NULL   AS BAIRRO_EX, ");
-		sql.append(" NULL   AS COD_POSTAL, ");
-		sql.append(" NULL   AS NM_CID, ");
-		sql.append("  NULL   AS DSC_LOGRAD_EX, ");
-		sql.append("  NULL   AS NRLOGRAD_EX, ");
-		sql.append("  NULL   AS COMPLEMENTO_EX, ");
-		sql.append(" NULL   AS PAIS_RESID ");
+
+		sql.append(" SELECT    ");
+		sql.append("   0 as id, ");
+		sql.append("  f.id idfuncional,  ");
+		sql.append("  f.id||'-'||o.id AS referencia,  ");
+		sql.append("  p.cpf as CPF_BENEF, ");
+		sql.append("  f.matricula AS MATRICULA, ");
+		sql.append(" NULL AS CNPJ_ORIGEM, ");
+		sql.append(" CASE  ");
+		sql.append(" WHEN c.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N'  ");
+		sql.append(" ELSE 'S' ");
+		sql.append(" END AS CAD_INI, ");
+		sql.append(" NULL AS INC_SIT_BENEF, ");
+		sql.append(" NULL AS NR_BENEFICIO, ");
+		sql.append(" a.datainiciobeneficio AS DT_INI_BENEFICIO, ");
+		sql.append("  a.datapublicacaoato AS DT_PUBLIC, ");
+		sql.append("  '0101' AS TP_BENEFICIO, ");
+		sql.append(" 2 AS TP_PLAN_RP, ");
+		sql.append("  NULL AS DSC, ");
+		sql.append("  CASE  ");
+		sql.append("  WHEN c.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ");
+		sql.append("  ELSE NULL ");
+		sql.append("  END AS IND_DEC_JUD, ");
+		sql.append(" NULL AS TP_PEN_MORTE, ");
+		sql.append("  NULL AS CPF_INST, ");
+		sql.append("  NULL AS DT_INST, ");
+		sql.append("  NULL AS CNPJ_ORGAO_ANT, ");
+		sql.append("  NULL AS NR_BENEFICIO_ANT_SUC, ");
+		sql.append("  NULL AS DT_TRANSF, ");
+		sql.append("  NULL AS OBSERVACAO_SUC, ");
+		sql.append("  NULL AS CPF_ANT, ");
+		sql.append("  NULL AS NR_BENEFICIO_ANT_MUD, ");
+		sql.append("   NULL AS DT_ALT_CPF, ");
+		sql.append("  NULL AS OBSERVACAO_MUD, ");
+		sql.append("  NULL AS DT_TERM_BENEFICIO, ");
+		sql.append("  NULL AS MTV_TERMINO ");
+		   
 		sql.append(" FROM srh.tb_funcional f ");
 		sql.append(" INNER JOIN srh.fp_cadastro c ON f.id = c.idfuncional ");
 		sql.append(" INNER JOIN srh.tb_pessoal p ON f.idpessoal = p.id ");
 		sql.append(" INNER JOIN srh.tb_ocupacao o ON f.idocupacao = o.id ");
 		sql.append(" INNER JOIN srh.tb_estadocivil ec ON p.idestadocivil = ec.id ");
-		sql.append(" INNER JOIN srh.esocial_pais pn ON p.paisnascimento = pn.id ");
-		sql.append(" INNER JOIN srh.esocial_pais pnd ON p.paisnacionalidade = pnd.id ");
-		sql.append(" INNER JOIN srh.esocial_tipologradouro tl ON p.tipologradouro = tl.id ");
+		sql.append(" INNER JOIN srh.esocial_pais PAIS_NASCIMENTO ON p.paisnascimento = pais_nascimento.id ");
+		sql.append(" INNER JOIN srh.esocial_pais PAIS_NACIONALIDADE ON p.paisnacionalidade = pais_nacionalidade.id ");
+		sql.append(" INNER JOIN srh.tb_aposentadoria a ON f.idaposentadoria = a.id ");
+		sql.append(" INNER JOIN srh.esocial_tipologradouro tpl ON p.tipologradouro = tpl.id ");
 		sql.append(" INNER JOIN srh.tb_municipio m ON p.municipioendereco = m.id ");
 		sql.append(" WHERE f.id = :idFuncional ");
-			    
 	    return sql.toString();
 	}
 

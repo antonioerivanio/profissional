@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -11,13 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.ibm.icu.math.BigDecimal;
+
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.VinculoRGPS;
+import br.gov.ce.tce.srh.enums.TipoVinculoRGPS;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.service.VinculoRGPSService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("vinculoRGPSFormBean")
@@ -27,19 +33,24 @@ public class VinculoRGPSFormBean implements Serializable {
 	static Logger logger = Logger.getLogger(VinculoRGPSFormBean.class);
 
 	@Autowired
-	private VinculoRGPSService VinculoRGPSService;
+	private VinculoRGPSService vinculoRGPSService;
 	
 	@Autowired
 	private PessoaJuridicaService pessoaJuridicaService;
 
 	@Autowired
 	private FuncionalService funcionalService;
+	
+	@Autowired
+	private AuthenticationService authenticationService;
 
 	private VinculoRGPS entidade = new VinculoRGPS();
 
 	private String matricula = new String();
 	private String matriculaConsulta = new String();
 	private String nome = new String();
+	private String valorOutraEmpresaStr = new String();
+	
 
 	private Date inicial;
 	private Date fim;
@@ -49,6 +60,7 @@ public class VinculoRGPSFormBean implements Serializable {
 
 	private List<PessoaJuridica> comboEmpresasCadastradas;
 	private PessoaJuridica pessoaJuridica;
+	private TipoVinculoRGPS codigoTipoVinculoRGPS;
 	
 	private Integer pagina = 1;
 
@@ -59,6 +71,9 @@ public class VinculoRGPSFormBean implements Serializable {
 		this.pagina = (Integer) FacesUtil.getFlashParameter("pagina");
 		this.matriculaConsulta = (String) FacesUtil.getFlashParameter("matricula");
 		this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
+		this.pessoaJuridica = entidade.getPessoaJuridica();
+		this.codigoTipoVinculoRGPS = TipoVinculoRGPS.getByCodigo(entidade.getTipoEsocial());
+		this.valorOutraEmpresaStr = entidade.getValorOutraEmpresa().toString();	
 		
 		try {
 			if(this.entidade.getId() != null) {					
@@ -76,14 +91,18 @@ public class VinculoRGPSFormBean implements Serializable {
 	
 	public void salvar() {
 		
-		if(pessoaJuridica != null) {
-			try {
-	
+		if(verificaVinculoRGPS()) {
+			try {	
 				this.entidade.setInicio(this.inicial);
 				this.entidade.setFim(this.fim);
-	
-				VinculoRGPSService.salvar(entidade);
-	
+				this.entidade.setValorOutraEmpresa(SRHUtils.valorMonetarioStringParaBigDecimal2(valorOutraEmpresaStr));
+				this.entidade.setPessoaJuridica(pessoaJuridica);
+				this.entidade.setTipoEsocial(codigoTipoVinculoRGPS.getCodigo());			
+				this.entidade.setUsuario(authenticationService.getUsuarioLogado());
+				this.entidade.setDataAlteracao(SRHUtils.getDataHoraAtual());
+				
+				vinculoRGPSService.salvar(entidade);
+				
 				FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 				logger.info("Operação realizada com sucesso.");
 				
@@ -93,13 +112,31 @@ public class VinculoRGPSFormBean implements Serializable {
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
+			}	
 		}
-		else {
-			FacesUtil.addErroMessage("A Empresa Vinculada é um campo obrigatório");
-		}
+		
 	}
 	
+	private boolean verificaVinculoRGPS() {
+		if (pessoaJuridica == null ) {
+			FacesUtil.addErroMessage("A Empresa Vinculada é um campo obrigatório.");
+			return false;
+		} 
+		else if(codigoTipoVinculoRGPS == null) {
+			FacesUtil.addErroMessage("Outra fonte remuneração é um campo obrigatório.");
+			return false;
+		}
+		else if(this.inicial == null || this.inicial.before(entidade.getFuncional().getExercicio())) {
+			FacesUtil.addErroMessage("A Data Inicio deve ser maior ou igual a data exercio funcional.");
+			return false;
+		}
+		else if(valorOutraEmpresaStr == null || valorOutraEmpresaStr == "" || SRHUtils.valorMonetarioStringParaBigDecimal2(valorOutraEmpresaStr).equals(new BigDecimal(0))) {
+			FacesUtil.addErroMessage("O Valor deve ser informado.");
+			return false;
+		}
+		return true;
+	}
+
 	public String voltar() {
 		if (entidade.getId() != null) {
 			if (!alterar) {
@@ -173,6 +210,26 @@ public class VinculoRGPSFormBean implements Serializable {
 
 	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		this.pessoaJuridica = pessoaJuridica;
+	}
+
+	public TipoVinculoRGPS getCodigoTipoVinculoRGPS() {
+		return codigoTipoVinculoRGPS;
+	}
+
+	public void setCodigoTipoVinculoRGPS(TipoVinculoRGPS codigoTipoVinculoRGPS) {
+		this.codigoTipoVinculoRGPS = codigoTipoVinculoRGPS;
+	}
+	
+	public String getValorOutraEmpresaStr() {
+		return valorOutraEmpresaStr;
+	}
+
+	public void setValorOutraEmpresaStr(String valorOutraEmpresaStr) {
+		this.valorOutraEmpresaStr = valorOutraEmpresaStr;
+	}
+
+	public List<TipoVinculoRGPS> getComboTipoVinculoRGPS() {
+		return Arrays.asList(TipoVinculoRGPS.values());
 	}
 
 	public boolean isBloquearDatas() {return bloquearDatas;}

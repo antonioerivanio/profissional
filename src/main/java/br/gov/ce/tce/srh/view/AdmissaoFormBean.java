@@ -108,6 +108,7 @@ public class AdmissaoFormBean implements Serializable {
 	}
 	
 	public String editar() {
+		consultar();
 		FacesUtil.setFlashParameter("entidade", getEntidade());  
         return "incluirAlterar";
 	}
