@@ -114,26 +114,6 @@
     TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM
-  NAME="rules:#paginas#tabelas#competenciaFuncionalList.xhtml"
-  PATH="/paginas/tabelas/competenciaFuncionalList.xhtml"
-  SHAPE="32,1169,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM
-   ID="rules:#paginas#tabelas#competenciaFuncionalList.xhtml:0"
-   NAME="item" PATH="/paginas/tabelas/competenciaFuncionalList.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT
-    ID="listar::#paginas#tabelas#competenciaFuncionalList.xhtml"
-    NAME="output" PATH="/paginas/tabelas/competenciaFuncionalList.xhtml"
-    TARGET="rules:#paginas#tabelas#competenciaFuncionalList.xhtml"
-    TITLE="listar" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT
-    ID="incluirAlterar::#paginas#tabelas#competenciaFuncionalForm.xhtml"
-    NAME="output1"
-    PATH="/paginas/tabelas/competenciaFuncionalForm.xhtml"
-    TARGET="rules:#paginas#tabelas#competenciaFuncionalForm.xhtml"
-    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
-  </PROCESS-ITEM>
- </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#paginas#tabelas#cursoAcademicaList.xhtml"
   PATH="/paginas/tabelas/cursoAcademicaList.xhtml" SHAPE="32,1313,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#paginas#tabelas#cursoAcademicaList.xhtml:0"
@@ -347,6 +327,8 @@
    <PROCESS-ITEM-OUTPUT ID="loginInvalido::#login.xhtml" NAME="output1"
     PATH="/login.xhtml" TARGET="rules:#login.xhtml"
     TITLE="loginInvalido" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="erro::#erro.xhtml" NAME="output2"
+    PATH="/erro.xhtml" TARGET="rules:#erro.xhtml" TITLE="erro" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#paginas#tabelas#motivoDependenciaList.xhtml"
@@ -380,10 +362,16 @@
     TARGET="rules:#paginas#funcional#nomeacaoServidorList.xhtml"
     TITLE="listar" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="incluirAlterar::#paginas#funcional#nomeacaoServidorForm.xhtml"
+    ID="incluir::#paginas#funcional#nomeacaoServidorForm.xhtml"
     NAME="output1" PATH="/paginas/funcional/nomeacaoServidorForm.xhtml"
     TARGET="rules:#paginas#funcional#nomeacaoServidorForm.xhtml"
-    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+    TITLE="incluir" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="alterar::#paginas#funcional#nomeacaoServidorFormEdit.xhtml"
+    NAME="output2"
+    PATH="/paginas/funcional/nomeacaoServidorFormEdit.xhtml"
+    TARGET="rules:#paginas#funcional#nomeacaoServidorFormEdit.xhtml"
+    TITLE="alterar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#paginas#cadastros#pessoaList.xhtml"
@@ -653,7 +641,14 @@
   PATH="/paginas/tabelas/cargoComissionadoForm.xhtml"
   SHAPE="256,897,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#paginas#funcional#feriasForm.xhtml"
-  PATH="/paginas/funcional/feriasForm.xhtml" SHAPE="256,2337,0,0" model-entity="JSFProcessGroup"/>
+  PATH="/paginas/funcional/feriasForm.xhtml" SHAPE="256,2337,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#funcional#feriasForm.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/feriasForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listar::#paginas#funcional#feriasList.xhtml"
+    NAME="output" PATH="/paginas/funcional/feriasList.xhtml"
+    TARGET="rules:#paginas#funcional#feriasList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#home.xhtml" PATH="/home.xhtml"
   SHAPE="480,3041,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#paginas#cadastros#publicacaoForm.xhtml"
@@ -701,10 +696,6 @@
   NAME="rules:#paginas#cadastros#representacaoValorForm.xhtml"
   PATH="/paginas/cadastros/representacaoValorForm.xhtml"
   SHAPE="256,4353,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM
-  NAME="rules:#paginas#tabelas#competenciaFuncionalForm.xhtml"
-  PATH="/paginas/tabelas/competenciaFuncionalForm.xhtml"
-  SHAPE="256,1185,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM NAME="rules:#paginas#tabelas#cursoAcademicaForm.xhtml"
   PATH="/paginas/tabelas/cursoAcademicaForm.xhtml" SHAPE="256,1329,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM
@@ -1017,26 +1008,6 @@
   </PROCESS-ITEM>
  </PROCESS-ITEM>
  <PROCESS-ITEM
-  NAME="rules:#paginas#cadastros#categoriaFuncionalList.xhtml"
-  PATH="/paginas/cadastros/categoriaFuncionalList.xhtml"
-  SHAPE="32,14545,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM
-   ID="rules:#paginas#cadastros#categoriaFuncionalList.xhtml:0"
-   NAME="item" PATH="/paginas/cadastros/categoriaFuncionalList.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT
-    ID="listar::#paginas#cadastros#categoriaFuncionalList.xhtml"
-    NAME="output" PATH="/paginas/cadastros/categoriaFuncionalList.xhtml"
-    TARGET="rules:#paginas#cadastros#categoriaFuncionalList.xhtml"
-    TITLE="listar" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT
-    ID="incluirAlterar::#paginas#cadastros#categoriaFuncionalForm.xhtml"
-    NAME="output1"
-    PATH="/paginas/cadastros/categoriaFuncionalForm.xhtml"
-    TARGET="rules:#paginas#cadastros#categoriaFuncionalForm.xhtml"
-    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
-  </PROCESS-ITEM>
- </PROCESS-ITEM>
- <PROCESS-ITEM
   NAME="rules:#paginas#cadastros#competenciaSetorialList.xhtml"
   PATH="/paginas/cadastros/competenciaSetorialList.xhtml"
   SHAPE="272,14561,0,0" model-entity="JSFProcessGroup">
@@ -1080,10 +1051,6 @@
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#paginas#cadastros#atestoPessoaForm.xhtml"
   PATH="/paginas/cadastros/atestoPessoaForm.xhtml" SHAPE="256,14561,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM
-  NAME="rules:#paginas#cadastros#categoriaFuncionalForm.xhtml"
-  PATH="/paginas/cadastros/categoriaFuncionalForm.xhtml"
-  SHAPE="256,14561,0,0" model-entity="JSFProcessGroup"/>
  <PROCESS-ITEM
   NAME="rules:#paginas#cadastros#competenciaSetorFuncionalList.xhtml"
   PATH="/paginas/cadastros/competenciaSetorFuncionalList.xhtml"
@@ -1179,14 +1146,662 @@
   NAME="rules:#paginas#cadastros#categoriaSetorPessoalForm.xhtml"
   PATH="/paginas/cadastros/categoriaSetorPessoalForm.xhtml"
   SHAPE="256,14561,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM NAME="rules:#paginas#cadastros#servidorList.xhtml"
-  PATH="/paginas/cadastros/servidorList.xhtml" SHAPE="32,14545,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM ID="rules:#paginas#cadastros#servidorList.xhtml:0"
-   NAME="item" PATH="/paginas/cadastros/servidorList.xhtml" model-entity="JSFProcessItem">
+ <PROCESS-ITEM NAME="rules:#paginas#cadastros#atribuicaoSetorList.xhtml"
+  PATH="/paginas/cadastros/atribuicaoSetorList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#cadastros#atribuicaoSetorList.xhtml:0" NAME="item"
+   PATH="/paginas/cadastros/atribuicaoSetorList.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT
-    ID="listar::#paginas#cadastros#servidorList.xhtml" NAME="output"
-    PATH="/paginas/cadastros/servidorList.xhtml"
-    TARGET="rules:#paginas#cadastros#servidorList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+    ID="listar::#paginas#cadastros#atribuicaoSetorList.xhtml"
+    NAME="output" PATH="/paginas/cadastros/atribuicaoSetorList.xhtml"
+    TARGET="rules:#paginas#cadastros#atribuicaoSetorList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#cadastros#atribuicaoSetorForm.xhtml"
+    NAME="output1" PATH="/paginas/cadastros/atribuicaoSetorForm.xhtml"
+    TARGET="rules:#paginas#cadastros#atribuicaoSetorForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#empregadorList.xhtml"
+  PATH="/paginas/tabelas/empregadorList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#empregadorList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/empregadorList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#empregadorList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/empregadorList.xhtml"
+    TARGET="rules:#paginas#tabelas#empregadorList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#empregadorForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/empregadorForm.xhtml"
+    TARGET="rules:#paginas#tabelas#empregadorForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#estabelecimentoList.xhtml"
+  PATH="/paginas/tabelas/estabelecimentoList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#estabelecimentoList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/estabelecimentoList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#estabelecimentoList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/estabelecimentoList.xhtml"
+    TARGET="rules:#paginas#tabelas#estabelecimentoList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#estabelecimentoForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/estabelecimentoForm.xhtml"
+    TARGET="rules:#paginas#tabelas#estabelecimentoForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#lotacaoTributariaList.xhtml"
+  PATH="/paginas/tabelas/lotacaoTributariaList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#tabelas#lotacaoTributariaList.xhtml:0" NAME="item"
+   PATH="/paginas/tabelas/lotacaoTributariaList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#lotacaoTributariaList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/lotacaoTributariaList.xhtml"
+    TARGET="rules:#paginas#tabelas#lotacaoTributariaList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#lotacaoTributariaForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/lotacaoTributariaForm.xhtml"
+    TARGET="rules:#paginas#tabelas#lotacaoTributariaForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#rubricaESocialTCEList.xhtml"
+  PATH="/paginas/tabelas/rubricaESocialTCEList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#tabelas#rubricaESocialTCEList.xhtml:0" NAME="item"
+   PATH="/paginas/tabelas/rubricaESocialTCEList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#rubricaESocialTCEList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/rubricaESocialTCEList.xhtml"
+    TARGET="rules:#paginas#tabelas#rubricaESocialTCEList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#rubricaESocialTCEForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/rubricaESocialTCEForm.xhtml"
+    TARGET="rules:#paginas#tabelas#rubricaESocialTCEForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#tabelas#horario-turnos-trabalho#gradeHorarioList.xhtml"
+  PATH="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#tabelas#horario-turnos-trabalho#gradeHorarioList.xhtml:0"
+   NAME="item"
+   PATH="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#horario-turnos-trabalho#gradeHorarioList.xhtml"
+    NAME="output"
+    PATH="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioList.xhtml"
+    TARGET="rules:#paginas#tabelas#horario-turnos-trabalho#gradeHorarioList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#horario-turnos-trabalho#gradeHorarioForm.xhtml"
+    NAME="output1"
+    PATH="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioForm.xhtml"
+    TARGET="rules:#paginas#tabelas#horario-turnos-trabalho#gradeHorarioForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#carreiraList.xhtml"
+  PATH="/paginas/tabelas/carreiraList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#carreiraList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/carreiraList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listar::#paginas#tabelas#carreiraList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/carreiraList.xhtml"
+    TARGET="rules:#paginas#tabelas#carreiraList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#carreiraForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/carreiraForm.xhtml"
+    TARGET="rules:#paginas#tabelas#carreiraForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#ambienteTrabalhoList.xhtml"
+  PATH="/paginas/tabelas/ambienteTrabalhoList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#ambienteTrabalhoList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/ambienteTrabalhoList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#ambienteTrabalhoList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/ambienteTrabalhoList.xhtml"
+    TARGET="rules:#paginas#tabelas#ambienteTrabalhoList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#ambienteTrabalhoForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/ambienteTrabalhoForm.xhtml"
+    TARGET="rules:#paginas#tabelas#ambienteTrabalhoForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#processoESocialList.xhtml"
+  PATH="/paginas/tabelas/processoESocialList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#processoESocialList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/processoESocialList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#processoESocialList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/processoESocialList.xhtml"
+    TARGET="rules:#paginas#tabelas#processoESocialList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#processoESocialForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/processoESocialForm.xhtml"
+    TARGET="rules:#paginas#tabelas#processoESocialForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#tabelas#competenciasGeraisList.xhtml"
+  PATH="/paginas/tabelas/competenciasGeraisList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#tabelas#competenciasGeraisList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/competenciasGeraisList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#competenciasGeraisList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/competenciasGeraisList.xhtml"
+    TARGET="rules:#paginas#tabelas#competenciasGeraisList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#competenciasGeraisForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/competenciasGeraisForm.xhtml"
+    TARGET="rules:#paginas#tabelas#competenciasGeraisForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#relatorios#cursoServidorList.xhtml"
+  PATH="/paginas/relatorios/cursoServidorList.xhtml"
+  SHAPE="448,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#relatorios#cursoServidorList.xhtml:0"
+   NAME="item" PATH="/paginas/relatorios/cursoServidorList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#relatorios#cursoServidorList.xhtml"
+    NAME="output" PATH="/paginas/relatorios/cursoServidorList.xhtml"
+    TARGET="rules:#paginas#relatorios#cursoServidorList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#relatorios#cursoPeriodoList.xhtml"
+  PATH="/paginas/relatorios/cursoPeriodoList.xhtml"
+  SHAPE="656,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#relatorios#cursoPeriodoList.xhtml:0"
+   NAME="item" PATH="/paginas/relatorios/cursoPeriodoList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#relatorios#cursoPeriodoList.xhtml"
+    NAME="output" PATH="/paginas/relatorios/cursoPeriodoList.xhtml"
+    TARGET="rules:#paginas#relatorios#cursoPeriodoList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#pessoaJuridicaList.xhtml"
+  PATH="/paginas/tabelas/pessoaJuridicaList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#pessoaJuridicaList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/pessoaJuridicaList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#pessoaJuridicaList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/pessoaJuridicaList.xhtml"
+    TARGET="rules:#paginas#tabelas#pessoaJuridicaList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#pessoaJuridicaForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/pessoaJuridicaForm.xhtml"
+    TARGET="rules:#paginas#tabelas#pessoaJuridicaForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#orientacaoCargoList.xhtml"
+  PATH="/paginas/tabelas/orientacaoCargoList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#orientacaoCargoList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/orientacaoCargoList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#orientacaoCargoList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/orientacaoCargoList.xhtml"
+    TARGET="rules:#paginas#tabelas#orientacaoCargoList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#orientacaoCargoForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/orientacaoCargoForm.xhtml"
+    TARGET="rules:#paginas#tabelas#orientacaoCargoForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#aposentadoriaList.xhtml"
+  PATH="/paginas/funcional/aposentadoriaList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#funcional#aposentadoriaList.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/aposentadoriaList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#funcional#aposentadoriaList.xhtml"
+    NAME="output" PATH="/paginas/funcional/aposentadoriaList.xhtml"
+    TARGET="rules:#paginas#funcional#aposentadoriaList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#funcional#aposentadoriaForm.xhtml"
+    NAME="output1" PATH="/paginas/funcional/aposentadoriaForm.xhtml"
+    TARGET="rules:#paginas#funcional#aposentadoriaForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#folgaList.xhtml"
+  PATH="/paginas/funcional/folgaList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#funcional#folgaList.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/folgaList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listar::#paginas#funcional#folgaList.xhtml"
+    NAME="output" PATH="/paginas/funcional/folgaList.xhtml"
+    TARGET="rules:#paginas#funcional#folgaList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#funcional#folgaForm.xhtml"
+    NAME="output1" PATH="/paginas/funcional/folgaForm.xhtml"
+    TARGET="rules:#paginas#funcional#folgaForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#folgaForm.xhtml"
+  PATH="/paginas/funcional/folgaForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#funcional#folgaForm.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/folgaForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listar::#paginas#funcional#folgaList.xhtml"
+    NAME="output" PATH="/paginas/funcional/folgaList.xhtml"
+    TARGET="rules:#paginas#funcional#folgaList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#funcional#abonoPermanenciaList.xhtml"
+  PATH="/paginas/funcional/abonoPermanenciaList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#funcional#abonoPermanenciaList.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/abonoPermanenciaList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#funcional#abonoPermanenciaList.xhtml"
+    NAME="output" PATH="/paginas/funcional/abonoPermanenciaList.xhtml"
+    TARGET="rules:#paginas#funcional#abonoPermanenciaList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#funcional#abonoPermanenciaForm.xhtml"
+    NAME="output1" PATH="/paginas/funcional/abonoPermanenciaForm.xhtml"
+    TARGET="rules:#paginas#funcional#abonoPermanenciaForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#funcional#licencaFinalizarList.xhtml"
+  PATH="/paginas/funcional/licencaFinalizarList.xhtml"
+  SHAPE="864,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#funcional#licencaFinalizarList.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/licencaFinalizarList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#funcional#licencaFinalizarList.xhtml"
+    NAME="output" PATH="/paginas/funcional/licencaFinalizarList.xhtml"
+    TARGET="rules:#paginas#funcional#licencaFinalizarList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#cadastros#categoriaFuncionalSetorResponsabilidadeList.xhtml"
+  PATH="/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#cadastros#categoriaFuncionalSetorResponsabilidadeList.xhtml:0"
+   NAME="item"
+   PATH="/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#cadastros#categoriaFuncionalSetorResponsabilidadeList.xhtml"
+    NAME="output"
+    PATH="/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeList.xhtml"
+    TARGET="rules:#paginas#cadastros#categoriaFuncionalSetorResponsabilidadeList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#cadastros#categoriaFuncionalSetorResponsabilidadeForm.xhtml"
+    NAME="output1"
+    PATH="/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeForm.xhtml"
+    TARGET="rules:#paginas#cadastros#categoriaFuncionalSetorResponsabilidadeForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#carreiraPessoalList.xhtml"
+  PATH="/paginas/funcional/carreiraPessoalList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#funcional#carreiraPessoalList.xhtml:0" NAME="item"
+   PATH="/paginas/funcional/carreiraPessoalList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#funcional#carreiraPessoalList.xhtml"
+    NAME="output" PATH="/paginas/funcional/carreiraPessoalList.xhtml"
+    TARGET="rules:#paginas#funcional#carreiraPessoalList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#funcional#carreiraPessoalForm.xhtml"
+    NAME="output1" PATH="/paginas/funcional/carreiraPessoalForm.xhtml"
+    TARGET="rules:#paginas#funcional#carreiraPessoalForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#tabelas#categoriaFuncionalList.xhtml"
+  PATH="/paginas/tabelas/categoriaFuncionalList.xhtml"
+  SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#tabelas#categoriaFuncionalList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/categoriaFuncionalList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#categoriaFuncionalList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/categoriaFuncionalList.xhtml"
+    TARGET="rules:#paginas#tabelas#categoriaFuncionalList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#categoriaFuncionalForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/categoriaFuncionalForm.xhtml"
+    TARGET="rules:#paginas#tabelas#categoriaFuncionalForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#cadastros#dependenteList.xhtml"
+  PATH="/paginas/cadastros/dependenteList.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#cadastros#dependenteList.xhtml:0"
+   NAME="item" PATH="/paginas/cadastros/dependenteList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#cadastros#dependenteList.xhtml" NAME="output"
+    PATH="/paginas/cadastros/dependenteList.xhtml"
+    TARGET="rules:#paginas#cadastros#dependenteList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#cadastros#dependenteForm.xhtml"
+    NAME="output1" PATH="/paginas/cadastros/dependenteForm.xhtml"
+    TARGET="rules:#paginas#cadastros#dependenteForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#relatorios#relatorioServidorList.xhtml"
+  PATH="/paginas/relatorios/relatorioServidorList.xhtml"
+  SHAPE="1072,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#relatorios#relatorioServidorList.xhtml:0"
+   NAME="item" PATH="/paginas/relatorios/relatorioServidorList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#relatorios#relatorioServidorList.xhtml"
+    NAME="output" PATH="/paginas/relatorios/relatorioServidorList.xhtml"
+    TARGET="rules:#paginas#relatorios#relatorioServidorList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#relatorios#relatorioDemonstrativoDeCargosList.xhtml"
+  PATH="/paginas/relatorios/relatorioDemonstrativoDeCargosList.xhtml"
+  SHAPE="448,14721,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#relatorios#relatorioDemonstrativoDeCargosList.xhtml:0"
+   NAME="item"
+   PATH="/paginas/relatorios/relatorioDemonstrativoDeCargosList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#relatorios#relatorioDemonstrativoDeCargosList.xhtml"
+    NAME="output"
+    PATH="/paginas/relatorios/relatorioDemonstrativoDeCargosList.xhtml"
+    TARGET="rules:#paginas#relatorios#relatorioDemonstrativoDeCargosList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#relatorios#relatorioDependente.xhtml"
+  PATH="/paginas/relatorios/relatorioDependente.xhtml"
+  SHAPE="656,14737,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#paginas#relatorios#relatorioDependente.xhtml:0"
+   NAME="item" PATH="/paginas/relatorios/relatorioDependente.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#relatorios#relatorioDependente.xhtml"
+    NAME="output" PATH="/paginas/relatorios/relatorioDependente.xhtml"
+    TARGET="rules:#paginas#relatorios#relatorioDependente.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#vinculoRGPSList.xhtml"
+  PATH="/paginas/funcional/vinculoRGPSList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#funcional#vinculoRGPSList.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/vinculoRGPSList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#funcional#vinculoRGPSList.xhtml" NAME="output"
+    PATH="/paginas/funcional/vinculoRGPSList.xhtml"
+    TARGET="rules:#paginas#funcional#vinculoRGPSList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#funcional#vinculoRGPSForm.xhtml"
+    NAME="output1" PATH="/paginas/funcional/vinculoRGPSForm.xhtml"
+    TARGET="rules:#paginas#funcional#vinculoRGPSForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#vinculoRGPSForm.xhtml"
+  PATH="/paginas/funcional/vinculoRGPSForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#funcional#vinculoRGPSForm.xhtml:0"
+   NAME="item" PATH="/paginas/funcional/vinculoRGPSForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#funcional#vinculoRGPSList.xhtml" NAME="output"
+    PATH="/paginas/funcional/vinculoRGPSList.xhtml"
+    TARGET="rules:#paginas#funcional#vinculoRGPSList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#admissaoList.xhtml"
+  PATH="/paginas/tabelas/admissaoList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#admissaoList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/admissaoList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listar::#paginas#tabelas#admissaoList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/admissaoList.xhtml"
+    TARGET="rules:#paginas#tabelas#admissaoList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#admissaoForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/admissaoForm.xhtml"
+    TARGET="rules:#paginas#tabelas#admissaoForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#admissaoForm.xhtml"
+  PATH="/paginas/tabelas/admissaoForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#admissaoForm.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/admissaoForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="listar::#paginas#tabelas#admissaoList.xhtml"
+    NAME="output" PATH="/paginas/tabelas/admissaoList.xhtml"
+    TARGET="rules:#paginas#tabelas#admissaoList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#beneficiarioList.xhtml"
+  PATH="/paginas/tabelas/beneficiarioList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#beneficiarioList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/beneficiarioList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#beneficiarioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/beneficiarioList.xhtml"
+    TARGET="rules:#paginas#tabelas#beneficiarioList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#beneficiarioForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/beneficiarioForm.xhtml"
+    TARGET="rules:#paginas#tabelas#beneficiarioForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#beneficiarioForm.xhtml"
+  PATH="/paginas/tabelas/beneficiarioForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#beneficiarioForm.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/beneficiarioForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#beneficiarioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/beneficiarioList.xhtml"
+    TARGET="rules:#paginas#tabelas#beneficiarioList.xhtml"
+    TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#estagiarioList.xhtml"
+  PATH="/paginas/tabelas/estagiarioList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#estagiarioList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/estagiarioList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#estagiarioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/estagiarioList.xhtml"
+    TARGET="rules:#paginas#tabelas#estagiarioList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#estagiarioForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/estagiarioForm.xhtml"
+    TARGET="rules:#paginas#tabelas#estagiarioForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#estagiarioForm.xhtml"
+  PATH="/paginas/tabelas/estagiarioForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#estagiarioForm.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/estagiarioForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#estagiarioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/estagiarioList.xhtml"
+    TARGET="rules:#paginas#tabelas#estagiarioList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#afastamentoList.xhtml"
+  PATH="/paginas/tabelas/afastamentoList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#afastamentoList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/afastamentoList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#afastamentoList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/afastamentoList.xhtml"
+    TARGET="rules:#paginas#tabelas#afastamentoList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#afastamentoForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/afastamentoForm.xhtml"
+    TARGET="rules:#paginas#tabelas#afastamentoForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#afastamentoForm.xhtml"
+  PATH="/paginas/tabelas/afastamentoForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#afastamentoForm.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/afastamentoForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#afastamentoList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/afastamentoList.xhtml"
+    TARGET="rules:#paginas#tabelas#afastamentoList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#beneficioList.xhtml"
+  PATH="/paginas/tabelas/beneficioList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#beneficioList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/beneficioList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#beneficioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/beneficioList.xhtml"
+    TARGET="rules:#paginas#tabelas#beneficioList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#beneficioForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/beneficioForm.xhtml"
+    TARGET="rules:#paginas#tabelas#beneficioForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#beneficioForm.xhtml"
+  PATH="/paginas/tabelas/beneficioForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#beneficioForm.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/beneficioForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#beneficioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/beneficioList.xhtml"
+    TARGET="rules:#paginas#tabelas#beneficioList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#funcional#nomeacaoServidorFormEdit.xhtml"
+  PATH="/paginas/funcional/nomeacaoServidorFormEdit.xhtml"
+  SHAPE="272,4161,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#estabelecimentoForm.xhtml"
+  PATH="/paginas/tabelas/estabelecimentoForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#tabelas#horario-turnos-trabalho#gradeHorarioForm.xhtml"
+  PATH="/paginas/tabelas/horario-turnos-trabalho/gradeHorarioForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#lotacaoTributariaForm.xhtml"
+  PATH="/paginas/tabelas/lotacaoTributariaForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#empregadorForm.xhtml"
+  PATH="/paginas/tabelas/empregadorForm.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#cadastros#atribuicaoSetorForm.xhtml"
+  PATH="/paginas/cadastros/atribuicaoSetorForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#cadastros#dependenteForm.xhtml"
+  PATH="/paginas/cadastros/dependenteForm.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#ambienteTrabalhoForm.xhtml"
+  PATH="/paginas/tabelas/ambienteTrabalhoForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#orientacaoCargoForm.xhtml"
+  PATH="/paginas/tabelas/orientacaoCargoForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#erro.xhtml" PATH="/erro.xhtml"
+  SHAPE="496,3825,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#pessoaJuridicaForm.xhtml"
+  PATH="/paginas/tabelas/pessoaJuridicaForm.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#aposentadoriaForm.xhtml"
+  PATH="/paginas/funcional/aposentadoriaForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#rubricaESocialTCEForm.xhtml"
+  PATH="/paginas/tabelas/rubricaESocialTCEForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#tabelas#categoriaFuncionalForm.xhtml"
+  PATH="/paginas/tabelas/categoriaFuncionalForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#carreiraForm.xhtml"
+  PATH="/paginas/tabelas/carreiraForm.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#tabelas#competenciasGeraisForm.xhtml"
+  PATH="/paginas/tabelas/competenciasGeraisForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#processoESocialForm.xhtml"
+  PATH="/paginas/tabelas/processoESocialForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#carreiraPessoalForm.xhtml"
+  PATH="/paginas/funcional/carreiraPessoalForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#funcional#abonoPermanenciaForm.xhtml"
+  PATH="/paginas/funcional/abonoPermanenciaForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM
+  NAME="rules:#paginas#cadastros#categoriaFuncionalSetorResponsabilidadeForm.xhtml"
+  PATH="/paginas/cadastros/categoriaFuncionalSetorResponsabilidadeForm.xhtml"
+  SHAPE="256,14593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#estatutarioList.xhtml"
+  PATH="/paginas/tabelas/estatutarioList.xhtml" SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#estatutarioList.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/estatutarioList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#estatutarioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/estatutarioList.xhtml"
+    TARGET="rules:#paginas#tabelas#estatutarioList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="incluirAlterar::#paginas#tabelas#estatutarioForm.xhtml"
+    NAME="output1" PATH="/paginas/tabelas/estatutarioForm.xhtml"
+    TARGET="rules:#paginas#tabelas#estatutarioForm.xhtml"
+    TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#paginas#tabelas#estatutarioForm.xhtml"
+  PATH="/paginas/tabelas/estatutarioForm.xhtml" SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#paginas#tabelas#estatutarioForm.xhtml:0"
+   NAME="item" PATH="/paginas/tabelas/estatutarioForm.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="listar::#paginas#tabelas#estatutarioList.xhtml" NAME="output"
+    PATH="/paginas/tabelas/estatutarioList.xhtml"
+    TARGET="rules:#paginas#tabelas#estatutarioList.xhtml" TITLE="listar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
 </PROCESS>
