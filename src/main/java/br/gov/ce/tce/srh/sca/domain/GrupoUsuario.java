@@ -28,10 +28,8 @@ public class GrupoUsuario implements Serializable{
 	@JoinColumn(name = "GRUPO")	
 	private Grupo grupo;
 
-	
-	@ManyToOne
-	@JoinColumn(name="USUARIO")
-	private Usuario usuario;
+	@Column(name="USUARIO")	
+	private Long usuario;
 
 	public Long getId() {
 		return id;
@@ -50,11 +48,11 @@ public class GrupoUsuario implements Serializable{
 	}
 
 	public Long getUsuario() {
-		return usuario.getId();
+		return usuario;
 	}
 
 	public void setUsuario(Long usuario) {
-		this.usuario.setId(usuario);
+		this.usuario = usuario;
 	}
 
 }

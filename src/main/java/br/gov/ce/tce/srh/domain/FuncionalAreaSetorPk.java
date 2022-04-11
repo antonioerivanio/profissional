@@ -1,8 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -28,22 +26,5 @@ public class FuncionalAreaSetorPk implements Serializable {
 
 	public Long getAreaSetor() {return areaSetor;}
 	public void setAreaSetor(Long areaSetor) {this.areaSetor = areaSetor;}
-	@Override
-	public int hashCode() {
-		return Objects.hash(areaSetor, funcional);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		FuncionalAreaSetorPk other = (FuncionalAreaSetorPk) obj;
-		return Objects.equals(areaSetor, other.areaSetor) && Objects.equals(funcional, other.funcional);
-	}
-	
-	
 
 }

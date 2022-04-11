@@ -56,7 +56,7 @@ public class Usuario implements Serializable, LdapUserDetails {
 	private boolean senhaExpirada;
 
 
-	@OneToMany(mappedBy="usuario", targetEntity=GrupoUsuario.class, fetch=FetchType.EAGER)	
+	@OneToMany(mappedBy="usuario", targetEntity=GrupoUsuario.class, fetch=FetchType.EAGER)
 	@BatchSize(size=1000)
 	@OrderBy("grupo")
 	private List<GrupoUsuario> grupoUsuario;

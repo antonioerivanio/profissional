@@ -43,24 +43,7 @@
 					  			itemLabel="#{servidor.nome}"/>
 						</rich:select>
 				</div>
-				<div class="conteiner">				
-					<rich:select 
-							enableManualInput="true"
-							defaultLabel="Selecione..."	
-							clientFilterFunction="customFilter"
-							listWidth="500"
-							id="tipo2"
-							converter="entityConverter" 
-							rendered="#{!estatutarioFormBean.emEdicao}"
-							value="#{estatutarioFormBean.estagiarioFuncional}">							
-							<f:selectItems 
-								id="comboServidor2"
-								value="#{estatutarioFormBean.servidorEnvioList}"
-					  			var="servidor"
-					  			itemValue="#{servidor}"
-					  			itemLabel="#{servidor.nome}"/>
-						</rich:select>
-				</div>
+				
 				<ui:fragment  rendered="#{estatutarioFormBean.emEdicao}">
 					<div class="input-box box-60">						
 							<div class="conteiner">
