@@ -70,12 +70,16 @@ public class RubricaESocialTCEFormBean implements Serializable {
 		this.rubricasESocial = rubricaESocialDAO.findAll();
 		this.codigoPrevidTipo = entidade.getCodigoPrevid() != null ? entidade.getCodigoPrevid().getTipo() : null;
 		this.codigoIrrfTipo = entidade.getCodigoIrrf() != null ? entidade.getCodigoIrrf().getTipo() : null;
+		
+		if(entidade.getCodigoFgts() == null) {
+			entidade.setCodigoFgts(RubricaIncidenciaFGTS.RIFGTS00);
+		}
     }
 
 	public void salvar() {
 
 		try {
-
+			entidade.setRubrica(rubricaService.findById(entidade.getRubrica().getId()));
 			service.salvar(entidade);
 			limpar();
 
@@ -86,6 +90,7 @@ public class RubricaESocialTCEFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -109,6 +114,10 @@ public class RubricaESocialTCEFormBean implements Serializable {
 	}
 	
 	public List<RubricaIncidenciaFGTS> getComboCodigoFgts() {
+		return Arrays.asList(RubricaIncidenciaFGTS.values());
+	}
+	
+	public List<RubricaIncidenciaFGTS> getComboCodigoIncCprp() {
 		return Arrays.asList(RubricaIncidenciaFGTS.values());
 	}
 	
