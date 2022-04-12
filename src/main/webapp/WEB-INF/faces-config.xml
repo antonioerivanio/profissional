@@ -1117,6 +1117,27 @@
 		</navigation-case>
 	</navigation-rule>
 	
+		
+	<!-- Estatutário eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estatutarioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estatutarioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/estatutarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estatutarioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estatutarioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 	<!-- Afastamento eSocial/TCE -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/afastamentoList.xhtml</from-view-id>
