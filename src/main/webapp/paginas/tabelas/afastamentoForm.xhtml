@@ -36,8 +36,34 @@
 					  					var="servidor"
 					  					itemValue="#{servidor}"
 					  					itemLabel="#{servidor.nome}"/>
+					  					
+					  					<f:ajax listener="#{afastamentoFormBean.carregarAfastamentoListChange}" execute="@this"  render="form afastamento"/>
+
 					</h:selectOneMenu>
 				</div>
+				
+				<a4j:outputPanel rendered="#{not empty afastamentoFormBean.afastamentoESocialList}" id="teste">
+				<div class="conteiner">
+			
+					<label for="">Afastamento *</label>
+						<h:selectOneMenu id="afastamento"									
+										 converter="afastamentoConverter" 
+										 rendered="#{!afastamentoFormBean.emEdicao}"
+										 value="#{afastamentoFormBean.entidade}"
+										 >
+						  	<f:selectItem id="selecioneAfastamento" itemLabel="Selecione..."/>
+						  	<f:selectItems 	id="comboAfastamento"
+						  					value="#{afastamentoFormBean.afastamentoESocialList}"
+						  					var="afastamento"
+						  					itemValue="#{afastamento}"
+						  					itemLabel="#{afastamento.observacao} #{afastamento.dataFinalAfastamentoFormat}"
+						  					/>						  		
+						  					<f:ajax execute="@this" />
+						</h:selectOneMenu>
+			
+				</div>
+				</a4j:outputPanel>
+				 
 				<div class="input-box box-40">						
 						<div class="conteiner">
 							<h:inputText id="nomeEdicao" 
@@ -49,7 +75,7 @@
 				</div>
 				
 			</div>
-				<h:commandButton action="#{afastamentoFormBean.consultar}" value="Consultar"  rendered="#{!afastamentoFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" />
+				<h:commandButton actionListener="#{afastamentoFormBean.consultar}" value="Consultar"  rendered="#{!afastamentoFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" /> 
 				
 			</fieldset>
 			
@@ -158,7 +184,7 @@
 			
 			
 			
-			<h:commandButton action="#{afastamentoFormBean.salvarEvento}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			<h:commandButton actionListener="#{afastamentoFormBean.salvarEvento}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
 			
 			<a href="/srh/paginas/tabelas/afastamentoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 

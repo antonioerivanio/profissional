@@ -367,13 +367,13 @@ public class FuncionalDAO {
 	}
 	
 	public List<Funcional> findServidoresEvento2230() {
-		try {
+		try {	  
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
 					+ "FROM Funcional f "
 					+ "WHERE f.saida IS NULL "
 					+ "AND f.status = 1 "
 					+ "AND f.ocupacao.id not in (14,15) "
-					+ "AND f.id  NOT IN (SELECT a.funcional.id FROM AfastamentoESocial a) "
+					//+ "AND f.id  NOT IN (SELECT a.funcional.id FROM AfastamentoESocial a) "
 					+ "ORDER BY f.nome", Funcional.class);
 			return query.getResultList();
 		} catch (NoResultException e) {

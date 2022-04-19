@@ -68,7 +68,7 @@
                         <f:facet name="header">
                             Nome
                         </f:facet>
-                        <h:outputText id="item3" value="#{item.nmTrab}" styleClass="cel-50" />
+                        <h:outputText id="item3" value="#{item.funcional.nomeCompleto}" styleClass="cel-50" />
                     </rich:column>
                     <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">

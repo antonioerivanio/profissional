@@ -1,11 +1,16 @@
 package br.gov.ce.tce.srh.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -13,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.enums.TipoLicenca;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
@@ -33,11 +39,39 @@ public class AfastamentoESocialDAO {
 	
 	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional, boolean possuiCargo) {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS2230(possuiCargo), AfastamentoESocial.class);
+			StringBuffer campoAdicionalWhere = new StringBuffer(" tb_funcional.id = :idFuncional ");
+			
+			Query query = entityManager.createNativeQuery(getSQLEventoS2230(possuiCargo, getSqlColunasEJoins(null), campoAdicionalWhere), AfastamentoESocial.class);
 			query.setParameter("idFuncional", servidorFuncional.getId());
-			return (AfastamentoESocial) query.getSingleResult();
+
+			return (AfastamentoESocial) query.getSingleResult();			
 		} catch (NoResultException e) {
 			return null;
+		}
+	}
+	
+	/**
+	 * Metodo que retorna a lista de afasmentos por id e tipo de licença do servidor e que não esteja salvos na tabela ESOCIAL_AFASTAMENTO
+	 * @author erivanio.cruz
+	 * @param servidorFuncional
+	 * @param possuiCargo
+	 * @return
+	 */
+	public List<AfastamentoESocial> getEvento2230ByServidorList(Funcional servidorFuncional, boolean possuiCargo) {
+		try {
+			StringBuffer campoAdicionalWhere = new StringBuffer(" NOT EXISTS (SELECT 1 from srh.ESOCIAL_AFASTAMENTO ea " );
+					campoAdicionalWhere.append(" WHERE ea.DT_INI_AFAST = srh.TB_LICENCA.INICIO ");
+					campoAdicionalWhere.append(" AND ea.DT_TERM_AFAST = srh.TB_LICENCA.fim ) ");
+					campoAdicionalWhere.append(" AND tb_funcional.id = :idFuncional   AND tb_tipolicenca.id IN (:idTipoLicenca)" );
+			
+			Query query = entityManager.createNativeQuery(getSQLEventoS2230(possuiCargo, getSqlColunasEJoins(null), campoAdicionalWhere), AfastamentoESocial.class);
+			query.setParameter("idFuncional", servidorFuncional.getId());
+			query.setParameter("idTipoLicenca",    TipoLicenca.getTodosCodigos());
+			
+			return query.getResultList();
+			
+		} catch (NoResultException e) {
+			return new ArrayList<AfastamentoESocial>();
 		}
 	}
 	
@@ -45,11 +79,38 @@ public class AfastamentoESocialDAO {
 		return entityManager.find(AfastamentoESocial.class, id);
 	}
 	
-	public String getSQLEventoS2230(boolean possuiCargo) {
+	/**
+	 * Metodo criado para adicionar sql codicional no JOIN e no WHERE 
+	 * @author erivanio.cruz
+	 * @param possuiCargo
+	 * @param sqlAdicionalWhere
+	 * @return string
+	 */
+	public String getSQLEventoS2230(boolean possuiCargo, StringBuffer sqlColunasEJoinsAdicional, StringBuffer whereSqlAdicional) {
+		StringBuilder sql =new StringBuilder();
+		
+		if(Objects.nonNull(sqlColunasEJoinsAdicional)) {
+			sql. append(sqlColunasEJoinsAdicional);
+		}
+		
+		sql.append("WHERE  ");
+		
+		if(Objects.nonNull( whereSqlAdicional)) {
+			sql.append(whereSqlAdicional);
+		}
+		
+		return sql.toString();
+	}
+	
+	/**
+	 * @author erivanio.cruz
+	 * @return string
+	 */
+	private StringBuffer getSqlColunasEJoins(StringBuffer joinsAdicional) {
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append("SELECT 0 AS ID, ");
-		sql.append(" tb_funcional.id||'-'||tb_ocupacao.id AS REFERENCIA, ");
+		sql.append("SELECT rownum AS ID, ");
+		sql.append(" tb_funcional.id ||'-'|| tb_ocupacao.id AS REFERENCIA, ");
 		sql.append("tb_funcional.id AS idfuncional,  ");
 		sql.append("NULL                  AS RETIFICAR_RECIBO, ");
 		sql.append("NULL                  AS OCORRENCIA_ID, ");
@@ -69,13 +130,14 @@ public class AfastamentoESocialDAO {
 		sql.append("ON  srh.tb_funcional.idpessoal = srh.tb_pessoal.id ");
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
-		sql.append("WHERE  tb_funcional.id = :idFuncional  ");
-//		sql.append("AND ( tb_licenca.inicio > To_date('21/11/2021', 'dd/mm/yyyy') ");
-//		sql.append("AND ( tb_licenca.fim >= To_date('22/11/2021', 'dd/mm/yyyy') ");
-//		sql.append("OR tb_licenca.fim IS NULL ) ) ");
-		          
-		return sql.toString();
+		
+		if(Objects.nonNull(joinsAdicional)) {
+			sql.append(joinsAdicional);	
+		}
+		
+		return sql;
 	}
+
 	
 	@Transactional
 	public AfastamentoESocial salvar(AfastamentoESocial entidade) {
