@@ -193,7 +193,7 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 	}
 
 	public String getDataFinalAfastamentoFormat() {
-		if (Objects.nonNull(dtTermAfast)) {
+		if (dtTermAfast != null) {
 			dataFinalAfastamentoFormat = new SimpleDateFormat("dd/MM/yyyy").format(dtTermAfast);
 		}
 		return "(".concat(dataFinalAfastamentoFormat).concat(")");

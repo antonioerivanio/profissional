@@ -38,7 +38,7 @@ public class AfastamentoConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object object) {
-    	if(Objects.isNull(object))
+    	if(object == null)
     		return null;
     	
         return ((AfastamentoESocial) object).getId().toString();

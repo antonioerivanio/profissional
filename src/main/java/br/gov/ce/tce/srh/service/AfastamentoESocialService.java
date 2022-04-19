@@ -1,11 +1,7 @@
 package br.gov.ce.tce.srh.service;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

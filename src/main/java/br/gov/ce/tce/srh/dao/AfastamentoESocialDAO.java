@@ -16,6 +16,8 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mchange.lang.StringUtils;
+
 import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.enums.TipoLicenca;
@@ -89,13 +91,13 @@ public class AfastamentoESocialDAO {
 	public String getSQLEventoS2230(boolean possuiCargo, StringBuffer sqlColunasEJoinsAdicional, StringBuffer whereSqlAdicional) {
 		StringBuilder sql =new StringBuilder();
 		
-		if(Objects.nonNull(sqlColunasEJoinsAdicional)) {
+		if(sqlColunasEJoinsAdicional != null) {
 			sql. append(sqlColunasEJoinsAdicional);
 		}
 		
 		sql.append("WHERE  ");
 		
-		if(Objects.nonNull( whereSqlAdicional)) {
+		if(whereSqlAdicional != null) {
 			sql.append(whereSqlAdicional);
 		}
 		
@@ -131,7 +133,7 @@ public class AfastamentoESocialDAO {
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
 		
-		if(Objects.nonNull(joinsAdicional)) {
+		if(joinsAdicional != null) {
 			sql.append(joinsAdicional);	
 		}
 		
