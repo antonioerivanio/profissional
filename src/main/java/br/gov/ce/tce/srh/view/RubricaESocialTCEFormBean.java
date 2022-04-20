@@ -18,10 +18,10 @@ import br.gov.ce.tce.srh.domain.Rubrica;
 import br.gov.ce.tce.srh.domain.RubricaESocial;
 import br.gov.ce.tce.srh.domain.RubricaESocialTCE;
 import br.gov.ce.tce.srh.domain.RubricaESocialTabela;
+import br.gov.ce.tce.srh.enums.RubricaContribuicaoRPPS;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaCPTipo;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaFGTS;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaIRRFTipo;
-import br.gov.ce.tce.srh.enums.RubricaIncidenciaSIND;
 import br.gov.ce.tce.srh.enums.TipoRubrica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.RubricaESocialTCEService;
@@ -117,8 +117,8 @@ public class RubricaESocialTCEFormBean implements Serializable {
 		return Arrays.asList(RubricaIncidenciaFGTS.values());
 	}
 	
-	public List<RubricaIncidenciaFGTS> getComboCodigoIncCprp() {
-		return Arrays.asList(RubricaIncidenciaFGTS.values());
+	public List<RubricaContribuicaoRPPS> getComboCodigoIncCprp() {
+		return Arrays.asList(RubricaContribuicaoRPPS.values());
 	}
 	
 //	public List<RubricaIncidenciaSIND> getComboCodigoSindicato() {

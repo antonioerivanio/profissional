@@ -10,14 +10,14 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import br.gov.ce.tce.srh.domain.Admissao;
+import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
-public class AdmissaoEsocialDAO {
+public class RemuneracaoTrabalhadorEsocialDAO {
 
-	static Logger logger = Logger.getLogger(AdmissaoEsocialDAO.class);
+	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorEsocialDAO.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -27,11 +27,11 @@ public class AdmissaoEsocialDAO {
 	}
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from Admissao e ");
+		Query query = entityManager.createQuery("Select max(e.id) from RemuneracaoTrabalhador e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
-	public Admissao salvar(Admissao entidade) {
+	public RemuneracaoTrabalhador salvar(RemuneracaoTrabalhador entidade) {
 
 		if (entidade.getId() == null || entidade.getId().equals(0l)) {
 			entidade.setId(getMaxId());
@@ -40,20 +40,20 @@ public class AdmissaoEsocialDAO {
 		return entityManager.merge(entidade);
 	}
 
-	public void excluir(Admissao entidade) {
+	public void excluir(RemuneracaoTrabalhador entidade) {
 		entidade = entityManager.merge(entidade);
 		entityManager.remove(entidade);
 	}
 
-	public Admissao getById(Long id) {
-		return entityManager.find(Admissao.class, id);
+	public RemuneracaoTrabalhador getById(Long id) {
+		return entityManager.find(RemuneracaoTrabalhador.class, id);
 	}
 	
 	public int count(String nome, String cpf) {
 		
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(a) FROM Admissao a inner join a.funcional f WHERE 1=1 ");
+		sql.append(" Select count(a) FROM RemuneracaoTrabalhador a inner join a.funcional f WHERE 1=1 ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -76,11 +76,11 @@ public class AdmissaoEsocialDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Admissao> search(String nome, String cpf, Integer first, Integer rows) {
+	public List<RemuneracaoTrabalhador> search(String nome, String cpf, Integer first, Integer rows) {
 
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT e FROM Admissao e inner join fetch e.funcional f WHERE 1=1 ");
+		sql.append("  SELECT e FROM RemuneracaoTrabalhador e inner join fetch e.funcional f WHERE 1=1 ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -108,18 +108,18 @@ public class AdmissaoEsocialDAO {
 		return query.getResultList();
 	}
 
-	public Admissao getEventoS2200ByServidor(Funcional servidorFuncional, boolean possuiCargo) {
+	public RemuneracaoTrabalhador getEventoS1200ByServidor(Funcional servidorFuncional) {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS2200(possuiCargo), Admissao.class);
+			Query query = entityManager.createNativeQuery(getSQLEventoS1200(), RemuneracaoTrabalhador.class);
 			query.setParameter("idFuncional",servidorFuncional.getId() );
-			return (Admissao) query.getSingleResult();
+			return (RemuneracaoTrabalhador) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 
 	}	
 	
-	public String getSQLEventoS2200(boolean possuiCargo) {
+	public String getSQLEventoS1200() {
 		StringBuffer sql = new StringBuffer();
 
 		sql.append(" SELECT ");
@@ -247,14 +247,10 @@ public class AdmissaoEsocialDAO {
 		sql.append(" INNER JOIN srh.esocial_pais PAIS_NACIONALIDADE ON p.paisnacionalidade = pais_nacionalidade.id ");
 		sql.append(" INNER JOIN srh.esocial_tipologradouro tl ON p.tipologradouro = tl.id ");
 		sql.append(" INNER JOIN srh.tb_municipio m ON p.municipioendereco = m.id ");
-		//sql.append(" LEFT JOIN srh.tb_representacaofuncional rf ON rf.idfuncional = f.id ");
-		sql.append(" LEFT JOIN srh.tb_representacaofuncional rf ON rf.id in  (select id from srh.tb_representacaofuncional where idfuncional = :idFuncional and fim IS NULL) ");
+		sql.append(" LEFT JOIN srh.tb_representacaofuncional rf ON rf.idfuncional = f.id ");
 		sql.append(" LEFT JOIN srh.tb_representacaocargo rc ON rf.idrepresentacaocargo = rc.id ");
 		sql.append(" LEFT JOIN srh.tb_funcionaldeficiencia fd ON fd.idfuncional = f.id	 ");		
 		sql.append(" WHERE f.id = :idFuncional ");
-		if(possuiCargo) {
-			sql.append(" and (rf.tiponomeacao = 1 AND rf.fim IS NULL) ");
-		}
 	    sql.append(" ) ");
 	    
 	    return sql.toString();

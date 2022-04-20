@@ -304,13 +304,13 @@
 							id="codIncCprp"
 							value="#{rubricaESocialTCEFormBean.entidade.codigoIncCprp}"
 							required="true"
-							requiredMessage="O código de incidência FGTS é obrigatório.">
+							requiredMessage="O código de incidência do RPPS é obrigatório.">
 							<f:selectItems 
 								id="comboCodIncCprp"
 								value="#{rubricaESocialTCEFormBean.comboCodigoIncCprp}" 
 								var="item"
 								itemLabel="#{item.codigo} - #{item.descricao}" 
-								itemValue="#{item}">								
+								itemValue="#{item.codigo}">								
 							</f:selectItems>							
 						</rich:select>
 					</div>

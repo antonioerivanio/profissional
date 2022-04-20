@@ -10,10 +10,12 @@ import java.math.RoundingMode;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -811,6 +813,21 @@ public class SRHUtils {
 	
 	public static boolean anoExercicioValido(Integer ano) {		
 		return ano > 1900;
+	}
+	
+	public static List<Integer> popularComboAno(int quantidade) {
+		List<Integer> comboAno = new ArrayList<Integer>();
+		Calendar c = Calendar.getInstance();
+		Integer ano = c.get(Calendar.YEAR);
+		for (int i = 0; i < quantidade; i++) {
+			if (comboAno.size() > 0) {
+				ano--;
+				comboAno.add(ano);
+			} else {
+				comboAno.add(ano);
+			}
+		}
+		return comboAno;
 	}
 
 }

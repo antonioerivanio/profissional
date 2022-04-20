@@ -43,9 +43,9 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 			throw new SRHRuntimeException("CNPJ já cadastrado. Operação cancelada.");
 		
 		// verificando razão social
-		entidadeJaExiste = dao.getByrazaoSocial(entidade.getRazaoSocial());
+	/*	entidadeJaExiste = dao.getByrazaoSocial(entidade.getRazaoSocial());
 		if (entidadeJaExiste != null && !entidade.getId().equals(entidadeJaExiste.getId()))
-			throw new SRHRuntimeException("Razão Social já cadastrada. Operação cancelada.");
+			throw new SRHRuntimeException("Razão Social já cadastrada. Operação cancelada.");*/
 		
 		// verificando nome de fantasia
 		entidadeJaExiste = dao.getBynomeFantasia(entidade.getNomeFantasia());
