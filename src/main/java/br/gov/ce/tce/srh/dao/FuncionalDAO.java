@@ -31,6 +31,7 @@ public class FuncionalDAO {
 	
 	@Autowired
 	private PessoalService pessoalService;
+
 	
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
@@ -286,7 +287,7 @@ public class FuncionalDAO {
 	
 	
 	public List<Funcional> findByNome(String nome) {
-		TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.setor) "
+		TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.setor, f.ocupacao, f.vinculo) "
 																+ "FROM Funcional f "
 																+ "WHERE upper( f.nomePesquisa ) like :nome "
 																+ "AND f.saida IS NULL "
@@ -347,6 +348,79 @@ public class FuncionalDAO {
 			return ((BigDecimal) query.getSingleResult()).intValue();
 		} catch (Exception e) {
 			return 0;
+		}
+	}
+
+	public List<Funcional> findServidoresEvento2200() {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.saida IS NULL "
+					+ "AND f.status = 1 "
+					+ "AND f.ocupacao.id not in (14,15) "
+					+ "AND f.id  NOT IN (SELECT a.funcional.id FROM Admissao a) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	public List<Funcional> findServidoresEvento2230() {
+		try {	  
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.saida IS NULL "
+					+ "AND f.status = 1 "
+					+ "AND f.ocupacao.id not in (14,15) "
+					//+ "AND f.id  NOT IN (SELECT a.funcional.id FROM AfastamentoESocial a) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public List<Funcional> findBeneficiariosEvento2400() {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.status = 5"				 
+					+ "AND f.id  IN (SELECT a.funcional.id FROM Aposentadoria a) "
+					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public List<Funcional> findEstagiariosEventos2300() {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.saida IS NULL "
+					+ "AND f.status = 2 "
+					+ "AND f.ocupacao.id in (14,15) "
+					+ "AND f.id  NOT IN (SELECT e.funcional.id FROM EstagiarioESocial e) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public List<Funcional> findBeneficiariosEvento2410() {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.status = 5"				 
+					+ "AND f.id  IN (SELECT b.funcional.id FROM Beneficiario b) "
+					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficio b) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
 		}
 	}
 

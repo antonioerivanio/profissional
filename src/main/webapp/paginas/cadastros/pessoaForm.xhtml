@@ -552,6 +552,16 @@
 				</rich:tab>
 				
 				<rich:tab header="Contato">
+				<div class="input-box box-20">
+						<label for="">Celular</label>
+						<div class="conteiner">
+							<h:inputText id="celular"
+										 maxlength="15"
+										 styleClass="maskTelefone" 
+										 value="#{pessoaBean.entidade.celular}" 
+										 disabled="#{not pessoaBean.podeAlterar()}"/>
+						</div>
+					</div>
 				
 					<div class="input-box box-20">
 						<label for="">Telefone</label>

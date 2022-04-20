@@ -51,6 +51,7 @@ function aplicarMascaras(jQuery) {
 	jQuery(".maskData").mask("99/99/9999",{placeholder:" "});  // DATA
 	jQuery(".maskVigencia").mask("99/9999",{placeholder:" "});  // VIGÊNCIA ESOCIAL
 	jQuery(".maskCpf").mask("999.999.999-99",{placeholder:" "});  // CPF
+	jQuery(".maskCnpj").mask("99.999.999/9999-99",{placeholder:" "});  // CNPJ	
 	jQuery(".maskPasep").mask("999.99999.99/9",{placeholder:" "});  // PASEP
 	jQuery(".maskAgencia").mask("9999-9",{placeholder:" "});  // AGENCIA
 	jQuery(".maskConta").mask("9999999-9",{placeholder:" "});  // CONTA

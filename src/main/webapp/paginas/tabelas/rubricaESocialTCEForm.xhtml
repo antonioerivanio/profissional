@@ -211,6 +211,7 @@
 					</fieldset>
 				</div>
 				
+			  	
 				<div class="select-box box-50">
 				
 					<fieldset class="conteiner">
@@ -261,8 +262,17 @@
 					</fieldset>
 				</div>	
 				
+				<div class="radios-group box-10">
+					<label for="">Incide Teto* <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<div class="radio-box">
+							<h:selectBooleanCheckbox value="#{rubricaESocialTCEFormBean.entidade.incideTeto}" id="incideTeto"/>
+						</div>
+					</div>
+				</div>
+				
 				<div class="select-box box-25">
-					<label for="">Código de incidência tributária<br />para FGTS * <span class="identificador-esocial">e</span></label>
+					<label for="">Código de incidência tributária para FGTS * <span class="identificador-esocial">e</span></label>
 					<div class="conteiner">
 						<rich:select 
 							enableManualInput="true"
@@ -279,6 +289,28 @@
 								var="item"
 								itemLabel="#{item.codigo} - #{item.descricao}" 
 								itemValue="#{item}">								
+							</f:selectItems>							
+						</rich:select>
+					</div>
+				</div>
+				<div class="select-box box-40">
+					<label for="">Código de incidência da rubrica para as contribuições do RPPS* <span class="identificador-esocial">e</span></label>
+					<div class="conteiner">
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="400"
+							id="codIncCprp"
+							value="#{rubricaESocialTCEFormBean.entidade.codigoIncCprp}"
+							required="true"
+							requiredMessage="O código de incidência do RPPS é obrigatório.">
+							<f:selectItems 
+								id="comboCodIncCprp"
+								value="#{rubricaESocialTCEFormBean.comboCodigoIncCprp}" 
+								var="item"
+								itemLabel="#{item.codigo} - #{item.descricao}" 
+								itemValue="#{item.codigo}">								
 							</f:selectItems>							
 						</rich:select>
 					</div>

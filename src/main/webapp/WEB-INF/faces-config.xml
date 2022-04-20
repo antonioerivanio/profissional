@@ -27,6 +27,10 @@
 		<converter-class>br.gov.ce.tce.srh.converter.CPFConverter</converter-class>
 	</converter>
 	<converter>
+		<converter-id>cnpjConverter</converter-id>
+		<converter-class>br.gov.ce.tce.srh.converter.CNPJConverter</converter-class>
+	</converter>
+	<converter>
 		<converter-id>dateConverter</converter-id>
 		<converter-class>br.gov.ce.tce.srh.converter.DateConverter</converter-class>
 	</converter>
@@ -429,6 +433,25 @@
 			<to-view-id>/paginas/tabelas/escolaridadeForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	
+	<!-- PessoaJuridica -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/pessoaJuridicaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/pessoaJuridicaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/pessoaJuridicaForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	
+	
+	
 	<!-- Especialidade Cargo -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/especialidadeCargoList.xhtml</from-view-id>
@@ -1012,5 +1035,168 @@
 			<to-view-id>/paginas/relatorios/relatorioDependente.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- Vinculo RGPS -->
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/vinculoRGPSList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/vinculoRGPSList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/funcional/vinculoRGPSForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/vinculoRGPSForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/vinculoRGPSList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Admissao eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/admissaoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/admissaoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/admissaoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/admissaoForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/admissaoList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+
+	<!-- Beneficiario eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/beneficiarioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/beneficiarioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/beneficiarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/beneficiarioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/beneficiarioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Estagiario eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estagiarioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estagiarioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/estagiarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estagiarioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estagiarioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+		
+	<!-- Estatutário eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estatutarioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estatutarioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/estatutarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/estatutarioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/estatutarioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Afastamento eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/afastamentoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/afastamentoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/afastamentoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/afastamentoForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/afastamentoList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Beneficio eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/beneficioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/beneficioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/beneficioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/beneficioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/beneficioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Remuneracao Trabalhador eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoTrabalhadorList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoTrabalhadorList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoTrabalhadorForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoTrabalhadorForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoTrabalhadorList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 
 </faces-config>

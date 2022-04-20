@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Cadastro de Estagiario ESocial</h2>
+
+		</div>
+
+         <h:form id="form" styleClass="formularios">
+
+			<br/>
+
+            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<fieldset>		
+			<div class="select-box box-46">
+				<label for="">Estagiário: *</label>
+				<div class="conteiner">				
+					<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="500"
+							id="tipo"
+							converter="entityConverter" 
+							rendered="#{!estagiarioFormBean.emEdicao}"
+							value="#{estagiarioFormBean.estagiarioFuncional}">							
+							<f:selectItems 
+								id="comboServidor"
+								value="#{estagiarioFormBean.servidorEnvioList}"
+					  			var="servidor"
+					  			itemValue="#{servidor}"
+					  			itemLabel="#{servidor.nome}"/>
+						</rich:select>
+				</div>
+				<ui:fragment  rendered="#{estagiarioFormBean.emEdicao}">
+					<div class="input-box box-60">						
+							<div class="conteiner">
+								<h:inputText id="nomeEdicao" 
+											 maxlength="46"
+											 size="46"
+											 disabled="true"
+											 rendered="#{estagiarioFormBean.emEdicao}"
+											 value="#{estagiarioFormBean.estagiarioFuncional.nome}" />
+							</div>
+					</div>
+				</ui:fragment>			
+				</div>
+				
+			
+			<h:commandButton action="#{estagiarioFormBean.consultar}" rendered="#{!estagiarioFormBean.emEdicao}" value="Consultar" styleClass="bt-padrao fr mg-right-10" />
+			</fieldset>
+			
+			
+			<fieldset>
+
+				<legend>Dados Evento S-2300</legend>
+
+				<br/>
+
+            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+				<fieldset>
+					<legend>ideEmpregador:</legend>
+						<div class="input-box box-10">
+							<label for="">tpInsc</label>
+							<div class="conteiner">
+								<h:inputText id="tpInsc" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.tpInsc}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+							<label for="">nrInsc</label>
+							<div class="conteiner">
+								<h:inputText id="nrInsc" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.nrInsc}" />
+							</div>
+						</div>
+
+						
+				</fieldset>
+				
+				<fieldset>
+					<legend>trabalhador:</legend>
+					
+						<div class="input-box box-10">
+							<label for="">cpfTrab</label>
+							<div class="conteiner">
+								<h:inputText id="cpfTrab" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.cpfTrab}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+							<label for="">nmTrab</label>
+							<div class="conteiner">
+								<h:inputText id="nmTrab" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.nmTrab}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+							<label for="">sexo</label>
+							<div class="conteiner">
+								<h:inputText id="sexo" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.sexo}" />
+							</div>
+						</div>
+
+						<div class="input-box box-10">
+							<label for="">racaCor</label>
+							<div class="conteiner">
+								<h:inputText id="racaCor" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.racaCor}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+							<label for="">estCiv</label>
+							<div class="conteiner">
+								<h:inputText id="estCiv" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.estCiv}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+							<label for="">grauInstr</label>
+							<div class="conteiner">
+								<h:inputText id="grauInstr" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.grauInstr}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+							<label for="">nmSoc</label>
+							<div class="conteiner">
+								<h:inputText id="nmSoc" 
+											 maxlength="15"
+											 disabled="true"
+											 value="#{estagiarioFormBean.entidade.nmSoc}" />
+							</div>
+						</div>
+						
+						
+						<div class="input-box box-10">
+						<label for="">dtNascto</label>
+							<div class="conteiner">
+							<h:inputText id="dtNascto" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.dtNascto}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">paisNascto</label>
+							<div class="conteiner">
+							<h:inputText id="paisNascto" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.paisNascto}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">paisNac</label>
+							<div class="conteiner">
+							<h:inputText id="paisNac" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.paisNac}" />
+							</div>
+						</div>
+						
+						
+						<div class="input-box box-10">
+						<label for="">tpLograd</label>
+							<div class="conteiner">
+							<h:inputText id="tpLograd" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.tpLograd}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">dscLograd</label>
+							<div class="conteiner">
+							<h:inputText id="dscLograd" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.dscLograd}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">nrLograd</label>
+							<div class="conteiner">
+							<h:inputText id="nrLograd" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.nrLograd}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">complemento</label>
+							<div class="conteiner">
+							<h:inputText id="complemento" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.complemento}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">bairro</label>
+							<div class="conteiner">
+							<h:inputText id="bairro" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.bairro}" />
+							</div>
+						</div>
+							
+						<div class="input-box box-10">
+						<label for="">cep</label>
+							<div class="conteiner">
+							<h:inputText id="cep" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.cep}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">codMunic</label>
+							<div class="conteiner">
+							<h:inputText id="codMunic" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.codMunic}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">uf</label>
+							<div class="conteiner">
+							<h:inputText id="uf" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.uf}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">defFisica</label>
+							<div class="conteiner">
+							<h:inputText id="defFisica" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.defFisica}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">defVisual</label>
+							<div class="conteiner">
+							<h:inputText id="defVisual" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.defVisual}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">defAuditiva</label>
+							<div class="conteiner">
+							<h:inputText id="defAuditiva" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.defAuditiva}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">defMental</label>
+							<div class="conteiner">
+							<h:inputText id="defMental" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.defMental}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">defIntelectual</label>
+							<div class="conteiner">
+							<h:inputText id="defIntelectual" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.defIntelectual}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">reabReadap</label>
+							<div class="conteiner">
+							<h:inputText id="reabReadap" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.reabReadap}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">fonePrinc</label>
+							<div class="conteiner">
+							<h:inputText id="fonePrinc" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.fonePrinc}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-10">
+						<label for="">emailPrinc</label>
+							<div class="conteiner">
+							<h:inputText id="emailPrinc" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.emailPrinc}" />
+							</div>
+						</div>
+						
+						
+				</fieldset>
+				
+				<FIELDSET>
+					<LEGEND>infoTSVInicio</LEGEND>
+					
+					<div class="input-box box-10">
+						<label for="">cadIni</label>
+							<div class="conteiner">
+							<h:inputText id="cadIni" 
+										 maxlength="15"
+										 disabled="true"
+										 value="#{estagiarioFormBean.entidade.cadIni}" />
+							</div>
+					</div>
+						
+					<div class="input-box box-10">
+					<label for="">matricula</label>
+						<div class="conteiner">
+						<h:inputText id="matricula" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.matricula}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">codCateg</label>
+						<div class="conteiner">
+						<h:inputText id="codCateg" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.codCateg}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">dtInicio</label>
+						<div class="conteiner">
+						<h:inputText id="dtInicio" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.dtInicio}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">nmCargo</label>
+						<div class="conteiner">
+						<h:inputText id="nmCargo" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.nmCargo}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">CBOCargo</label>
+						<div class="conteiner">
+						<h:inputText id="CBOCargo" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.CBOCargo}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">vrSalFx</label>
+						<div class="conteiner">
+						<h:inputText id="vrSalFx" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.vrSalFx}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">undSalFixo</label>
+						<div class="conteiner">
+						<h:inputText id="undSalFixo" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.undSalFixo}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">natEstagio</label>
+						<div class="conteiner">
+						<h:inputText id="natEstagio" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.natEstagio}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">nivEstagio</label>
+						<div class="conteiner">
+						<h:inputText id="nivEstagio" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.nivEstagio}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">dtPrevTerm</label>
+						<div class="conteiner">
+						<h:inputText id="dtPrevTerm" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.dtPrevTerm}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">cnpjInstEnsino</label>
+						<div class="conteiner">
+						<h:inputText id="cnpjInstEnsino" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.cnpjInstEnsino}" />
+						</div>
+					</div>
+					
+					<div class="input-box box-10">
+					<label for="">dtTerm</label>
+						<div class="conteiner">
+						<h:inputText id="dtTerm" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{estagiarioFormBean.entidade.dtTerm}" />
+						</div>
+					</div>
+					
+					
+				</FIELDSET>
+				
+								
+
+			</fieldset>
+			
+			
+			
+			<h:commandButton action="#{estagiarioFormBean.salvar}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			
+			<a href="/srh/paginas/tabelas/estagiarioList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+
+		</h:form>
+
+		<script>
+			if (document.getElementById('form:alterar') != null) {
+				if (document.getElementById('form:alterar').value == 'true') {
+					document.getElementById('form:PesquisarServidor').style.visibility='hidden';				
+				}	
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

@@ -50,6 +50,14 @@
 					window.opener.document.getElementById('form:idSetor').value = mySplit[9];
 				if (window.opener.document.getElementById('form:nomeSetor') != null)
 					window.opener.document.getElementById('form:nomeSetor').value = mySplit[10];
+				
+				// vinculo
+				if (window.opener.document.getElementById('form:tipoOcupacao') != null)
+					window.opener.document.getElementById('form:tipoOcupacao').value = mySplit[11];
+				if (window.opener.document.getElementById('form:tipoCargoFuncao') != null)
+					window.opener.document.getElementById('form:tipoCargoFuncao').value = mySplit[12];
+				if (window.opener.document.getElementById('form:vinculo') != null)
+					window.opener.document.getElementById('form:vinculo').value = mySplit[13];
 	
 				window.close();
 			}			
@@ -75,7 +83,7 @@
                         <label for="#{item.matricula}"></label>
                         <center>
                         	<input  type="radio" id="#{item.matricula}" name="seleciona" 
-                        			value="#{item.matricula},#{item.id},#{item.pessoal.id},#{item.pessoal.nomeCompleto},#{item.pessoal.nomeMae},#{item.pessoal.cpf},#{item.pessoal.rg},#{item.pessoal.emissorRg},#{item.pessoal.ufEmissorRg.id},#{item.setor.id},#{item.setor.nome}" 
+                        			value="#{item.matricula},#{item.id},#{item.pessoal.id},#{item.pessoal.nomeCompleto},#{item.pessoal.nomeMae},#{item.pessoal.cpf},#{item.pessoal.rg},#{item.pessoal.emissorRg},#{item.pessoal.ufEmissorRg.id},#{item.setor.id},#{item.setor.nome},#{item.ocupacao.tipoOcupacao.descricao},#{item.ocupacao.nomenclatura},#{item.vinculo.descricao}" 
                         			onfocus="retorno(this)" />
                         </center>
                     </h:column>

@@ -63,7 +63,10 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 	private ESocialEventoVigencia esocialVigencia = new ESocialEventoVigencia();
 		
 	@Column(name="FLINCIDETETO")
-	private Integer incideTeto;
+	private Boolean incideTeto;
+	
+	@Column(name="CODINCCPRP")
+	private String codigoIncCprp;
 	
 	public Long getId() {
 		return id;
@@ -171,12 +174,20 @@ public class RubricaESocialTCE extends BasicEntity<Long> implements Serializable
 		return this.rubrica.getCodigo() + "-" + this.tabela.getCodigo();
 	}
 
-	public Integer getIncideTeto() {
+	public Boolean getIncideTeto() {
 		return incideTeto;
 	}
 
-	public void setIncideTeto(Integer incideTeto) {
+	public void setIncideTeto(Boolean incideTeto) {
 		this.incideTeto = incideTeto;
+	}
+
+	public String getCodigoIncCprp() {
+		return codigoIncCprp;
+	}
+
+	public void setCodigoIncCprp(String codigoIncCprp) {
+		this.codigoIncCprp = codigoIncCprp;
 	}
 	
 	

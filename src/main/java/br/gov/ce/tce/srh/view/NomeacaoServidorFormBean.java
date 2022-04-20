@@ -19,6 +19,7 @@ import br.gov.ce.tce.srh.domain.Folha;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.OrientacaoCargo;
+import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.Situacao;
 import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
@@ -38,6 +39,7 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.NomeacaoFuncionalService;
 import br.gov.ce.tce.srh.service.OcupacaoService;
 import br.gov.ce.tce.srh.service.OrientacaoCargoService;
+import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.service.SituacaoService;
 import br.gov.ce.tce.srh.service.TipoMovimentoService;
@@ -100,6 +102,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 	
 	@Autowired
 	private EntidadeService entidadeService;
+	
+	@Autowired
+	private PessoaJuridicaService pessoaJuridicaService;
 
 
 	// entidades das telas
@@ -144,6 +149,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private List<Cbo> comboCBO4;
 	private List<LeiIncorporacao> comboLeiIncorporacao;
 	private List<Entidade> comboOrgaoOrigem;
+	private List<PessoaJuridica> instituicaoEnsinoList;
 
 
 	@PostConstruct
@@ -664,6 +670,21 @@ public class NomeacaoServidorFormBean implements Serializable {
 		if(!digitarMatricula){
 			entidade.setMatricula(new String());
 		}
+	}	
+	
+	public List<PessoaJuridica> getComboEmpresasCadastradas() {
+
+		try {
+
+			if ( this.instituicaoEnsinoList == null )
+				this.instituicaoEnsinoList = pessoaJuridicaService.findAll();
+
+		} catch (Exception e) {
+			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+
+		return this.instituicaoEnsinoList;
 	}	
 
 

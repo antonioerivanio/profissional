@@ -10,9 +10,12 @@ import java.math.RoundingMode;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +29,9 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 public class SRHUtils {
 	
-	public static final String FORMATO_DATA = "dd/MM/yyyy"; 
+	public static final String FORMATO_DATA = "dd/MM/yyyy";
+	
+	public static final String FORMATO_DATA_HORA = "dd/MM/yyyy HH:mm:ss";
 	
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	
@@ -303,6 +308,20 @@ public class SRHUtils {
 		 return new Date();
 	 }
 	 
+	 public static Date getDataHoraAtual() {	
+		 Date dataHoraAtual = new Date();
+		 String datahora = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(dataHoraAtual);
+		 SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
+					 
+		 try {
+			 Date dataFormatada = formato.parse(datahora); 
+			return dataFormatada;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}		 
+	 }
+	 
 	 public static int getAnoCorrente() {		 
 		GregorianCalendar hoje = new GregorianCalendar();		
 		hoje.setTime(new Date());
@@ -361,6 +380,76 @@ public class SRHUtils {
 		//comparar o digito verificador do cpf com o primeiro resto + o segundo resto.  
 		return nDigVerific.equals(nDigResult);  
 	} 
+	
+	
+	/** 
+	 * Metodo que valida CNPJ.
+	 * @return Boolean 
+	 */  
+	public static boolean isCNPJ(String CNPJ) {
+		
+		CNPJ = removerMascara(CNPJ);
+		
+		// considera-se erro CNPJ's formados por uma sequencia de numeros iguais, vazio ou nulo
+		if (CNPJ.equals("00000000000000") || CNPJ.equals("11111111111111") || CNPJ.equals("22222222222222")
+				|| CNPJ.equals("33333333333333") || CNPJ.equals("44444444444444") || CNPJ.equals("55555555555555")
+				|| CNPJ.equals("66666666666666") || CNPJ.equals("77777777777777") || CNPJ.equals("88888888888888")
+				|| CNPJ.equals("99999999999999") || (CNPJ.length() != 14) || CNPJ.isEmpty() || CNPJ == null)
+			return (false);
+
+		char dig13, dig14;
+		int sm, i, r, num, peso;
+
+		// "try" - protege o código para eventuais erros de conversao de tipo (int)
+		try {
+			// Calculo do 1o. Digito Verificador
+			sm = 0;
+			peso = 2;
+			for (i = 11; i >= 0; i--) {
+				// converte o i-ésimo caractere do CNPJ em um número:
+				// por exemplo, transforma o caractere '0' no inteiro 0
+				// (48 eh a posição de '0' na tabela ASCII)
+				num = (int) (CNPJ.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso + 1;
+				if (peso == 10)
+					peso = 2;
+			}
+
+			r = sm % 11;
+			if ((r == 0) || (r == 1))
+				dig13 = '0';
+			else
+				dig13 = (char) ((11 - r) + 48);
+
+			// Calculo do 2o. Digito Verificador
+			sm = 0;
+			peso = 2;
+			for (i = 12; i >= 0; i--) {
+				num = (int) (CNPJ.charAt(i) - 48);
+				sm = sm + (num * peso);
+				peso = peso + 1;
+				if (peso == 10)
+					peso = 2;
+			}
+
+			r = sm % 11;
+			if ((r == 0) || (r == 1))
+				dig14 = '0';
+			else
+				dig14 = (char) ((11 - r) + 48);
+
+			// Verifica se os dígitos calculados conferem com os dígitos informados.
+			if ((dig13 == CNPJ.charAt(12)) && (dig14 == CNPJ.charAt(13)))
+				return (true);
+			else
+				return (false);
+		} catch (InputMismatchException erro) {
+			return (false);
+		}
+	}
+	
+	
 	
 	/**
 	 * Método que verifica se o Dígito Verificador de uma Agência Bradesco é válida, 
@@ -456,10 +545,25 @@ public class SRHUtils {
 	public static BigDecimal valorMonetarioStringParaBigDecimal(String valorMonetarioString) {
 		String r = "";
 		for (int i = 0; i < valorMonetarioString.length(); i++) {
-			if (valorMonetarioString.charAt(i) != ',' && valorMonetarioString.charAt(i) != '.')
+			if (valorMonetarioString.charAt(i) != ',' && valorMonetarioString.charAt(i) != '.'&& valorMonetarioString.charAt(i) != 'R'&& valorMonetarioString.charAt(i) != '$')
 				r += valorMonetarioString.charAt(i);
 		}
 		return new BigDecimal(new BigDecimal(r).doubleValue()/100).setScale(2, RoundingMode.HALF_EVEN);
+	}
+	
+	public static BigDecimal valorMonetarioStringParaBigDecimal2(String valorMonetarioString) {
+		String valor = "";
+		for (int i = 0; i < valorMonetarioString.length(); i++) {
+			if ( valorMonetarioString.charAt(i) != '.'&& valorMonetarioString.charAt(i) != 'R'&& valorMonetarioString.charAt(i) != '$')
+				valor += valorMonetarioString.charAt(i);
+		}
+		valor = valor.replace(",", ".");
+		 // Creating a Double Object 
+        Double d = new Double(valor); 
+
+        /// Assigning the bigdecimal value of ln to b 
+        BigDecimal b = BigDecimal.valueOf(d); 
+		return b;
 	}
 	
 	public static Boolean validarPisPasep(String pisPasep){
@@ -548,6 +652,12 @@ public class SRHUtils {
 	
 	public static String formatarCPF(String texto) throws ParseException {
 		MaskFormatter mf = new MaskFormatter("###.###.###-##");
+		mf.setValueContainsLiteralCharacters(false);
+		return mf.valueToString(texto);  		
+	}
+	
+	public static String formatarCNPJ(String texto) throws ParseException {
+		MaskFormatter mf = new MaskFormatter("##.###.###/####-##");
 		mf.setValueContainsLiteralCharacters(false);
 		return mf.valueToString(texto);  		
 	}
@@ -703,6 +813,21 @@ public class SRHUtils {
 	
 	public static boolean anoExercicioValido(Integer ano) {		
 		return ano > 1900;
+	}
+	
+	public static List<Integer> popularComboAno(int quantidade) {
+		List<Integer> comboAno = new ArrayList<Integer>();
+		Calendar c = Calendar.getInstance();
+		Integer ano = c.get(Calendar.YEAR);
+		for (int i = 0; i < quantidade; i++) {
+			if (comboAno.size() > 0) {
+				ano--;
+				comboAno.add(ano);
+			} else {
+				comboAno.add(ano);
+			}
+		}
+		return comboAno;
 	}
 
 }
