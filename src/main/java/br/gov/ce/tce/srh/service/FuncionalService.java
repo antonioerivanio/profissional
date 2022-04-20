@@ -124,5 +124,25 @@ public class FuncionalService {
 	public int countResponsavelSetor(long idFuncional, Long idSetor) {
 		return dao.countResponsavelSetor(idFuncional, idSetor);
 	}
+
+	public List<Funcional> findServidoresEvento2200() {		
+		return dao.findServidoresEvento2200();
+	}
+	
+	public List<Funcional> findServidoresEvento2230() {		
+		return dao.findServidoresEvento2230();
+	}
+
+	public List<Funcional> findBeneficiariosEvento2400() {
+		return dao.findBeneficiariosEvento2400();
+	}
+	
+	public List<Funcional> findEstagiarioservidoresEvento2300() {
+		return dao.findEstagiariosEventos2300();
+	}
+
+	public List<Funcional> findBeneficiariosEvento2410() {
+		return dao.findBeneficiariosEvento2410();
+	}
 	
 }

@@ -18,10 +18,10 @@ import br.gov.ce.tce.srh.domain.Rubrica;
 import br.gov.ce.tce.srh.domain.RubricaESocial;
 import br.gov.ce.tce.srh.domain.RubricaESocialTCE;
 import br.gov.ce.tce.srh.domain.RubricaESocialTabela;
+import br.gov.ce.tce.srh.enums.RubricaContribuicaoRPPS;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaCPTipo;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaFGTS;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaIRRFTipo;
-import br.gov.ce.tce.srh.enums.RubricaIncidenciaSIND;
 import br.gov.ce.tce.srh.enums.TipoRubrica;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.RubricaESocialTCEService;
@@ -70,12 +70,16 @@ public class RubricaESocialTCEFormBean implements Serializable {
 		this.rubricasESocial = rubricaESocialDAO.findAll();
 		this.codigoPrevidTipo = entidade.getCodigoPrevid() != null ? entidade.getCodigoPrevid().getTipo() : null;
 		this.codigoIrrfTipo = entidade.getCodigoIrrf() != null ? entidade.getCodigoIrrf().getTipo() : null;
+		
+		if(entidade.getCodigoFgts() == null) {
+			entidade.setCodigoFgts(RubricaIncidenciaFGTS.RIFGTS00);
+		}
     }
 
 	public void salvar() {
 
 		try {
-
+			entidade.setRubrica(rubricaService.findById(entidade.getRubrica().getId()));
 			service.salvar(entidade);
 			limpar();
 
@@ -86,6 +90,7 @@ public class RubricaESocialTCEFormBean implements Serializable {
 			FacesUtil.addErroMessage(e.getMessage());
 			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
@@ -110,6 +115,10 @@ public class RubricaESocialTCEFormBean implements Serializable {
 	
 	public List<RubricaIncidenciaFGTS> getComboCodigoFgts() {
 		return Arrays.asList(RubricaIncidenciaFGTS.values());
+	}
+	
+	public List<RubricaContribuicaoRPPS> getComboCodigoIncCprp() {
+		return Arrays.asList(RubricaContribuicaoRPPS.values());
 	}
 	
 //	public List<RubricaIncidenciaSIND> getComboCodigoSindicato() {

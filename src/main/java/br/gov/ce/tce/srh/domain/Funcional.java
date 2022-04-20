@@ -209,6 +209,11 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	@Column(name="IDSETORDESIGNADO")
 	private Long idSetorDesignado;
 	
+	@NotAudited
+	@ManyToOne
+	@JoinColumn(name = "IDPESSOAJURIDICA")
+	private PessoaJuridica pessoaJuridica;
+	
 	@Transient
 	private int anos;
 	
@@ -261,11 +266,12 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 		this.posse = dataPosse;
 	}
 	
-	public Funcional(Long id, String matricula, Pessoal pessoal) {
+	public Funcional(Long id, String matricula, Pessoal pessoal, String nome) {
 		//Para Dynamic Instatiation
 		this.id = id;
 		this.matricula = matricula;
 		this.pessoal = pessoal;
+		this.nome = nome;
 	}
 	
 	public Funcional(Long id, String matricula, Pessoal pessoal, Setor setor) {
@@ -274,6 +280,16 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 		this.matricula = matricula;
 		this.pessoal = pessoal;
 		this.setor = setor;
+	}
+	
+	public Funcional(Long id, String matricula, Pessoal pessoal, Setor setor, Ocupacao ocupacao, Vinculo vinculo) {
+		//Para Dynamic Instatiation
+		this.id = id;
+		this.matricula = matricula;
+		this.pessoal = pessoal;
+		this.setor = setor;
+		this.ocupacao = ocupacao;
+		this.vinculo = vinculo;
 	}
 	
 	public Pessoal getPessoal() {return pessoal;}
@@ -454,5 +470,15 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 				|| (this.tipoMovimentoSaida != null && tipoMovimentoSaida.getId() == TipoMovimento.APOSENTADORIA)
 				|| (this.aposentadoria != null && this.aposentadoria.getId() > 0 ) ; 
 	}
+
+	public PessoaJuridica getPessoaJuridica() {
+		return pessoaJuridica;
+	}
+
+	public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
+		this.pessoaJuridica = pessoaJuridica;
+	}
+	
+	
 	
 }

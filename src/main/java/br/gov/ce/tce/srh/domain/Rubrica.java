@@ -61,7 +61,7 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 	private Boolean ativa;
 	
 	@Column(name="FLINCIDETETO")
-	private Integer incideTeto;
+	private Boolean incideTeto;
 
 	public Long getId() {
 		return id;
@@ -146,7 +146,7 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 	public void setVerificaTeto(Boolean verificaTeto) {
 		this.verificaTeto = verificaTeto;
 	}
-
+		
 	public Boolean getAgrupaDesconto() {
 		return agrupaDesconto;
 	}
@@ -179,11 +179,7 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 		this.auxilio = auxilio;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public Boolean isAtiva() {
+	public Boolean getAtiva() {
 		return ativa;
 	}
 
@@ -191,12 +187,19 @@ public class Rubrica extends BasicEntity<Long> implements Serializable {
 		this.ativa = ativa;
 	}
 
-	public Integer getIncideTeto() {
+	public Boolean getIncideTeto() {
 		return incideTeto;
 	}
 
-	public void setIncideTeto(Integer incideTeto) {
+	public void setIncideTeto(Boolean incideTeto) {
 		this.incideTeto = incideTeto;
 	}		
 	
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Boolean isAtiva() {
+		return ativa;
+	}
 }

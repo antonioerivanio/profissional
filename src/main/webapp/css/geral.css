@@ -660,6 +660,7 @@ img.ambiente {
 	border-radius: 4px;
 }
 
+
 .formularios .radios-group .radio-box, .formularios .checkbox-group .checkbox-box
 	{
 	overflow: auto;
@@ -807,6 +808,10 @@ img.ambiente {
 
 .tabela-dados th.cel-10, .tabela-dados td.cel-10 {
 	width: 10%;
+}
+
+.tabela-dados th.cel-5, .tabela-dados td.cel-5 {
+	width: 5%;
 }
 
 .tabela-dados td.ico-cell, .tabela-dados th.ico-cell {

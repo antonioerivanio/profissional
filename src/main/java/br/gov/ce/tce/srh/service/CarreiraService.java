@@ -65,7 +65,6 @@ public class CarreiraService {
 	}
 
 	private void validaCamposObrigatorios(Carreira entidade) {
-		// TODO Auto-generated method stub
 		if (entidade.getCodigo().toUpperCase().indexOf("ESOCIAL") == 0) {
 			throw new SRHRuntimeException("O código não pode ter eSocial nos sete primeiros caracteres.");
 		}

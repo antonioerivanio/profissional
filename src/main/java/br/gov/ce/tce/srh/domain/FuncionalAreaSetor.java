@@ -1,5 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
+import java.util.Objects;
+
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,6 +39,6 @@ public class FuncionalAreaSetor {
 	public void setFuncional(Funcional funcional) {this.funcional = funcional;}
 
 	public AreaSetor getAreaSetor() {return areaSetor;}
-	public void setAreaSetor(AreaSetor areaSetor) {this.areaSetor = areaSetor;}
+	public void setAreaSetor(AreaSetor areaSetor) {this.areaSetor = areaSetor;}	
 
 }

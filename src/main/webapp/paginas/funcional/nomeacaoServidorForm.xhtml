@@ -451,6 +451,26 @@
 					</h:inputText>
 				</div>
 			</div>
+			<div class="select-box box-50">
+				<label for="">Instituição de Ensino</label>
+				<div class="conteiner">
+					<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="500"
+							id="instituicaoEncino"
+							converter="entityConverter" 							
+							value="#{nomeacaoServidorFormBean.entidade.pessoaJuridica}">							
+							<f:selectItems 
+								id="comboServidor"
+								value="#{nomeacaoServidorFormBean.comboEmpresasCadastradas}"
+					  			var="instituicao"
+					  			itemValue="#{instituicao}"
+					  			itemLabel="#{instituicao.razaoSocial}"/>
+						</rich:select>
+				</div>
+			</div>
 			
 			<div class="radios-group box-10" style="clear: both;">
 				<label>Cálculo PCC?</label>
