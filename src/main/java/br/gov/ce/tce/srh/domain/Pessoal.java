@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
@@ -281,6 +283,7 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Column(name="FLREADAPTADO")
 	private String isReadaptado;
+
 	
 	public Pessoal(){
 		//seguindo padrao Java Beans...

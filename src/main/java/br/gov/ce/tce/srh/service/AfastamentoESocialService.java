@@ -70,6 +70,18 @@ public class AfastamentoESocialService {
 		return afastamentoESocialDAO.getEvento2230ByServidor(servidorFuncional, possuiCargo);
 	}
 
+	/**
+	 * @author erivanio.cruz
+	 * @since 12/04/2022
+	 * @param servidorFuncional
+	 * @param possuiCargo
+	 * @return Set<AfastamentoESocial>
+	 */
+	public List<AfastamentoESocial> getEvento2230ByServidorList(Funcional servidorFuncional, boolean possuiCargo) {
+			List<AfastamentoESocial> afastamentoESocialList = afastamentoESocialDAO.getEvento2230ByServidorList(servidorFuncional, possuiCargo);
+			
+			return afastamentoESocialList;
+	}
 }
 
 

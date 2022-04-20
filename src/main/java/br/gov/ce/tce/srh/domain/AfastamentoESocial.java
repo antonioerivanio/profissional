@@ -1,7 +1,9 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,61 +14,65 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_AFASTAMENTO", schema=DatabaseMetadata.SCHEMA_SRH)
-public class AfastamentoESocial extends BasicEntity<Long> implements Serializable{
+@Table(name = "ESOCIAL_AFASTAMENTO", schema = DatabaseMetadata.SCHEMA_SRH)
+public class AfastamentoESocial extends BasicEntity<Long> implements Serializable {
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "IDFUNCIONAL")
 	private Funcional funcional;
-	
+
 	@Column(name = "REFERENCIA")
 	private String referencia;
-	
+
 	@Column(name = "RETIFICAR_RECIBO")
 	private String retificarRecibo;
 
 	@Column(name = "OCORRENCIA_ID")
 	private Long ocorrenciaId;
-	
+
 	@Column(name = "OCORRENCIA_COD_ESTADO")
 	private Long ocorrenciaCodEstado;
-	
+
 	@Column(name = "CPF_TRAB")
 	private String cpfTrab;
-	
+
 	@Column(name = "MATRICULA")
 	private String matricula;
-	
+
 //	@Column(name = "COD_CATEG")
 //	private Long codCateg;
-	
+
 //	@Column(name = "TP_INSC")
 //	private String tpInsc;
-	
+
 //	@Column(name = "NR_INSC")
 //	private String nrInsc;
-	
+
 	@Column(name = "DT_INI_AFAST")
 	@Temporal(TemporalType.DATE)
 	private Date dtIniAfast;
-	
+
 	@Column(name = "COD_MOT_AFAST")
 	private String codMotAfast;
-	
+
 	@Column(name = "OBSERVACAO")
 	private String observacao;
-	
+
 	@Column(name = "DT_TERM_AFAST")
 	@Temporal(TemporalType.DATE)
-	private Date dtTermAfast; 
-	
-	public Long getId() {
+	private Date dtTermAfast;
+
+	@Transient
+	private String dataFinalAfastamentoFormat;
+
+	public Long getId() {	
 		return id;
 	}
 
@@ -89,7 +95,7 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
 	}
-	
+
 	public String getRetificarRecibo() {
 		return retificarRecibo;
 	}
@@ -184,6 +190,12 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 
 	public void setDtTermAfast(Date dtTermAfast) {
 		this.dtTermAfast = dtTermAfast;
-	} 
+	}
 
+	public String getDataFinalAfastamentoFormat() {
+		if (dtTermAfast != null) {
+			dataFinalAfastamentoFormat = new SimpleDateFormat("dd/MM/yyyy").format(dtTermAfast);
+		}
+		return "(".concat(dataFinalAfastamentoFormat).concat(")");
+	}
 }
