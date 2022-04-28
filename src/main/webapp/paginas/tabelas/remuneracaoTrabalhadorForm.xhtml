@@ -25,30 +25,22 @@
 
 			<fieldset>	
 			
-				<div class="select-box box-30">
-					<label for="">Ano:* </label>
+				<div class="input-box box-10">
+					<label for="">Ano Referência: *</label>
 					<div class="conteiner">
-						<rich:select 
-							enableManualInput="true"
-							defaultLabel="Selecione..."	
-							clientFilterFunction="customFilter"
-							listWidth="350"
-							id="tipo"
-							value="#{remuneracaoTrabalhadorFormBean.codigoTipoVinculoRGPS}">							
-							<f:selectItems 
-								id="comboAno"
-								value="#{remuneracaoTrabalhadorFormBean.comboAno}" 
-								var="ano"
-								itemLabel="#{ano}" 
-								itemValue="#{ano}" />
-						</rich:select>
+						<h:inputText id="anoReferencia" 
+									 name="anoReferencia"
+									 value="#{remuneracaoTrabalhadorFormBean.anoReferencia}" 
+									 maxlength="4"
+									 onkeyup="SoNumeros(this)">
+						</h:inputText>
 					</div>
 				</div>
 			
 			<div class="select-box box-16">
-				<label for="mes">Mês:* </label>
+				<label for="mes">Mês: </label>
 				<div class="conteiner">
-					<h:selectOneMenu id="mesF" value="#{remuneracaoTrabalhadorFormBean.mes}">							  
+					<h:selectOneMenu id="mesF" value="#{remuneracaoTrabalhadorFormBean.mesReferencia}">							  
 						<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0"/>
 						<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01"/>
 						<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
@@ -61,10 +53,16 @@
 						<f:selectItem id="mes9F" itemLabel="Setembro" itemValue="09"/>
 						<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
 						<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11"/>
-						<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />																	
+						<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
+						<f:selectItem id="mes12F" itemLabel="Anual (13° salário)" itemValue="13" />	
+						<a4j:ajax event="change" 
+							  				 execute="@this"
+							  				 listener="#{remuneracaoTrabalhadorFormBean.carregaServidores}"
+							  				 render="tipo"/>																
 					</h:selectOneMenu>
 				</div>
 			</div>	
+				
 			<div class="select-box box-46">
 				<label for="">Servidor:</label>
 				<div class="conteiner">

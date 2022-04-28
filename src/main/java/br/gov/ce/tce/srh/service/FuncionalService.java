@@ -144,5 +144,9 @@ public class FuncionalService {
 	public List<Funcional> findBeneficiariosEvento2410() {
 		return dao.findBeneficiariosEvento2410();
 	}
+
+	public List<Funcional> findServidoresEvento1200(String anoReferencia, String mesReferencia) {
+		return dao.findServidoresEvento1200(anoReferencia, mesReferencia);
+	}
 	
 }

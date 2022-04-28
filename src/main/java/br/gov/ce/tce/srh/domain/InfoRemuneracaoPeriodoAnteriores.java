@@ -57,6 +57,9 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	
 	@Column(name = "IND_SIMPLES")
 	private Byte indSimples;
+	
+	@Column(name = "GRAU_EXP")
+	private Byte grauExp;
 
 	public Long getId() {
 		return id;
@@ -153,6 +156,15 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	public void setIndSimples(Byte indSimples) {
 		this.indSimples = indSimples;
 	}
+
+	public Byte getGrauExp() {
+		return grauExp;
+	}
+
+	public void setGrauExp(Byte grauExp) {
+		this.grauExp = grauExp;
+	}
+	
 	
 	
 }

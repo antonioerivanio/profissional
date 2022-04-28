@@ -424,4 +424,20 @@ public class FuncionalDAO {
 		}
 	}
 
+	public List<Funcional> findServidoresEvento1200(String anoReferencia, String mesReferencia) {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.ocupacao.id = 33 "				 					
+					+ "AND f.id  NOT IN (SELECT r.funcional.id FROM RemuneracaoTrabalhador r where r.referencia like :referencia) "
+					+ "ORDER BY f.nome", Funcional.class);
+			 
+			 
+			query.setParameter("referencia", "%" + anoReferencia+mesReferencia + "%");
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
 }
