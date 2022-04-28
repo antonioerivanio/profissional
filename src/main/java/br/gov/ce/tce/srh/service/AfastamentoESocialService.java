@@ -11,6 +11,7 @@ import br.gov.ce.tce.srh.dao.AfastamentoESocialDAO;
 import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
@@ -25,6 +26,9 @@ public class AfastamentoESocialService {
 	
 	@Autowired
 	private NotificacaoService notificacaoService;
+	
+	@Autowired
+	private LicencaService licencaService;
 	
 	public int count(String nome, String cpf) {
 		return afastamentoESocialDAO.count(nome, cpf);
@@ -66,21 +70,19 @@ public class AfastamentoESocialService {
 		return entidade;
 	}
 	
-	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional, boolean possuiCargo) {
-		return afastamentoESocialDAO.getEvento2230ByServidor(servidorFuncional, possuiCargo);
+	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional,Licenca licenca, boolean possuiCargo) {
+		return afastamentoESocialDAO.getEvento2230ByServidor(servidorFuncional, licenca, possuiCargo);
 	}
-
+	
 	/**
 	 * @author erivanio.cruz
-	 * @since 12/04/2022
+	 * @since 27/04/2022
 	 * @param servidorFuncional
 	 * @param possuiCargo
 	 * @return Set<AfastamentoESocial>
 	 */
-	public List<AfastamentoESocial> getEvento2230ByServidorList(Funcional servidorFuncional, boolean possuiCargo) {
-			List<AfastamentoESocial> afastamentoESocialList = afastamentoESocialDAO.getEvento2230ByServidorList(servidorFuncional, possuiCargo);
-			
-			return afastamentoESocialList;
+	public List<Licenca> getLicencaList(Funcional servidorFuncional, List<Integer> listaCondigo) {
+		return licencaService.search(servidorFuncional, listaCondigo);
 	}
 }
 

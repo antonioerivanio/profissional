@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.service;
 
 import java.util.List;
 
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.domain.TipoLicenca;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -15,6 +16,7 @@ public interface LicencaService {
 	public List<Licenca> search(Long idPessoa, Long tipoLicenca, int first, int rows);
 	public List<Licenca> search(String nome, int first, int rows);
 	public List<Licenca> search(String nome, TipoLicenca tipoLicenca, int first, int rows);
+	public List<Licenca> search(Funcional funcional, List<Integer> listaCodigo);
 
 	public String salvar(Licenca entidade) throws SRHRuntimeException;
 	public void excluir(Licenca entidade) throws SRHRuntimeException;

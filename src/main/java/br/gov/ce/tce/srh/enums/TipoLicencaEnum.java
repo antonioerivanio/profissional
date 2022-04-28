@@ -10,7 +10,7 @@ import java.util.Arrays;
  * @since 13/04/2022
  *
  */
-public enum TipoLicenca {
+public enum TipoLicencaEnum {
 
 	LICENCA_SEM_REMUNERACAO_PARA_SERVIDOR_ESTATUTARIO(1, "Licença Especial"),
 	LICENCA_SAUDE(3, "Licença Saúde"),
@@ -22,7 +22,7 @@ public enum TipoLicenca {
 	private Integer codigo;
 	private String descricao;
 
-	private TipoLicenca(Integer codigo, String descricao) {
+	private TipoLicencaEnum(Integer codigo, String descricao) {
 		this.descricao = descricao;
 		this.codigo = codigo;
 	}
@@ -35,13 +35,13 @@ public enum TipoLicenca {
 		return codigo;
 	}
 
-	public static TipoLicenca getByCodigo(Integer codigo) {
+	public static TipoLicencaEnum getByCodigo(Integer codigo) {
 		
 		if (codigo == null) {
 			return null;
 		}
 		
-		for (TipoLicenca parametro : values()) {
+		for (TipoLicencaEnum parametro : values()) {
 			if (parametro.getCodigo().equals(codigo)) {
 				return parametro;
 			}
@@ -51,7 +51,7 @@ public enum TipoLicenca {
 	
 	public static ArrayList<Integer> getTodosCodigos() {
 		ArrayList<Integer> codigos = new ArrayList<Integer>();
-		for (TipoLicenca parametro : values()) {			
+		for (TipoLicencaEnum parametro : values()) {			
 				codigos.add(parametro. getCodigo());
 		}
 		

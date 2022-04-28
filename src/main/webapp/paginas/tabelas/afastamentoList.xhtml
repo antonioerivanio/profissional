@@ -58,19 +58,33 @@
                         <f:facet name="header">
                             CPF
                         </f:facet>
+                        
                         <center>
 	                        <h:outputText id="item2" value="#{item.cpfTrab}" styleClass="cel-25" >
 	                        	  <f:converter converterId="cpfConverter" /> 
 	                        </h:outputText>
 	                    </center>
                     </rich:column>
+                    
                     <rich:column id="col3" headerClass="cel-50">
                         <f:facet name="header">
                             Nome
                         </f:facet>
                         <h:outputText id="item3" value="#{item.funcional.nomeCompleto}" styleClass="cel-50" />
                     </rich:column>
-                    <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                    <rich:column id="col4" headerClass="cel-25">
+                        <f:facet name="header">
+                            Data Inicio
+                        </f:facet>
+                        <h:outputText id="item4" value="#{item.dtIniAfast}" styleClass="cel-25" />
+                    </rich:column>
+                    <rich:column id="col5" headerClass="cel-25">
+                        <f:facet name="header">
+                            Data Fim
+                        </f:facet>
+                        <h:outputText id="item5" value="#{item.dtTermAfast}" styleClass="cel-25" />
+                    </rich:column>
+                    <rich:column id="col6" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
                             DETALHAR
                         </f:facet>
@@ -81,7 +95,7 @@
                             <f:setPropertyActionListener target="#{afastamentoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>                    
-                	<rich:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                	<rich:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>

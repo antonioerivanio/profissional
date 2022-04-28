@@ -1,7 +1,9 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -81,6 +83,9 @@ public class Licenca extends BasicEntity<Long> implements Serializable {
 
 	@Transient
 	private Integer dias;
+	
+	@Transient
+	private String dataFinalAfastamentoFormat;
 
 	public Pessoal getPessoal() {return pessoal;}
 	public void setPessoal(Pessoal pessoal) {this.pessoal = pessoal;}
@@ -143,5 +148,16 @@ public class Licenca extends BasicEntity<Long> implements Serializable {
 	
 	@Override
 	public void setId(Long id) {this.id = id;}
+	
+	/**
+	 * @author erivanio.cruz
+	 * @return
+	 */
+	public String getDataFinalAfastamentoFormat() {
+		if (Objects.nonNull(getFim())) {
+			dataFinalAfastamentoFormat = new SimpleDateFormat("dd/MM/yyyy").format(getFim());
+		}
+		return "(".concat(dataFinalAfastamentoFormat).concat(")");
+	}
 	
 }

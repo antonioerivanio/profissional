@@ -68,9 +68,9 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 	@Column(name = "DT_TERM_AFAST")
 	@Temporal(TemporalType.DATE)
 	private Date dtTermAfast;
-
+	
 	@Transient
-	private String dataFinalAfastamentoFormat;
+	private Licenca licenca;
 
 	public Long getId() {	
 		return id;
@@ -192,10 +192,12 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 		this.dtTermAfast = dtTermAfast;
 	}
 
-	public String getDataFinalAfastamentoFormat() {
-		if (dtTermAfast != null) {
-			dataFinalAfastamentoFormat = new SimpleDateFormat("dd/MM/yyyy").format(dtTermAfast);
-		}
-		return "(".concat(dataFinalAfastamentoFormat).concat(")");
+	public Licenca getLicenca() {
+		return licenca;
 	}
+
+	public void setLicenca(Licenca licenca) {
+		this.licenca = licenca;
+	}
+
 }

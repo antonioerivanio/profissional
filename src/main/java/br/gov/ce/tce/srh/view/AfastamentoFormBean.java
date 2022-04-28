@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Licenca;
+import br.gov.ce.tce.srh.enums.TipoLicencaEnum;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AfastamentoESocialService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -50,7 +52,8 @@ public class AfastamentoFormBean implements Serializable {
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
 	private List<AfastamentoESocial> pagedList = new ArrayList<AfastamentoESocial>();
-	private List<AfastamentoESocial> afastamentoESocialList;
+
+	private List<Licenca> licencaList;
 	
 	@PostConstruct
 	private void init() {
@@ -69,8 +72,10 @@ public class AfastamentoFormBean implements Serializable {
 			try {				
 				boolean possuiCargo = getPossuiCargo(servidorFuncional.getId());
 				 
-				entidade.setFuncional(servidorFuncional);
-				 //entidade = afastamentoESocialService.getEvento2230ByServidor(entidade, possuiCargo);
+				//entidade.setFuncional(servidorFuncional);
+				 Licenca licenca = entidade.getLicenca();
+				 entidade = afastamentoESocialService.getEvento2230ByServidor(servidorFuncional, licenca, possuiCargo);
+				 entidade.setLicenca(licenca);
 				
 			} catch (Exception e) {		
 				e.printStackTrace();
@@ -144,11 +149,6 @@ public class AfastamentoFormBean implements Serializable {
 	public List<AfastamentoESocial> getPagedList() {return pagedList;}
 	public void setPagedList(List<AfastamentoESocial> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
-
-
-	public List<AfastamentoESocial> getAfastamentoESocialList() { return afastamentoESocialList;}
-	public void setAfastamentoESocialList(List<AfastamentoESocial> afastamentoESocialList) { 	this.afastamentoESocialList = afastamentoESocialList; }
-
 	
 	/**
 	 * @author erivanio.cruz
@@ -159,11 +159,15 @@ public class AfastamentoFormBean implements Serializable {
 		return representacaoFuncionalService.temAtivaByPessoal(idFuncional);
 	}
 	
+	public List<Licenca> getLicencaList() { return licencaList; }
+	public void setLicencaList(List<Licenca> licencaList) { this.licencaList = licencaList; }
+
 	/** metodo ajax que carrega a lista de afastamento
 	 * @author erivanio.cruz
 	 */
 	public void carregarAfastamentoListChange() {
 		boolean possuiCargo = getPossuiCargo(servidorFuncional.getId());
-		setAfastamentoESocialList(afastamentoESocialService.getEvento2230ByServidorList(servidorFuncional, possuiCargo) );		
+		
+		setLicencaList(afastamentoESocialService.getLicencaList(servidorFuncional, TipoLicencaEnum.getTodosCodigos()));
 	}
 }

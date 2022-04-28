@@ -37,26 +37,25 @@
 					  					itemValue="#{servidor}"
 					  					itemLabel="#{servidor.nome}"/>
 					  					
-					  					<f:ajax listener="#{afastamentoFormBean.carregarAfastamentoListChange}" execute="@this"  render="form afastamento"/>
-
+					  					<f:ajax listener="#{afastamentoFormBean.carregarAfastamentoListChange}" execute="@this"  render="form"/>
 					</h:selectOneMenu>
 				</div>
 				
-				<a4j:outputPanel rendered="#{not empty afastamentoFormBean.afastamentoESocialList}" id="teste">
+				<a4j:outputPanel rendered="#{not empty afastamentoFormBean.licencaList}" >
 				<div class="conteiner">
 			
 					<label for="">Afastamento *</label>
 						<h:selectOneMenu id="afastamento"									
 										 converter="afastamentoConverter" 
 										 rendered="#{!afastamentoFormBean.emEdicao}"
-										 value="#{afastamentoFormBean.entidade}"
+										 value="#{afastamentoFormBean.entidade.licenca}"
 										 >
 						  	<f:selectItem id="selecioneAfastamento" itemLabel="Selecione..."/>
 						  	<f:selectItems 	id="comboAfastamento"
-						  					value="#{afastamentoFormBean.afastamentoESocialList}"
-						  					var="afastamento"
-						  					itemValue="#{afastamento}"
-						  					itemLabel="#{afastamento.observacao} #{afastamento.dataFinalAfastamentoFormat}"
+						  					value="#{afastamentoFormBean.licencaList}"
+						  					var="licenca"
+						  					itemValue="#{licenca}"
+						  					itemLabel="#{licenca.tipoLicenca.descricao} #{licenca.dataFinalAfastamentoFormat}"
 						  					/>						  		
 						  					<f:ajax execute="@this" />
 						</h:selectOneMenu>
@@ -86,7 +85,7 @@
 
 				<br/>
 
-            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+            	<!-- <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" /> -->
             	
             	<fieldset>
 					<legend>ideEmpregador:</legend>
