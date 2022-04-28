@@ -12,15 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
-import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.RemuneracaoTrabalhadorEsocialService;
-import br.gov.ce.tce.srh.service.DependenteEsocialTCEService;
 import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
+import br.gov.ce.tce.srh.service.RemuneracaoTrabalhadorEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -32,14 +28,10 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorFormBean.class);
 
 	@Autowired
-	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorEsocialService;
-	@Autowired
-	private DependenteEsocialTCEService dependenteEsocialTCEService;
-	
+	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorEsocialService;	
 	@Autowired
 	private FuncionalService funcionalService;
-	@Autowired
-	private RepresentacaoFuncionalService representacaoFuncionalService;
+
 	
 
 	// entidades das telas
@@ -47,9 +39,9 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	private List<Integer> comboAno;
 	private Funcional servidorFuncional;
 	private RemuneracaoTrabalhador entidade = new RemuneracaoTrabalhador();
-	private List<DependenteEsocial> dependentesList;
 	boolean emEdicao = false;
-	
+	private String anoReferencia;
+	private String mesReferencia;
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -59,20 +51,19 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	private void init() {
 		RemuneracaoTrabalhador flashParameter = (RemuneracaoTrabalhador)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new RemuneracaoTrabalhador());
-		this.servidorEnvioList = funcionalService.findServidoresEvento2200();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
 			servidorFuncional = getEntidade().getFuncional();
 			emEdicao = true;
 		}
     }	
 	
+	public void carregaServidores() {
+		this.servidorEnvioList = funcionalService.findServidoresEvento1200(anoReferencia, mesReferencia);
+	}
 	public void consultar() {
 		if(servidorFuncional != null) {
 			try {
-				boolean possuiCargo = representacaoFuncionalService.temAtivaByPessoal(servidorFuncional.getId());
 				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200ByServidor(servidorFuncional);
-				dependentesList = dependenteEsocialTCEService.findByIdfuncional(servidorFuncional.getId());
 	
 			} catch (Exception e) {		
 				e.printStackTrace();
@@ -91,12 +82,8 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 			if(servidorFuncional != null) {
 				remuneracaoTrabalhadorEsocialService.salvar(entidade);
 				
-				if(dependentesList != null && !dependentesList.isEmpty()) {
-					dependenteEsocialTCEService.salvar(dependentesList);
-				}
 			}
-			//setEntidade( new RemuneracaoTrabalhador() );
-
+			
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
 
@@ -151,14 +138,23 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 		this.servidorFuncional = servidorFuncional;
 	}	
 
-	public List<DependenteEsocial> getDependentesList() {
-		return dependentesList;
+	
+	public String getAnoReferencia() {
+		return anoReferencia;
 	}
 
-	public void setDependentesList(List<DependenteEsocial> dependentesList) {
-		this.dependentesList = dependentesList;
+	public void setAnoReferencia(String anoReferencia) {
+		this.anoReferencia = anoReferencia;
 	}
-	
+
+	public String getMesReferencia() {
+		return mesReferencia;
+	}
+
+	public void setMesReferencia(String mesReferencia) {
+		this.mesReferencia = mesReferencia;
+	}
+
 	public boolean isEmEdicao() {
 		return emEdicao;
 	}

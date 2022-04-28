@@ -57,9 +57,6 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 	@Column(name = "IND_APUR_IR")
 	private Byte indApurIr;
 	
-	@Column(name = "GRAU_EXP")
-	private Byte grauExp;
-	
 	
 	public Long getId() {
 		return id;
@@ -147,14 +144,6 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 
 	public void setIndApurIr(Byte indApurIr) {
 		this.indApurIr = indApurIr;
-	}
-
-	public Byte getGrauExp() {
-		return grauExp;
-	}
-
-	public void setGrauExp(Byte grauExp) {
-		this.grauExp = grauExp;
 	}
 	
 	
