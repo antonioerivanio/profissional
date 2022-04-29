@@ -24,8 +24,8 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "IDREMUNERACAOTRABALHADOR")
-	private RemuneracaoTrabalhador remuneracaoTrabalhador;
+	@JoinColumn(name = "IDDMDEV")
+	private DemonstrativosDeValores demonstrativosDeValores;
 	
 	@Column(name = "DT_AC_CONV")
 	@Temporal(TemporalType.DATE)
@@ -59,7 +59,7 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	private Byte indSimples;
 	
 	@Column(name = "GRAU_EXP")
-	private Byte grauExp;
+	private Byte grauEX;
 
 	public Long getId() {
 		return id;
@@ -68,15 +68,15 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public RemuneracaoTrabalhador getRemuneracaoTrabalhador() {
-		return remuneracaoTrabalhador;
+	
+	public DemonstrativosDeValores getDemonstrativosDeValores() {
+		return demonstrativosDeValores;
 	}
 
-	public void setRemuneracaoTrabalhador(RemuneracaoTrabalhador remuneracaoTrabalhador) {
-		this.remuneracaoTrabalhador = remuneracaoTrabalhador;
+	public void setDemonstrativosDeValores(DemonstrativosDeValores demonstrativosDeValores) {
+		this.demonstrativosDeValores = demonstrativosDeValores;
 	}
-
+	
 	public Date getDtAcConv() {
 		return dtAcConv;
 	}
@@ -157,14 +157,13 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 		this.indSimples = indSimples;
 	}
 
-	public Byte getGrauExp() {
-		return grauExp;
+	public Byte getGrauEX() {
+		return grauEX;
 	}
 
-	public void setGrauExp(Byte grauExp) {
-		this.grauExp = grauExp;
+	public void setGrauEX(Byte grauEX) {
+		this.grauEX = grauEX;
 	}
-	
-	
+		
 	
 }
