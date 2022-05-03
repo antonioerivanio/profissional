@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_INFOREMUNPERANTERIORES", schema=DatabaseMetadata.SCHEMA_SRH)
+@Table(name = "ESOCIAL_DMDEV", schema=DatabaseMetadata.SCHEMA_SRH)
 public class DemonstrativosDeValores  extends BasicEntity<Long> implements Serializable{
 	
 	@Id
@@ -23,8 +23,8 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	private String ideDmDev;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "IDINFOREMUNPERANTERIORES")
-	private InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores;
+	@JoinColumn(name = "IDREMUNERACAOTRABALHADOR")
+	private RemuneracaoTrabalhador remuneracaoTrabalhador;
 	
 	@Column(name = "COD_CATEG")
 	private Integer codCateg;
@@ -143,12 +143,12 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 		this.id = id;
 	}
 
-	public InfoRemuneracaoPeriodoAnteriores getInfoRemuneracaoPeriodoAnteriores() {
-		return infoRemuneracaoPeriodoAnteriores;
+	public RemuneracaoTrabalhador getRemuneracaoTrabalhador() {
+		return remuneracaoTrabalhador;
 	}
 
-	public void setInfoRemuneracaoPeriodoAnteriores(InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores) {
-		this.infoRemuneracaoPeriodoAnteriores = infoRemuneracaoPeriodoAnteriores;
+	public void setRemuneracaoTrabalhador(RemuneracaoTrabalhador remuneracaoTrabalhador) {
+		this.remuneracaoTrabalhador = remuneracaoTrabalhador;
 	}
 
 	public Byte getGrauEX() {

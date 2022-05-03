@@ -73,7 +73,9 @@ public class VinculoRGPSFormBean implements Serializable {
 		this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
 		this.pessoaJuridica = entidade.getPessoaJuridica();
 		this.codigoTipoVinculoRGPS = TipoVinculoRGPS.getByCodigo(entidade.getTipoEsocial());
-		this.valorOutraEmpresaStr = entidade.getValorOutraEmpresa().toString();	
+		if(entidade.getValorOutraEmpresa() != null) {
+			this.valorOutraEmpresaStr = entidade.getValorOutraEmpresa().toString();	
+		}
 		
 		try {
 			if(this.entidade.getId() != null) {					
@@ -127,7 +129,7 @@ public class VinculoRGPSFormBean implements Serializable {
 			return false;
 		}
 		else if(this.inicial == null || this.inicial.before(entidade.getFuncional().getExercicio())) {
-			FacesUtil.addErroMessage("A Data Inicio deve ser maior ou igual a data exercio funcional.");
+			FacesUtil.addErroMessage("A Data Inicio deve ser maior ou igual a data exercício funcional.");
 			return false;
 		}
 		else if(valorOutraEmpresaStr == null || valorOutraEmpresaStr == "" || SRHUtils.valorMonetarioStringParaBigDecimal2(valorOutraEmpresaStr).equals(new BigDecimal(0))) {
