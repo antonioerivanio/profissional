@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @SuppressWarnings("serial")
 @Table(name="TB_CODIGOCATEGORIA", schema=DatabaseMetadata.SCHEMA_SRH)
