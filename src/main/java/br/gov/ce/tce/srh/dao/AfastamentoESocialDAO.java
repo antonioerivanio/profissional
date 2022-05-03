@@ -54,7 +54,7 @@ public class AfastamentoESocialDAO {
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append("SELECT 0 AS ID, ");
-		sql.append(" tb_funcional.id||'-'||tb_ocupacao.id AS REFERENCIA, ");
+		sql.append(" tb_funcional.id||'-'||tb_tipolicenca.id ||'-'||tb_licenca.inicio AS REFERENCIA, ");
 		sql.append("tb_funcional.id AS idfuncional,  ");
 		sql.append("NULL                  AS RETIFICAR_RECIBO, ");
 		sql.append("NULL                  AS OCORRENCIA_ID, ");

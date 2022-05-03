@@ -154,7 +154,7 @@ public class Licenca extends BasicEntity<Long> implements Serializable {
 	 * @return
 	 */
 	public String getDataFinalAfastamentoFormat() {
-		if (Objects.nonNull(getFim())) {
+		if (getFim() != null) {
 			dataFinalAfastamentoFormat = new SimpleDateFormat("dd/MM/yyyy").format(getFim());
 		}
 		return "(".concat(dataFinalAfastamentoFormat).concat(")");

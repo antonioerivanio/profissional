@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.view.AfastamentoFormBean;
 
@@ -35,7 +34,7 @@ public class AfastamentoConverter implements Converter {
 
 	@Override
 	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object object) {
-		if (Objects.isNull(object))
+		if (object == null)
 			return null;
 
 		return ((Licenca) object).getId().toString();
