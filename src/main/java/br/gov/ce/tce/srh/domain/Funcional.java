@@ -15,6 +15,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.ibm.icu.impl.coll.BOCSU;
+
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -479,6 +481,19 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 		this.pessoaJuridica = pessoaJuridica;
 	}
 	
+	public boolean getRegimeTrabalhistaIsnull() {
+		if(getRegime() == null)
+			return Boolean.TRUE;
+					
+		return Boolean.FALSE;
+	}
+	
+	public boolean getRegimePrevidenciarioIsnull() {
+		if(getPrevidencia() == null)
+			return Boolean.TRUE;
+					
+		return Boolean.FALSE;
+	}
 	
 	
 }

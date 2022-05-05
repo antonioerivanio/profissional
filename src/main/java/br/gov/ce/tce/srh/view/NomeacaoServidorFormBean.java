@@ -88,9 +88,6 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private CboService cboService;
 	
 	@Autowired
-	private CodigoCategoriaService codigoCateogiraService;
-	
-	@Autowired
 	private OcupacaoService ocupacaoService;
 	
 	@Autowired
@@ -124,9 +121,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 	private Cbo cbo1;
 	private Cbo cbo2;
-	private Cbo cbo3;
-	
-	private CodigoCategoria codCateg;
+	private Cbo cbo3;	
 
 	// controle dos campos
 	private Boolean alterar = false;
@@ -154,7 +149,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private List<Cbo> comboCBO2;
 	private List<Cbo> comboCBO3;
 	private List<Cbo> comboCBO4;
-	private List<CodigoCategoria> comboCodCateg;
+	
 	private List<LeiIncorporacao> comboLeiIncorporacao;
 	private List<Entidade> comboOrgaoOrigem;
 	private List<PessoaJuridica> instituicaoEnsinoList;
@@ -548,17 +543,6 @@ public class NomeacaoServidorFormBean implements Serializable {
 
         return this.comboCBO4;
 	}
-	
-	public List<CodigoCategoria> getComboCodCateg(){
-		try {
-			this.comboCodCateg = codigoCateogiraService.findAll();
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Erro ao carregar o campo Codigo Categoria. Operação cancelada.");
-        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-		
-		return this.comboCodCateg;
-	}
 
 	public List<LeiIncorporacao> getComboLeiIncorporacao() {
 
@@ -674,14 +658,6 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 	public Cbo getCbo3() {return cbo3;}
 	public void setCbo3(Cbo cbo3) {this.cbo3 = cbo3;}
-
-	public CodigoCategoria getCodCateg() {
-		return codCateg;
-	}
-
-	public void setCodCateg(CodigoCategoria codCateg) {
-		this.codCateg = codCateg;
-	}
 
 	public void recarregaPagina(ValueChangeEvent event) {}
 

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
+
+	<ui:define name="content">
+
+		<script>
+		function openwindow()
+		{
+			nome = document.getElementById('form:nomeCompletoPessoa').value;
+			if (nome.length > 2) {
+				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+			} else {
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
+			}
+		}
+		</script>
+		
+		<style>
+			.destaque {
+				color: red;
+				font-weight: bold;
+			}
+		</style>
+
+		<div class="titulo-pagina">
+			<h2>Consultar Vínculo RGPS</h2>
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+
+			<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+			
+			<ui:fragment>
+			
+				<div class="input-box box-10">
+					<label for="">Matrícula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula"
+									 name="matricula"
+									 maxlength="6"
+									 styleClass="maskMatricula"
+									 value="#{funcionalCedidoListBean.matricula}" >
+	            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
+	        			</h:inputText>
+					</div>
+				</div>
+	
+				<ui:fragment>
+					<div class="input-box box-15" >
+						<label for="">CPF</label>
+						<div class="conteiner">
+							<h:inputText id="cpf" 
+										 name="cpf"
+										 maxlength="14"
+										 styleClass="maskCpf"
+										 converter="cpfConverter"
+										 value="#{funcionalCedidoListBean.cpf}" >
+								<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
+							</h:inputText>
+						</div>
+					</div>
+				</ui:fragment>
+	
+				<div class="input-box box-38">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa"
+									 name="nomeCompletoPessoa"
+									 value="#{funcionalCedidoListBean.nome}" />
+					</div>
+				</div>
+	
+				<a id="form:Pesquisar" 
+				   href="#" 
+				   onclick="openwindow()" 
+				   class="bt-padrao fl mg-top-18">Pesquisar</a>
+	
+				<h:commandButton id="Consultar"
+								 value="Consultar"
+								 action="#{funcionalCedidoListBean.consultar}"
+								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+								 render="scroller,lista"/>
+				
+							 
+			</ui:fragment>			
+			
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" 
+								var="item" 
+								rows="#{funcionalCedidoListBean.dataModel.pageSize}"
+								value="#{funcionalCedidoListBean.dataModel}" 
+								>
+
+               		<h:column id="col1" headerClass="cel-25">
+                        <f:facet name="header">
+                            Servidor
+                        </f:facet>
+                        <h:outputText id="item2" value="#{item.funcional.nome}" styleClass="cel-25" />
+                    </h:column>
+                    <h:column id="col2">
+                        <f:facet name="header">
+                            Nome da Empresa
+                        </f:facet>
+						<h:outputText id="item1" value="#{item.pessoaJuridica.razaoSocial}" />
+                    </h:column>
+               	
+               		<h:column id="col8" >
+                        <f:facet name="header">
+                            EDITAR
+                        </f:facet>
+                       <h:commandLink id="editar"
+                       				  value="Editar"
+                       				  action="#{funcionalCedidoListBean.editar}"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{funcionalCedidoListBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </h:column>
+                	<h:column id="col9" >
+                        <f:facet name="header">
+                            EXCLUIR
+                        </f:facet>
+                        <a4j:commandLink id="excluir"
+                        			   value="Excluir" 
+                        			   styleClass="ico-delete" 
+                        			   onclick="alertaExclusao()"
+                        			   execute="@this">
+                            <f:setPropertyActionListener target="#{funcionalCedidoListBean.entidade}" value="#{item}" />
+                        </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{funcionalCedidoListBean.excluir}" render="form"/>
+                    </h:column>
+
+				</rich:dataTable>
+				<rich:dataScroller 	id="scroller" 
+									for="lista" 
+									stepControls="hide"									
+									renderIfSinglePage="false"
+									page="#{funcionalCedidoListBean.pagina}" />
+			</div>
+			
+			<ui:fragment>
+				<h:commandButton id="incluir" 
+								 value="Incluir"
+								 action="#{funcionalCedidoListBean.incluir}"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 />
+				<h:commandButton id="limpaTela"
+								 value="Limpar"
+								 action="listar"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 />
+			</ui:fragment>
+		</h:form>
+	</ui:define>
+</ui:composition>

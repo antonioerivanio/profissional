@@ -43,7 +43,7 @@ public class AfastamentoFormBean implements Serializable {
 
 	// entidades das telas
 	private List<Funcional> servidorEnvioList;
-	private Funcional servidorFuncional;	
+	private Funcional servidorFuncional;
 	private AfastamentoESocial entidade = new AfastamentoESocial();
 	
 	boolean emEdicao = false;
