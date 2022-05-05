@@ -25,8 +25,8 @@ public class FuncionalCedidoServiceImpl implements FuncionalCedidoService {
 
 	@Override
 	@Transactional
-	public FuncionalCedido salvar(FuncionalCedido entidade) throws SRHRuntimeException {		
-				
+	public FuncionalCedido salvar(FuncionalCedido entidade) throws SRHRuntimeException {	
+		
 		return dao.salvar(entidade);
 	}
 	

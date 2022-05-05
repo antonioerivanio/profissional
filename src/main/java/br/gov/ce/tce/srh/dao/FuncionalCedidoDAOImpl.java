@@ -30,7 +30,7 @@ public class FuncionalCedidoDAOImpl implements FuncionalCedidoDAO {
 
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("SELECT MAX(v.id) FROM VinculoRGPS  v");
+		Query query = entityManager.createQuery("SELECT MAX(v.id) FROM FuncionalCedido  v");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
@@ -40,7 +40,7 @@ public class FuncionalCedidoDAOImpl implements FuncionalCedidoDAO {
 			entidade.setId(getMaxId());
 		}
 
-		return entityManager.merge(entidade);
+		return entityManager.merge(entidade);	
 	}
 
 	@Override

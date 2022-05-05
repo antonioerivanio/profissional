@@ -49,8 +49,10 @@ public class FuncionalCedidoFormBean implements Serializable {
 	private AfastamentoFormBean afastamentoFormBean;
 	
 	@Autowired
-	@Qualifier("nomeacaoServidorFormBean")
 	private NomeacaoServidorFormBean nomeacaoServidorFormBean;
+	
+	@Autowired
+	private LoginBean loginBean;
 	
 	private FuncionalCedido entidade;	
 	private PessoaJuridica pessoaJuridica;
@@ -67,11 +69,9 @@ public class FuncionalCedidoFormBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		FuncionalCedido flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());	
-		getEntidade().setFuncional(new Funcional());
-		getEntidade().setPessoaJuridica(new PessoaJuridica());			
-
-		this.servidorEnvioList = funcionalService.findServidoresEvento2230();		
+		setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());
+		
+		inicializarEntidade();
 		
 		try {
 			if(this.entidade.getId() != null) {					
@@ -83,13 +83,16 @@ public class FuncionalCedidoFormBean implements Serializable {
 		}
 	}	
 	
+
 	public void salvar() {		
 		try {
-			if(funcionalCedidoService.isOk(entidade)) {					
+			if(funcionalCedidoService.isOk(entidade)) {
+				entidade.setIdUsuarioAtualizacao(loginBean.getUsuarioLogado().getId());				
 				entidade.setTpRegTrab(entidade.getFuncional().getRegime().intValue());
 				entidade.setTpRegPrev(entidade.getFuncional().getPrevidencia().intValue());
 				entidade.setFuncional(getFuncionalByServidorFuncional());
-				entidade.getCodigoCategoria().setId(Long.parseLong(entidade.getCodigoCategoria().getCodigo()));
+				entidade.setPessoaJuridica(pessoaJuridica);				
+				entidade.setCodigoCategoria(getCodigoCategoraById());
 				
 				funcionalCedidoService.salvar(entidade);
 				
@@ -100,17 +103,37 @@ public class FuncionalCedidoFormBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
+		inicializarEntidade();		
 	}	
+	
+	private void inicializarEntidade() {
+		getEntidade().setFuncional(new Funcional());		
+		getEntidade().setDtAdmCed(null);
+		getEntidade().setMatricOrig(null);
+		getEntidade().setMatricOrig(null);		
+		pessoaJuridica = new PessoaJuridica();	
+		getEntidade().setPessoaJuridica(pessoaJuridica);
+		getEntidade().setCodigoCategoria(null);
+		getAfastamentoFormBean().setServidorFuncional(null);
+
+		this.servidorEnvioList = funcionalService.findServidoresEvento2230();
+	}
+	
+	private CodigoCategoria getCodigoCategoraById() {
+		int index = getComboCodCateg().indexOf(getEntidade().getCodigoCategoria());
+		CodigoCategoria codigoCategoriaEncontrado = getComboCodCateg().get(index);
+		
+		return codigoCategoriaEncontrado;
+	}
 	
 	public void setCnpjPessoaJuridicaChange() {
 		int index = nomeacaoServidorFormBean.getComboEmpresasCadastradas().indexOf(entidade.getPessoaJuridica());
 		PessoaJuridica pessoaJuridicaEncontrada = nomeacaoServidorFormBean.getComboEmpresasCadastradas().get(index);
-		entidade.setPessoaJuridica(pessoaJuridicaEncontrada);
+		setPessoaJuridica(pessoaJuridicaEncontrada);
 	}	
 
 
-	public String voltar() {
-	
+	public String voltar() {	
         return "listar";
 	}
 	/***

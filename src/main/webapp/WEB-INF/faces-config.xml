@@ -1058,23 +1058,24 @@
 	
 	<!-- Funcional Cedido -->
 	<navigation-rule>
-		<from-view-id>/paginas/funcional/FuncionalCedidoList.xhtml</from-view-id>
+		<from-view-id>/paginas/funcional/funcionalCedidoList.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>listar</from-outcome>
-			<to-view-id>/paginas/funcional/FuncionalCedidoList.xhtml</to-view-id>
+			<to-view-id>/paginas/funcional/funcionalCedidoList.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>incluirAlterar</from-outcome>
-			<to-view-id>/paginas/funcional/FuncionalCedidoForm.xhtml</to-view-id>
+			<to-view-id>/paginas/funcional/funcionalCedidoForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<from-view-id>/paginas/funcional/FuncionalCedidoForm.xhtml</from-view-id>
+		<from-view-id>/paginas/funcional/funcionalCedidoForm.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>listar</from-outcome>
-			<to-view-id>/paginas/funcional/FuncionalCedidoList.xhtml</to-view-id>
+			<to-view-id>/paginas/funcional/funcionalCedidoList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
 	
 	<!-- Admissao eSocial/TCE -->
 	<navigation-rule>

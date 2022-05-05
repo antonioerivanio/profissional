@@ -1840,34 +1840,34 @@
     TITLE="listar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#paginas#funcional#FuncionalCedidoList.xhtml"
-  PATH="/paginas/funcional/FuncionalCedidoList.xhtml"
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#funcionalCedidoList.xhtml"
+  PATH="/paginas/funcional/funcionalCedidoList.xhtml"
   SHAPE="256,14593,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM
-   ID="rules:#paginas#funcional#FuncionalCedidoList.xhtml:0" NAME="item"
-   PATH="/paginas/funcional/FuncionalCedidoList.xhtml" model-entity="JSFProcessItem">
+   ID="rules:#paginas#funcional#funcionalCedidoList.xhtml:0" NAME="item"
+   PATH="/paginas/funcional/funcionalCedidoList.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT
-    ID="listar::#paginas#funcional#FuncionalCedidoList.xhtml"
-    NAME="output" PATH="/paginas/funcional/FuncionalCedidoList.xhtml"
-    TARGET="rules:#paginas#funcional#FuncionalCedidoList.xhtml"
+    ID="listar::#paginas#funcional#funcionalCedidoList.xhtml"
+    NAME="output" PATH="/paginas/funcional/funcionalCedidoList.xhtml"
+    TARGET="rules:#paginas#funcional#funcionalCedidoList.xhtml"
     TITLE="listar" model-entity="JSFProcessItemOutput"/>
    <PROCESS-ITEM-OUTPUT
-    ID="incluirAlterar::#paginas#funcional#FuncionalCedidoForm.xhtml"
-    NAME="output1" PATH="/paginas/funcional/FuncionalCedidoForm.xhtml"
-    TARGET="rules:#paginas#funcional#FuncionalCedidoForm.xhtml"
+    ID="incluirAlterar::#paginas#funcional#funcionalCedidoForm.xhtml"
+    NAME="output1" PATH="/paginas/funcional/funcionalCedidoForm.xhtml"
+    TARGET="rules:#paginas#funcional#funcionalCedidoForm.xhtml"
     TITLE="incluirAlterar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#paginas#funcional#FuncionalCedidoForm.xhtml"
-  PATH="/paginas/funcional/FuncionalCedidoForm.xhtml"
+ <PROCESS-ITEM NAME="rules:#paginas#funcional#funcionalCedidoForm.xhtml"
+  PATH="/paginas/funcional/funcionalCedidoForm.xhtml"
   SHAPE="32,14577,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM
-   ID="rules:#paginas#funcional#FuncionalCedidoForm.xhtml:0" NAME="item"
-   PATH="/paginas/funcional/FuncionalCedidoForm.xhtml" model-entity="JSFProcessItem">
+   ID="rules:#paginas#funcional#funcionalCedidoForm.xhtml:0" NAME="item"
+   PATH="/paginas/funcional/funcionalCedidoForm.xhtml" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT
-    ID="listar::#paginas#funcional#FuncionalCedidoList.xhtml"
-    NAME="output" PATH="/paginas/funcional/FuncionalCedidoList.xhtml"
-    TARGET="rules:#paginas#funcional#FuncionalCedidoList.xhtml"
+    ID="listar::#paginas#funcional#funcionalCedidoList.xhtml"
+    NAME="output" PATH="/paginas/funcional/funcionalCedidoList.xhtml"
+    TARGET="rules:#paginas#funcional#funcionalCedidoList.xhtml"
     TITLE="listar" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>

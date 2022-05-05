@@ -55,7 +55,7 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 
 	public PessoaJuridica(Long id, String cnpj, String razaoSocial, String nomeFantasia) {
 		this.id = id;
-		this.cnpj = cnpj;
+		this.cnpj = cnpj.trim();
 		this.razaoSocial = razaoSocial;
 		this.nomeFantasia = nomeFantasia;
 	}
@@ -69,6 +69,10 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 	}
 
 	public String getCnpj() {
+		if(cnpj != null) {
+			cnpj.trim();
+		}
+		
 		return cnpj;
 	}
 

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_CODIGOCATEGORIA", schema=DatabaseMetadata.SCHEMA_SRH)
+@Table(name="ESOCIAL_CODIGOCATEGORIA", schema=DatabaseMetadata.SCHEMA_SRH)
 public class CodigoCategoria extends BasicEntity<Long> implements Serializable {
 	
 	@Id
@@ -18,16 +18,16 @@ public class CodigoCategoria extends BasicEntity<Long> implements Serializable {
 	private Long id;
 
 	@Column(name="CODIGO")
-	private String codigo;
+	private Long codigo;
 	
 	@Column(name="DESCRICAO")
 	private String descricao;
 
-	public String getCodigo() {
+	public Long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
+	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
 
