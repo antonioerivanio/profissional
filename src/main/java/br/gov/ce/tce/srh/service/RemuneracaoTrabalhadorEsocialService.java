@@ -26,6 +26,12 @@ public class RemuneracaoTrabalhadorEsocialService{
 
 	@Autowired
 	private NotificacaoService notificacaoService;
+	
+	@Transactional
+	public void salvar(String mesReferencia, String anoReferencia, Funcional servidorFuncional) {
+		String periodoApuracao = 	getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		
+	}
 
 	@Transactional
 	public RemuneracaoTrabalhador salvar(RemuneracaoTrabalhador entidade) {		
@@ -70,6 +76,18 @@ public class RemuneracaoTrabalhadorEsocialService{
 
 	public RemuneracaoTrabalhador getEventoS1200ByServidor(Funcional servidorFuncional) {	
 		return dao.getEventoS1200ByServidor(servidorFuncional);
+	}
+	
+	private String getPeriodoApuracaoStr(String mesReferencia, String anoReferencia) {
+		String periodoApuracaoStr = "";
+		
+		if(mesReferencia.equals("13")) {
+			periodoApuracaoStr = anoReferencia;
+		}
+		else {
+			periodoApuracaoStr = anoReferencia + "-" + mesReferencia;
+		}
+		return periodoApuracaoStr;
 	}
 
 }

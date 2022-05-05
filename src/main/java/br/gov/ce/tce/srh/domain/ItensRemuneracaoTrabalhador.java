@@ -25,8 +25,8 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "IDREMUNERACAOTRABALADOR")
-	private RemuneracaoTrabalhador remuneracaoTrabalhador;
+	@JoinColumn(name = "IDDMDEV")
+	private DemonstrativosDeValores demonstrativosDeValores;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "IDINFOREMUNPERANTERIORES")
@@ -57,6 +57,9 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 	@Column(name = "IND_APUR_IR")
 	private Byte indApurIr;
 	
+	@Column(name = "GRAU_EXP")
+	private Byte grauExp;
+	
 	
 	public Long getId() {
 		return id;
@@ -65,13 +68,13 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public RemuneracaoTrabalhador getRemuneracaoTrabalhador() {
-		return remuneracaoTrabalhador;
+	
+	public DemonstrativosDeValores getDemonstrativosDeValores() {
+		return demonstrativosDeValores;
 	}
 
-	public void setRemuneracaoTrabalhador(RemuneracaoTrabalhador remuneracaoTrabalhador) {
-		this.remuneracaoTrabalhador = remuneracaoTrabalhador;
+	public void setDemonstrativosDeValores(DemonstrativosDeValores demonstrativosDeValores) {
+		this.demonstrativosDeValores = demonstrativosDeValores;
 	}
 
 	public InfoRemuneracaoPeriodoAnteriores getInfoRemuneracaoPeriodoAnteriores() {
@@ -144,6 +147,14 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 
 	public void setIndApurIr(Byte indApurIr) {
 		this.indApurIr = indApurIr;
+	}
+
+	public Byte getGrauExp() {
+		return grauExp;
+	}
+
+	public void setGrauExp(Byte grauExp) {
+		this.grauExp = grauExp;
 	}
 	
 	
