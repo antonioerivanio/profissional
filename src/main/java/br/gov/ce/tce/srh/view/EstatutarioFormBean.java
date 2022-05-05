@@ -31,11 +31,13 @@ public class EstatutarioFormBean implements Serializable {
 
 	@Autowired
 	private EstatutarioESocialService estatutarioESocialService;
+	
 	@Autowired
 	private DependenteEsocialTCEService dependenteEsocialTCEService;
 	
 	@Autowired
 	private FuncionalService funcionalService;
+	
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
 	

@@ -72,8 +72,7 @@ public class EstatutarioESocialDAO {
 		sql.append("    tb_municipio.uf as UF_END, ");
 		sql.append("    tb_pessoal.email as EMAIL_PRINC, ");
 		sql.append("    '0'||tb_funcional.matricula as MATRICULA, ");
-		sql.append("    tb_funcional.dataexercicio as DT_INICIO, ");
-		sql.append("    2 as NIV_ESTAGIO, ");
+		sql.append("    tb_funcional.dataexercicio as DT_INICIO, ");	
 		sql.append("    tb_ocupacao.nomenclatura as NM_CARGO, ");
 		sql.append("    tb_ocupacao.cbo as CBO_CARGO, ");
 		sql.append("    fp_cadastro.vpad as VR_SAL_FX, ");
@@ -87,10 +86,13 @@ public class EstatutarioESocialDAO {
 		sql.append("	CASE WHEN fp_cadastro.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ELSE 'S' END AS CAD_INI, ");
 		sql.append("	901 AS COD_CATEG, ");
 		sql.append("	5 AS UND_SAL_FIXO, ");
-		sql.append("	'N' AS NAT_ESTAGIO, ");
-		sql.append("	'07954514042120' AS CNPJ_INST_ENSINO,  ");
 		sql.append("	tb_funcional.datasaida AS DT_TERMINO, ");
-		sql.append("	ADD_MONTHS(tb_funcional.dataexercicio,12) AS DT_PREV_TERM ");
+		sql.append("	tb_funcionalcedidos.codigocategoria AS CATEG_ORIG, ");
+		sql.append("	TB_PESSOAJURIDICA.cnpj AS CNPJ_CEDNT, ");
+		sql.append("	tb_funcionalcedidos.matriculaorigem AS MATRIC_CED, ");
+		sql.append("	tb_funcionalcedidos.dataorigemadmissao AS DT_ADM_CED, ");
+		sql.append("	tb_funcionalcedidos.tiporegtrab AS TP_REG_TRAB, ");
+		sql.append("	tb_funcionalcedidos.tiporegprev AS TP_REG_PREV ");
 		sql.append("FROM   srh.tb_funcional ");
 		sql.append("       INNER JOIN srh.fp_cadastro ");
 		sql.append("               ON srh.tb_funcional.id = srh.fp_cadastro.idfuncional ");
@@ -114,6 +116,10 @@ public class EstatutarioESocialDAO {
 		sql.append("               ON srh.tb_pessoal.tipologradouro = srh.esocial_tipologradouro.id ");
 		sql.append("       INNER JOIN srh.tb_municipio ");
 		sql.append("               ON srh.tb_pessoal.municipioendereco = srh.tb_municipio.id ");
+		sql.append("       INNER JOIN srh.tb_funcionalcedidos ");
+		sql.append("               ON srh.tb_funcional.id = srh.tb_funcionalcedidos.idfuncional");
+		sql.append("       INNER JOIN SRH.TB_PESSOAJURIDICA ");
+		sql.append("               ON SRH.TB_PESSOAJURIDICA.id = srh.tb_funcionalcedidos.idpessoajuridica ");
 		sql.append("WHERE  tb_funcional.id = :idFuncional");
 		
 		return sql.toString();

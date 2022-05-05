@@ -174,18 +174,6 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 //	@Column(name = "CBO_FUNCAO")
 //	private String CBOFuncao;
 	
-	@Column(name = "NAT_ESTAGIO")
-	private String natEstagio;
-	
-	@Column(name = "NIV_ESTAGIO")
-	private String nivEstagio;
-	
-	@Column(name = "DT_PREV_TERM")
-	@Temporal(TemporalType.DATE)
-	private Date dtPrevTerm;
-	
-	@Column(name = "CNPJ_INST_ENSINO")
-	private String cnpjInstEnsino;
 	
 //	@Column(name = "NAT_ATIVIDADE")
 //	private String natAtividade;
@@ -220,15 +208,27 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 //	@Column(name="DEF_OBSERVACAO")
 //	private String defObservacao;
 //	
-//	@Column(name = "TP_REG_TRAB")
-//	private Byte tpRegTrab;
-//	
-//	@Column(name = "TP_REG_PREV")
-//	private Byte tpRegPrev;
-//	
 //	@Column(name="UF_NAC")
 //	private Long ufNac;
 	
+	@Column(name="CATEG_ORIG")
+	private Long categOrig;
+	
+	@Column(name="CNPJ_CEDNT")
+	private String cnpjCednt;
+	
+	@Column(name="MATRIC_CED")
+	private String matricCed;
+	
+	@Column(name="DT_ADM_CED")
+	@Temporal(TemporalType.DATE)
+	private Date dtAdmCed;
+	
+	@Column(name="TP_REG_TRAB")
+	private Long tpRegTrab;
+	
+	@Column(name="TP_REG_PREV")
+	private Long tpRegPrev;
 	
 	public Date getDtNascto() {
 		return dtNascto;
@@ -242,23 +242,11 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 	public void setDtTerm(Date dtTerm) {
 		this.dtTerm = dtTerm;
 	}
-	public Date getDtPrevTerm() {
-		return dtPrevTerm;
-	}
-	public void setDtPrevTerm(Date dtPrevTerm) {
-		this.dtPrevTerm = dtPrevTerm;
-	}
 	public Date getDtInicio() {
 		return dtInicio;
 	}
 	public void setDtInicio(Date dtInicio) {
 		this.dtInicio = dtInicio;
-	}
-	public String getCnpjInstEnsino() {
-		return cnpjInstEnsino;
-	}
-	public void setCnpjInstEnsino(String cnpjInstEnsino) {
-		this.cnpjInstEnsino = cnpjInstEnsino;
 	}
 	
 	public String getReferencia() {
@@ -366,18 +354,6 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 		return vrSalFx;
 	}
 	
-	public String getNatEstagio() {
-		return natEstagio;
-	}
-	public void setNatEstagio(String natEstagio) {
-		this.natEstagio = natEstagio;
-	}
-	public String getNivEstagio() {
-		return nivEstagio;
-	}
-	public void setNivEstagio(String nivEstagio) {
-		this.nivEstagio = nivEstagio;
-	}
 	public void setVrSalFx(Double vrSalFx) {
 		this.vrSalFx = vrSalFx;
 	}
@@ -497,7 +473,6 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 		
 			this.fonePrinc = fonePrinc;	
 		
-		
 	}
 	public String getEmailPrinc() {
 		return emailPrinc;
@@ -522,5 +497,41 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 	}
 	public void setUndSalFixo(Byte undSalFixo) {
 		this.undSalFixo = undSalFixo;
+	}
+	public Long getCategOrig() {
+		return categOrig;
+	}
+	public void setCategOrig(Long categOrig) {
+		this.categOrig = categOrig;
+	}
+	public String getCnpjCednt() {
+		return cnpjCednt;
+	}
+	public void setCnpjCednt(String cnpjCednt) {
+		this.cnpjCednt = cnpjCednt;
+	}
+	public String getMatricCed() {
+		return matricCed;
+	}
+	public void setMatricCed(String matricCed) {
+		this.matricCed = matricCed;
+	}
+	public Date getDtAdmCed() {
+		return dtAdmCed;
+	}
+	public void setDtAdmCed(Date dtAdmCed) {
+		this.dtAdmCed = dtAdmCed;
+	}
+	public Long getTpRegTrab() {
+		return tpRegTrab;
+	}
+	public void setTpRegTrab(Long tpRegTrab) {
+		this.tpRegTrab = tpRegTrab;
+	}
+	public Long getTpRegPrev() {
+		return tpRegPrev;
+	}
+	public void setTpRegPrev(Long tpRegPrev) {
+		this.tpRegPrev = tpRegPrev;
 	}
 }
