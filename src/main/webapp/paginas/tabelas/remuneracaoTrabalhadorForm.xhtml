@@ -54,7 +54,7 @@
 						<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
 						<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11"/>
 						<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
-						<f:selectItem id="mes12F" itemLabel="Anual (13° salário)" itemValue="13" />	
+						<f:selectItem id="mes13F" itemLabel="Anual (13° salário)" itemValue="13" />	
 						<a4j:ajax event="change" 
 							  				 execute="@this"
 							  				 listener="#{remuneracaoTrabalhadorFormBean.carregaServidores}"
@@ -528,7 +528,7 @@
 			
 			<h:commandButton action="#{remuneracaoTrabalhadorFormBean.salvarEvento}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
 			
-			<a href="/srh/paginas/tabelas/admissaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			<a href="/srh/paginas/tabelas/remuneracaoTrabalhadorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 		</h:form>
 

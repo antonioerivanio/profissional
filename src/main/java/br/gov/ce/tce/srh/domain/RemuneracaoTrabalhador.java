@@ -89,36 +89,6 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 	
 	@Column(name = "COD_SUSP")
 	private Integer codSusp;
-	
-	@Column(name = "IDE_DM_DEV")
-	private String ideDmDev;
-	
-	@Column(name = "COD_CATEG")
-	private Integer codCateg;
-	
-	@Column(name = "TP_INSC")
-	private Byte tpInsc;
-	
-	@Column(name = "NR_INSC")
-	private String nrInsc;
-	
-	@Column(name = "COD_LOTACAO")
-	private String codLotacao;
-	
-	@Column(name = "QTD_DIAS_AV")
-	private Integer qtdDiasAv;
-	
-	@Column(name = "CEP")
-	private String cep;
-	
-	@Column(name = "MATRICULA")
-	private String matricula;
-	
-	@Column(name = "IND_SIMPLES")
-	private Byte indSimples;
-	
-	@Column(name = "GRAU_EXP")
-	private Byte grauExp;
 
 	public Long getId() {
 		return id;
@@ -286,88 +256,6 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 
 	public void setCodSusp(Integer codSusp) {
 		this.codSusp = codSusp;
-	}
-
-	public String getIdeDmDev() {
-		return ideDmDev;
-	}
-
-	public void setIdeDmDev(String ideDmDev) {
-		this.ideDmDev = ideDmDev;
-	}
-
-	public Integer getCodCateg() {
-		return codCateg;
-	}
-
-	public void setCodCateg(Integer codCateg) {
-		this.codCateg = codCateg;
-	}
-
-	public Byte getTpInsc() {
-		return tpInsc;
-	}
-
-	public void setTpInsc(Byte tpInsc) {
-		this.tpInsc = tpInsc;
-	}
-
-	public String getNrInsc() {
-		return nrInsc;
-	}
-
-	public void setNrInsc(String nrInsc) {
-		this.nrInsc = nrInsc;
-	}
-
-	public String getCodLotacao() {
-		return codLotacao;
-	}
-
-	public void setCodLotacao(String codLotacao) {
-		this.codLotacao = codLotacao;
-	}
-
-	public Integer getQtdDiasAv() {
-		return qtdDiasAv;
-	}
-
-	public void setQtdDiasAv(Integer qtdDiasAv) {
-		this.qtdDiasAv = qtdDiasAv;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-
-	public Byte getIndSimples() {
-		return indSimples;
-	}
-
-	public void setIndSimples(Byte indSimples) {
-		this.indSimples = indSimples;
-	}
-
-	public Byte getGrauExp() {
-		return grauExp;
-	}
-
-	public void setGrauExp(Byte grauExp) {
-		this.grauExp = grauExp;
 	}	
-	
-	
 	
 }

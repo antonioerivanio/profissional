@@ -63,8 +63,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	public void consultar() {
 		if(servidorFuncional != null) {
 			try {
-				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200ByServidor(servidorFuncional);
-	
+				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200ByServidor(servidorFuncional);	
 			} catch (Exception e) {		
 				e.printStackTrace();
 				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
@@ -76,14 +75,11 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 		}
 	}
 
-	public void salvarEvento() {
-
+	public void salvarEvento() { 
 		try {
-			if(servidorFuncional != null) {
-				remuneracaoTrabalhadorEsocialService.salvar(entidade);
-				
-			}
 			
+			remuneracaoTrabalhadorEsocialService.salvar(mesReferencia, anoReferencia, servidorFuncional);
+				
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
 
@@ -97,6 +93,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 		}
 	}
 	
+
 	public String editar() {
 		consultar();
 		FacesUtil.setFlashParameter("entidade", getEntidade());  
