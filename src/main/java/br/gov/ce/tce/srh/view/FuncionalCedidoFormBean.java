@@ -85,7 +85,7 @@ public class FuncionalCedidoFormBean implements Serializable {
 	
 	public void salvar() {		
 		try {
-			if(funcionalCedidoService.validarDadosAntesSalvar(entidade)) {					
+			if(funcionalCedidoService.isOk(entidade)) {					
 				entidade.setTpRegTrab(entidade.getFuncional().getRegime().intValue());
 				entidade.setTpRegPrev(entidade.getFuncional().getPrevidencia().intValue());
 				entidade.setFuncional(getFuncionalByServidorFuncional());
@@ -100,15 +100,13 @@ public class FuncionalCedidoFormBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 		
-	}
-	
+	}	
 	
 	public void setCnpjPessoaJuridicaChange() {
 		int index = nomeacaoServidorFormBean.getComboEmpresasCadastradas().indexOf(entidade.getPessoaJuridica());
 		PessoaJuridica pessoaJuridicaEncontrada = nomeacaoServidorFormBean.getComboEmpresasCadastradas().get(index);
 		entidade.setPessoaJuridica(pessoaJuridicaEncontrada);
-	}
-	
+	}	
 
 
 	public String voltar() {

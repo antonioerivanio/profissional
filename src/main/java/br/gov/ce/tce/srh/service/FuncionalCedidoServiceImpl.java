@@ -35,7 +35,7 @@ public class FuncionalCedidoServiceImpl implements FuncionalCedidoService {
 	 * @return boolean true |false
 	 */
 	@Override
-	public boolean validarDadosAntesSalvar(FuncionalCedido entidade) {
+	public boolean isOk(FuncionalCedido entidade) {
 		if(entidade.getFuncional().getRegimeTrabalhistaIsnull()) {
 			FacesUtil.addErroMessage("Regime Trabalhista é obrigatório!");
 			return Boolean.FALSE;
