@@ -44,30 +44,12 @@
 					<div class="conteiner">
 						<h:inputText id="matricula"
 									 name="matricula"
-									 maxlength="6"
-									 styleClass="maskMatricula"
 									 value="#{funcionalCedidoListBean.matricula}" >
 	            			<a4j:ajax event="change" render="messages, cpf, nomeCompletoPessoa" execute="@this" />
 	        			</h:inputText>
 					</div>
-				</div>
-	
-				<ui:fragment>
-					<div class="input-box box-15" >
-						<label for="">CPF</label>
-						<div class="conteiner">
-							<h:inputText id="cpf" 
-										 name="cpf"
-										 maxlength="14"
-										 styleClass="maskCpf"
-										 converter="cpfConverter"
-										 value="#{funcionalCedidoListBean.cpf}" >
-								<a4j:ajax event="change" render="messages, matricula, nomeCompletoPessoa" execute="@this" />
-							</h:inputText>
-						</div>
-					</div>
-				</ui:fragment>
-	
+				</div>	
+				
 				<div class="input-box box-38">
 					<label for="">Nome</label>
 					<div class="conteiner">

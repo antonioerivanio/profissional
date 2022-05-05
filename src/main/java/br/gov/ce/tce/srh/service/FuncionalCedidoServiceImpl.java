@@ -50,6 +50,11 @@ public class FuncionalCedidoServiceImpl implements FuncionalCedidoService {
 	}
 
 	@Override
+	public int count(String matricula) {
+		return dao.count(matricula);
+	}
+	
+	@Override
 	public FuncionalCedido getById(Long id) {
 		return dao.getById(id);
 	}
@@ -72,6 +77,10 @@ public class FuncionalCedidoServiceImpl implements FuncionalCedidoService {
 		return dao.findByCodigo(codigo);
 	}
 
+	@Override
+	public List<FuncionalCedido> search(String matricula, int first, int rows){
+		return dao.search(matricula, first, rows);
+	}
 
 	public void setDAO(FuncionalCedidoDAO dao) {this.dao = dao;}
 

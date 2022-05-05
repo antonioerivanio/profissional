@@ -34,9 +34,6 @@ public class FuncionalCedidoListBean implements Serializable {
 	
 	@Autowired
 	private FuncionalService funcionalService;
-	
-	@Autowired
-	private AuthenticationService authenticationService;
 
 	private String matricula = new String();
 	private String cpf = new String();
@@ -65,12 +62,12 @@ public class FuncionalCedidoListBean implements Serializable {
 		try {
 			
 			limparListas();
-			Long idPessoal = null;
-			if( getEntidade().getFuncional() != null ) {
-				idPessoal = getEntidade().getFuncional().getPessoal().getId();
+			
+			if(getEntidade().getFuncional() != null &&  getEntidade().getFuncional().getMatricula() != null) {
+				count = funcionalCedidoService.count( getEntidade().getFuncional().getMatricula());
+			}else {
+				count = funcionalCedidoService.count(null);
 			}
-				
-			count = funcionalCedidoService.count( idPessoal );
 
 			if (count == 0) {
 				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -93,9 +90,11 @@ public class FuncionalCedidoListBean implements Serializable {
 	}
 	
 	public String editar() {
-		FacesUtil.setFlashParameter("entidade", getEntidade());
-		FacesUtil.setFlashParameter("matricula", matricula);
-		FacesUtil.setFlashParameter("pagina", pagina);
+		/*
+		 * FacesUtil.setFlashParameter("entidade", getEntidade());
+		 * FacesUtil.setFlashParameter("matricula", matricula);
+		 * FacesUtil.setFlashParameter("pagina", pagina);
+		 */
         return "incluirAlterar";
 	}
 	
@@ -109,7 +108,7 @@ public class FuncionalCedidoListBean implements Serializable {
 
 		try {
 
-			funcionalCedidoService.excluir(entidade);
+			//funcionalCedidoService.excluir(entidade);
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -194,11 +193,12 @@ public class FuncionalCedidoListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( registroInicial != getPrimeiroDaPagina() ) {
 			registroInicial = getPrimeiroDaPagina();
-			Long idPessoal = null;
-			if( getEntidade().getFuncional() != null ) {
-				idPessoal = getEntidade().getFuncional().getPessoal().getId();
+			if(getEntidade().getFuncional() != null && getEntidade().getFuncional().getMatricula() != null)
+				setPagedList(funcionalCedidoService.search(getEntidade().getFuncional().getMatricula(), registroInicial, dataModel.getPageSize()));
+			else {
+				setPagedList(funcionalCedidoService.search(null, registroInicial, dataModel.getPageSize()));
 			}
-			//setPagedList(funcionalCedidoService.search(idPessoal, registroInicial, dataModel.getPageSize()));
+			
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

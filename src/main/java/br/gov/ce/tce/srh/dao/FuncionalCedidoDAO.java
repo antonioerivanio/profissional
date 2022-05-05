@@ -7,8 +7,11 @@ import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 public interface FuncionalCedidoDAO {
 
-	public FuncionalCedido salvar(FuncionalCedido entidade) throws SRHRuntimeException;
-	public FuncionalCedido getById(Long id);
+	public int count(String matricula);
+	public List<FuncionalCedido> search(String matricula, int first, int rows);
+	
+	public FuncionalCedido salvar(FuncionalCedido entidade) throws SRHRuntimeException;	
+	public FuncionalCedido getById(Long id);	
 	public FuncionalCedido getByCodigo(Long codigo);
 
 	public List<FuncionalCedido> findAll();

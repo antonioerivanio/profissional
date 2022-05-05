@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.FuncionalCedido;
+import br.gov.ce.tce.srh.domain.VinculoRGPS;
 
 
 /**
@@ -48,6 +49,49 @@ public class FuncionalCedidoDAOImpl implements FuncionalCedidoDAO {
 		return entityManager.find(FuncionalCedido.class, id);
 	}
 
+	@Override
+	public List<FuncionalCedido> search(String matricula, int first, int rows) {
+		try {
+			StringBuffer sql = new StringBuffer();
+			sql.append(" SELECT f FROM FuncionalCedido f ");
+			sql.append("  WHERE  1=1 ");			
+			if(matricula != null) {
+				sql.append("  and f.matricOrig = :matricula ");
+			}
+			sql.append("         ORDER BY f.matricOrig DESC ");
+			Query query = entityManager.createQuery(sql.toString());
+			
+			if(matricula != null) {
+				query.setParameter("matricula", matricula);
+			}
+			query.setFirstResult(first);
+			query.setMaxResults(rows);
+			
+			return query.getResultList();
+			
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	public int count(String matricula) {			
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT count (f) FROM FuncionalCedido f ");
+		sql.append("  WHERE  1=1 ");
+		
+		if(matricula != null) {
+			sql.append("     and   f.matricOrig = :pessoal ");
+		}
+		
+		Query query = entityManager.createQuery(sql.toString());
+		
+		if(matricula != null) {
+			query.setParameter("pessoal", matricula);
+		}
+		
+		int i = ((Long) query.getSingleResult()).intValue();
+		return i;
+	}
 
 	@Override
 	public FuncionalCedido getByCodigo(Long codigo) {
