@@ -84,7 +84,7 @@ public class EstatutarioESocialDAO {
 		sql.append("	CASE WHEN fd.FLREADAPTADO IS NULL THEN 'N' ELSE 'S' END AS DEF_REAB_READAP, ");
 		sql.append("	TRIM(' ' from tb_pessoal.TELEFONE) AS FONE_PRINC, ");
 		sql.append("	CASE WHEN fp_cadastro.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ELSE 'S' END AS CAD_INI, ");
-		sql.append("	901 AS COD_CATEG, ");
+		sql.append("	410 AS COD_CATEG, ");
 		sql.append("	5 AS UND_SAL_FIXO, ");
 		sql.append("	tb_funcional.datasaida AS DT_TERMINO, ");
 		sql.append("	tb_funcionalcedidos.codigocategoria AS CATEG_ORIG, ");
