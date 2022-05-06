@@ -169,8 +169,11 @@ public class PessoaBean implements Serializable {
 	private List<Municipio> comboMunicipioEndereco;
 	private List<TipoDeficiencia> comboTipoDeficiencia;
 	
-	private Parametro pathDeclaracaoBensSRH;
-	private Parametro pathComprovanteVinculoSocietarioSRH;
+	//private Parametro pathDeclaracaoBensSRH;
+	//private Parametro pathComprovanteVinculoSocietarioSRH;
+	
+	private String pathDeclaracaoBensSRH;
+	private String pathComprovanteVinculoSocietarioSRH;
 
 	// paginação
 	private int count;
@@ -220,8 +223,11 @@ public class PessoaBean implements Serializable {
 			
 			imageBean.setFoto(this.entidade.getFoto());
 			
-			this.pathDeclaracaoBensSRH = parametroService.getByNome("pathDeclaracaoBensSRH");
-			this.pathComprovanteVinculoSocietarioSRH = parametroService.getByNome("pathComprovanteVinculoSocietarioSRH");
+			//this.pathDeclaracaoBensSRH = parametroService.getByNome("pathDeclaracaoBensSRH");
+			//this.pathComprovanteVinculoSocietarioSRH = parametroService.getByNome("pathComprovanteVinculoSocietarioSRH");
+			
+			this.pathDeclaracaoBensSRH = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.declaracaoBens");
+			this.pathComprovanteVinculoSocietarioSRH = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteContratoSocial");;
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -600,9 +606,10 @@ public class PessoaBean implements Serializable {
 			try {
 	
 				// pegando o caminho do arquivo no servidor
-				Parametro parametro = parametroService.getByNome("pathImageSRH");
+				//Parametro parametro = parametroService.getByNome("pathImageSRH");
+				String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.fotofunc");
 	
-				if (parametro == null)
+				if (caminho == null)
 					throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SRH.TB_PARAMETRO");
 	
 				// setando o nome da foto
@@ -612,7 +619,7 @@ public class PessoaBean implements Serializable {
 				imageBean.setFoto(nomeDoArquivo);
 	
 				// gravando em disco
-				File file = new File(parametro.getValor() + getEntidade().getFoto());
+				File file = new File(caminho + getEntidade().getFoto());
 				FileOutputStream fop;
 	
 				fop = new FileOutputStream(file);
@@ -639,9 +646,10 @@ public class PessoaBean implements Serializable {
 		try {
 
 			// pegando o caminho do arquivo no servidor
-			Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
-
-			if (parametro == null)
+			//Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
+			String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.fichaFuncional");
+			
+			if (caminho == null)
 				throw new SRHRuntimeException(
 						"Parâmetro do caminho da ficha não encontrado na tabela SRH.TB_PARAMETRO");
 
@@ -650,7 +658,7 @@ public class PessoaBean implements Serializable {
 			getEntidade().setFicha(new File(ficha.getName()).getName());
 
 			// gravando em disco
-			File file = new File(parametro.getValor() + getEntidade().getFicha());
+			File file = new File(caminho + getEntidade().getFicha());
 			FileOutputStream fop;
 
 			fop = new FileOutputStream(file);
@@ -674,8 +682,9 @@ public class PessoaBean implements Serializable {
 	public void fichaAntiga() {
 		try {
 			
-			Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
-			String fichaAntiga = parametro.getValor() + entidade.getFicha();
+			//Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
+			String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.fichaFuncional");
+			String fichaAntiga = caminho + entidade.getFicha();
 			InputStream in = new FileInputStream(fichaAntiga);
 			byte[] fichaAntigaBytes = IOUtils.toByteArray(in);
 			relatorioUtil.openPdf(fichaAntigaBytes, fichaAntiga);
@@ -707,10 +716,10 @@ public class PessoaBean implements Serializable {
 			declaracao.setCaminho(this.entidade.getId() + File.separator + UUID.randomUUID() + nomeArquivo.substring(nomeArquivo.lastIndexOf('.'), nomeArquivo.length()));
 			declaracao.setPessoal(this.entidade);		
 			
-			File diretorio = new File(this.pathDeclaracaoBensSRH.getValor() + this.entidade.getId());
+			File diretorio = new File(this.pathDeclaracaoBensSRH + this.entidade.getId());
 			diretorio.mkdirs();
 			
-			File file = new File(this.pathDeclaracaoBensSRH.getValor() + declaracao.getCaminho());			
+			File file = new File(this.pathDeclaracaoBensSRH + declaracao.getCaminho());			
 			FileOutputStream fop = new FileOutputStream(file);
 			fop.write(arquivo.getData());
 			fop.flush();
@@ -734,8 +743,9 @@ public class PessoaBean implements Serializable {
 	public void abrirDeclaracao(String caminho) {
 		try {
 			
-			Parametro parametro = parametroService.getByNome("pathDeclaracaoBensSRH");
-			String caminhoDeclaracao = parametro.getValor() + caminho;
+			//Parametro parametro = parametroService.getByNome("pathDeclaracaoBensSRH");
+			String path = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.img");
+			String caminhoDeclaracao = path + caminho;
 			InputStream in = new FileInputStream(caminhoDeclaracao);
 			byte[] declaracaoBytes = IOUtils.toByteArray(in);
 			relatorioUtil.openPdf(declaracaoBytes, caminhoDeclaracao);
@@ -787,10 +797,10 @@ public class PessoaBean implements Serializable {
 			comprovante.setCaminho(this.entidade.getId() + File.separator  + UUID.randomUUID() + nomeArquivo.substring(nomeArquivo.lastIndexOf('.'), nomeArquivo.length()));
 			comprovante.setPessoal(this.entidade);		
 			
-			File diretorio = new File(this.pathComprovanteVinculoSocietarioSRH.getValor() + this.entidade.getId());
+			File diretorio = new File(this.pathComprovanteVinculoSocietarioSRH + this.entidade.getId());
 			diretorio.mkdirs();
 			
-			File file = new File(this.pathComprovanteVinculoSocietarioSRH.getValor() + comprovante.getCaminho());
+			File file = new File(this.pathComprovanteVinculoSocietarioSRH + comprovante.getCaminho());
 			FileOutputStream fop = new FileOutputStream(file);
 			fop.write(arquivo.getData());
 			fop.flush();
@@ -812,8 +822,9 @@ public class PessoaBean implements Serializable {
 	
 	public void abrirComprovante(String caminho) {
 		try {
-			Parametro parametro = parametroService.getByNome("pathComprovanteVinculoSocietarioSRH");
-			String caminhoComprovante = parametro.getValor() + caminho;
+			//Parametro parametro = parametroService.getByNome("pathComprovanteVinculoSocietarioSRH");
+			String path = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteContratoSocial");
+			String caminhoComprovante = path + caminho;
 			InputStream in = new FileInputStream(caminhoComprovante);
 			byte[] declaracaoBytes = IOUtils.toByteArray(in);
 			relatorioUtil.openPdf(declaracaoBytes, caminhoComprovante);

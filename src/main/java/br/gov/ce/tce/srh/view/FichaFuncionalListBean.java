@@ -24,6 +24,7 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("fichaFuncionalListBean")
@@ -99,19 +100,20 @@ public class FichaFuncionalListBean implements Serializable {
 	        String imagemPessoa = null;
 
 			// pegando o caminho do arquivo no servidor
-	        Parametro parametro = parametroService.getByNome("pathImageSRH");
-
+	       // Parametro parametro = parametroService.getByNome("pathImageSRH");
+	        String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.fotofunc");
+	        
 	        InputStream in = null;
 			try {
 				
 				if ( entidade.getPessoal().getFoto() != null && !entidade.getPessoal().getFoto().equals("") ) {
-					in = new FileInputStream( parametro.getValor() + entidade.getPessoal().getFoto() );
-					imagemPessoa = parametro.getValor() + entidade.getPessoal().getFoto();
+					in = new FileInputStream( caminho + entidade.getPessoal().getFoto() );
+					imagemPessoa = caminho + entidade.getPessoal().getFoto();
 				}
 
 			} catch (FileNotFoundException e) {
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-				imagemPessoa = parametro.getValor() + "semfoto.png";
+				imagemPessoa = caminho + "semfoto.png";
 			} finally {
 				IOUtils.closeQuietly(in);				
 			}
@@ -145,19 +147,20 @@ public class FichaFuncionalListBean implements Serializable {
 	        String imagemFichaAntiga = entidade.getPessoal().getFicha();
 
 			// pegando o caminho do arquivo no servidor
-	        Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
-
+	        //Parametro parametro = parametroService.getByNome("pathFichaFuncionalSRH");
+	        String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.fichaFuncional");
+	        
 			try {
 
 				// testando o carregamento da foto
-				imagemFichaAntiga = parametro.getValor() + imagemFichaAntiga;
+				imagemFichaAntiga = caminho + imagemFichaAntiga;
 				InputStream in = new FileInputStream( imagemFichaAntiga );
 				byte[] imagemFichaAntigaBytes = IOUtils.toByteArray(in);
 				relatorioUtil.openPdf(imagemFichaAntigaBytes, imagemFichaAntiga);
 
 			} catch (FileNotFoundException e) {
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-				imagemFichaAntiga = parametro.getValor() + "semfoto.png";
+				imagemFichaAntiga = caminho + "semfoto.png";
 			}			
 
 		} catch (SRHRuntimeException e) {

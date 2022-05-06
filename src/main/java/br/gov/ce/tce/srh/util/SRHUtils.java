@@ -829,5 +829,29 @@ public class SRHUtils {
 		}
 		return comboAno;
 	}
+	
+	public static String getDadosParametroProperties(String key)  {
+		String resourceName = "application.properties"; // could also be a constant
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		Properties props = new Properties();
+		InputStream resourceStream = null;
+		try {
+		    resourceStream = loader.getResourceAsStream(resourceName);
+		    props.load(resourceStream);
+			
+			return props.getProperty(key);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (resourceStream != null) {
+				try {
+					resourceStream.close();
+				} catch (IOException e) {					
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
 
 }
