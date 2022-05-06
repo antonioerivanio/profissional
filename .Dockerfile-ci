@@ -1,0 +1,48 @@
+# Estágio de criação do arquivo de keystore
+ARG REGISTRY_ADRESS=packages.tce.ce.gov.br:5000
+FROM ${REGISTRY_ADRESS}/devops/docker/openssl:1.1-alpine AS keystore
+
+ARG SSL_CERT \
+    SSL_KEY \
+    SSL_KEY_STORE_PASSWORD
+
+ENV SSL_CERT=$SSL_CERT \
+    SSL_KEY=$SSL_KEY \
+    SSL_KEY_STORE_PASSWORD=$SSL_KEY_STORE_PASSWORD
+
+RUN set -eux; \
+    openssl pkcs12 \
+      -export \
+      -in $SSL_CERT \
+      -inkey $SSL_KEY \
+      -password env:SSL_KEY_STORE_PASSWORD \
+      -name "keystore" \
+      -out /tmp/keystore.p12
+
+
+# Estágio do webserver Tomcat
+FROM ${REGISTRY_ADRESS}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
+
+ARG SSL_KEY_STORE_DEFAULT_PATH \
+    SSL_KEY_STORE_PASSWORD \
+    SERVER_CONFIG_FILE=server.xml
+
+ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH} \
+    SSL_KEY_STORE_PASSWORD=${SSL_KEY_STORE_PASSWORD}
+
+# Cópia do keystore a partir do estágio anterior
+COPY --from=keystore /tmp/keystore.p12 ${SSL_KEY_STORE_DEFAULT_PATH}
+# Cópia do arquivo de configuração
+COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SERVER_CONFIG_FILE} conf/${SERVER_CONFIG_FILE}
+
+RUN set -eux; \
+    # Configuração da permissão apropriada para o arquivo de configuração
+    chmod 600 conf/${SERVER_CONFIG_FILE}; \
+    # Remoção do conteúdo default do Tomcat do path webapps
+    rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT; \
+    # Atribuição das variáveis do keystore para o contexto do Tomcat
+    export JAVA_OPTS="$JAVA_OPTS -Dkeystore_path=${SSL_KEY_STORE_DEFAULT_PATH} -Dkeystore_pass=${SSL_KEY_STORE_PASSWORD}"
+
+# Cópia do arquivo .war, gerado no job project_release da pipeline
+# Renomeação para ROOT.war é necessária
+COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} target/*.war ${TOMCAT_HOME_DIR}/webapps/ROOT.war
