@@ -1,0 +1,35 @@
+# Estágio de build da aplicação
+ARG CI_REPOSITORY=packages.tce.ce.gov.br
+FROM ${CI_REPOSITORY}/devops/docker/maven:3.8-openjdk8-alpine AS maven
+
+ARG CI_REPOSITORY \
+    CI_REGISTRY_USER \
+    CI_REGISTRY_PASSWORD \
+    MAVEN_CLI_OPTS="-s settings.xml"
+
+ENV CI_REPOSITORY=${CI_REPOSITORY} \
+    CI_REGISTRY_USER=${CI_REGISTRY_USER} \
+    CI_REGISTRY_PASSWORD=${CI_REGISTRY_PASSWORD}
+
+COPY .m2/settings.xml .
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn ${MAVEN_CLI_OPTS} clean package
+
+
+# Estágio do webserver Tomcat
+FROM ${CI_REPOSITORY}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
+
+ARG SSL_KEY_STORE_DEFAULT_PATH \
+    SSL_KEY_STORE_PASSWORD
+
+ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH} \
+    SSL_KEY_STORE_PASSWORD=${SSL_KEY_STORE_PASSWORD}
+
+# Remoção do conteúdo default do Tomcat do path webapps
+RUN rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
+
+# Cópia do arquivo .war a partir do estágio anterior
+# Renomeação para ROOT.war é necessária
+COPY --from=maven --chown=${TOMCAT_USER}:${TOMCAT_GROUP} target/*.war ${TOMCAT_HOME_DIR}/webapps/ROOT.war

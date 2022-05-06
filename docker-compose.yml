@@ -1,0 +1,25 @@
+---
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: .Dockerfile-compose
+      args:
+        CI_REPOSITORY: "${CI_REPOSITORY}"
+        CI_REGISTRY_USER: "${CI_REGISTRY_USER}"
+        CI_REGISTRY_PASSWORD: "${CI_REGISTRY_PASSWORD}"
+        SSL_KEY_STORE_DEFAULT_PATH: "${SSL_KEY_STORE_DEFAULT_PATH}"
+        SSL_KEY_STORE_PASSWORD: "${SSL_KEY_STORE_PASSWORD}"
+    env_file: .env
+    container_name: "${CI_PROJECT_NAME}"
+    hostname: "${K8S_APP_ING}"
+    ports:
+      - "${APP_LOCAL_PORT}:8443"
+    networks:
+      - bridge_mode
+    shm_size: "256m"
+
+networks:
+  bridge_mode:
+    driver: bridge
