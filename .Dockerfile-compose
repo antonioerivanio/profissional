@@ -21,12 +21,6 @@ RUN mvn ${MAVEN_CLI_OPTS} clean package
 # Estágio do webserver Tomcat
 FROM ${CI_REPOSITORY}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
 
-ARG SSL_KEY_STORE_DEFAULT_PATH \
-    SSL_KEY_STORE_PASSWORD
-
-ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH} \
-    SSL_KEY_STORE_PASSWORD=${SSL_KEY_STORE_PASSWORD}
-
 # Remoção do conteúdo default do Tomcat do path webapps
 RUN rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
 
