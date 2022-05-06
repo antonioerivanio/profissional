@@ -141,7 +141,7 @@ public class EstagiarioESocialDAO {
 	public int count(String nome, String cpf) {
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(e) FROM EstagiarioESocial e inner join e.funcional f WHERE 1=1 ");
+		sql.append(" Select count(e) FROM EstagiarioESocial e inner join e.funcional f WHERE 1=1 and e.natEstagio is not null ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -168,7 +168,7 @@ public class EstagiarioESocialDAO {
 	public List<EstagiarioESocial> search(String nome, String cpf, Integer first, Integer rows) {
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT e FROM EstagiarioESocial e inner join fetch e.funcional f WHERE 1=1 ");
+		sql.append("  SELECT e FROM EstagiarioESocial e inner join fetch e.funcional f WHERE 1=1 and e.natEstagio is not null ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
