@@ -26,6 +26,7 @@ FROM ${REGISTRY_ADRESS}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
 ARG SSL_KEY_STORE_DEFAULT_PATH
 ARG SSL_KEY_STORE_PASSWORD
 ARG SERVER_CONFIG_FILE=server.xml
+ARG SETENV_SCRIPT_FILE=setenv.sh
 
 ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH} \
     SSL_KEY_STORE_PASSWORD=${SSL_KEY_STORE_PASSWORD}
@@ -34,6 +35,8 @@ ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH} \
 COPY --from=keystore /tmp/keystore.p12 ${SSL_KEY_STORE_DEFAULT_PATH}
 # Cópia do arquivo de configuração
 COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SERVER_CONFIG_FILE} conf/${SERVER_CONFIG_FILE}
+# Cópia do script que seta as variáveis de ambiente
+COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SETENV_SCRIPT_FILE} bin/${SETENV_SCRIPT_FILE}
 
 RUN set -eux; \
     # Configuração da permissão apropriada para o arquivo de configuração
