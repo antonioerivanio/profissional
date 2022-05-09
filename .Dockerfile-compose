@@ -1,5 +1,5 @@
-# Estágio de build da aplicação
 ARG CI_REPOSITORY=packages.tce.ce.gov.br
+# Estágio de build da aplicação
 FROM ${CI_REPOSITORY}/devops/docker/maven:3.8-openjdk8-alpine AS maven
 
 ARG CI_REPOSITORY \
@@ -25,5 +25,4 @@ FROM ${CI_REPOSITORY}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
 RUN rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
 
 # Cópia do arquivo .war a partir do estágio anterior
-# Renomeação para ROOT.war é necessária
-COPY --from=maven --chown=${TOMCAT_USER}:${TOMCAT_GROUP} target/*.war ${TOMCAT_HOME_DIR}/webapps/ROOT.war
+COPY --from=maven --chown=${TOMCAT_USER}:${TOMCAT_GROUP} target/*.war ${TOMCAT_HOME_DIR}/webapps/srh.war

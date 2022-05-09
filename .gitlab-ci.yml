@@ -87,7 +87,7 @@ chart_deploy:
   extends: .chart_deploy
   stage: deploy
   environment:
-    url: https://${K8S_APP_ING}
+    url: https://${K8S_APP_ING}/srh
     on_stop: chart_uninstall
 
 

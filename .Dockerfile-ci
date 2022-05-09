@@ -55,5 +55,4 @@ RUN set -eux; \
     rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
 
 # Cópia do arquivo .war, gerado no job project_release da pipeline
-# Renomeação para ROOT.war é necessária
-COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} target/*.war ${TOMCAT_HOME_DIR}/webapps/ROOT.war
+COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} target/*.war ${TOMCAT_HOME_DIR}/webapps/srh.war
