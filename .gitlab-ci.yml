@@ -46,6 +46,17 @@ chart_build:
 image_build:
   extends: .image_build
   stage: package
+  script:
+    - |
+      echo "Building and shipping image to ${CI_REPOSITORY}:${CI_REGISTRY_PUSH_PORT}/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+      /kaniko/executor \
+        --build-arg SSL_CERT="${SSL_CERT}" \
+        --build-arg SSL_KEY="${SSL_KEY}" \
+        --build-arg SSL_KEY_STORE_PASSWORD="${SSL_KEY_STORE_PASSWORD}" \
+        --build-arg SSL_KEY_STORE_DEFAULT_PATH="${SSL_KEY_STORE_DEFAULT_PATH}" \
+        --context $CI_PROJECT_DIR \
+        --dockerfile $CI_PROJECT_DIR/.Dockerfile-ci \
+        $KANIKO_CACHE_ARGS $FORMATTEDTAGLIST $IMAGE_LABELS
   needs:
     - job: project_release
 
