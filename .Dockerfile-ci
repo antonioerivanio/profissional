@@ -39,9 +39,7 @@ RUN set -eux; \
     # Configuração da permissão apropriada para o arquivo de configuração
     chmod 600 conf/${SERVER_CONFIG_FILE}; \
     # Remoção do conteúdo default do Tomcat do path webapps
-    rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT; \
-    # Atribuição das variáveis do keystore para o contexto do Tomcat
-    export JAVA_OPTS="$JAVA_OPTS -Dkeystore_path=${SSL_KEY_STORE_DEFAULT_PATH} -Dkeystore_pass=${SSL_KEY_STORE_PASSWORD}"
+    rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
 
 # Cópia do arquivo .war, gerado no job project_release da pipeline
 # Renomeação para ROOT.war é necessária
