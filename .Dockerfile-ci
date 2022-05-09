@@ -41,6 +41,8 @@ COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SETENV_SCRIPT_FILE} bin/${SETENV
 RUN set -eux; \
     # Configuração da permissão apropriada para o arquivo de configuração
     chmod 600 conf/${SERVER_CONFIG_FILE}; \
+    # Configuração da permissão apropriada para o script das variáveis de ambiente
+    chmod 750 bin/${SETENV_SCRIPT_FILE}; \
     # Remoção do conteúdo default do Tomcat do path webapps
     rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
 
