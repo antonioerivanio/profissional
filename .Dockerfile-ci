@@ -20,29 +20,37 @@ RUN set -eux; \
       -out /tmp/keystore.p12
 
 
-# Estágio do webserver Tomcat
-FROM ${REGISTRY_ADRESS}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
+# Estágio de configuração do arquivo server.xml
+FROM ${REGISTRY_ADRESS}/devops/docker/alpine:3.14-tools AS envsubst
 
+ARG SERVER_CONFIG_FILE=server.xml
 ARG SSL_KEY_STORE_DEFAULT_PATH
 ARG SSL_KEY_STORE_PASSWORD
-ARG SERVER_CONFIG_FILE=server.xml
-ARG SETENV_SCRIPT_FILE=setenv.sh
 
 ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH} \
     SSL_KEY_STORE_PASSWORD=${SSL_KEY_STORE_PASSWORD}
 
-# Cópia do keystore a partir do estágio anterior
+COPY ./${SERVER_CONFIG_FILE} ${SERVER_CONFIG_FILE}.tmpl
+
+RUN envsubst < ${SERVER_CONFIG_FILE}.tmpl > /tmp/${SERVER_CONFIG_FILE}
+
+
+# Estágio do webserver Tomcat
+FROM ${REGISTRY_ADRESS}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
+
+ARG SERVER_CONFIG_FILE=server.xml
+ARG SSL_KEY_STORE_DEFAULT_PATH
+
+ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH}
+
+# Cópia do keystore a partir do estágio "keystore"
 COPY --from=keystore /tmp/keystore.p12 ${SSL_KEY_STORE_DEFAULT_PATH}
-# Cópia do arquivo de configuração
-COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SERVER_CONFIG_FILE} conf/${SERVER_CONFIG_FILE}
-# Cópia do script que seta as variáveis de ambiente
-COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SETENV_SCRIPT_FILE} bin/${SETENV_SCRIPT_FILE}
+# Cópia do arquivo de configuração a partir do estágio "envsubst"
+COPY --from=envsubst --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SERVER_CONFIG_FILE} conf/${SERVER_CONFIG_FILE}
 
 RUN set -eux; \
     # Configuração da permissão apropriada para o arquivo de configuração
     chmod 600 conf/${SERVER_CONFIG_FILE}; \
-    # Configuração da permissão apropriada para o script das variáveis de ambiente
-    chmod 750 bin/${SETENV_SCRIPT_FILE}; \
     # Remoção do conteúdo default do Tomcat do path webapps
     rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
 
