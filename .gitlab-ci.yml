@@ -1,6 +1,6 @@
 ---
 include:
-  - project: 'https://devops-citemplates-acess-token:MZXcKxhVJ_ED2FxaiHsx@gitlabci.tce.ce.gov.br/devops/gitlab/ci-templates'
+  - project: 'devops/gitlab/ci-templates'
     ref: 0.5.1
     file:
       - '/workflows/rules.yml'
