@@ -171,8 +171,11 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 	@Column(name = "CBO_CARGO")
 	private String CBOCargo;
 	
-//	@Column(name = "CBO_FUNCAO")
-//	private String CBOFuncao;
+	@Column(name="NM_FUNCAO")
+	private String nmFuncao;
+	
+	@Column(name = "CBO_FUNCAO")
+	private String CBOFuncao;
 	
 	
 //	@Column(name = "NAT_ATIVIDADE")
@@ -201,9 +204,6 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 //	
 //	@Column(name = "INI_VALID")
 //	private String iniValid;
-//	
-//	@Column(name="NM_FUNCAO")
-//	private String nmFuncao;
 //	
 //	@Column(name="DEF_OBSERVACAO")
 //	private String defObservacao;
@@ -472,7 +472,6 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 	public void setFonePrinc(String fonePrinc) {
 		
 			this.fonePrinc = fonePrinc;	
-		
 	}
 	public String getEmailPrinc() {
 		return emailPrinc;
@@ -533,5 +532,17 @@ public class EstatutarioESocial extends BasicEntity<Long> implements Serializabl
 	}
 	public void setTpRegPrev(Long tpRegPrev) {
 		this.tpRegPrev = tpRegPrev;
+	}
+	public String getNmFuncao() {
+		return nmFuncao;
+	}
+	public void setNmFuncao(String nmFuncao) {
+		this.nmFuncao = nmFuncao;
+	}
+	public String getCBOFuncao() {
+		return CBOFuncao;
+	}
+	public void setCBOFuncao(String cBOFuncao) {
+		CBOFuncao = cBOFuncao;
 	}
 }

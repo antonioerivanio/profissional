@@ -75,6 +75,8 @@ public class EstatutarioESocialDAO {
 		sql.append("    tb_funcional.dataexercicio as DT_INICIO, ");	
 		sql.append("    tb_ocupacao.nomenclatura as NM_CARGO, ");
 		sql.append("    tb_ocupacao.cbo as CBO_CARGO, ");
+		sql.append("    tb_representacaocargo.nomenclatura as NM_FUNCAO, ");
+		sql.append("    tb_representacaocargo.cbo as CBO_FUNCAO, ");
 		sql.append("    fp_cadastro.vpad as VR_SAL_FX, ");
 		sql.append("    CASE WHEN fd.FLFISICA IS NULL THEN 'N' ELSE 'S' END AS DEF_FISICA, ");
 		sql.append("	CASE WHEN fd.FLVISUAL IS NULL THEN 'N' ELSE 'S' END AS DEF_VISUAL, ");
@@ -102,6 +104,8 @@ public class EstatutarioESocialDAO {
 		sql.append("              ON srh.tb_funcional.id = srh.tb_previdlimite.idfuncional ");
 		sql.append("	   LEFT JOIN srh.tb_funcionaldeficiencia fd ");
 		sql.append("	   		  ON fd.idfuncional = tb_funcional.ID ");
+		sql.append("	   LEFT JOIN srh.tb_representacaocargo ");
+		sql.append("	   		  ON srh.tb_funcional.idrepresentacaocargo = tb_representacaocargo.id ");
 		sql.append("       INNER JOIN srh.tb_ocupacao ");
 		sql.append("               ON srh.tb_funcional.idocupacao = srh.tb_ocupacao.id ");
 		sql.append("       INNER JOIN srh.tb_pessoal ");
