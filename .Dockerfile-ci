@@ -44,9 +44,9 @@ ARG SSL_KEY_STORE_DEFAULT_PATH
 ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH}
 
 # Cópia do keystore a partir do estágio "keystore"
-COPY --from=keystore /tmp/keystore.p12 ${SSL_KEY_STORE_DEFAULT_PATH}
+COPY --from=keystore --chown=${TOMCAT_USER}:${TOMCAT_GROUP} /tmp/keystore.p12 ${SSL_KEY_STORE_DEFAULT_PATH}
 # Cópia do arquivo de configuração a partir do estágio "envsubst"
-COPY --from=envsubst --chown=${TOMCAT_USER}:${TOMCAT_GROUP} ./${SERVER_CONFIG_FILE} conf/${SERVER_CONFIG_FILE}
+COPY --from=envsubst --chown=${TOMCAT_USER}:${TOMCAT_GROUP} /tmp/${SERVER_CONFIG_FILE} conf/${SERVER_CONFIG_FILE}
 
 RUN set -eux; \
     # Configuração da permissão apropriada para o arquivo de configuração
