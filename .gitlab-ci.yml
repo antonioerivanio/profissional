@@ -1,6 +1,6 @@
 ---
 include:
-  - project: 'devops/gitlab/ci-templates'
+  - project: 'pipelines/ci-templates'
     ref: 0.5.1
     file:
       - '/workflows/rules.yml'
