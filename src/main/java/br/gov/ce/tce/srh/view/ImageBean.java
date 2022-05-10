@@ -20,6 +20,7 @@ import br.gov.ce.tce.srh.domain.Parametro;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("imageBean")
@@ -42,9 +43,10 @@ public class ImageBean implements Serializable {
 			ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
 
 			// pegando o caminho do arquivo no servidor
-			Parametro parametro = parametroService.getByNome("pathImageSRH");
+			//Parametro parametro = parametroService.getByNome("pathImageSRH");
+			String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.fotofunc");
 
-			if (parametro == null)
+			if (caminho == null)
 				throw new SRHRuntimeException("Parâmetro do caminho da imagem não encontrado na tabela SAPJAVA.FWPARAMETER");
 
 			// pegando a foto
@@ -53,7 +55,7 @@ public class ImageBean implements Serializable {
 			try {
 				// pegando a foto
 				if (getFoto() != null && !getFoto().equalsIgnoreCase("")) {
-					in = new FileInputStream(parametro.getValor() + getFoto());
+					in = new FileInputStream(caminho + getFoto());
 				}	
 
 			} catch (FileNotFoundException e) {

@@ -215,11 +215,12 @@ public class PublicacaoBean implements Serializable {
 		String data = formato.format(new Date());
 
         // pegando o caminho do arquivo no servidor
-        Parametro parametro = parametroService.getByNome("CAMARQPUB");
+        //Parametro parametro = parametroService.getByNome("CAMARQPUB");
+		String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.img");
 
 		try {
 
-	       	if (parametro == null)
+	       	if (caminho == null)
 				throw new SRHRuntimeException("Parametro do caminho do documento nao encontrado na tabela SAPJAVA.FWPARAMETER");
 
 	       	if ( getEntidade().getTipoPublicacao() == null )
@@ -234,7 +235,7 @@ public class PublicacaoBean implements Serializable {
 				getEntidade().setArquivo( "DOU" + data + SRHUtils.getTipoArquivo( arquivo.getName() ) );
 
 			// gravando em disco
-			java.io.File file = new java.io.File(parametro.getValor() + getEntidade().getArquivo());
+			java.io.File file = new java.io.File(caminho + getEntidade().getArquivo());
 			FileOutputStream fop;
 
 			fop = new FileOutputStream(file);
@@ -261,15 +262,16 @@ public class PublicacaoBean implements Serializable {
 		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();  
 
 		// pegando o caminho
-		Parametro parametro = parametroService.getByNome("CAMARQPUB");
+		//Parametro parametro = parametroService.getByNome("CAMARQPUB");
+		String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.img");
 
 		try {
 
-			if (parametro == null)
+			if (caminho == null)
 				throw new SRHRuntimeException("Parametro do caminho da imagem nao encontrado na tabela SAPJAVA.FWPARAMETER");
 
 			// pegando o arquivo
-			File file = new File(parametro.getValor() + getEntidade().getArquivo()); // LINHA ALTERADA 
+			File file = new File(caminho + getEntidade().getArquivo()); // LINHA ALTERADA 
 
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + getEntidade().getArquivo() + "\";");
 			response.setContentLength((int) file.length());
