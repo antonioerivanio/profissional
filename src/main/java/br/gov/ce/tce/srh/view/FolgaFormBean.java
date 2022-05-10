@@ -30,6 +30,7 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
 @Component("folgaFormBean")
@@ -190,17 +191,18 @@ static Logger logger = Logger.getLogger(FolgaListBean.class);
 		try {
 
 			// pegando o caminho do arquivo no servidor
-			Parametro parametro = parametroService.getByNome("pathComprovanteFolgaSRH");
-
-			if (parametro == null) {
+			//Parametro parametro = parametroService.getByNome("pathComprovanteFolgaSRH");
+			String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteFolga");
+			
+			if (caminho == null) {
 				throw new SRHRuntimeException(
-						"Parâmetro do caminho do comprovante não encontrado na tabela SRH.TB_PARAMETRO");				
+						"Parâmetro do caminho do comprovante não encontrado");				
 			}
 
 			setComprovante(event.getUploadedFile());
 			
 			// gravando em disco
-			File file = new File(parametro.getValor() + comprovante.getName());
+			File file = new File(caminho + comprovante.getName());
 			FileOutputStream fop;
 			
 			// setando o nome do comprovante
@@ -227,8 +229,10 @@ static Logger logger = Logger.getLogger(FolgaListBean.class);
 	public void comprovanteFolga() {
 		try {
 			
-			Parametro parametro = parametroService.getByNome("pathComprovanteFolgaSRH");
-			String comprovante = parametro.getValor() + entidade.getCaminhoComprovante();
+			//Parametro parametro = parametroService.getByNome("pathComprovanteFolgaSRH");
+			String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteFolga");
+
+			String comprovante = caminho + entidade.getCaminhoComprovante();
 			InputStream in = new FileInputStream(comprovante);
 			byte[] comprovanteBytes = IOUtils.toByteArray(in);
 			relatorioUtil.openPdf(comprovanteBytes, comprovante);

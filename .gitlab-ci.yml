@@ -1,0 +1,96 @@
+---
+include:
+  - project: 'pipelines/ci-templates'
+    ref: 0.5.1
+    file:
+      - '/workflows/rules.yml'
+      - '/variables/main.yml'
+      - '/variables/kaniko/main.yml'
+      - '/variables/helm/main.yml'
+      - '/stages/main.yml'
+      - '/default.yml'
+      - '/jobs/main.yml'
+      - '/jobs/kaniko/build.yml'
+      - '/jobs/helm/lint.yml'
+      - '/jobs/helm/package.yml'
+      - '/jobs/helm/push.yml'
+      - '/jobs/helm/deploy.yml'
+      - '/jobs/crane/retag.yml'
+      - '/jobs/java/maven.yml'
+      - '/variables/java/maven.yml'
+
+
+chart_lint:
+  extends: .chart_lint
+  stage: test
+  needs: []
+
+
+project_release:
+  extends: .project_release
+  stage: test
+  artifacts:
+    expire_in: 1 day
+    name: "$CI_JOB_NAME"
+    paths:
+      - target/*.war
+
+
+chart_build:
+  extends: .chart_build
+  stage: package
+  needs:
+    - job: chart_lint
+
+
+image_build:
+  extends: .image_build
+  stage: package
+  script:
+    - |
+      echo "Building and shipping image to ${CI_REPOSITORY}:${CI_REGISTRY_PUSH_PORT}/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
+      /kaniko/executor \
+        --build-arg SSL_CERT="${SSL_CERT}" \
+        --build-arg SSL_KEY="${SSL_KEY}" \
+        --build-arg SSL_KEY_STORE_PASSWORD="${SSL_KEY_STORE_PASSWORD}" \
+        --build-arg SSL_KEY_STORE_DEFAULT_PATH="${SSL_KEY_STORE_DEFAULT_PATH}" \
+        --context $CI_PROJECT_DIR \
+        --dockerfile $CI_PROJECT_DIR/.Dockerfile-ci \
+        $KANIKO_CACHE_ARGS $FORMATTEDTAGLIST $IMAGE_LABELS
+  needs:
+    - job: project_release
+
+
+chart_release:
+  extends: .chart_release
+  stage: release
+  needs:
+    - job: chart_build
+
+
+retag_to_staging:
+  extends: .retag_to_staging
+  stage: retag
+
+
+retag_hotfix:
+  extends: .retag_hotfix
+  stage: retag
+
+
+retag_to_production:
+  extends: .retag_to_production
+  stage: retag
+
+
+chart_deploy:
+  extends: .chart_deploy
+  stage: deploy
+  environment:
+    url: https://${K8S_APP_ING}/srh
+    on_stop: chart_uninstall
+
+
+chart_uninstall:
+  extends: .chart_uninstall
+  stage: deploy

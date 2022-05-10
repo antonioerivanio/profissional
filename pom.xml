@@ -23,7 +23,20 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
   
-  
+	<distributionManagement>
+		<repository>
+			<id>nexus</id>
+			<name>Nexus Releases</name>
+			<url>https://${env.CI_REPOSITORY}/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>Nexus Snapshot</name>
+			<url>https://${env.CI_REPOSITORY}/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+
 	<dependencies> 
 	
 		
