@@ -1,7 +1,5 @@
 package br.gov.ce.tce.srh.domain;
 
-import java.util.Objects;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

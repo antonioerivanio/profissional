@@ -193,7 +193,10 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 	}
 
 	public Licenca getLicenca() {
-		return licenca;
+		if(licenca != null)
+			return licenca;
+		
+		return null;
 	}
 
 	public void setLicenca(Licenca licenca) {

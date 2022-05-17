@@ -48,6 +48,8 @@
 						<h:selectOneMenu id="afastamento"									
 										 converter="afastamentoConverter" 
 										 rendered="#{!afastamentoFormBean.emEdicao}"
+										 required="true"
+										 requiredMessage="Afastamento obrigatório"
 										 value="#{afastamentoFormBean.entidade.licenca}"
 										 >
 						  	<f:selectItem id="selecioneAfastamento" itemLabel="Selecione..."/>

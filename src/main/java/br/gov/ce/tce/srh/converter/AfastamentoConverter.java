@@ -25,8 +25,10 @@ public class AfastamentoConverter implements Converter {
 
 		AfastamentoFormBean afastamentoFormBean = (AfastamentoFormBean) vex.getValue(ctx.getELContext());
 		for (Licenca licenca : afastamentoFormBean.getLicencaList()) {
-			if (licenca.getId().equals(Long.valueOf(id))) {
-				return licenca;
+			if(id != null && !id.contentEquals("Selecione...")) {
+				if (licenca.getId().equals(Long.valueOf(id))) {
+					return licenca;
+				}
 			}
 		}
 		return null;

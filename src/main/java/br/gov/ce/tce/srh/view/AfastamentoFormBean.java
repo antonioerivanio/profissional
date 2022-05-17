@@ -18,6 +18,7 @@ import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.enums.TipoLicencaEnum;
+import br.gov.ce.tce.srh.exception.AfastamentoEsocialException;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AfastamentoESocialService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -77,7 +78,12 @@ public class AfastamentoFormBean implements Serializable {
 				 entidade = afastamentoESocialService.getEvento2230ByServidor(servidorFuncional, licenca, possuiCargo);
 				 entidade.setLicenca(licenca);
 				
-			} catch (Exception e) {		
+			}
+			catch (AfastamentoEsocialException e) {
+				FacesUtil.addErroMessage(e.getMessage());
+				logger.error(e.getMessage());
+			}
+			catch (Exception e) {		
 				e.printStackTrace();
 				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());

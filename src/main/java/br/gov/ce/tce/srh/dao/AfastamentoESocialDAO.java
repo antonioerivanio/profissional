@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Licenca;
+import br.gov.ce.tce.srh.exception.AfastamentoEsocialException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
@@ -34,15 +35,36 @@ public class AfastamentoESocialDAO {
 		entityManager.remove(entidade);
 	}
 	
-	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional, Licenca licenca,  boolean possuiCargo) {
+	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional, Licenca licenca,  boolean possuiCargo)  throws AfastamentoEsocialException  {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS2230(possuiCargo), AfastamentoESocial.class);
+			
+			String sql = getParametrosWhere(licenca, getSQLEventoS2230(possuiCargo));
+			
+			Query query = entityManager.createNativeQuery(sql,  AfastamentoESocial.class);
 			query.setParameter("idFuncional", servidorFuncional.getId());
-			query.setParameter("dataLicencaInicio", licenca.getInicio(), TemporalType.DATE);
-			query.setParameter("dataLicencaFim", licenca.getFim(), TemporalType.DATE);
+			
+			adicionarParametrosWhere(licenca, query);
+			
 			return (AfastamentoESocial) query.getSingleResult();
 		} catch (NoResultException e) {
-			return null;
+			throw new AfastamentoEsocialException("Nenhum Afastamento encontrado!");
+		}
+	}
+	
+	private String getParametrosWhere(Licenca licenca, StringBuffer sql) {
+		if(licenca != null && licenca.isDataInicioFimLicencaNotNull()) {
+			sql.append("AND tb_licenca.inicio = :dataLicencaInicio ");
+			sql.append("AND tb_licenca.fim  =:dataLicencaFim ");
+			sql.append("OR tb_licenca.fim IS NULL ");
+		}
+		
+		return sql.toString();
+	}
+	
+	private void adicionarParametrosWhere(Licenca licenca, Query query) {
+		if(licenca != null  && licenca.isDataInicioFimLicencaNotNull()) {
+			query.setParameter("dataLicencaInicio", licenca.getInicio(), TemporalType.DATE);
+			query.setParameter("dataLicencaFim", licenca.getFim(), TemporalType.DATE);
 		}
 	}
 	
@@ -50,7 +72,7 @@ public class AfastamentoESocialDAO {
 		return entityManager.find(AfastamentoESocial.class, id);
 	}
 	
-	public String getSQLEventoS2230(boolean possuiCargo) {
+	public StringBuffer getSQLEventoS2230(boolean possuiCargo) {
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append("SELECT 0 AS ID, ");
@@ -74,12 +96,12 @@ public class AfastamentoESocialDAO {
 		sql.append("ON  srh.tb_funcional.idpessoal = srh.tb_pessoal.id ");
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
-		sql.append("WHERE  tb_funcional.id = :idFuncional  ");
-		sql.append("AND tb_licenca.inicio = :dataLicencaInicio ");
-		sql.append("AND tb_licenca.fim  =:dataLicencaFim ");
-		sql.append("OR tb_licenca.fim IS NULL ");
+		sql.append("WHERE  tb_funcional.id = :idFuncional  ");		
+		//sql.append("AND tb_licenca.inicio = :dataLicencaInicio ");
+		//sql.append("AND tb_licenca.fim  =:dataLicencaFim ");
+		//sql.append("OR tb_licenca.fim IS NULL ");
 		          
-		return sql.toString();
+		return sql;
 	}
 	
 	@Transactional
