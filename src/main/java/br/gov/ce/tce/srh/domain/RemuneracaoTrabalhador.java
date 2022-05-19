@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -89,6 +90,8 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 	
 	@Column(name = "COD_SUSP")
 	private Integer codSusp;
+	@Transient
+	private String nome;
 
 	public Long getId() {
 		return id;
@@ -256,6 +259,14 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 
 	public void setCodSusp(Integer codSusp) {
 		this.codSusp = codSusp;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}	
 	
 }

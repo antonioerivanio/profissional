@@ -20,7 +20,7 @@
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 			
-			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR,ROLE_CONSULTA_CADASTRO_PESSOAL')}">
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR, ROLE_CONSULTA_CADASTRO_PESSOAL')}">
 				
 				<div class="input-box box-50">
 					<label for="">Nome</label>

@@ -127,7 +127,7 @@ public class AdmissaoEsocialDAO {
 		sql.append(" FROM ");
 		sql.append(" ( ");
 		sql.append("  SELECT ");
-		sql.append(" 0 as id, ");
+		sql.append(" f.id-10000 as id, ");
 		sql.append( "f.id||'-'||o.id AS referencia, ");	
 		sql.append(" f.id AS idfuncional, ");
 		sql.append(" p.nome AS nm_trab, ");

@@ -62,6 +62,8 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	@Column(name = "QTD_DIAS_TRAB")
 	private Byte qtdDiasTrab;
 	
+	@Column(name="FLINFOREMUNPERANTERIORES")
+	private Integer flInfoRemunPerAnteriores;
 	
 	public String getIdeDmDev() {
 		return ideDmDev;
@@ -181,7 +183,14 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 
 	public void setQtdDiasTrab(Byte qtdDiasTrab) {
 		this.qtdDiasTrab = qtdDiasTrab;
-	}	
-	
+	}
+
+	public Integer getFlInfoRemunPerAnteriores() {
+		return flInfoRemunPerAnteriores;
+	}
+
+	public void setFlInfoRemunPerAnteriores(Integer flInfoRemunPerAnteriores) {
+		this.flInfoRemunPerAnteriores = flInfoRemunPerAnteriores;
+	}		
 
 }

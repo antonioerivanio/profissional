@@ -33,7 +33,7 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 
 	public RemuneracaoTrabalhador salvar(RemuneracaoTrabalhador entidade) {
 
-		if (entidade.getId() == null || entidade.getId().equals(0l)) {
+		if (entidade.getId() == null || entidade.getId() < 0) {
 			entidade.setId(getMaxId());
 		}
 
@@ -108,150 +108,68 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		return query.getResultList();
 	}
 
-	public RemuneracaoTrabalhador getEventoS1200ByServidor(Funcional servidorFuncional) {
+	@SuppressWarnings("unchecked")
+	public List<RemuneracaoTrabalhador> getEventoS1200ByServidor(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS1200(), RemuneracaoTrabalhador.class);
-			query.setParameter("idFuncional",servidorFuncional.getId() );
-			return (RemuneracaoTrabalhador) query.getSingleResult();
+			Query query = entityManager.createNativeQuery(getSQLEventoS1200(servidorFuncional), RemuneracaoTrabalhador.class);
+			query.setParameter("mesReferencia", mesReferencia);
+			query.setParameter("anoReferencia", anoReferencia);
+			query.setParameter("periodoApuracao",periodoApuracao);
+			if(servidorFuncional != null) {
+				query.setParameter("idFuncional",servidorFuncional.getId() );
+			}
+			return  query.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}
 
 	}	
 	
-	public String getSQLEventoS1200() {
+	public String getSQLEventoS1200(Funcional servidorFuncional) {
 		StringBuffer sql = new StringBuffer();
+		
+		
+		
+		sql.append(" SELECT distinct dp.nome,   "); 
+		sql.append(" (f.id * -1) as id, ");
+		sql.append(" f.id as idfuncional, ");
+		sql.append(" f.id||'-'||:periodoApuracao as referencia, ");
+		sql.append("  1 as IND_APURACAO, ");
+		sql.append(" :periodoApuracao as PER_APUR,       ");
+		sql.append("  p.cpf as CPF_TRAB, ");
+		sql.append(" 1 as IND_MV, ");
+		sql.append("  1 as TP_INSC_OUTR_EMPR, ");
+		sql.append(" pj.cnpj as NR_INSC_OUTR_EMPR, ");
+		sql.append(" v.tipoesocial as COD_CATEG_OUTR_EMPR, ");
+		sql.append(" v.valoroutraempresa as VLR_REMUN_OE, ");
+		sql.append("  null as NM_TRAB, ");
+		sql.append(" null as DT_NASCTO, ");
+		sql.append(" null as TP_INSC_SUC_VINC, ");
+		sql.append(" null as NR_INSC_SUC_VINC, ");
+		sql.append("  null as MATRIC_ANT,   ");
+		sql.append("  null as DT_ADM, ");
+		sql.append(" null as OBSERVACAO, ");
+		sql.append(" null as TP_TRIB, ");
+		sql.append(" null as NR_PROC_JUD, ");
+		sql.append(" null as COD_SUSP ");
+		
+		sql.append(" FROM srh.fp_pagamentos pg ");
+		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
+		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
+		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
+		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		sql.append(" LEFT JOIN srh.tb_vinculorgps v ON v.idfuncional = f.id ");
+		sql.append(" LEFT JOIN srh.tb_pessoajuridica pj ON pj.id = v.idpessoajuridica ");
+		sql.append(" WHERE ano_esocial = :anoReferencia ");
+		sql.append(" AND mes_esocial = :mesReferencia");
+		sql.append(" AND dp.contribui_inss = 'S' ");
+		sql.append("AND dp.num_mes <> '13' ");
+		if(servidorFuncional != null) {
+			sql.append("AND f.id = :idFuncional ");
+		}
+		sql.append("ORDER BY dp.nome ");
 
-		sql.append(" SELECT ");
-		sql.append(" * ");
-		sql.append(" FROM ");
-		sql.append(" ( ");
-		sql.append("  SELECT ");
-		sql.append(" 0 as id, ");
-		sql.append( "f.id||'-'||o.id AS referencia, ");	
-		sql.append(" f.id AS idfuncional, ");
-		sql.append(" p.nome AS nm_trab, ");
-		sql.append(" p.cpf AS cpf_trab, ");
-		sql.append("  p.sexo AS sexo, ");
-		sql.append("  p.idraca AS raca_cor, ");
-		sql.append("  ec.codigoesocial AS est_civ, ");
-		sql.append("  p.idescolaridade AS grau_instr, ");
-		sql.append(" p.nomesocial AS NM_SOCIAL, ");
-		sql.append(" p.datanascimento AS dt_nasc, ");
-		sql.append(" pais_nascimento.codigo AS pais_nasc, ");
-		sql.append(" pais_nacionalidade.codigo AS pais_nac, ");
-		sql.append("  tl.codigo AS tp_lograd, ");
-		sql.append("  p.endereco AS dsc_lograd, ");
-		sql.append("  p.numero AS nr_lograd, ");
-		sql.append("  p.complemento AS complemento, ");
-		sql.append("  p.bairro AS bairro, ");
-		sql.append(" TRIM (p.cep) AS cep, ");
-		sql.append(" m.cod_municipio AS cod_munic_end, ");
-		sql.append("  m.uf AS uf_end, ");
-		sql.append("  TRIM (p.celular) AS fone_princ, ");
-		sql.append("  TRIM (p.email) AS email_princ, ");
-		sql.append(" '0'||f.matricula AS matricula, ");
-		sql.append("  2 AS tp_reg_trab, ");
-		sql.append(" Decode(c.contribui_inss,'S', 1, 2) AS tp_reg_prev, ");
-		sql.append(" Decode(c.contribui_inss,'S', null, 2) AS TP_PLAN_RP, ");
-		sql.append(" NULL  AS DSC_SAL_VAR, ");
-		sql.append(" NULL  AS TP_CONTR, ");
-		sql.append("  1     AS LTRAB_GERAL_TP_INSC, ");
-		sql.append(" '09499757000146' AS LTRAB_GERAL_NR_INSC, ");
-		sql.append("  NULL  AS LTRAB_GERAL_DESC_COMP, ");
-		sql.append("  CASE ");
-		sql.append("  WHEN c.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END AS cad_ini, ");
-		sql.append("  c.exercicio AS dt_exercicio, ");
-		sql.append("  CASE o.id ");
-		sql.append("   WHEN 33 THEN 2 ");
-		sql.append("  ELSE 1 ");
-		sql.append(" END AS tp_prov, ");
-		sql.append(" Decode(c.contribui_inss,'S', null, "); 
-		sql.append(" CASE ");
-		sql.append("  WHEN pl.dtinicio IS NULL THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END) AS IND_TETO_RGPS,  ");
-		sql.append(" Decode(c.contribui_inss,'S', null,   ");  
-		sql.append("  CASE ");
-		sql.append("  WHEN ap.dataimplantacao IS NULL THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END) AS IND_ABONO_PERM, ");	   
-		sql.append(" CASE c.contribui_inss ");
-		sql.append("  WHEN 'S' THEN null ");
-		sql.append("  ELSE ap.dataimplantacao ");
-		sql.append(" END  AS DT_INI_ABONO, ");		   
-		sql.append(" Decode(o.id,33, null, o.nomenclatura)  AS NM_CARGO, ");
-		sql.append(" Decode(o.id,33, null, o.cbo) AS CBO_CARGO, ");		   
-		sql.append("  CASE o.id ");
-		sql.append("  WHEN 33 THEN null ");
-		sql.append(" ELSE c.exercicio ");
-		sql.append(" END  AS DT_INGR_CARGO,	 ");	       		   
-		sql.append(" rc.nomenclatura AS NM_FUNCAO, ");
-		sql.append(" rc.cbo AS CBO_FUNCAO, ");
-		sql.append("  CASE ");
-		sql.append("  WHEN o.tipoacumulacao = 4 THEN 'S' ");
-		sql.append("  ELSE 'N' ");
-		sql.append(" END AS ACUM_CARGO, ");
-		sql.append("  CASE o.id ");
-		sql.append("  WHEN 33 THEN 302 ");
-		sql.append("  ELSE 301 ");
-		sql.append(" END AS COD_CATEG, ");
-		sql.append("  CASE o.id ");
-		sql.append("  WHEN 33 THEN c.rep ");
-		sql.append(" ELSE c.vpad ");
-		sql.append("  END AS VR_SAL_FX, ");
-		sql.append("  5 AS UND_SAL_FIXO, ");
-		sql.append(" CASE ");
-		sql.append("  WHEN fd.FLFISICA IS NULL THEN 'N' ");
-		sql.append(" ELSE 'S' ");
-		sql.append(" END AS DEF_FISICA, ");
-		sql.append(" CASE ");
-		sql.append(" WHEN fd.FLVISUAL IS NULL THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END AS DEF_VISUAL, ");
-		sql.append(" CASE ");
-		sql.append(" WHEN fd.FLAUDITIVA IS NULL THEN 'N' ");
-		sql.append(" ELSE 'S' ");
-		sql.append("  END AS DEF_AUDITIVA, ");
-		sql.append(" CASE ");
-		sql.append(" WHEN fd.FLMENTAL IS NULL THEN 'N' ");
-		sql.append(" ELSE 'S' ");
-		sql.append(" END AS DEF_MENTAL, ");
-		sql.append(" CASE ");
-		sql.append("  WHEN fd.FLFISICA IS NULL THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append("  END AS DEF_INTELECTUAL, ");
-		sql.append(" CASE ");
-		sql.append("  WHEN fd.FLREADAPTADO IS NULL THEN 'N' ");
-		sql.append(" ELSE 'S' ");
-		sql.append(" END AS DEF_REAB_READAP, ");
-		sql.append(" CASE ");
-		sql.append(" WHEN fd.FLFISICA IS NULL THEN 'N' ");
-		sql.append(" ELSE 'S' ");
-		sql.append(" END AS DEF_INFO_COTA, ");
-		sql.append(" CASE ");
-		sql.append(" WHEN fd.FLFISICA IS NULL THEN 'N' ");
-		sql.append(" ELSE 'S' ");
-		sql.append(" END AS DEF_OBESERVACAO ");
-		   
-		sql.append(" FROM srh.tb_funcional f ");
-		sql.append(" INNER JOIN srh.fp_cadastro c ON f.id = c.idfuncional ");
-		sql.append(" LEFT JOIN srh.tb_abonopermanencia ap ON f.id = ap.idfuncional ");
-		sql.append(" LEFT JOIN srh.tb_previdlimite pl ON f.id = pl.idfuncional ");
-		sql.append(" INNER JOIN srh.tb_ocupacao o ON f.idocupacao = o.id ");
-		sql.append(" INNER JOIN srh.tb_pessoal p ON f.idpessoal = p.id ");
-		sql.append(" INNER JOIN srh.tb_estadocivil ec ON p.idestadocivil = ec.id ");
-		sql.append(" INNER JOIN srh.esocial_pais PAIS_NASCIMENTO ON p.paisnascimento = pais_nascimento.id ");
-		sql.append(" INNER JOIN srh.esocial_pais PAIS_NACIONALIDADE ON p.paisnacionalidade = pais_nacionalidade.id ");
-		sql.append(" INNER JOIN srh.esocial_tipologradouro tl ON p.tipologradouro = tl.id ");
-		sql.append(" INNER JOIN srh.tb_municipio m ON p.municipioendereco = m.id ");
-		sql.append(" LEFT JOIN srh.tb_representacaofuncional rf ON rf.idfuncional = f.id ");
-		sql.append(" LEFT JOIN srh.tb_representacaocargo rc ON rf.idrepresentacaocargo = rc.id ");
-		sql.append(" LEFT JOIN srh.tb_funcionaldeficiencia fd ON fd.idfuncional = f.id	 ");		
-		sql.append(" WHERE f.id = :idFuncional ");
-	    sql.append(" ) ");
+		
 	    
 	    return sql.toString();
 	}

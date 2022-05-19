@@ -63,7 +63,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	public void consultar() {
 		if(servidorFuncional != null) {
 			try {
-				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200ByServidor(servidorFuncional);	
+				//entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200ByServidor(servidorFuncional);	
 			} catch (Exception e) {		
 				e.printStackTrace();
 				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");

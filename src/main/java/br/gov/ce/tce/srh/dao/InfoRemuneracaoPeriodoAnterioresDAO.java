@@ -48,7 +48,7 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<InfoRemuneracaoPeriodoAnteriores> findByIdfuncional(Long idFuncional) {	
+	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(Long idFuncional) {	
 		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoAnteriores(), InfoRemuneracaoPeriodoAnteriores.class);
 		query.setParameter("idFuncional",idFuncional );
 		return query.getResultList();
@@ -85,6 +85,6 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 		Query query = entityManager.createQuery("Select e from InfoRemuneracaoPeriodoAnteriores e where e.remuneracaoTrabalhador.funcional.id = :idFuncional", InfoRemuneracaoPeriodoAnteriores.class);
 		query.setParameter("idFuncional",idFuncional );
 		return query.getResultList();
-	}
+	}	
 
 }
