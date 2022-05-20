@@ -143,3 +143,28 @@ function validarFerias() {
 		salvar();
 	}
 }
+
+function validarGTR() {
+	
+	var fim = document.getElementById('form:fim').value;
+	
+	if(fim == ""){
+		Swal.fire({
+			title: 'Atenção!',
+			icon: 'warning',
+			text: 'Não foi preenchida a data de fim. Deseja prosseguir a gravação?',
+			confirmButtonText: 'Confirmar',
+			cancelButtonText: 'Cancelar',
+			showCancelButton: true,
+			reverseButtons: true,
+			focusConfirm: false,
+			confirmButtonColor: '#195297'
+		}).then((result) => {
+			if(result.value){
+				salvar();			
+			} 
+		});		
+	} else {
+		salvar();
+	}
+}
