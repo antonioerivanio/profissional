@@ -111,8 +111,7 @@ public class AdmissaoFormBean implements Serializable {
 		consultar();
 		FacesUtil.setFlashParameter("entidade", getEntidade());  
         return "incluirAlterar";
-	}
-	
+	}	
 
 	public Admissao getEntidade() {return entidade;}
 	public void setEntidade(Admissao entidade) {this.entidade = entidade;}
