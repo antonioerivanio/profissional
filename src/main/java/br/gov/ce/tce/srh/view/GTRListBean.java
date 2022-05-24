@@ -168,6 +168,29 @@ public class GTRListBean implements Serializable {
 		consultar();
 	}
 
+	public void relatorio() {
+
+		try {
+
+			if( getEntidade().getFuncional() == null )
+				throw new SRHRuntimeException("Selecione um funcionário.");
+
+			validarPermissaoDeConsulta();
+			
+			Map<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("FILTRO", entidade.getFuncional().getId().toString());
+
+			relatorioUtil.relatorio("gtr.jasper", parametros, "gtr.pdf");
+
+		} catch (SRHRuntimeException e) {
+			FacesUtil.addErroMessage(e.getMessage());
+			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesUtil.addErroMessage("Erro na geração do Relatório de GTR. Operação cancelada.");
+			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+	}
 
 	public String getMatricula() {return matricula;	}
 	public void setMatricula(String matricula) {

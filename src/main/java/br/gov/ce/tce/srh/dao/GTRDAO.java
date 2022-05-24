@@ -26,15 +26,11 @@ public class GTRDAO {
 		this.entityManager = entityManager;
 	}
 
-	private Long getMaxId() {
-		Query query = entityManager.createQuery("SELECT MAX(g.id) FROM GTR g");
-		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
-	}
 
 	public GTR salvar(GTR entidade) {
 		
 		if (entidade.getId() == null || entidade.getId() == 0){
-			entidade.setId(getMaxId());
+			entidade.setId(0l);
 		}
 
 		return entityManager.merge(entidade);
