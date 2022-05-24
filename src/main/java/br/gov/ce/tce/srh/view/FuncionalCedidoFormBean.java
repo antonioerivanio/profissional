@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.AssertFalse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +14,6 @@ import br.gov.ce.tce.srh.domain.CodigoCategoria;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalCedido;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
-import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.CodigoCategoriaService;
 import br.gov.ce.tce.srh.service.FuncionalCedidoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -38,9 +34,6 @@ public class FuncionalCedidoFormBean implements Serializable {
 
 	@Autowired
 	private FuncionalService funcionalService;
-	
-	@Autowired
-	private AuthenticationService authenticationService;
 	
 	@Autowired
 	private CodigoCategoriaService codigoCateogiraService;
@@ -68,7 +61,12 @@ public class FuncionalCedidoFormBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		FuncionalCedido flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
+		FuncionalCedido flashParameter = null;
+	
+		if(FacesUtil.getFlashParameter("entidade") != null && FacesUtil.getFlashParameter("entidade") instanceof FuncionalCedido) {
+			flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
+		}
+
 		setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());
 		
 		inicializarEntidade();
@@ -80,7 +78,7 @@ public class FuncionalCedidoFormBean implements Serializable {
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
+		}		
 	}	
 	
 
@@ -92,7 +90,7 @@ public class FuncionalCedidoFormBean implements Serializable {
 				entidade.setTpRegPrev(entidade.getFuncional().getPrevidencia().intValue());
 				entidade.setFuncional(getFuncionalByServidorFuncional());
 				entidade.setPessoaJuridica(pessoaJuridica);				
-				entidade.setCodigoCategoria(getCodigoCategoraById());
+				entidade.setCodigoCategoria(entidade.getCodigoCategoria().getCodigoCategoraByList(getComboCodCateg()));
 				
 				funcionalCedidoService.salvar(entidade);
 				
@@ -117,13 +115,6 @@ public class FuncionalCedidoFormBean implements Serializable {
 		getAfastamentoFormBean().setServidorFuncional(null);
 
 		this.servidorEnvioList = funcionalService.findServidoresEvento2230();
-	}
-	
-	private CodigoCategoria getCodigoCategoraById() {
-		int index = getComboCodCateg().indexOf(getEntidade().getCodigoCategoria());
-		CodigoCategoria codigoCategoriaEncontrado = getComboCodCateg().get(index);
-		
-		return codigoCategoriaEncontrado;
 	}
 	
 	public void setCnpjPessoaJuridicaChange() {

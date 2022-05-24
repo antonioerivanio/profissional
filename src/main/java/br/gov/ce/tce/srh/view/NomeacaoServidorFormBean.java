@@ -106,8 +106,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private EntidadeService entidadeService;
 	
 	@Autowired
-	private PessoaJuridicaService pessoaJuridicaService;
-
+	private PessoaJuridicaService pessoaJuridicaService;	
 
 	// entidades das telas
 	private Funcional entidade = new Funcional();
@@ -153,6 +152,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private List<LeiIncorporacao> comboLeiIncorporacao;
 	private List<Entidade> comboOrgaoOrigem;
 	private List<PessoaJuridica> instituicaoEnsinoList;
+	private List<CodigoCategoria> comboCodCategList;
 
 
 	@PostConstruct
@@ -160,8 +160,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 		
 		Funcional flashParameter = (Funcional)FacesUtil.getFlashParameter("entidade");
 		
-		if (flashParameter == null) {
-			
+		if (flashParameter == null) {			
 			setEntidade( new Funcional() );
 			getEntidade().setProporcionalidade( 100l );
 			getEntidade().setQtdQuintos( 0l );
@@ -169,7 +168,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 			getEntidade().setIRRF(true);
 			getEntidade().setAtivoPortal(true);
 			exibirTodosOsCampos = true;
-			
+
 		} else {			
 			
 			try {
@@ -216,7 +215,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 			if(alterar) {
 				nomeacaoFuncionalService.alterarNomeacao(entidade);
-			} else {				
+			} else {		
+				entidade.setCodigoCategoria(entidade.getCodigoCategoria().getCodigoCategoraByList(getComboCodCateg()));
 				nomeacaoFuncionalService.nomear(entidade);			
 			}
 			
@@ -688,7 +688,16 @@ public class NomeacaoServidorFormBean implements Serializable {
 		}
 
 		return this.instituicaoEnsinoList;
-	}	
-
-
+	}
+	
+	public List<CodigoCategoria> getComboCodCateg(){
+		try {
+			this.comboCodCategList = nomeacaoFuncionalService.getCategoriaListAll();
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar o campo Codigo Categoria. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		
+		return this.comboCodCategList;
+	}
 }

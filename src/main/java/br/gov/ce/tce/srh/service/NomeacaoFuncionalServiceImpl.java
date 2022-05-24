@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.gov.ce.tce.srh.domain.CodigoCategoria;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalSetor;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
@@ -29,6 +30,9 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 
 	@Autowired
 	private FuncionalSetorService funcionalSetorService;
+	
+	@Autowired
+	private CodigoCategoriaService codigoCateogiraService;
 
 	@Autowired
 	private OcupacaoService ocupacaoService;
@@ -346,5 +350,14 @@ public class NomeacaoFuncionalServiceImpl implements NomeacaoFuncionalService {
 			throw new SRHRuntimeException("Não será permitido inserir nova nomeação, pois este servidor possui outra ativa.");
 
 	}
+
+
+	@Override
+	public List<CodigoCategoria> getCategoriaListAll() throws SRHRuntimeException {
+		return codigoCateogiraService.findAll();
+		
+	}
+	
+	
 
 }

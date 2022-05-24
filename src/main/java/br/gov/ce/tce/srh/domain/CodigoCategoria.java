@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,6 +51,13 @@ public class CodigoCategoria extends BasicEntity<Long> implements Serializable {
 		this.id = id;
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public CodigoCategoria getCodigoCategoraByList(List<CodigoCategoria> codigoCategoriaList) {
+		int index = codigoCategoriaList.indexOf(this);
+		CodigoCategoria codigoCategoriaEncontrado = codigoCategoriaList.get(index);
+		
+		return codigoCategoriaEncontrado;
 	}
 
 }
