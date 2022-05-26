@@ -58,8 +58,9 @@ public class AdmissaoFormBean implements Serializable {
 		setEntidade(flashParameter != null ? flashParameter : new Admissao());
 		this.servidorEnvioList = funcionalService.findServidoresEvento2200();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
+			//dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
 			servidorFuncional = getEntidade().getFuncional();
+			consultar();			
 			emEdicao = true;
 		}
     }	
