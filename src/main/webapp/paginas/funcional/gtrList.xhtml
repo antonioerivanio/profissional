@@ -164,9 +164,7 @@
 									renderIfSinglePage="false"
 									page="#{gtrListBean.pagina}" />
 			</div>
-			
-			<div style="float: left; font-size: 12px; font-style: italic;">Em <span class="destaque">vermelho</span>, estão destacadas datas futuras de início ou fim de fruição</div>
- 
+			 
 			<ui:fragment rendered="#{gtrListBean.chefe or not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 				<h:commandButton id="incluir" 
 								 value="Incluir"
