@@ -25,15 +25,30 @@ public class GTRServiceImpl implements GTRService {
 
 	@Autowired
 	private FuncionalService funcionalService;
-	
+
 	@Override
 	@Transactional
-	public void salvar(GTR entidade) throws SRHRuntimeException {		
-		
+	public void salvar(GTR entidade) throws SRHRuntimeException {
+
 		validaDadosObrigatorios(entidade);
 
-	    
+		validaDados(entidade);
+
 		dao.salvar(entidade);
+	}
+
+	private void validaDados(GTR entidade) {
+
+		if(entidade.getFim() != null && entidade.getInicio().after(entidade.getFim())) {
+			throw new SRHRuntimeException("O fim não pode ser antes do início");
+		}
+
+		List<GTR> g = findByPessoal(entidade.getFuncional().getPessoal().getId());
+		for (GTR gtr : g) {
+			if(gtr.getFim() == null) {
+				throw new SRHRuntimeException("O servidor já tem gtr em aberto");
+			}
+		}
 	}
 
 	@Override
