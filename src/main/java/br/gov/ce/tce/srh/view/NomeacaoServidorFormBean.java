@@ -26,6 +26,7 @@ import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.domain.Vinculo;
+import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 import br.gov.ce.tce.srh.enums.LeiIncorporacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Entidade;
@@ -675,12 +676,14 @@ public class NomeacaoServidorFormBean implements Serializable {
 		}
 	}	
 	
+	
+	
 	public List<PessoaJuridica> getComboEmpresasCadastradas() {
 
 		try {
 
 			if ( this.instituicaoEnsinoList == null )
-				this.instituicaoEnsinoList = pessoaJuridicaService.findAll();
+				this.instituicaoEnsinoList = pessoaJuridicaService.findAllByTipo(EmpresaAreaSaude.NAO);
 
 		} catch (Exception e) {
 			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");

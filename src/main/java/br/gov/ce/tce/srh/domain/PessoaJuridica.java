@@ -2,9 +2,10 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -12,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 /**
@@ -49,7 +50,13 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 	@Temporal(TemporalType.DATE)
     @Column(name = "DATAALTERACAO")
     private Date dataAlteracao;
-
+	
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "FG_EMPRESAAREASAUDE")
+	private EmpresaAreaSaude flgEmpresaAreSaude;
+	
+	
 	public PessoaJuridica() {
 	}
 
@@ -111,6 +118,7 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 	public void setDataAlteracao(Date dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
 	}
+	
 
 	
 }

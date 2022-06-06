@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 
 /**
  * Referente a tabela: TB_PESSOAJURIDICA
@@ -167,6 +168,14 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 		return entityManager.createQuery("SELECT pj FROM PessoaJuridica pj ORDER BY pj.id").getResultList();
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<PessoaJuridica> findAllByTipo(EmpresaAreaSaude areaSaude) {
+	  Query query = entityManager.createQuery("SELECT pj FROM PessoaJuridica pj where pj.flgEmpresaAreSaude = :flgEmpresaAreSaude ORDER BY pj.id");
+	  query.setParameter("flgEmpresaAreSaude", areaSaude);
+	  return query.getResultList();
+	}
+	   
 	@Override
 	public PessoaJuridica findById(Long id) {
 		try {

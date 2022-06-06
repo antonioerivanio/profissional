@@ -14,6 +14,7 @@ import br.gov.ce.tce.srh.domain.CodigoCategoria;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.FuncionalCedido;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 import br.gov.ce.tce.srh.service.CodigoCategoriaService;
 import br.gov.ce.tce.srh.service.FuncionalCedidoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -140,9 +141,8 @@ public class FuncionalCedidoFormBean implements Serializable {
 	public List<PessoaJuridica> getComboEmpresasCadastradas() {
 
 		try {
-
-			if ( this.comboEmpresasCadastradas == null )
-				this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
+		  if ( this.comboEmpresasCadastradas == null )
+            this.comboEmpresasCadastradas = pessoaJuridicaService.findAllByTipo(EmpresaAreaSaude.NAO);
 
 		} catch (Exception e) {
 			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");

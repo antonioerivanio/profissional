@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 
 /**
  * Referente a tabela: TB_PESSOAJURIDICA
@@ -24,6 +25,7 @@ public interface PessoaJuridicaDAO {
 	public PessoaJuridica getBynomeFantasia(String nomeFantasia);
 
 	public List<PessoaJuridica> findAll();
+	public List<PessoaJuridica> findAllByTipo(EmpresaAreaSaude areaSaude);
 	public PessoaJuridica findById(Long id);
 	
 

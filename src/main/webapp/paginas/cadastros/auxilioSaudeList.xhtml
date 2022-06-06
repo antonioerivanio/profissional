@@ -1,276 +1,152 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition template="../../WEB-INF/templates/page.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:t="http://myfaces.apache.org/tomahawk"
-	xmlns:rich="http://richfaces.org/rich">
+	  xmlns="http://www.w3.org/1999/xhtml"     
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
 
 	<ui:define name="content">
 
-		<style>
-.foto-pessoal {
-	cursor: pointer;
-}
-
-.foto-pessoal img {
-	max-width: 136px;
-}
-
-.exercicioInput {
-	font-size: 12px;
-	color: #343434;
-	border: 0;
-	width: 100%;
-	padding: 8px 6px;
-	box-sizing: border-box;
-	border-radius: 4px;
-	text-align: right;
-	border: 1px solid #c5c5c5;
-}
-</style>
-
 		<div class="titulo-pagina">
 
-			<h2>Dados Cadastrais</h2>
+			<h2>Consulta de Servidor com Auxilio Saúde</h2>
 
 		</div>
 
-		<span class="label-campos-obrigarotios"><i>* Campos
-				Obrigatórios</i></span>
-
-		<ui:fragment rendered="#{pessoaBean.ehServidor()}">
-			<div class="mensagem-alerta">
-				<p>
-					<b>Importante!</b> Caso verifique alguma discrepância nos dados
-					cadastrais não editáveis, favor entrar em contato com a Gerência de
-					Atos Funcionais.
-				</p>
-			</div>
-		</ui:fragment>
-
 		<h:form id="form" styleClass="formularios">
 
-			<rich:tabPanel switchType="client">
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+			
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR,ROLE_CONSULTA_CADASTRO_PESSOAL')}">
+				
+				<div class="input-box box-50">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nome"
+									 name="nome"
+									 value="#{pessoaBean.nome}" />
+					</div>
+				</div>
+	
+				<div class="input-box box-25">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 name="cpf"
+									 maxlength="14"
+									 styleClass="maskCnpj"
+									 value="#{pessoaBean.cpf}" />
+					</div>
+				</div>
 
-					<rich:tab header="Auxílio Saúde">
-					<rich:tabPanel switchType="client">
-						<rich:tab header="DADOS - Requerimento Inicial">
-							<ui:fragment id="pfCadAuxilioSaude">
-								<div class="input-box">
-									<div class="input-box box-25">
-										<label for="pfCadNome">Nome</label>
-										<h:outputText name="pfCadNome"
-											value="ANTONIO ERIVANIO FERREIRA DA CRUZ" />
-									</div>
+				<h:commandButton id="consultar"
+								 value="Consultar" 
+								 action="#{pessoaBean.consultar}" 
+								 styleClass="bt-padrao fl mg-top-18" 
+								 render="scroller,lista"/>
+				
+				<h:commandButton id="relatorio"
+							 value="Relatório"
+							 action="#{pessoaBean.relatorio}" 
+							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
+							 style="margin-left: 10px" />
+			
+			</ui:fragment>				
+			
 
-									<div class="input-box box-15">
-										<label for="pfCadMat">Matricula</label>
-										<h:outputText name="pfCadMat" value="010651"></h:outputText>
-									</div>
+			<div class="tabela-dados">
 
-									<div class="input-box box-15">
-										<label for="pfCadLot">Lotação</label>
-										<h:outputText name="pfCadLot"
-											value="STI - Secretaria de Tecnologia da Informação"></h:outputText>
-										<br></br>
-									</div>
+				<rich:dataTable id="lista" 
+								var="item" 
+								rows="#{pessoaBean.dataModel.pageSize}" 
+								value="#{pessoaBean.dataModel}" >
 
-									<div class="input-box box-15">
-										<label for="pfCadAtivo">Servidor Ativo</label>
-										<h:outputText name="pfCadAtivo" value="Sim"></h:outputText>
-										<br></br>
-									</div>
+                    <rich:column id="col2" headerClass="cel-25">
+                        <f:facet name="header">
+                            CPF
+                        </f:facet>
+                        <center>
+	                        <h:outputText id="item2" value="#{item.cpf}" styleClass="cel-25" >
+	                        	  <f:converter converterId="cpfConverter" /> 
+	                        </h:outputText>
+	                    </center>
+                    </rich:column>
+                    <rich:column id="col3" headerClass="cel-50">
+                        <f:facet name="header">
+                            Nome
+                        </f:facet>
+                        <h:outputText id="item3" value="#{item.nomeCompleto}" styleClass="cel-50" />
+                    </rich:column>
+                    <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                        <f:facet name="header">
+                            DETALHAR
+                        </f:facet>
+                       <h:commandLink id="detalhar"
+                       				  value="Detalhar"
+                       				  action="#{pessoaBean.editar}"
+                       				  styleClass="ico-detail" > maskedinput
+                            <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </rich:column>                    
+                	<rich:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                        <f:facet name="header">
+                            EDITAR
+                        </f:facet>
+                       <h:commandLink id="editar"
+                       				  value="Editar"
+                       				  action="#{pessoaBean.editar}"
+                       				  styleClass="ico-editar" >
+                            <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
+                        </h:commandLink>
+                    </rich:column>
+                	<rich:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
+                        <f:facet name="header">
+                            EXCLUIR
+                        </f:facet>
+                        <a4j:commandLink id="excluir"
+                        			   value="Excluir"                        			   
+                        			   styleClass="ico-delete"
+                        			   onclick="alertaExclusao();"
+                        			   execute="@this">
+                            <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
+                        </a4j:commandLink>
+                        <a4j:jsFunction name="excluir" action="#{pessoaBean.excluir}" render="form"/> 
+                    </rich:column>
 
-									<div class="input-box box-25">
-										<label for="pfCadCargo">Cargo/Vínculo</label>
-										<h:outputText name="pfCadCargo" value="Analista de Sistemas"></h:outputText>
-										<br></br>
-									</div>
-								</div>
-								<fieldset>
-									<legend>Dados do Requerente</legend>
-									<div style="width: 100%; margin-bottom: 15px;">
-										<div class="input-box box-20 ">
-											<label for="pfCadValorPlano">Valor PLano R$: *</label>
-											<div class="conteiner">
-												<h:inputText id="pfCadValorPlano" value="1400,00"
-													maxlength="20" />
-											</div>
-										</div>
-
-										<div class="input-box box-20 ">
-											<label for="pfCadNomeEmpresaPlano">Nome Emp. PLano
-												Saúde</label>
-											<div class="conteiner">
-												<h:inputText id="pfCadNomeEmpresaPlano" value="Hapvida"
-													maxlength="30" />
-											</div>
-										</div>
-
-										<div class="radios-group box-22">
-											<h3>Coparticipação:</h3>
-											<div class="conteiner">
-												<div class="radio-box">
-													<h:selectOneRadio id="pfCadCoParticipacao" value="">
-														<f:selectItem itemLabel="Sim" itemValue="Sim" />
-														<f:selectItem itemLabel="Não" itemValue="Não" />
-													</h:selectOneRadio>
-												</div>
-											</div>
-										</div>
-
-										<div class="radios-group box-22">
-											<h3>Dependentes :</h3>
-											<div class="conteiner">
-												<div class="radio-box">
-													<h:selectOneRadio id="pfCadDep" value="">
-														<f:selectItem itemLabel="Sim" itemValue="Sim" />
-														<f:selectItem itemLabel="Não" itemValue="Não" />
-													</h:selectOneRadio>
-												</div>
-											</div>
-										</div>
-
-										<div class="tabela-dados">	
-										<fiedset> <legend class="titulo-pagina"><h2>Lista de Dependentes</h2></legend>
-											
-												<rich:dataTable id="pfCadDtDependete" var="item"
-													rows="#{pessoaBean.dataModel.pageSize}"
-													value="#{pessoaBean.dataModel}" noDataLabel="Nenhum Dependente foi selecionado">
-																	
-													<rich:column id="col2" headerClass="cel-25">
-														<f:facet name="header">
-									                            CPF
-									                        </f:facet>
-														<center>
-															<h:outputText id="item2" value="#{item.cpf}"
-																styleClass="cel-25">
-																<f:converter converterId="cpfConverter" />
-															</h:outputText>
-														</center>
-													</rich:column>
-													<rich:column id="col3" headerClass="cel-50">
-														<f:facet name="header">
-								                            Nome
-								                        </f:facet>
-														<h:outputText id="item3" value="#{item.nomeCompleto}"
-															styleClass="cel-50" />
-													</rich:column>
-													<rich:column id="col4"
-														rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
-														<f:facet name="header">
-								                            DETALHAR
-								                        </f:facet>
-														<h:commandLink id="detalhar" value="Detalhar"
-															action="#{pessoaBean.editar}" styleClass="ico-detail">
-															<f:setPropertyActionListener
-																target="#{pessoaBean.entidade}" value="#{item}" />
-														</h:commandLink>
-													</rich:column>
-													<rich:column id="col5"
-														rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
-														<f:facet name="header">
-								                            EDITAR
-								                        </f:facet>
-														<h:commandLink id="editar" value="Editar"
-															action="#{pessoaBean.editar}" styleClass="ico-editar">
-															<f:setPropertyActionListener
-																target="#{pessoaBean.entidade}" value="#{item}" />
-														</h:commandLink>
-													</rich:column>
-													<rich:column id="col6"
-														rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
-														<f:facet name="header">
-								                            EXCLUIR
-								                        </f:facet>
-														<a4j:commandLink id="excluir" value="Excluir"
-															styleClass="ico-delete" onclick="alertaExclusao();"
-															execute="@this">
-															<f:setPropertyActionListener
-																target="#{pessoaBean.entidade}" value="#{item}" />
-														</a4j:commandLink>
-														<a4j:jsFunction name="excluir"
-															action="#{pessoaBean.excluir}" render="form" />
-													</rich:column>
-
-												</rich:dataTable>
-												<rich:dataScroller id="scroller" for="pfCadDtDependete"
-													stepControls="hide" renderIfSinglePage="false"
-													page="#{pessoaBean.pagina}" />											
-
-											</fiedset>
-										</div>
-
-
-										<fieldset>
-											<legend>
-												<strong>DECLARAÇÃO</strong>
-											</legend>
-
-											<div class="conteiner">
-												<p>Declaro que estou ciente que a inveracidade da
-													informação contida neste documento, por mim firmado,
-													constitui prática de infração disciplinar, passível de
-													punição na forma da lei, e que não recebo auxílio-saúde
-													semelhante nem possuo programa de assistência à saúde
-													custeado integral ou parcialmente pelos cofres públicos</p>
-											</div>
-
-											<div class="conteiner" style="padding: 15px">
-												<div class="radio-box box-25">
-													<h:selectOneRadio id="pfCadAcordo" value="">
-														<f:selectItem itemLabel="Concordo" itemValue="Sim" />
-													</h:selectOneRadio>
-												</div>
-											</div>
-										</fieldset>
-
-
-										<div class="textarea-box box-100">
-											<label for="">Observação</label>
-											<div class="conteiner">
-												<h:inputTextarea id="pfCadObs"
-													value="Campo obrigatório apenas para área gestora"
-													onkeyup="this.value = this.value.substring(0, 254);" />
-											</div>
-										</div>
-									</div>
-								</fieldset>
-
-							</ui:fragment>
-						</rich:tab>
-					</rich:tabPanel>
-
-				</rich:tab>
-
-			</rich:tabPanel>
-
-			<div class="bt-conteiner">
-
-				<ui:fragment rendered="#{pessoaBean.cadastroAindaNaoFinalizado()}">
-					<a onclick="finalizaRecadastramento();" href="#"
-						class="bt-padrao fr">Finalizar</a>
-					<a4j:jsFunction name="finalizarRecadastramento"
-						action="#{pessoaBean.salvar(true)}" render="form">
-					</a4j:jsFunction>
-				</ui:fragment>
-
-				<ui:fragment rendered="#{pessoaBean.podeAlterar()}">
-					<h:commandButton id="salvar" action="#{pessoaBean.salvar(false)}"
-						value="Salvar" styleClass="bt-padrao fr mg-right-10" />
-				</ui:fragment>
-
-				<a href="/srh/paginas/cadastros/pessoaList.faces"
-					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
-
+				</rich:dataTable>
+				<rich:dataScroller  id="scroller" 
+									for="lista" 
+									stepControls="hide"
+									renderIfSinglePage="false"
+									page="#{pessoaBean.pagina}" />
+				
 			</div>
+
+			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			
+				<h:commandButton id="incluir"
+								 value="Incluir"
+								 action="incluirAlterar"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_INSERIR')}"/>
+								 
+				<h:commandButton id="limpaTela"
+								 value="Limpar"
+								 action="listar"
+								 styleClass="bt-padrao fr mg-right-15" 
+								 />		
+			</ui:fragment>			
+
+			<!-- <h:commandButton id="relatorio2"
+							 value="Relatório"
+							 action="#{pessoaBean.relatorio}" 
+							 styleClass="bt-padrao fr mg-right-15" 
+							 rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}" /> -->
 
 		</h:form>
 
 	</ui:define>
-
 </ui:composition>

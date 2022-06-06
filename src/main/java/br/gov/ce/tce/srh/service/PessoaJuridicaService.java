@@ -3,6 +3,7 @@ package br.gov.ce.tce.srh.service;
 import java.util.List;
 
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 /**
@@ -22,5 +23,6 @@ public interface PessoaJuridicaService {
 	public void excluir(PessoaJuridica entidade);
 	
 	public List<PessoaJuridica> findAll();
+	public List<PessoaJuridica> findAllByTipo(EmpresaAreaSaude areaSaude);
 	public PessoaJuridica findById(Long parseLong);
 }

@@ -797,6 +797,20 @@
 			<to-view-id>/paginas/cadastros/publicacaoForm.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>	
+	
+	<!-- Auxilio Saude -->		
+	<navigation-rule>
+		<from-view-id>/paginas/cadastros/auxilioSaudeList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/cadastros/auxilioSaudeList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/cadastros/auxilioSaudeForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule> 
+	
 	<!-- Reclassificação Ocupacional -->
 	<navigation-rule>
 		<from-view-id>/paginas/funcional/reclassificacaoOcupacionalList.xhtml</from-view-id>

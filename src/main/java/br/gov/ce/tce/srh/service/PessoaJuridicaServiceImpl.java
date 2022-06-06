@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.PessoaJuridicaDAO;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -96,7 +97,10 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 		return dao.findAll();
 	}
 	
-		
+	@Override
+	public List<PessoaJuridica> findAllByTipo(EmpresaAreaSaude areaSaude) {
+	  return dao.findAllByTipo(areaSaude);
+	}
 	
 	public void setDao(PessoaJuridicaDAO pessoaJuridicaDao) {this.dao = pessoaJuridicaDao;}
 

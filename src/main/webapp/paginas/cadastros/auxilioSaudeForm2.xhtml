@@ -41,11 +41,10 @@
 
 		<span class="label-campos-obrigarotios"><i>* Campos
 				Obrigatórios</i></span>
-
-
-		<a4j:outputPanel ajaxRendered="true">
-			<h:messages id="messages" infoClass="infoMessage"
-				errorClass="errorMessage" />
+	
+		
+			<a4j:outputPanel ajaxRendered="true" >
+            <h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 		</a4j:outputPanel>
 
 		<h:form id="form" styleClass="formularios">
@@ -83,9 +82,7 @@
 							value="#{auxilioSaudeFormBean.entidade.funcional.ocupacao.nomenclatura}"></h:outputText>
 						<br></br>
 					</div>
-
 				</div>
-
 				<fieldset>
 					<legend>Dados do Requerente</legend>
 					<div style="width: 100%; margin-bottom: 15px;">
@@ -93,17 +90,17 @@
 						<div class="input-box box-20 ">
 							<label for="asCadValorPlano">Valor PLano R$: *</label>
 							<div class="conteiner">
-								<h:inputText id="asCadValorPlano" required="true"
+								<h:inputText id="asCadValorPlano"
+									required="true"
 									requiredMessage="Obrigatório Valor Plano"
 									value="#{auxilioSaudeFormBean.entidade.valorGastoPlanoSaude}"
-									maxlength="20" styleClass="maskSalario">
-									<f:convertNumber type="currency" currencySymbol="R$"
-										locale="pt_br" />
+									maxlength="20" styleClass="maskSalario" >
+									<f:convertNumber type="currency" currencySymbol="R$" locale="pt_br"/>
 								</h:inputText>
 							</div>
 						</div>
 
-						<div class="select-box box-30">
+						<div class="select-box box-50">
 							<label for="">Empresa Plano Saúde/Odonto * </label>
 							<div class="conteiner">
 								<h:selectOneMenu id="asPessoaJuridica" required="true"
@@ -120,108 +117,97 @@
 								</h:selectOneMenu>
 							</div>
 						</div>
+
 						<br></br>
+						<h:commandButton id="Adicionar"
+							actionListener="#{auxilioSaudeFormBean.adicionar}" value="Adicionar"
+							styleClass="bt-padrao">
+							<a4j:ajax execute="asCadValorPlano asPessoaJuridica asCadAuxilioSaude"></a4j:ajax>
+						</h:commandButton>
 
 
-						<h:panelGrid columns="3">
-
-							<h:commandButton id="Adicionar"
-								actionListener="#{auxilioSaudeFormBean.adicionar}"
-								value="Adicionar" styleClass="bt-padrao">
-								<a4j:ajax execute="asCadValorPlano asPessoaJuridica"
-									render="form:lista"></a4j:ajax>
-							</h:commandButton>
-
-							<h:commandButton id="Novo"
-								actionListener="#{auxilioSaudeFormBean.adicionar}" value="Novo"
-								styleClass="bt-padrao">
-								<a4j:ajax execute="asCadValorPlano asPessoaJuridica"
-									render="form:lista"></a4j:ajax>
-							</h:commandButton>
-
-							<ui:fragment>
-								<rich:tooltip mode="ajax" styleClass="tooltip" layout="block"
-									target="Novo">
-									<span style="white-space: nowrap">o Botão Novo <strong>
-											Adiciona uma nova empresa </strong>
-									</span>
-
-								</rich:tooltip>
-							</ui:fragment>
-
-						</h:panelGrid>
-
-					</div>
-				</fieldset>
-			</ui:fragment>
-
-			<fieldset class="clr"
-				style="display: flex; align-items: center; padding-bottom: 10px;">
-				<legend>Comprovante</legend>
-
-				<ui:fragment
-					rendered="#{LoginBean.anyGranted('ROLE_FOLGA_INSERIR,ROLE_FOLGA_ALTERAR')}">
-					<rich:fileUpload id="fileUpload" styleClass="fileUploadFicha"
-						style="display: none"
-						fileUploadListener="#{folgaFormBean.uploadComprovante}"
-						acceptedTypes="pdf"
-						ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
-						maxFilesQuantity="1" immediateUpload="true"
-						onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
-						<a4j:ajax event="uploadcomplete" execute="@none"
-							render="form:fileUpload, form:comprovanteFolga, messages" />
-					</rich:fileUpload>
-
-					<span class="bt-upload fl"
-						onclick="document.querySelector('.fileUploadFicha input').click()">
-						Selecionar arquivo </span>
-				</ui:fragment>
-
-				<h:commandLink id="comprovanteFolga" styleClass="link-arquivo"
-					value="Clique aqui para visualizar"
-					action="#{folgaFormBean.comprovanteFolga}" target="_blank"
-					rendered="#{folgaFormBean.entidade.caminhoComprovante != null}" />
-			</fieldset>
-
-			<div class="tabela-dados">
-
-				<rich:dataTable id="lista" var="bean"
-					rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList.size()}"
-					value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList}">
-
-					<h:column>
-						<f:facet name="header">
-		                            EMPRESA
+		 					<a4j:repeat value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList}" var="cap" rows="15" id="repeat">
+							  <f:facet name="header">
+		                            <h:panelGroup>
+		                                <h:graphicImage value="#{cap.stateFlag}" alt="flag" />
+		                                <h:outputText value="#{cap.valorGastoPlanoSaude}" style="font-weight:bold; margin-left: 4px" />
+		                            </h:panelGroup>
 		                        </f:facet>
+							 </a4j:repeat>
+							
+						<div class="tabela-dados">
+							<fiedset> 
+								<legend class="titulo-dependente">
+									<h2>Dados Cadastrado Colaborador Titular</h2>
+								</legend> 
+							
+					
+							
+								<rich:dataTable id="asCadDtTitular" var="item"									
+									value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList}"
+									noDataLabel="Nenhum Dependente foi selecionado">
+	
+									<rich:column id="col2" headerClass="cel-25">
+										<f:facet name="header"> Empresa Plano de Saúde </f:facet>
+										<center>
+											<h:outputText id="item2" value="#{item.pessoaJuridica.nomeFantasia}"
+												styleClass="cel-25">												
+											</h:outputText>
+										</center>
+									</rich:column>
+									
+									<rich:column id="col3" headerClass="cel-50">
+										<f:facet name="header"> Valor Plano R$</f:facet>
+										<h:outputText id="item3" value="#{item.valorGastoPlanoSaude}" styleClass="cel-50" />
+									</rich:column>
+									
+									<rich:column id="col4"
+										rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+										<f:facet name="header">
+										                            DETALHAR
+										                        </f:facet>
+										<h:commandLink id="detalhar" value="Detalhar"
+											action="#{auxilioSaudeFormBean.editar}"
+											styleClass="ico-detail">
+											<f:setPropertyActionListener
+												target="#{auxilioSaudeFormBean.entidade}" value="#{item}" />
+										</h:commandLink>
+									</rich:column>
+									<rich:column id="col5"
+										rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+										<f:facet name="header">
+										                            EDITAR
+										                        </f:facet>
+										<h:commandLink id="editar" value="Editar"
+											action="#{auxilioSaudeFormBean.editar}"
+											styleClass="ico-editar">
+											<f:setPropertyActionListener
+												target="#{auxilioSaudeFormBean.entidade}" value="#{item}" />
+										</h:commandLink>
+									</rich:column>
+									<rich:column id="col6"
+										rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
+										<f:facet name="header">
+										                            EXCLUIR
+										                        </f:facet>
+										<a4j:commandLink id="excluir" value="Excluir"
+											styleClass="ico-delete" onclick="alertaExclusao();"
+											execute="@this">
+											<f:setPropertyActionListener
+												target="#{auxilioSaudeFormBean.entidade}" value="#{item}" />
+										</a4j:commandLink>
+										<a4j:jsFunction name="excluir"
+											action="#{auxilioSaudeFormBean.excluir}" render="form" />
+									</rich:column>
+	
+								</rich:dataTable> <rich:dataScroller id="scrollerTitular" for="asCadDtTitular"
+									stepControls="hide" renderIfSinglePage="false"
+									page="#{auxilioSaudeFormBean.pagina}" /> 
+							</fiedset>
+						</div>
 
-						<h:outputText value="#{bean.pessoaJuridica.nomeFantasia}" />
-					</h:column>
 
-					<h:column>
-						<f:facet name="header">
-		                            Valor Gasto (R$)
-		                        </f:facet>
-
-						<h:outputText value="#{bean.valorGastoPlanoSaude}" />
-					</h:column>
-
-					<h:column>
-						<center>
-							<f:facet name="header">
-		                          Anexos
-		                        </f:facet>
-
-							<h:outputLink actionListener="#{auxilioSaudeFormBean.adicionar}">
-								<h:graphicImage url="/img/attached.png"
-									style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
-							</h:outputLink>
-						</center>
-					</h:column>
-
-				</rich:dataTable>
-			</div>
-			
-			<div class="tabela-dados">
+						<div class="tabela-dados">
 							<fiedset> <legend class="titulo-dependente">
 								<h2>Lista de Dependentes</h2>
 							</legend> <rich:dataTable id="asCadDtDependente" var="item"
@@ -322,13 +308,35 @@
 									onkeyup="this.value = this.value.substring(0, 254);" />
 							</div>
 						</div>
-					
-			
+					</div>
+				</fieldset>
 
+			</ui:fragment>
+
+
+
+			<div class="bt-conteiner">
+				<!-- 
+				<ui:fragment rendered="#{auxilioSaudeFormBean.cadastroAindaNaoFinalizado()}">
+					<a onclick="finalizaRecadastramento();" href="#"
+						class="bt-padrao fr">Finalizar</a>
+					<a4j:jsFunction name="finalizarRecadastramento"
+						action="#{auxilioSaudeFormBean.salvar(true)}" render="form">
+					</a4j:jsFunction>
+				</ui:fragment>
+ -->
+				<ui:fragment>
+					<h:commandButton id="salvar"
+						action="#{auxilioSaudeFormBean.salvar(false)}" value="Salvar"
+						styleClass="bt-padrao fr mg-right-10" />
+				</ui:fragment>
+
+				<a href="/srh/paginas/cadastros/pessoaList.faces"
+					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+
+			</div>
 
 		</h:form>
-
-
 
 	</ui:define>
 
