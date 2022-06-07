@@ -1,8 +1,9 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,119 +14,216 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
 @SuppressWarnings("serial")
-@Table(name="TB_DEPENDENTE", schema=DatabaseMetadata.SCHEMA_SRH)
-@NamedQueries({
-	@NamedQuery(name = "Dependente.findAll", query = "SELECT d FROM Dependente d ORDER BY d.responsavel.nomeCompleto")
-})
-public class Dependente extends BasicEntity<Long> implements Serializable{
+@Table(name = "TB_DEPENDENTE", schema = DatabaseMetadata.SCHEMA_SRH)
+@NamedQueries({@NamedQuery(name = "Dependente.findAll",
+    query = "SELECT d FROM Dependente d ORDER BY d.responsavel.nomeCompleto")})
+public class Dependente extends BasicEntity<Long> implements Serializable {
 
-	@Id
-    @Column(name = "ID")
-    private Long id;
-	
-	@ManyToOne
-	@JoinColumn(name = "IDPESSOALRESP")
-	private Pessoal responsavel;
-	
-	@ManyToOne
-	@JoinColumn(name = "IDPESSOALDEP")
-	private Pessoal dependente;
-	
-	@ManyToOne
-	@JoinColumn(name = "IDTIPODEPENDENCIA")
-	private TipoDependencia tipoDependencia;
-	
-	@ManyToOne
-	@JoinColumn(name = "IDMOTIVOINICIO")
-	private MotivoDependencia motivoInicio;
-	
-	@ManyToOne
-	@JoinColumn(name = "IDMOTIVOFIM")
-	private MotivoDependencia motivoFim;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "DATAINICIO")
-	private Date dataInicio;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "DATAFIM")
-	private Date dataFim;
-	
-	@Column(name = "TIPODURACAO")
-	private Long tipoDuracao;
-	
-	@Column(name = "DEPPREV")
-	private boolean depPrev;
-	
-	@Column(name = "DEPIR")
-	private boolean depIr;
-	
-	@Column(name = "DEPSF")
-	private boolean depSf;
-	
-	@Column(name = "OBS")
-	private String obs;
-	
-	@Column(name = "FLUNIVERSITARIO")
-	private boolean flUniversitario;
-	
-	
-	public Dependente() {
-		
-	}	
-	
+  @Id
+  @Column(name = "ID")
+  private Long id;
 
-	@Override
-	public Long getId() {return this.id;}
+  @ManyToOne
+  @JoinColumn(name = "IDPESSOALRESP")
+  private Pessoal responsavel;
 
-	@Override
-	public void setId(Long id) {this.id = id;}
+  @ManyToOne
+  @JoinColumn(name = "IDPESSOALDEP")
+  private Pessoal dependente;
 
-	public Pessoal getResponsavel() {return responsavel;}
-	public void setResponsavel(Pessoal responsavel) {this.responsavel = responsavel;}
+  @ManyToOne
+  @JoinColumn(name = "IDTIPODEPENDENCIA")
+  private TipoDependencia tipoDependencia;
 
-	public Pessoal getDependente() {return dependente;}
-	public void setDependente(Pessoal dependente) {this.dependente = dependente;}
-		
-	public TipoDependencia getTipoDependencia() {return tipoDependencia;}
-	public void setTipoDependencia(TipoDependencia tipoDependencia) {this.tipoDependencia = tipoDependencia;}
+  @ManyToOne
+  @JoinColumn(name = "IDMOTIVOINICIO")
+  private MotivoDependencia motivoInicio;
 
-	public MotivoDependencia getMotivoInicio() {return motivoInicio;}
-	public void setMotivoInicio(MotivoDependencia motivoInicio) {this.motivoInicio = motivoInicio;}
+  @ManyToOne
+  @JoinColumn(name = "IDMOTIVOFIM")
+  private MotivoDependencia motivoFim;
 
-	public MotivoDependencia getMotivoFim() {return motivoFim;}
-	public void setMotivoFim(MotivoDependencia motivoFim) {this.motivoFim = motivoFim;}
+  @Temporal(TemporalType.DATE)
+  @Column(name = "DATAINICIO")
+  private Date dataInicio;
 
-	public Date getDataInicio() {return dataInicio;}
-	public void setDataInicio(Date dataInicio) {this.dataInicio = dataInicio;}
+  @Temporal(TemporalType.DATE)
+  @Column(name = "DATAFIM")
+  private Date dataFim;
 
-	public Date getDataFim() {return dataFim;}
-	public void setDataFim(Date dataFim) {this.dataFim = dataFim;}
+  @Column(name = "TIPODURACAO")
+  private Long tipoDuracao;
 
-	public Long getTipoDuracao() {return tipoDuracao;}
-	public void setTipoDuracao(Long tipoDuracao) {this.tipoDuracao = tipoDuracao;}
+  @Column(name = "DEPPREV")
+  private boolean depPrev;
 
-	public boolean isDepPrev() {return depPrev;}
-	public void setDepPrev(boolean depPrev) {this.depPrev = depPrev;}
+  @Column(name = "DEPIR")
+  private boolean depIr;
 
-	public boolean isDepIr() {return depIr;}
-	public void setDepIr(boolean depIr) {this.depIr = depIr;}
+  @Column(name = "DEPSF")
+  private boolean depSf;
 
-	public boolean isDepSf() {return depSf;}
-	public void setDepSf(boolean depSf) {this.depSf = depSf;}
+  @Column(name = "OBS")
+  private String obs;
 
-	public String getObs() {return obs;}
-	public void setObs(String obs) {this.obs = obs;}
+  @Column(name = "FLUNIVERSITARIO")
+  private boolean flUniversitario;
 
-	public boolean isFlUniversitario() {return flUniversitario;}
-	public void setFlUniversitario(boolean flUniversitario) {this.flUniversitario = flUniversitario;}	
-	
+
+  @Transient
+  private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList;
+
+
+  public Dependente() {
+
+  }
+
+
+  public void adicionarRequisiscao(Double valor, PessoaJuridica pessoaJuridica) {
+    AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao();
+    auxilioSaudeRequisicaoLocal.setPessoaJuridica(pessoaJuridica);
+    auxilioSaudeRequisicaoLocal.setValorGastoPlanoSaude(valor);
+    auxilioSaudeRequisicaoLocal.setDependenteSelecionado(this);
+
+    if (auxilioSaudeRequisicaoList == null) {
+      auxilioSaudeRequisicaoList = new ArrayList<>();
+    }
+
+    auxilioSaudeRequisicaoList.add(auxilioSaudeRequisicaoLocal);
+  }
+
+
+  @Override
+  public Long getId() {
+    return this.id;
+  }
+
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Pessoal getResponsavel() {
+    return responsavel;
+  }
+
+  public void setResponsavel(Pessoal responsavel) {
+    this.responsavel = responsavel;
+  }
+
+  public Pessoal getDependente() {
+    return dependente;
+  }
+
+  public void setDependente(Pessoal dependente) {
+    this.dependente = dependente;
+  }
+
+  public TipoDependencia getTipoDependencia() {
+    return tipoDependencia;
+  }
+
+  public void setTipoDependencia(TipoDependencia tipoDependencia) {
+    this.tipoDependencia = tipoDependencia;
+  }
+
+  public MotivoDependencia getMotivoInicio() {
+    return motivoInicio;
+  }
+
+  public void setMotivoInicio(MotivoDependencia motivoInicio) {
+    this.motivoInicio = motivoInicio;
+  }
+
+  public MotivoDependencia getMotivoFim() {
+    return motivoFim;
+  }
+
+  public void setMotivoFim(MotivoDependencia motivoFim) {
+    this.motivoFim = motivoFim;
+  }
+
+  public Date getDataInicio() {
+    return dataInicio;
+  }
+
+  public void setDataInicio(Date dataInicio) {
+    this.dataInicio = dataInicio;
+  }
+
+  public Date getDataFim() {
+    return dataFim;
+  }
+
+  public void setDataFim(Date dataFim) {
+    this.dataFim = dataFim;
+  }
+
+  public Long getTipoDuracao() {
+    return tipoDuracao;
+  }
+
+  public void setTipoDuracao(Long tipoDuracao) {
+    this.tipoDuracao = tipoDuracao;
+  }
+
+  public boolean isDepPrev() {
+    return depPrev;
+  }
+
+  public void setDepPrev(boolean depPrev) {
+    this.depPrev = depPrev;
+  }
+
+  public boolean isDepIr() {
+    return depIr;
+  }
+
+  public void setDepIr(boolean depIr) {
+    this.depIr = depIr;
+  }
+
+  public boolean isDepSf() {
+    return depSf;
+  }
+
+  public void setDepSf(boolean depSf) {
+    this.depSf = depSf;
+  }
+
+  public String getObs() {
+    return obs;
+  }
+
+  public void setObs(String obs) {
+    this.obs = obs;
+  }
+
+  public boolean isFlUniversitario() {
+    return flUniversitario;
+  }
+
+  public void setFlUniversitario(boolean flUniversitario) {
+    this.flUniversitario = flUniversitario;
+  }  
+
+  public List<AuxilioSaudeRequisicao> getAuxilioSaudeRequisicaoList() {
+    return auxilioSaudeRequisicaoList;
+  }
+
+
+  public void setAuxilioSaudeRequisicaoList(
+      List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList) {
+    this.auxilioSaudeRequisicaoList = auxilioSaudeRequisicaoList;
+  }
+
+
 
 }

@@ -46,12 +46,14 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   
   @Autowired
   private  DependenteService dependenteService;
-
   
   @PostConstruct
   private void init() {
     try {
 
+      getEntidade().setBeanAuxilioSaudeRequisicaoDependente(new AuxilioSaudeRequisicao());
+      getEntidade().setBeanAuxilioSaudeRequisicaoTitular(new AuxilioSaudeRequisicao());
+      
       String matColaborador =
           funcionalService.getMatriculaAndNomeByCpfAtiva(CPF_TESTE).getMatricula();
 
@@ -104,13 +106,47 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   }
 
-  public void adicionar() {
+  /***
+   * metodo adiciona os dados do titular e validade se este é dependente,
+   * caso seja dependente o metodo para cadastro de dependentes é chamado
+   * @param beanEntidade
+   * @param isTitular
+   */
+  public void adicionarDadosTitular(AuxilioSaudeRequisicao beanEntidade, Boolean isTitular) {
     
     try { 
       
-      getEntidade().adicionarRequisiscao(getEntidade().getValorGastoPlanoSaude(), getPessoaJuridicaPorId(getEntidade().getPessoaJuridica()));
+      if(isTitular) {
+        getEntidade().adicionarRequisiscao(beanEntidade.getValorGastoPlanoSaude(), getPessoaJuridicaPorId(beanEntidade.getPessoaJuridica()));
+      } else {
+        adicionarDadosDependente(beanEntidade);
+      }
       
       
+    } catch (InstantiationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+  
+  public void adicionarDadosDependente(AuxilioSaudeRequisicao beanDependente) {
+    
+    try { 
+      /***selecionar o dependente completo na lista e adicionar na entidade***/
+      int index = getEntidade().getDependenteList().indexOf(getEntidade().getDependenteSelecionado());
+      Dependente dependenteEncontrado = getEntidade().getDependenteList().get(index);      
+      getEntidade().setDependenteSelecionado(dependenteEncontrado);
+      
+      
+      /***adicionar os intens valor e pessoajuridica a lista de auxiliosauderequisição dentro 
+       * do dependente selecionado
+       */
+      getEntidade().getDependenteSelecionado().
+      adicionarRequisiscao(beanDependente.getValorGastoPlanoSaude(), getPessoaJuridicaPorId(beanDependente.getPessoaJuridica()));      
     } catch (InstantiationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

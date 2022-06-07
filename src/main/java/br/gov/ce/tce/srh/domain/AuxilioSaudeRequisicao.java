@@ -73,6 +73,15 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
   @Transient
   private String declaracao;
+  
+  @Transient
+  private Dependente dependenteSelecionado;
+  
+  @Transient
+  private AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoTitular;
+  
+  @Transient
+  private AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoDependente;
 
   @Transient
   private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList;
@@ -100,25 +109,17 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   };
 
 
-  public void adicionarRequisiscao(Double valor, PessoaJuridica pessoaJuridica) {
-    
+  public void adicionarRequisiscao(Double valor, PessoaJuridica pessoaJuridica) {    
     AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao();
     auxilioSaudeRequisicaoLocal.setPessoaJuridica(pessoaJuridica);
-    auxilioSaudeRequisicaoLocal.setValorGastoPlanoSaude(valorGastoPlanoSaude);
+    auxilioSaudeRequisicaoLocal.setValorGastoPlanoSaude(valor);
     
     if (auxilioSaudeRequisicaoList == null) {
       auxilioSaudeRequisicaoList = new ArrayList<>();
     }
     
-    auxilioSaudeRequisicaoList.add(auxilioSaudeRequisicaoLocal);
-    
-    /*
-     * if (auxilioSaudeRequisicaoList.isEmpty()) {
-     * auxilioSaudeRequisicaoList.add(auxilioSaudeRequisicaoLocal); } else { if
-     * (!auxilioSaudeRequisicaoList.contains(auxilioSaudeRequisicaoLocal)) {
-     * auxilioSaudeRequisicaoList.add(auxilioSaudeRequisicaoLocal); } }
-     */
-  }
+    auxilioSaudeRequisicaoList.add(auxilioSaudeRequisicaoLocal); 
+  }  
 
 
   // getters e setters
@@ -224,6 +225,35 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
   public void setObservacao(String observacao) {
     this.observacao = observacao;
+  }  
+
+  public Dependente getDependenteSelecionado() {
+    return dependenteSelecionado;
+  }
+
+  public void setDependenteSelecionado(Dependente dependenteSelecionado) {
+    this.dependenteSelecionado = dependenteSelecionado;
+  }
+  
+  public AuxilioSaudeRequisicao getBeanAuxilioSaudeRequisicaoTitular() {
+    return beanAuxilioSaudeRequisicaoTitular;
+  }
+
+
+  public void setBeanAuxilioSaudeRequisicaoTitular(
+      AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoTitular) {
+    this.beanAuxilioSaudeRequisicaoTitular = beanAuxilioSaudeRequisicaoTitular;
+  }
+
+
+  public AuxilioSaudeRequisicao getBeanAuxilioSaudeRequisicaoDependente() {
+    return beanAuxilioSaudeRequisicaoDependente;
+  }
+
+
+  public void setBeanAuxilioSaudeRequisicaoDependente(
+      AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoDependente) {
+    this.beanAuxilioSaudeRequisicaoDependente = beanAuxilioSaudeRequisicaoDependente;
   }
 
 
