@@ -63,6 +63,10 @@ public class FacesUtil {
 		getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR, message, message));
 	}
 	
+	public static void addAvisoMessage(String message) {
+      getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, message));
+    }
+	
 	public static Object getFlashParameter(String name) {
         return getFacesContext().getExternalContext().getFlash().get(name);
     }

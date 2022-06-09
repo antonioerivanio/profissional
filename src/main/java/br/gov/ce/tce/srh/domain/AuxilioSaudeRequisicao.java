@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,41 +27,54 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
  * @author erivanio.cruz
  * @since 03/06/2022
  */
+
 @Entity
 @Table(name = "FP_AUXILIOSAUDEREQ", schema = DatabaseMetadata.SCHEMA_SRH)
 @SequenceGenerator(name = "SEQ_AUXILIOSAUDEREQ", sequenceName = "SEQ_AUXILIOSAUDEREQ",
-    schema = DatabaseMetadata.SCHEMA_SRH, allocationSize = 1, initialValue = 1)
+    allocationSize = 1)
 public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Serializable {
 
-  private static final long serialVersionUID = 481877607288972254L;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQ")
   private Long id;
 
-  @Column(name = "IDFUNCIONAL")
+  @ManyToOne
+  @JoinColumn(name = "IDFUNCIONAL")
   private Funcional funcional;
 
-  @Column(name = "IDUSUARIO")
+
+  @ManyToOne
+  @JoinColumn(name = "IDUSUARIO")
   private Usuario usuario;
 
-  @Column(name = "ID_PESSOAJURIDICA")
+  @ManyToOne
+  @JoinColumn(name = "IDPESSOAJURIDICA")
   private PessoaJuridica pessoaJuridica;
-
-  @OneToMany
-  @JoinColumn(name = "ID_DEPENDENTES")
-  private List<Dependente> dependenteList;
 
   @Column(name = "VALOR_PLANOSAUDE")
   private Double valorGastoPlanoSaude;
-
-  @Enumerated(EnumType.ORDINAL)
-  @Column(name = "FL_VALIDADO")
-  private Validacoes flValidado;
+  
+  @Column(name = "STATUS")
+  private String Status;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_INICIOREQ")
   private Date dataInicioRequisicao;
+  
+  
+  public static String DEFERIDO = "DEFERIDO";
+  public static String INDEFERIDO = "INDEFERIDO";
+
+  /**
+   * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
+   */
+  @Column(name = "FLG_AFIRMACAOSERVERDADE")
+  private boolean flAfirmaSerVerdadeiraInformacao;
 
   /* data da aprovação/reprovação da requisição */
   @Temporal(TemporalType.DATE)
@@ -71,30 +84,45 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   @Column(name = "OBSERVACAO")
   private String observacao;
 
+
+  // Beans que não são persistiveis -
   @Transient
   private String declaracao;
-  
+
   @Transient
   private Dependente dependenteSelecionado;
-  
-  @Transient
-  private AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoTitular;
-  
-  @Transient
-  private AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoDependente;
 
   @Transient
   private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList;
- 
+
+  @Transient
+  private List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaoDependenteList;
+
+  @Transient
+  private List<Dependente> dependentesComboList;
+
   public AuxilioSaudeRequisicao() {
 
   }
 
 
-  static enum Validacoes {
-    DEFERIDO, INDEFERIDO
+
+  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario,
+      PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude,
+      Date dataInicioRequisicao, boolean flAfirmaSerVerdadeiraInformacao
+      ) {
+    super();
+    
+    this.funcional = funcional;
+    this.usuario = usuario;
+    this.pessoaJuridica = pessoaJuridica;
+    this.valorGastoPlanoSaude = valorGastoPlanoSaude;    
+    this.dataInicioRequisicao = dataInicioRequisicao;
+    this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
   }
 
+
+  
 
   public String getDeclaracao() {
     StringBuilder declaracao =
@@ -109,17 +137,27 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   };
 
 
-  public void adicionarRequisiscao(Double valor, PessoaJuridica pessoaJuridica) {    
-    AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao();
-    auxilioSaudeRequisicaoLocal.setPessoaJuridica(pessoaJuridica);
-    auxilioSaudeRequisicaoLocal.setValorGastoPlanoSaude(valor);
-    
+  
+  public void adicionarDadosRequisicao(AuxilioSaudeRequisicao bean) {
+
     if (auxilioSaudeRequisicaoList == null) {
       auxilioSaudeRequisicaoList = new ArrayList<>();
     }
-    
-    auxilioSaudeRequisicaoList.add(auxilioSaudeRequisicaoLocal); 
-  }  
+
+    auxilioSaudeRequisicaoList.add(bean);
+  }
+
+  public void adicionarDadosDependente(AuxilioSaudeRequisicaoDependente beanDep) {
+   // beanDep.setAuxilioSaudeRequisicao(this);
+
+    if (auxilioSaudeRequisicaoDependenteList == null) {
+      auxilioSaudeRequisicaoDependenteList = new ArrayList<>();
+    }
+
+    auxilioSaudeRequisicaoDependenteList.add(beanDep);
+    beanDep.getAuxilioSaudeRequisicao().setAuxilioSaudeRequisicaoDependenteList(auxilioSaudeRequisicaoDependenteList);
+  }
+
 
 
   // getters e setters
@@ -127,14 +165,13 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   @Override
   public Long getId() {
     // TODO Auto-generated method stub
-    return null;
+    return id;
   }
 
 
   @Override
   public void setId(Long id) {
-    // TODO Auto-generated method stub
-
+    this.id = id;
   }
 
 
@@ -167,17 +204,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.pessoaJuridica = pessoaJuridica;
   }
 
-
-  public List<Dependente> getDependenteList() {
-    return dependenteList;
-  }
-
-
-  public void setDependenteList(List<Dependente> dependenteList) {
-    this.dependenteList = dependenteList;
-  }
-
-
   public Double getValorGastoPlanoSaude() {
     return valorGastoPlanoSaude;
   }
@@ -187,16 +213,13 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
   }
 
-
-  public Validacoes getFlValidado() {
-    return flValidado;
+  public String getStatus() {
+    return Status;
   }
 
-
-  public void setFlValidado(Validacoes flValidado) {
-    this.flValidado = flValidado;
+  public void setStatus(String status) {
+    Status = status;
   }
-
 
   public Date getDataInicioRequisicao() {
     return dataInicioRequisicao;
@@ -225,48 +248,51 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
   public void setObservacao(String observacao) {
     this.observacao = observacao;
-  }  
+  }
 
   public Dependente getDependenteSelecionado() {
     return dependenteSelecionado;
   }
 
+  public boolean getFlAfirmaSerVerdadeiraInformacao() {
+    return flAfirmaSerVerdadeiraInformacao;
+  }
+
+  public void setFlAfirmaSerVerdadeiraInformacao(boolean flAfirmaSerVerdadeiraInformacao) {
+    this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
+  }
+
+
   public void setDependenteSelecionado(Dependente dependenteSelecionado) {
     this.dependenteSelecionado = dependenteSelecionado;
   }
-  
-  public AuxilioSaudeRequisicao getBeanAuxilioSaudeRequisicaoTitular() {
-    return beanAuxilioSaudeRequisicaoTitular;
-  }
-
-
-  public void setBeanAuxilioSaudeRequisicaoTitular(
-      AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoTitular) {
-    this.beanAuxilioSaudeRequisicaoTitular = beanAuxilioSaudeRequisicaoTitular;
-  }
-
-
-  public AuxilioSaudeRequisicao getBeanAuxilioSaudeRequisicaoDependente() {
-    return beanAuxilioSaudeRequisicaoDependente;
-  }
-
-
-  public void setBeanAuxilioSaudeRequisicaoDependente(
-      AuxilioSaudeRequisicao beanAuxilioSaudeRequisicaoDependente) {
-    this.beanAuxilioSaudeRequisicaoDependente = beanAuxilioSaudeRequisicaoDependente;
-  }
-
 
   public List<AuxilioSaudeRequisicao> getAuxilioSaudeRequisicaoList() {
     return auxilioSaudeRequisicaoList;
   }
-
 
   public void setAuxilioSaudeRequisicaoList(
       List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList) {
     this.auxilioSaudeRequisicaoList = auxilioSaudeRequisicaoList;
   }
 
+
+  public List<Dependente> getDependentesComboList() {
+    return dependentesComboList;
+  }
+
+  public void setDependentesComboList(List<Dependente> dependentesComboList) {
+    this.dependentesComboList = dependentesComboList;
+  }
+
+  public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeRequisicaoDependenteList() {
+    return auxilioSaudeRequisicaoDependenteList;
+  }
+
+  public void setAuxilioSaudeRequisicaoDependenteList(
+      List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaoDependenteList) {
+    this.auxilioSaudeRequisicaoDependenteList = auxilioSaudeRequisicaoDependenteList;
+  }
 
 
 }

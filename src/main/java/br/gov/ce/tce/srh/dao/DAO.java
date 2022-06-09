@@ -5,6 +5,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /***
  * 
@@ -29,7 +31,7 @@ public abstract class DAO<T> {
   }
 
   public final void salvar(T obj) {
-      getEntityManager().persist(obj);
+      getEntityManager().persist(obj);      
   }
   
   public final void deletar(T obj) {

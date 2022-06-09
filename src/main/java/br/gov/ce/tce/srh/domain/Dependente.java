@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -77,28 +78,14 @@ public class Dependente extends BasicEntity<Long> implements Serializable {
   private boolean flUniversitario;
 
 
+  //@OneToMany
   @Transient
-  private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList;
+  private AuxilioSaudeRequisicao auxilioSaudeRequisicao;
 
 
   public Dependente() {
 
   }
-
-
-  public void adicionarRequisiscao(Double valor, PessoaJuridica pessoaJuridica) {
-    AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao();
-    auxilioSaudeRequisicaoLocal.setPessoaJuridica(pessoaJuridica);
-    auxilioSaudeRequisicaoLocal.setValorGastoPlanoSaude(valor);
-    auxilioSaudeRequisicaoLocal.setDependenteSelecionado(this);
-
-    if (auxilioSaudeRequisicaoList == null) {
-      auxilioSaudeRequisicaoList = new ArrayList<>();
-    }
-
-    auxilioSaudeRequisicaoList.add(auxilioSaudeRequisicaoLocal);
-  }
-
 
   @Override
   public Long getId() {
@@ -212,18 +199,14 @@ public class Dependente extends BasicEntity<Long> implements Serializable {
 
   public void setFlUniversitario(boolean flUniversitario) {
     this.flUniversitario = flUniversitario;
-  }  
-
-  public List<AuxilioSaudeRequisicao> getAuxilioSaudeRequisicaoList() {
-    return auxilioSaudeRequisicaoList;
   }
 
-
-  public void setAuxilioSaudeRequisicaoList(
-      List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList) {
-    this.auxilioSaudeRequisicaoList = auxilioSaudeRequisicaoList;
+  public AuxilioSaudeRequisicao getAuxilioSaudeRequisicao() {
+    return auxilioSaudeRequisicao;
   }
 
-
+  public void setAuxilioSaudeRequisicao(AuxilioSaudeRequisicao auxilioSaudeRequisicao) {
+    this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
+  }
 
 }

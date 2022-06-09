@@ -1,6 +1,8 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
@@ -8,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
+import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
@@ -22,8 +27,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 
 @Component("auxilioSaudeFormBean")
 @Scope("view")
-public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisicao>
-    implements Serializable {
+public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisicao> implements Serializable {
 
   private static final long serialVersionUID = 3707425815443102633L;
 
@@ -37,32 +41,35 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   @Autowired
   FuncionalService funcionalService;
-  
+
   @Autowired
   AuthenticationService authenticationService;
-  
+
+  @Autowired
+  AuxilioSaudeRequisicaoService entidadeService;
+
   @Autowired
   private PessoaJuridicaService pessoaJuridicaService;
-  
+
   @Autowired
-  private  DependenteService dependenteService;
-  
+  private DependenteService dependenteService;
+
+  @Autowired
+  private LoginBean loginBean;
+
   @PostConstruct
   private void init() {
     try {
 
-      getEntidade().setBeanAuxilioSaudeRequisicaoDependente(new AuxilioSaudeRequisicao());
-      getEntidade().setBeanAuxilioSaudeRequisicaoTitular(new AuxilioSaudeRequisicao());
-      
-      String matColaborador =
-          funcionalService.getMatriculaAndNomeByCpfAtiva(CPF_TESTE).getMatricula();
+      String matColaborador = funcionalService.getMatriculaAndNomeByCpfAtiva(CPF_TESTE).getMatricula();
 
       funcional = funcionalService.getCpfAndNomeByMatriculaAtiva(matColaborador);
-      
-      List<Dependente>  dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
-      
-      getEntidade().setDependenteList(dependenteList);
+
+      List<Dependente> dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
+
+      getEntidade().setDependentesComboList(dependenteList);
       getEntidade().setFuncional(funcional);
+      getEntidade().setUsuario(loginBean.getUsuarioLogado());
 
     } catch (Exception e) {
       FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -96,8 +103,27 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   @Override
   public void salvar() {
-    // TODO Auto-generated method stub
 
+    try {
+
+      entidadeService.adicionarDadosAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
+      
+      if (entidadeService.isOK(getEntidade())) {
+       
+        entidadeService.salvarAll(getEntidade().getAuxilioSaudeRequisicaoList());
+
+        FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
+
+        logger.info("Operação realizada com sucesso.");
+
+        createNewInstance();
+      }
+    } catch (InstantiationException | IllegalAccessException e) {
+      logger.error(e);
+    } catch (Exception e) {
+      FacesUtil.addErroMessage("Ops! Não foi possível salvar a requisição, Por gentileza entre em contato o setor responsável");
+      logger.error(e);
+    }
   }
 
   @Override
@@ -107,22 +133,32 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   /***
-   * metodo adiciona os dados do titular e validade se este é dependente,
-   * caso seja dependente o metodo para cadastro de dependentes é chamado
+   * metodo adiciona os dados do titular e validade se este é dependente, caso seja dependente o
+   * metodo para cadastro de dependentes é chamado
+   * 
    * @param beanEntidade
    * @param isTitular
    */
-  public void adicionarDadosTitular(AuxilioSaudeRequisicao beanEntidade, Boolean isTitular) {
-    
-    try { 
-      
-      if(isTitular) {
-        getEntidade().adicionarRequisiscao(beanEntidade.getValorGastoPlanoSaude(), getPessoaJuridicaPorId(beanEntidade.getPessoaJuridica()));
+  public void adicionarDadosBeneficiario(AuxilioSaudeRequisicao bean, Boolean isBeneficiario) {
+
+    try {
+
+      PessoaJuridica pessoaJuridica = entidadeService.getPessoaJuridicaPorId(getEntidade().getPessoaJuridica(),
+                                comboEmpresasCadastradas);
+      Date dataInicioRequisicao = new Date();
+
+
+      AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(funcional,
+                                loginBean.getUsuarioLogado(), pessoaJuridica, getEntidade().getValorGastoPlanoSaude(),
+                                dataInicioRequisicao, getEntidade().getFlAfirmaSerVerdadeiraInformacao());
+
+      if (isBeneficiario) {
+        getEntidade().adicionarDadosRequisicao(auxilioSaudeRequisicaoLocal);
       } else {
-        adicionarDadosDependente(beanEntidade);
+        adicionarDadosDependente(auxilioSaudeRequisicaoLocal);
       }
-      
-      
+
+
     } catch (InstantiationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -132,21 +168,21 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
 
   }
-  
-  public void adicionarDadosDependente(AuxilioSaudeRequisicao beanDependente) {
-    
-    try { 
-      /***selecionar o dependente completo na lista e adicionar na entidade***/
-      int index = getEntidade().getDependenteList().indexOf(getEntidade().getDependenteSelecionado());
-      Dependente dependenteEncontrado = getEntidade().getDependenteList().get(index);      
-      getEntidade().setDependenteSelecionado(dependenteEncontrado);
-      
-      
-      /***adicionar os intens valor e pessoajuridica a lista de auxiliosauderequisição dentro 
-       * do dependente selecionado
-       */
-      getEntidade().getDependenteSelecionado().
-      adicionarRequisiscao(beanDependente.getValorGastoPlanoSaude(), getPessoaJuridicaPorId(beanDependente.getPessoaJuridica()));      
+
+  public void adicionarDadosDependente(AuxilioSaudeRequisicao bean) {
+
+    try {
+
+      Dependente dependente = entidadeService.getDependentePorId(getEntidade().getDependenteSelecionado(),
+                                getEntidade().getDependentesComboList());
+      getEntidade().setDependenteSelecionado(dependente);
+
+      AuxilioSaudeRequisicaoDependente beanDependente = new AuxilioSaudeRequisicaoDependente(getEntidade(), dependente,
+                                bean.getPessoaJuridica(), bean.getValorGastoPlanoSaude());
+
+      /*** adicionar os dependentes na lista */
+      getEntidade().adicionarDadosDependente(beanDependente);
+
     } catch (InstantiationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -156,13 +192,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
 
   }
-  
-  public PessoaJuridica getPessoaJuridicaPorId(PessoaJuridica pj) {
-     int index = getComboEmpresasCadastradas().indexOf(pj);
-     PessoaJuridica pessoaJuridicaEncontrada = getComboEmpresasCadastradas().get(index);
-     return pessoaJuridicaEncontrada;
-  }
-  
+
 
   public List<PessoaJuridica> getComboEmpresasCadastradas() {
 

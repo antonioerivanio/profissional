@@ -66,6 +66,10 @@ textarea:disabled, input:not([type]):disabled, input[type="color" i]:disabled, i
 	margin-top: 5px !important;
 }
 
+.mg-top-14 {
+	margin-top: 14px !important;
+}
+
 .mg-top-15 {
 	margin-top: 15px !important;
 }

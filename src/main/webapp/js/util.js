@@ -61,3 +61,7 @@ function validarPessoa() {
 	}
 }
 
+function exibirCamposDependentes(){		
+	$(".tabela-dados-dependentes").show();  	
+}
+

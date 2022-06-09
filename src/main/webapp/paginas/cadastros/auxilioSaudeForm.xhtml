@@ -39,19 +39,18 @@
 
 		<h:outputScript>
 		function exibirCamposDependentes(){
+		
 			$(".tabela-dados-dependentes").show();  	
-		}
+		}	
 	</h:outputScript>
 
 		<div class="titulo-pagina">
-
-			<h2>Cadastro - Requerimento Auxilio Saúde</h2>
-
+			<h2>Cadastro - Requerimento Auxílio-Saúde</h2>
 		</div>
 
 		<span class="label-campos-obrigarotios"><i>* Campos
 				Obrigatórios</i></span>
-
+		<br></br>
 
 		<a4j:outputPanel ajaxRendered="true">
 			<h:messages id="messages" infoClass="infoMessage"
@@ -60,157 +59,36 @@
 
 		<h:form id="form" styleClass="formularios">
 
-
-			<div class="input-box">
-				<div class="input-box box-25">
-					<label for="asCadNome">Nome</label>
-					<h:outputText name="asCadNome"
-						value="#{auxilioSaudeFormBean.entidade.funcional.nomeCompleto}" />
-				</div>
-
-				<div class="input-box box-15">
-					<label for="asCadMat">Matricula</label>
-					<h:outputText name="asCadMat"
-						value="#{auxilioSaudeFormBean.entidade.funcional.matricula}"></h:outputText>
-				</div>
-
-				<div class="input-box box-15">
-					<label for="asCadLot">Lotação</label>
-					<h:outputText name="asCadLot"
-						value="#{auxilioSaudeFormBean.entidade.funcional.setor.nome}"></h:outputText>
-					<br></br>
-				</div>
-
-				<div class="input-box box-15">
-					<label for="asCadAtivo">Servidor Ativo</label>
-					<h:outputText name="asCadAtivo" value="Sim"></h:outputText>
-					<br></br>
-				</div>
-
-				<div class="input-box box-25">
-					<label for="asCadCargo">Cargo/Função</label>
-					<h:outputText name="asCadCargo"
-						value="#{auxilioSaudeFormBean.entidade.funcional.ocupacao.nomenclatura}"></h:outputText>
-					<br></br>
-				</div>
-
-			</div>
-
 			<!-- campos para entrada de dados Titular -->
 			<ui:fragment>
-				<ui:include src="/paginas/cadastros/auxilioSaudeInputs.xhtml">
-					<ui:param name="beanAuxilioSaudeRequisicao"
-						value="#{auxilioSaudeFormBean.entidade.beanAuxilioSaudeRequisicaoTitular}"></ui:param>
+				<ui:include src="/paginas/cadastros/auxilioSaudeBeneficiario.xhtml">
 					<ui:param name="id" value="1"></ui:param>
-					<ui:param name="isTitular" value="true"></ui:param>
-					<ui:param name="titleTitular" value="Dados Titular"></ui:param>
-					<ui:param name="isExibidoBotaoNovo" value="true"></ui:param>
-					<ui:param name="isExibidoBotaoAdicionar" value="true"></ui:param>
-
+					<ui:param name="title" value="Beneficiário"></ui:param>
+					<ui:param name="isBeneficiario" value="true"></ui:param>
 				</ui:include>
 			</ui:fragment>
 
-			<div class="tabela-dados">
 
-				<rich:dataTable id="lista" var="item"
-					rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList.size()}"
-					value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList}">
-
-					<h:column>
-						<f:facet name="header">
-		                            EMPRESA
-		                        </f:facet>
-
-						<h:outputText value="#{item.pessoaJuridica.nomeFantasia}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-		                            Valor Gasto (R$)
-		                        </f:facet>
-
-						<h:outputText value="#{item.valorGastoPlanoSaude}" />
-					</h:column>
-
-					<h:column>
-						<center>
-							<f:facet name="header">
-		                          Anexos
-		                        </f:facet>
-
-							<h:outputLink actionListener="#{auxilioSaudeFormBean.adicionar}">
-								<h:graphicImage url="/img/attached.png"
-									style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
-							</h:outputLink>
-						</center>
-					</h:column>
-
-				</rich:dataTable>
-			</div>
-
-			<div class="select-box box-30">
-				<label for="">Dependentes </label>
-				<div class="conteiner">
-					<h:selectOneMenu id="dependente" converter="entityConverter"
-						onchange="exibirCamposDependentes()"
-						value="#{auxilioSaudeFormBean.entidade.dependenteSelecionado}">
-						<f:selectItem id="selecioneDependente" itemLabel="Selecione..." />
-						<f:selectItems id="comboDependente"
-							value="#{auxilioSaudeFormBean.entidade.dependenteList}"
-							var="beanDep" itemValue="#{beanDep}"
-							itemLabel="#{beanDep.dependente.nomeCompleto}" />
-						<a4j:ajax execute="@this"></a4j:ajax>
-					</h:selectOneMenu>
-				</div>
-			</div>
-
-
-			<div class="tabela-dados tabela-dados-dependentes">
-
-				<!-- campos para entrada de dados Dependente -->
-				<ui:fragment id="asFragmentDep"
-					rendered="#{not empty auxilioSaudeFormBean.entidade.dependenteList}">
-					<ui:include src="/paginas/cadastros/auxilioSaudeInputs.xhtml">
-						<ui:param name="beanAuxilioSaudeRequisicao"
-							value="#{auxilioSaudeFormBean.entidade.beanAuxilioSaudeRequisicaoDependente}"></ui:param>
+			<div id="dependentes">
+				<!-- campos para entrada de dados Titular -->
+				<ui:fragment
+					rendered="#{not empty auxilioSaudeFormBean.entidade.dependentesComboList}">
+					<ui:include src="/paginas/cadastros/auxilioSaudeDependente.xhtml">
 						<ui:param name="id" value="2"></ui:param>
-						<ui:param name="isTitular" value="false"></ui:param>
-						<ui:param name="titleTitular" value="Dados Dependente"></ui:param>
-						<ui:param name="isExibidoBotaoNovo" value="false"></ui:param>
-						<ui:param name="isExibidoBotaoAdicionar" value="true"></ui:param>
+						<ui:param name="title" value="Dependentes"></ui:param>
+						<ui:param name="isBeneficiario" value="false"></ui:param>
 					</ui:include>
 				</ui:fragment>
 
-				<fiedset> <legend class="titulo-dependente">
-					<h2>Lista de Dependentes</h2>
-				</legend> <rich:dataTable id="asCadDtDependente" var="item"
-					rows="#{auxilioSaudeFormBean.entidade.dependenteSelecionado.auxilioSaudeRequisicaoList.size()}"
-					value="#{auxilioSaudeFormBean.entidade.dependenteSelecionado.auxilioSaudeRequisicaoList}"
-					noDataLabel="Nenhum Dependente foi selecionado">
-
-					<h:column>
-						<f:facet name="header"> 
-							Nome 
-						</f:facet>
-						<h:outputText
-							value="#{item.dependenteSelecionado.dependente.nomeCompleto}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							Valor Gasto (R$)
-						</f:facet>
-						<h:outputText value="#{item.valorGastoPlanoSaude}" />
-					</h:column>
-
-					<h:column>
-						<f:facet name="header">
-							Empresa Plano Saúde
-						</f:facet>
-						<h:outputText value="#{item.pessoaJuridica.nomeFantasia}" />
-					</h:column>
-
-				</rich:dataTable> </fiedset>
+			</div>
+			<!-- Campo obrigatório apenas para área gestora -->
+			<div class="textarea-box box-100">
+				<label for="">Observações da área</label>
+				<div class="conteiner">
+					<h:inputTextarea id="asCadObs"
+						value="#{auxilioSaudeFormBean.entidade.observacao}"
+						onkeyup="this.value = this.value.substring(0, 254);" />
+				</div>
 			</div>
 
 			<fieldset>
@@ -224,47 +102,29 @@
 					</p>
 				</div>
 
-				<div class="conteiner" style="padding: 15px">
+				<div class="conteiner" style="padding: 15px; font-size: 15px">
 					<div class="radio-box box-25">
-						<h:selectOneRadio id="asCadAcordo" value="">
-							<f:selectItem itemLabel="Concordo" itemValue="Sim" />
-						</h:selectOneRadio>
+						<h:selectBooleanCheckbox required="true"
+							requiredMessage="Campo Obrigatório Concordo" id="asCadAcordo"
+							value="#{auxilioSaudeFormBean.entidade.flAfirmaSerVerdadeiraInformacao}" />
+						Concordo
 					</div>
 				</div>
 			</fieldset>
 
-			<div class="textarea-box box-100">
-				<label for="">Observação</label>
-				<div class="conteiner">
-					<h:inputTextarea id="asCadObs"
-						value="Campo obrigatório apenas para área gestora"
-						onkeyup="this.value = this.value.substring(0, 254);" />
-				</div>
-			</div>
-
-
 			<div class="bt-conteiner">
-				<!-- 
-				<ui:fragment rendered="#{auxilioSaudeFormBean.cadastroAindaNaoFinalizado()}">
-					<a onclick="finalizaRecadastramento();" href="#"
-						class="bt-padrao fr">Finalizar</a>
-					<a4j:jsFunction name="finalizarRecadastramento"
-						action="#{auxilioSaudeFormBean.salvar(true)}" render="form">
-					</a4j:jsFunction>
-				</ui:fragment>
- -->
-				<ui:fragment>
+
+				
 					<h:commandButton id="salvar"
-						action="#{auxilioSaudeFormBean.salvar(false)}" value="Salvar"
-						styleClass="bt-padrao fr mg-right-10" />
-				</ui:fragment>
+						action="#{auxilioSaudeFormBean.salvar()}" value="Salvar"
+						styleClass="bt-padrao fr mg-right-10"
+						onclick="exibirCamposDependentes()" />
+				
 
 				<a href="/srh/paginas/cadastros/pessoaList.faces"
 					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 
 			</div>
-
-
 		</h:form>
 
 	</ui:define>
