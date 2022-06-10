@@ -16,8 +16,10 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
+import br.gov.ce.tce.srh.sapjava.domain.Entidade;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
+import br.gov.ce.tce.srh.service.AfastamentoESocialService;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -31,16 +33,21 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   private static final long serialVersionUID = 3707425815443102633L;
 
-  static Logger logger = Logger.getLogger(AuxilioSaudeFormBean.class);
+  static Logger logger = Logger.getLogger(AuxilioSaudeFormBean.class);  
 
-  Pessoal pessoal = null;
-  Funcional funcional = null;
-  private static String CPF_TESTE = "00276670302";
+  @Autowired
+  private LoginBean loginBean;
 
+  @Autowired
+  private AfastamentoFormBean afastamentoFormBean;
+  
   private List<PessoaJuridica> comboEmpresasCadastradas;
 
   @Autowired
   FuncionalService funcionalService;
+  
+  @Autowired
+  private AfastamentoESocialService afastamentoESocialService;
 
   @Autowired
   AuthenticationService authenticationService;
@@ -50,26 +57,15 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   @Autowired
   private PessoaJuridicaService pessoaJuridicaService;
-
-  @Autowired
-  private DependenteService dependenteService;
-
-  @Autowired
-  private LoginBean loginBean;
+  
 
   @PostConstruct
   private void init() {
     try {
 
-      String matColaborador = funcionalService.getMatriculaAndNomeByCpfAtiva(CPF_TESTE).getMatricula();
-
-      funcional = funcionalService.getCpfAndNomeByMatriculaAtiva(matColaborador);
-
-      List<Dependente> dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
-
-      getEntidade().setDependentesComboList(dependenteList);
-      getEntidade().setFuncional(funcional);
-      getEntidade().setUsuario(loginBean.getUsuarioLogado());
+      getEntidade().setUsuario(loginBean.getUsuarioLogado());      
+      
+      entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
 
     } catch (Exception e) {
       FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
@@ -77,11 +73,13 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
   }
 
+  
   @Override
   public void consultar() {
     try {
 
-
+      entidadeService.setDadosIniciaisDaEntidade(getEntidade());
+      
     } catch (Exception e) {
 
       FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
@@ -100,13 +98,14 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     // TODO Auto-generated method stub
 
   }
+  
 
   @Override
   public void salvar() {
 
     try {
 
-      entidadeService.adicionarDadosAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
+      entidadeService.executarAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
       
       if (entidadeService.isOK(getEntidade())) {
        
@@ -116,7 +115,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
         logger.info("Operação realizada com sucesso.");
 
-        createNewInstance();
+        //createNewInstance();
       }
     } catch (InstantiationException | IllegalAccessException e) {
       logger.error(e);
@@ -145,12 +144,10 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
       PessoaJuridica pessoaJuridica = entidadeService.getPessoaJuridicaPorId(getEntidade().getPessoaJuridica(),
                                 comboEmpresasCadastradas);
-      Date dataInicioRequisicao = new Date();
-
-
-      AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(funcional,
+     
+      AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(),
                                 loginBean.getUsuarioLogado(), pessoaJuridica, getEntidade().getValorGastoPlanoSaude(),
-                                dataInicioRequisicao, getEntidade().getFlAfirmaSerVerdadeiraInformacao());
+                                getEntidade().getFlAfirmaSerVerdadeiraInformacao());
 
       if (isBeneficiario) {
         getEntidade().adicionarDadosRequisicao(auxilioSaudeRequisicaoLocal);
@@ -158,6 +155,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         adicionarDadosDependente(auxilioSaudeRequisicaoLocal);
       }
 
+      bean = new AuxilioSaudeRequisicao();
 
     } catch (InstantiationException e) {
       // TODO Auto-generated catch block
@@ -208,4 +206,16 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     return this.comboEmpresasCadastradas;
   }
+
+
+  public AfastamentoFormBean getAfastamentoFormBean() {
+    return afastamentoFormBean;
+  }
+  
+
+  
+  public void carregarDadosBeneficiarioChange() {
+    
+  }
+  
 }

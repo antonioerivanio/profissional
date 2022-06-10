@@ -30,14 +30,20 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 @Entity
 @Table(name = "FP_AUXILIOSAUDEREQ", schema = DatabaseMetadata.SCHEMA_SRH)
-@SequenceGenerator(name = "SEQ_AUXILIOSAUDEREQ", sequenceName = "SEQ_AUXILIOSAUDEREQ",
-    allocationSize = 1)
+@SequenceGenerator(name = "SEQ_AUXILIOSAUDEREQ", sequenceName = "SEQ_AUXILIOSAUDEREQ", allocationSize = 1)
 public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Serializable {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
+  
+
+  public static String DEFERIDO = "DEFERIDO";
+  public static String INDEFERIDO = "INDEFERIDO";
+  public static String ATIVO = "SIM";
+  public static String INATIVO = "NÃO";
+  
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQ")
@@ -58,28 +64,27 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
   @Column(name = "VALOR_PLANOSAUDE")
   private Double valorGastoPlanoSaude;
-  
-  @Column(name = "STATUS")
-  private String Status;
+
+  @Column(name = "STATUSAPROVACAO")
+  private String StatusAprovacao;
+
+  @Column(name = "STATUSFUNCIONAL")
+  private String StatusFuncional;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_INICIOREQ")
   private Date dataInicioRequisicao;
-  
-  
-  public static String DEFERIDO = "DEFERIDO";
-  public static String INDEFERIDO = "INDEFERIDO";
-
-  /**
-   * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
-   */
-  @Column(name = "FLG_AFIRMACAOSERVERDADE")
-  private boolean flAfirmaSerVerdadeiraInformacao;
 
   /* data da aprovação/reprovação da requisição */
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_FIMREQ")
   private Date dataFImRequisicao;
+  
+  /**
+   * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
+   */
+  @Column(name = "FLG_AFIRMACAOSERVERDADE")
+  private boolean flAfirmaSerVerdadeiraInformacao;
 
   @Column(name = "OBSERVACAO")
   private String observacao;
@@ -101,43 +106,36 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   @Transient
   private List<Dependente> dependentesComboList;
 
+  
+  
   public AuxilioSaudeRequisicao() {
 
   }
 
 
-
-  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario,
-      PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude,
-      Date dataInicioRequisicao, boolean flAfirmaSerVerdadeiraInformacao
-      ) {
+  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica,
+                            Double valorGastoPlanoSaude, boolean flAfirmaSerVerdadeiraInformacao) {
     super();
-    
+
     this.funcional = funcional;
     this.usuario = usuario;
     this.pessoaJuridica = pessoaJuridica;
-    this.valorGastoPlanoSaude = valorGastoPlanoSaude;    
-    this.dataInicioRequisicao = dataInicioRequisicao;
+    this.valorGastoPlanoSaude = valorGastoPlanoSaude;
     this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
   }
 
 
-  
-
   public String getDeclaracao() {
-    StringBuilder declaracao =
-        new StringBuilder("Declaro que estou ciente que a inveracidade da informação ");
+    StringBuilder declaracao = new StringBuilder("Declaro que estou ciente que a inveracidade da informação ");
     declaracao.append("contida neste documento, por mim firmado, constitui prática de ");
     declaracao.append("infração disciplinar, passível de punição na forma da lei, e ");
     declaracao.append("que não recebo auxílio-saúde semelhante nem possuo programa de ");
-    declaracao
-        .append("assistência à saúde custeado integral ou parcialmente pelos cofres públicos ");
+    declaracao.append("assistência à saúde custeado integral ou parcialmente pelos cofres públicos ");
 
     return declaracao.toString();
   };
 
 
-  
   public void adicionarDadosRequisicao(AuxilioSaudeRequisicao bean) {
 
     if (auxilioSaudeRequisicaoList == null) {
@@ -148,7 +146,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   }
 
   public void adicionarDadosDependente(AuxilioSaudeRequisicaoDependente beanDep) {
-   // beanDep.setAuxilioSaudeRequisicao(this);
+    // beanDep.setAuxilioSaudeRequisicao(this);
 
     if (auxilioSaudeRequisicaoDependenteList == null) {
       auxilioSaudeRequisicaoDependenteList = new ArrayList<>();
@@ -157,7 +155,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     auxilioSaudeRequisicaoDependenteList.add(beanDep);
     beanDep.getAuxilioSaudeRequisicao().setAuxilioSaudeRequisicaoDependenteList(auxilioSaudeRequisicaoDependenteList);
   }
-
 
 
   // getters e setters
@@ -208,23 +205,21 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     return valorGastoPlanoSaude;
   }
 
-
   public void setValorGastoPlanoSaude(Double valorGastoPlanoSaude) {
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
   }
 
-  public String getStatus() {
-    return Status;
+  public String getStatusFuncional() {
+    return StatusFuncional;
   }
 
-  public void setStatus(String status) {
-    Status = status;
+  public void setStatusFuncional(String statusFuncional) {
+    StatusFuncional = statusFuncional;
   }
 
   public Date getDataInicioRequisicao() {
     return dataInicioRequisicao;
   }
-
 
   public void setDataInicioRequisicao(Date dataInicioRequisicao) {
     this.dataInicioRequisicao = dataInicioRequisicao;
@@ -235,20 +230,28 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     return dataFImRequisicao;
   }
 
-
   public void setDataFImRequisicao(Date dataFImRequisicao) {
     this.dataFImRequisicao = dataFImRequisicao;
   }
-
 
   public String getObservacao() {
     return observacao;
   }
 
-
   public void setObservacao(String observacao) {
     this.observacao = observacao;
   }
+
+
+  public String getStatusAprovacao() {
+    return StatusAprovacao;
+  }
+
+
+  public void setStatusAprovacao(String statusAprovacao) {
+    StatusAprovacao = statusAprovacao;
+  }
+
 
   public Dependente getDependenteSelecionado() {
     return dependenteSelecionado;
@@ -271,8 +274,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     return auxilioSaudeRequisicaoList;
   }
 
-  public void setAuxilioSaudeRequisicaoList(
-      List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList) {
+  public void setAuxilioSaudeRequisicaoList(List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList) {
     this.auxilioSaudeRequisicaoList = auxilioSaudeRequisicaoList;
   }
 
@@ -290,9 +292,8 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   }
 
   public void setAuxilioSaudeRequisicaoDependenteList(
-      List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaoDependenteList) {
+                            List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaoDependenteList) {
     this.auxilioSaudeRequisicaoDependenteList = auxilioSaudeRequisicaoDependenteList;
   }
-
 
 }

@@ -60,7 +60,7 @@ public class AfastamentoFormBean implements Serializable {
 	private void init() {
 		AfastamentoESocial flashParameter = null;
 		
-		if(FacesUtil.getFlashParameter("entidade")  != null && FacesUtil.getFlashParameter("entidade") instanceof AfastamentoESocial) {
+		if(FacesUtil.getFlashParameter("entidade") != null && FacesUtil.getFlashParameter("entidade") instanceof AfastamentoESocial) {
 			flashParameter = (AfastamentoESocial)FacesUtil.getFlashParameter("entidade");
 		}
 		
