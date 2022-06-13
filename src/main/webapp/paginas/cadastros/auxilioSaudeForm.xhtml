@@ -17,14 +17,14 @@
 
 		<!-- id=asFrmOtNome foi usado atalhos, então o id seria igual auxilioSaudeFormularioOutputTextNome  -->
 
-	<h:outputStylesheet>
+		<h:outputStylesheet>
 		.tabela-dados-dependentes {
 			display: none
 		}
 
 	</h:outputStylesheet>
 
-	<h:outputScript>
+		<h:outputScript>
 		function exibirCamposDependentes(){		
 			$(".tabela-dados-dependentes").show();  	
 		}
@@ -62,21 +62,17 @@
 									value="#{auxilioSaudeFormBean.afastamentoFormBean.servidorEnvioList}"
 									var="servidor" itemValue="#{servidor}"
 									itemLabel="#{servidor.nome}" />
-
-								<f:ajax
-									listener="#{auxilioSaudeFormBean.carregarDadosBeneficiarioChange()}"
-									execute="@this" render="form" />
 							</h:selectOneMenu>
 						</div>
 					</div>
-					
+
 					<br></br>
-					
+
 					<h:commandButton actionListener="#{auxilioSaudeFormBean.consultar}"
 						value="Consultar" styleClass="bt-padrao fr mg-right-10" />
 
 
-					<ui:fragment id="asFrmFragDadosBeneficiario" rendered="#{auxilioSaudeFormBean.entidade.funcional.nomeCompleto != null}">
+					<ui:fragment id="asFrmFragDadosBeneficiario">
 						<div class="input-box">
 							<div class="input-box box-25">
 								<label for="asFrmOtNome">Nome</label>
@@ -110,7 +106,7 @@
 									value="#{auxilioSaudeFormBean.entidade.funcional.ocupacao.nomenclatura}"></h:outputText>
 								<br></br>
 							</div>
-							
+
 							<div class="input-box box-10">
 								<label for="asDtInicio">Data Atual</label>
 								<h:outputText name="asDtInicio"
@@ -149,22 +145,24 @@
 						</div>
 
 						<rich:fileUpload styleClass="fileUploadFicha"
-							style="display: none; padding-rigth:10px"
-							fileUploadListener="#{folgaFormBean.uploadComprovante}"
+							style="display: none; padding-rigth:10px" id="asFrmFlBenefeciario"
+							fileUploadListener="#{auxilioSaudeFormBean.uploadComprovante}"
 							acceptedTypes="pdf"
 							ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
 							maxFilesQuantity="1" immediateUpload="true"
 							onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
+							<!-- parametros enviado para servidor -->
+							<f:attribute name="isComprovanteBeneficiario" value="true" />
+							
 							<a4j:ajax event="uploadcomplete" execute="@none"
-								render="form:fileUpload, form:comprovanteFolga, messages" />
+								render="form:asFrmFlBenefeciario, messages" />
 						</rich:fileUpload>
 
-						<h:commandLink id="asFrmBntAnexoBeneficiario"
+						<span id="asFrmBntAnexoBeneficiario"
 							class="bt-upload fl mg-top-14"
-							onclick="document.querySelector('.fileUploadFicha input').click()"
-							value="Anexar"></h:commandLink>
+							onclick="document.querySelector('.fileUploadFicha input').click()">Anexar</span>
 
-						<!-- Exibe informações do botão Novo quando usuário passar o mouse sobre ele -->
+						<!-- Exibe informações do botão anexar quando usuário passar o mouse sobre ele -->
 						<rich:tooltip styleClass="tooltip" layout="block"
 							target="asFrmBntAnexoBeneficiario">
 							<span style="white-space: nowrap"> <strong>
@@ -280,21 +278,23 @@
 
 							<ui:fragment
 								rendered="#{LoginBean.anyGranted('ROLE_FOLGA_INSERIR,ROLE_FOLGA_ALTERAR')}">
-								<rich:fileUpload styleClass="fileUploadFicha" id="asFrmFuDep"
-									style="display: none; padding-rigth:10px"
-									fileUploadListener="#{folgaFormBean.uploadComprovante}"
+								<rich:fileUpload styleClass="fileUploadFichaDep"
+									style="display: none; padding-rigth:10px" 
+									fileUploadListener="#{auxilioSaudeFormBean.uploadComprovante}"
 									acceptedTypes="pdf"
 									ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
 									maxFilesQuantity="1" immediateUpload="true"
 									onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
+									
+									<f:attribute name="isComprovanteBeneficiario" value="false" />
+									
 									<a4j:ajax event="uploadcomplete" execute="@none"
-										render="form:fileUpload, form:comprovanteFolga, messages" />
+										render="messages" />
 								</rich:fileUpload>
 
-								<h:commandLink id="asFrmClAnexoDep"
-									class="bt-upload fl mg-top-14"
-									onclick="document.querySelector('.fileUploadFicha input').click()"
-									value="Anexar"></h:commandLink>
+
+								<span id="asFrmBntAnexoDep" class="bt-upload fl mg-top-14"
+									onclick="document.querySelector('.fileUploadFichaDep input').click()">Anexar</span>
 
 								<!-- Exibe informações do botão Novo quando usuário passar o mouse sobre ele -->
 								<rich:tooltip styleClass="tooltip" layout="block"

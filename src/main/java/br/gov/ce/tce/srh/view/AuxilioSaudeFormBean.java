@@ -6,30 +6,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.richfaces.event.FileUploadEvent;
+import org.richfaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.Dependente;
-import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Parametro;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
-import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.sapjava.domain.Entidade;
-import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
-import br.gov.ce.tce.srh.service.AfastamentoESocialService;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
-import br.gov.ce.tce.srh.service.DependenteService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -40,17 +36,21 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   private static final long serialVersionUID = 3707425815443102633L;
 
-  static Logger logger = Logger.getLogger(AuxilioSaudeFormBean.class);  
+  static Logger logger = Logger.getLogger(AuxilioSaudeFormBean.class);
 
   @Autowired
   private LoginBean loginBean;
 
   @Autowired
   private AfastamentoFormBean afastamentoFormBean;
+
   public AfastamentoFormBean getAfastamentoFormBean() {
     return afastamentoFormBean;
   }
-  
+
+
+  private UploadedFile comprovante;
+
   private List<PessoaJuridica> comboEmpresasCadastradas;
 
   @Autowired
@@ -64,14 +64,18 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   @Autowired
   private PessoaJuridicaService pessoaJuridicaService;
-  
+
+
+  @Autowired
+  private ParametroService parametroService;
+
 
   @PostConstruct
   private void init() {
     try {
 
-      getEntidade().setUsuario(loginBean.getUsuarioLogado());      
-      
+      getEntidade().setUsuario(loginBean.getUsuarioLogado());
+
       entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
 
     } catch (Exception e) {
@@ -80,13 +84,13 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
   }
 
-  
+
   @Override
   public void consultar() {
     try {
 
       entidadeService.setDadosIniciaisDaEntidade(getEntidade());
-      
+
     } catch (Exception e) {
 
       FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
@@ -105,24 +109,25 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     // TODO Auto-generated method stub
 
   }
-  
+
 
   @Override
   public void salvar() {
 
     try {
 
-      entidadeService.executarAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
-      
+      entidadeService.executarAntesSalvar(getEntidade(), getEntidade().getObservacao(),
+                                getEntidade().getFlAfirmaSerVerdadeiraInformacao());
+
       if (entidadeService.isOK(getEntidade())) {
-       
+
         entidadeService.salvarAll(getEntidade().getAuxilioSaudeRequisicaoList());
 
         FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
 
         logger.info("Operação realizada com sucesso.");
 
-        //createNewInstance();
+        // createNewInstance();
       }
     } catch (InstantiationException | IllegalAccessException e) {
       logger.error(e);
@@ -151,7 +156,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
       PessoaJuridica pessoaJuridica = entidadeService.getPessoaJuridicaPorId(getEntidade().getPessoaJuridica(),
                                 comboEmpresasCadastradas);
-     
+
       AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(),
                                 loginBean.getUsuarioLogado(), pessoaJuridica, getEntidade().getValorGastoPlanoSaude(),
                                 getEntidade().getFlAfirmaSerVerdadeiraInformacao());
@@ -215,47 +220,111 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   /***
-   * Salvar o arquivo que comprove o gasto com auxilio saude 
+   * Salvar o arquivo que comprove o gasto com auxilio saude
+   * 
    * @param event
+   * @throws IllegalAccessException
+   * @throws InstantiationException
    */
+
+
   public void uploadComprovante(FileUploadEvent event) {
 
     try {
 
-        //pegando o caminho do arquivo no servidor
-        //Parametro parametro = parametroService.getByNome("pathComprovanteFolgaSRH");
+      String isComprovanteBeneficiario = (String) event.getComponent().getAttributes().get("isComprovanteBeneficiario");
 
-        //if (parametro == null) {
-          //  throw new SRHRuntimeException(
-            //        "Parâmetro do caminho do comprovante não encontrado na tabela SRH.TB_PARAMETRO");               
-       // }
+      @SuppressWarnings("unused")
+      UploadedFile comprovante = event.getUploadedFile();
 
-        //setComprovante(event.getUploadedFile());
-        
+      // pegando o caminho do arquivo no servidor
+      Parametro parametro = parametroService.getByNome("pathComprovanteAuxilioSaudeSRH");
+
+      String pathArquivo = parametro.getValor() + comprovante.getName();
+
+      if (parametro == null) {
+        throw new SRHRuntimeException("Parâmetro do caminho do comprovante não encontrado na tabela SRH.TB_PARAMETRO");
+      }
+
+      if (Boolean.valueOf(isComprovanteBeneficiario)) {
+
+        // setComprovante(event.getUploadedFile());
+
         // gravando em disco
-       // File file = new File(parametro.getValor() + comprovante.getName());
-        FileOutputStream fop;
-        
-        // setando o nome do comprovante
-       // getEntidade().setCaminhoComprovante(file.getName());
+        // File file = new File(parametro.getValor() + comprovante.getName());
+        // FileOutputStream fop;
 
-        //fop = new FileOutputStream(file);
-        fop = new FileOutputStream(new File(""));
-        //fop.write(comprovante.getData());
-        fop.flush();
-        fop.close();
+        // setando o nome do comprovante
+        if (getEntidade().getAuxilioSaudeRequisicaoDocumento() == null) {
+          getEntidade().setAuxilioSaudeRequisicaoDocumento(new AuxilioSaudeRequisicaoDocumento());
+        }
+
+        AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento = new AuxilioSaudeRequisicaoDocumento(
+                                  getEntidade(), null, comprovante.getName(), pathArquivo, new Date(), comprovante);
+
+        getEntidade().getAuxilioSaudeRequisicaoDocumento().adicionarComprovanteList(auxilioSaudeRequisicaoDocumento);
+      } else {//arquivos dos dependentes
+        if (getEntidade().getDependenteSelecionado() != null && getEntidade().getDependenteSelecionado()
+                                  .getAuxilioSaudeRequisicaoDocumento() == null) {
+          getEntidade().getDependenteSelecionado()
+                                    .setAuxilioSaudeRequisicaoDocumento(new AuxilioSaudeRequisicaoDocumento());
+        }
+
+        AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento = new AuxilioSaudeRequisicaoDocumento(
+                                  getEntidade(), null, comprovante.getName(), pathArquivo, new Date(), comprovante);
+
+        getEntidade().getDependenteSelecionado().getAuxilioSaudeRequisicaoDocumento()
+                                  .adicionarComprovanteList(auxilioSaudeRequisicaoDocumento);
+
+      }
+      // fop = new FileOutputStream(file);
+      // fop.write(comprovante.getData());
+      // fop.flush();
+      // fop.close();
 
     } catch (SRHRuntimeException e) {
-        FacesUtil.addErroMessage("Erro na gravação do comprovante de folga.");
-        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-    } catch (FileNotFoundException e) {
-        FacesUtil.addErroMessage("Erro na gravação do comprovante de folga.");
-        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-    } catch (IOException e) {
-        FacesUtil.addErroMessage("Erro na gravação do comprovante de folga.");
-        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+      FacesUtil.addErroMessage("Erro na gravação do comprovante.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (InstantiationException e) {
+      FacesUtil.addErroMessage("Erro na gravação do comprovante.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      FacesUtil.addErroMessage("Erro na gravação do comprovante.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
     }
 
-}
-  
+    event.getComponent().getAttributes().clear();
+
+  }
+
+  public void uploadComprovanteDependente(FileUploadEvent event) throws InstantiationException, IllegalAccessException {
+
+    @SuppressWarnings("unused")
+    String isComprovanteBeneficiario = (String) event.getComponent().getAttributes().get("isComprovanteBeneficiario");
+
+    @SuppressWarnings("unused")
+    UploadedFile comprovante = event.getUploadedFile();
+
+    // pegando o caminho do arquivo no servidor
+    Parametro parametro = parametroService.getByNome("pathComprovanteAuxilioSaudeSRH");
+
+    String pathArquivo = parametro.getValor() + comprovante.getName();
+
+    if (parametro == null) {
+      throw new SRHRuntimeException("Parâmetro do caminho do comprovante não encontrado na tabela SRH.TB_PARAMETRO");
+    }
+
+    // setando o nome do comprovante
+    if (getEntidade().getAuxilioSaudeRequisicaoDocumento() == null) {
+      getEntidade().setAuxilioSaudeRequisicaoDocumento(new AuxilioSaudeRequisicaoDocumento());
+    }
+
+    AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento = new AuxilioSaudeRequisicaoDocumento(getEntidade(),
+                              null, comprovante.getName(), pathArquivo, new Date(), comprovante);
+
+    getEntidade().getAuxilioSaudeRequisicaoDocumento().adicionarComprovanteList(auxilioSaudeRequisicaoDocumento);
+
+  }
+
 }

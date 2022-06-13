@@ -106,7 +106,9 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   @Transient
   private List<Dependente> dependentesComboList;
 
-  
+  @Transient
+  private AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;
+    
   
   public AuxilioSaudeRequisicao() {
 
@@ -155,6 +157,8 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     auxilioSaudeRequisicaoDependenteList.add(beanDep);
     beanDep.getAuxilioSaudeRequisicao().setAuxilioSaudeRequisicaoDependenteList(auxilioSaudeRequisicaoDependenteList);
   }
+    
+
 
 
   // getters e setters
@@ -252,6 +256,16 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     StatusAprovacao = statusAprovacao;
   }
 
+  
+  public AuxilioSaudeRequisicaoDocumento getAuxilioSaudeRequisicaoDocumento() {
+    return auxilioSaudeRequisicaoDocumento;
+  }
+
+
+  public void setAuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento) {
+    this.auxilioSaudeRequisicaoDocumento = auxilioSaudeRequisicaoDocumento;
+  }
+
 
   public Dependente getDependenteSelecionado() {
     return dependenteSelecionado;
@@ -296,4 +310,5 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.auxilioSaudeRequisicaoDependenteList = auxilioSaudeRequisicaoDependenteList;
   }
 
+  
 }

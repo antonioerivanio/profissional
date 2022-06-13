@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
@@ -77,10 +78,13 @@ public class Dependente extends BasicEntity<Long> implements Serializable {
   @Column(name = "FLUNIVERSITARIO")
   private boolean flUniversitario;
 
-
-  //@OneToMany
+  
   @Transient
   private AuxilioSaudeRequisicao auxilioSaudeRequisicao;
+  
+  
+  @Transient
+  private AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;  
 
 
   public Dependente() {
@@ -209,4 +213,13 @@ public class Dependente extends BasicEntity<Long> implements Serializable {
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
   }
 
+  public AuxilioSaudeRequisicaoDocumento getAuxilioSaudeRequisicaoDocumento() {
+    return auxilioSaudeRequisicaoDocumento;
+  }
+
+  public void setAuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento) {
+    this.auxilioSaudeRequisicaoDocumento = auxilioSaudeRequisicaoDocumento;
+  }
+
+  
 }

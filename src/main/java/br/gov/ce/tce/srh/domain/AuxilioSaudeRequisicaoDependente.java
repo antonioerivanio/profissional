@@ -1,26 +1,17 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import br.gov.ce.tce.srh.sca.domain.Usuario;
+import javax.validation.constraints.AssertFalse.List;
 
 /***
  * Classe que amazena os dados das solicitações dependentes do Beneficiario do TCE-CE para
@@ -62,6 +53,10 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
   
   @Column(name = "FLG_DELETADO")
   private boolean flgDeletado;
+  
+  
+  @Transient
+  AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;
   
   
   public AuxilioSaudeRequisicaoDependente() {
