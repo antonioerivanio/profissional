@@ -75,15 +75,38 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public Boolean isOK(AuxilioSaudeRequisicao bean) {
+    if (bean.getFuncional() == null) {
+      FacesUtil.addErroMessage("Dados do Beneficiário inválido");
+      return false;
+    }
+
+    if (bean.getFuncional() != null && bean.getAuxilioSaudeRequisicaoList() != null
+                              && !bean.getAuxilioSaudeRequisicaoList().isEmpty()) {      
+      for (AuxilioSaudeRequisicao beanAux : bean.getAuxilioSaudeRequisicaoList()) {
+        if (beanAux.getValorGastoPlanoSaude() == null) {
+          FacesUtil.addErroMessage("O Valor Mensal é Obrigatório" );
+          return false;
+        }
+
+        if (beanAux.getPessoaJuridica() == null) {          
+          FacesUtil.addErroMessage("Nome da empresa é Obrigatório" );
+          return false;
+        }
+      }
+     
+      return true;
+    }
+
     if (bean.getFlAfirmaSerVerdadeiraInformacao() == Boolean.FALSE) {
       FacesUtil.addErroMessage("Campo Obrigatório Concordo");
       return Boolean.FALSE;
     }
 
+
     if (bean.getDependenteSelecionado() != null) {
       if (bean.getAuxilioSaudeRequisicaoDependenteList() != null
                                 && bean.getAuxilioSaudeRequisicaoDependenteList().isEmpty()) {
-        
+
         FacesUtil.addErroMessage("O valor mensal e Nome da Empresa de Saúde deve ser adicionado");
         return false;
       }
@@ -98,7 +121,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     return Boolean.TRUE;
   }
-  
+
 
   @Override
   public PessoaJuridica getPessoaJuridicaPorId(PessoaJuridica pj, List<PessoaJuridica> comboEmpresasCadastradas) {
@@ -160,8 +183,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public void setDadosIniciaisDaEntidade(AuxilioSaudeRequisicao entidade) {
     Funcional funcional = funcionalService.getById(entidade.getFuncional().getId());
-    // String matColaborador =
-    // funcionalService.getMatriculaAndNomeByCpfAtiva(entidade.getFuncional().getPessoal().getCpf()).getMatricula();
 
     List<Dependente> dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
 

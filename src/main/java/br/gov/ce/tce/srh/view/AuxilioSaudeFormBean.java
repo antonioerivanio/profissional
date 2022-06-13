@@ -1,11 +1,16 @@
 package br.gov.ce.tce.srh.view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
+import org.richfaces.event.FileUploadEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -13,9 +18,11 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Parametro;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Entidade;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
@@ -40,14 +47,14 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   @Autowired
   private AfastamentoFormBean afastamentoFormBean;
+  public AfastamentoFormBean getAfastamentoFormBean() {
+    return afastamentoFormBean;
+  }
   
   private List<PessoaJuridica> comboEmpresasCadastradas;
 
   @Autowired
   FuncionalService funcionalService;
-  
-  @Autowired
-  private AfastamentoESocialService afastamentoESocialService;
 
   @Autowired
   AuthenticationService authenticationService;
@@ -207,15 +214,48 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return this.comboEmpresasCadastradas;
   }
 
+  /***
+   * Salvar o arquivo que comprove o gasto com auxilio saude 
+   * @param event
+   */
+  public void uploadComprovante(FileUploadEvent event) {
 
-  public AfastamentoFormBean getAfastamentoFormBean() {
-    return afastamentoFormBean;
-  }
-  
+    try {
 
-  
-  public void carregarDadosBeneficiarioChange() {
-    
-  }
+        //pegando o caminho do arquivo no servidor
+        //Parametro parametro = parametroService.getByNome("pathComprovanteFolgaSRH");
+
+        //if (parametro == null) {
+          //  throw new SRHRuntimeException(
+            //        "Parâmetro do caminho do comprovante não encontrado na tabela SRH.TB_PARAMETRO");               
+       // }
+
+        //setComprovante(event.getUploadedFile());
+        
+        // gravando em disco
+       // File file = new File(parametro.getValor() + comprovante.getName());
+        FileOutputStream fop;
+        
+        // setando o nome do comprovante
+       // getEntidade().setCaminhoComprovante(file.getName());
+
+        //fop = new FileOutputStream(file);
+        fop = new FileOutputStream(new File(""));
+        //fop.write(comprovante.getData());
+        fop.flush();
+        fop.close();
+
+    } catch (SRHRuntimeException e) {
+        FacesUtil.addErroMessage("Erro na gravação do comprovante de folga.");
+        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (FileNotFoundException e) {
+        FacesUtil.addErroMessage("Erro na gravação do comprovante de folga.");
+        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (IOException e) {
+        FacesUtil.addErroMessage("Erro na gravação do comprovante de folga.");
+        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    }
+
+}
   
 }
