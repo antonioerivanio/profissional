@@ -42,8 +42,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   public static String DEFERIDO = "DEFERIDO";
   public static String INDEFERIDO = "INDEFERIDO";
   public static String ATIVO = "SIM";
-  public static String INATIVO = "NÃO";
-  
+  public static String INATIVO = "NÃO";  
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQ")
@@ -107,8 +106,11 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   private List<Dependente> dependentesComboList;
 
   @Transient
-  private AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;
-    
+  private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList;  
+  
+  @Transient
+  private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoDependenteList;
+
   
   public AuxilioSaudeRequisicao() {
 
@@ -148,7 +150,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   }
 
   public void adicionarDadosDependente(AuxilioSaudeRequisicaoDependente beanDep) {
-    // beanDep.setAuxilioSaudeRequisicao(this);
 
     if (auxilioSaudeRequisicaoDependenteList == null) {
       auxilioSaudeRequisicaoDependenteList = new ArrayList<>();
@@ -158,6 +159,25 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     beanDep.getAuxilioSaudeRequisicao().setAuxilioSaudeRequisicaoDependenteList(auxilioSaudeRequisicaoDependenteList);
   }
     
+  public void adicionarComprovanteBeneficiarioList(AuxilioSaudeRequisicaoDocumento beanDoc) {
+    // beanDep.setAuxilioSaudeRequisicao(this);
+
+    if (auxilioSaudeRequisicaoDocumentoBeneficiarioList == null) {
+      auxilioSaudeRequisicaoDocumentoBeneficiarioList = new ArrayList<>();
+    }
+
+    auxilioSaudeRequisicaoDocumentoBeneficiarioList.add(beanDoc);    
+  }
+  
+  public void adicionarComprovanteDependenteList(AuxilioSaudeRequisicaoDocumento beanDoc) {
+    // beanDep.setAuxilioSaudeRequisicao(this);
+
+    if (auxilioSaudeRequisicaoDocumentoDependenteList == null) {
+      auxilioSaudeRequisicaoDocumentoDependenteList = new ArrayList<>();
+    }
+
+    auxilioSaudeRequisicaoDocumentoDependenteList.add(beanDoc);    
+  }
 
 
 
@@ -256,16 +276,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     StatusAprovacao = statusAprovacao;
   }
 
-  
-  public AuxilioSaudeRequisicaoDocumento getAuxilioSaudeRequisicaoDocumento() {
-    return auxilioSaudeRequisicaoDocumento;
-  }
-
-
-  public void setAuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento) {
-    this.auxilioSaudeRequisicaoDocumento = auxilioSaudeRequisicaoDocumento;
-  }
-
 
   public Dependente getDependenteSelecionado() {
     return dependenteSelecionado;
@@ -310,5 +320,35 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.auxilioSaudeRequisicaoDependenteList = auxilioSaudeRequisicaoDependenteList;
   }
 
+
+  public List<AuxilioSaudeRequisicaoDocumento> getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() {
+    return auxilioSaudeRequisicaoDocumentoBeneficiarioList;
+  }
+
+
+  public void setauxilioSaudeRequisicaoDocumentoBeneficiarioList(
+                            List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList) {
+    this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoList;
+  }
+
+
+  public List<AuxilioSaudeRequisicaoDocumento> getAuxilioSaudeRequisicaoDocumentoDependenteList() {
+    return auxilioSaudeRequisicaoDocumentoDependenteList;
+  }
+
+
+  public void setAuxilioSaudeRequisicaoDocumentoDependenteList(
+                            List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoDependenteList) {
+    this.auxilioSaudeRequisicaoDocumentoDependenteList = auxilioSaudeRequisicaoDocumentoDependenteList;
+  }
+
+
+  public void setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(
+                            List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList) {
+    this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoBeneficiarioList;
+  }
+  
+  
+  
   
 }

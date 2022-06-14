@@ -18,16 +18,16 @@
 		<!-- id=asFrmOtNome foi usado atalhos, então o id seria igual auxilioSaudeFormularioOutputTextNome  -->
 
 		<h:outputStylesheet>
-		.tabela-dados-dependentes {
+		<!-- .tabela-dados-dependentes {
 			display: none
-		}
+		} -->
 
 	</h:outputStylesheet>
 
 		<h:outputScript>
-		function exibirCamposDependentes(){		
+		<!-- function exibirCamposDependentes(){		
 			$(".tabela-dados-dependentes").show();  	
-		}
+		} -->
 
 	</h:outputScript>
 
@@ -144,23 +144,21 @@
 							</div>
 						</div>
 
-						<rich:fileUpload styleClass="fileUploadFicha"
-							style="display: none; padding-rigth:10px" id="asFrmFlBenefeciario"
-							fileUploadListener="#{auxilioSaudeFormBean.uploadComprovante}"
+						<rich:fileUpload id="fileUpload" styleClass="fileUploadFicha"
+							style="display: none"
+							fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
 							acceptedTypes="pdf"
 							ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
 							maxFilesQuantity="1" immediateUpload="true"
 							onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
-							<!-- parametros enviado para servidor -->
-							<f:attribute name="isComprovanteBeneficiario" value="true" />
-							
+
 							<a4j:ajax event="uploadcomplete" execute="@none"
-								render="form:asFrmFlBenefeciario, messages" />
+								render="form:fileUpload, form:asCadFrmRDep, messages" />
 						</rich:fileUpload>
 
-						<span id="asFrmBntAnexoBeneficiario"
-							class="bt-upload fl mg-top-14"
-							onclick="document.querySelector('.fileUploadFicha input').click()">Anexar</span>
+						<span class="bt-upload fl mg-top-14"
+							onclick="document.querySelector('.fileUploadFicha input').click()">
+							Anexar </span>
 
 						<!-- Exibe informações do botão anexar quando usuário passar o mouse sobre ele -->
 						<rich:tooltip styleClass="tooltip" layout="block"
@@ -170,16 +168,40 @@
 							</span>
 						</rich:tooltip>
 
-						<h:commandButton id="asFrmBtnAdicionarBeneficiario"
+						<h:commandButton id="asFrmBtnAdicionarBeneficiario"						
 							actionListener="#{auxilioSaudeFormBean.adicionarDadosBeneficiario(auxilioSaudeFormBean.entidade, true)}"
 							value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
 							style="padding:10px;">
-							<a4j:ajax execute="asFrmStPjBeneficiario asFrmItValorPlano"
-								render="asFrmDtBeneficiario"></a4j:ajax>
+							<f:ajax execute="asFrmStPjBeneficiario asFrmItValorPlano"
+								render="form:asCadFrmRDep,  form:asCadFrmDtBeneficiario"></f:ajax>
 						</h:commandButton>
 
+						<!-- Anexos Beneficiarios -->
+
+						<div class="select-box box-80">
+							<span><h4>Arquivos</h4></span>
+							<a4j:repeat
+								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDocumentoBeneficiarioList}"
+								var="beanAnexo" rows="15" id="asCadFrmRDep" class="select-box box-80">
+								<rich:panel styleClass="panel">
+									<h:panelGrid columns="3">
+										<h:outputText value="Nome : " style="font-weight:bold; " />
+										<h:outputText value="#{beanAnexo.nomeArquivo} " />
+
+										<h:commandLink
+											actionListener="#{auxilioSaudeFormBean.deletarAnexo(beanAnexo, true)}"
+											style="padding-left:10px">
+											<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
+										</h:commandLink>
+									</h:panelGrid>
+								</rich:panel>
+							</a4j:repeat>
+						</div>
+
+
+
 						<div class="tabela-dados">
-							<rich:dataTable id="asFrmDtBeneficiario" var="item"
+							<rich:dataTable id="asCadFrmDtBeneficiario" var="beanBenef"
 								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList.size()}"
 								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoList}">
 								<h:column>
@@ -187,14 +209,14 @@
 		                            NOME DA EMPRESA DO PLANO DE SAÚDE
 		                        </f:facet>
 
-									<h:outputText value="#{item.pessoaJuridica.nomeFantasia}" />
+									<h:outputText value="#{beanBenef.pessoaJuridica.nomeFantasia}" />
 								</h:column>
 								<h:column>
 									<f:facet name="header">
 		                            Valor Gasto (R$)
 		                        </f:facet>
 
-									<h:outputText value="#{item.valorGastoPlanoSaude}" />
+									<h:outputText value="#{beanBenef.valorGastoPlanoSaude}" />
 								</h:column>
 								<h:column>
 									<center>
@@ -203,10 +225,23 @@
 		                        </f:facet>
 
 										<h:outputLink
-											actionListener="#{auxilioSaudeFormBean.adicionar}">
-											<h:graphicImage url="/img/attached.png"
+											actionListener="#{auxilioSaudeFormBean.visualizar(beanBenef, true)}">
+											<h:graphicImage url="/img/icon-pdf.png"
 												style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
 										</h:outputLink>
+									</center>
+								</h:column>
+
+								<h:column>
+									<center>
+										<f:facet name="header">
+		                          Ação
+		                        </f:facet>
+										<h:commandLink
+											actionListener="#{auxilioSaudeFormBean.deletar(beanBenef, true)}"
+											style="padding-left:10px">
+											<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
+										</h:commandLink>
 									</center>
 								</h:column>
 
@@ -279,17 +314,15 @@
 							<ui:fragment
 								rendered="#{LoginBean.anyGranted('ROLE_FOLGA_INSERIR,ROLE_FOLGA_ALTERAR')}">
 								<rich:fileUpload styleClass="fileUploadFichaDep"
-									style="display: none; padding-rigth:10px" 
-									fileUploadListener="#{auxilioSaudeFormBean.uploadComprovante}"
+									style="display: none; padding-rigth:10px"
+									fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
 									acceptedTypes="pdf"
 									ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
 									maxFilesQuantity="1" immediateUpload="true"
 									onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
-									
-									<f:attribute name="isComprovanteBeneficiario" value="false" />
-									
+
 									<a4j:ajax event="uploadcomplete" execute="@none"
-										render="messages" />
+										render="messages asCadFrmRBenef" />
 								</rich:fileUpload>
 
 
@@ -298,17 +331,13 @@
 
 								<!-- Exibe informações do botão Novo quando usuário passar o mouse sobre ele -->
 								<rich:tooltip styleClass="tooltip" layout="block"
-									target="asFrmClAnexoDep">
+									target="asFrmBntAnexoDep">
 									<span style="white-space: nowrap"> <strong>
 											Anexar documentação comprobatória</strong>
 									</span>
 								</rich:tooltip>
 							</ui:fragment>
 
-							<h:commandLink styleClass="link-arquivo"
-								id="asFrmBtnLinkArquivoDep" value="Clique aqui para visualizar"
-								action="#{folgaFormBean.comprovanteFolga}" target="_blank"
-								rendered="#{folgaFormBean.entidade.caminhoComprovante != null}" />
 
 							<h:commandButton id="asFrmBtnSalvarDep"
 								actionListener="#{auxilioSaudeFormBean.adicionarDadosBeneficiario(auxilioSaudeFormBean.entidade, false)}"
@@ -317,10 +346,34 @@
 								<a4j:ajax execute="asFrmItValorPlanoDep" render="asFrmDtDep"></a4j:ajax>
 							</h:commandButton>
 
+							<!-- Anexos Dependentes -->
+							<a4j:outputPanel
+								rendered="#{not empty auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDocumentoDependenteList}">
+								<div class="select-box box-80">
+									<span><h4>Arquivos</h4></span>
+									<a4j:repeat
+										value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDocumentoDependenteList}"
+										var="beanAnexo" rows="15" id="asCadFrmRBenef">
+										<rich:panel styleClass="panel">
+											<h:panelGrid columns="3">
+												<h:outputText value="Nome : " style="font-weight:bold; " />
+												<h:outputText value="#{beanAnexo.nomeArquivo} " />
+
+												<h:commandLink
+													actionListener="#{auxilioSaudeFormBean.deletarAnexo(beanAnexo, false)}"
+													style="padding-left:10px">
+													<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
+												</h:commandLink>
+											</h:panelGrid>
+										</rich:panel>
+									</a4j:repeat>
+								</div>
+							</a4j:outputPanel>
+
 						</h:panelGroup>
 						<div class="tabela-dados">
 
-							<rich:dataTable id="asFrmDtDep" var="item"
+							<rich:dataTable id="asFrmDtDep" var="beanDep"
 								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList.size()}"
 								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList}">
 
@@ -329,7 +382,7 @@
 		                            NOME DA EMPRESA DO PLANO DE SAÚDE
 		                        </f:facet>
 
-									<h:outputText value="#{item.pessoaJuridica.nomeFantasia}" />
+									<h:outputText value="#{beanDep.pessoaJuridica.nomeFantasia}" />
 								</h:column>
 
 								<h:column>
@@ -337,7 +390,7 @@
 		                            Valor Gasto (R$)
 		                        </f:facet>
 
-									<h:outputText value="#{item.valorGastoPlanoSaude}" />
+									<h:outputText value="#{beanDep.valorGastoPlanoSaude}" />
 								</h:column>
 
 								<h:column>
@@ -346,10 +399,22 @@
 		                          Anexos
 		                        </f:facet>
 										<h:outputLink
-											actionListener="#{auxilioSaudeFormBean.adicionar}">
-											<h:graphicImage url="/img/attached.png"
-												style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
+											actionListener="#{auxilioSaudeFormBean.visualizar(beanDep, false)}">
+											<h:graphicImage url="/img/icon-pdf.png" style="width: 24px;height: 24px;"></h:graphicImage>
 										</h:outputLink>
+									</center>
+								</h:column>
+
+								<h:column>
+									<center>
+										<f:facet name="header">
+		                          Ação
+		                        </f:facet>
+										<h:commandLink
+											actionListener="#{auxilioSaudeFormBean.deletar(beanAnexo, false)}"
+											style="padding-left:10px">
+											<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
+										</h:commandLink>
 									</center>
 								</h:column>
 

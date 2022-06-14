@@ -11,6 +11,8 @@ public interface AuxilioSaudeRequisicaoService {
 
   public void salvarAll(List<AuxilioSaudeRequisicao> beanList);
   
+  public void salvarAnexo(AuxilioSaudeRequisicao bean);
+  
   /***
    * valida campos obrigatórios
    * @param bean

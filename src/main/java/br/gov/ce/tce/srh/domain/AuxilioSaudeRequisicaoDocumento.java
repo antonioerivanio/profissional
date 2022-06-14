@@ -52,6 +52,10 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   @Column(name = "CAMINHO_ARQ")
   private String caminhoArquivo;
   
+  @Column(name = "DESC_ARQUIVO")
+  private String descricaoArquivo;
+  
+  
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_INCLUSAO")
   private Date dataInclusao;
@@ -65,11 +69,10 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   private Date dataDelete;
   
   @Transient
-  private UploadedFile comprovante;
+  private byte[] comprovante;
   
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
-  
   
   
   public AuxilioSaudeRequisicaoDocumento() {
@@ -79,17 +82,16 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   
   public AuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicao auxilioSaudeRequisicao,
                             AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente, String nomeArquivo,
-                            String caminhoArquivo, Date dataInclusao, UploadedFile comprovante) {
+                            String caminhoArquivo, String descricaoArquivo, Date dataInclusao, byte[] comprovante) {
     super();
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
     this.auxilioSaudeRequisicaoDependente = auxilioSaudeRequisicaoDependente;
     this.nomeArquivo = nomeArquivo;
     this.caminhoArquivo = caminhoArquivo;
+    this.descricaoArquivo = descricaoArquivo;
     this.dataInclusao = dataInclusao;
     this.comprovante = comprovante;
   }
-
-
 
 
   public void adicionarComprovanteList(AuxilioSaudeRequisicaoDocumento beanDoc) {    
@@ -180,15 +182,24 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   public void setDataDelete(Date dataDelete) {
     this.dataDelete = dataDelete;
+  }  
+
+  public String getDescricaoArquivo() {
+    return descricaoArquivo;
   }
 
 
-  public UploadedFile getComprovante() {
+  public void setDescricaoArquivo(String descricaoArquivo) {
+    this.descricaoArquivo = descricaoArquivo;
+  }
+
+
+  public byte[] getComprovante() {
     return comprovante;
   }
 
 
-  public void setComprovante(UploadedFile comprovante) {
+  public void setComprovante(byte[] comprovante) {
     this.comprovante = comprovante;
   }
 

@@ -119,6 +119,4 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 		this.dataAlteracao = dataAlteracao;
 	}
 	
-
-	
 }

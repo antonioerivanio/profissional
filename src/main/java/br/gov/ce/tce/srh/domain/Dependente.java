@@ -84,7 +84,7 @@ public class Dependente extends BasicEntity<Long> implements Serializable {
   
   
   @Transient
-  private AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;  
+  private List<AuxilioSaudeRequisicaoDocumento>  auxilioSaudeRequisicaoDocumentoList;  
 
 
   public Dependente() {
@@ -213,13 +213,12 @@ public class Dependente extends BasicEntity<Long> implements Serializable {
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
   }
 
-  public AuxilioSaudeRequisicaoDocumento getAuxilioSaudeRequisicaoDocumento() {
-    return auxilioSaudeRequisicaoDocumento;
+  public List<AuxilioSaudeRequisicaoDocumento> getAuxilioSaudeRequisicaoDocumentoList() {
+    return auxilioSaudeRequisicaoDocumentoList;
   }
 
-  public void setAuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento) {
-    this.auxilioSaudeRequisicaoDocumento = auxilioSaudeRequisicaoDocumento;
-  }
-
-  
+  public void setAuxilioSaudeRequisicaoDocumentoList(
+                            List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList) {
+    this.auxilioSaudeRequisicaoDocumentoList = auxilioSaudeRequisicaoDocumentoList;
+  }  
 }

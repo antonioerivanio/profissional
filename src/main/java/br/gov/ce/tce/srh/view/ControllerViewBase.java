@@ -20,31 +20,35 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
  * @param <T>
  */
 @Component
-public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {  
+public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
 
   private T entidade;
- 
+
   protected void createNewInstance() throws InstantiationException, IllegalAccessException {
     entidade = getTypeParameterClass().newInstance();
   }
-  
-  @SuppressWarnings ("unchecked")
-  public Class<T> getTypeParameterClass()
-  {
-      Type type = getClass().getGenericSuperclass();
-      ParameterizedType paramType = (ParameterizedType) type;
-      return (Class<T>) paramType.getActualTypeArguments()[0];
+
+  @SuppressWarnings("unchecked")
+  public Class<T> getTypeParameterClass() {
+    Type type = getClass().getGenericSuperclass();
+    ParameterizedType paramType = (ParameterizedType) type;
+    return (Class<T>) paramType.getActualTypeArguments()[0];
   }
 
 
-  public T getEntidade() throws InstantiationException, IllegalAccessException {
-    if(entidade == null) {
+  public T getEntidade() {
+    try {
+      if (entidade == null) {
         createNewInstance();
+      }
+    } catch (InstantiationException | IllegalAccessException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-    
-    return entidade ;
+
+    return entidade;
   }
-  
+
   // paginação
   public int count = 0;
   public PagedListDataModel dataModel = new PagedListDataModel();

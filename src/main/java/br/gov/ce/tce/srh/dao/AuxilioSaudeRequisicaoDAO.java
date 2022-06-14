@@ -11,7 +11,6 @@ public class AuxilioSaudeRequisicaoDAO extends DAO<AuxilioSaudeRequisicao>  {
     this.setmodelClass(AuxilioSaudeRequisicao.class);
   }
   
-  
 
   @Override
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao criteria) {

@@ -68,5 +68,9 @@ CREATE TABLE FP_AUXILIOSAUDEDOC(
 
 CREATE SEQUENCE  "SRH"."SEQ_FP_AUXILIOSAUDEDOC"  MINVALUE 1 MAXVALUE 999999 INCREMENT BY 1 START WITH 1 NOCACHE  NOORDER  NOCYCLE ;
 
-<!-- PARAMETRO DO CAMINHO DA PASTA DO COMPROVANTE DO AUXILIO SAUDE A SER ANEXADO NO SRH -->
-insert into tb_parametro values((select max(id)+1 from tb_parametro),	'pathComprovanteAuxilioSaudeSRH',	'Diretório dos comprovantes de valores paga com auxilio saude.',	'\\svtcefs2\SRH\comprovanteAuxilioSaude\') 
+
+<!--Adicionar um Coluna na tabela pessoa juridica -->
+alter table tb_pessoajuridica add (
+    FG_EMPRESAAREASAUDE char(1),
+    CONSTRAINT "CK_FLG_EMPRESAAREASAUDE" CHECK (FG_EMPRESAAREASAUDE IN(0,1))
+);
