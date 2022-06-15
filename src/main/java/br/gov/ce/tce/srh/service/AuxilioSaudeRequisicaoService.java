@@ -7,11 +7,15 @@ import br.gov.ce.tce.srh.domain.PessoaJuridica;
 
 public interface AuxilioSaudeRequisicaoService {
 
+  public int count(String nome, String cpf);
+  
   public void salvar(AuxilioSaudeRequisicao bean);
 
   public void salvarAll(List<AuxilioSaudeRequisicao> beanList);
   
   public void salvarAnexo(AuxilioSaudeRequisicao bean);
+  
+  public List<AuxilioSaudeRequisicao> search(String nomeParam, String cpfParam, Integer first, Integer rows);
   
   /***
    * valida campos obrigatórios

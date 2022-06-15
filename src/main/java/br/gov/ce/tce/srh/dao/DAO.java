@@ -3,10 +3,11 @@ package br.gov.ce.tce.srh.dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.metamodel.Type;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /***
  * 
@@ -21,8 +22,15 @@ public abstract class DAO<T> {
   
   public void setmodelClass(Class<T> modelClass) {
     this.modelClass = modelClass;
-  }
+  }  
   
+  
+  public Class<T> getModelClass() {
+    return modelClass;
+  }  
+
+
+
   @PersistenceContext
   private EntityManager entityManager;
   

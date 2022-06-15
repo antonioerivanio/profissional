@@ -68,7 +68,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   private String StatusAprovacao;
 
   @Column(name = "STATUSFUNCIONAL")
-  private String StatusFuncional;
+  private String statusFuncional;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_INICIOREQ")
@@ -87,7 +87,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
   @Column(name = "OBSERVACAO")
   private String observacao;
-
 
   // Beans que não são persistiveis -
   @Transient
@@ -118,7 +117,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
 
   public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica,
-                            Double valorGastoPlanoSaude, boolean flAfirmaSerVerdadeiraInformacao) {
+                            Double valorGastoPlanoSaude, boolean flAfirmaSerVerdadeiraInformacao, String statusFuncional) {
     super();
 
     this.funcional = funcional;
@@ -126,6 +125,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.pessoaJuridica = pessoaJuridica;
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
     this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
+    this.statusFuncional = statusFuncional;
   }
 
 
@@ -234,11 +234,11 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   }
 
   public String getStatusFuncional() {
-    return StatusFuncional;
+    return statusFuncional;
   }
 
   public void setStatusFuncional(String statusFuncional) {
-    StatusFuncional = statusFuncional;
+    statusFuncional = statusFuncional;
   }
 
   public Date getDataInicioRequisicao() {

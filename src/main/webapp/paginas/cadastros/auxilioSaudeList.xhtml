@@ -27,7 +27,7 @@
 					<div class="conteiner">
 						<h:inputText id="nome"
 									 name="nome"
-									 value="#{pessoaBean.nome}" />
+									 value="#{auxilioSaudeListBean.entidade.funcional.pessoal.nome}" />
 					</div>
 				</div>
 	
@@ -38,19 +38,19 @@
 									 name="cpf"
 									 maxlength="14"
 									 styleClass="maskCnpj"
-									 value="#{pessoaBean.cpf}" />
+									 value="#{auxilioSaudeListBean.entidade.funcional.pessoal.cpf}" />
 					</div>
 				</div>
 
 				<h:commandButton id="consultar"
 								 value="Consultar" 
-								 action="#{pessoaBean.consultar}" 
+								 action="#{auxilioSaudeListBean.consultar}" 
 								 styleClass="bt-padrao fl mg-top-18" 
 								 render="scroller,lista"/>
 				
 				<h:commandButton id="relatorio"
 							 value="Relatório"
-							 action="#{pessoaBean.relatorio}" 
+							 action="#{auxilioSaudeFormBean.relatorio}" 
 							 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 							 style="margin-left: 10px" />
 			
@@ -62,15 +62,15 @@
 
 				<rich:dataTable id="lista" 
 								var="item" 
-								rows="#{pessoaBean.dataModel.pageSize}" 
-								value="#{pessoaBean.dataModel}" >
+								rows="#{auxilioSaudeListBean.dataModel.pageSize}" 
+								value="#{auxilioSaudeListBean.dataModel}" >
 
                     <rich:column id="col2" headerClass="cel-25">
                         <f:facet name="header">
                             CPF
                         </f:facet>
                         <center>
-	                        <h:outputText id="item2" value="#{item.cpf}" styleClass="cel-25" >
+	                        <h:outputText id="item2" value="#{item.funcional.pessoal.cpf}" styleClass="cel-25" >
 	                        	  <f:converter converterId="cpfConverter" /> 
 	                        </h:outputText>
 	                    </center>
@@ -79,7 +79,7 @@
                         <f:facet name="header">
                             Nome
                         </f:facet>
-                        <h:outputText id="item3" value="#{item.nomeCompleto}" styleClass="cel-50" />
+                        <h:outputText id="item3" value="#{item.funcional.pessoal.nomeCompleto}" styleClass="cel-50" />
                     </rich:column>
                     <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
@@ -89,7 +89,7 @@
                        				  value="Detalhar"
                        				  action="#{pessoaBean.editar}"
                        				  styleClass="ico-detail" > maskedinput
-                            <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{auxilioSaudeListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>                    
                 	<rich:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
@@ -103,7 +103,7 @@
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>
-                	<rich:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
+                	<!-- <rich:column id="col6" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
@@ -115,7 +115,7 @@
                             <f:setPropertyActionListener target="#{pessoaBean.entidade}" value="#{item}" />
                         </a4j:commandLink>
                         <a4j:jsFunction name="excluir" action="#{pessoaBean.excluir}" render="form"/> 
-                    </rich:column>
+                    </rich:column> -->
 
 				</rich:dataTable>
 				<rich:dataScroller  id="scroller" 

@@ -2,9 +2,14 @@ package br.gov.ce.tce.srh.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,8 @@ import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.FileUtils;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("auxilioSaudeRequisicaoService")
 public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoService {
@@ -48,7 +55,11 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     dao.salvar(bean);
   }
 
-
+  @Override
+  public int count(String nome, String cpf) {
+    return dao.count(nome, cpf);
+}
+  
   @Override
   @Transactional
   public void salvarAll(List<AuxilioSaudeRequisicao> beanList) {
@@ -62,9 +73,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
           salvarAnexo(beanAuxilio);
           
-          salvarDependentes(beanAuxilio);
-
-        
+          salvarDependentes(beanAuxilio);        
         }
       }
       
@@ -80,20 +89,22 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   public void salvarAnexo(AuxilioSaudeRequisicao bean) {
     try {
       logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
+      String subPastaAnoMatriculaFuncional = SRHUtils.formataData(SRHUtils.FORMATO_DATA_ANO, new Date()) + File.separator + bean.getFuncional().getMatricula();
       
-      for (AuxilioSaudeRequisicaoDocumento beanAuxilio : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
-        beanAuxilio.setAuxilioSaudeRequisicao(bean);
-        beanAuxilio.setNomeArquivo(bean.getId() + "_" + beanAuxilio.getNomeArquivo());
+      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
+        beanAuxDoc.setAuxilioSaudeRequisicao(bean);
         
-        dao.getEntityManager().persist(beanAuxilio);
-
-        // gravando em disco
-        File file = new File(beanAuxilio.getCaminhoArquivo());
-        FileOutputStream fop;
-        fop = new FileOutputStream(file);
-        fop.write(beanAuxilio.getComprovante());
-        fop.flush();
-        fop.close();
+        String nomeArquivoAtual =  beanAuxDoc.getNomeArquivo() + ".pdf";
+        
+        beanAuxDoc.setNomeArquivo(bean.getId() + "_" + beanAuxDoc.getNomeArquivo() + ".pdf");
+        
+        dao.getEntityManager().persist(beanAuxDoc);          
+        
+        String caminhoDiretorioNovo = beanAuxDoc.getCaminhoArquivo() + File.separator + subPastaAnoMatriculaFuncional;
+        
+        FileUtils.criarDiretorio(caminhoDiretorioNovo);
+       
+        FileUtils.moverArquivoParaUmNovoDiretorio(beanAuxDoc.getCaminhoTemporario(), caminhoDiretorioNovo + File.separator + nomeArquivoAtual);
       }
     } catch (Exception e) {
       logger.error("Erro ao salvar o anexos do auxilio requisição : " + e.getMessage());
@@ -193,7 +204,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public PessoaJuridica getPessoaJuridicaPorId(PessoaJuridica pj, List<PessoaJuridica> comboEmpresasCadastradas) {
-
     int index = comboEmpresasCadastradas.indexOf(pj);
 
     PessoaJuridica pessoaJuridicaEncontrada = comboEmpresasCadastradas.get(index);
@@ -214,18 +224,16 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public void executarAntesSalvar(AuxilioSaudeRequisicao entidade, String observacao,
                             Boolean flgAfirmaSerVerdadeiraInformacao) {
-    if (entidade.getAuxilioSaudeRequisicaoList() != null && !entidade.getAuxilioSaudeRequisicaoList().isEmpty()) {
+    if (entidade.getAuxilioSaudeRequisicaoList() != null && !entidade.getAuxilioSaudeRequisicaoList().isEmpty()) {//um ou mais registro
       for (AuxilioSaudeRequisicao beanAux : entidade.getAuxilioSaudeRequisicaoList()) {
+        beanAux.setDataInicioRequisicao(new Date());
         beanAux.setObservacao(entidade.getObservacao());
         beanAux.setFlAfirmaSerVerdadeiraInformacao(entidade.getFlAfirmaSerVerdadeiraInformacao());
         beanAux.setAuxilioSaudeRequisicaoDependenteList(entidade.getAuxilioSaudeRequisicaoDependenteList());
-        beanAux.setauxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
-        beanAux.setAuxilioSaudeRequisicaoDocumentoDependenteList(entidade.getAuxilioSaudeRequisicaoDocumentoDependenteList());
       }
-    } else {
+    } else {//apenas um registro 
       entidade.setValorGastoPlanoSaude(null);
       entidade.setPessoaJuridica(null);
-
       entidade.setAuxilioSaudeRequisicaoList(new ArrayList<AuxilioSaudeRequisicao>());
       entidade.getAuxilioSaudeRequisicaoList().add(entidade);
     }
@@ -262,6 +270,12 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
                               funcional.getStatus() != null && funcional.getStatus() == 1 ? AuxilioSaudeRequisicao.ATIVO
                                                         : AuxilioSaudeRequisicao.INATIVO);
     entidade.setDependentesComboList(dependenteList);
+  }
+
+  @Override
+  public List<AuxilioSaudeRequisicao> search(String nomeParam, String cpfParam, Integer first, Integer rows) {
+    // TODO Auto-generated method stub
+    return dao.search(nomeParam, cpfParam, first, rows);
   }
 
 }

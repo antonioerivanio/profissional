@@ -31,6 +31,8 @@ public class SRHUtils {
 	
 	public static final String FORMATO_DATA = "dd/MM/yyyy";
 	
+	public static final String FORMATO_DATA_ANO = "yyyy";
+	
 	public static final String FORMATO_DATA_HORA = "dd/MM/yyyy HH:mm:ss";
 	
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";

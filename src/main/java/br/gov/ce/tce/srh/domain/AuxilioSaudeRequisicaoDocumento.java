@@ -19,16 +19,16 @@ import javax.persistence.Transient;
 import org.richfaces.model.UploadedFile;
 
 /***
- * Classe que amazena os arquivos que compravam os gastos 
- * com saude dos Beneficiarios e seus dependentes.
+ * Classe que amazena os arquivos que compravam os gastos com saude dos Beneficiarios e seus
+ * dependentes.
  * 
  * @author erivanio.cruz
  * @since 03/06/2022
  */
 @Entity
-@Table(name = "FP_AUXILIOSAUDEDOC", schema=DatabaseMetadata.SCHEMA_SRH)
+@Table(name = "FP_AUXILIOSAUDEDOC", schema = DatabaseMetadata.SCHEMA_SRH)
 @SequenceGenerator(name = "SEQ_FP_AUXILIOSAUDEDOC", sequenceName = "SEQ_FP_AUXILIOSAUDEDOC",
-schema=DatabaseMetadata.SCHEMA_SRH, allocationSize = 1, initialValue = 1)
+                          schema = DatabaseMetadata.SCHEMA_SRH, allocationSize = 1, initialValue = 1)
 public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implements Serializable {
 
   private static final long serialVersionUID = 481877607288972254L;
@@ -37,49 +37,51 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FP_AUXILIOSAUDEDOC")
   private Long id;
 
-  
+
   @ManyToOne
   @JoinColumn(name = "IDAUXILIOSAUDEREQ")
   private AuxilioSaudeRequisicao auxilioSaudeRequisicao;
-  
+
   @ManyToOne
   @JoinColumn(name = "IDAUXILIOSAUDEREQDEP")
   private AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente;
-  
+
   @Column(name = "NOME_ARQ")
   private String nomeArquivo;
-  
+
   @Column(name = "CAMINHO_ARQ")
   private String caminhoArquivo;
-  
+
   @Column(name = "DESC_ARQUIVO")
   private String descricaoArquivo;
-  
   
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_INCLUSAO")
   private Date dataInclusao;
-  
-  
-  @Column(name = "FL_DELETADO")
+
+  @Column(name = "FLG_DELETADO")
   private boolean isDeletado;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_DELETE")
   private Date dataDelete;
-  
+
   @Transient
   private byte[] comprovante;
-  
+
+  @Transient
+  private String caminhoTemporario;
+
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
+
   
-  
+
   public AuxilioSaudeRequisicaoDocumento() {
 
   }
-  
-  
+
+
   public AuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicao auxilioSaudeRequisicao,
                             AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente, String nomeArquivo,
                             String caminhoArquivo, String descricaoArquivo, Date dataInclusao, byte[] comprovante) {
@@ -94,7 +96,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   }
 
 
-  public void adicionarComprovanteList(AuxilioSaudeRequisicaoDocumento beanDoc) {    
+  public void adicionarComprovanteList(AuxilioSaudeRequisicaoDocumento beanDoc) {
 
     if (auxilioSaudeRequisicaoDocumentoList == null) {
       auxilioSaudeRequisicaoDocumentoList = new ArrayList<>();
@@ -102,7 +104,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
     auxilioSaudeRequisicaoDocumentoList.add(beanDoc);
   }
-  
+
 
   @Override
   public Long getId() {
@@ -113,9 +115,9 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   @Override
   public void setId(Long id) {
-    this.id=id;
+    this.id = id;
   }
-  
+
   public AuxilioSaudeRequisicao getAuxilioSaudeRequisicao() {
     return auxilioSaudeRequisicao;
   }
@@ -129,8 +131,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   }
 
 
-  public void setAuxilioSaudeRequisicaoDependente(
-      AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente) {
+  public void setAuxilioSaudeRequisicaoDependente(AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente) {
     this.auxilioSaudeRequisicaoDependente = auxilioSaudeRequisicaoDependente;
   }
 
@@ -182,7 +183,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   public void setDataDelete(Date dataDelete) {
     this.dataDelete = dataDelete;
-  }  
+  }
 
   public String getDescricaoArquivo() {
     return descricaoArquivo;
@@ -191,6 +192,16 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   public void setDescricaoArquivo(String descricaoArquivo) {
     this.descricaoArquivo = descricaoArquivo;
+  }
+
+
+  public String getCaminhoTemporario() {
+    return caminhoTemporario;
+  }
+
+
+  public void setCaminhoTemporario(String caminhoTemporario) {
+    this.caminhoTemporario = caminhoTemporario;
   }
 
 
@@ -213,7 +224,6 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
                             List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList) {
     this.auxilioSaudeRequisicaoDocumentoList = auxilioSaudeRequisicaoDocumentoList;
   }
-  
-  
-  
+
+
 }

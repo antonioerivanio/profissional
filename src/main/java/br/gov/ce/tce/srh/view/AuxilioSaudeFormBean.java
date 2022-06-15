@@ -1,15 +1,23 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.richfaces.event.FileUploadEvent;
+import org.richfaces.exception.FileUploadException;
 import org.richfaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,8 +26,9 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.Dependente;
-import br.gov.ce.tce.srh.domain.Parametro;
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
@@ -28,6 +37,8 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.ParametroService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.FileUtils;
+import br.gov.ce.tce.srh.util.RelatorioUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 
@@ -42,6 +53,10 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   @Autowired
   private LoginBean loginBean;
 
+  private boolean isExibidoBotaoAdicionar;
+
+  @Autowired
+  private RelatorioUtil relatorioUtil;
 
   @Autowired
   private AfastamentoFormBean afastamentoFormBean;
@@ -50,13 +65,15 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return afastamentoFormBean;
   }
 
-  private UploadedFile comprovante;
 
-  private Integer contadorAnexoBeneficiario, contatorAnexoDependente=1;
-  
+  private Integer contadorAnexoBeneficiario = 1;
+  private Integer contatorAnexoDependente = 1;
+
   private static String REMOVIDO_SUCESSO = "Arquivo removido com sucesso";
 
   private List<PessoaJuridica> comboEmpresasCadastradas;
+
+  private AuxilioSaudeRequisicaoDocumento auxSaudeRequisicaoDoc;
 
   @Autowired
   FuncionalService funcionalService;
@@ -71,13 +88,10 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   private PessoaJuridicaService pessoaJuridicaService;
 
 
-  @Autowired
-  private ParametroService parametroService;
-
-
   @PostConstruct
   private void init() {
     try {
+
 
       getEntidade().setUsuario(loginBean.getUsuarioLogado());
 
@@ -157,13 +171,23 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     PessoaJuridica pessoaJuridica = entidadeService.getPessoaJuridicaPorId(getEntidade().getPessoaJuridica(),
                               comboEmpresasCadastradas);
 
+    String statusFuncional = getEntidade().getFuncional() != null && getEntidade().getFuncional().getStatus() != null
+                              && getEntidade().getFuncional().getStatus() == 1 ? AuxilioSaudeRequisicao.ATIVO
+                                                        : AuxilioSaudeRequisicao.INATIVO;
+
+
     AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(),
                               loginBean.getUsuarioLogado(), pessoaJuridica, getEntidade().getValorGastoPlanoSaude(),
-                              getEntidade().getFlAfirmaSerVerdadeiraInformacao());
+                              getEntidade().getFlAfirmaSerVerdadeiraInformacao(), statusFuncional);
+
 
     if (isBeneficiario) {
+      auxilioSaudeRequisicaoLocal.setauxilioSaudeRequisicaoDocumentoBeneficiarioList(
+                                getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
       getEntidade().adicionarDadosRequisicao(auxilioSaudeRequisicaoLocal);
     } else {
+      auxilioSaudeRequisicaoLocal.setAuxilioSaudeRequisicaoDocumentoDependenteList(
+                                getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList());
       adicionarDadosDependente(auxilioSaudeRequisicaoLocal);
     }
 
@@ -217,24 +241,36 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       UploadedFile comprovante = event.getUploadedFile();
 
       // pegando o caminho do arquivo no servidor
-      String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteAuxilioSaude");
-
+      String caminhoArquivo = SRHUtils
+                                .getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteAuxilioSaude");
 
       String nome = "COMPROVANTE_BENEFICIARIO" + "_" + contadorAnexoBeneficiario;
       String descricacao = comprovante.getName();
-      String caminhoCompletoArquivo = caminho + nome;
-     
+      String caminhoCompleto = caminhoArquivo + File.separator + nome;
 
-      AuxilioSaudeRequisicaoDocumento auxSaudeRequisicaoDoc = new AuxilioSaudeRequisicaoDocumento(getEntidade(), null,
-                                nome, caminhoCompletoArquivo,  descricacao,  new Date(), comprovante.getData());
-      
+      auxSaudeRequisicaoDoc = new AuxilioSaudeRequisicaoDocumento(getEntidade(), null, nome, caminhoArquivo,
+                                descricacao, new Date(), comprovante.getData());
+
       getEntidade().adicionarComprovanteBeneficiarioList(auxSaudeRequisicaoDoc);
 
       contadorAnexoBeneficiario++;
 
+      auxSaudeRequisicaoDoc.setCaminhoTemporario(caminhoCompleto + ".pdf");
+
+      FileUtils.upload(caminhoCompleto, comprovante.getData());
+
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage("Erro na gravação do comprovante.");
       logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (FileUploadException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 
@@ -246,7 +282,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     // pegando o caminho do arquivo no servidor
     String caminho = SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteAuxilioSaude");
 
-    String nome = "COMPROVANTE_DEPENDENTE"+ "_"+contatorAnexoDependente ;
+    String nome = "COMPROVANTE_DEPENDENTE" + "_" + contatorAnexoDependente;
     String descricacao = comprovante.getName();
     String caminhoCompletoArquivo = caminho + nome;
 
@@ -255,7 +291,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
                               nome, caminhoCompletoArquivo, comprovante.getName(), new Date(), comprovante.getData());
 
     getEntidade().adicionarComprovanteDependenteList(auxSaudeRequisicaoDoc);
-    
+
     contatorAnexoDependente++;
   }
 
@@ -284,7 +320,38 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   // deletar os registro
-  public void visualizar(AuxilioSaudeRequisicaoDocumento bean, String isBeneficiario) {
-    System.out.println("VISUALIZAR");
+  public void visualizar(AuxilioSaudeRequisicao bean, String isBeneficiario) {
+    try {
+      String comprovante = auxSaudeRequisicaoDoc.getCaminhoArquivo() + auxSaudeRequisicaoDoc.getNomeArquivo() + ".pdf";
+      
+      FileUtils.visualizar(comprovante, relatorioUtil);
+
+    } catch (FileNotFoundException e) {
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (SRHRuntimeException e) {
+      FacesUtil.addErroMessage(e.getMessage());
+      logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (Exception e) {
+      FacesUtil.addErroMessage("Ocorreu algum erro na geração do arquivo. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    }
   }
+
+  public void exibirBotaoAdicionarChange() {
+    isExibidoBotaoAdicionar = Boolean.TRUE;
+  }
+
+
+  public boolean getIsExibidoBotaoAdicionar() {
+    return isExibidoBotaoAdicionar;
+  }
+
+
+  public void setExibidoBotaoAdicionar(boolean isExibidoBotaoAdicionar) {
+    this.isExibidoBotaoAdicionar = isExibidoBotaoAdicionar;
+  }
+  
+  
+
+
 }

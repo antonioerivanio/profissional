@@ -4,13 +4,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.richfaces.component.UIDataTable;
 import org.springframework.stereotype.Component;
-import br.gov.ce.tce.srh.domain.PessoaJuridica;
-import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
-import br.gov.ce.tce.srh.sca.service.AuthenticationService;
-import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 
 /**
@@ -23,6 +19,14 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
 
   private T entidade;
+
+  // paginação
+  public Integer count = 0;
+  public PagedListDataModel dataModel;
+  private UIDataTable dataTable;
+  public List<AuxilioSaudeRequisicao> pagedList;
+  public int flagRegistroInicial = 0;
+  public Integer pagina = 1;
 
   protected void createNewInstance() throws InstantiationException, IllegalAccessException {
     entidade = getTypeParameterClass().newInstance();
@@ -49,18 +53,46 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
     return entidade;
   }
 
-  // paginação
-  public int count = 0;
-  public PagedListDataModel dataModel = new PagedListDataModel();
-  public List<T> pagedList = new ArrayList<T>();
-  public int flagRegistroInicial = 0;
-  public Integer pagina = 1;
 
   public PagedListDataModel getDataModel() {
+    if(getPagedList() == null) {
+      setPagedList(new ArrayList<AuxilioSaudeRequisicao>());
+    }
+    
+    if(getDataTable() == null) {
+      setDataTable(new UIDataTable());
+    }
+
+    if (flagRegistroInicial != getDataTable().getFirst()) {
+      flagRegistroInicial = getDataTable().getFirst();
+       
+      if (count != 0) {        
+                                  
+        dataModel = new PagedListDataModel(getPagedList(), count);
+      } else {
+        limparListas();
+      }
+    }   
+
+
     return dataModel;
+
   }
 
-  public List<T> getPagedList() {
+  
+  public void setPagedList(List<AuxilioSaudeRequisicao> pagedList) {
+    this.pagedList = pagedList;
+  }
+
+  public UIDataTable getDataTable() {
+    return dataTable;
+  }
+
+  public void setDataTable(UIDataTable dataTable) {
+    this.dataTable = dataTable;
+  }
+
+  public List<AuxilioSaudeRequisicao> getPagedList() {
     return pagedList;
   }
 
@@ -70,6 +102,13 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
 
   public Integer getPagina() {
     return pagina;
+  }
+
+  // PAGINAÇÃO
+  public void limparListas() {
+    dataModel = new PagedListDataModel();
+    pagedList = new ArrayList<AuxilioSaudeRequisicao>();
+    pagina = 1;
   }
 
 }
