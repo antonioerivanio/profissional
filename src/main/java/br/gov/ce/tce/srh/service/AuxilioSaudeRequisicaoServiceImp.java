@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -86,30 +87,23 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
 
   @Override
-  public void salvarAnexo(AuxilioSaudeRequisicao bean) {
-    try {
+  public void salvarAnexo(AuxilioSaudeRequisicao bean) throws IOException {
+    
       logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
-      String subPastaAnoMatriculaFuncional = SRHUtils.formataData(SRHUtils.FORMATO_DATA_ANO, new Date()) + File.separator + bean.getFuncional().getMatricula();
+     
       
       for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
         beanAuxDoc.setAuxilioSaudeRequisicao(bean);
-        
-        String nomeArquivoAtual =  beanAuxDoc.getNomeArquivo() + ".pdf";
-        
-        beanAuxDoc.setNomeArquivo(bean.getId() + "_" + beanAuxDoc.getNomeArquivo() + ".pdf");
-        
+        beanAuxDoc.adicionarNovoNomeArquivo();
+
         dao.getEntityManager().persist(beanAuxDoc);          
         
-        String caminhoDiretorioNovo = beanAuxDoc.getCaminhoArquivo() + File.separator + subPastaAnoMatriculaFuncional;
+        beanAuxDoc.adicionarNovoCaminhoPorAnoMatricula(new Date(), beanAuxDoc.getAuxilioSaudeRequisicao().getFuncional().getMatricula());
         
-        FileUtils.criarDiretorio(caminhoDiretorioNovo);
-       
-        FileUtils.moverArquivoParaUmNovoDiretorio(beanAuxDoc.getCaminhoTemporario(), caminhoDiretorioNovo + File.separator + nomeArquivoAtual);
+        FileUtils.criarDiretorio(beanAuxDoc.getCaminhoArquivo());       
+        FileUtils.moverArquivoParaUmNovoDiretorio(beanAuxDoc.getCaminhoTemporario(), beanAuxDoc.getCaminhoArquivo() + File.separator + beanAuxDoc.getNomeArquivo());
       }
-    } catch (Exception e) {
-      logger.error("Erro ao salvar o anexos do auxilio requisição : " + e.getMessage());
-    }
-
+    
   }
 
   private void salvarDependentes(AuxilioSaudeRequisicao beanAuxilio) {
@@ -279,3 +273,4 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
 }
+

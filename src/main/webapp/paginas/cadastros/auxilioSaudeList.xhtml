@@ -37,10 +37,11 @@
 						<h:inputText id="cpf" 
 									 name="cpf"
 									 maxlength="14"
-									 styleClass="maskCnpj"
+									 styleClass="maskCpf"
 									 value="#{auxilioSaudeListBean.entidade.funcional.pessoal.cpf}" />
 					</div>
 				</div>
+					
 
 				<h:commandButton id="consultar"
 								 value="Consultar" 
@@ -65,23 +66,34 @@
 								rows="#{auxilioSaudeListBean.dataModel.pageSize}" 
 								value="#{auxilioSaudeListBean.dataModel}" >
 
-                    <rich:column id="col2" headerClass="cel-25">
+                   
+                    <rich:column headerClass="cel-50">
+                        <f:facet name="header">
+                            Nome
+                        </f:facet>
+                        <h:outputText  value="#{item.funcional.pessoal.nomeCompleto}" styleClass="cel-50" />
+                    </rich:column>
+                     <rich:column headerClass="cel-25">
                         <f:facet name="header">
                             CPF
                         </f:facet>
                         <center>
-	                        <h:outputText id="item2" value="#{item.funcional.pessoal.cpf}" styleClass="cel-25" >
+	                        <h:outputText value="#{item.funcional.pessoal.cpf}" styleClass="cel-25" >
 	                        	  <f:converter converterId="cpfConverter" /> 
 	                        </h:outputText>
 	                    </center>
                     </rich:column>
-                    <rich:column id="col3" headerClass="cel-50">
+                    <rich:column headerClass="cel-25">
                         <f:facet name="header">
-                            Nome
+                            STATUS
                         </f:facet>
-                        <h:outputText id="item3" value="#{item.funcional.pessoal.nomeCompleto}" styleClass="cel-50" />
+                        <center>
+	                        <h:outputText value="AguardadoAprovação" styleClass="cel-25" >
+	                        	   
+	                        </h:outputText>
+	                    </center>
                     </rich:column>
-                    <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                    <rich:column  rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
                             DETALHAR
                         </f:facet>
@@ -92,7 +104,7 @@
                             <f:setPropertyActionListener target="#{auxilioSaudeListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>                    
-                	<rich:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+                	<rich:column  rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>

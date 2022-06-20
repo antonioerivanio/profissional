@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.io.IOException;
 import java.util.List;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.Dependente;
@@ -13,7 +14,7 @@ public interface AuxilioSaudeRequisicaoService {
 
   public void salvarAll(List<AuxilioSaudeRequisicao> beanList);
   
-  public void salvarAnexo(AuxilioSaudeRequisicao bean);
+  public void salvarAnexo(AuxilioSaudeRequisicao bean) throws IOException;
   
   public List<AuxilioSaudeRequisicao> search(String nomeParam, String cpfParam, Integer first, Integer rows);
   

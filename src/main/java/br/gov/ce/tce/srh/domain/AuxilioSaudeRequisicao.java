@@ -65,7 +65,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   private Double valorGastoPlanoSaude;
 
   @Column(name = "STATUSAPROVACAO")
-  private String StatusAprovacao;
+  private String statusAprovacao;
 
   @Column(name = "STATUSFUNCIONAL")
   private String statusFuncional;
@@ -116,7 +116,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   }
 
 
-  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica,
+  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica, Dependente dependenteSelecionado,
                             Double valorGastoPlanoSaude, boolean flAfirmaSerVerdadeiraInformacao, String statusFuncional) {
     super();
 
@@ -126,6 +126,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
     this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
     this.statusFuncional = statusFuncional;
+    this.dependenteSelecionado = dependenteSelecionado;
   }
 
 
@@ -266,14 +267,12 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.observacao = observacao;
   }
 
-
-  public String getStatusAprovacao() {
-    return StatusAprovacao;
+  public String getStatusAprovacao() {    
+    return statusAprovacao == null ? "Aguardando Aprovação" : statusAprovacao;
   }
 
-
   public void setStatusAprovacao(String statusAprovacao) {
-    StatusAprovacao = statusAprovacao;
+    this.statusAprovacao = statusAprovacao;
   }
 
 

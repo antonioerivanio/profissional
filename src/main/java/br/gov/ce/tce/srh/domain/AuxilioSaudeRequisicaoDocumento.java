@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.richfaces.model.UploadedFile;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 /***
  * Classe que amazena os arquivos que compravam os gastos com saude dos Beneficiarios e seus
@@ -71,6 +73,9 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   @Transient
   private String caminhoTemporario;
+  
+  @Transient
+  private String nomeTemporario;
 
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
@@ -87,7 +92,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
                             String caminhoArquivo, String descricaoArquivo, Date dataInclusao, byte[] comprovante) {
     super();
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
-    this.auxilioSaudeRequisicaoDependente = auxilioSaudeRequisicaoDependente;
+    this.auxilioSaudeRequisicaoDependente = auxilioSaudeRequisicaoDependente;    
     this.nomeArquivo = nomeArquivo;
     this.caminhoArquivo = caminhoArquivo;
     this.descricaoArquivo = descricaoArquivo;
@@ -105,7 +110,16 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
     auxilioSaudeRequisicaoDocumentoList.add(beanDoc);
   }
 
+  public void adicionarNovoNomeArquivo() {
+    setNomeArquivo(getId() + "_" + getNomeArquivo());
+  }
 
+  public void adicionarNovoCaminhoPorAnoMatricula(Date ano, String matricula) {
+    String anoAtual = SRHUtils.formataData(SRHUtils.FORMATO_DATA_ANO, ano);
+    setCaminhoArquivo(anoAtual + File.separator + matricula);
+  }
+
+  
   @Override
   public Long getId() {
     // TODO Auto-generated method stub
@@ -212,6 +226,15 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   public void setComprovante(byte[] comprovante) {
     this.comprovante = comprovante;
+  }  
+
+  public String getNomeTemporario() {
+    return nomeTemporario;
+  }
+
+
+  public void setNomeTemporario(String nomeTemporario) {
+    this.nomeTemporario = nomeTemporario;
   }
 
 

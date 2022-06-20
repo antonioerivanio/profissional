@@ -25,7 +25,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   @Autowired
   AuxilioSaudeRequisicaoService entidadeService;
 
-  
+
   @PostConstruct
   private void init() {
     getEntidade().setFuncional(new Funcional());
@@ -34,13 +34,14 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   public void consultar() {
 
-    try {   
+    try {
 
       limparListas();
 
-      setPagedList(entidadeService.search(getEntidade().getFuncional().getPessoal().getNome(), getEntidade().getFuncional().getPessoal().getCpf(), getDataTable().getFirst(),
+      setPagedList(entidadeService.search(getEntidade().getFuncional().getPessoal().getNome(),
+                                getEntidade().getFuncional().getPessoal().getCpf(), getDataTable().getFirst(),
                                 getDataTable().getRows()));
-      
+
       count = entidadeService.count(getEntidade().getFuncional().getPessoal().getNome(),
                                 getEntidade().getFuncional().getPessoal().getCpf());
 
@@ -58,7 +59,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
   }
 
-  
+
   public void salvar(boolean finalizar) {
 
 

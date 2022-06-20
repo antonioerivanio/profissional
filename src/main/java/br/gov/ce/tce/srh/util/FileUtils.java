@@ -103,7 +103,7 @@ public class FileUtils {
 
   
   public static void upload(String caminhoArquivo, byte[] dadosArquivos) throws Exception {
-    File file = new File(caminhoArquivo + ".pdf");
+    File file = new File(caminhoArquivo);
     FileOutputStream fop;
     fop = new FileOutputStream(file);
     fop.write(dadosArquivos);
@@ -111,22 +111,18 @@ public class FileUtils {
     fop.close();
   }
 
-  public static void visualizar(String pathArquivo, RelatorioUtil relatorioUtil) throws Exception {
-    
+  public static void visualizar(String pathArquivo, RelatorioUtil relatorioUtil) throws Exception {    
       InputStream in = new FileInputStream(pathArquivo);
       byte[] comprovanteBytes = IOUtils.toByteArray(in);
 
       relatorioUtil.openPdf(comprovanteBytes, pathArquivo);
 
       IOUtils.closeQuietly(in);
-
   }
   
   public static void criarDiretorio(String pathDiretorio) throws IOException {
     Path caminhoDiretorioNovo = Paths.get(pathDiretorio);
-    Path diretorioCriado = Files.createDirectories(caminhoDiretorioNovo);
-    
-    
+    Path diretorioCriado = Files.createDirectories(caminhoDiretorioNovo);      
   }
   
   public static void moverArquivoParaUmNovoDiretorio(String caminhoOrigem, String caminhoSestino) {
