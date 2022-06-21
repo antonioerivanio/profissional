@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import org.richfaces.model.UploadedFile;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /***
@@ -56,7 +55,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   @Column(name = "DESC_ARQUIVO")
   private String descricaoArquivo;
-  
+
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_INCLUSAO")
   private Date dataInclusao;
@@ -69,37 +68,41 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   private Date dataDelete;
 
   @Transient
-  private byte[] comprovante;
-
-  @Transient
-  private String caminhoTemporario;
+  private ArquivoVO arquivoVO;
   
   @Transient
-  private String nomeTemporario;
+  private String caminhoCompleto;
+  
+ 
 
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
 
-  
 
   public AuxilioSaudeRequisicaoDocumento() {
 
   }
 
 
-  public AuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicao auxilioSaudeRequisicao,
-                            AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente, String nomeArquivo,
-                            String caminhoArquivo, String descricaoArquivo, Date dataInclusao, byte[] comprovante) {
+  public AuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicao auxilioSaudeRequisicao, String nomeArquivo,
+                            String descricaoArquivo, Date dataInclusao, byte[] comprovante) {
     super();
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
-    this.auxilioSaudeRequisicaoDependente = auxilioSaudeRequisicaoDependente;    
     this.nomeArquivo = nomeArquivo;
-    this.caminhoArquivo = caminhoArquivo;
     this.descricaoArquivo = descricaoArquivo;
     this.dataInclusao = dataInclusao;
-    this.comprovante = comprovante;
+
+    this.arquivoVO = new ArquivoVO(nomeArquivo,
+                              descricaoArquivo, ArquivoVO.CAMINHO_PARA_SALVAR_ARQUIVO, comprovante);  
   }
 
+  public void adicionarDependente(AuxilioSaudeRequisicao bean) {
+    AuxilioSaudeRequisicaoDependente dependente =
+                              new AuxilioSaudeRequisicaoDependente(bean, bean.getDependenteSelecionado(),
+                                                        bean.getPessoaJuridica(), bean.getValorGastoPlanoSaude());
+
+    setAuxilioSaudeRequisicaoDependente(dependente);
+  }
 
   public void adicionarComprovanteList(AuxilioSaudeRequisicaoDocumento beanDoc) {
 
@@ -114,12 +117,21 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
     setNomeArquivo(getId() + "_" + getNomeArquivo());
   }
 
-  public void adicionarNovoCaminhoPorAnoMatricula(Date ano, String matricula) {
+  /***
+   * exemplo do caminho do arquivo
+   * \\svtcenas2\Desenvolvimento\svtcefs2\SRH\comprovanteAuxSaude\2022\{MATRICULA}\nomeArquivo.pdf
+   * 
+   * @param caminhoArquivoCompleto
+   * @param ano
+   * @param matricula
+   */
+  public void adicionarCaminho(Date ano, String matricula) {
     String anoAtual = SRHUtils.formataData(SRHUtils.FORMATO_DATA_ANO, ano);
-    setCaminhoArquivo(anoAtual + File.separator + matricula);
+    String matriculaFormatada = SRHUtils.removeHifenMatricula(matricula);
+    setCaminhoArquivo(arquivoVO.getCaminhoCompletoArquivo() + File.separator + anoAtual + File.separator + matriculaFormatada);
   }
 
-  
+
   @Override
   public Long getId() {
     // TODO Auto-generated method stub
@@ -207,34 +219,38 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   public void setDescricaoArquivo(String descricaoArquivo) {
     this.descricaoArquivo = descricaoArquivo;
   }
+  
+  
+  
 
 
-  public String getCaminhoTemporario() {
-    return caminhoTemporario;
+  /*
+   * public byte[] getComprovante() { return comprovante; }
+   * 
+   * 
+   * public void setComprovante(byte[] comprovante) { this.comprovante = comprovante; }
+   */
+
+  public String getCaminhoCompleto() {
+    if(caminhoCompleto == null) {
+      caminhoCompleto = getCaminhoArquivo() + File.separator + getArquivoVO().getNomeTemp();
+    }
+    return caminhoCompleto;
   }
 
 
-  public void setCaminhoTemporario(String caminhoTemporario) {
-    this.caminhoTemporario = caminhoTemporario;
+  public void setCaminhoCompleto(String caminhoCompleto) {
+    this.caminhoCompleto = caminhoCompleto;
   }
 
 
-  public byte[] getComprovante() {
-    return comprovante;
+  public ArquivoVO getArquivoVO() {
+    return arquivoVO;
   }
 
 
-  public void setComprovante(byte[] comprovante) {
-    this.comprovante = comprovante;
-  }  
-
-  public String getNomeTemporario() {
-    return nomeTemporario;
-  }
-
-
-  public void setNomeTemporario(String nomeTemporario) {
-    this.nomeTemporario = nomeTemporario;
+  public void setArquivoVO(ArquivoVO arquivoVO) {
+    this.arquivoVO = arquivoVO;
   }
 
 

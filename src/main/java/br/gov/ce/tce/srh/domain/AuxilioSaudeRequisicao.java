@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
+import br.gov.ce.tce.srh.util.FacesUtil;
 
 /***
  * Classe que amazena os dados das solicitações dos colaboradores e seus dependentes para
@@ -37,12 +38,12 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
    * 
    */
   private static final long serialVersionUID = 1L;
-  
+
 
   public static String DEFERIDO = "DEFERIDO";
   public static String INDEFERIDO = "INDEFERIDO";
   public static String ATIVO = "SIM";
-  public static String INATIVO = "NÃO";  
+  public static String INATIVO = "NÃO";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQ")
@@ -78,7 +79,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_FIMREQ")
   private Date dataFImRequisicao;
-  
+
   /**
    * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
    */
@@ -105,27 +106,27 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   private List<Dependente> dependentesComboList;
 
   @Transient
-  private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList;  
-  
+  private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList;
+
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoDependenteList;
 
-  
+
   public AuxilioSaudeRequisicao() {
 
   }
 
 
-  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica, Dependente dependenteSelecionado,
-                            Double valorGastoPlanoSaude, boolean flAfirmaSerVerdadeiraInformacao, String statusFuncional) {
+  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica,
+                            Dependente dependenteSelecionado, Double valorGastoPlanoSaude,
+                            boolean flAfirmaSerVerdadeiraInformacao) {
     super();
 
     this.funcional = funcional;
     this.usuario = usuario;
     this.pessoaJuridica = pessoaJuridica;
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
-    this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
-    this.statusFuncional = statusFuncional;
+    this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;    
     this.dependenteSelecionado = dependenteSelecionado;
   }
 
@@ -159,17 +160,23 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     auxilioSaudeRequisicaoDependenteList.add(beanDep);
     beanDep.getAuxilioSaudeRequisicao().setAuxilioSaudeRequisicaoDependenteList(auxilioSaudeRequisicaoDependenteList);
   }
-    
+
   public void adicionarComprovanteBeneficiarioList(AuxilioSaudeRequisicaoDocumento beanDoc) {
     // beanDep.setAuxilioSaudeRequisicao(this);
 
     if (auxilioSaudeRequisicaoDocumentoBeneficiarioList == null) {
       auxilioSaudeRequisicaoDocumentoBeneficiarioList = new ArrayList<>();
     }
+    
+    if(auxilioSaudeRequisicaoDocumentoBeneficiarioList != null && !auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty()) {
+      if(auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
+        FacesUtil.addErroMessage("O Arquivo adicionado já está na lista");
+      }
+    }
 
-    auxilioSaudeRequisicaoDocumentoBeneficiarioList.add(beanDoc);    
+    auxilioSaudeRequisicaoDocumentoBeneficiarioList.add(beanDoc);
   }
-  
+
   public void adicionarComprovanteDependenteList(AuxilioSaudeRequisicaoDocumento beanDoc) {
     // beanDep.setAuxilioSaudeRequisicao(this);
 
@@ -177,9 +184,8 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
       auxilioSaudeRequisicaoDocumentoDependenteList = new ArrayList<>();
     }
 
-    auxilioSaudeRequisicaoDocumentoDependenteList.add(beanDoc);    
+    auxilioSaudeRequisicaoDocumentoDependenteList.add(beanDoc);
   }
-
 
 
   // getters e setters
@@ -235,11 +241,17 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   }
 
   public String getStatusFuncional() {
+    if (this.statusFuncional == null) {
+      return getFuncional() != null && getFuncional().getStatus() != null && getFuncional().getStatus() == 1
+                                ? AuxilioSaudeRequisicao.ATIVO
+                                : AuxilioSaudeRequisicao.INATIVO;
+    }
+
     return statusFuncional;
   }
 
   public void setStatusFuncional(String statusFuncional) {
-    statusFuncional = statusFuncional;
+    this.statusFuncional = statusFuncional;
   }
 
   public Date getDataInicioRequisicao() {
@@ -267,7 +279,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.observacao = observacao;
   }
 
-  public String getStatusAprovacao() {    
+  public String getStatusAprovacao() {
     return statusAprovacao == null ? "Aguardando Aprovação" : statusAprovacao;
   }
 
@@ -346,8 +358,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
                             List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList) {
     this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoBeneficiarioList;
   }
-  
-  
-  
-  
+
+
 }
