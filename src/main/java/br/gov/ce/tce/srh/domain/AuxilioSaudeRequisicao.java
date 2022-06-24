@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -32,13 +35,12 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 @Entity
 @Table(name = "FP_AUXILIOSAUDEREQ", schema = DatabaseMetadata.SCHEMA_SRH)
 @SequenceGenerator(name = "SEQ_AUXILIOSAUDEREQ", sequenceName = "SEQ_AUXILIOSAUDEREQ", allocationSize = 1)
-public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Serializable {
+public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEntidade {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
-
 
   public static String DEFERIDO = "DEFERIDO";
   public static String INDEFERIDO = "INDEFERIDO";
@@ -49,6 +51,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQ")
   private Long id;
 
+  @NotNull(message = "Campo funcional é obrigatório")
   @ManyToOne
   @JoinColumn(name = "IDFUNCIONAL")
   private Funcional funcional;
@@ -83,6 +86,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
   /**
    * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
    */
+  @AssertTrue(message = "Aviso, Leia a Declaração antes de marcar o campo Concordo")
   @Column(name = "FLG_AFIRMACAOSERVERDADE")
   private boolean flAfirmaSerVerdadeiraInformacao;
 
@@ -91,7 +95,11 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
   // Beans que não são persistiveis -
   @Transient
-  private String declaracao;
+  private String declaracao = Texto.getDeclaracao();
+
+  // Beans que não são persistiveis -
+  @Transient
+  private String aviso = Texto.getAviso();
 
   @Transient
   private Dependente dependenteSelecionado;
@@ -126,19 +134,13 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     this.usuario = usuario;
     this.pessoaJuridica = pessoaJuridica;
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
-    this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;    
+    this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
     this.dependenteSelecionado = dependenteSelecionado;
   }
 
 
   public String getDeclaracao() {
-    StringBuilder declaracao = new StringBuilder("Declaro que estou ciente que a inveracidade da informação ");
-    declaracao.append("contida neste documento, por mim firmado, constitui prática de ");
-    declaracao.append("infração disciplinar, passível de punição na forma da lei, e ");
-    declaracao.append("que não recebo auxílio-saúde semelhante nem possuo programa de ");
-    declaracao.append("assistência à saúde custeado integral ou parcialmente pelos cofres públicos ");
-
-    return declaracao.toString();
+    return declaracao;
   };
 
 
@@ -167,9 +169,10 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     if (auxilioSaudeRequisicaoDocumentoBeneficiarioList == null) {
       auxilioSaudeRequisicaoDocumentoBeneficiarioList = new ArrayList<>();
     }
-    
-    if(auxilioSaudeRequisicaoDocumentoBeneficiarioList != null && !auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty()) {
-      if(auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
+
+    if (auxilioSaudeRequisicaoDocumentoBeneficiarioList != null
+                              && !auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty()) {
+      if (auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
         FacesUtil.addErroMessage("O Arquivo adicionado já está na lista");
       }
     }
@@ -187,6 +190,10 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
     auxilioSaudeRequisicaoDocumentoDependenteList.add(beanDoc);
   }
 
+
+  public Boolean isPessoaJuridicaNull() {
+    return getPessoaJuridica() == null ? Boolean.TRUE : Boolean.FALSE;
+  }
 
   // getters e setters
 
@@ -298,6 +305,15 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements Seriali
 
   public void setFlAfirmaSerVerdadeiraInformacao(boolean flAfirmaSerVerdadeiraInformacao) {
     this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
+  }
+
+
+  public String getAviso() {
+    return aviso;
+  }
+
+  public void setAviso(String aviso) {
+    this.aviso = aviso;
   }
 
 

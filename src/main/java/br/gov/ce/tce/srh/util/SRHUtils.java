@@ -10,6 +10,8 @@ import java.math.RoundingMode;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,11 +21,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.text.MaskFormatter;
-
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
@@ -684,10 +683,10 @@ public class SRHUtils {
   public static String removeHifenMatricula(String matricula) {
     String novoMatricula = matricula;
 
-    if (matricula.contains("-")) {     
-        novoMatricula = matricula.replaceAll("-", "").trim();   
-    } 
-    
+    if (matricula != null && matricula.contains("-")) {
+      novoMatricula = matricula.replaceAll("-", "").trim();
+    }
+
     return novoMatricula;
   }
 
@@ -880,4 +879,12 @@ public class SRHUtils {
     return null;
   }
 
+  public static long getIdade(int dia, int mes, int ano) {
+    LocalDate startDate = LocalDate.of(ano, mes, dia);
+    LocalDate endDate = LocalDate.now();
+    // calculates the amount of time between two specified temporal objects
+    long idade = ChronoUnit.YEARS.between(startDate, endDate);
+
+    return idade;
+  }
 }

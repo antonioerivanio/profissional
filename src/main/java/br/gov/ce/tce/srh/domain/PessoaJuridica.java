@@ -28,95 +28,103 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
 @SuppressWarnings("serial")
 @Table(name = "TB_PESSOAJURIDICA", schema = DatabaseMetadata.SCHEMA_SRH)
 public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
-	
 
-	@Id
-	@Column(name = "ID")
-	private Long id;
 
-	@Column(name = "CNPJ", nullable = false)
-	private String cnpj;
+  @Id
+  @Column(name = "ID")
+  private Long id;
 
-	@Column(name = "RAZAOSOCIAL", nullable = false)
-	private String razaoSocial;
+  @Column(name = "CNPJ", nullable = false)
+  private String cnpj;
 
-	@Column(name = "NOMEFANTASIA", nullable = false)
-	private String nomeFantasia;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IDUSUARIOINCLUSAO")
-    private Usuario usuarioInclusao;
-	
-	@Temporal(TemporalType.DATE)
-    @Column(name = "DATAALTERACAO")
-    private Date dataAlteracao;
-	
-	
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "FG_EMPRESAAREASAUDE")
-	private EmpresaAreaSaude flgEmpresaAreSaude;
-	
-	
-	public PessoaJuridica() {
-	}
+  @Column(name = "RAZAOSOCIAL", nullable = false)
+  private String razaoSocial;
 
-	public PessoaJuridica(Long id, String cnpj, String razaoSocial, String nomeFantasia) {
-		this.id = id;
-		this.cnpj = cnpj.trim();
-		this.razaoSocial = razaoSocial;
-		this.nomeFantasia = nomeFantasia;
-	}
+  @Column(name = "NOMEFANTASIA", nullable = false)
+  private String nomeFantasia;
 
-	public Long getId() {
-		return id;
-	}
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "IDUSUARIOINCLUSAO")
+  private Usuario usuarioInclusao;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Temporal(TemporalType.DATE)
+  @Column(name = "DATAALTERACAO")
+  private Date dataAlteracao;
 
-	public String getCnpj() {
-		if(cnpj != null) {
-			cnpj.trim();
-		}
-		
-		return cnpj;
-	}
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
-	}
+  @Enumerated(EnumType.ORDINAL)
+  @Column(name = "FG_EMPRESAAREASAUDE")
+  private EmpresaAreaSaude flgEmpresaAreSaude;
 
-	public String getRazaoSocial() {
-		return razaoSocial;
-	}
 
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
-	}
+  public PessoaJuridica() {}
 
-	public String getNomeFantasia() {
-		return nomeFantasia;
-	}
+  public PessoaJuridica(Long id, String cnpj, String razaoSocial, String nomeFantasia) {
+    this.id = id;
+    this.cnpj = cnpj.trim();
+    this.razaoSocial = razaoSocial;
+    this.nomeFantasia = nomeFantasia;
+  }
 
-	public void setNomeFantasia(String nomeFantasia) {
-		this.nomeFantasia = nomeFantasia;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public Usuario getUsuarioInclusao() {
-		return usuarioInclusao;
-	}
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public void setUsuarioInclusao(Usuario usuarioInclusao) {
-		this.usuarioInclusao = usuarioInclusao;
-	}
+  public String getCnpj() {
+    if (cnpj != null) {
+      cnpj.trim();
+    }
 
-	public Date getDataAlteracao() {
-		return dataAlteracao;
-	}
+    return cnpj;
+  }
 
-	public void setDataAlteracao(Date dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-	
+  public void setCnpj(String cnpj) {
+    this.cnpj = cnpj;
+  }
+
+  public String getRazaoSocial() {
+    return razaoSocial;
+  }
+
+  public void setRazaoSocial(String razaoSocial) {
+    this.razaoSocial = razaoSocial;
+  }
+
+  public String getNomeFantasia() {
+    return nomeFantasia;
+  }
+
+  public void setNomeFantasia(String nomeFantasia) {
+    this.nomeFantasia = nomeFantasia;
+  }
+
+  public Usuario getUsuarioInclusao() {
+    return usuarioInclusao;
+  }
+
+  public void setUsuarioInclusao(Usuario usuarioInclusao) {
+    this.usuarioInclusao = usuarioInclusao;
+  }
+
+  public Date getDataAlteracao() {
+    return dataAlteracao;
+  }
+
+  public void setDataAlteracao(Date dataAlteracao) {
+    this.dataAlteracao = dataAlteracao;
+  }
+
+  public EmpresaAreaSaude getFlgEmpresaAreSaude() {
+    return flgEmpresaAreSaude;
+  }
+
+  public void setFlgEmpresaAreSaude(EmpresaAreaSaude flgEmpresaAreSaude) {
+    this.flgEmpresaAreSaude = flgEmpresaAreSaude;
+  }
+
+
 }

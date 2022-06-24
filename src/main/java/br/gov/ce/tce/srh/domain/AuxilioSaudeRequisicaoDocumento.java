@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import org.richfaces.model.UploadedFile;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /***
@@ -30,7 +31,7 @@ import br.gov.ce.tce.srh.util.SRHUtils;
 @Table(name = "FP_AUXILIOSAUDEDOC", schema = DatabaseMetadata.SCHEMA_SRH)
 @SequenceGenerator(name = "SEQ_FP_AUXILIOSAUDEDOC", sequenceName = "SEQ_FP_AUXILIOSAUDEDOC",
                           schema = DatabaseMetadata.SCHEMA_SRH, allocationSize = 1, initialValue = 1)
-public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implements Serializable {
+public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implements BeanEntidade {
 
   private static final long serialVersionUID = 481877607288972254L;
 
@@ -72,8 +73,6 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   
   @Transient
   private String caminhoCompleto;
-  
- 
 
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
@@ -113,6 +112,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
     auxilioSaudeRequisicaoDocumentoList.add(beanDoc);
   }
 
+  
   public void adicionarNovoNomeArquivo() {
     setNomeArquivo(getId() + "_" + getNomeArquivo());
   }
@@ -125,7 +125,7 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
    * @param ano
    * @param matricula
    */
-  public void adicionarCaminho(Date ano, String matricula) {
+  public void adicionarNovoCaminhoArquivo(Date ano, String matricula) {
     String anoAtual = SRHUtils.formataData(SRHUtils.FORMATO_DATA_ANO, ano);
     String matriculaFormatada = SRHUtils.removeHifenMatricula(matricula);
     setCaminhoArquivo(arquivoVO.getCaminhoCompletoArquivo() + File.separator + anoAtual + File.separator + matriculaFormatada);
@@ -232,9 +232,14 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
    */
 
   public String getCaminhoCompleto() {
-    if(caminhoCompleto == null) {
+    if(getId() != null) {
       caminhoCompleto = getCaminhoArquivo() + File.separator + getArquivoVO().getNomeTemp();
+    }else {    
+      if(caminhoCompleto == null) {
+        caminhoCompleto = getCaminhoArquivo() + File.separator + getArquivoVO().getNomeTemp();
+      }
     }
+    
     return caminhoCompleto;
   }
 

@@ -24,6 +24,8 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   @Autowired
   AuxilioSaudeRequisicaoService entidadeService;
+  
+  private AuxilioSaudeRequisicao entidadeEditar;
 
 
   @PostConstruct
@@ -67,7 +69,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   public String editar() {
-    FacesUtil.setFlashParameter("entidade", getEntidade());
+    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());
     return "incluirAlterar";
   }
 
@@ -83,6 +85,16 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     // TODO Auto-generated method stub
 
   }
+
+  public AuxilioSaudeRequisicao getEntidadeEditar() {
+    return entidadeEditar;
+  }
+
+  public void setEntidadeEditar(AuxilioSaudeRequisicao entidadeEditar) {
+    this.entidadeEditar = entidadeEditar;
+  }
+  
+  
 
   // FIM PAGINAÇÃO
 

@@ -3,20 +3,33 @@ package br.gov.ce.tce.srh.service;
 import java.io.IOException;
 import java.util.List;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
+import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.sapjava.domain.Entidade;
 
 public interface AuxilioSaudeRequisicaoService {
 
   public int count(String nome, String cpf);
   
-  public void salvar(AuxilioSaudeRequisicao bean);
 
-  public void salvarAll(List<AuxilioSaudeRequisicao> beanList);
+  
+  public void editar(AuxilioSaudeRequisicao bean);
+  
+  public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj);
+  public void salvar(AuxilioSaudeRequisicao bean);
+  
+  public void salvar(List<AuxilioSaudeRequisicao> beanList);
+  
+  public List<AuxilioSaudeRequisicaoDocumento> getListaArquivosPorIdAuxilio(BeanEntidade bean);
   
   public void salvarAnexo(AuxilioSaudeRequisicao bean) throws IOException;
   
   public List<AuxilioSaudeRequisicao> search(String nomeParam, String cpfParam, Integer first, Integer rows);
+  
+  
+  
   
   /***
    * valida campos obrigatórios
