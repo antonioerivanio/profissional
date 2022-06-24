@@ -1,7 +1,7 @@
 ---
 include:
   - project: 'pipelines/ci-templates'
-    ref: 0.5.1
+    ref: 0.6.0
     file:
       - '/workflows/rules.yml'
       - '/variables/main.yml'
@@ -36,6 +36,11 @@ project_release:
       - target/*.war
 
 
+image_check:
+  extends: .image_check
+  stage: test
+
+
 chart_build:
   extends: .chart_build
   stage: package
@@ -59,6 +64,8 @@ image_build:
         $KANIKO_CACHE_ARGS $FORMATTEDTAGLIST $IMAGE_LABELS
   needs:
     - job: project_release
+    - job: image_check
+  allow_failure: true
 
 
 chart_release:
