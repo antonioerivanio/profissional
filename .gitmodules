@@ -1,3 +1,4 @@
 [submodule ".helm/srh"]
 	path = .helm/srh
 	url = https://devops-helm-deploy-token:fG3ysMcBZ_jcdp8CRBq-@gitlabci.tce.ce.gov.br/devops/helm/application/sti/ds/srh.git
+	branch = development
