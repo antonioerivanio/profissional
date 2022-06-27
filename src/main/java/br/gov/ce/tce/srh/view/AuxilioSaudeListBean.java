@@ -69,16 +69,10 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   public String editar() {
-    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());
+    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());    
     return "incluirAlterar";
   }
 
-
-  @Override
-  public void excluir() {
-    // TODO Auto-generated method stub
-
-  }
 
   @Override
   public void salvar() {

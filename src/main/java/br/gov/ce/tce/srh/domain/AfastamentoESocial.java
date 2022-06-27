@@ -136,30 +136,6 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 		this.matricula = matricula;
 	}
 
-//	public Long getCodCateg() {
-//		return codCateg;
-//	}
-
-//	public void setCodCateg(Long codCateg) {
-//		this.codCateg = codCateg;
-//	}
-
-//	public String getTpInsc() {
-//		return tpInsc;
-//	}
-
-//	public void setTpInsc(String tpInsc) {
-//		this.tpInsc = tpInsc;
-//	}
-
-//	public String getNrInsc() {
-//		return nrInsc;
-//	}
-
-//	public void setNrInsc(String nrInsc) {
-//		this.nrInsc = nrInsc;
-//	}
-
 	public Date getDtIniAfast() {
 		return dtIniAfast;
 	}

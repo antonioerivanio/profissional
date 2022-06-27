@@ -428,7 +428,7 @@
                                         </li>
                                     </ui:fragment>
                                     
-                                    <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_DEPENDENTE')}">
+                                    <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA, ROLE_DEPENDENTE')}">
                                         <li>
                                             <a href="/srh/paginas/cadastros/auxilioSaudeList.faces">
 												Auxílio-Saúde </a>

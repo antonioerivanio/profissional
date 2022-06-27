@@ -1,19 +1,18 @@
 package br.gov.ce.tce.srh.service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
-import br.gov.ce.tce.srh.sapjava.domain.Entidade;
+import br.gov.ce.tce.srh.exception.UsuarioException;
 
 public interface AuxilioSaudeRequisicaoService {
 
   public int count(String nome, String cpf);
-  
-
   
   public void editar(AuxilioSaudeRequisicao bean);
   
@@ -28,6 +27,10 @@ public interface AuxilioSaudeRequisicaoService {
   
   public List<AuxilioSaudeRequisicao> search(String nomeParam, String cpfParam, Integer first, Integer rows);
   
+  public BigDecimal getValorSalarioComBaseIdadePorPercentual(Double percentual);
+  
+  public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean);
+  
   
   
   
@@ -36,9 +39,9 @@ public interface AuxilioSaudeRequisicaoService {
    * @param bean
    * @return
    */
-  public Boolean isOK(AuxilioSaudeRequisicao bean);
+  public boolean isOK(AuxilioSaudeRequisicao bean);
   
-  public void setDadosIniciaisDaEntidadePorCpf(AuxilioSaudeRequisicao entidade, String cpf);
+  public void setDadosIniciaisDaEntidadePorCpf(AuxilioSaudeRequisicao entidade, String cpf) throws UsuarioException;
   
   public void setDadosIniciaisDaEntidade(AuxilioSaudeRequisicao entidade);
   

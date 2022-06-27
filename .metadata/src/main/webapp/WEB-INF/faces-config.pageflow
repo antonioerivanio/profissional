@@ -721,5 +721,5 @@
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
   <links id="pf16541689459266" target="pf16541689459265" source="pf16541689459265" outcome="listar" redirect="true"/>
-  <links id="pf16541689459267" target="pf16541689459268" source="pf16541689459265" outcome="incluirAlterar"/>
+  <links id="pf16541689459267" target="pf16541689459268" source="pf16541689459265" outcome="incluirAlterar" redirect="true"/>
 </pageflow:Pageflow>

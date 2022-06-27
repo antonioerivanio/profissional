@@ -55,13 +55,14 @@
 			<ui:insert name="camposEntrada"></ui:insert>
 
 			<div class="tabela-dados">
-				
+
 				<rich:dataTable id="lista" var="item"
 					rows="#{auxilioSaudeListBean.dataModel.pageSize}"
 					value="#{auxilioSaudeListBean.dataModel}">
 
 					<f:facet name="header">
-						<h:outputText value="Quantidade Registros  #{auxilioSaudeListBean.count}" />
+						<h:outputText
+							value="Quantidade Registros  #{auxilioSaudeListBean.count}" />
 					</f:facet>
 
 					<rich:column headerClass="cel-25">
@@ -121,15 +122,24 @@
 
 					<rich:column headerClass="cel-25">
 						<f:facet name="header">
-                            STATUS
+                            Data da Aprovação
                         </f:facet>
 						<center>
-							<h:outputText value="Aguardado Aprovação" styleClass="cel-25">
+							<h:outputText value="#{item.dataFImRequisicao}"
+								styleClass="cel-25">
 
 							</h:outputText>
 						</center>
 					</rich:column>
 
+					<rich:column headerClass="cel-25">
+						<f:facet name="header">
+                            STATUS
+                        </f:facet>
+						<center>
+							<h:outputText value="#{item.statusAprovacao}" styleClass="cel-25" />
+						</center>
+					</rich:column>
 
 					<rich:column
 						rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
@@ -148,7 +158,7 @@
                             AÇÃO
                         </f:facet>
 						<h:commandLink id="editar" value="Editar"
-							action="#{auxilioSaudeListBean.editar}" styleClass="ico-editar">
+							action="#{auxilioSaudeListBean.editar}" styleClass="ico-editar" rendered="#{item.dataFImRequisicao eq null}">
 							<f:setPropertyActionListener
 								target="#{auxilioSaudeListBean.entidadeEditar}" value="#{item}" />
 						</h:commandLink>

@@ -1,13 +1,10 @@
 package br.gov.ce.tce.srh.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +17,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -42,10 +38,10 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
    */
   private static final long serialVersionUID = 1L;
 
-  public static String DEFERIDO = "DEFERIDO";
-  public static String INDEFERIDO = "INDEFERIDO";
-  public static String ATIVO = "SIM";
-  public static String INATIVO = "NÃO";
+  public static final String DEFERIDO = "DEFERIDO";
+  public static final String INDEFERIDO = "INDEFERIDO";
+  public static final String ATIVO = "SIM";
+  public static final String INATIVO = "NÃO";
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQ")
@@ -82,6 +78,11 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_FIMREQ")
   private Date dataFImRequisicao;
+  
+  @Temporal(TemporalType.DATE)
+  @Column(name = "DT_ALTERACAO")
+  private Date dataAlteracao;
+  
 
   /**
    * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
@@ -93,7 +94,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   @Column(name = "OBSERVACAO")
   private String observacao;
 
-  // Beans que não são persistiveis -
+  // Variaveis ou Beans que não são persistiveis -
   @Transient
   private String declaracao = Texto.getDeclaracao();
 
@@ -105,7 +106,13 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   private Dependente dependenteSelecionado;
 
   @Transient
-  private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList;
+  private Double valorMaximoAserRestituido;
+
+  @Transient
+  private Double valorTotalSolicitado;
+
+  @Transient
+  private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoBeneficiarioItemList;
 
   @Transient
   private List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaoDependenteList;
@@ -125,8 +132,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
 
-  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica,
-                            Dependente dependenteSelecionado, Double valorGastoPlanoSaude,
+  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica, Dependente dependenteSelecionado, Double valorGastoPlanoSaude,
                             boolean flAfirmaSerVerdadeiraInformacao) {
     super();
 
@@ -141,16 +147,16 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
 
   public String getDeclaracao() {
     return declaracao;
-  };
+  }
 
 
   public void adicionarDadosRequisicao(AuxilioSaudeRequisicao bean) {
 
-    if (auxilioSaudeRequisicaoList == null) {
-      auxilioSaudeRequisicaoList = new ArrayList<>();
+    if (auxilioSaudeRequisicaoBeneficiarioItemList == null) {
+      auxilioSaudeRequisicaoBeneficiarioItemList = new ArrayList<>();
     }
 
-    auxilioSaudeRequisicaoList.add(bean);
+    auxilioSaudeRequisicaoBeneficiarioItemList.add(bean);
   }
 
   public void adicionarDadosDependente(AuxilioSaudeRequisicaoDependente beanDep) {
@@ -164,25 +170,18 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
   public void adicionarComprovanteBeneficiarioList(AuxilioSaudeRequisicaoDocumento beanDoc) {
-    // beanDep.setAuxilioSaudeRequisicao(this);
-
     if (auxilioSaudeRequisicaoDocumentoBeneficiarioList == null) {
       auxilioSaudeRequisicaoDocumentoBeneficiarioList = new ArrayList<>();
     }
 
-    if (auxilioSaudeRequisicaoDocumentoBeneficiarioList != null
-                              && !auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty()) {
-      if (auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
-        FacesUtil.addErroMessage("O Arquivo adicionado já está na lista");
-      }
+    if (!auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty() && auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
+      FacesUtil.addErroMessage("O Arquivo adicionado já está na lista");
     }
 
     auxilioSaudeRequisicaoDocumentoBeneficiarioList.add(beanDoc);
   }
 
   public void adicionarComprovanteDependenteList(AuxilioSaudeRequisicaoDocumento beanDoc) {
-    // beanDep.setAuxilioSaudeRequisicao(this);
-
     if (auxilioSaudeRequisicaoDocumentoDependenteList == null) {
       auxilioSaudeRequisicaoDocumentoDependenteList = new ArrayList<>();
     }
@@ -191,15 +190,23 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
 
-  public Boolean isPessoaJuridicaNull() {
+  public boolean isPessoaJuridicaNull() {
     return getPessoaJuridica() == null ? Boolean.TRUE : Boolean.FALSE;
   }
+  
+ public boolean checkBeneficiarioItemLIstNotNull() {
+   return getAuxilioSaudeRequisicaoBeneficiarioItemList() != null && !getAuxilioSaudeRequisicaoBeneficiarioItemList().isEmpty();
+ }
+ 
+ public boolean isDocumentoBeneficiarioLIstNull() {
+   return getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() == null || getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().isEmpty();
+ }
+ 
 
   // getters e setters
 
   @Override
   public Long getId() {
-    // TODO Auto-generated method stub
     return id;
   }
 
@@ -249,9 +256,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
 
   public String getStatusFuncional() {
     if (this.statusFuncional == null) {
-      return getFuncional() != null && getFuncional().getStatus() != null && getFuncional().getStatus() == 1
-                                ? AuxilioSaudeRequisicao.ATIVO
-                                : AuxilioSaudeRequisicao.INATIVO;
+      return getFuncional() != null && getFuncional().getStatus() != null && getFuncional().getStatus() == 1 ? AuxilioSaudeRequisicao.ATIVO : AuxilioSaudeRequisicao.INATIVO;
     }
 
     return statusFuncional;
@@ -269,13 +274,20 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
     this.dataInicioRequisicao = dataInicioRequisicao;
   }
 
-
   public Date getDataFImRequisicao() {
     return dataFImRequisicao;
   }
 
   public void setDataFImRequisicao(Date dataFImRequisicao) {
     this.dataFImRequisicao = dataFImRequisicao;
+  }
+  
+  public Date getDataAlteracao() {
+    return dataAlteracao;
+  }
+
+  public void setDataAlteracao(Date dataAlteracao) {
+    this.dataAlteracao = dataAlteracao;
   }
 
   public String getObservacao() {
@@ -307,7 +319,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
     this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
   }
 
-
   public String getAviso() {
     return aviso;
   }
@@ -316,19 +327,29 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
     this.aviso = aviso;
   }
 
+  public Double getValorMaximoAserRestituido() {
+    return valorMaximoAserRestituido;
+  }
+
+  public void setValorMaximoAserRestituido(Double valorMaximoAserRestituido) {
+    this.valorMaximoAserRestituido = valorMaximoAserRestituido;
+  }
+
+  public Double getValorTotalSolicitado() {
+    return valorTotalSolicitado;
+  }
+
+  public void setValorTotalSolicitado(Double valorTotalSolicitado) {
+    this.valorTotalSolicitado = valorTotalSolicitado;
+  }
 
   public void setDependenteSelecionado(Dependente dependenteSelecionado) {
     this.dependenteSelecionado = dependenteSelecionado;
   }
 
-  public List<AuxilioSaudeRequisicao> getAuxilioSaudeRequisicaoList() {
-    return auxilioSaudeRequisicaoList;
+  public List<AuxilioSaudeRequisicao> getAuxilioSaudeRequisicaoBeneficiarioItemList() {
+    return auxilioSaudeRequisicaoBeneficiarioItemList;
   }
-
-  public void setAuxilioSaudeRequisicaoList(List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList) {
-    this.auxilioSaudeRequisicaoList = auxilioSaudeRequisicaoList;
-  }
-
 
   public List<Dependente> getDependentesComboList() {
     return dependentesComboList;
@@ -342,8 +363,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
     return auxilioSaudeRequisicaoDependenteList;
   }
 
-  public void setAuxilioSaudeRequisicaoDependenteList(
-                            List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaoDependenteList) {
+  public void setAuxilioSaudeRequisicaoDependenteList(List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaoDependenteList) {
     this.auxilioSaudeRequisicaoDependenteList = auxilioSaudeRequisicaoDependenteList;
   }
 
@@ -353,27 +373,22 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
 
-  public void setauxilioSaudeRequisicaoDocumentoBeneficiarioList(
-                            List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList) {
-    this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoList;
-  }
-
-
   public List<AuxilioSaudeRequisicaoDocumento> getAuxilioSaudeRequisicaoDocumentoDependenteList() {
     return auxilioSaudeRequisicaoDocumentoDependenteList;
   }
 
 
-  public void setAuxilioSaudeRequisicaoDocumentoDependenteList(
-                            List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoDependenteList) {
+  public void setAuxilioSaudeRequisicaoDocumentoDependenteList(List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoDependenteList) {
     this.auxilioSaudeRequisicaoDocumentoDependenteList = auxilioSaudeRequisicaoDocumentoDependenteList;
   }
 
 
-  public void setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(
-                            List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList) {
-    this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoBeneficiarioList;
+  public void setAuxilioSaudeRequisicaoBeneficiarioItemList(List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoBeneficiarioItemList) {
+    this.auxilioSaudeRequisicaoBeneficiarioItemList = auxilioSaudeRequisicaoBeneficiarioItemList;
   }
 
-
+  public void setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList) {
+    this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoBeneficiarioList;
+  }
+    
 }

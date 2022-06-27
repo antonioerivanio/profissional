@@ -1,7 +1,7 @@
 package br.gov.ce.tce.srh.view;
 
 /**
- * Contém as classes basicas usada nos Controllers
+ * Contém os metodo da classe basica usada nos Controllers
  * @author erivanio.cruz
  *
  * @param <T>
@@ -9,10 +9,6 @@ package br.gov.ce.tce.srh.view;
 public interface ControllerViewCrudBase {  
  
   void consultar();
-  
-  String editar();
-  
-  void excluir();
   
   void salvar();
   

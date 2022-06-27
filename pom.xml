@@ -1,8 +1,5 @@
-<project 
-	xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.gov.ce.tce</groupId>
 	<artifactId>srh</artifactId>
@@ -10,23 +7,23 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>srh Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-  
-  
+
+
 	<properties>
 		<spring.version>3.1.4.RELEASE</spring.version>
 		<spring.security.version>3.1.7.RELEASE</spring.security.version>
 		<org.aspectj.version>1.6.12</org.aspectj.version>
-		<hibernate.version>4.2.15.Final</hibernate.version>		
+		<hibernate.version>4.2.15.Final</hibernate.version>
 		<apache-poi.version>3.15</apache-poi.version>
 		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-  
-  
-	<dependencies> 
-	
-		
+
+
+	<dependencies>
+
+
 		<!-- Expression Language -->
 		<dependency>
 			<groupId>javax.el</groupId>
@@ -34,8 +31,8 @@
 			<version>2.2.4</version>
 			<scope>provided</scope>
 		</dependency>
-		
-	
+
+
 		<!-- TOMCAT SERVLET API -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -43,16 +40,16 @@
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-	    
-	    
-	    <!-- ORACLE JDBC -->
+
+
+		<!-- ORACLE JDBC -->
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0.3</version>
-		</dependency>	      
-	    
-	    <!-- AspectJ é dependência do AOP do Spring -->
+		</dependency>
+
+		<!-- AspectJ é dependência do AOP do Spring -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -63,10 +60,10 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${org.aspectj.version}</version>
-		</dependency>	    
-	    
-	    
-	    <!-- Spring -->
+		</dependency>
+
+
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -74,9 +71,9 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-aspects</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -104,15 +101,15 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-instrument</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-instrument</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-instrument-tomcat</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-instrument-tomcat</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -122,11 +119,11 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-jms</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
@@ -134,11 +131,11 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-oxm</artifactId>
-		    <version>${spring.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
@@ -150,28 +147,28 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 
-		
+
 		<!-- Required by Spring AOP -->
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 			<version>2.2</version>
-		</dependency>		
-						
-		
-		<!-- SPRING SECURITY -->		
+		</dependency>
+
+
+		<!-- SPRING SECURITY -->
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-acl</artifactId>
-		    <version>${spring.security.version}</version>
-		</dependency>		
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-acl</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -186,20 +183,20 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-ldap</artifactId>
-		    <version>${spring.security.version}</version>
-		</dependency>		
-				
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-ldap</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-taglibs</artifactId>
-		    <version>${spring.security.version}</version>
-		</dependency> 		
-  			    
-	        	
-    	<!-- HIBERNATE -->
-    	<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring.security.version}</version>
+		</dependency>
+
+
+		<!-- HIBERNATE -->
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
@@ -210,88 +207,87 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-    	
-    	
+
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
 
-		<dependency>		
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>${hibernate.version}</version>
-		</dependency>		
-		
+		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-envers</artifactId>
 			<version>${hibernate.version}</version>
-		</dependency>		
-		
+		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.1.0.Final</version>			
+			<version>4.1.0.Final</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>0.9.5.2</version>
 		</dependency>
-				
-				
-		<!-- RICHFACES -->			
+
+
+		<!-- RICHFACES -->
 		<dependency>
-		    <groupId>org.richfaces</groupId>
-		    <artifactId>richfaces</artifactId>
-		    <version>4.5.17.Final</version>
+			<groupId>org.richfaces</groupId>
+			<artifactId>richfaces</artifactId>
+			<version>4.5.17.Final</version>
 		</dependency>
-		
-		<dependency>
-		    <groupId>net.sourceforge.cssparser</groupId>
-		    <artifactId>cssparser</artifactId>
-		    <version>0.9.18</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.google.guava</groupId>
-		    <artifactId>guava</artifactId>
-		    <version>19.0</version>
-		</dependency>		
 
 		<dependency>
-		    <groupId>org.w3c.css</groupId>
-		    <artifactId>sac</artifactId>
-		    <version>1.3</version>
-		</dependency>		
-		
-    	<dependency>
+			<groupId>net.sourceforge.cssparser</groupId>
+			<artifactId>cssparser</artifactId>
+			<version>0.9.18</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.w3c.css</groupId>
+			<artifactId>sac</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.faces</artifactId>
 			<version>2.2.13</version>
-		</dependency>		
-			
-		<dependency>
-		    <groupId>org.apache.myfaces.tomahawk</groupId>
-		    <artifactId>tomahawk</artifactId>
-		    <version>1.1.14</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>javax.enterprise</groupId>
-		    <artifactId>cdi-api</artifactId>
-		    <version>1.2</version>
-		</dependency>	
-		
-		
-		
-		<!-- JASPERREPORTS -->				
+			<groupId>org.apache.myfaces.tomahawk</groupId>
+			<artifactId>tomahawk</artifactId>
+			<version>1.1.14</version>
+		</dependency>
+
 		<dependency>
-		    <groupId>net.sf.jasperreports</groupId>
-		    <artifactId>jasperreports</artifactId>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
+		<!-- JASPERREPORTS -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
 			<version>6.5.1</version>
 			<exclusions>
 				<exclusion>
@@ -300,25 +296,25 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>com.lowagie</groupId>
-		    <artifactId>itext</artifactId>
-		    <version>2.1.7</version>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.1.7</version>
 		</dependency>
-		 
+
 		<dependency>
-		   <groupId>br.gov.ce.tce</groupId>
-		   <artifactId>CustomSans</artifactId>
-		   <version>1.0.0</version>
-	  	</dependency>
-		
-		<dependency>
-		   <groupId>br.gov.ce.tce</groupId>
-		   <artifactId>CustomSerif</artifactId>
-		   <version>1.0.0</version>
+			<groupId>br.gov.ce.tce</groupId>
+			<artifactId>CustomSans</artifactId>
+			<version>1.0.0</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>br.gov.ce.tce</groupId>
+			<artifactId>CustomSerif</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<!-- APACHE POI -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -331,90 +327,101 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>${apache-poi.version}</version>
 		</dependency>
-		
-		
+
+
 		<!-- COMMONS -->
-    	<dependency>
-		    <groupId>commons-discovery</groupId>
-		    <artifactId>commons-discovery</artifactId>
-		    <version>0.4</version>
-		</dependency>
-		
 		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>1.3.2</version>
-		</dependency>     	
-            	
-    			
+			<groupId>commons-discovery</groupId>
+			<artifactId>commons-discovery</artifactId>
+			<version>0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
+
 		<!-- SLF4J LOG4J -->
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-api</artifactId>
-		    <version>1.7.21</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.21</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-log4j12</artifactId>
-		    <version>1.7.21</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.apache.lucene</groupId>
-		    <artifactId>lucene-analyzers</artifactId>
-		    <version>3.0.2</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.21</version>
 		</dependency>
 
 		<dependency>
-		    <groupId>org.apache.lucene</groupId>
-		    <artifactId>lucene-core</artifactId>
-		    <version>3.0.3</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.apache.lucene</groupId>
-		    <artifactId>lucene-snowball</artifactId>
-		    <version>3.0.2</version>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers</artifactId>
+			<version>3.0.2</version>
 		</dependency>
 
-  
-  
-  		<dependency>
-		    <groupId>org.dbunit</groupId>
-		    <artifactId>dbunit</artifactId>
-		    <version>2.4.7</version>
-		</dependency>				
-		
-		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-snowball</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.4.7</version>
+		</dependency>
+
+
 		<!-- JavaMail API -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.4</version>
 		</dependency>
-		
+
 		<!-- Commons Email -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-		
-  	
-  		<!-- Quartz framework -->
+
+
+		<!-- Quartz framework -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>1.8.6</version>
 		</dependency>
-  		
-  
+
+		<!-- Velocity para template email -->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-tools</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+
 	</dependencies>
-  
+
 	<build>
-   
+
 		<finalName>srh</finalName>
-	
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -427,21 +434,20 @@
 			</plugin>
 		</plugins>
 		<resources>
-	        <resource>
-	            <directory>src/main/resources</directory>
-	            <includes>
-	                <include>**/*.properties</include>
-	                <include>**/*.xml</include>
-	            </includes>
-	        </resource>
-	        <resource>
-	            <directory>src/main/java</directory>
-	            <includes>
-	                <include>**/*.properties</include>
-	            </includes>
-	        </resource>
-	    </resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
-  
-  
+
 </project>
