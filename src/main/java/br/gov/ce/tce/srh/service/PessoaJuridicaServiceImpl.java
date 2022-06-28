@@ -1,14 +1,12 @@
 package br.gov.ce.tce.srh.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import br.gov.ce.tce.srh.dao.PessoaJuridicaDAO;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
-import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -98,8 +96,8 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 	}
 	
 	@Override
-	public List<PessoaJuridica> findAllByTipo(EmpresaAreaSaude areaSaude) {
-	  return dao.findAllByTipo(areaSaude);
+	public List<PessoaJuridica> findAllByTipo(TipodeEmpresa tipodeEmpresa) {
+	  return dao.findAllByTipo(tipodeEmpresa);
 	}
 	
 	public void setDao(PessoaJuridicaDAO pessoaJuridicaDao) {this.dao = pessoaJuridicaDao;}

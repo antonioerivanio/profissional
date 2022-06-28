@@ -1,7 +1,9 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
 /**
@@ -53,8 +55,8 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 
 
   @Enumerated(EnumType.ORDINAL)
-  @Column(name = "FG_EMPRESAAREASAUDE")
-  private EmpresaAreaSaude flgEmpresaAreSaude;
+  @Column(name = "FG_TIPOEMPRESA")
+  private TipodeEmpresa tipodeEmpresa;
 
 
   public PessoaJuridica() {}
@@ -118,13 +120,17 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
     this.dataAlteracao = dataAlteracao;
   }
 
-  public EmpresaAreaSaude getFlgEmpresaAreSaude() {
-    return flgEmpresaAreSaude;
+  public TipodeEmpresa getTipodeEmpresa() {
+    return this.tipodeEmpresa;
   }
 
-  public void setFlgEmpresaAreSaude(EmpresaAreaSaude flgEmpresaAreSaude) {
-    this.flgEmpresaAreSaude = flgEmpresaAreSaude;
+  public void setTipodeEmpresa(TipodeEmpresa tipodeEmpresa) {
+    this.tipodeEmpresa = tipodeEmpresa;
   }
+  
 
+  public List<TipodeEmpresa> getTipoEmpresaList() {
+    return  Arrays.asList(TipodeEmpresa.values());    
+  }
 
 }

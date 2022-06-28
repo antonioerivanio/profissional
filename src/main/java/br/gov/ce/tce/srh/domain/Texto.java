@@ -19,7 +19,7 @@ public class Texto {
   
   
   public static String getAviso() {    
-    StringBuilder aviso = new StringBuilder("Prezado (a) servidor (a), o requerimento para pagamento do auxílio-saúde ");
+    StringBuilder aviso = new StringBuilder("Prezado(a) servidor (a), o requerimento para pagamento do auxílio-saúde ");
     aviso.append("deve ser proposto até o dia 10 de cada mês, acompanhado dos respectivos documentos comprobatórios. ");
     aviso.append("Requerimentos realizados após o dia 10 somente serão incluídos na folha de pagamento do mês subsequente. ");    
     

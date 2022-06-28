@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 //import javax.validation.constraints.NotNull;
-
 import br.gov.ce.tce.srh.enums.ClassificacaoTributaria;
 //import br.gov.ce.tce.srh.enums.NaturezaJuridica;
 import br.gov.ce.tce.srh.enums.SimNao;

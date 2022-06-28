@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import org.richfaces.model.UploadedFile;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 /***

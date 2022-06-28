@@ -1,17 +1,14 @@
 package br.gov.ce.tce.srh.dao;
 
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
-
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
-import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 
 /**
  * Referente a tabela: TB_PESSOAJURIDICA
@@ -170,9 +167,9 @@ public class PessoaJuridicaDAOImpl implements PessoaJuridicaDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<PessoaJuridica> findAllByTipo(EmpresaAreaSaude areaSaude) {
-	  Query query = entityManager.createQuery("SELECT pj FROM PessoaJuridica pj where pj.flgEmpresaAreSaude = :flgEmpresaAreSaude ORDER BY pj.id");
-	  query.setParameter("flgEmpresaAreSaude", areaSaude);
+	public List<PessoaJuridica> findAllByTipo(TipodeEmpresa tipodeEmpresa) {
+	  Query query = entityManager.createQuery("SELECT pj FROM PessoaJuridica pj where pj.flgEmpresaAreSaude = :tipodeEmpresa ORDER BY pj.id");
+	  query.setParameter("tipodeEmpresa", tipodeEmpresa);
 	  return query.getResultList();
 	}
 	   

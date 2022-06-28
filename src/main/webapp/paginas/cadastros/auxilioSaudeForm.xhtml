@@ -134,8 +134,10 @@
 							maxlength="20" styleClass="maskSalario">
 							<f:convertNumber type="currency" currencySymbol="R$"
 								locale="pt_br" />
-								
-								<a4j:ajax event="change"  execute="form:asFrmItValorPlano" listener="#{auxilioSaudeFormBean.calcularValorSolicitado(auxilioSaudeFormBean.itemBeneficiario.valorGastoPlanoSaude, true)}" render="form:valorTotalSolicitado"></a4j:ajax>
+
+							<a4j:ajax event="change" execute="form:asFrmItValorPlano"
+								listener="#{auxilioSaudeFormBean.calcularValorSolicitado(auxilioSaudeFormBean.itemBeneficiario.valorGastoPlanoSaude, true)}"
+								render="form:valorTotalSolicitado"></a4j:ajax>
 						</h:inputText>
 					</div>
 					<rich:message for="asFrmItValorPlano" />
@@ -291,7 +293,9 @@
 								maxlength="20" styleClass="maskSalario">
 								<f:convertNumber type="currency" currencySymbol="R$"
 									locale="pt_br" />
-								<a4j:ajax execute="@this" listener="#{auxilioSaudeFormBean.calcularValorSolicitado(auxilioSaudeFormBean.entidadeDependenteParamentro.valorGastoPlanoSaude, false)}" render="form:valorTotalSolicitado"></a4j:ajax>
+								<a4j:ajax execute="@this"
+									listener="#{auxilioSaudeFormBean.calcularValorSolicitado(auxilioSaudeFormBean.entidadeDependenteParamentro.valorGastoPlanoSaude, false)}"
+									render="form:valorTotalSolicitado"></a4j:ajax>
 							</h:inputText>
 						</div>
 					</div>
@@ -417,14 +421,13 @@
 			</a4j:outputPanel>
 			<!-- Fim campos Dependentes -->
 
-			<h:panelGroup rendered="#{auxilioSaudeFormBean.ehAprovador()}" >
+			<h:panelGroup rendered="#{auxilioSaudeFormBean.ehAprovador()}">
 				<!-- Campo obrigatório apenas para área gestora -->
 				<div class="textarea-box box-100">
 					<label for="">Observações da área</label>
 					<div class="conteiner">
-						<h:inputTextarea id="asFrmIttObs" disabled="true"
-							value="#{auxilioSaudeFormBean.entidade.observacao}"
-							/>
+						<h:inputTextarea id="asFrmIttObs" disabled="#{not auxilioSaudeFormBean.ehAprovador()}"
+							value="#{auxilioSaudeFormBean.entidade.observacao}" />
 					</div>
 				</div>
 			</h:panelGroup>
@@ -455,21 +458,24 @@
 					<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
 				</legend>
 
-				<div class="conteiner">
+				<div class="conteiner" style="padding: 5px">
 					<p>
-						<strong>Valor total solicitado: </strong>  <h:outputText id="valorTotalSolicitado" value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
+						<strong>Valor total solicitado: </strong>
+						<h:outputText id="valorTotalSolicitado"
+							value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
 							<f:convertNumber type="currency" currencySymbol="R$"
-										locale="pt_br" />
+								locale="pt_br" />
 						</h:outputText>
 					</p>
 				</div>
 
-				<div class="conteiner">
+				<div class="conteiner" style="padding: 5px">
 					<p>
-						<strong>Valor a ser restituído: </strong> 
-						<h:outputText id="valorRestituido" value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
+						<strong>Valor a ser restituído: </strong>
+						<h:outputText id="valorRestituido"
+							value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
 							<f:convertNumber type="currency" currencySymbol="R$"
-										locale="pt_br" />
+								locale="pt_br" />
 						</h:outputText>
 					</p>
 				</div>
@@ -477,54 +483,29 @@
 
 			<div class="bt-conteiner">
 				<a4j:commandButton id="asFrmBtnSalvar"
-					rendered="#{not auxilioSaudeFormBean.ehAprovador()}"
+					rendered="#{auxilioSaudeFormBean.ehAprovador()}"
 					action="#{auxilioSaudeFormBean.salvar()}" value="Salvar"
 					styleClass="bt-padrao fr mg-right-10"
 					onclick="exibirCamposDependentes()" />
 
-				<h:commandLink id="asFrmBtnAprova"
+				<h:commandLink id="asFrmBtnIndeferir"
 					rendered="#{auxilioSaudeFormBean.ehAprovador()}"
-					action="#{auxilioSaudeFormBean.salvar()}"
-					styleClass="bt-padrao fr mg-right-10" value="Aprovar"
-					onclick="exibirCamposDependentes()">
-					<rich:componentControl target="popup" operation="show" />
+					action="#{auxilioSaudeFormBean.deferir(false)}"
+					styleClass="bt-padrao fr mg-right-10" value="INDEFERIR"
+					style="background: #081e5c;">
+					
+				</h:commandLink>
+
+				<h:commandLink id="asFrmBtnDeferir"
+					rendered="#{auxilioSaudeFormBean.ehAprovador()}"
+					action="#{auxilioSaudeFormBean.deferir(true)}"
+					styleClass="bt-padrao fr mg-right-10" value="DEFERIR"
+					>					
 				</h:commandLink>
 
 				<a href="/srh/paginas/cadastros/auxilioSaudeList.faces"
 					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 			</div>
-			
-			<rich:popupPanel id="popup" modal="true" resizeable="true"
-				onmaskclick="#{rich:component('popup')}.hide()">
-				<f:facet name="header">
-					<h:outputText value="Opções para aprovação" />
-				</f:facet>
-				<f:facet name="controls">
-					<h:outputLink value="#"
-						onclick="#{rich:component('popup')}.hide(); return false;"
-						style="color: inherit">
-                X
-            </h:outputLink>
-				</f:facet>
-				<h2>Escolha a opção desejada</h2>
-
-				<h:panelGrid columns="3">
-
-					<h:commandLink id="asFrmBtnAprova3"
-						rendered="#{auxilioSaudeFormBean.ehAprovador()}"
-						actionListener="#{auxilioSaudeFormBean.aprovar(true)}"
-						styleClass="bt-padrao fr mg-right-10" value="Deferir">
-					</h:commandLink>
-
-					<h1 style="padding: 15px">OU</h1>
-
-					<h:commandLink id="asFrmBtnAprova1"
-						rendered="#{auxilioSaudeFormBean.ehAprovador()}"
-						actionListener="#{auxilioSaudeFormBean.aprovar(false)}"
-						styleClass="bt-padrao fr mg-right-10" value="Indeferir">
-					</h:commandLink>
-				</h:panelGrid>
-			</rich:popupPanel>
 		</h:form>
 
 	</ui:define>

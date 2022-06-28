@@ -40,12 +40,10 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
       limparListas();
 
-      setPagedList(entidadeService.search(getEntidade().getFuncional().getPessoal().getNome(),
-                                getEntidade().getFuncional().getPessoal().getCpf(), getDataTable().getFirst(),
+      setPagedList(entidadeService.search(getEntidade(), getDataTable().getFirst(),
                                 getDataTable().getRows()));
 
-      count = entidadeService.count(getEntidade().getFuncional().getPessoal().getNome(),
-                                getEntidade().getFuncional().getPessoal().getCpf());
+      count = entidadeService.count(getEntidade());
 
       if (count == 0) {
         FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");

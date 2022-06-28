@@ -12,9 +12,9 @@ import br.gov.ce.tce.srh.exception.UsuarioException;
 
 public interface AuxilioSaudeRequisicaoService {
 
-  public int count(String nome, String cpf);
+  public int count(AuxilioSaudeRequisicao bean);
   
-  public void editar(AuxilioSaudeRequisicao bean);
+  public void atualizar(AuxilioSaudeRequisicao bean);
   
   public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj);
   public void salvar(AuxilioSaudeRequisicao bean);
@@ -25,13 +25,11 @@ public interface AuxilioSaudeRequisicaoService {
   
   public void salvarAnexo(AuxilioSaudeRequisicao bean) throws IOException;
   
-  public List<AuxilioSaudeRequisicao> search(String nomeParam, String cpfParam, Integer first, Integer rows);
+  public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows);
   
   public BigDecimal getValorSalarioComBaseIdadePorPercentual(Double percentual);
   
   public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean);
-  
-  
   
   
   /***

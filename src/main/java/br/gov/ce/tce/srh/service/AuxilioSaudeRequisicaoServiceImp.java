@@ -16,13 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.AuxilioSaudeRequisicaoDAO;
 import br.gov.ce.tce.srh.domain.ArquivoVO;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase.FlagAtivo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.exception.UsuarioException;
+import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -51,8 +55,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
   @Override
-  public int count(String nome, String cpf) {
-    return dao.count(nome, cpf);
+  public int count(AuxilioSaudeRequisicao bean) {
+    return dao.count(bean);
   }
 
   @Override
@@ -64,7 +68,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       if (beanList != null && !beanList.isEmpty()) {
         for (AuxilioSaudeRequisicao beanAuxilio : beanList) {
           dao.getEntityManager().detach(beanAuxilio);
-          dao.salvar(beanAuxilio);          
+          dao.salvar(beanAuxilio);
           salvarDependentes(beanAuxilio);
           salvarAnexo(beanAuxilio);
         }
@@ -79,7 +83,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   @Transactional
-  public void editar(AuxilioSaudeRequisicao bean) {
+  public void atualizar(AuxilioSaudeRequisicao bean) {
     try {
       logger.info("Iniciando o Edicao do auxilio saude requisição");
 
@@ -93,12 +97,35 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
           salvarDependentes(beanAuxilio);
           salvarAnexo(beanAuxilio);
+
+          atualizarTabelaAuxilioSaudeBase(beanAuxilio);
         }
+
+
       }
 
     } catch (Exception e) {
       logger.error("Erro ao salvar o auxilio requisição : " + e.getMessage());
       System.out.println(e.getMessage());
+    }
+  }
+
+  private void atualizarTabelaAuxilioSaudeBase(AuxilioSaudeRequisicao bean) {
+    if (bean.getStatusAprovacao() != null) {
+      Funcional funcional = dao.getEntityManager().find(Funcional.class, bean.getFuncional().getId());
+      AuxilioSaudeRequisicaoBase auxilioSaudeRequisicaoBase = dao.getAuxilioSaudeBasePorPessoaIdeAtivo(funcional.getPessoal(), FlagAtivo.SIM);
+
+      if (auxilioSaudeRequisicaoBase != null) {
+        auxilioSaudeRequisicaoBase.setCustoPlanoBase(bean.getValorTotalSolicitado());
+        auxilioSaudeRequisicaoBase.setDataAtualizacao(new Date());
+        auxilioSaudeRequisicaoBase.setObservacao("Valor adicionar automaticamente a partir da tela do Auxilio-Saúde");
+      } else {
+
+        auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(bean.getFuncional().getPessoal(), bean.getUsuario(), bean.getValorTotalSolicitado(),
+                                  "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date());
+
+        dao.salvar(auxilioSaudeRequisicaoBase);
+      }
     }
   }
 
@@ -115,9 +142,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
           } else {
             dao.salvar(beanAuxilio);
           }
-
           salvarAnexoDependente(beanAuxDep);
-
         }
       }
 
@@ -158,7 +183,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       fazerUploadArquivo(beanAuxDoc);
     }
   }
-
 
   public void fazerUploadArquivo(AuxilioSaudeRequisicaoDocumento bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
@@ -244,21 +268,21 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   public void executarAntesSalvar(AuxilioSaudeRequisicao entidade, String observacao, Boolean flgAfirmaSerVerdadeiraInformacao) {
     if (entidade.getId() == null) {
       if (entidade.checkBeneficiarioItemLIstNotNull()) {// um
-                                                                                        // registro
+                                                        // registro
         for (AuxilioSaudeRequisicao beanAux : entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
           beanAux.setStatusFuncional(entidade.getStatusFuncional());
           beanAux.setDataInicioRequisicao(new Date());
           beanAux.setObservacao(entidade.getObservacao());
           beanAux.setFlAfirmaSerVerdadeiraInformacao(entidade.getFlAfirmaSerVerdadeiraInformacao());
           beanAux.setAuxilioSaudeRequisicaoDependenteList(entidade.getAuxilioSaudeRequisicaoDependenteList());
-          beanAux.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());         
+          beanAux.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
           beanAux.setAuxilioSaudeRequisicaoDocumentoDependenteList(entidade.getAuxilioSaudeRequisicaoDocumentoDependenteList());
         }
       } else {// apenas um registro adicionar na lista
         entidade.setValorGastoPlanoSaude(null);
         entidade.setPessoaJuridica(null);
-        entidade.setAuxilioSaudeRequisicaoBeneficiarioItemList(new ArrayList<AuxilioSaudeRequisicao>());        
-        entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidade);        
+        entidade.setAuxilioSaudeRequisicaoBeneficiarioItemList(new ArrayList<AuxilioSaudeRequisicao>());
+        entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidade);
       }
     }
   }
@@ -272,7 +296,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       Funcional funcional = funcionalService.getCpfAndNomeByMatriculaAtiva(matColaborador);
       List<Dependente> dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
       entidade.setFuncional(funcional);
-      entidade.setDependentesComboList(dependenteList);      
+      entidade.setDependentesComboList(dependenteList);
     } catch (Exception e) {
       logger.error("Usuario não encontrado");
       throw new UsuarioException("Usuario não encontrado");
@@ -292,9 +316,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
   @Override
-  public List<AuxilioSaudeRequisicao> search(String nomeParam, String cpfParam, Integer first, Integer rows) {
-    // TODO Auto-generated method stub
-    return dao.search(nomeParam, cpfParam, first, rows);
+  public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows) {
+    return dao.search(bean, first, rows);
   }
 
   @Override
@@ -314,10 +337,10 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean) {
-    int TRINTA_ANOS = 30;
-    int QUARENTA_ANOS = 40;
-    int CINQUENTA_ANOS = 51;
-    int SESSENTA_ANOS = 60;
+    final int TRINTA_ANOS = 30;
+    final int QUARENTA_ANOS = 40;
+    final int CINQUENTA_ANOS = 50;
+    final int SESSENTA_ANOS = 60;
 
     int idade = bean.getFuncional().getPessoal().getIdade();
 
@@ -325,22 +348,18 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       Double valor = getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.TRES_POR_CENTO).doubleValue();
       bean.setValorMaximoAserRestituido(valor);
     }
-
     if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {
       Double valor = getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.TRES_PONTO_CINCO_POR_CENTO).doubleValue();
       bean.setValorMaximoAserRestituido(valor);
     }
-
     if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {
       Double valor = getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.QUATRO_POR_CENTO).doubleValue();
       bean.setValorMaximoAserRestituido(valor);
     }
-
     if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {
       Double valor = getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.QUATRO_PONTO_CINCO_POR_CENTO).doubleValue();
       bean.setValorMaximoAserRestituido(valor);
     }
-
     if (idade > SESSENTA_ANOS) {
       Double valor = getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.CINCO_POR_CENTO).doubleValue();
       bean.setValorMaximoAserRestituido(valor);

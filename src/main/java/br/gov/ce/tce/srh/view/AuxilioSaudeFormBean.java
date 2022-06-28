@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.richfaces.event.FileUploadEvent;
-import org.richfaces.exception.FileUploadException;
 import org.richfaces.model.UploadedFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,10 +19,9 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.ExibeCampoFormAuxilioSaude;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
-import br.gov.ce.tce.srh.enums.EmpresaAreaSaude;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.exception.UsuarioException;
-import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
@@ -133,7 +131,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void salvar() {
     try {
       if (isEdicao) {
-        entidadeService.editar(getEntidade());
+        entidadeService.atualizar(getEntidade());
       } else {
         entidadeService.executarAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
 
@@ -156,20 +154,27 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   }  
   
-  public void aprovar(boolean deferido) {
+  public void deferir(boolean deferido) {
+    String msg = "";
+    
     if (deferido) {
       getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.DEFERIDO);
+      msg = "Requisição foi Deferida com sucesso";
     }else {
       getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.INDEFERIDO);
+      msg = "Requisição foi Indeferida com sucesso";
     }
     
-    getEntidade().setDataFImRequisicao(new Date());
     
-    entidadeService.editar(getEntidade());
+    getEntidade().setDataFimRequisicao(new Date());
+    
+    entidadeService.atualizar(getEntidade());
+    
+    FacesUtil.addAvisoMessage(msg);
   }
   
   private void salvarValorAuxilioSaudeBase() {
-    
+      
   }
 
 
@@ -310,7 +315,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
 
       if (isListaEmpresaJuridicaNull())
-        this.comboEmpresasCadastradas = pessoaJuridicaService.findAllByTipo(EmpresaAreaSaude.SIM);
+        this.comboEmpresasCadastradas = pessoaJuridicaService.findAllByTipo(TipodeEmpresa.EMPRESA_EM_GERAL);
 
     } catch (Exception e) {
       FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");

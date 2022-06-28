@@ -77,7 +77,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   /* data da aprovação/reprovação da requisição */
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_FIMREQ")
-  private Date dataFImRequisicao;
+  private Date dataFimRequisicao;
   
   @Temporal(TemporalType.DATE)
   @Column(name = "DT_ALTERACAO")
@@ -273,15 +273,15 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   public void setDataInicioRequisicao(Date dataInicioRequisicao) {
     this.dataInicioRequisicao = dataInicioRequisicao;
   }
-
-  public Date getDataFImRequisicao() {
-    return dataFImRequisicao;
-  }
-
-  public void setDataFImRequisicao(Date dataFImRequisicao) {
-    this.dataFImRequisicao = dataFImRequisicao;
-  }
   
+  public Date getDataFimRequisicao() {
+    return dataFimRequisicao;
+  }
+
+  public void setDataFimRequisicao(Date dataFimRequisicao) {
+    this.dataFimRequisicao = dataFimRequisicao;
+  }
+
   public Date getDataAlteracao() {
     return dataAlteracao;
   }

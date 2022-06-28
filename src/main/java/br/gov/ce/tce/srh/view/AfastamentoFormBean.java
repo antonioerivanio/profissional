@@ -75,7 +75,7 @@ public class AfastamentoFormBean implements Serializable {
 				boolean possuiCargo = getPossuiCargo(servidorFuncional.getId());
 
 				 Licenca licenca = entidade.getLicenca();
-				 entidade = afastamentoESocialService.getEvento2230ByServidor(servidorFuncional, licenca, possuiCargo);
+				 entidade = afastamentoESocialService.getEvento2230ByServidor(servidorFuncional, licenca);
 				 entidade.setLicenca(licenca);
 				
 			}

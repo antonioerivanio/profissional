@@ -1,14 +1,12 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import br.gov.ce.tce.srh.enums.AprendizContrato;
 import br.gov.ce.tce.srh.enums.PcdContrato;
 import br.gov.ce.tce.srh.enums.RegistroPonto;
