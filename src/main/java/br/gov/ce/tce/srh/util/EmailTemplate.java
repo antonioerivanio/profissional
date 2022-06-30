@@ -4,24 +4,25 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
 
-import br.gov.ce.tce.eTCE.util.Base64Util;
 
-public abstract class EmailTemplate {
+public class EmailTemplate {
 	
 	protected String templateName;
 	
 	private String headerImageContent;
 
-	private String footerImageContent;
+	private String footerImageContent;	
 	
-	public EmailTemplate(String templateName) {
+	private String key;
+	
+	public EmailTemplate(String keyParametro, String templateName) {
 		this.templateName = templateName;
+		key = keyParametro;
 		
 		URL headerResource = EmailTemplate.class.getResource("/resources/images/e-tce-logo-topo-email.jpeg");
 		if(headerResource != null) {
@@ -34,12 +35,6 @@ public abstract class EmailTemplate {
 			File footer = new File(footerResource.getFile());
 			footerImageContent = Base64Util.encoder(footer);			
 		}
-		
-		/*String headerImagePath = FacesUtil.getExternalContext().getRealPath("/resources/images/e-tce-logo.png");
-		String footerImagePath = FacesUtil.getExternalContext().getRealPath("/resources/images/logo_tce_transparente.png");
-		
-		headerImageContent = Base64Util.encoder(new File(headerImagePath));
-		footerImageContent = Base64Util.encoder(new File(footerImagePath));*/
 	}
 	
 	public String getHeaderImageContent() {
@@ -68,5 +63,11 @@ public abstract class EmailTemplate {
 		return stringWriter.toString();
 	}
 	
-	protected abstract VelocityContext construirContexto();
+	
+    protected VelocityContext construirContexto() {
+        VelocityContext velocityContext = new VelocityContext();    
+        velocityContext.put(key, this);
+        
+        return velocityContext;
+    }
 }

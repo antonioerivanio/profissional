@@ -3,11 +3,9 @@ package br.gov.ce.tce.srh.util;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static javax.faces.application.FacesMessage.SEVERITY_INFO;
 import static javax.faces.context.FacesContext.getCurrentInstance;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
 import org.springframework.web.context.WebApplicationContext;
 
 /**

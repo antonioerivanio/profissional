@@ -107,5 +107,13 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService {
 	@Override
 	public PessoaJuridica findById(Long id) {
 		return dao.findById(id);
-	}	
+	}
+
+
+
+  @Override
+  public List<PessoaJuridica> findAllNotTipo(List<TipodeEmpresa> tipodeEmpresaList) {
+    // TODO Auto-generated method stub
+    return dao.findAllNotTipo(tipodeEmpresaList);
+  }	
 }

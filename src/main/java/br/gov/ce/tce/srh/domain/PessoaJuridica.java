@@ -55,7 +55,7 @@ public class PessoaJuridica extends BasicEntity<Long> implements Serializable {
 
 
   @Enumerated(EnumType.ORDINAL)
-  @Column(name = "FG_TIPOEMPRESA")
+  @Column(name = "FLGTIPOEMPRESA")
   private TipodeEmpresa tipodeEmpresa;
 
 

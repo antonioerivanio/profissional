@@ -35,16 +35,15 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   public void consultar() {
-
     try {
-
       limparListas();
-
-      setPagedList(entidadeService.search(getEntidade(), getDataTable().getFirst(),
-                                getDataTable().getRows()));
-
-      count = entidadeService.count(getEntidade());
-
+      
+      if(isAnalista()) {
+        consultarTudo();     
+      }else {
+        consultarApenasSeusRegistros();
+      }
+      
       if (count == 0) {
         FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
         logger.info("Nenhum registro foi encontrado.");
@@ -59,10 +58,21 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
   }
 
-
-  public void salvar(boolean finalizar) {
-
-
+  private void consultarTudo() {
+    count = entidadeService.count(getEntidade());
+    
+    setPagedList(entidadeService.search(getEntidade(), getDataTable().getFirst(),
+                              getDataTable().getRows()));
+    
+  }
+  
+  private void consultarApenasSeusRegistros() {    
+    Funcional funcional = entidadeService.getFuncionalPorCpf(loginBean.getUsuarioLogado().getCpf());
+    getEntidade().setFuncional(funcional);
+    
+    count = entidadeService.count(getEntidade());
+    setPagedList(entidadeService.search(getEntidade(), getDataTable().getFirst(),
+                              getDataTable().getRows()));    
   }
 
 
@@ -77,6 +87,12 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     // TODO Auto-generated method stub
 
   }
+  
+  @Override
+  public void salvar(boolean finalizar) {
+    // TODO Auto-generated method stub
+    
+  }
 
   public AuxilioSaudeRequisicao getEntidadeEditar() {
     return entidadeEditar;
@@ -85,9 +101,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void setEntidadeEditar(AuxilioSaudeRequisicao entidadeEditar) {
     this.entidadeEditar = entidadeEditar;
   }
-  
-  
 
-  // FIM PAGINAÇÃO
+
 
 }

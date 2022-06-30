@@ -25,6 +25,7 @@ import br.gov.ce.tce.srh.exception.UsuarioException;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
+import br.gov.ce.tce.srh.util.EmailsBuilder;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.FileUtils;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -38,8 +39,10 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   static Logger logger = Logger.getLogger(AuxilioSaudeFormBean.class);
 
-  @Autowired
-  private LoginBean loginBean;
+
+  private boolean exibirCamposDependente = Boolean.FALSE;
+  int contadorBeneficiario = 1;
+  int contadorDependente = 1;
 
   @Autowired
   private RelatorioUtil relatorioUtil;
@@ -71,9 +74,12 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   @PostConstruct
   private void init() {
     try {
+
       if (FacesUtil.getFlashParameter("entidade") instanceof AuxilioSaudeRequisicao) {
         inicializarDadosParaEdicao();
         isEdicao = true;
+        consultar();
+
       } else {
         inicializar();
       }
@@ -81,7 +87,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     } catch (UsuarioException e) {
       logger.fatal(e.getMessage());
     } catch (Exception e) {
-      FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+      // FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
       logger.fatal(e.getMessage());
     }
   }
@@ -98,7 +104,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     entidadeEditar.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(documentoList);
 
     setValorSolicitado(entidadeEditar);
-
     entidadeService.setValorMaximoSolicitadoPorIdade(entidadeEditar);
 
     setEntidade(entidadeEditar);
@@ -112,13 +117,17 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
     entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
+
   }
 
   @Override
   public void consultar() {
     try {
       entidadeService.setDadosIniciaisDaEntidade(getEntidade());
+      entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
 
+    } catch (NullPointerException e) {
+      FacesUtil.addErroMessage(e.getMessage());
     } catch (Exception e) {
 
       FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
@@ -147,34 +156,37 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       FacesUtil.addErroMessage("Ops! Não foi possível salvar a requisição, Por gentileza entre em contato o setor responsável");
       logger.error(e);
     }
+    
+    contadorBeneficiario = 1;
+    contadorDependente = 1;
   }
 
   @Override
   public void salvar(boolean finalizar) {
 
-  }  
-  
+  }
+
   public void deferir(boolean deferido) {
     String msg = "";
-    
+
     if (deferido) {
       getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.DEFERIDO);
       msg = "Requisição foi Deferida com sucesso";
-    }else {
+    } else {
       getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.INDEFERIDO);
       msg = "Requisição foi Indeferida com sucesso";
     }
-    
-    
     getEntidade().setDataFimRequisicao(new Date());
-    
-    entidadeService.atualizar(getEntidade());
-    
+
+
+    if (isEdicao && isAnalista()) {
+      salvar();
+    } else {
+      entidadeService.atualizar(getEntidade());
+    }
+
+
     FacesUtil.addAvisoMessage(msg);
-  }
-  
-  private void salvarValorAuxilioSaudeBase() {
-      
   }
 
 
@@ -187,76 +199,59 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    * @throws IllegalAccessException
    * @throws InstantiationException
    */
-  public void adicionar(AuxilioSaudeRequisicao bean, boolean isBeneficiario) throws Exception {
-    checkPessoraJuridicaNull();
+  public void adicionar(AuxilioSaudeRequisicao bean, boolean isBeneficiario) {
+    try {
+      if (isBeneficiario) {
+        adicionarDadosBeneficiario(bean);
+      } else {
+        adicionarDadosDependente(bean);
+      }
 
-    if (isBeneficiario) {
-      adicionarDadosBeneficiario(bean, getPessoaJuridica());
-    } else {
-      adicionarDadosDependente(bean);
+      fazerUploadArquivos(isBeneficiario);
+    } catch (Exception e) {
+      FacesUtil.addErroMessage(e.getMessage());
     }
 
-    fazerUploadArquivos(isBeneficiario);
   }
 
-  private void checkPessoraJuridicaNull() {
-    if (getEntidade().isPessoaJuridicaNull()) {
-      FacesUtil.addErroMessage("Nome da Empresa do Plano Saúde é obrigatório");
-    }
+  public PessoaJuridica getPessoaJuridicaPorId(AuxilioSaudeRequisicao bean) {
+    return entidadeService.getPessoaJuridicaPorId(bean.getPessoaJuridica(), comboEmpresasCadastradas);
   }
 
-  public PessoaJuridica getPessoaJuridica() {
-    return entidadeService.getPessoaJuridicaPorId(getEntidade().getPessoaJuridica(), comboEmpresasCadastradas);
-  }
+  private void adicionarDadosBeneficiario(AuxilioSaudeRequisicao bean) {   
+      checkPessoaJuridicaIsNull(bean);
+      checkAnexoBeneficiarioIsNull();
 
-  private void adicionarDadosBeneficiario(AuxilioSaudeRequisicao bean, PessoaJuridica pessoaJuridica) {
-    // validar os anexos
-    if (getEntidade().isDocumentoBeneficiarioLIstNull()) {
-      FacesUtil.addErroMessage("O anexo do beneficiário é obrigatório");
-      return;
-    }
+      PessoaJuridica pessoaJuridica = getPessoaJuridicaPorId(bean);
 
-    AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = null;
-
-    if (isEdicao) {
-      bean.setPessoaJuridica(pessoaJuridica);
-
-      auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, bean.getValorGastoPlanoSaude(),
-                                getEntidade().getFlAfirmaSerVerdadeiraInformacao());
+      AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, bean.getValorGastoPlanoSaude());
       getEntidade().adicionarDadosRequisicao(auxilioSaudeRequisicaoLocal);
-
-    } else {
-      auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, getEntidade().getValorGastoPlanoSaude(),
-                                getEntidade().getFlAfirmaSerVerdadeiraInformacao());
-      getEntidade().adicionarDadosRequisicao(auxilioSaudeRequisicaoLocal);
-    }
-
-    itemBeneficiario = new AuxilioSaudeRequisicao();
+   
   }
 
+  private void checkAnexoBeneficiarioIsNull() {
+    if (getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() == null) {
+      throw new NullPointerException("Ops!, Por favor adicone um anexo para continuar");      
+    }
+  }
   /***
    * Metodo procura o item da lista de documentos, cria o diretorio se não existir e Faz o upload do
    * arquivo
    * 
    * @param isBeneficiario
+   * @throws Exception 
    */
-  private void fazerUploadArquivos(boolean isBeneficiario) {
-
-    try {
+  private void fazerUploadArquivos(boolean isBeneficiario) throws Exception {
       if (isBeneficiario) {
         criarDiretorioEfazerUploadArquivoBeneficiarioList();
       } else {
         criarDiretorioEfazerUploadArquivoDependenteList();
       }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   private void criarDiretorioEfazerUploadArquivoBeneficiarioList() throws Exception {
     if (getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() == null) {
-      FacesUtil.addAvisoMessage("Anexo não foi encontrado!");
+      throw new NullPointerException("Ops!, Por favor adiconar um anexo não foi encontrado!");      
     }
 
     for (AuxilioSaudeRequisicaoDocumento beanDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
@@ -281,24 +276,40 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
 
-  public void adicionarDadosDependente(AuxilioSaudeRequisicao bean) {
-    checkListaNullOrVazia();
+  public void adicionarDadosDependente(AuxilioSaudeRequisicao bean) {   
+      checkDepedenteSeleciona();
+      checkPessoaJuridicaIsNull(bean);
+      checkListaAnexoNullOrVazia();
 
-    /*** adicionar os dependentes na lista */
-    getEntidade().adicionarDadosDependente(getAuxilioSaudeRequisicaoDependente(bean));
+      /*** adicionar os dependentes na lista */
+      getEntidade().adicionarDadosDependente(getAuxilioSaudeRequisicaoDependente(bean));
   }
 
   public AuxilioSaudeRequisicaoDependente getAuxilioSaudeRequisicaoDependente(AuxilioSaudeRequisicao bean) {
-    return new AuxilioSaudeRequisicaoDependente(getEntidade(), getDependenteSelecionado(), getPessoaJuridica(), bean.getValorGastoPlanoSaude());
+    PessoaJuridica pessoaJuridica = getPessoaJuridicaPorId(bean);
+    return new AuxilioSaudeRequisicaoDependente(getEntidade(), getDependenteSelecionado(), pessoaJuridica, bean.getValorGastoPlanoSaude());
   }
 
-  private void checkListaNullOrVazia() {
+  private void checkPessoaJuridicaIsNull(AuxilioSaudeRequisicao bean) {
+
+    if (bean.isPessoaJuridicaNull()) {
+      // if (comboEmpresasCadastradas == null || comboEmpresasCadastradas.isEmpty()) {
+      throw new NullPointerException("Ops!. Por favor escolha a empresa do plano de saúde para continuar");
+    }
+  }
+
+  private void checkListaAnexoNullOrVazia() {
     if (getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList() == null || getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList().isEmpty()) {
-      FacesUtil.addErroMessage("O anexo do dependente é obrigatório");
+      throw new NullPointerException("Ops!. Por favor adicione um anexo do dependente para continuar");
     }
 
   }
 
+  private void checkDepedenteSeleciona() {
+    if (getEntidade().getDependenteSelecionado() == null) {
+      throw new NullPointerException("Ops!. Por favor escolha um dependente para continuar");
+    }
+  }
 
   /***
    * Metodo procura o dependente que usuario selecionou na lista
@@ -306,7 +317,13 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    * @return depentende encontrado
    */
   private Dependente getDependenteSelecionado() {
-    return entidadeService.getDependentePorId(getEntidade().getDependenteSelecionado(), getEntidade().getDependentesComboList());
+    try {
+      return entidadeService.getDependentePorId(getEntidade().getDependenteSelecionado(), getEntidade().getDependentesComboList());
+    } catch (NullPointerException e) {
+      FacesUtil.addErroMessage(e.getMessage());
+    }
+
+    return null;
   }
 
 
@@ -315,7 +332,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
 
       if (isListaEmpresaJuridicaNull())
-        this.comboEmpresasCadastradas = pessoaJuridicaService.findAllByTipo(TipodeEmpresa.EMPRESA_EM_GERAL);
+        this.comboEmpresasCadastradas = pessoaJuridicaService.findAllByTipo(TipodeEmpresa.PLANOS_SAUDE);
 
     } catch (Exception e) {
       FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");
@@ -347,12 +364,12 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
       UploadedFile comprovante = event.getUploadedFile();
 
-      novaInstanciaAuxDocumento(comprovante, ArquivoVO.NOME_ARQUIVO_BENEFICIARIO);
-
+      ArquivoVO arquivoVO = getInstanciaArquivoVO(AuxilioSaudeRequisicaoDocumento.NOME_ARQUIVO_BENEFICIARIO, comprovante.getName(), comprovante.getData(), contadorBeneficiario);
+      auxSaudeRequisicaoDoc = getInstanciaAuxDocumento(arquivoVO);
       auxSaudeRequisicaoDoc.adicionarNovoCaminhoArquivo(new Date(), getEntidade().getFuncional().getMatricula());
 
       getEntidade().adicionarComprovanteBeneficiarioList(auxSaudeRequisicaoDoc);
-
+      contadorBeneficiario++;
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage("Erro na gravação do comprovante.");
       logger.fatal(OCORREU_ERRO + e.getMessage());
@@ -364,14 +381,15 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
       UploadedFile comprovante = event.getUploadedFile();
 
-      novaInstanciaAuxDocumento(comprovante, ArquivoVO.NOME_ARQUIVO_DEPENDENTE);
+      ArquivoVO arquivoVO = getInstanciaArquivoVO(AuxilioSaudeRequisicaoDocumento.NOME_ARQUIVO_DEPENDENTE, comprovante.getName(), comprovante.getData(), contadorDependente);
 
+      auxSaudeRequisicaoDoc = getInstanciaAuxDocumento(arquivoVO);
       auxSaudeRequisicaoDoc.adicionarNovoCaminhoArquivo(new Date(), getEntidade().getFuncional().getMatricula());
-
       auxSaudeRequisicaoDoc.adicionarDependente(getEntidade());
 
       getEntidade().adicionarComprovanteDependenteList(auxSaudeRequisicaoDoc);
-
+      
+      contadorBeneficiario++;
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage("Erro na gravação do comprovante.");
       logger.fatal(OCORREU_ERRO + e.getMessage());
@@ -379,8 +397,13 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   }
 
-  public void novaInstanciaAuxDocumento(UploadedFile comprovante, String nomeArquivo) {
-    auxSaudeRequisicaoDoc = new AuxilioSaudeRequisicaoDocumento(getEntidade(), nomeArquivo, comprovante.getName(), new Date(), comprovante.getData());
+  private ArquivoVO getInstanciaArquivoVO(String nome, String descricao, byte[] comprovante, int contador) {
+    
+    return new ArquivoVO(nome, descricao, ArquivoVO.CAMINHO_PARA_SALVAR_ARQUIVO, comprovante, contador);
+  }
+
+  public AuxilioSaudeRequisicaoDocumento getInstanciaAuxDocumento(ArquivoVO arquivoVO) {
+    return new AuxilioSaudeRequisicaoDocumento(getEntidade(), new Date(), arquivoVO);
   }
 
   public void deletarAnexo(AuxilioSaudeRequisicaoDocumento bean, boolean isBeneficiario) {
@@ -418,21 +441,16 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    */
   public void visualizarAnexoBeneficiario(AuxilioSaudeRequisicao bean) {
     try {
-      String comprovante = null;
-
       for (AuxilioSaudeRequisicaoDocumento auxDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
         if (auxDoc.getId() != null) {
-          comprovante = auxDoc.getCaminhoCompleto();
-          FileUtils.visualizar(comprovante, relatorioUtil);
+          FileUtils.visualizar(auxDoc.getCaminhoCompleto(), relatorioUtil);
         }
-        
-        if(auxDoc.getAuxilioSaudeRequisicao().getId() != null) {
-          comprovante = auxSaudeRequisicaoDoc.getCaminhoCompleto();
-          FileUtils.visualizar(comprovante, relatorioUtil);
+
+        if (auxDoc.getAuxilioSaudeRequisicao().getId() != null) {
+          FileUtils.visualizar(auxSaudeRequisicaoDoc.getCaminhoCompleto(), relatorioUtil);
           break;
-        }else {      
-          comprovante = auxSaudeRequisicaoDoc.getCaminhoCompleto();
-          FileUtils.visualizar(comprovante, relatorioUtil);
+        } else {
+          FileUtils.visualizar(auxSaudeRequisicaoDoc.getCaminhoCompleto(), relatorioUtil);
           break;
         }
       }
@@ -458,8 +476,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
       for (AuxilioSaudeRequisicaoDocumento auxDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
         if (auxDoc.getAuxilioSaudeRequisicaoDependente().equals(bean)) {
-          String comprovante = auxDoc.getCaminhoCompleto();
-          FileUtils.visualizar(comprovante, relatorioUtil);
+          FileUtils.visualizar(auxDoc.getCaminhoCompleto(), relatorioUtil);
           break;
         }
       }
@@ -492,28 +509,22 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return afastamentoFormBean;
   }
 
-
   public AuxilioSaudeRequisicao getItemBeneficiario() {
     return itemBeneficiario;
   }
-
 
   public AuxilioSaudeRequisicao getItemDependente() {
     return itemDependente;
   }
 
 
-  public void calcularValorSolicitado(Double valorParamentro, boolean isBenficiario) {
-    Double totalValorSolicitado = null;
-
-    if (isBenficiario) {
-      totalValorSolicitado = valorParamentro;
-    } else {
-      Double valorBeneficiario = itemBeneficiario.getValorGastoPlanoSaude();
-      totalValorSolicitado = valorParamentro + valorBeneficiario;
+  public void calcularValorSolicitado(Double valorParamentro) {
+    if (getEntidade().getValorTotalSolicitado() == null) {
+      getEntidade().setValorTotalSolicitado(valorParamentro);
+    } else if (!getEntidade().getValorTotalSolicitado().equals(valorParamentro)) {
+      Double totalValorSolicitado = getEntidade().getValorTotalSolicitado() + valorParamentro;
+      getEntidade().setValorTotalSolicitado(totalValorSolicitado);
     }
-
-    getEntidade().setValorTotalSolicitado(totalValorSolicitado);
   }
 
   /***
@@ -535,6 +546,17 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
 
     bean.setValorTotalSolicitado(valor);
+  }
+
+  public boolean getExibirCamposDependente() {
+    if (getEntidade().getDependentesComboList() != null) {
+      exibirCamposDependente = Boolean.TRUE;
+    }
+    return exibirCamposDependente;
+  }
+
+  public void setExibirCamposDependente(boolean exibirCamposDependente) {
+    this.exibirCamposDependente = exibirCamposDependente;
   }
 
 

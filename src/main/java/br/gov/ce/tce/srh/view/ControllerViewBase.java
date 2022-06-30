@@ -24,7 +24,9 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
 
   @Autowired
   AuthenticationService authenticationService;
-
+  @Autowired
+  protected LoginBean loginBean;
+  
   private T entidade;
 
   // paginação
@@ -146,7 +148,7 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   }
 
   // Alteração para o perfil consulta ser igual ao do servidor
-  public boolean ehServidor() {
+  public boolean isServidor() {
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR");
   }
 
@@ -156,9 +158,42 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
    * 
    * @return
    */
-  public boolean ehAprovador() {
+  public boolean isAnalista() {
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_APROVADOR_AUXILIO_SAUDE");
   }
+  
+  
+  
+  /**
+   * O botão editar vai aparecer quando a solicitação não tiver sido deferido
+   * , e quando ela for deferido e o usuario logado é Analista 
+   * @param bean
+   * @return
+   */
+  public boolean validarExibicaoBotaoEditar(AuxilioSaudeRequisicao bean) {
+    return isDeferidoEtemPerfilAnalista(bean) || isNaoDeferidoAinda(bean);
+  }
+  
+  private boolean isDeferidoEtemPerfilAnalista(AuxilioSaudeRequisicao bean) {
+    return bean.getDataFimRequisicao() != null &&  isAnalista() ? Boolean.TRUE: Boolean.FALSE;
+  }
+  
+  private boolean isNaoDeferidoAinda(AuxilioSaudeRequisicao bean) {
+    return bean.getDataFimRequisicao() == null ? Boolean.TRUE: Boolean.FALSE;
+  }
 
+  public boolean validarExibicaoBotaoSalvar() {
+    if(isEdicao || isAnalista()) {
+      return Boolean.TRUE;
+    }
+    
+    else if(!isEdicao && !isAnalista()  && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
+      return Boolean.TRUE;
+    }
+    else {
+      return Boolean.FALSE;
+    }
+  }
+  
 
 }

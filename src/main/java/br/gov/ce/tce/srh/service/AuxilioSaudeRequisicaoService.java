@@ -7,26 +7,30 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.exception.UsuarioException;
 
 public interface AuxilioSaudeRequisicaoService {
-
+  
   public int count(AuxilioSaudeRequisicao bean);
+    
+  public void salvar(AuxilioSaudeRequisicao bean);  
+  
+  public void salvar(List<AuxilioSaudeRequisicao> beanList);  
   
   public void atualizar(AuxilioSaudeRequisicao bean);
   
-  public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj);
-  public void salvar(AuxilioSaudeRequisicao bean);
+  public Funcional getFuncionalPorCpf(String cpf);  
   
-  public void salvar(List<AuxilioSaudeRequisicao> beanList);
+  public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj);
   
   public List<AuxilioSaudeRequisicaoDocumento> getListaArquivosPorIdAuxilio(BeanEntidade bean);
   
-  public void salvarAnexo(AuxilioSaudeRequisicao bean) throws IOException;
+  public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException;
   
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows);
-  
+    
   public BigDecimal getValorSalarioComBaseIdadePorPercentual(Double percentual);
   
   public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean);

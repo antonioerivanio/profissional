@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -71,6 +72,9 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   
   @Transient
   private String caminhoCompleto;
+  
+  public final static String NOME_ARQUIVO_BENEFICIARIO ="comprovante_beneficiario";
+  public final static String NOME_ARQUIVO_DEPENDENTE ="comprovante_dependente";
 
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
@@ -81,16 +85,14 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   }
 
 
-  public AuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicao auxilioSaudeRequisicao, String nomeArquivo,
-                            String descricaoArquivo, Date dataInclusao, byte[] comprovante) {
+  public AuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicao auxilioSaudeRequisicao, 
+                            Date dataInclusao, ArquivoVO arquivoVO) {
     super();
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
-    this.nomeArquivo = nomeArquivo;
-    this.descricaoArquivo = descricaoArquivo;
     this.dataInclusao = dataInclusao;
-
-    this.arquivoVO = new ArquivoVO(nomeArquivo,
-                              descricaoArquivo, ArquivoVO.CAMINHO_PARA_SALVAR_ARQUIVO, comprovante);  
+    this.nomeArquivo = arquivoVO.getNome();
+    this.descricaoArquivo = arquivoVO.getDescricacao();
+    this.arquivoVO = arquivoVO;
   }
 
   public void adicionarDependente(AuxilioSaudeRequisicao bean) {
@@ -217,33 +219,16 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   public void setDescricaoArquivo(String descricaoArquivo) {
     this.descricaoArquivo = descricaoArquivo;
   }
-  
-  
-  
-
-
-  /*
-   * public byte[] getComprovante() { return comprovante; }
-   * 
-   * 
-   * public void setComprovante(byte[] comprovante) { this.comprovante = comprovante; }
-   */
-
-  public String getCaminhoCompleto() {
-    if(getId() != null) {
-      caminhoCompleto = getCaminhoArquivo() + File.separator + getArquivoVO().getNomeTemp();
-    }else {    
-      if(caminhoCompleto == null) {
-        caminhoCompleto = getCaminhoArquivo() + File.separator + getArquivoVO().getNomeTemp();
-      }
-    }
-    
-    return caminhoCompleto;
-  }
-
 
   public void setCaminhoCompleto(String caminhoCompleto) {
     this.caminhoCompleto = caminhoCompleto;
+  }  
+  
+  public String getCaminhoCompleto() {
+    if(caminhoCompleto ==null) {
+      caminhoCompleto = getCaminhoArquivo() + File.separator +  getNomeArquivo();
+    }
+    return caminhoCompleto;
   }
 
 

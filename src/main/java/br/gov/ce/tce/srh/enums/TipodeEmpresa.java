@@ -8,8 +8,12 @@ import java.util.List;
  * @author erivanio.cruz campos da tabela TB_PESSOAJURIDICA
  */
 public enum TipodeEmpresa {
-  EMPRESA_EM_GERAL(1, "Empresa em geral"), INSTITUICAO_ENSINO(2, "Instituição de Ensino"), PLANOS_SAUDE(3, "Planos de Saúde");
-
+  
+  EMPRESA_EM_GERAL(0, "Empresa em geral"), 
+  INSTITUICAO_ENSINO(1, "Instituição de Ensino"), 
+  PLANOS_SAUDE(2, "Planos de Saúde");
+  
+  
   private Integer codigo;
   private String descricao;
 

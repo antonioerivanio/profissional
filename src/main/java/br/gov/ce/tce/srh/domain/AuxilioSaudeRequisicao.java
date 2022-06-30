@@ -87,7 +87,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   /**
    * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
    */
-  @AssertTrue(message = "Aviso, Leia a Declaração antes de marcar o campo Concordo")
+  @AssertTrue(message = "Campo concordo é obrigatório")
   @Column(name = "FLG_AFIRMACAOSERVERDADE")
   private boolean flAfirmaSerVerdadeiraInformacao;
 
@@ -132,15 +132,13 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
 
-  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica, Dependente dependenteSelecionado, Double valorGastoPlanoSaude,
-                            boolean flAfirmaSerVerdadeiraInformacao) {
+  public AuxilioSaudeRequisicao(Funcional funcional, Usuario usuario, PessoaJuridica pessoaJuridica, Dependente dependenteSelecionado, Double valorGastoPlanoSaude) {
     super();
 
     this.funcional = funcional;
     this.usuario = usuario;
     this.pessoaJuridica = pessoaJuridica;
-    this.valorGastoPlanoSaude = valorGastoPlanoSaude;
-    this.flAfirmaSerVerdadeiraInformacao = flAfirmaSerVerdadeiraInformacao;
+    this.valorGastoPlanoSaude = valorGastoPlanoSaude;    
     this.dependenteSelecionado = dependenteSelecionado;
   }
 
@@ -198,7 +196,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
    return getAuxilioSaudeRequisicaoBeneficiarioItemList() != null && !getAuxilioSaudeRequisicaoBeneficiarioItemList().isEmpty();
  }
  
- public boolean isDocumentoBeneficiarioLIstNull() {
+ public boolean checkDocumentoBeneficiarioLIstNull() {
    return getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() == null || getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().isEmpty();
  }
  
@@ -299,7 +297,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
   public String getStatusAprovacao() {
-    return statusAprovacao == null ? "Aguardando Aprovação" : statusAprovacao;
+    return statusAprovacao == null ? "Aguardando deferimento" : statusAprovacao;
   }
 
   public void setStatusAprovacao(String statusAprovacao) {

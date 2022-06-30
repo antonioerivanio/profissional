@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -23,20 +22,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
 import org.apache.velocity.exception.VelocityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import br.gov.ce.tce.eTCE.email.template.EmailTemplate;
-import br.gov.ce.tce.eTCE.exception.eTCEException;
-import br.gov.ce.tce.eTCE.infra.EParametro;
-import br.gov.ce.tce.eTCE.infra.Parametros;
-import br.gov.ce.tce.eTCE.model.Parametro;
-import br.gov.ce.tce.eTCE.service.AmbienteService;
-import br.gov.ce.tce.eTCE.service.EmailService;
-import br.gov.ce.tce.eTCE.service.ParametroService;
-import br.gov.ce.tce.eTCE.util.ResourceBundle;
+import br.gov.ce.tce.srh.exception.eTCEException;
+import br.gov.ce.tce.srh.util.EmailTemplate;
 
 /**
  * Classe usada para enviar emails aos usuarios do sistema.
@@ -47,9 +37,13 @@ public class EmailServiceImpl implements EmailService, Serializable {
 	private static final long serialVersionUID = 6277806775704899604L;
 
 	private static final String MSG_ERRO_INESPERADO = "emailErro";
+	private static final String EMAIL_SMTP_HOST= "SERVIDOR_SMTP";
+	private static final String EMAIL_SMTP_PORT= "PORTA_SMTP";
+	private static final String EMAIL_USUARIO = "EMAIL_USUARIO";
+	//private static final String EMAIL_ORIGEM = "EMAIL_ORIGEM",	
+	private static final String EMAIL_SENHA = "EMAIL_SENHA";
 
-	@Autowired
-	private ParametroService parametroService;
+
 	@Autowired
 	private AmbienteService ambienteService;
 	
@@ -60,34 +54,12 @@ public class EmailServiceImpl implements EmailService, Serializable {
 	private int smtpPort;
 	private Properties configuracaoEmail;
 
-	public void configurarEmail(Integer tipo) throws eTCEException {
-		if (configuracaoEmail == null) {
-
-			Parametro parametro = parametroService.pesquisarPorCodigo(EParametro.EMAIL_SMTP_HOST.getNome());
-			smtpHost = parametro.getValor();
-			parametro = parametroService.pesquisarPorCodigo(EParametro.EMAIL_SMTP_PORT.getNome());
-			smtpPort = Integer.parseInt(parametro.getValor());
-			parametro = parametroService.pesquisarPorCodigo(EParametro.EMAIL_USUARIO.getNome());
-			nomeUsuarioOrigem = parametro.getValor();
-			String nomeEmail = new String();
-			if(tipo == 1)
-				nomeEmail = parametroService.pesquisarPorCodigo(
-						EParametro.EMAIL_ORIGEM.getNome()).getValor();
-			else if(tipo == 2)
-				nomeEmail = parametroService.pesquisarPorCodigo(
-						EParametro.EMAIL_PRESTACAO_CONTAS_ORIGEM.getNome()).getValor();
-			else if(tipo == 3)
-				nomeEmail = Parametros.NOME_EMAIL_ETCE_ERROS_SRP;
-			else if(tipo == 4)
-				nomeEmail = Parametros.NOME_EMAIL_ETCE_ERROS_ASSINATURA;
-			
-			emailOrigem = nomeEmail;
-			parametro = parametroService.pesquisarPorCodigo(EParametro.EMAIL_SENHA.getNome());
-			senhaUsuarioOrigem = parametro.getValor();
+	public void configurarEmail() throws eTCEException {		
 
 			Properties lProperties = new Properties();
 			lProperties.put("mail.smtp.host", smtpHost);
 			lProperties.put("mail.smtp.port", smtpPort);
+			
 			if (senhaUsuarioOrigem != null){ 
 				lProperties.put("mail.smtp.auth", "true");
 			}else{
@@ -102,7 +74,7 @@ public class EmailServiceImpl implements EmailService, Serializable {
 			}
 
 			configuracaoEmail = lProperties;
-		}
+		
 	}
 
 	private InternetAddress[] criarListaInternetAddress(List<String> destinatarios) throws Exception {
@@ -119,7 +91,7 @@ public class EmailServiceImpl implements EmailService, Serializable {
 	}
 
 	public void enviarEmail(List<String> destinatarios, String assunto, String conteudo, Map<String, InputStream> anexos, Integer tipoEmail) throws eTCEException {
-		configurarEmail(tipoEmail);
+		configurarEmail();
 		try {
 			// E-mail de Origem:
 			InternetAddress lAddressOrigem = new InternetAddress(emailOrigem, nomeUsuarioOrigem);
@@ -167,8 +139,9 @@ public class EmailServiceImpl implements EmailService, Serializable {
 			lTranportEnvio.connect(smtpHost, smtpPort, emailOrigem, senhaUsuarioOrigem);
 			lTranportEnvio.sendMessage(lMineMessage, lMineMessage.getAllRecipients());
 			lTranportEnvio.close();
-		} catch (Exception pEx) {
-			throw new eTCEException(ResourceBundle.getMessage(MSG_ERRO_INESPERADO), pEx);
+		} catch (Exception ex) {
+		  ex.printStackTrace();
+			//throw new eTCEException(ResourceBundle.getMessage(MSG_ERRO_INESPERADO), pEx);
 		}
 	}
 

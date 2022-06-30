@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import com.ibm.icu.math.BigDecimal;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.VinculoRGPS;
 import br.gov.ce.tce.srh.enums.TipoVinculoRGPS;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -153,8 +155,11 @@ public class VinculoRGPSFormBean implements Serializable {
 
 		try {
 
-			if ( this.comboEmpresasCadastradas == null )
-				this.comboEmpresasCadastradas = pessoaJuridicaService.findAll();
+			if ( this.comboEmpresasCadastradas == null ) {
+			    List<TipodeEmpresa> tipodeEmpresas = new ArrayList<TipodeEmpresa>();
+			    tipodeEmpresas.add(TipodeEmpresa.PLANOS_SAUDE);
+				this.comboEmpresasCadastradas = pessoaJuridicaService.findAllNotTipo(tipodeEmpresas);
+			}
 
 		} catch (Exception e) {
 			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");

@@ -1,35 +1,32 @@
 package br.gov.ce.tce.srh.domain;
 
+import java.io.File;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-public class ArquivoVO {
-  private int contador = 1; 
-  private String nomeTemp;
+public class ArquivoVO {  
+  private String nome;
   private String descricacao;
-  private String caminhoCompletoArquivo;  
+  private String caminhoCompletoArquivo;
   private byte[] comprovante;
-  public static String PDF = ".pdf";
-  public static String UNDERLINE = "_";
+  public static final String PDF = ".pdf";
+  public static final String UNDERLINE = "_";
   // pegando o caminho do arquivo no servidor
-  public static String CAMINHO_PARA_SALVAR_ARQUIVO =
+  public static final String CAMINHO_PARA_SALVAR_ARQUIVO =
                             SRHUtils.getDadosParametroProperties("arquivo.servidorarquivosrh.comprovanteAuxilioSaude");
   
-  public static String NOME_ARQUIVO_BENEFICIARIO ="comprovante_beneficiario";
-  public static String NOME_ARQUIVO_DEPENDENTE ="comprovante_dependente";
-  
-  public ArquivoVO(String nomeTemp, String descricacao, String caminhoCompletoArquivo, byte[] comprovante) {
+  public ArquivoVO(String nome, String descricacao, String caminhoCompletoArquivo, byte[] comprovante, int contador) {
     super();
-    this.nomeTemp = nomeTemp + UNDERLINE +  contador + PDF;
+    this.nome = nome + UNDERLINE +  contador + PDF;
     this.descricacao = descricacao;
     this.caminhoCompletoArquivo = caminhoCompletoArquivo;
-    this.comprovante = comprovante;
+    this.comprovante = comprovante;    
   }
   
-  public String getNomeTemp() {
-    return nomeTemp;
+  public String getNome() {
+    return nome;
   }
-  public void setNomeTemp(String nomeTemp) {
-    this.nomeTemp = nomeTemp;
+  public void setNome(String nome) {
+    this.nome = nome;
   }
   public String getDescricacao() {
     return descricacao;
@@ -52,6 +49,5 @@ public class ArquivoVO {
     this.comprovante = comprovante;
   }
   
-  
-  
 }
+

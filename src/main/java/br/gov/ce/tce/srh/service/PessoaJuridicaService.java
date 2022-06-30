@@ -23,5 +23,6 @@ public interface PessoaJuridicaService {
 	
 	public List<PessoaJuridica> findAll();
 	public List<PessoaJuridica> findAllByTipo(TipodeEmpresa tipodeEmpresa);
+	public List<PessoaJuridica> findAllNotTipo(List<TipodeEmpresa> tipodeEmpresaList);
 	public PessoaJuridica findById(Long parseLong);
 }

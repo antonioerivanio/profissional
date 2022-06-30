@@ -7,17 +7,14 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
-
+	
 	<ui:define name="content">
 
 		<div class="titulo-pagina">
-
 			<h2>Consulta de Servidor com Auxilio Saúde</h2>
-
 		</div>
 
 		<h:form id="form" styleClass="formularios">
-
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
 			<ui:fragment
@@ -69,15 +66,13 @@
 			<ui:insert name="camposEntrada"></ui:insert>
 
 			<div class="tabela-dados">
-
+				<center>
+					<strong><h:outputLabel value="Quantidade Registros "></h:outputLabel></strong>
+					<h:outputText value="#{auxilioSaudeListBean.count}" />
+				</center>
 				<rich:dataTable id="lista" var="item"
 					rows="#{auxilioSaudeListBean.dataModel.pageSize}"
 					value="#{auxilioSaudeListBean.dataModel}">
-
-					<f:facet name="header">
-						<h:outputText
-							value="Quantidade Registros  #{auxilioSaudeListBean.count}" />
-					</f:facet>
 
 					<rich:column headerClass="cel-25">
 						<f:facet name="header">
@@ -127,10 +122,7 @@
                             Data da Modificação
                         </f:facet>
 						<center>
-							<h:outputText value="#{item.dataAlteracao}"
-								styleClass="cel-25">
-
-							</h:outputText>
+							<h:outputText value="#{item.dataAlteracao}" styleClass="cel-25"/>
 						</center>
 					</rich:column>
 
@@ -140,9 +132,7 @@
                         </f:facet>
 						<center>
 							<h:outputText value="#{item.dataFimRequisicao}"
-								styleClass="cel-25">
-
-							</h:outputText>
+								styleClass="cel-25"/>							
 						</center>
 					</rich:column>
 
@@ -173,7 +163,7 @@
                         </f:facet>
 						<h:commandLink id="editar" value="Editar"
 							action="#{auxilioSaudeListBean.editar}" styleClass="ico-editar"
-							rendered="#{item.dataFimRequisicao eq null}">
+							rendered="#{auxilioSaudeListBean.validarExibicaoBotaoEditar(item)}">
 							<f:setPropertyActionListener
 								target="#{auxilioSaudeListBean.entidadeEditar}" value="#{item}" />
 						</h:commandLink>

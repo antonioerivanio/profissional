@@ -13,6 +13,7 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase.FlagAtivo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -22,10 +23,10 @@ public class AuxilioSaudeRequisicaoDAO {
   @PersistenceContext
   private EntityManager entityManager;
 
-  private static final String COUNT = "count";
-  private static final String SEARCH = "search";
+
   private static final String NOME = "nome";
   private static final String ID = "id";
+  private static final String IDFUNCIONAL = "idFuncional";
   private static final String CPF = "cpf";
   private static final String DATA_INICIO = "dataInicioRequisicao";
   private static final String DATA_FIM = "dataFimRequisicao";
@@ -71,177 +72,78 @@ public class AuxilioSaudeRequisicaoDAO {
     return getEntityManager().find(AuxilioSaudeRequisicaoDocumento.class, obj.getId());
   }
 
+  
   public int count(AuxilioSaudeRequisicao bean) {
     Query query = null;
-
-    if (isNomeNotNull(bean)) {
-      query = getQueryNomePorTipo(COUNT, bean.getFuncional().getPessoal().getNomeCompleto());
-    } else if (isCpfNotNull(bean)) {
-      query = getQueryCpfPorTipo(COUNT, bean.getFuncional().getPessoal().getCpf());
-    } else if (isNomeNotNull(bean) && isCpfNotNull(bean)) {
-      query = getQueryPorNomeECpf(bean.getFuncional().getPessoal().getNomeCompleto(), bean.getFuncional().getPessoal().getCpf());
-    } else if (isDataInicioNotNull(bean)) {
-      query = getQueryPorData(COUNT, bean);
-    } else if (isDataFimNotNull(bean)) {
-      query = getQueryPorData(COUNT, bean);
-    } else if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {
-      query = getQueryPorData(COUNT, bean);
-    } else {
-      query = getQueryCountAll();
-    }
-
+    StringBuilder sql = new StringBuilder();
+    sql.append("select count(asr) from AuxilioSaudeRequisicao asr where 1=1 ");
+    
+    setFiltrosWhere(sql, bean);    
+    query = entityManager.createQuery(sql.toString());
+    setParametroQuery(query, bean);
+    
     long countResult = (long) query.getSingleResult();
 
     return (int) countResult;
+  }
+  
+  private void setFiltrosWhere(StringBuilder sql, AuxilioSaudeRequisicao bean) {
+    if (isNomeNotNull(bean)) {
+      sql.append(" and upper(asr.funcional.nome) like :nome ");
+    } else if (isCpfNotNull(bean)) {
+      sql.append(" and asr.funcional.pessoal.cpf =:cpf ");
+    } else if (isNomeNotNull(bean) && isCpfNotNull(bean)) {
+      sql.append("and upper(asr.funcional.nome) like :nome and asr.funcional.cpf=:cpf");
+    } else if (isDataInicioNotNull(bean)) {
+      sql.append("and asr.dataInicioRequisicao= :dataInicioRequisicao ");
+    } else if (isDataFimNotNull(bean)) {
+      sql.append("and asr.dataFimRequisicao= :dataFimRequisicao ");
+    } else if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {      
+        sql.append("and asr.dataInicioRequisicao= :dataInicioRequisicao or asr.dataFimRequisicao= :dataFimRequisicao ");        
+    }
+  }
+
+
+  private void setParametroQuery(Query query, AuxilioSaudeRequisicao bean) {    
+    if (isNomeNotNull(bean)) {
+      query.setParameter(NOME, "%" + bean.getFuncional().getPessoal().getNomeCompleto() + "%");
+    }
+    else if (isCpfNotNull(bean)) {
+      query.setParameter(CPF, SRHUtils.removerMascara(bean.getFuncional().getPessoal().getCpf()));
+    } else if (isNomeNotNull(bean) && isCpfNotNull(bean)) {
+      query.setParameter(NOME, "%" + bean.getFuncional().getPessoal().getNomeCompleto() + "%");
+      query.setParameter(CPF, SRHUtils.removerMascara(bean.getFuncional().getPessoal().getCpf()));
+    }
+
+    else if (isDataInicioNotNull(bean)) {
+      query.setParameter(DATA_INICIO, bean.getDataInicioRequisicao(), TemporalType.DATE);
+    }
+    else if (isDataFimNotNull(bean)) {
+      query.setParameter(DATA_FIM, bean.getDataFimRequisicao(), TemporalType.DATE);
+    }
+    
+    else if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {
+      query.setParameter(DATA_INICIO, bean.getDataInicioRequisicao(), TemporalType.DATE);
+      query.setParameter(DATA_FIM, bean.getDataFimRequisicao(), TemporalType.DATE);
+    }
   }
 
   @SuppressWarnings("unchecked")
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows) {
     Query query = null;
-
-    if (isNomeNotNull(bean)) {
-      query = getQueryNomePorTipo(SEARCH, bean.getFuncional().getPessoal().getNomeCompleto());
-    } else if (isCpfNotNull(bean)) {
-      query = getQueryCpfPorTipo(SEARCH, bean.getFuncional().getPessoal().getCpf());
-    } else if (isDataInicioNotNull(bean)) {
-      query = getQueryPorData(SEARCH, bean);
-    } else if (isDataFimNotNull(bean)) {
-      query = getQueryPorData(SEARCH, bean);
-    } else {
-      query = getQueryAll();
-    }
-
+    StringBuilder sql = new StringBuilder();
+    sql.append("from AuxilioSaudeRequisicao asr where 1=1");
+    
+    setFiltrosWhere(sql, bean);    
+    query = entityManager.createQuery(sql.toString());
+    setParametroQuery(query, bean);
+    
     if (first != null && first >= 0)
       query.setFirstResult(first);
     if (rows != null && rows > 0)
       query.setMaxResults(rows);
 
     return query.getResultList();
-  }
-
-
-  private Query getQueryAll() {
-    return entityManager.createQuery("select asr from AuxilioSaudeRequisicao asr ");
-  }
-
-  private Query getQueryCountAll() {
-    return entityManager.createQuery("select count(asr) from AuxilioSaudeRequisicao asr ");
-  }
-
-  /***
-   * 
-   * @param tipo [count|search]
-   * @param nomeparam
-   * @return
-   */
-  private Query getQueryNomePorTipo(String tipo, String nomeparam) {
-    Query query = null;
-    StringBuilder sql = new StringBuilder();
-
-    if (tipo.equals(COUNT)) {
-      sql.append(" select count(asr) from AuxilioSaudeRequisicao asr where upper(asr.funcional.nome) like :nome ");
-      query = entityManager.createQuery(sql.toString());
-
-    } else {
-      sql.append("select asr from AuxilioSaudeRequisicao asr where upper(asr.funcional.nome) like :nome ");
-      query = entityManager.createQuery(sql.toString(), AuxilioSaudeRequisicao.class);
-    }
-
-    query.setParameter(NOME, "%" + nomeparam.toUpperCase() + "%");
-
-    return query;
-  }
-
-
-  private Query getQueryPorData(String tipo, AuxilioSaudeRequisicao bean) {
-    Query query = null;
-
-    if (isDataInicioNotNull(bean)) {
-      query = getQueryDataInicio(tipo, bean);
-    }
-    if (isDataFimNotNull(bean)) {
-      query = getQueryDataFim(tipo, bean);
-    }
-    if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {
-      query = getQueryDataInicioeFim(tipo, bean);
-    }
-
-    return query;
-  }
-
-  private Query getQueryDataInicio(String tipo, AuxilioSaudeRequisicao bean) {
-    Query query = null;
-    StringBuilder sql = new StringBuilder();
-
-    if (tipo.equals(COUNT)) {
-      sql.append("select count(asr) from AuxilioSaudeRequisicao asr where asr.dataInicioRequisicao= :dataInicioRequisicao ");
-      query = entityManager.createQuery(sql.toString());
-    } else {
-      sql.append("select asr from AuxilioSaudeRequisicao asr where asr.dataInicioRequisicao= :dataInicioRequisicao ");
-      query = entityManager.createQuery(sql.toString(), AuxilioSaudeRequisicao.class);
-    }
-
-    query.setParameter(DATA_INICIO, bean.getDataInicioRequisicao(), TemporalType.DATE);
-    return query;
-  }
-
-  private Query getQueryDataFim(String tipo, AuxilioSaudeRequisicao bean) {
-    Query query = null;
-    StringBuilder sql = new StringBuilder();
-
-    if (tipo.equals(COUNT)) {
-      sql.append("select count(asr) from AuxilioSaudeRequisicao asr where asr.dataFimRequisicao= :dataFimRequisicao ");
-      query = entityManager.createQuery(sql.toString());
-    } else {
-      sql.append("select asr from AuxilioSaudeRequisicao asr where asr.dataFimRequisicao= :dataFimRequisicao ");
-      query = entityManager.createQuery(sql.toString(), AuxilioSaudeRequisicao.class);
-    }
-
-    query.setParameter(DATA_FIM, bean.getDataFimRequisicao(), TemporalType.DATE);
-    return query;
-  }
-
-
-  private Query getQueryDataInicioeFim(String tipo, AuxilioSaudeRequisicao bean) {
-    Query query = null;
-    StringBuilder sql = new StringBuilder();
-
-    if (tipo.equals(COUNT)) {
-      sql.append("select count(asr) from AuxilioSaudeRequisicao asr where asr.dataInicioRequisicao= :dataInicioRequisicao or asr.dataFimRequisicao= :dataFimRequisicao ");
-      query = entityManager.createQuery(sql.toString());
-    } else {
-      sql.append("select asr from AuxilioSaudeRequisicao asr where asr.dataInicioRequisicao= :dataInicioRequisicao or asr.dataFimRequisicao= :dataFimRequisicao ");
-      query = entityManager.createQuery(sql.toString(), AuxilioSaudeRequisicao.class);
-    }
-
-    query.setParameter(DATA_INICIO, bean.getDataInicioRequisicao(), TemporalType.DATE);
-    query.setParameter(DATA_FIM, bean.getDataFimRequisicao(), TemporalType.DATE);
-    return query;
-  }
-
-
-  private Query getQueryCpfPorTipo(String tipo, String cpfparam) {
-    Query query = null;
-    StringBuilder sql = new StringBuilder();
-
-    if (tipo.equals(COUNT)) {
-      sql.append("select count(asr) from AuxilioSaudeRequisicao asr where asr.funcional.pessoal.cpf =:cpf ");
-      query = entityManager.createQuery(sql.toString());
-    } else {
-      sql.append("select asr from AuxilioSaudeRequisicao asr where asr.funcional.pessoal.cpf =:cpf ");
-      query = entityManager.createQuery(sql.toString(), AuxilioSaudeRequisicao.class);
-    }
-
-    query.setParameter(CPF, SRHUtils.removerMascara(cpfparam));
-    return query;
-  }
-
-
-  private Query getQueryPorNomeECpf(String nomeParam, String cpfParam) {
-    Query query = entityManager.createQuery("from AuxilioSaudeRequisicao asr where pper(asr.funcional.nome) like :nome and asr.funcional.cpf=:cpf", AuxilioSaudeRequisicao.class);
-    query.setParameter(NOME, "%" + nomeParam.toUpperCase() + "%");
-    query.setParameter(CPF, SRHUtils.removerMascara(cpfParam));
-    return query;
   }
 
   public List<AuxilioSaudeRequisicaoDocumento> getListaAnexos(BeanEntidade beanEntidade) {
