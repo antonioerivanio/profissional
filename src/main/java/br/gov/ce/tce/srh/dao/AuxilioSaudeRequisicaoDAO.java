@@ -30,7 +30,7 @@ public class AuxilioSaudeRequisicaoDAO {
   private static final String CPF = "cpf";
   private static final String DATA_INICIO = "dataInicioRequisicao";
   private static final String DATA_FIM = "dataFimRequisicao";
-  private static final String FL_ATIVO = "flAtivo";
+  private static final String FLG_ATIVO = "flgAtivo";
 
   public static final Double TRES_POR_CENTO = 0.03;
   public static final Double TRES_PONTO_CINCO_POR_CENTO = 0.035;
@@ -106,7 +106,7 @@ public class AuxilioSaudeRequisicaoDAO {
 
   private void setParametroQuery(Query query, AuxilioSaudeRequisicao bean) {    
     if (isNomeNotNull(bean)) {
-      query.setParameter(NOME, "%" + bean.getFuncional().getPessoal().getNomeCompleto() + "%");
+      query.setParameter(NOME, "%" + bean.getFuncional().getPessoal().getNome() + "%");
     }
     else if (isCpfNotNull(bean)) {
       query.setParameter(CPF, SRHUtils.removerMascara(bean.getFuncional().getPessoal().getCpf()));
@@ -212,7 +212,7 @@ public class AuxilioSaudeRequisicaoDAO {
   }
 
   private boolean isNomeNotNull(AuxilioSaudeRequisicao bean) {
-    if (bean.getFuncional().getPessoal().getNomeCompleto() != null && !bean.getFuncional().getPessoal().getNomeCompleto().isEmpty())
+    if (bean.getFuncional().getPessoal().getNome() != null && !bean.getFuncional().getPessoal().getNome().isEmpty())
       return Boolean.TRUE;
 
     return Boolean.FALSE;
@@ -232,10 +232,14 @@ public class AuxilioSaudeRequisicaoDAO {
    * @return AuxilioSaudeRequisicaoBase
    */
   public AuxilioSaudeRequisicaoBase getAuxilioSaudeBasePorPessoaIdeAtivo(Pessoal pessoal, FlagAtivo flagAtivo) {
-    Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoBase asb where asb.pessoal.id=:id and asb.flAtivo=:ativo", AuxilioSaudeRequisicaoBase.class);
-    query.setParameter(ID, pessoal.getId());
-    query.setParameter(FL_ATIVO, flagAtivo);
-    return (AuxilioSaudeRequisicaoBase) query.getSingleResult();
+    try {
+      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoBase asb where asb.pessoal.id=:id and asb.flgAtivo=:flgAtivo", AuxilioSaudeRequisicaoBase.class);
+      query.setParameter(ID, pessoal.getId());
+      query.setParameter(FLG_ATIVO, flagAtivo);
+      return (AuxilioSaudeRequisicaoBase) query.getSingleResult();
+    }catch (Exception e) {
+      return null;
+    }
   }
 }
 

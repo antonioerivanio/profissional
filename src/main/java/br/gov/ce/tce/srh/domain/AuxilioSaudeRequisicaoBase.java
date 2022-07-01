@@ -34,8 +34,7 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQBASE")
   private Long id;
-
-  @NotNull(message = "Campo funcional é obrigatório")
+  
   @ManyToOne
   @JoinColumn(name = "IDPESSOAL")
   private Pessoal pessoal;
@@ -69,7 +68,7 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
   private Date dataCriacao;
 
 
-  public static enum FlagAtivo {
+  public enum FlagAtivo {
     NAO, SIM
   }
 

@@ -11,6 +11,7 @@
 
 
 	<ui:define name="content">
+	
 
 		<!-- Esta tela é composta de campos para o cadastro das solicitações de auxilio do BENEFICIARIO E SEU DEPENDENTES-->
 		<!-- Após o envio dos dados, estes ficaram aguardando aprovação da área Gerência de Remuneração e Benefícios -->
@@ -48,7 +49,7 @@
 		</a4j:outputPanel>
 
 		<h:form id="form" styleClass="formularios"
-			enctype="multipart/form-data">
+			enctype="multipart/form-data" prependId="true">
 
 			<!-- Inicio dos campos do Beneficiário -->
 			<fieldset>
@@ -262,7 +263,7 @@
 				</div>
 			</fieldset>
 			<!-- fim campo Beneficiario -->
-			
+
 
 			<h:panelGroup id="asFrmOpDependentes">
 				<ui:fragment
@@ -351,7 +352,8 @@
 							actionListener="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.itemDependente, false)}"
 							value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
 							style="padding:10px;">
-							<a4j:ajax execute="asFrmOpDependentes " render="asFrmDtDep messages"></a4j:ajax>
+							<a4j:ajax execute="asFrmOpDependentes "
+								render="asFrmDtDep messages"></a4j:ajax>
 						</h:commandButton>
 
 						<div class="tabela-dados">
@@ -495,7 +497,7 @@
 
 			<div class="bt-conteiner">
 				<a4j:commandButton id="asFrmBtnSalvar"
-					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"					
+					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
 					action="#{auxilioSaudeFormBean.salvar()}" value="Salvar"
 					styleClass="bt-padrao fr mg-right-10" />
 
@@ -511,9 +513,8 @@
 					rendered="#{auxilioSaudeFormBean.isAnalista()}"
 					action="#{auxilioSaudeFormBean.deferir(true)}"
 					styleClass="bt-padrao fr mg-right-10" value="DEFERIR">
-				</h:commandLink>'
-
-				<a href="/srh/paginas/cadastros/auxilioSaudeList.faces"
+				</h:commandLink>
+				' <a href="/srh/paginas/cadastros/auxilioSaudeList.faces"
 					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 			</div>
 		</h:form>

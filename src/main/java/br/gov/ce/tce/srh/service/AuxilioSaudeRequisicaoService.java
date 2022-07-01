@@ -17,7 +17,9 @@ public interface AuxilioSaudeRequisicaoService {
     
   public void salvar(AuxilioSaudeRequisicao bean);  
   
-  public void salvar(List<AuxilioSaudeRequisicao> beanList);  
+  public void salvar(List<AuxilioSaudeRequisicao> beanList);
+  
+  public void salvarDependentes(List<AuxilioSaudeRequisicao> beanList);
   
   public void atualizar(AuxilioSaudeRequisicao bean);
   

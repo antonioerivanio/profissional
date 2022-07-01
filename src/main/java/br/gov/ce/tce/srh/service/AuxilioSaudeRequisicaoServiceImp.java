@@ -54,9 +54,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public void salvar(AuxilioSaudeRequisicao bean) {
     dao.salvar(bean);
-  }  
- 
-  
+  }
+
 
   @Override
   @Transactional
@@ -65,15 +64,17 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       logger.info("Iniciando o salvamento do auxilio saude requisição");
 
       if (beanList != null && !beanList.isEmpty()) {
-        for (AuxilioSaudeRequisicao bean : beanList) {          
-          dao.salvar(bean);          
-          salvarDependentes(bean);
-          salvarDocumentosBeneficiario(bean);  
-          
-          salvarArquivos(bean);
+        for (AuxilioSaudeRequisicao bean : beanList) {
+          dao.salvar(bean);
+
+          salvarDocumentosBeneficiario(bean);
+
+          if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
+            atualizarDadosTabelaAuxilioSaudeBase(bean);
+          }
         }
       }
-           
+
 
     } catch (Exception e) {
       logger.error("Erro ao salvar o auxilio requisição : " + e.getMessage());
@@ -91,17 +92,18 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       if (bean.checkBeneficiarioItemLIstNotNull()) {
         for (AuxilioSaudeRequisicao beanAuxilio : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
           beanAuxilio.setDataAlteracao(new Date());
-          
+
           if (beanAuxilio.getId() != null) {
             dao.atualizar(beanAuxilio);
           } else {
             dao.salvar(beanAuxilio);
           }
-          
-          salvarDependentes(beanAuxilio);
+
           salvarDocumentosBeneficiario(beanAuxilio);
 
-          atualizarTabelaAuxilioSaudeBase(beanAuxilio);
+          if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
+            atualizarDadosTabelaAuxilioSaudeBase(beanAuxilio);
+          }
         }
 
       }
@@ -112,7 +114,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     }
   }
 
-  private void atualizarTabelaAuxilioSaudeBase(AuxilioSaudeRequisicao bean) {
+  private void atualizarDadosTabelaAuxilioSaudeBase(AuxilioSaudeRequisicao bean) {
     if (bean.getStatusAprovacao() != null) {
       Funcional funcional = dao.getEntityManager().find(Funcional.class, bean.getFuncional().getId());
       AuxilioSaudeRequisicaoBase auxilioSaudeRequisicaoBase = dao.getAuxilioSaudeBasePorPessoaIdeAtivo(funcional.getPessoal(), FlagAtivo.SIM);
@@ -121,9 +123,10 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
         auxilioSaudeRequisicaoBase.setCustoPlanoBase(bean.getValorTotalSolicitado());
         auxilioSaudeRequisicaoBase.setDataAtualizacao(new Date());
         auxilioSaudeRequisicaoBase.setObservacao("Valor adicionar automaticamente a partir da tela do Auxilio-Saúde");
+        dao.atualizar(auxilioSaudeRequisicaoBase);
       } else {
 
-        auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(bean.getFuncional().getPessoal(), bean.getUsuario(), bean.getValorTotalSolicitado(),
+        auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), bean.getUsuario(), bean.getValorTotalSolicitado(),
                                   "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date());
 
         dao.salvar(auxilioSaudeRequisicaoBase);
@@ -131,23 +134,28 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     }
   }
 
-  private void salvarDependentes(AuxilioSaudeRequisicao bean) {
+  @Override
+  public void salvarDependentes(List<AuxilioSaudeRequisicao> beanList) {
     logger.info("Iniciando o salvamento dos dependentes do auxilio saude requisição");
 
     try {
-      if (bean.getAuxilioSaudeRequisicaoDependenteList() != null && !bean.getAuxilioSaudeRequisicaoDependenteList().isEmpty()) {
-        for (AuxilioSaudeRequisicaoDependente beanAuxDep : bean.getAuxilioSaudeRequisicaoDependenteList()) {
+      for (AuxilioSaudeRequisicao bean : beanList) {
+        if (bean.getAuxilioSaudeRequisicaoDependenteList() != null && !bean.getAuxilioSaudeRequisicaoDependenteList().isEmpty()) {
+          for (AuxilioSaudeRequisicaoDependente beanAuxDep : bean.getAuxilioSaudeRequisicaoDependenteList()) {
 
-          if (beanAuxDep.getId() != null) {
-            dao.atualizar(beanAuxDep);
-          } else {
-            beanAuxDep.setAuxilioSaudeRequisicao(bean);
-            dao.salvar(beanAuxDep);
+            if (beanAuxDep.getId() != null) {
+              dao.atualizar(beanAuxDep);
+            } else {
+              beanAuxDep.setAuxilioSaudeRequisicao(bean);
+              dao.salvar(beanAuxDep);
+            }
+
+            salvarDocumentosDependente(beanAuxDep);
           }
-
-          salvarDocumentosDependente(beanAuxDep);
         }
+
       }
+
 
     } catch (Exception e) {
       logger.error("Erro ao salvar os dependentes do auxilio requisição : " + e.getMessage());
@@ -155,26 +163,26 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
 
-  @Override  
+  @Override
   public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
 
     for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
-      //se a lista de dependentes estivar é porque somente o restrido do Beneficiario está sendo incuída
-      if(bean.getAuxilioSaudeRequisicaoDependenteList() == null) {
+      // se a lista de dependentes estivar é porque somente o restrido do Beneficiario está sendo incuída
+      if (bean.getAuxilioSaudeRequisicaoDependenteList() == null) {
         beanAuxDoc.setAuxilioSaudeRequisicaoDependente(null);
       }
-      
+
       if (beanAuxDoc.getId() != null) {
         dao.atualizar(beanAuxDoc);
       } else {
-        //dao.getEntityManager().flush();
+        // dao.getEntityManager().flush();
         AuxilioSaudeRequisicao find = dao.getEntityManager().find(AuxilioSaudeRequisicao.class, bean.getId());
         beanAuxDoc.setAuxilioSaudeRequisicao(find);
         dao.salvar(beanAuxDoc);
       }
 
-      ///fazerUploadArquivo(beanAuxDoc);
+      fazerUploadArquivo(beanAuxDoc);
     }
   }
 
@@ -182,43 +190,43 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição dependente");
 
     for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicao().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
-      //se estiver nulo é por está sendo incluido somente dados do dependente
-      if(bean.getAuxilioSaudeRequisicao().getPessoaJuridica() == null) {
+      // se estiver nulo é por está sendo incluido somente dados do dependente
+      if (bean.getAuxilioSaudeRequisicao().getPessoaJuridica() == null) {
         beanAuxDoc.setAuxilioSaudeRequisicao(null);
       }
-      
+
       if (beanAuxDoc.getId() != null) {
         dao.atualizar(beanAuxDoc);
       } else {
         beanAuxDoc.setAuxilioSaudeRequisicaoDependente(bean);
         dao.salvar(beanAuxDoc);
       }
-      
-      
+
+      fazerUploadArquivo(beanAuxDoc);
     }
   }
-  
-  private void salvarArquivos(AuxilioSaudeRequisicao bean) throws IOException {
-    for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
-      fazerUploadArquivo(beanAuxDoc);  
-    }
-    
-    for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
-        fazerUploadArquivo(beanAuxDoc);  
-    }
-    
-  } 
+  /*
+   * private void salvarArquivos(AuxilioSaudeRequisicao bean) throws IOException { for
+   * (AuxilioSaudeRequisicaoDocumento beanAuxDoc :
+   * bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) { fazerUploadArquivo(beanAuxDoc); }
+   * 
+   * for (AuxilioSaudeRequisicaoDocumento beanAuxDoc :
+   * bean.getAuxilioSaudeRequisicaoDocumentoDependenteList()) { fazerUploadArquivo(beanAuxDoc); }
+   * 
+   * }
+   */
 
   public void fazerUploadArquivo(AuxilioSaudeRequisicaoDocumento bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos Beneficiario do auxilio saude requisição");
 
-   
-    Path arquivoSalvo = Paths.get(bean.getCaminhoArquivo() + File.separator + bean.getNomeArquivo());
-    String novoNome = bean.getId() + "_" + bean.getNomeArquivo();
-    bean.setNomeArquivo(novoNome);
-    
-    // renomear o arquivo dentro da pasta
-    Files.move(arquivoSalvo, arquivoSalvo.resolveSibling(novoNome));  
+    if (bean.getId() == null) {
+      Path arquivoSalvo = Paths.get(bean.getCaminhoArquivo() + File.separator + bean.getNomeArquivo());
+      String novoNome = bean.getId() + "_" + bean.getNomeArquivo();
+      bean.setNomeArquivo(novoNome);
+
+      // renomear o arquivo dentro da pasta
+      Files.move(arquivoSalvo, arquivoSalvo.resolveSibling(novoNome));
+    }
   }
 
   @Override
@@ -271,20 +279,20 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
 
   @Override
-  public PessoaJuridica getPessoaJuridicaPorId(PessoaJuridica pj, List<PessoaJuridica> comboEmpresasCadastradas) {    
+  public PessoaJuridica getPessoaJuridicaPorId(PessoaJuridica pj, List<PessoaJuridica> comboEmpresasCadastradas) {
     int index = comboEmpresasCadastradas.indexOf(pj);
 
-    return comboEmpresasCadastradas.get(index);    
+    return comboEmpresasCadastradas.get(index);
   }
 
   /*** selecionar o dependente completo na lista e adicionar na entidade ***/
   @Override
   public Dependente getDependentePorId(Dependente dependente, List<Dependente> dependentesComboList) {
-    if(dependentesComboList == null || dependentesComboList.isEmpty()) {
+    if (dependentesComboList == null || dependentesComboList.isEmpty()) {
       throw new NullPointerException("Ops!. Por favor escolha um dependente para continuar");
-     }
-    
-    int index = dependentesComboList.indexOf(dependente);    
+    }
+
+    int index = dependentesComboList.indexOf(dependente);
     return dependentesComboList.get(index);
   }
 
@@ -318,16 +326,16 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     try {
       entidade.setDataInicioRequisicao(new Date());
       Funcional funcional = getFuncionalPorCpf(cpf);
-      
+
       List<Dependente> dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
       entidade.setFuncional(funcional);
       entidade.setDependentesComboList(dependenteList);
     } catch (Exception e) {
       logger.error("Usuario não encontrado");
-      //throw new UsuarioException("Usuario não encontrado");
+      // throw new UsuarioException("Usuario não encontrado");
     }
   }
-  
+
   @Override
   public Funcional getFuncionalPorCpf(String cpf) {
     String matColaborador = funcionalService.getMatriculaAndNomeByCpfAtiva(cpf).getMatricula();
@@ -337,7 +345,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public void setDadosIniciaisDaEntidade(AuxilioSaudeRequisicao entidade) {
-    if(entidade.getFuncional() == null) {
+    if (entidade.getFuncional() == null) {
       throw new NullPointerException("Ops!. Por favor escolha um servidor para continuar");
     }
     Funcional funcional = funcionalService.getById(entidade.getFuncional().getId());
@@ -351,7 +359,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
 
-  
   @Override
   public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj) {
     return ((AuxilioSaudeRequisicao) dao.find(obj));
@@ -402,13 +409,13 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public int count(AuxilioSaudeRequisicao bean) {
     return dao.count(bean);
-   }
+  }
 
   @Override
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows) {
     // TODO Auto-generated method stub
     return dao.search(bean, first, rows);
   }
-  
+
 }
 
