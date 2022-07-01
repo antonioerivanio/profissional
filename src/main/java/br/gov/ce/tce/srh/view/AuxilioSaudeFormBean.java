@@ -25,7 +25,6 @@ import br.gov.ce.tce.srh.exception.UsuarioException;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
-import br.gov.ce.tce.srh.util.EmailsBuilder;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.FileUtils;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -117,7 +116,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
     entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
-
   }
 
   @Override
@@ -175,11 +173,11 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       if (deferido) {
         getEntidade().setDataFimRequisicao(new Date());
         getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.DEFERIDO);
-        msg = "Requisição foi Deferida com sucesso";
+        msg = "Requisição foi deferida com sucesso";
       } else {
         getEntidade().setDataFimRequisicao(new Date());
         getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.INDEFERIDO);
-        msg = "Requisição foi Indeferida com sucesso";
+        msg = "Requisição foi indeferida com sucesso";
       }
 
       if (getEntidade().getId() == null) {
@@ -286,7 +284,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void adicionarDadosDependente(AuxilioSaudeRequisicao bean) {
     checkDepedenteSeleciona();
     checkPessoaJuridicaIsNull(bean);
-    checkListaAnexoNullOrVazia();
+    checkListaAnexoDependenteIsNull();
 
     /*** adicionar os dependentes na lista */
     getEntidade().adicionarDadosDependente(getAuxilioSaudeRequisicaoDependente(bean));
@@ -305,7 +303,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
   }
 
-  private void checkListaAnexoNullOrVazia() {
+  private void checkListaAnexoDependenteIsNull() {
     if (getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList() == null || getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList().isEmpty()) {
       throw new NullPointerException("Ops!. Por favor adicione um anexo do dependente para continuar");
     }
@@ -425,16 +423,44 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   }
 
-
-  // deletar os registro
+  /**
+   *  deletar os registro da lista e arquivo 
+   * @param bean
+   */
   public void deletar(AuxilioSaudeRequisicao bean) {
+    checkAnexoBeneficiarioIsNull();
+    for (AuxilioSaudeRequisicaoDocumento auxDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
+      if (auxDoc.getAuxilioSaudeRequisicao().equals(bean)) {
+        if (auxDoc.getId() == null) {
+          FileUtils.removerArquivo(auxDoc.getCaminhoCompleto());
+        } else {
+          auxDoc.setDeletado(Boolean.TRUE);
+        }
+      }
+    }
+
     getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().remove(bean);
 
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
   }
 
-  // deletar os registro
+  /**
+   *  deletar os registro da lista e arquivo 
+   * @param bean
+   */
   public void deletarDependente(AuxilioSaudeRequisicaoDependente bean) {
+    checkListaAnexoDependenteIsNull();
+
+    for (AuxilioSaudeRequisicaoDocumento auxDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
+      if (auxDoc.getAuxilioSaudeRequisicaoDependente().equals(bean)) {
+        if (auxDoc.getId() == null) {
+          FileUtils.removerArquivo(auxDoc.getCaminhoCompleto());
+        } else {
+          auxDoc.setDeletado(Boolean.TRUE);
+        }
+      }
+    }
+
     getEntidade().getAuxilioSaudeRequisicaoDependenteList().remove(bean);
 
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
@@ -526,7 +552,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   public void calcularValorSolicitado(Double valorParamentro) {
-    if (getEntidade().getValorTotalSolicitado() == null) {    
+    if (getEntidade().getValorTotalSolicitado() == null) {
       getEntidade().setValorTotalSolicitado(valorParamentro);
     } else if (!getEntidade().getValorGastoPlanoSaude().equals(valorParamentro)) {
       Double totalValorSolicitado = getEntidade().getValorTotalSolicitado() + valorParamentro;

@@ -81,7 +81,12 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     return "incluirAlterar";
   }
 
+  public String detalhar() {
+    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());    
+    return "auxilioSaudeDetalhes.xhtml?faces-redirect=true";
+  }
 
+  
   @Override
   public void salvar() {
     // TODO Auto-generated method stub

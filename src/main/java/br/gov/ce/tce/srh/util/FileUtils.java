@@ -16,9 +16,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
+import org.springframework.util.FileSystemUtils;
 
 /***
  * Classe para trabalhar com upload, dowload, de arquivos
+ * 
  * @author erivanio.cruz
  *
  */
@@ -41,7 +43,7 @@ public class FileUtils {
 
     try {
       // Open file.
-     // input = new BufferedInputStream(new FileInputStream(file), file.length());
+      // input = new BufferedInputStream(new FileInputStream(file), file.length());
 
       // Init servlet response.
       /*
@@ -98,7 +100,7 @@ public class FileUtils {
     }
   }
 
-  
+
   public static void upload(String caminhoArquivo, byte[] dadosArquivos) throws Exception {
     File file = new File(caminhoArquivo);
     FileOutputStream fop;
@@ -108,26 +110,38 @@ public class FileUtils {
     fop.close();
   }
 
-  public static void visualizar(String pathArquivo, RelatorioUtil relatorioUtil) throws Exception {    
-      InputStream in = new FileInputStream(pathArquivo);
-      byte[] comprovanteBytes = IOUtils.toByteArray(in);
+  public static void visualizar(String pathArquivo, RelatorioUtil relatorioUtil) throws Exception {
+    InputStream in = new FileInputStream(pathArquivo);
+    byte[] comprovanteBytes = IOUtils.toByteArray(in);
 
-      relatorioUtil.openPdf(comprovanteBytes, pathArquivo);
+    relatorioUtil.openPdf(comprovanteBytes, pathArquivo);
 
-      IOUtils.closeQuietly(in);
+    IOUtils.closeQuietly(in);
   }
-  
+
   public static void criarDiretorio(String pathDiretorio) throws IOException {
     Path caminhoDiretorioNovo = Paths.get(pathDiretorio);
-    Files.createDirectories(caminhoDiretorioNovo);      
+    Files.createDirectories(caminhoDiretorioNovo);
   }
-  
+
   public static void moverArquivoParaUmNovoDiretorio(String caminhoOrigem, String caminhoSestino) {
-  //mover arquivo para um nova pasta  nome da pessoa/id
+    // mover arquivo para um nova pasta nome da pessoa/id
     try {
       Files.move(Paths.get(caminhoOrigem), Paths.get(caminhoSestino), StandardCopyOption.REPLACE_EXISTING);
     } catch (IOException e) {
       // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  
+  public static void removerArquivo(String pathArquivo) {
+    // create object of Path
+    Path path = Paths.get(pathArquivo);
+
+    // delete File
+    try {      
+      Files.delete(path);
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }

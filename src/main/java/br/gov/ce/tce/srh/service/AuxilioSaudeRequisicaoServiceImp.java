@@ -205,28 +205,29 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       fazerUploadArquivo(beanAuxDoc);
     }
   }
-  /*
-   * private void salvarArquivos(AuxilioSaudeRequisicao bean) throws IOException { for
-   * (AuxilioSaudeRequisicaoDocumento beanAuxDoc :
-   * bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) { fazerUploadArquivo(beanAuxDoc); }
-   * 
-   * for (AuxilioSaudeRequisicaoDocumento beanAuxDoc :
-   * bean.getAuxilioSaudeRequisicaoDocumentoDependenteList()) { fazerUploadArquivo(beanAuxDoc); }
-   * 
-   * }
+
+  /***
+   * o sistema deverá salvar os arquivos no caminho\anoAtual\matriculaColaborador\idSalvo_nomeArquvo_versao.pdf
+   * exemplo: \svtcenas2\Desenvolvimento\svtcefs2\SRH\comprovanteAuxSaude\2022\1980\1_comprovante_1.pdf 
+   * @param bean
+   * @throws IOException
    */
-
   public void fazerUploadArquivo(AuxilioSaudeRequisicaoDocumento bean) throws IOException {
-    logger.info("Iniciando o salvamento dos anexos Beneficiario do auxilio saude requisição");
+    logger.info("Iniciando o salvamento dos anexos do auxilio saude");
 
-    if (bean.getId() == null) {
-      Path arquivoSalvo = Paths.get(bean.getCaminhoArquivo() + File.separator + bean.getNomeArquivo());
-      String novoNome = bean.getId() + "_" + bean.getNomeArquivo();
+    Path arquivoSalvo = Paths.get(bean.getCaminhoArquivo() + File.separator + bean.getNomeArquivo());
+    String novoNome = bean.getNomeArquivo();
+    String[] nomeJaExisteNaPasta = bean.getNomeArquivo().split("_");
+
+    /**
+     * verificar se o nome comerça com digitos
+     */
+    if (!nomeJaExisteNaPasta[0].matches("-?\\d+")) {
+      novoNome = bean.getId() + "_" + bean.getNomeArquivo();
       bean.setNomeArquivo(novoNome);
-
-      // renomear o arquivo dentro da pasta
-      Files.move(arquivoSalvo, arquivoSalvo.resolveSibling(novoNome));
     }
+    // renomear o arquivo dentro da pasta
+    Files.move(arquivoSalvo, arquivoSalvo.resolveSibling(novoNome));
   }
 
   @Override
