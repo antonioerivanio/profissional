@@ -138,10 +138,6 @@
 							maxlength="20" styleClass="maskSalario">
 							<f:convertNumber type="currency" currencySymbol="R$"
 								locale="pt_br" />
-
-							<a4j:ajax event="blur" execute="@this"
-								listener="#{auxilioSaudeFormBean.calcularValorSolicitado(auxilioSaudeFormBean.itemBeneficiario.valorGastoPlanoSaude)}"
-								render="asfPgResumo"></a4j:ajax>
 						</h:inputText>
 					</div>
 
@@ -197,7 +193,7 @@
 					value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
 					style="padding:10px;">
 					<a4j:ajax execute="asFrmItValorPlano"
-						render="form:asCadFrmDtBeneficiario" />
+						render="asCadFrmDtBeneficiario asfPgResumo" />
 				</h:commandButton>
 
 				<div class="tabela-dados">
@@ -253,7 +249,7 @@
 								<h:commandLink immediate="true"
 									actionListener="#{auxilioSaudeFormBean.deletar(beanBenef)}"
 									style="padding-left:10px">
-									<a4j:ajax render="asCadFrmDtBeneficiario"></a4j:ajax>
+									<a4j:ajax render="asCadFrmDtBeneficiario asfPgResumo"></a4j:ajax>
 									<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
 								</h:commandLink>
 							</center>
@@ -296,10 +292,7 @@
 									value="#{auxilioSaudeFormBean.itemDependente.valorGastoPlanoSaude}"
 									maxlength="20" styleClass="maskSalario">
 									<f:convertNumber type="currency" currencySymbol="R$"
-										locale="pt_br" />
-									<a4j:ajax execute="@this" event="blur"
-										listener="#{auxilioSaudeFormBean.calcularValorSolicitado(auxilioSaudeFormBean.itemDependente.valorGastoPlanoSaude)}"
-										render="asfPgResumo"></a4j:ajax>
+										locale="pt_br" />									
 								</h:inputText>
 							</div>
 						</div>
@@ -353,7 +346,7 @@
 							value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
 							style="padding:10px;">
 							<a4j:ajax execute="asFrmOpDependentes "
-								render="asFrmDtDep messages"></a4j:ajax>
+								render="asFrmDtDep messages asfPgResumo"></a4j:ajax>
 						</h:commandButton>
 
 						<div class="tabela-dados">
@@ -411,7 +404,7 @@
 											actionListener="#{auxilioSaudeFormBean.deletarDependente(beanDep)}"
 											style="padding-left:10px">
 											<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
-											<a4j:ajax render="form:asFrmDtDep"></a4j:ajax>
+											<a4j:ajax render="form:asFrmDtDep asfPgResumo"></a4j:ajax>
 										</h:commandLink>
 									</center>
 								</h:column>

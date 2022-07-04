@@ -241,5 +241,12 @@ public class AuxilioSaudeRequisicaoDAO {
       return null;
     }
   }
+  
+  public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeRequisicaoDependentePorId(Long id){    
+      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoDependente asd where asd.auxilioSaudeRequisicao.id=:id ", AuxilioSaudeRequisicaoDependente.class);
+      query.setParameter(ID, id);      
+      return query.getResultList();
+  }
+  
 }
 

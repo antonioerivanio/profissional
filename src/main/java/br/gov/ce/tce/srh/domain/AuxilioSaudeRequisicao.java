@@ -148,7 +148,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
 
-  public void adicionarDadosRequisicao(AuxilioSaudeRequisicao bean) {
+  public void adicionarDadosRequisicaoList(AuxilioSaudeRequisicao bean) {
 
     if (auxilioSaudeRequisicaoBeneficiarioItemList == null) {
       auxilioSaudeRequisicaoBeneficiarioItemList = new ArrayList<>();
@@ -157,7 +157,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
     auxilioSaudeRequisicaoBeneficiarioItemList.add(bean);
   }
 
-  public void adicionarDadosDependente(AuxilioSaudeRequisicaoDependente beanDep) {
+  public void adicionarDadosDependenteList(AuxilioSaudeRequisicaoDependente beanDep) {
 
     if (auxilioSaudeRequisicaoDependenteList == null) {
       auxilioSaudeRequisicaoDependenteList = new ArrayList<>();
@@ -192,9 +192,14 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
     return getPessoaJuridica() == null ? Boolean.TRUE : Boolean.FALSE;
   }
   
- public boolean checkBeneficiarioItemLIstNotNull() {
+ public boolean checkBeneficiarioItemListNotNull() {
    return getAuxilioSaudeRequisicaoBeneficiarioItemList() != null && !getAuxilioSaudeRequisicaoBeneficiarioItemList().isEmpty();
  }
+ 
+ public boolean checkDependenteItemListNotNull() {
+   return getAuxilioSaudeRequisicaoDependenteList() != null && !getAuxilioSaudeRequisicaoDependenteList().isEmpty();
+ }
+ 
  
  public boolean checkDocumentoBeneficiarioLIstNull() {
    return getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() == null || getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().isEmpty();

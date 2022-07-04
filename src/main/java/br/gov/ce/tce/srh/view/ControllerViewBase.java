@@ -176,9 +176,12 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   public boolean validarExibicaoBotaoSalvar() {
     if(isEdicao && isAnalista()) {
       return Boolean.TRUE;
+    }    
+    else if(!isEdicao && isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
+      return Boolean.TRUE;
     }
     
-    else if(!isEdicao && !isAnalista()  && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
+    else if(!isEdicao && !isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
       return Boolean.TRUE;
     }
     else {

@@ -98,11 +98,15 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     AuxilioSaudeRequisicao entidadeEditar = entidadeService.getAuxilioSaudePorId((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter("entidade"));
 
     List<AuxilioSaudeRequisicaoDocumento> documentoList = entidadeService.getListaArquivosPorIdAuxilio(entidadeEditar);
+    entidadeEditar.setAuxilioSaudeRequisicaoDependenteList(entidadeService.getAuxilioSaudeDependenteList(entidadeEditar.getId()));
     entidadeEditar.setAuxilioSaudeRequisicaoBeneficiarioItemList(new ArrayList<AuxilioSaudeRequisicao>());
+
     entidadeEditar.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidadeEditar);
+
     entidadeEditar.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(documentoList);
 
     setValorSolicitado(entidadeEditar);
+
     entidadeService.setValorMaximoSolicitadoPorIdade(entidadeEditar);
 
     setEntidade(entidadeEditar);
@@ -143,8 +147,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         entidadeService.executarAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
 
         if (Boolean.TRUE.equals(entidadeService.isOK(getEntidade()))) {
-          entidadeService.salvar(getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList());
-          entidadeService.salvarDependentes(getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList());
+          entidadeService.salvar(getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList());        
         }
       }
 
@@ -211,11 +214,11 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         adicionarDadosDependente(bean);
       }
 
+      setValorSolicitado(getEntidade());
       fazerUploadArquivos(isBeneficiario);
     } catch (Exception e) {
       FacesUtil.addErroMessage(e.getMessage());
     }
-
   }
 
   public PessoaJuridica getPessoaJuridicaPorId(AuxilioSaudeRequisicao bean) {
@@ -229,8 +232,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     PessoaJuridica pessoaJuridica = getPessoaJuridicaPorId(bean);
 
     AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, bean.getValorGastoPlanoSaude());
-    getEntidade().adicionarDadosRequisicao(auxilioSaudeRequisicaoLocal);
-
+    getEntidade().adicionarDadosRequisicaoList(auxilioSaudeRequisicaoLocal);
   }
 
   private void checkAnexoBeneficiarioIsNull() {
@@ -287,7 +289,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     checkListaAnexoDependenteIsNull();
 
     /*** adicionar os dependentes na lista */
-    getEntidade().adicionarDadosDependente(getAuxilioSaudeRequisicaoDependente(bean));
+    getEntidade().adicionarDadosDependenteList(getAuxilioSaudeRequisicaoDependente(bean));
   }
 
   public AuxilioSaudeRequisicaoDependente getAuxilioSaudeRequisicaoDependente(AuxilioSaudeRequisicao bean) {
@@ -307,7 +309,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     if (getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList() == null || getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList().isEmpty()) {
       throw new NullPointerException("Ops!. Por favor adicione um anexo do dependente para continuar");
     }
-
   }
 
   private void checkDepedenteSeleciona() {
@@ -424,7 +425,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   /**
-   *  deletar os registro da lista e arquivo 
+   * deletar os registro da lista e arquivo
+   * 
    * @param bean
    */
   public void deletar(AuxilioSaudeRequisicao bean) {
@@ -441,11 +443,14 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().remove(bean);
 
+    setValorSolicitado(getEntidade());
+
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
   }
 
   /**
-   *  deletar os registro da lista e arquivo 
+   * deletar os registro da lista e arquivo
+   * 
    * @param bean
    */
   public void deletarDependente(AuxilioSaudeRequisicaoDependente bean) {
@@ -462,7 +467,9 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
 
     getEntidade().getAuxilioSaudeRequisicaoDependenteList().remove(bean);
-
+    
+    setValorSolicitado(getEntidade());
+    
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
   }
 
@@ -550,29 +557,29 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return itemDependente;
   }
 
-
-  public void calcularValorSolicitado(Double valorParamentro) {
-    if (getEntidade().getValorTotalSolicitado() == null) {
-      getEntidade().setValorTotalSolicitado(valorParamentro);
-    } else if (!getEntidade().getValorGastoPlanoSaude().equals(valorParamentro)) {
-      Double totalValorSolicitado = getEntidade().getValorTotalSolicitado() + valorParamentro;
-      getEntidade().setValorTotalSolicitado(totalValorSolicitado);
-    }
-  }
-
   /***
    * somar o valor do beneficiario com o dependente
    * 
    * @param bean
    */
   private void setValorSolicitado(AuxilioSaudeRequisicao bean) {
-    Double valor = null;
+    Double valor = 0.0;
 
-    for (AuxilioSaudeRequisicao auxBenef : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-      valor = auxBenef.getValorGastoPlanoSaude();
+    if (bean.checkBeneficiarioItemListNotNull()) {
+      for (AuxilioSaudeRequisicao auxBenef : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+        if (bean.getValorTotalSolicitado() == null) {
+          valor = auxBenef.getValorGastoPlanoSaude();
+        } else {
+          valor += auxBenef.getValorGastoPlanoSaude();
+        }
+      }
+    }
 
-      if (auxBenef.getAuxilioSaudeRequisicaoDependenteList() != null && !auxBenef.getAuxilioSaudeRequisicaoDependenteList().isEmpty()) {
-        for (AuxilioSaudeRequisicaoDependente auxDep : auxBenef.getAuxilioSaudeRequisicaoDependenteList()) {
+    if (bean.checkDependenteItemListNotNull()) {
+      for (AuxilioSaudeRequisicaoDependente auxDep : bean.getAuxilioSaudeRequisicaoDependenteList()) {
+        if (bean.getValorTotalSolicitado() == null) {
+          valor = auxDep.getValorGastoPlanoSaude();
+        } else {
           valor += auxDep.getValorGastoPlanoSaude();
         }
       }

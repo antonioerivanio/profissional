@@ -67,6 +67,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
         for (AuxilioSaudeRequisicao bean : beanList) {
           dao.salvar(bean);
 
+          salvarDependentes(bean);
           salvarDocumentosBeneficiario(bean);
 
           if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
@@ -74,8 +75,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
           }
         }
       }
-
-
     } catch (Exception e) {
       logger.error("Erro ao salvar o auxilio requisição : " + e.getMessage());
       System.out.println(e.getMessage());
@@ -89,7 +88,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     try {
       logger.info("Iniciando o Edicao do auxilio saude requisição");
 
-      if (bean.checkBeneficiarioItemLIstNotNull()) {
+      if (bean.checkBeneficiarioItemListNotNull()) {
         for (AuxilioSaudeRequisicao beanAuxilio : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
           beanAuxilio.setDataAlteracao(new Date());
 
@@ -99,6 +98,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
             dao.salvar(beanAuxilio);
           }
 
+          salvarDependentes(beanAuxilio);
           salvarDocumentosBeneficiario(beanAuxilio);
 
           if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
@@ -110,7 +110,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     } catch (Exception e) {
       logger.error("Erro ao atualizar o auxilio-saúde " + e.getMessage());
-      System.out.println(e.getMessage());
+      e.printStackTrace();
     }
   }
 
@@ -153,10 +153,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
             salvarDocumentosDependente(beanAuxDep);
           }
         }
-
       }
-
-
     } catch (Exception e) {
       logger.error("Erro ao salvar os dependentes do auxilio requisição : " + e.getMessage());
     }
@@ -164,21 +161,48 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
 
   @Override
+  public void salvarDependentes(AuxilioSaudeRequisicao bean) {
+    logger.info("Iniciando o salvamento dos dependentes do auxilio saude requisição");
+
+    try {
+      if (bean.checkDependenteItemListNotNull()) {
+        for (AuxilioSaudeRequisicaoDependente beanAuxDep : bean.getAuxilioSaudeRequisicaoDependenteList()) {
+
+          if (beanAuxDep.getId() != null) {
+            dao.atualizar(beanAuxDep);
+          } else {
+            beanAuxDep.setAuxilioSaudeRequisicao(bean);
+            dao.salvar(beanAuxDep);
+          }
+
+          salvarDocumentosDependente(beanAuxDep);
+        }
+      }
+    } catch (Exception e) {
+      logger.error("Erro ao salvar os dependentes do auxilio requisição : " + e.getMessage());
+    }
+  }
+
+  @Override
   public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
-
-    for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
-      // se a lista de dependentes estivar é porque somente o restrido do Beneficiario está sendo incuída
-      if (bean.getAuxilioSaudeRequisicaoDependenteList() == null) {
-        beanAuxDoc.setAuxilioSaudeRequisicaoDependente(null);
+    if (bean.checkBeneficiarioItemListNotNull()) {
+      for (AuxilioSaudeRequisicao auxilioSaudeRequisicao : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+        salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), auxilioSaudeRequisicao);
       }
+    } else {
+      salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), bean);      
+    }
+  }
+
+  private void salvarDocumento(List<AuxilioSaudeRequisicaoDocumento> beanList, AuxilioSaudeRequisicao bean) throws IOException {
+    for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : beanList) {
+      beanAuxDoc.setAuxilioSaudeRequisicaoDependente(null);
 
       if (beanAuxDoc.getId() != null) {
         dao.atualizar(beanAuxDoc);
       } else {
-        // dao.getEntityManager().flush();
-        AuxilioSaudeRequisicao find = dao.getEntityManager().find(AuxilioSaudeRequisicao.class, bean.getId());
-        beanAuxDoc.setAuxilioSaudeRequisicao(find);
+        beanAuxDoc.setAuxilioSaudeRequisicao(bean);
         dao.salvar(beanAuxDoc);
       }
 
@@ -186,29 +210,30 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     }
   }
 
+  @Override
   public void salvarDocumentosDependente(AuxilioSaudeRequisicaoDependente bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição dependente");
-
-    for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicao().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
-      // se estiver nulo é por está sendo incluido somente dados do dependente
-      if (bean.getAuxilioSaudeRequisicao().getPessoaJuridica() == null) {
+    if (bean.getAuxilioSaudeRequisicao().checkDependenteItemListNotNull()) {
+      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicao().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
         beanAuxDoc.setAuxilioSaudeRequisicao(null);
-      }
 
-      if (beanAuxDoc.getId() != null) {
-        dao.atualizar(beanAuxDoc);
-      } else {
-        beanAuxDoc.setAuxilioSaudeRequisicaoDependente(bean);
-        dao.salvar(beanAuxDoc);
-      }
+        if (beanAuxDoc.getId() != null) {
+          dao.atualizar(beanAuxDoc);
+        } else {
+          beanAuxDoc.setAuxilioSaudeRequisicaoDependente(bean);
+          dao.salvar(beanAuxDoc);
+        }
 
-      fazerUploadArquivo(beanAuxDoc);
+        fazerUploadArquivo(beanAuxDoc);
+      }
     }
   }
 
   /***
-   * o sistema deverá salvar os arquivos no caminho\anoAtual\matriculaColaborador\idSalvo_nomeArquvo_versao.pdf
-   * exemplo: \svtcenas2\Desenvolvimento\svtcefs2\SRH\comprovanteAuxSaude\2022\1980\1_comprovante_1.pdf 
+   * o sistema deverá salvar os arquivos no
+   * caminho\anoAtual\matriculaColaborador\idSalvo_nomeArquvo_versao.pdf exemplo:
+   * \svtcenas2\Desenvolvimento\svtcefs2\SRH\comprovanteAuxSaude\2022\1980\1_comprovante_1.pdf
+   * 
    * @param bean
    * @throws IOException
    */
@@ -241,7 +266,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     if (bean.getDependenteSelecionado() == null) {// não tem dependentes
 
-      if (bean.checkBeneficiarioItemLIstNotNull()) {
+      if (bean.checkBeneficiarioItemListNotNull()) {
         for (AuxilioSaudeRequisicao beanAux : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
           if (beanAux.getValorGastoPlanoSaude() == null) {
             FacesUtil.addErroMessage("O campo Valor Mensal é obrigatório.");
@@ -301,7 +326,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public void executarAntesSalvar(AuxilioSaudeRequisicao entidade, String observacao, Boolean flgAfirmaSerVerdadeiraInformacao) {
     if (entidade.getId() == null) {
-      if (entidade.checkBeneficiarioItemLIstNotNull()) {// um
+      if (entidade.checkBeneficiarioItemListNotNull()) {// um
                                                         // registro
         for (AuxilioSaudeRequisicao beanAux : entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
           beanAux.setStatusFuncional(entidade.getStatusFuncional());
@@ -414,8 +439,12 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows) {
-    // TODO Auto-generated method stub
     return dao.search(bean, first, rows);
+  }
+
+  @Override
+  public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeDependenteList(Long id) {
+    return dao.getAuxilioSaudeRequisicaoDependentePorId(id);
   }
 
 }

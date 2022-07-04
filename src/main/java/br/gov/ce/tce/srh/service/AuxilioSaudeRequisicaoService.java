@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
@@ -20,6 +21,7 @@ public interface AuxilioSaudeRequisicaoService {
   public void salvar(List<AuxilioSaudeRequisicao> beanList);
   
   public void salvarDependentes(List<AuxilioSaudeRequisicao> beanList);
+  public void salvarDependentes(AuxilioSaudeRequisicao bean);
   
   public void atualizar(AuxilioSaudeRequisicao bean);
   
@@ -31,11 +33,15 @@ public interface AuxilioSaudeRequisicaoService {
   
   public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException;
   
+  public void salvarDocumentosDependente(AuxilioSaudeRequisicaoDependente bean) throws IOException;
+  
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows);
     
   public BigDecimal getValorSalarioComBaseIdadePorPercentual(Double percentual);
   
   public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean);
+  
+  public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeDependenteList(Long id);
   
   
   /***

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -73,8 +72,8 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   @Transient
   private String caminhoCompleto;
   
-  public final static String NOME_ARQUIVO_BENEFICIARIO ="comprovante_beneficiario";
-  public final static String NOME_ARQUIVO_DEPENDENTE ="comprovante_dependente";
+  public  static final String NOME_ARQUIVO_BENEFICIARIO ="comprovante_beneficiario";
+  public  static final String NOME_ARQUIVO_DEPENDENTE ="comprovante_dependente";
 
   @Transient
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
@@ -134,7 +133,6 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
 
   @Override
   public Long getId() {
-    // TODO Auto-generated method stub
     return id;
   }
 
