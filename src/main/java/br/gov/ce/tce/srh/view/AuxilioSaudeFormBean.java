@@ -561,8 +561,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    * somar o valor do beneficiario com o dependente
    * 
    * @param bean
-   */
-  private void setValorSolicitado(AuxilioSaudeRequisicao bean) {
+   */  
+  protected void setValorSolicitado(AuxilioSaudeRequisicao bean) {
     Double valor = 0.0;
 
     if (bean.checkBeneficiarioItemListNotNull()) {
@@ -573,6 +573,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
           valor += auxBenef.getValorGastoPlanoSaude();
         }
       }
+      
+      bean.setValorTotalSolicitado(valor);
     }
 
     if (bean.checkDependenteItemListNotNull()) {
@@ -583,9 +585,9 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
           valor += auxDep.getValorGastoPlanoSaude();
         }
       }
-    }
-
-    bean.setValorTotalSolicitado(valor);
+      
+      bean.setValorTotalSolicitado(valor);
+    }    
   }
 
   public boolean getExibirCamposDependente() {
