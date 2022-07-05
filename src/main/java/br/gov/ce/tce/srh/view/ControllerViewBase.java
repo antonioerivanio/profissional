@@ -35,7 +35,7 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   private UIDataTable dataTable;
   public List<AuxilioSaudeRequisicao> pagedList;
   public int flagRegistroInicial = 0;
-  public static Integer pagina = 1;
+  public  Integer pagina = 1;
   boolean isEdicao = false;
   
   
@@ -118,6 +118,10 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
 
   public Integer getPagina() {
     return pagina;
+  }
+
+  public void setPagina(Integer pagina) {
+    this.pagina = pagina;
   }
 
   // PAGINAÇÃO

@@ -10,7 +10,7 @@ public interface ControllerViewCrudBase {
  
   void consultar();
   
-  void salvar();
+  String salvar();
   
   void salvar(boolean finalizar);   
 }

@@ -43,6 +43,8 @@ public interface AuxilioSaudeRequisicaoService {
   
   public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeDependenteList(Long id);
   
+  public void setValorSolicitado(AuxilioSaudeRequisicao bean);
+  
   
   /***
    * valida campos obrigatórios

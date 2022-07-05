@@ -4,8 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlSelectBooleanCheckbox;
+import javax.faces.component.html.HtmlSelectManyCheckbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
@@ -22,6 +30,7 @@ import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.exception.UsuarioException;
+import br.gov.ce.tce.srh.sapjava.domain.Entidade;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
@@ -80,13 +89,21 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         consultar();
 
       } else {
+        /**
+         * Message recebida após o salvamento do registro
+         */
+        if (FacesUtil.getFlashParameter("mensagem") != null) {
+          String message = (String) FacesUtil.getFlashParameter("mensagem");
+          FacesUtil.addInfoMessage(message);
+        }
+
         inicializar();
       }
 
     } catch (UsuarioException e) {
       logger.fatal(e.getMessage());
     } catch (Exception e) {
-      // FacesUtil.addErroMessage("Erro ao carregar os dados. Operação cancelada.");
+      e.printStackTrace();
       logger.fatal(e.getMessage());
     }
   }
@@ -105,7 +122,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     entidadeEditar.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(documentoList);
 
-    setValorSolicitado(entidadeEditar);
+    entidadeService.setValorSolicitado(entidadeEditar);
 
     entidadeService.setValorMaximoSolicitadoPorIdade(entidadeEditar);
 
@@ -139,7 +156,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   @Override
-  public void salvar() {
+  public String salvar() {
     try {
       if (isEdicao) {
         entidadeService.atualizar(getEntidade());
@@ -147,11 +164,15 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         entidadeService.executarAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
 
         if (Boolean.TRUE.equals(entidadeService.isOK(getEntidade()))) {
-          entidadeService.salvar(getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList());        
+          entidadeService.salvar(getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList());
         }
       }
 
-      FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
+
+      /**
+       * Message enviada para tela após registro ser salvo
+       */
+      FacesUtil.setFlashParameter("mensagem", "Registro Salvo com sucesso!");
 
       logger.info("Operação realizada com sucesso");
     } catch (Exception e) {
@@ -159,8 +180,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       logger.error(e);
     }
 
-    contadorBeneficiario = 1;
-    contadorDependente = 1;
+    // redirecionar para propria paginas e assim limpar todos campos
+    return "auxilioSaudeForm.faces?faces-redirect=true";
   }
 
   @Override
@@ -213,9 +234,13 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       } else {
         adicionarDadosDependente(bean);
       }
+ 
 
-      setValorSolicitado(getEntidade());
+      entidadeService.setValorSolicitado(getEntidade());
+      validarValorTotalSolicitacao();
+      
       fazerUploadArquivos(isBeneficiario);
+
     } catch (Exception e) {
       FacesUtil.addErroMessage(e.getMessage());
     }
@@ -298,9 +323,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void checkPessoaJuridicaIsNull(AuxilioSaudeRequisicao bean) {
-
     if (bean.isPessoaJuridicaNull()) {
-      // if (comboEmpresasCadastradas == null || comboEmpresasCadastradas.isEmpty()) {
       throw new NullPointerException("Ops!. Por favor escolha a empresa do plano de saúde para continuar");
     }
   }
@@ -443,7 +466,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().remove(bean);
 
-    setValorSolicitado(getEntidade());
+    entidadeService.setValorSolicitado(getEntidade());
 
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
   }
@@ -467,9 +490,9 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
 
     getEntidade().getAuxilioSaudeRequisicaoDependenteList().remove(bean);
-    
-    setValorSolicitado(getEntidade());
-    
+
+    entidadeService.setValorSolicitado(getEntidade());
+
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
   }
 
@@ -557,38 +580,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return itemDependente;
   }
 
-  /***
-   * somar o valor do beneficiario com o dependente
-   * 
-   * @param bean
-   */  
-  protected void setValorSolicitado(AuxilioSaudeRequisicao bean) {
-    Double valor = 0.0;
-
-    if (bean.checkBeneficiarioItemListNotNull()) {
-      for (AuxilioSaudeRequisicao auxBenef : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-        if (bean.getValorTotalSolicitado() == null) {
-          valor = auxBenef.getValorGastoPlanoSaude();
-        } else {
-          valor += auxBenef.getValorGastoPlanoSaude();
-        }
-      }
-      
-      bean.setValorTotalSolicitado(valor);
-    }
-
-    if (bean.checkDependenteItemListNotNull()) {
-      for (AuxilioSaudeRequisicaoDependente auxDep : bean.getAuxilioSaudeRequisicaoDependenteList()) {
-        if (bean.getValorTotalSolicitado() == null) {
-          valor = auxDep.getValorGastoPlanoSaude();
-        } else {
-          valor += auxDep.getValorGastoPlanoSaude();
-        }
-      }
-      
-      bean.setValorTotalSolicitado(valor);
-    }    
-  }
 
   public boolean getExibirCamposDependente() {
     if (getEntidade().getDependentesComboList() != null) {
@@ -601,5 +592,16 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     this.exibirCamposDependente = exibirCamposDependente;
   }
 
+  public void validarValorTotalSolicitacao() { 
+    AuxilioSaudeRequisicao bean =  getEntidade();
 
+    if (bean.getFuncional() != null && bean.getFuncional().getPessoal() != null) {
+      if (bean.getValorTotalSolicitado() < bean.getValorMaximoAserRestituido()) {
+        bean.setValorMaximoAserRestituido(bean.getValorTotalSolicitado());
+      }else {
+        entidadeService.setValorMaximoSolicitadoPorIdade(bean);
+      }
+    }
+
+  }
 }

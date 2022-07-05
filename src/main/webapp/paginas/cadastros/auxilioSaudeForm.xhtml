@@ -484,7 +484,8 @@
 								value="#{auxilioSaudeFormBean.entidade.statusAprovacao}"
 								styleClass="cel-25" />
 						</p>
-					</div>
+					</div>		
+					
 				</fieldset>
 			</a4j:outputPanel>
 
@@ -492,6 +493,7 @@
 				<a4j:commandButton id="asFrmBtnSalvar"
 					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
 					action="#{auxilioSaudeFormBean.salvar()}" value="Salvar"
+					render="form:messageNotify"					
 					styleClass="bt-padrao fr mg-right-10" />
 
 				<h:commandLink id="asFrmBtnIndeferir"

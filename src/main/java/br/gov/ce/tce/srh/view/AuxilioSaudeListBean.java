@@ -62,8 +62,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     count = entidadeService.count(getEntidade());
     
     setPagedList(entidadeService.search(getEntidade(), getDataTable().getFirst(),
-                              getDataTable().getRows()));
-    
+                              getDataTable().getRows()));    
   }
   
   private void consultarApenasSeusRegistros() {    
@@ -88,9 +87,8 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   
   @Override
-  public void salvar() {
-    // TODO Auto-generated method stub
-
+  public String salvar() {
+    return null;
   }
   
   @Override
