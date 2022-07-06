@@ -64,11 +64,11 @@ public class GTRListBean implements Serializable {
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 			setCpf(authenticationService.getUsuarioLogado().getCpf());			
 			consultarAutomaticamente();		
-			
-			int countResponsavelSetor = funcionalService.countResponsavelSetor(getEntidade().getFuncional().getId(), null);
+
+			int countResponsavelSetor = funcionalService.countResponsavelSetor(funcionalService.findByUsuariologado(authenticationService.getUsuarioLogado()).size(), null);
 			chefe = countResponsavelSetor > 0;
 			if(chefe) {
-				idFuncionalChefe = getEntidade().getFuncional().getId();
+				idFuncionalChefe = funcionalService.findByUsuariologado(authenticationService.getUsuarioLogado()).get(0).getId();
 			}
 		
 		} else {
