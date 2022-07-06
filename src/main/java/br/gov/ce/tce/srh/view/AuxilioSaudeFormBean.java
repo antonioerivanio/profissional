@@ -226,6 +226,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
       if (isBeneficiario) {
         adicionarDadosBeneficiario(bean);
+        
       } else {
         adicionarDadosDependente(bean);
       }
@@ -235,8 +236,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       validarValorTotalSolicitacao();      
       
       fazerUploadArquivos(isBeneficiario);
-      
-      
 
     } catch (Exception e) {
       FacesUtil.addErroMessage(e.getMessage());
@@ -260,6 +259,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, bean.getValorGastoPlanoSaude());
     getEntidade().adicionarDadosRequisicaoList(auxilioSaudeRequisicaoLocal);
+    
+    this.itemBeneficiario = new AuxilioSaudeRequisicao();
   }
 
   private void checkAnexoBeneficiarioIsNull() {
@@ -317,6 +318,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     /*** adicionar os dependentes na lista */
     getEntidade().adicionarDadosDependenteList(getAuxilioSaudeRequisicaoDependente(bean));
+    
+    this.itemDependente = new AuxilioSaudeRequisicao();
   }
 
   public AuxilioSaudeRequisicaoDependente getAuxilioSaudeRequisicaoDependente(AuxilioSaudeRequisicao bean) {
@@ -392,7 +395,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    */
   public void uploadComprovanteBeneficario(FileUploadEvent event) {
     try {
-
       UploadedFile comprovante = event.getUploadedFile();
 
       ArquivoVO arquivoVO = getInstanciaArquivoVO(AuxilioSaudeRequisicaoDocumento.NOME_ARQUIVO_BENEFICIARIO, comprovante.getName(), comprovante.getData(), contadorBeneficiario);
@@ -400,6 +402,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       auxSaudeRequisicaoDoc.adicionarNovoCaminhoArquivo(new Date(), getEntidade().getFuncional().getMatricula());
 
       getEntidade().adicionarComprovanteBeneficiarioList(auxSaudeRequisicaoDoc);
+      auxSaudeRequisicaoDoc= new AuxilioSaudeRequisicaoDocumento();
       contadorBeneficiario++;
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage("Erro na gravação do comprovante.");
@@ -419,7 +422,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       auxSaudeRequisicaoDoc.adicionarDependente(getEntidade());
 
       getEntidade().adicionarComprovanteDependenteList(auxSaudeRequisicaoDoc);
-
+      auxSaudeRequisicaoDoc= new AuxilioSaudeRequisicaoDocumento();
+      event = null;
       contadorBeneficiario++;
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage("Erro na gravação do comprovante.");

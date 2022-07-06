@@ -167,14 +167,14 @@
 					fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
 					acceptedTypes="pdf"
 					ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
-					maxFilesQuantity="1" immediateUpload="true"
+					maxFilesQuantity="1" 
+					immediateUpload="true"
 					onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
 
 					<a4j:ajax event="uploadcomplete"
 						execute="@none asFrmBtnAdicionarBeneficiario"
 						render="form:fileUpload, messages," />
 				</rich:fileUpload>
-
 
 				<span id="" class="bt-upload fl mg-top-14"
 					onclick="document.querySelector('.fileUploadFicha input').click()">
@@ -193,7 +193,7 @@
 					value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
 					style="padding:10px;">
 					<a4j:ajax execute="asFrmItValorPlano"
-						render="asCadFrmDtBeneficiario asfPgResumo" />
+						render="asCadFrmDtBeneficiario, asfPgResumo, asFrmItValorPlano, asFrmStPjBeneficiario" />
 				</h:commandButton>
 
 				<div class="tabela-dados">
@@ -316,6 +316,7 @@
 
 						<ui:fragment>
 							<rich:fileUpload styleClass="fileUploadFichaDep"
+								id="cadFrmFuDep"
 								style="display: none; padding-rigth:10px"
 								fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
 								acceptedTypes="pdf"
@@ -324,7 +325,7 @@
 								onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
 
 								<a4j:ajax event="uploadcomplete" execute="@none"
-									render="messages asCadFrmRBenef" />
+									render="messages, asCadFrmRBenef, asFrmItValorPlanoDep, asFrmSomPJDep, cadFrmFuDep" />
 							</rich:fileUpload>
 
 
@@ -456,7 +457,7 @@
 						<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
 					</legend>
 					<div style="display: flex; with:100%;">
-						<div style="padding-right:10%;">
+						<div style="width:50%">
 							<div class="conteiner" style="padding: 5px">
 								<p>
 									<strong>Valor total solicitado: </strong>
