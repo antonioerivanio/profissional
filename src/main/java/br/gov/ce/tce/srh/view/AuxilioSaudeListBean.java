@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
+import br.gov.ce.tce.srh.enums.BaseCalculoValorRestituido;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -26,6 +27,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   AuxilioSaudeRequisicaoService entidadeService;
   
   private AuxilioSaudeRequisicao entidadeEditar;
+
 
 
   @PostConstruct
@@ -76,12 +78,12 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   public String editar() {
-    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());    
+    FacesUtil.setFlashParameter(ENTIDADE, getEntidadeEditar());    
     return "incluirAlterar";
   }
 
   public String detalhar() {
-    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());    
+    FacesUtil.setFlashParameter(ENTIDADE, getEntidadeEditar());    
     return "auxilioSaudeDetalhes.xhtml?faces-redirect=true";
   }
 
@@ -93,7 +95,6 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   
   @Override
   public void salvar(boolean finalizar) {
-    // TODO Auto-generated method stub
     
   }
 

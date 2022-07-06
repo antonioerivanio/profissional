@@ -4,16 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.component.html.HtmlSelectManyCheckbox;
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
@@ -21,16 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.ArquivoVO;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeBaseCalculo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.ExibeCampoFormAuxilioSaude;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.BaseCalculoValorRestituido;
 import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.exception.UsuarioException;
-import br.gov.ce.tce.srh.sapjava.domain.Entidade;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.PessoaJuridicaService;
@@ -46,12 +39,13 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   private static final long serialVersionUID = 3707425815443102633L;
 
   static Logger logger = Logger.getLogger(AuxilioSaudeFormBean.class);
-
-
+  
+  
   private boolean exibirCamposDependente = Boolean.FALSE;
   int contadorBeneficiario = 1;
   int contadorDependente = 1;
-
+ 
+  
   @Autowired
   private RelatorioUtil relatorioUtil;
 
@@ -77,13 +71,13 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   private AuxilioSaudeRequisicao itemBeneficiario;
   private AuxilioSaudeRequisicao itemDependente;
-
+ 
 
   @PostConstruct
   private void init() {
     try {
 
-      if (FacesUtil.getFlashParameter("entidade") instanceof AuxilioSaudeRequisicao) {
+      if (FacesUtil.getFlashParameter(ENTIDADE) instanceof AuxilioSaudeRequisicao) {
         inicializarDadosParaEdicao();
         isEdicao = true;
         consultar();
@@ -92,13 +86,15 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         /**
          * Message recebida após o salvamento do registro
          */
-        if (FacesUtil.getFlashParameter("mensagem") != null) {
-          String message = (String) FacesUtil.getFlashParameter("mensagem");
+        if (FacesUtil.getFlashParameter(MESSAGEM) != null) {
+          String message = (String) FacesUtil.getFlashParameter(MESSAGEM);
           FacesUtil.addInfoMessage(message);
         }
 
         inicializar();
       }
+      
+      exibirTableAuxilioSaudeBase();
 
     } catch (UsuarioException e) {
       logger.fatal(e.getMessage());
@@ -123,7 +119,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     entidadeEditar.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(documentoList);
 
     entidadeService.setValorSolicitado(entidadeEditar);
-
     entidadeService.setValorMaximoSolicitadoPorIdade(entidadeEditar);
 
     setEntidade(entidadeEditar);
@@ -136,7 +131,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
-    entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
+ 
   }
 
   @Override
@@ -235,15 +230,22 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         adicionarDadosDependente(bean);
       }
  
-
       entidadeService.setValorSolicitado(getEntidade());
-      validarValorTotalSolicitacao();
+      entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
+      validarValorTotalSolicitacao();      
       
       fazerUploadArquivos(isBeneficiario);
+      
+      
 
     } catch (Exception e) {
       FacesUtil.addErroMessage(e.getMessage());
     }
+  }
+  
+  private void exibirTableAuxilioSaudeBase() {
+    getEntidade().setAuxilioSaudeBaseCalculo(new AuxilioSaudeBaseCalculo());
+    getEntidade().getAuxilioSaudeBaseCalculo().gerarTabelaAuxilioSaudeBase();
   }
 
   public PessoaJuridica getPessoaJuridicaPorId(AuxilioSaudeRequisicao bean) {
@@ -602,6 +604,11 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         entidadeService.setValorMaximoSolicitadoPorIdade(bean);
       }
     }
-
   }
+
+
+  
+  
+  
+  
 }

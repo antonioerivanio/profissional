@@ -27,6 +27,12 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   @Autowired
   protected LoginBean loginBean;
   
+  protected static final String MESSAGEM = "mensagem";
+  protected static final String ENTIDADE = "entidade";
+  
+  private String titulo = "Base de Cálculo: Valor do vencimento correspondente à  referência 23 do cargo de Analista de Controle Externo.";
+  private String[] nomeColuna = {"FAIXA DE IDADE DO BENEFICIÁRIO EM ANOS", "PERCENTUAL DO AUXÍLIO-SAÚDE", "VALOR CORRESPONDENTE"};
+  
   private T entidade;
 
   // paginação
@@ -146,13 +152,29 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   public void setEdicao(boolean isEdicao) {
     this.isEdicao = isEdicao;
   }
+  
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public void setTitulo(String titulo) {
+    this.titulo = titulo;
+  }
+
+  public String[] getNomeColuna() {
+    return nomeColuna;
+  }
+
+  public void setNomeColuna(String[] nomeColuna) {
+    this.nomeColuna = nomeColuna;
+  }
 
   public boolean temPermisssaoParaAlterar() {
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_INSERIR") || authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_ALTERAR");
   }
 
   // Alteração para o perfil consulta ser igual ao do servidor
-  public boolean isServidor() {
+  public boolean isServidor() {    
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR");
   }
 
@@ -162,7 +184,7 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
    * 
    * @return
    */
-  public boolean isAnalista() {
+  public boolean isAnalista() {    
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_APROVADOR_AUXILIO_SAUDE");
   }
     

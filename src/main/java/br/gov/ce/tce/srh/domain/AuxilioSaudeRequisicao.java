@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
+import br.gov.ce.tce.srh.enums.BaseCalculoValorRestituido;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
@@ -110,6 +111,10 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
 
   @Transient
   private Double valorTotalSolicitado;
+  
+  @Transient
+  private AuxilioSaudeBaseCalculo auxilioSaudeBaseCalculo;
+  
 
   @Transient
   private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoBeneficiarioItemList;
@@ -392,6 +397,26 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
 
   public void setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList) {
     this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoBeneficiarioList;
+  }   
+  
+  public AuxilioSaudeBaseCalculo getAuxilioSaudeBaseCalculo() {
+    return auxilioSaudeBaseCalculo;
   }
+
+  public void setAuxilioSaudeBaseCalculo(AuxilioSaudeBaseCalculo auxilioSaudeBaseCalculo) {
+    this.auxilioSaudeBaseCalculo = auxilioSaudeBaseCalculo;
+  }
+
+
+  public void gerarTabelaAuxilioSaudeBase() {    
+    List<AuxilioSaudeBaseCalculo> auxilioSaudeBaseCalculoList = new ArrayList<AuxilioSaudeBaseCalculo>();
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("ATÉ 30", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_ATE_30ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("31-40", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_31_ATE_40ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("41-50", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_41_ATE_50ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("51-60", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_51_ATE_60ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("A PARTIR DE 61", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_SUPERIOR_60ANOS));
     
+    getAuxilioSaudeBaseCalculo().setAuxilioSaudeBaseCalculos(auxilioSaudeBaseCalculoList);
+  }
+  
 }

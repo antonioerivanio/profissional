@@ -27,6 +27,7 @@ import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.Pessoal;
+import br.gov.ce.tce.srh.enums.BaseCalculoValorRestituido;
 import br.gov.ce.tce.srh.exception.UsuarioException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
@@ -406,48 +407,26 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     final int QUARENTA_ANOS = 40;
     final int CINQUENTA_ANOS = 50;
     final int SESSENTA_ANOS = 60;
+    
     if (bean.getFuncional() != null && bean.getFuncional().getPessoal() != null) {
       int idade = bean.getFuncional().getPessoal().getIdade();
 
-      if (idade <= TRINTA_ANOS) {
-        String valor = "814.12";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
+      if (idade <= TRINTA_ANOS) {        
+        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_ATE_30ANOS.getValor());
       }
-      if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {
-        String valor = "949.80";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
+      if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {        
+        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_31_ATE_40ANOS.getValor());
       }
-      if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {
-        String valor = "1085.49";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
+      if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {        
+        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_41_ATE_50ANOS.getValor());
       }
-      if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {
-        String valor = "1221.17";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
+      if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {        
+        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_51_ATE_60ANOS.getValor());
       }
-      if (idade > SESSENTA_ANOS) {
-        String valor = "1356.86";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
+      else {        
+        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_SUPERIOR_60ANOS.getValor());
       }
     }
-
-    /*
-     * if (idade <= TRINTA_ANOS) { Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.TRES_POR_CENTO).doubleValue();
-     * bean.setValorMaximoAserRestituido(valor); } if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {
-     * Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.TRES_PONTO_CINCO_POR_CENTO).
-     * doubleValue(); bean.setValorMaximoAserRestituido(valor); } if (idade > QUARENTA_ANOS && idade <=
-     * CINQUENTA_ANOS) { Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.QUATRO_POR_CENTO).doubleValue(
-     * ); bean.setValorMaximoAserRestituido(valor); } if (idade > CINQUENTA_ANOS && idade <=
-     * SESSENTA_ANOS) { Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.QUATRO_PONTO_CINCO_POR_CENTO).
-     * doubleValue(); bean.setValorMaximoAserRestituido(valor); } if (idade > SESSENTA_ANOS) { Double
-     * valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.CINCO_POR_CENTO).doubleValue()
-     * ; bean.setValorMaximoAserRestituido(valor); } }
-     */
   }
 
 
@@ -461,6 +440,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     List<AuxilioSaudeRequisicao> beanList = dao.search(bean, first, rows);
 
     for (AuxilioSaudeRequisicao beanBeneficiario : beanList) {
+
       if (beanList != null && !beanList.isEmpty()) {
         List<AuxilioSaudeRequisicaoDependente> beanDependenteList = dao.getAuxilioSaudeRequisicaoDependentePorId(beanBeneficiario.getId());
         if (beanDependenteList != null && !beanDependenteList.isEmpty()) {
@@ -469,6 +449,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
           Double valorTotalSolicitado = somarValoBeneficiarioMaisDependente(valorPlanoBeneficiario, valorPlanoSaudeDependente);
 
           beanBeneficiario.setValorTotalSolicitado(valorTotalSolicitado);
+        } else {
+          beanBeneficiario.setValorTotalSolicitado(beanBeneficiario.getValorGastoPlanoSaude());
         }
       }
     }
