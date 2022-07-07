@@ -6,6 +6,7 @@ $ docker version
 $ docker compose version
 ```
 
+
 Na raiz do projeto:
 1. Crie um arquivo `.env`
 2. Copie o conteúdo do arquivo `.env-template` para o arquivo `.env`
