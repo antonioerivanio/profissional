@@ -274,8 +274,11 @@
 				</fieldset>
 			</a4j:outputPanel>
 			
-			<a href="/srh/paginas/cadastros/auxilioSaudeList.faces"
-					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			<h:commandButton 
+				 action="#{auxilioSaudeFormBean.voltar}"
+				 immediate="true"
+				value="Voltar"
+				styleClass="bt-padrao fr mg-right-10"/>
 		
 		</h:form>
 

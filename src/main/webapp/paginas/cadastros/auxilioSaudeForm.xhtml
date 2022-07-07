@@ -167,8 +167,7 @@
 					fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
 					acceptedTypes="pdf"
 					ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
-					maxFilesQuantity="1" 
-					immediateUpload="true"
+					maxFilesQuantity="1" immediateUpload="true"
 					onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
 
 					<a4j:ajax event="uploadcomplete"
@@ -192,8 +191,8 @@
 					actionListener="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.itemBeneficiario, true)}"
 					value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
 					style="padding:10px;">
-					<a4j:ajax execute="asFrmItValorPlano"
-						render="asCadFrmDtBeneficiario, asfPgResumo, asFrmItValorPlano, asFrmStPjBeneficiario" />
+					<a4j:ajax execute="@this asFrmItValorPlano asFrmStPjBeneficiario"
+						render="asFrmItValorPlano asFrmStPjBeneficiario asCadFrmDtBeneficiario" />
 				</h:commandButton>
 
 				<div class="tabela-dados">
@@ -230,13 +229,11 @@
 								<f:facet name="header">
 		                          Anexos
 		                        </f:facet>
-
 								<h:commandLink
-									rendered="#{not empty auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDocumentoBeneficiarioList}"
+									style="color:blue"
 									actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
-									immediate="true" target="_blank">
-									<h:graphicImage url="/img/icon-pdf.png"
-										style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
+									immediate="true" target="_blank"
+									value="#{beanBenef.arquivoVO.nome}">
 								</h:commandLink>
 							</center>
 						</h:column>
@@ -280,6 +277,7 @@
 										value="#{auxilioSaudeFormBean.entidade.dependentesComboList}"
 										var="beanDep" itemValue="#{beanDep}"
 										itemLabel="#{beanDep.dependente.nomeCompleto}" />
+									<f:ajax execute="@this"></f:ajax>
 								</h:selectOneMenu>
 							</div>
 						</div>
@@ -298,7 +296,7 @@
 						</div>
 
 						<div class="select-box box-30">
-							<label for="">Nome Empresa Plano Saúde * </label>
+							<label for="asFrmSomPJDep">Nome Empresa Plano Saúde * </label>
 
 							<div class="conteiner">
 								<h:selectOneMenu id="asFrmSomPJDep"
@@ -315,8 +313,7 @@
 						</div>
 
 						<ui:fragment>
-							<rich:fileUpload styleClass="fileUploadFichaDep"
-								id="cadFrmFuDep"
+							<rich:fileUpload styleClass="fileUploadFichaDep" id="cadFrmFuDep"
 								style="display: none; padding-rigth:10px"
 								fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
 								acceptedTypes="pdf"
@@ -346,8 +343,8 @@
 							actionListener="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.itemDependente, false)}"
 							value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
 							style="padding:10px;">
-							<a4j:ajax execute="asFrmOpDependentes "
-								render="asFrmDtDep messages asfPgResumo"></a4j:ajax>
+							<a4j:ajax execute="asFrmOpDependentes"
+								render="asFrmItValorPlanoDep asFrmSomPJDep asfPgResumo asFrmDtDep "></a4j:ajax>
 						</h:commandButton>
 
 						<div class="tabela-dados">
@@ -387,11 +384,11 @@
 										<f:facet name="header">
 		                          Anexos
 		                        </f:facet>
-										<h:commandLink immediate="true"
+										<h:commandLink
+											style="color:blue"
 											actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
-											target="_blank">
-											<h:graphicImage url="/img/icon-pdf.png"
-												style="width: 24px;height: 24px;"></h:graphicImage>
+											immediate="true" target="_blank"
+											value="#{beanDep.arquivoVO.nome}">
 										</h:commandLink>
 									</center>
 								</h:column>
@@ -456,8 +453,8 @@
 					<legend>
 						<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
 					</legend>
-					<div style="display: flex; with:100%;">
-						<div style="width:50%">
+					<div style="display: flex; with: 100%;">
+						<div style="width: 50%">
 							<div class="conteiner" style="padding: 5px">
 								<p>
 									<strong>Valor total solicitado: </strong>
@@ -488,31 +485,32 @@
 								</p>
 							</div>
 						</div>
-						<div class="tabela-dados" style="padding-left:15px; margin-left:10px;" >
+						<div class="tabela-dados"
+							style="padding-left: 15px; margin-left: 10px;">
 							<h5>#{auxilioSaudeFormBean.titulo}</h5>
 							<rich:dataTable id="asCadFrmDtTabelBase" var="beanBase"
 								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeBaseCalculo.auxilioSaudeBaseCalculos.size()}"
 								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeBaseCalculo.auxilioSaudeBaseCalculos}"
-								style="text-align: center; " >
+								style="text-align: center; ">
 
 								<h:column>
 									<f:facet name="header">
-		                           <h:outputText  value="#{auxilioSaudeFormBean.nomeColuna[0]}" />
-		                            
-		                        </f:facet>
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[0]}" />
+
+									</f:facet>
 									<h:outputText value="#{beanBase.intervaloIdade}" />
 								</h:column>
 								<h:column>
 									<f:facet name="header">
-		                           <h:outputText  value="#{auxilioSaudeFormBean.nomeColuna[1]}"/>
-		                        </f:facet>
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[1]}" />
+									</f:facet>
 									<h:outputText
 										value="#{beanBase.baseCalculoValorRestituido.percentual}" />
 								</h:column>
 								<h:column>
 									<f:facet name="header">
-		                            <h:outputText  value="#{auxilioSaudeFormBean.nomeColuna[2]}"/>
-		                        </f:facet>
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[2]}" />
+									</f:facet>
 									<h:outputText
 										value="#{beanBase.baseCalculoValorRestituido.valor}">
 										<f:convertNumber type="currency" currencySymbol="R$"
@@ -526,26 +524,27 @@
 			</a4j:outputPanel>
 
 			<div class="bt-conteiner">
-				<a4j:commandButton id="asFrmBtnSalvar"
+				<h:commandButton id="asFrmBtnSalvar"
 					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
 					action="#{auxilioSaudeFormBean.salvar()}" value="Salvar"
-					render="form:messageNotify" styleClass="bt-padrao fr mg-right-10" />
+					styleClass="bt-padrao fr mg-right-10" />
 
 				<h:commandLink id="asFrmBtnIndeferir"
-					rendered="#{auxilioSaudeFormBean.isAnalista()}"
+					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
 					action="#{auxilioSaudeFormBean.deferir(false)}"
 					styleClass="bt-padrao fr mg-right-10" value="INDEFERIR"
-					style="background: #081e5c;">
-
-				</h:commandLink>
+					style="background: #081e5c;" />
 
 				<h:commandLink id="asFrmBtnDeferir"
-					rendered="#{auxilioSaudeFormBean.isAnalista()}"
+					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
 					action="#{auxilioSaudeFormBean.deferir(true)}"
 					styleClass="bt-padrao fr mg-right-10" value="DEFERIR">
 				</h:commandLink>
-				<a href="/srh/paginas/cadastros/auxilioSaudeList.faces"
-					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+				<h:commandButton action="#{auxilioSaudeFormBean.voltar}"
+					immediate="true" value="Voltar"
+					styleClass="bt-padrao fr mg-right-10" />
+
+
 			</div>
 		</h:form>
 

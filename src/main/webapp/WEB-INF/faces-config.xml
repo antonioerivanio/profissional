@@ -805,8 +805,7 @@
 		
 		<navigation-case>
 			<from-outcome>listar</from-outcome>
-			<to-view-id>/paginas/cadastros/auxilioSaudeList.xhtml</to-view-id>
-			<redirect/>
+			<to-view-id>/paginas/cadastros/auxilioSaudeList.xhtml</to-view-id>			
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>incluirAlterar</from-outcome>

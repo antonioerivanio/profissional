@@ -29,6 +29,9 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   
   protected static final String MESSAGEM = "mensagem";
   protected static final String ENTIDADE = "entidade";
+  protected static final String LISTAR = "listar";
+  protected static final String INCLUIR_OU_ALTERAR = "incluirAlterar";
+  
   
   private String titulo = "Base de Cálculo: Valor do vencimento correspondente à  referência 23 do cargo de Analista de Controle Externo.";
   private String[] nomeColuna = {"FAIXA DE IDADE DO BENEFICIÁRIO EM ANOS", "PERCENTUAL DO AUXÍLIO-SAÚDE", "VALOR CORRESPONDENTE"};
@@ -107,6 +110,9 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   }
 
   public UIDataTable getDataTable() {
+    if(dataTable == null) {
+      setDataTable(new UIDataTable());
+    }
     return dataTable;
   }
 

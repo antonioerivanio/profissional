@@ -56,6 +56,9 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
   @Transient
   AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;
   
+  @Transient
+  private ArquivoVO arquivoVO;
+  
   
   public AuxilioSaudeRequisicaoDependente() {
 
@@ -131,6 +134,18 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
 
   public void setFlgDeletado(boolean flgDeletado) {
     this.flgDeletado = flgDeletado;
-  }  
+  }
+
+
+  public ArquivoVO getArquivoVO() {
+    return arquivoVO;
+  }
+
+
+  public void setArquivoVO(ArquivoVO arquivoVO) {
+    this.arquivoVO = arquivoVO;
+  } 
+  
+  
   
 }

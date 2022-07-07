@@ -497,7 +497,15 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
   private Double somarValoBeneficiarioMaisDependente(Double valorBeneficiario, Double valorDependente) {
-    return valorBeneficiario + valorDependente;
+    double valorBeneficiarioTemp = 0.0 ;
+    double valorDependenteTemp = 0.0 ;
+    if(valorBeneficiario != null) {
+      valorBeneficiarioTemp = valorBeneficiario;
+    }
+    if(valorDependente != null) {
+      valorDependenteTemp = valorDependente;
+    }
+    return valorBeneficiarioTemp + valorDependenteTemp;
   }
 
 

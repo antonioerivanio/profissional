@@ -32,8 +32,15 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   @PostConstruct
   private void init() {
+    
+    if(FacesUtil.getFlashParameter(ENTIDADE) != null) {
+      setEntidade((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter(ENTIDADE));
+      consultar();
+      FacesUtil.setFlashParameter(ENTIDADE, null);
+    }
+    
     getEntidade().setFuncional(new Funcional());
-    getEntidade().getFuncional().setPessoal(new Pessoal());
+    getEntidade().getFuncional().setPessoal(new Pessoal()); 
   }
 
   public void consultar() {
@@ -79,7 +86,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   public String editar() {
     FacesUtil.setFlashParameter(ENTIDADE, getEntidadeEditar());    
-    return "incluirAlterar";
+    return INCLUIR_OU_ALTERAR;
   }
 
   public String detalhar() {
@@ -105,6 +112,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void setEntidadeEditar(AuxilioSaudeRequisicao entidadeEditar) {
     this.entidadeEditar = entidadeEditar;
   }
+
 
 
 

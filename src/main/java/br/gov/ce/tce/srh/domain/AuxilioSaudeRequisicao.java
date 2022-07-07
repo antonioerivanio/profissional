@@ -95,7 +95,11 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   @Column(name = "OBSERVACAO")
   private String observacao;
 
-  // Variaveis ou Beans que não são persistiveis -
+  
+  // Variaveis ou Beans que não são persistiveis -  
+  @Transient
+  private ArquivoVO arquivoVO;
+  
   @Transient
   private String declaracao = Texto.getDeclaracao();
 
@@ -151,6 +155,14 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   public String getDeclaracao() {
     return declaracao;
   }
+  
+  public ArquivoVO getArquivoVO() {
+    return arquivoVO;
+  }
+
+  public void setArquivoVO(ArquivoVO arquivoVO) {
+    this.arquivoVO = arquivoVO;
+  }
 
 
   public void adicionarDadosRequisicaoList(AuxilioSaudeRequisicao bean) {
@@ -172,26 +184,26 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
     beanDep.getAuxilioSaudeRequisicao().setAuxilioSaudeRequisicaoDependenteList(auxilioSaudeRequisicaoDependenteList);
   }
 
-  public void adicionarComprovanteBeneficiarioList(AuxilioSaudeRequisicaoDocumento beanDoc) {
+  public void adicionarComprovanteBeneficiarioList(List<AuxilioSaudeRequisicaoDocumento> beanDocList) {
     if (auxilioSaudeRequisicaoDocumentoBeneficiarioList == null) {
       auxilioSaudeRequisicaoDocumentoBeneficiarioList = new ArrayList<>();
     }
 
-    if (!auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty() && auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
-      FacesUtil.addErroMessage("O Arquivo adicionado já está na lista");
-    }
-
-    auxilioSaudeRequisicaoDocumentoBeneficiarioList.add(beanDoc);
+    /*
+     * if (!auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty() &&
+     * auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
+     * FacesUtil.addErroMessage("O Arquivo adicionado já está na lista"); }
+     */
+    auxilioSaudeRequisicaoDocumentoBeneficiarioList.addAll(beanDocList);
   }
 
-  public void adicionarComprovanteDependenteList(AuxilioSaudeRequisicaoDocumento beanDoc) {
+  public void adicionarComprovanteDependenteList(List<AuxilioSaudeRequisicaoDocumento> beanDocList) {
     if (auxilioSaudeRequisicaoDocumentoDependenteList == null) {
       auxilioSaudeRequisicaoDocumentoDependenteList = new ArrayList<>();
     }
 
-    auxilioSaudeRequisicaoDocumentoDependenteList.add(beanDoc);
-  }
-
+    auxilioSaudeRequisicaoDocumentoDependenteList.addAll(beanDocList);
+  }  
 
   public boolean isPessoaJuridicaNull() {
     return getPessoaJuridica() == null ? Boolean.TRUE : Boolean.FALSE;
