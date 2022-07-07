@@ -11,7 +11,7 @@
 
 
 	<ui:define name="content">
-	
+
 
 		<!-- Esta tela é composta de campos para o cadastro das solicitações de auxilio do BENEFICIARIO E SEU DEPENDENTES-->
 		<!-- Após o envio dos dados, estes ficaram aguardando aprovação da área Gerência de Remuneração e Benefícios -->
@@ -45,7 +45,7 @@
 			<fieldset>
 				<legend>Beneficiários</legend>
 
-<h:panelGroup class="input-box" id="dadosInputBeneficiario">
+				<h:panelGroup class="input-box" id="dadosInputBeneficiario">
 					<div class="input-box box-20">
 						<label for="asFrmOtNome">Nome</label>
 						<h:outputText styleClass="textSmall" name="asFrmOtNome"
@@ -91,7 +91,7 @@
 							value="#{auxilioSaudeFormBean.entidade.dataInicioRequisicao}" />
 					</div>
 				</h:panelGroup>
-				
+
 				<div class="tabela-dados">
 					<rich:dataTable id="asCadFrmDtBeneficiario" var="beanBenef"
 						rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList.size()}"
@@ -127,13 +127,17 @@
 		                          Anexos
 		                        </f:facet>
 
-								<h:commandLink
-									rendered="#{not empty auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDocumentoBeneficiarioList}"
-									actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
-									immediate="true" target="_blank">
-									<h:graphicImage url="/img/icon-pdf.png"
-										style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
-								</h:commandLink>
+								<ui:repeat var="anexo"
+									value="#{beanBenef.auxilioSaudeRequisicaoDocumentoBeneficiarioList}">
+									<h:commandLink immediate="true"
+										actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
+										style="padding:5px; color:blue;" 
+										value="#{anexo.nomeArquivo}" target="_blank" >
+										<a4j:ajax render="asCadFrmDtBeneficiario asfPgResumo"></a4j:ajax>
+
+									</h:commandLink>
+									<br />
+								</ui:repeat>
 							</center>
 						</h:column>
 					</rich:dataTable>
@@ -147,7 +151,7 @@
 					rendered="#{not empty auxilioSaudeFormBean.entidade.dependentesComboList}">
 					<!-- inicios dos campos dos dependentes -->
 					<fieldset>
-						<legend>Dependentes</legend>	
+						<legend>Dependentes</legend>
 
 						<div class="tabela-dados">
 							<rich:dataTable id="asFrmDtDep" var="beanDep"
@@ -180,18 +184,21 @@
 											locale="pt_br" />
 									</h:outputText>
 								</h:column>
-								
+
 								<h:column>
 									<center>
 										<f:facet name="header">
 		                          Anexos
 		                        </f:facet>
-										<h:commandLink immediate="true"
-											actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
-											target="_blank">
-											<h:graphicImage url="/img/icon-pdf.png"
-												style="width: 24px;height: 24px;"></h:graphicImage>
-										</h:commandLink>
+										<ui:repeat var="anexo"
+											value="#{beanDep.auxilioSaudeRequisicaoDocumentoList}">
+											<h:commandLink value="#{anexo.nomeArquivo}"
+												style="color:blue" immediate="true"
+												actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
+												target="_blank" />
+											<br />
+										</ui:repeat>
+
 									</center>
 								</h:column>
 
@@ -202,13 +209,12 @@
 			</h:panelGroup>
 			<!-- Fim campos Dependentes -->
 
-			<h:panelGroup >
+			<h:panelGroup>
 				<!-- Campo obrigatório apenas para área gestora -->
 				<div class="textarea-box box-100">
 					<label for="">Observações da área</label>
 					<div class="conteiner">
-						<h:inputTextarea id="asFrmIttObs"
-							disabled="true"
+						<h:inputTextarea id="asFrmIttObs" disabled="true"
 							value="#{auxilioSaudeFormBean.entidade.observacao}" />
 					</div>
 				</div>
@@ -227,11 +233,12 @@
 
 				<div class="conteiner" style="padding: 15px; font-size: 15px">
 					<div class="radio-box box-25">
-						<h:selectBooleanCheckbox required="true" id="asFrmSbcxAcordo" disabled="true"
+						<h:selectBooleanCheckbox required="true" id="asFrmSbcxAcordo"
+							disabled="true"
 							value="#{auxilioSaudeFormBean.entidade.flAfirmaSerVerdadeiraInformacao}" />
 						Concordo
 					</div>
-					
+
 				</div>
 			</fieldset>
 
@@ -273,13 +280,11 @@
 					</div>
 				</fieldset>
 			</a4j:outputPanel>
-			
-			<h:commandButton 
-				 action="#{auxilioSaudeFormBean.voltar}"
-				 immediate="true"
-				value="Voltar"
-				styleClass="bt-padrao fr mg-right-10"/>
-		
+
+			<h:commandButton action="#{auxilioSaudeFormBean.voltar}"
+				immediate="true" value="Voltar"
+				styleClass="bt-padrao fr mg-right-10" />
+
 		</h:form>
 
 	</ui:define>

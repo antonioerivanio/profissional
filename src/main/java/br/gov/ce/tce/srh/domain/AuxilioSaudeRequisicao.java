@@ -166,7 +166,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
 
 
   public void adicionarDadosRequisicaoList(AuxilioSaudeRequisicao bean) {
-
     if (auxilioSaudeRequisicaoBeneficiarioItemList == null) {
       auxilioSaudeRequisicaoBeneficiarioItemList = new ArrayList<>();
     }
@@ -175,7 +174,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   }
 
   public void adicionarDadosDependenteList(AuxilioSaudeRequisicaoDependente beanDep) {
-
     if (auxilioSaudeRequisicaoDependenteList == null) {
       auxilioSaudeRequisicaoDependenteList = new ArrayList<>();
     }
@@ -189,11 +187,6 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
       auxilioSaudeRequisicaoDocumentoBeneficiarioList = new ArrayList<>();
     }
 
-    /*
-     * if (!auxilioSaudeRequisicaoDocumentoBeneficiarioList.isEmpty() &&
-     * auxilioSaudeRequisicaoDocumentoBeneficiarioList.contains(beanDoc)) {
-     * FacesUtil.addErroMessage("O Arquivo adicionado já está na lista"); }
-     */
     auxilioSaudeRequisicaoDocumentoBeneficiarioList.addAll(beanDocList);
   }
 

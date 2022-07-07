@@ -38,6 +38,7 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   
   private T entidade;
 
+  protected boolean isRegistroSalvo = Boolean.FALSE;
   // paginação
   public Integer count = 0;
   public PagedListDataModel dataModel;
@@ -206,14 +207,19 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   }
   
   public boolean validarExibicaoBotaoSalvar() {
-    if(isEdicao && isAnalista()) {
+    if(isAnalista() && !isRegistroSalvo) {
       return Boolean.TRUE;
     }    
-    else if(!isEdicao && isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
+    else if(!isAnalista() && !isRegistroSalvo) {
       return Boolean.TRUE;
     }
-    
-    else if(!isEdicao && !isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
+    else {
+      return Boolean.FALSE;
+    }
+  }
+  
+  public boolean validarExibicaoBotaoDeferirEIndeferir() {
+    if(isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
       return Boolean.TRUE;
     }
     else {

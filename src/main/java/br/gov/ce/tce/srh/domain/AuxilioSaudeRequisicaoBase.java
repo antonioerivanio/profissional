@@ -146,6 +146,9 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
 
 
   public Double getCustoAdicional() {
+    if(this.custoAdicional == null) {
+      this.custoAdicional = 0.0;
+    }
     return custoAdicional;
   }
 

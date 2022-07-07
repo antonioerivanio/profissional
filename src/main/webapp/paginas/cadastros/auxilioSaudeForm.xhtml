@@ -229,12 +229,16 @@
 								<f:facet name="header">
 		                          Anexos
 		                        </f:facet>
-								<h:commandLink
-									style="color:blue"
-									actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
-									immediate="true" target="_blank"
-									value="#{beanBenef.arquivoVO.nome}">
-								</h:commandLink>
+
+								<ui:repeat var="anexo"
+									value="#{beanBenef.auxilioSaudeRequisicaoDocumentoBeneficiarioList}">
+									<h:commandLink immediate="true"
+										actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
+										style="padding:5px; color:blue;" value="#{anexo.nomeArquivo}"
+										target="_blank">
+									</h:commandLink>
+									<br />
+								</ui:repeat>
 							</center>
 						</h:column>
 
@@ -384,12 +388,14 @@
 										<f:facet name="header">
 		                          Anexos
 		                        </f:facet>
-										<h:commandLink
-											style="color:blue"
-											actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
-											immediate="true" target="_blank"
-											value="#{beanDep.arquivoVO.nome}">
-										</h:commandLink>
+										<ui:repeat var="anexo"
+											value="#{beanDep.auxilioSaudeRequisicaoDocumentoList}">
+											<h:commandLink value="#{anexo.nomeArquivo}"
+												style="color:blue" immediate="true"
+												actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
+												target="_blank" />
+											<br />
+										</ui:repeat>
 									</center>
 								</h:column>
 
@@ -524,27 +530,27 @@
 			</a4j:outputPanel>
 
 			<div class="bt-conteiner">
+				
 				<h:commandButton id="asFrmBtnSalvar"
 					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
 					action="#{auxilioSaudeFormBean.salvar()}" value="Salvar"
 					styleClass="bt-padrao fr mg-right-10" />
 
 				<h:commandLink id="asFrmBtnIndeferir"
-					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
+					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoDeferirEIndeferir()}"
 					action="#{auxilioSaudeFormBean.deferir(false)}"
 					styleClass="bt-padrao fr mg-right-10" value="INDEFERIR"
 					style="background: #081e5c;" />
 
 				<h:commandLink id="asFrmBtnDeferir"
-					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
+					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoDeferirEIndeferir()}"
 					action="#{auxilioSaudeFormBean.deferir(true)}"
 					styleClass="bt-padrao fr mg-right-10" value="DEFERIR">
 				</h:commandLink>
+
 				<h:commandButton action="#{auxilioSaudeFormBean.voltar}"
 					immediate="true" value="Voltar"
 					styleClass="bt-padrao fr mg-right-10" />
-
-
 			</div>
 		</h:form>
 

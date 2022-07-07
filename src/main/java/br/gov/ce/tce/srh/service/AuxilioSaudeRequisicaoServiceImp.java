@@ -187,12 +187,9 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
-    if (bean.checkBeneficiarioItemListNotNull()) {
-      for (AuxilioSaudeRequisicao auxilioSaudeRequisicao : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-        salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), auxilioSaudeRequisicao);
-      }
-    } else {
-      salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), bean);
+    
+    if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() != null) {      
+        salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), bean);      
     }
   }
 
@@ -215,7 +212,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   public void salvarDocumentosDependente(AuxilioSaudeRequisicaoDependente bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição dependente");
     if (bean.getAuxilioSaudeRequisicao().checkDependenteItemListNotNull()) {
-      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicao().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
+      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoList()) {
         beanAuxDoc.setAuxilioSaudeRequisicao(null);
 
         if (beanAuxDoc.getId() != null) {
@@ -335,8 +332,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
           beanAux.setObservacao(entidade.getObservacao());
           beanAux.setFlAfirmaSerVerdadeiraInformacao(entidade.getFlAfirmaSerVerdadeiraInformacao());
           beanAux.setAuxilioSaudeRequisicaoDependenteList(entidade.getAuxilioSaudeRequisicaoDependenteList());
-          beanAux.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
-          beanAux.setAuxilioSaudeRequisicaoDocumentoDependenteList(entidade.getAuxilioSaudeRequisicaoDocumentoDependenteList());
+          // beanAux.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
+          // beanAux.setAuxilioSaudeRequisicaoDocumentoDependenteList(entidade.getAuxilioSaudeRequisicaoDocumentoDependenteList());
         }
       } else {// apenas um registro adicionar na lista
         entidade.setValorGastoPlanoSaude(null);
@@ -388,13 +385,17 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj) {
-    return ((AuxilioSaudeRequisicao) dao.find(obj));
+    AuxilioSaudeRequisicao auxilioSaudeRequisicao = ((AuxilioSaudeRequisicao) dao.find(obj));
+    List<AuxilioSaudeRequisicaoDocumento> doclist = dao.getListaAnexos(auxilioSaudeRequisicao);
+    auxilioSaudeRequisicao.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(doclist);
+    return auxilioSaudeRequisicao;
   }
 
   @Override
   public List<AuxilioSaudeRequisicaoDocumento> getListaArquivosPorIdAuxilio(BeanEntidade bean) {
     return dao.getListaAnexos(bean);
   }
+
 
   @Override
   public BigDecimal getValorSalarioComBaseIdadePorPercentual(Double percentual) {
@@ -407,23 +408,22 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     final int QUARENTA_ANOS = 40;
     final int CINQUENTA_ANOS = 50;
     final int SESSENTA_ANOS = 60;
-    
+
     if (bean.getFuncional() != null && bean.getFuncional().getPessoal() != null) {
       int idade = bean.getFuncional().getPessoal().getIdade();
 
-      if (idade <= TRINTA_ANOS) {        
+      if (idade <= TRINTA_ANOS) {
         bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_ATE_30ANOS.getValor());
       }
-      if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {        
+      if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {
         bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_31_ATE_40ANOS.getValor());
       }
-      if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {        
+      if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {
         bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_41_ATE_50ANOS.getValor());
       }
-      if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {        
+      if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {
         bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_51_ATE_60ANOS.getValor());
-      }
-      else {        
+      } else {
         bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_SUPERIOR_60ANOS.getValor());
       }
     }
@@ -460,7 +460,17 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeDependenteList(Long id) {
-    return dao.getAuxilioSaudeRequisicaoDependentePorId(id);
+    List<AuxilioSaudeRequisicaoDependente> dependenteList = dao.getAuxilioSaudeRequisicaoDependentePorId(id);
+
+    if (dependenteList != null) {
+      // adicionar os anexos
+      for (AuxilioSaudeRequisicaoDependente beanDep : dependenteList) {
+        List<AuxilioSaudeRequisicaoDocumento> doclist = dao.getListaAnexos(beanDep);
+        beanDep.setAuxilioSaudeRequisicaoDocumentoList(doclist);
+      }
+    }
+
+    return dependenteList;
   }
 
   /***
@@ -497,12 +507,12 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
   private Double somarValoBeneficiarioMaisDependente(Double valorBeneficiario, Double valorDependente) {
-    double valorBeneficiarioTemp = 0.0 ;
-    double valorDependenteTemp = 0.0 ;
-    if(valorBeneficiario != null) {
+    double valorBeneficiarioTemp = 0.0;
+    double valorDependenteTemp = 0.0;
+    if (valorBeneficiario != null) {
       valorBeneficiarioTemp = valorBeneficiario;
     }
-    if(valorDependente != null) {
+    if (valorDependente != null) {
       valorDependenteTemp = valorDependente;
     }
     return valorBeneficiarioTemp + valorDependenteTemp;

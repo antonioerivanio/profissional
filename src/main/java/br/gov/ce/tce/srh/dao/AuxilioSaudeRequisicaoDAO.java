@@ -13,7 +13,6 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase.FlagAtivo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
-import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -147,8 +146,17 @@ public class AuxilioSaudeRequisicaoDAO {
   }
 
   public List<AuxilioSaudeRequisicaoDocumento> getListaAnexos(BeanEntidade beanEntidade) {
-    Query query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicao.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
-    query.setParameter(ID, (((AuxilioSaudeRequisicao) beanEntidade)).getId());
+    Query query = null;
+    if(beanEntidade instanceof AuxilioSaudeRequisicao) {
+      query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicao.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
+      query.setParameter(ID, (((AuxilioSaudeRequisicao) beanEntidade)).getId());
+    }
+    
+    if(beanEntidade instanceof AuxilioSaudeRequisicaoDependente) {
+      query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicaoDependente.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
+      query.setParameter(ID, (((AuxilioSaudeRequisicaoDependente) beanEntidade)).getId());
+    }
+    
     return query.getResultList();
   }
 

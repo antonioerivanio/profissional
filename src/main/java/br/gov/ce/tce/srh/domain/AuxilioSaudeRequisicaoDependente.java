@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,6 +58,9 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
   AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;
   
   @Transient
+  List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
+  
+  @Transient
   private ArquivoVO arquivoVO;
   
   
@@ -101,32 +105,26 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
     return id;
   }
 
-
   @Override
   public void setId(Long id) {
     this.id=id;
   }
 
-
   public PessoaJuridica getPessoaJuridica() {
     return pessoaJuridica;
   }
-
 
   public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
     this.pessoaJuridica = pessoaJuridica;
   }
 
-
   public Double getValorGastoPlanoSaude() {
     return valorGastoPlanoSaude;
   }
 
-
   public void setValorGastoPlanoSaude(Double valorGastoPlanoSaude) {
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
   }
-
 
   public boolean getFlgDeletado() {
     return flgDeletado;
@@ -136,16 +134,29 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
     this.flgDeletado = flgDeletado;
   }
 
-
   public ArquivoVO getArquivoVO() {
     return arquivoVO;
   }
 
-
   public void setArquivoVO(ArquivoVO arquivoVO) {
     this.arquivoVO = arquivoVO;
-  } 
-  
+  }
+
+  public AuxilioSaudeRequisicaoDocumento getAuxilioSaudeRequisicaoDocumento() {
+    return auxilioSaudeRequisicaoDocumento;
+  }
+
+  public void setAuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento) {
+    this.auxilioSaudeRequisicaoDocumento = auxilioSaudeRequisicaoDocumento;
+  }
+
+  public List<AuxilioSaudeRequisicaoDocumento> getAuxilioSaudeRequisicaoDocumentoList() {
+    return auxilioSaudeRequisicaoDocumentoList;
+  }
+
+  public void setAuxilioSaudeRequisicaoDocumentoList(List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList) {
+    this.auxilioSaudeRequisicaoDocumentoList = auxilioSaudeRequisicaoDocumentoList;
+  }   
   
   
 }

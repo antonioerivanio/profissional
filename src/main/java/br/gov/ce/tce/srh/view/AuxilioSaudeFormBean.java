@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.persistence.Transient;
 import org.apache.log4j.Logger;
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
@@ -18,7 +17,6 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeBaseCalculo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
-import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.ExibeCampoFormAuxilioSaude;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
@@ -41,12 +39,10 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   static Logger logger = Logger.getLogger(AuxilioSaudeFormBean.class);
 
-
   private boolean exibirCamposDependente = Boolean.FALSE;
   int contadorBeneficiario = 1;
   int contadorDependente = 1;
-
-
+  
   @Autowired
   private RelatorioUtil relatorioUtil;
 
@@ -72,7 +68,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   private AuxilioSaudeRequisicao itemBeneficiario;
   private AuxilioSaudeRequisicao itemDependente;
-  private ArquivoVO arquivoVO; 
+  private ArquivoVO arquivoVO;
 
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeDocBeneficiarioTempList;
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeDocDependenteTempList;
@@ -85,16 +81,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         inicializarDadosParaEdicao();
         isEdicao = true;
         consultar();
-
       } else {
-        /**
-         * Message recebida após o salvamento do registro
-         */
-        if (FacesUtil.getFlashParameter(MESSAGEM) != null) {
-          String message = (String) FacesUtil.getFlashParameter(MESSAGEM);
-          FacesUtil.addInfoMessage(message);
-        }
-
         inicializar();
       }
 
@@ -113,12 +100,9 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     itemDependente = new AuxilioSaudeRequisicao();
 
     AuxilioSaudeRequisicao entidadeEditar = entidadeService.getAuxilioSaudePorId((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter("entidade"));
-
-    List<AuxilioSaudeRequisicaoDocumento> documentoList = entidadeService.getListaArquivosPorIdAuxilio(entidadeEditar);
     entidadeEditar.setAuxilioSaudeRequisicaoDependenteList(entidadeService.getAuxilioSaudeDependenteList(entidadeEditar.getId()));
     entidadeEditar.setAuxilioSaudeRequisicaoBeneficiarioItemList(new ArrayList<AuxilioSaudeRequisicao>());
     entidadeEditar.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidadeEditar);
-    entidadeEditar.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(documentoList);
 
     entidadeService.setValorSolicitado(entidadeEditar);
     entidadeService.setValorMaximoSolicitadoPorIdade(entidadeEditar);
@@ -133,6 +117,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
+    exibirTableAuxilioSaudeBase();
   }
 
   @Override
@@ -152,7 +137,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   @Override
-  public String salvar() {
+  public void salvar() {
     try {
       if (isEdicao) {
         entidadeService.atualizar(getEntidade());
@@ -164,20 +149,20 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         }
       }
 
+      isRegistroSalvo = Boolean.TRUE;
 
       /**
        * Message enviada para tela após registro ser salvo
        */
-      FacesUtil.setFlashParameter("mensagem", "Registro Salvo com sucesso!");
-
-      logger.info("Operação realizada com sucesso");
+      FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
+      
+      if(!isAnalista()) {
+        inicializar();
+      }
     } catch (Exception e) {
       FacesUtil.addErroMessage("Ops! Não foi possível salvar a requisição, Por gentileza entre em contato o setor responsável");
       logger.error(e);
     }
-
-    // redirecionar para propria paginas e assim limpar todos campos
-    return "auxilioSaudeForm.faces?faces-redirect=true";
   }
 
   @Override
@@ -205,7 +190,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       } else {
         entidadeService.atualizar(getEntidade());
       }
-      
+
       voltar();
       FacesUtil.addInfoMessage(msg);
     } catch (Exception e) {
@@ -214,40 +199,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
   }
 
-
-  /***
-   * metodo adiciona os dados do titular e validade se este é dependente, caso seja dependente o
-   * metodo para cadastro de dependentes é chamado
-   * 
-   * @param beanEntidade
-   * @param isTitular
-   * @throws IllegalAccessException
-   * @throws InstantiationException
-   */
-  public void adicionar(AuxilioSaudeRequisicao bean, boolean isBeneficiario) {
-    try {
-      if (bean.getValorGastoPlanoSaude() == null) {
-        throw new NullPointerException("Ops!, Precisa adiconar o valor mensal para continuar!");
-      }
-
-      if (isBeneficiario) {
-        adicionarDadosBeneficiario(bean);
-
-      } else {
-        adicionarDadosDependente(bean);
-      }
-
-      entidadeService.setValorSolicitado(getEntidade());
-      entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
-
-      validarValorTotalSolicitacao();
-
-      fazerUploadArquivos(isBeneficiario);
-
-    } catch (Exception e) {
-      FacesUtil.addErroMessage(e.getMessage());
-    }
-  }
 
   private void exibirTableAuxilioSaudeBase() {
     getEntidade().setAuxilioSaudeBaseCalculo(new AuxilioSaudeBaseCalculo());
@@ -258,22 +209,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return entidadeService.getPessoaJuridicaPorId(bean.getPessoaJuridica(), comboEmpresasCadastradas);
   }
 
-  private void adicionarDadosBeneficiario(AuxilioSaudeRequisicao bean) {
-    checkPessoaJuridicaIsNull(bean);
-    checkAnexoBeneficiarioIsNull();
-
-    PessoaJuridica pessoaJuridica = getPessoaJuridicaPorId(bean);
-
-    AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, bean.getValorGastoPlanoSaude());
-    auxilioSaudeRequisicaoLocal.setArquivoVO(arquivoVO);
-    getEntidade().adicionarDadosRequisicaoList(auxilioSaudeRequisicaoLocal);
-    getEntidade().adicionarComprovanteBeneficiarioList(auxilioSaudeDocBeneficiarioTempList);
-    
-    this.itemBeneficiario = new AuxilioSaudeRequisicao();
-    auxilioSaudeDocBeneficiarioTempList.clear();
-    contadorBeneficiario++;
-    
-  }
 
   private void checkAnexoBeneficiarioIsNull() {
     if (auxilioSaudeDocBeneficiarioTempList == null) {
@@ -301,20 +236,30 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void criarDiretorioEfazerUploadArquivoBeneficiarioList() throws Exception {
-    if (getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() == null) {
-      throw new NullPointerException("Ops!, O anexo não foi encontrado!");
+    for (AuxilioSaudeRequisicao bean : getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+      if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() == null) {
+        throw new NullPointerException("Ops!, O anexo não foi encontrado!");
+      }
+
+      for (AuxilioSaudeRequisicaoDocumento beanDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
+        criarDiretorio(beanDoc);
+        salvarArquivoDiretorio(beanDoc);
+      }
     }
 
-    for (AuxilioSaudeRequisicaoDocumento beanDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
-      criarDiretorio(beanDoc);
-      salvarArquivoDiretorio(beanDoc);
-    }
   }
 
   private void criarDiretorioEfazerUploadArquivoDependenteList() throws Exception {
-    for (AuxilioSaudeRequisicaoDocumento beanDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
-      criarDiretorio(beanDoc);
-      salvarArquivoDiretorio(beanDoc);
+    for (AuxilioSaudeRequisicaoDependente bean : getEntidade().getAuxilioSaudeRequisicaoDependenteList()) {
+      if (bean.getAuxilioSaudeRequisicaoDocumentoList() == null) {
+        throw new NullPointerException("Ops!, O anexo não foi encontrado!");
+      }
+
+      for (AuxilioSaudeRequisicaoDocumento beanDoc : bean.getAuxilioSaudeRequisicaoDocumentoList()) {
+        criarDiretorio(beanDoc);
+        salvarArquivoDiretorio(beanDoc);
+      }
+
     }
   }
 
@@ -326,22 +271,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     FileUtils.upload(doc.getCaminhoCompleto(), doc.getArquivoVO().getComprovante());
   }
 
-
-  public void adicionarDadosDependente(AuxilioSaudeRequisicao bean) {
-    checkDepedenteSeleciona();
-    checkPessoaJuridicaIsNull(bean);
-    checkListaAnexoDependenteIsNull();
-
-    /*** adicionar os dependentes na lista */
-    AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente =getAuxilioSaudeRequisicaoDependente(bean);
-    auxilioSaudeRequisicaoDependente.setArquivoVO(arquivoVO);
-    getEntidade().adicionarDadosDependenteList(auxilioSaudeRequisicaoDependente);
-    getEntidade().adicionarComprovanteDependenteList(auxilioSaudeDocDependenteTempList);
-    this.itemDependente = new AuxilioSaudeRequisicao();
-    getEntidade().setDependenteSelecionado(null);
-    auxilioSaudeDocDependenteTempList.clear();
-    contadorDependente++;
-  }
 
   public AuxilioSaudeRequisicaoDependente getAuxilioSaudeRequisicaoDependente(AuxilioSaudeRequisicao bean) {
     PessoaJuridica pessoaJuridica = getPessoaJuridicaPorId(bean);
@@ -427,7 +356,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       auxSaudeRequisicaoDoc.adicionarNovoCaminhoArquivo(new Date(), getEntidade().getFuncional().getMatricula());
       auxilioSaudeDocBeneficiarioTempList = new ArrayList<AuxilioSaudeRequisicaoDocumento>();
       auxilioSaudeDocBeneficiarioTempList.add(auxSaudeRequisicaoDoc);
-      
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage("Erro na gravação do comprovante.");
       logger.fatal(OCORREU_ERRO + e.getMessage());
@@ -445,13 +373,80 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       auxSaudeRequisicaoDoc.adicionarNovoCaminhoArquivo(new Date(), getEntidade().getFuncional().getMatricula());
       auxSaudeRequisicaoDoc.adicionarDependente(getEntidade());
       auxilioSaudeDocDependenteTempList = new ArrayList<AuxilioSaudeRequisicaoDocumento>();
-      auxilioSaudeDocDependenteTempList.add(auxSaudeRequisicaoDoc);      
+      auxilioSaudeDocDependenteTempList.add(auxSaudeRequisicaoDoc);
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage("Erro na gravação do comprovante.");
       logger.fatal(OCORREU_ERRO + e.getMessage());
     }
 
   }
+
+
+  /***
+   * metodo adiciona os dados do titular e validade se este é dependente, caso seja dependente o
+   * metodo para cadastro de dependentes é chamado
+   * 
+   * @param beanEntidade
+   * @param isTitular
+   * @throws IllegalAccessException
+   * @throws InstantiationException
+   */
+  public void adicionar(AuxilioSaudeRequisicao bean, boolean isBeneficiario) {
+    try {
+      if (bean.getValorGastoPlanoSaude() == null) {
+        throw new NullPointerException("Ops!, Precisa adiconar o valor mensal para continuar!");
+      }
+
+      if (isBeneficiario) {
+        adicionarDadosBeneficiario(bean);
+
+      } else {
+        adicionarDadosDependente(bean);
+      }
+
+      entidadeService.setValorSolicitado(getEntidade());
+      entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
+
+      validarValorTotalSolicitacao();
+
+      fazerUploadArquivos(isBeneficiario);
+
+    } catch (Exception e) {
+      FacesUtil.addErroMessage(e.getMessage());
+    }
+  }
+
+  public void adicionarDadosDependente(AuxilioSaudeRequisicao bean) {
+    checkDepedenteSeleciona();
+    checkPessoaJuridicaIsNull(bean);
+    checkListaAnexoDependenteIsNull();
+
+    /*** adicionar os dependentes na lista */
+    AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente = getAuxilioSaudeRequisicaoDependente(bean);
+    auxilioSaudeRequisicaoDependente.setArquivoVO(arquivoVO);
+    auxilioSaudeRequisicaoDependente.setAuxilioSaudeRequisicaoDocumentoList(auxilioSaudeDocDependenteTempList);
+    getEntidade().adicionarDadosDependenteList(auxilioSaudeRequisicaoDependente);
+
+
+    this.itemDependente = new AuxilioSaudeRequisicao();
+    getEntidade().setDependenteSelecionado(null);
+    contadorDependente++;
+  }
+
+  private void adicionarDadosBeneficiario(AuxilioSaudeRequisicao bean) {
+    checkPessoaJuridicaIsNull(bean);
+    checkAnexoBeneficiarioIsNull();
+
+    PessoaJuridica pessoaJuridica = getPessoaJuridicaPorId(bean);
+
+    AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, bean.getValorGastoPlanoSaude());
+    auxilioSaudeRequisicaoLocal.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(auxilioSaudeDocBeneficiarioTempList);
+    getEntidade().adicionarDadosRequisicaoList(auxilioSaudeRequisicaoLocal);
+
+    this.itemBeneficiario = new AuxilioSaudeRequisicao();
+    contadorBeneficiario++;
+  }
+
 
   private ArquivoVO getInstanciaArquivoVO(String nome, String descricao, byte[] comprovante, int contador) {
     return new ArquivoVO(nome, descricao, ArquivoVO.CAMINHO_PARA_SALVAR_ARQUIVO, comprovante, contador);
@@ -531,7 +526,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    */
   public void visualizarAnexoBeneficiario(AuxilioSaudeRequisicao bean) {
     try {
-      for (AuxilioSaudeRequisicaoDocumento auxDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
+      for (AuxilioSaudeRequisicaoDocumento auxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
         if (auxDoc.getAuxilioSaudeRequisicao().equals(bean)) {
 
           if (auxDoc.getCaminhoCompleto() == null) {
@@ -571,7 +566,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    */
   public void visualizarAnexoDependente(AuxilioSaudeRequisicaoDependente bean) {
     try {
-      for (AuxilioSaudeRequisicaoDocumento auxDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
+      for (AuxilioSaudeRequisicaoDocumento auxDoc : bean.getAuxilioSaudeRequisicaoDocumentoList()) {
         if (auxDoc.getAuxilioSaudeRequisicaoDependente().equals(bean)) {
           FileUtils.visualizar(auxDoc.getCaminhoCompleto(), relatorioUtil);
           break;
@@ -642,13 +637,11 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       }
     }
   }
-  
-  
-  public String voltar() {    
+
+
+  public String voltar() {
     FacesUtil.setFlashParameter(ENTIDADE, getEntidade());
     return "/paginas/cadastros/auxilioSaudeList.xhtml?faces-redirect=true";
   }
 
-  
-  
 }
