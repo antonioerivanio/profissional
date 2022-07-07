@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Admissao;
+import br.gov.ce.tce.srh.domain.Cbo;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -258,6 +259,16 @@ public class AdmissaoEsocialDAO {
 	    sql.append(" ) ");
 	    
 	    return sql.toString();
+	}
+
+	public Admissao getByIdFuncional(Long idFuncional) {
+		try {
+			Query query = entityManager.createQuery("SELECT a FROM Admissao a where a.funcional.id = :idFuncional");
+			query.setParameter("idFuncional", idFuncional);
+			return (Admissao) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }

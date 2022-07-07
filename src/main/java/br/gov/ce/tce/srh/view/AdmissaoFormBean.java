@@ -11,6 +11,7 @@ import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
@@ -44,6 +45,7 @@ public class AdmissaoFormBean implements Serializable {
 	private List<Funcional> servidorEnvioList;
 	private Funcional servidorFuncional;
 	private Admissao entidade = new Admissao();
+	private Admissao admissaoAnterior = new Admissao();	
 	private List<DependenteEsocial> dependentesList;
 	boolean emEdicao = false;
 	
@@ -58,7 +60,7 @@ public class AdmissaoFormBean implements Serializable {
 		setEntidade(flashParameter != null ? flashParameter : new Admissao());
 		this.servidorEnvioList = funcionalService.findServidoresEvento2200();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			//dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
+			admissaoAnterior = 	getEntidade();		
 			servidorFuncional = getEntidade().getFuncional();
 			consultar();			
 			emEdicao = true;
@@ -83,10 +85,21 @@ public class AdmissaoFormBean implements Serializable {
 		}
 	}
 
+	@Transactional
 	public void salvarEvento() {
 
 		try {
 			if(servidorFuncional != null) {
+				if(emEdicao) {
+					if(admissaoAnterior != null) {
+						List<DependenteEsocial> dependentesListExcluir = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(admissaoAnterior.getFuncional().getId());
+						if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
+							dependenteEsocialTCEService.excluirAll(dependentesListExcluir);
+						}
+						admissaoEsocialService.excluir(admissaoAnterior);
+					}
+					  	 	
+				}
 				admissaoEsocialService.salvar(entidade);
 				
 				if(dependentesList != null && !dependentesList.isEmpty()) {
