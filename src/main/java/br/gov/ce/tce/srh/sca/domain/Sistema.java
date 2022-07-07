@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.sca.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,9 +10,14 @@ import br.gov.ce.tce.srh.domain.DatabaseMetadata;
 
 @Entity
 @Table(name="SISTEMA", schema=DatabaseMetadata.SCHEMA_SCA)
-public class Sistema {
+public class Sistema implements Serializable {
 
-	@Id
+	/**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+
+  @Id
 	private Long id;
 
 	@Column(name="NOME")

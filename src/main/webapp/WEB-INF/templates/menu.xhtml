@@ -427,6 +427,13 @@
 												Dependentes </a>
                                         </li>
                                     </ui:fragment>
+                                    
+                                    <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA, ROLE_DEPENDENTE')}">
+                                        <li>
+                                            <a href="/srh/paginas/cadastros/auxilioSaudeList.faces">
+												Auxílio-Saúde </a>
+                                        </li>
+                                    </ui:fragment>
                                 </ul>
                             </li>
                         </ui:fragment>

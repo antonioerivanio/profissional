@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,11 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaCPCodigo;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaFGTS;
 import br.gov.ce.tce.srh.enums.RubricaIncidenciaIRRFCodigo;
-import br.gov.ce.tce.srh.enums.RubricaIncidenciaSIND;
 import br.gov.ce.tce.srh.enums.TipoRubrica;
 
 @Entity

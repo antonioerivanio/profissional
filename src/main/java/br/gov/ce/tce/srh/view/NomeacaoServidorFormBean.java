@@ -26,6 +26,7 @@ import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.domain.Vinculo;
+
 import br.gov.ce.tce.srh.enums.LeiIncorporacao;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Entidade;
@@ -668,10 +669,10 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public Boolean getExibirOrgaoEhSalario() {return exibirOrgaoEhSalario;}
 
 	public Boolean getDigitarMatricula() {return digitarMatricula;}
-	public void setDigitarMatricula(Boolean digitarMatricula) {
-		this.digitarMatricula = digitarMatricula;
+	public void setDigitarMatricula(boolean digitarMatricula) {
+		
 		if(!digitarMatricula){
-			entidade.setMatricula(new String());
+			entidade.setMatricula("");
 		}
 	}	
 	

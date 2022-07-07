@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:rich="http://richfaces.org/rich">
+
+
+	<ui:define name="content">
+	
+
+		<!-- Esta tela é composta de campos para o cadastro das solicitações de auxilio do BENEFICIARIO E SEU DEPENDENTES-->
+		<!-- Após o envio dos dados, estes ficaram aguardando aprovação da área Gerência de Remuneração e Benefícios -->
+		<!-- O campo do dependentes será carregado automatica se existir na tabela SRH.TB_DEPENDENTEDependentes-->
+		<!-- quando o colocaborador logado escolher o seu dependente os campos para cadastro de valor e pessoa juridica será exibido [metodo chamado exibirCamposDependentes()] -->
+
+		<!-- id=asFrmOtNome foi usado atalhos, então o id seria igual auxilioSaudeFormularioOutputTextNome  -->
+
+
+		<div class="titulo-pagina">
+			<h2>Cadastro - Requerimento Auxílio-Saúde</h2>
+		</div>
+
+		<h:panelGroup rendered="false">
+			<fieldset
+				style="background-color: #fffbce; padding: 0px 9px 24px 31px">
+				<legend>
+					<p style="color: red">Aviso do prazo de solicitação:</p>
+				</legend>
+				<br />
+				<h:outputText
+					style="padding-bottom:10px; font-style: italic; font: 1.00625em Verdana,sans-serif; color: #454545; font-size:small"
+					value="#{auxilioSaudeFormBean.entidade.aviso}"></h:outputText>
+			</fieldset>
+		</h:panelGroup>
+
+		<h:form id="form" styleClass="formularios"
+			enctype="multipart/form-data" prependId="true">
+
+			<!-- Inicio dos campos do Beneficiário -->
+			<fieldset>
+				<legend>Beneficiários</legend>
+
+<h:panelGroup class="input-box" id="dadosInputBeneficiario">
+					<div class="input-box box-20">
+						<label for="asFrmOtNome">Nome</label>
+						<h:outputText styleClass="textSmall" name="asFrmOtNome"
+							value="#{auxilioSaudeFormBean.entidade.funcional.nomeCompleto}" />
+					</div>
+
+					<div class="input-box box-10">
+						<label for="asFrmOtMat">Matricula</label>
+						<h:outputText styleClass="textSmall" name="asFrmOtMat"
+							value="#{auxilioSaudeFormBean.entidade.funcional.matricula}"></h:outputText>
+					</div>
+
+					<div class="input-box box-10">
+						<label for="asFrmOtLot">Lotação</label>
+						<h:outputText styleClass="textSmall" name="asCadLot"
+							value="#{auxilioSaudeFormBean.entidade.funcional.setor.nome}"></h:outputText>
+						<br></br>
+					</div>
+
+					<div class="input-box box-10">
+						<label for="asFrmOtAtivo">Servidor Ativo</label>
+						<h:outputText styleClass="textSmall" name="asFrmOtAtivo"
+							value="#{auxilioSaudeFormBean.entidade.statusFuncional}"></h:outputText>
+						<br></br>
+					</div>
+
+					<div class="input-box box-15">
+						<label for="asFrmOtCargo">Cargo/Função</label>
+						<h:outputText styleClass="textSmall" name="asFrmOtCargo"
+							value="#{auxilioSaudeFormBean.entidade.funcional.ocupacao.nomenclatura}"></h:outputText>
+						<br></br>
+					</div>
+
+					<div class="input-box box-15">
+						<label for="asDtInicio">Data da Solicitação</label>
+						<h:outputText styleClass="textSmall" name="asDtInicio"
+							value="#{auxilioSaudeFormBean.entidade.dataInicioRequisicao}" />
+					</div>
+
+					<div class="input-box box-15">
+						<label for="asDtInicio">Data da Aprovação</label>
+						<h:outputText styleClass="textSmall" name="asDtInicio"
+							value="#{auxilioSaudeFormBean.entidade.dataInicioRequisicao}" />
+					</div>
+				</h:panelGroup>
+				
+				<div class="tabela-dados">
+					<rich:dataTable id="asCadFrmDtBeneficiario" var="beanBenef"
+						rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList.size()}"
+						value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList}">
+						<h:column>
+							<f:facet name="header">
+		                            NOME DO BENEFICIÁRIO
+		                        </f:facet>
+
+							<h:outputText value="#{beanBenef.funcional.pessoal.nomeCompleto}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">
+		                            NOME DA EMPRESA DO PLANO DE SAÚDE
+		                        </f:facet>
+
+							<h:outputText value="#{beanBenef.pessoaJuridica.nomeFantasia}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+		                            Valor Gasto (R$)
+		                        </f:facet>
+
+							<h:outputText value="#{beanBenef.valorGastoPlanoSaude}">
+								<f:convertNumber type="currency" currencySymbol="R$"
+									locale="pt_br" />
+							</h:outputText>
+						</h:column>
+						<h:column>
+							<center>
+								<f:facet name="header">
+		                          Anexos
+		                        </f:facet>
+
+								<h:commandLink
+									rendered="#{not empty auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDocumentoBeneficiarioList}"
+									actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
+									immediate="true" target="_blank">
+									<h:graphicImage url="/img/icon-pdf.png"
+										style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
+								</h:commandLink>
+							</center>
+						</h:column>
+					</rich:dataTable>
+				</div>
+			</fieldset>
+			<!-- fim campo Beneficiario -->
+
+
+			<h:panelGroup id="asFrmOpDependentes">
+				<ui:fragment
+					rendered="#{not empty auxilioSaudeFormBean.entidade.dependentesComboList}">
+					<!-- inicios dos campos dos dependentes -->
+					<fieldset>
+						<legend>Dependentes</legend>	
+
+						<div class="tabela-dados">
+							<rich:dataTable id="asFrmDtDep" var="beanDep"
+								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList.size()}"
+								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList}">
+
+								<h:column>
+									<f:facet name="header">
+		                            NOME DO DEPENDENTE
+		                        </f:facet>
+									<h:outputText
+										value="#{beanDep.dependente.dependente.nomeCompleto}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+		                            NOME DA EMPRESA DO PLANO DE SAÚDE
+		                        </f:facet>
+
+									<h:outputText value="#{beanDep.pessoaJuridica.nomeFantasia}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+		                           Valor Mensal (R$)
+		                        </f:facet>
+
+									<h:outputText value="#{beanDep.valorGastoPlanoSaude}">
+										<f:convertNumber type="currency" currencySymbol="R$"
+											locale="pt_br" />
+									</h:outputText>
+								</h:column>
+								
+								<h:column>
+									<center>
+										<f:facet name="header">
+		                          Anexos
+		                        </f:facet>
+										<h:commandLink immediate="true"
+											actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
+											target="_blank">
+											<h:graphicImage url="/img/icon-pdf.png"
+												style="width: 24px;height: 24px;"></h:graphicImage>
+										</h:commandLink>
+									</center>
+								</h:column>
+
+							</rich:dataTable>
+						</div>
+					</fieldset>
+				</ui:fragment>
+			</h:panelGroup>
+			<!-- Fim campos Dependentes -->
+
+			<h:panelGroup >
+				<!-- Campo obrigatório apenas para área gestora -->
+				<div class="textarea-box box-100">
+					<label for="">Observações da área</label>
+					<div class="conteiner">
+						<h:inputTextarea id="asFrmIttObs"
+							disabled="true"
+							value="#{auxilioSaudeFormBean.entidade.observacao}" />
+					</div>
+				</div>
+			</h:panelGroup>
+
+			<fieldset>
+				<legend>
+					<strong> <span style="color: #024ffb;important!">DECLARAÇÃO</span></strong>
+				</legend>
+
+				<div class="conteiner">
+					<p>
+						<h:outputLabel value="#{auxilioSaudeFormBean.entidade.declaracao}"></h:outputLabel>
+					</p>
+				</div>
+
+				<div class="conteiner" style="padding: 15px; font-size: 15px">
+					<div class="radio-box box-25">
+						<h:selectBooleanCheckbox required="true" id="asFrmSbcxAcordo" disabled="true"
+							value="#{auxilioSaudeFormBean.entidade.flAfirmaSerVerdadeiraInformacao}" />
+						Concordo
+					</div>
+					
+				</div>
+			</fieldset>
+
+			<a4j:outputPanel id="asfPgResumo"
+				rendered="#{auxilioSaudeFormBean.entidade.statusAprovacao ne null}">
+				<fieldset>
+					<legend>
+						<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
+					</legend>
+
+					<div class="conteiner" style="padding: 5px">
+						<p>
+							<strong>Valor total solicitado: </strong>
+							<h:outputText id="valorTotalSolicitado"
+								value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
+								<f:convertNumber type="currency" currencySymbol="R$"
+									locale="pt_br" />
+							</h:outputText>
+						</p>
+					</div>
+					<div class="conteiner" style="padding: 5px">
+						<p>
+							<strong>Valor a ser restituído: </strong>
+							<h:outputText id="valorRestituido"
+								value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
+								<f:convertNumber type="currency" currencySymbol="R$"
+									locale="pt_br" />
+							</h:outputText>
+						</p>
+					</div>
+
+					<div class="conteiner" style="padding: 5px">
+						<p>
+							<strong>Status: </strong>
+							<h:outputText
+								value="#{auxilioSaudeFormBean.entidade.statusAprovacao}"
+								styleClass="cel-25" />
+						</p>
+					</div>
+				</fieldset>
+			</a4j:outputPanel>
+			
+			<a href="/srh/paginas/cadastros/auxilioSaudeList.faces"
+					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+		
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
