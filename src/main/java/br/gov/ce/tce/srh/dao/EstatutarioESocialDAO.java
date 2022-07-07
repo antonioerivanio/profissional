@@ -72,10 +72,11 @@ public class EstatutarioESocialDAO {
 		sql.append("    tb_municipio.uf as UF_END, ");
 		sql.append("    tb_pessoal.email as EMAIL_PRINC, ");
 		sql.append("    '0'||tb_funcional.matricula as MATRICULA, ");
-		sql.append("    tb_funcional.dataexercicio as DT_INICIO, ");
-		sql.append("    2 as NIV_ESTAGIO, ");
+		sql.append("    tb_funcional.dataexercicio as DT_INICIO, ");	
 		sql.append("    tb_ocupacao.nomenclatura as NM_CARGO, ");
 		sql.append("    tb_ocupacao.cbo as CBO_CARGO, ");
+		sql.append("    tb_representacaocargo.nomenclatura as NM_FUNCAO, ");
+		sql.append("    tb_representacaocargo.cbo as CBO_FUNCAO, ");
 		sql.append("    fp_cadastro.vpad as VR_SAL_FX, ");
 		sql.append("    CASE WHEN fd.FLFISICA IS NULL THEN 'N' ELSE 'S' END AS DEF_FISICA, ");
 		sql.append("	CASE WHEN fd.FLVISUAL IS NULL THEN 'N' ELSE 'S' END AS DEF_VISUAL, ");
@@ -85,12 +86,15 @@ public class EstatutarioESocialDAO {
 		sql.append("	CASE WHEN fd.FLREADAPTADO IS NULL THEN 'N' ELSE 'S' END AS DEF_REAB_READAP, ");
 		sql.append("	TRIM(' ' from tb_pessoal.TELEFONE) AS FONE_PRINC, ");
 		sql.append("	CASE WHEN fp_cadastro.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ELSE 'S' END AS CAD_INI, ");
-		sql.append("	901 AS COD_CATEG, ");
+		sql.append("	410 AS COD_CATEG, ");
 		sql.append("	5 AS UND_SAL_FIXO, ");
-		sql.append("	'N' AS NAT_ESTAGIO, ");
-		sql.append("	'07954514042120' AS CNPJ_INST_ENSINO,  ");
 		sql.append("	tb_funcional.datasaida AS DT_TERMINO, ");
-		sql.append("	ADD_MONTHS(tb_funcional.dataexercicio,12) AS DT_PREV_TERM ");
+		sql.append("	tb_funcionalcedidos.codigocategoria AS CATEG_ORIG, ");
+		sql.append("	TB_PESSOAJURIDICA.cnpj AS CNPJ_CEDNT, ");
+		sql.append("	tb_funcionalcedidos.matriculaorigem AS MATRIC_CED, ");
+		sql.append("	tb_funcionalcedidos.dataorigemadmissao AS DT_ADM_CED, ");
+		sql.append("	tb_funcionalcedidos.tiporegtrab AS TP_REG_TRAB, ");
+		sql.append("	tb_funcionalcedidos.tiporegprev AS TP_REG_PREV ");
 		sql.append("FROM   srh.tb_funcional ");
 		sql.append("       INNER JOIN srh.fp_cadastro ");
 		sql.append("               ON srh.tb_funcional.id = srh.fp_cadastro.idfuncional ");
@@ -100,6 +104,8 @@ public class EstatutarioESocialDAO {
 		sql.append("              ON srh.tb_funcional.id = srh.tb_previdlimite.idfuncional ");
 		sql.append("	   LEFT JOIN srh.tb_funcionaldeficiencia fd ");
 		sql.append("	   		  ON fd.idfuncional = tb_funcional.ID ");
+		sql.append("	   LEFT JOIN srh.tb_representacaocargo ");
+		sql.append("	   		  ON srh.tb_funcional.idrepresentacaocargo = tb_representacaocargo.id ");
 		sql.append("       INNER JOIN srh.tb_ocupacao ");
 		sql.append("               ON srh.tb_funcional.idocupacao = srh.tb_ocupacao.id ");
 		sql.append("       INNER JOIN srh.tb_pessoal ");
@@ -114,6 +120,10 @@ public class EstatutarioESocialDAO {
 		sql.append("               ON srh.tb_pessoal.tipologradouro = srh.esocial_tipologradouro.id ");
 		sql.append("       INNER JOIN srh.tb_municipio ");
 		sql.append("               ON srh.tb_pessoal.municipioendereco = srh.tb_municipio.id ");
+		sql.append("       INNER JOIN srh.tb_funcionalcedidos ");
+		sql.append("               ON srh.tb_funcional.id = srh.tb_funcionalcedidos.idfuncional");
+		sql.append("       INNER JOIN SRH.TB_PESSOAJURIDICA ");
+		sql.append("               ON SRH.TB_PESSOAJURIDICA.id = srh.tb_funcionalcedidos.idpessoajuridica ");
 		sql.append("WHERE  tb_funcional.id = :idFuncional");
 		
 		return sql.toString();
@@ -138,7 +148,7 @@ public class EstatutarioESocialDAO {
 	public int count(String nome, String cpf) {
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(e) FROM EstatutarioESocial e inner join e.funcional f WHERE 1=1 ");
+		sql.append(" Select count(e) FROM EstatutarioESocial e inner join e.funcional f WHERE 1=1 and e.cnpjCednt is not null ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -165,7 +175,7 @@ public class EstatutarioESocialDAO {
 	public List<EstatutarioESocial> search(String nome, String cpf, Integer first, Integer rows) {
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT e FROM EstatutarioESocial e inner join fetch e.funcional f WHERE 1=1 ");
+		sql.append("  SELECT e FROM EstatutarioESocial e inner join fetch e.funcional f WHERE 1=1 AND e.cnpjCednt is not null ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");

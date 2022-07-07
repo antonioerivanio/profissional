@@ -1,10 +1,7 @@
 package br.gov.ce.tce.srh.dao;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -16,11 +13,10 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mchange.lang.StringUtils;
-
 import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.enums.TipoLicenca;
+import br.gov.ce.tce.srh.domain.Licenca;
+import br.gov.ce.tce.srh.exception.AfastamentoEsocialException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
@@ -39,41 +35,36 @@ public class AfastamentoESocialDAO {
 		entityManager.remove(entidade);
 	}
 	
-	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional, boolean possuiCargo) {
+	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional, Licenca licenca,  boolean possuiCargo)  throws AfastamentoEsocialException  {
 		try {
-			StringBuffer campoAdicionalWhere = new StringBuffer(" tb_funcional.id = :idFuncional ");
 			
-			Query query = entityManager.createNativeQuery(getSQLEventoS2230(possuiCargo, getSqlColunasEJoins(null), campoAdicionalWhere), AfastamentoESocial.class);
+			String sql = getParametrosWhere(licenca, getSQLEventoS2230(possuiCargo));
+			
+			Query query = entityManager.createNativeQuery(sql,  AfastamentoESocial.class);
 			query.setParameter("idFuncional", servidorFuncional.getId());
-
-			return (AfastamentoESocial) query.getSingleResult();			
+			
+			adicionarParametrosWhere(licenca, query);
+			
+			return (AfastamentoESocial) query.getSingleResult();
 		} catch (NoResultException e) {
-			return null;
+			throw new AfastamentoEsocialException("Nenhum Afastamento encontrado!");
 		}
 	}
 	
-	/**
-	 * Metodo que retorna a lista de afasmentos por id e tipo de licença do servidor e que não esteja salvos na tabela ESOCIAL_AFASTAMENTO
-	 * @author erivanio.cruz
-	 * @param servidorFuncional
-	 * @param possuiCargo
-	 * @return
-	 */
-	public List<AfastamentoESocial> getEvento2230ByServidorList(Funcional servidorFuncional, boolean possuiCargo) {
-		try {
-			StringBuffer campoAdicionalWhere = new StringBuffer(" NOT EXISTS (SELECT 1 from srh.ESOCIAL_AFASTAMENTO ea " );
-					campoAdicionalWhere.append(" WHERE ea.DT_INI_AFAST = srh.TB_LICENCA.INICIO ");
-					campoAdicionalWhere.append(" AND ea.DT_TERM_AFAST = srh.TB_LICENCA.fim ) ");
-					campoAdicionalWhere.append(" AND tb_funcional.id = :idFuncional   AND tb_tipolicenca.id IN (:idTipoLicenca)" );
-			
-			Query query = entityManager.createNativeQuery(getSQLEventoS2230(possuiCargo, getSqlColunasEJoins(null), campoAdicionalWhere), AfastamentoESocial.class);
-			query.setParameter("idFuncional", servidorFuncional.getId());
-			query.setParameter("idTipoLicenca",    TipoLicenca.getTodosCodigos());
-			
-			return query.getResultList();
-			
-		} catch (NoResultException e) {
-			return new ArrayList<AfastamentoESocial>();
+	private String getParametrosWhere(Licenca licenca, StringBuffer sql) {
+		if(licenca != null && licenca.isDataInicioFimLicencaNotNull()) {
+			sql.append("AND tb_licenca.inicio = :dataLicencaInicio ");
+			sql.append("AND tb_licenca.fim  =:dataLicencaFim ");
+			sql.append("OR tb_licenca.fim IS NULL ");
+		}
+		
+		return sql.toString();
+	}
+	
+	private void adicionarParametrosWhere(Licenca licenca, Query query) {
+		if(licenca != null  && licenca.isDataInicioFimLicencaNotNull()) {
+			query.setParameter("dataLicencaInicio", licenca.getInicio(), TemporalType.DATE);
+			query.setParameter("dataLicencaFim", licenca.getFim(), TemporalType.DATE);
 		}
 	}
 	
@@ -81,38 +72,11 @@ public class AfastamentoESocialDAO {
 		return entityManager.find(AfastamentoESocial.class, id);
 	}
 	
-	/**
-	 * Metodo criado para adicionar sql codicional no JOIN e no WHERE 
-	 * @author erivanio.cruz
-	 * @param possuiCargo
-	 * @param sqlAdicionalWhere
-	 * @return string
-	 */
-	public String getSQLEventoS2230(boolean possuiCargo, StringBuffer sqlColunasEJoinsAdicional, StringBuffer whereSqlAdicional) {
-		StringBuilder sql =new StringBuilder();
-		
-		if(sqlColunasEJoinsAdicional != null) {
-			sql. append(sqlColunasEJoinsAdicional);
-		}
-		
-		sql.append("WHERE  ");
-		
-		if(whereSqlAdicional != null) {
-			sql.append(whereSqlAdicional);
-		}
-		
-		return sql.toString();
-	}
-	
-	/**
-	 * @author erivanio.cruz
-	 * @return string
-	 */
-	private StringBuffer getSqlColunasEJoins(StringBuffer joinsAdicional) {
+	public StringBuffer getSQLEventoS2230(boolean possuiCargo) {
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append("SELECT rownum AS ID, ");
-		sql.append(" tb_funcional.id ||'-'|| tb_ocupacao.id AS REFERENCIA, ");
+		sql.append("SELECT 0 AS ID, ");
+		sql.append(" tb_funcional.id||'-'||tb_tipolicenca.id ||'-'||tb_licenca.inicio AS REFERENCIA, ");
 		sql.append("tb_funcional.id AS idfuncional,  ");
 		sql.append("NULL                  AS RETIFICAR_RECIBO, ");
 		sql.append("NULL                  AS OCORRENCIA_ID, ");
@@ -132,14 +96,13 @@ public class AfastamentoESocialDAO {
 		sql.append("ON  srh.tb_funcional.idpessoal = srh.tb_pessoal.id ");
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
-		
-		if(joinsAdicional != null) {
-			sql.append(joinsAdicional);	
-		}
-		
+		sql.append("WHERE  tb_funcional.id = :idFuncional  ");		
+		//sql.append("AND tb_licenca.inicio = :dataLicencaInicio ");
+		//sql.append("AND tb_licenca.fim  =:dataLicencaFim ");
+		//sql.append("OR tb_licenca.fim IS NULL ");
+		          
 		return sql;
 	}
-
 	
 	@Transactional
 	public AfastamentoESocial salvar(AfastamentoESocial entidade) {
@@ -153,8 +116,8 @@ public class AfastamentoESocialDAO {
 	}
 	
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from EstagiarioESocial e ");
-		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
+		Query query = entityManager.createNativeQuery("SELECT max(ID) FROM srh.esocial_afastamento ");
+		return query.getSingleResult() == null ? 1 : ((BigDecimal) query.getSingleResult()).longValue() + 1;
 	}
 
 	public int count(String nome, String cpf) {

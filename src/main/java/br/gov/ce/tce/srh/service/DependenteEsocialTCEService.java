@@ -51,6 +51,13 @@ public class DependenteEsocialTCEService{
 		return dao.findDependenteEsocialByIdfuncional(idFuncional);
 	}
 
+	public void excluirAll(List<DependenteEsocial> dependentesList) {
+		for (DependenteEsocial dependenteEsocial : dependentesList) {			
+			dao.excluir(dependenteEsocial);
+		}
+		
+	}
+
 	
 
 }

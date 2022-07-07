@@ -29,7 +29,7 @@ public class AdmissaoEsocialService{
 
 	@Transactional
 	public Admissao salvar(Admissao entidade) {		
-				
+		
 		entidade = dao.salvar(entidade);
 
 		// salvando notificação
@@ -56,6 +56,10 @@ public class AdmissaoEsocialService{
 		dao.excluir(entidade);
 	}	
 
+	public Admissao getByIdFuncional(Long idFuncional) {
+		return dao.getByIdFuncional(idFuncional);
+	}	
+	
 	public Admissao getById(Long id) {
 		return dao.getById(id);
 	}	

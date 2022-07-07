@@ -8,40 +8,38 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import br.gov.ce.tce.srh.domain.AfastamentoESocial;
+import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.view.AfastamentoFormBean;
 
 /**
- * @author erivanio.cruz
- * Converter 
+ * @author erivanio.cruz Converter
  *
  */
 @FacesConverter(value = "afastamentoConverter")
 public class AfastamentoConverter implements Converter {
 
 	@Override
-    public Object getAsObject(FacesContext ctx, UIComponent uiComponent, String id) {
-        ValueExpression vex =
-                ctx.getApplication().getExpressionFactory()
-                        .createValueExpression(ctx.getELContext(),
-                                "#{afastamentoFormBean}", AfastamentoFormBean.class);
+	public Object getAsObject(FacesContext ctx, UIComponent uiComponent, String id) {
+		ValueExpression vex = ctx.getApplication().getExpressionFactory().createValueExpression(ctx.getELContext(),
+				"#{afastamentoFormBean}", AfastamentoFormBean.class);
 
-        AfastamentoFormBean afastamentoFormBean = (AfastamentoFormBean)vex.getValue(ctx.getELContext());
-        
-        for(AfastamentoESocial afastamentoESocial: afastamentoFormBean.getAfastamentoESocialList()) {
-        	if(afastamentoESocial.getId().equals(Long.valueOf(id))) {
-        		return afastamentoESocial;
-        	}
-        }
-        return null;
-    }
+		AfastamentoFormBean afastamentoFormBean = (AfastamentoFormBean) vex.getValue(ctx.getELContext());
+		for (Licenca licenca : afastamentoFormBean.getLicencaList()) {
+			if(id != null && !id.contentEquals("Selecione...")) {
+				if (licenca.getId().equals(Long.valueOf(id))) {
+					return licenca;
+				}
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object object) {
-    	if(object == null)
-    		return null;
-    	
-        return ((AfastamentoESocial) object).getId().toString();
-    	
-    }
+	@Override
+	public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object object) {
+		if (object == null)
+			return null;
+
+		return ((Licenca) object).getId().toString();
+
+	}
 }

@@ -528,6 +528,13 @@
 												Exoneração </a>
                                         </li>
                                     </ui:fragment>
+                                    <!-- <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNCIONAL_CEDIDO')}">  -->
+                                    <ui:fragment>
+                                        <li>
+                                            <a href="/srh/paginas/funcional/funcionalCedidoList.faces">
+												Funcional Cedido </a>
+                                        </li>
+                                    </ui:fragment>
                                     <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_NOMEACAO')}">
                                         <li>
                                             <a href="/srh/paginas/funcional/nomeacaoServidorList.faces">

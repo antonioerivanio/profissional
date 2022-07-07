@@ -372,7 +372,7 @@ public class FuncionalDAO {
 					+ "FROM Funcional f "
 					+ "WHERE f.saida IS NULL "
 					+ "AND f.status = 1 "
-					+ "AND f.ocupacao.id not in (14,15) "
+					+ " OR f.ocupacao.id in (14,15)"
 					//+ "AND f.id  NOT IN (SELECT a.funcional.id FROM AfastamentoESocial a) "
 					+ "ORDER BY f.nome", Funcional.class);
 			return query.getResultList();
@@ -434,6 +434,21 @@ public class FuncionalDAO {
 			 
 			 
 			query.setParameter("referencia", "%" + anoReferencia+mesReferencia + "%");
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	public List<Funcional> findServidorEvento2300() {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE f.saida IS NULL "
+					+ "AND f.status = 1 "
+					+ "AND f.id IN (SELECT fc.funcional.id FROM FuncionalCedido fc)"
+					+ "AND f.id  NOT IN (SELECT e.funcional.id FROM EstagiarioESocial e) "
+					+ "ORDER BY f.nome", Funcional.class);
 			return query.getResultList();
 		} catch (NoResultException e) {
 			return null;

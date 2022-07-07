@@ -227,6 +227,12 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "IDAPOSENTADORIA")	
 	private Aposentadoria aposentadoria;
+	
+	@NotAudited
+	@ManyToOne
+	@JoinColumn(name = "CODCATEGORIA" , referencedColumnName = "CODIGO")
+	private CodigoCategoria codigoCategoria;
+	
 
 	public Funcional() {
 		//seguindo padrao Java Beans...
@@ -457,6 +463,14 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 	public Aposentadoria getAposentadoria() {return aposentadoria;}
 	public void setAposentadoria(Aposentadoria aposentadoria) {this.aposentadoria = aposentadoria;}
 	
+	public CodigoCategoria getCodigoCategoria() {
+		return codigoCategoria;
+	}
+
+	public void setCodigoCategoria(CodigoCategoria codigoCategoria) {
+		this.codigoCategoria = codigoCategoria;
+	}
+	
 	public boolean isProvenienteDoTCM() {
 		return this.tipoMovimentoEntrada != null && this.tipoMovimentoEntrada.getId().longValue() == 43L;		
 	}
@@ -479,6 +493,17 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
 		this.pessoaJuridica = pessoaJuridica;
 	}
 	
+	public boolean getRegimeTrabalhistaIsnull() {
+		if(getRegime() == null)
+			return Boolean.TRUE;
+					
+		return Boolean.FALSE;
+	}
 	
-	
+	public boolean getRegimePrevidenciarioIsnull() {
+		if(getPrevidencia() == null)
+			return Boolean.TRUE;
+					
+		return Boolean.FALSE;
+	}
 }

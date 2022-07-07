@@ -196,6 +196,9 @@
         <intercept-url pattern="/paginas/funcional/exoneracaoList.faces" access="ROLE_EXONERACAO" />
         <intercept-url pattern="/paginas/funcional/exoneracaoForm.faces" access="ROLE_EXONERACAO" />
         
+        <!-- <intercept-url pattern="/paginas/funcional/funcionalCedidoList.faces" access="ROLE_FUNCIONAL_CEDIDO" />
+        <intercept-url pattern="/paginas/funcional/funcionalCedidoForm.faces" access="ROLE_FUNCIONAL_CEDIDO" /> -->
+        
         <intercept-url pattern="/paginas/funcional/aposentadoriaList.faces" access="ROLE_APOSENTADORIA" />
         <intercept-url pattern="/paginas/funcional/aposentadoriaForm.faces" access="ROLE_APOSENTADORIA" />
 
@@ -271,17 +274,16 @@
 	
 	
 	<!-- SCA - DESENVOLVIMENTO -->
-	
-<authentication-manager alias="authenticationManager" >
+	 <!-- <authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
-    </authentication-manager>	 
+    </authentication-manager>-->
 
 		
 <!--***********************************************************************************************************************************************************-->	
 		
 	<!-- AD - PRODUÇÃO -->
-	 
- <!--   <beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+  <beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+
         <beans:constructor-arg value="tce.ce.gov.br" />
         <beans:constructor-arg value="ldap://tce.ce.gov.br:389/"/> 
         <beans:property name="userDetailsContextMapper" ref="customUserDetailsMapper"/>
@@ -292,7 +294,7 @@
 	<authentication-manager alias="authenticationManager">
 	    <authentication-provider ref="ldapActiveDirectoryAuthProvider" />
 
-	</authentication-manager>-->
+	</authentication-manager>
 	
 
 </beans:beans>

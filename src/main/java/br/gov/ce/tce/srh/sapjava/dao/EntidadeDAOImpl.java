@@ -1,11 +1,15 @@
 package br.gov.ce.tce.srh.sapjava.dao;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +41,8 @@ public class EntidadeDAOImpl implements EntidadeDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Entidade> listaOrgaoOrigemComRestricaoTipoEsfera() {
-		Query query = entityManager.createQuery("SELECT e FROM Entidade e WHERE e.tipoEntidadeEsfera=1 or e.tipoEntidadeEsfera=2 or e.tipoEntidadeEsfera=3 ORDER BY descricaoEntidade ");
+		//Query query = entityManager.createQuery("SELECT distinct e FROM Entidade e WHERE e.tipoEntidadeEsfera=1 or e.tipoEntidadeEsfera=2 or e.tipoEntidadeEsfera=3 ORDER BY descricaoEntidade ");
+		Query query = entityManager.createQuery("SELECT distinct e FROM Entidade e WHERE e.tipoEntidadeEsfera in(1,2,3) ORDER BY descricaoEntidade ");
 		return query.getResultList();
 	}
 

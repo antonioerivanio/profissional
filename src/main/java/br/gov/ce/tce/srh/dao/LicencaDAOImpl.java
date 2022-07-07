@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.domain.TipoLicenca;
 
@@ -147,6 +148,54 @@ public class LicencaDAOImpl implements LicencaDAO {
 		Query query = entityManager.createQuery("Select l from Licenca l where l.pessoal.id = :pessoal and l.excluitemposerv = 1 ORDER BY l.inicio desc ");
 		query.setParameter("pessoal", idPessoa);
 		return query.getResultList();
+	}
+
+
+	@Override
+	public List<Licenca> search(Funcional funcional, List<Integer> listaCodigo) {		
+		Query query = entityManager.createNativeQuery(getSqlNativeLicenca(), Licenca.class);
+		query.setParameter("idFuncional", funcional.getId());
+		query.setParameter("tiposLicencas", listaCodigo);
+
+		return query.getResultList();
+	}
+	
+	/**
+	 * @author erivanio.cruz
+	 * Retorna dados consulta da tabela lincenca e tipo de lincenca
+	 * @return string sql
+	 */
+	private String getSqlNativeLicenca() {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT tb_licenca.id AS ID, ");
+		sql.append("tb_pessoal.id AS IDPESSOAL, ");
+		sql.append("tb_tipolicenca.id AS IDTIPOLICENCA, ");		
+		sql.append("tb_licenca.inicio AS INICIO, ");
+		sql.append("tb_licenca.fim AS FIM, ");
+		sql.append("tb_licenca.excluitemposerv AS EXCLUITEMPOSERV, ");
+		sql.append("tb_licenca.excluifinanceiro AS EXCLUIFINANCEIRO, ");
+		sql.append("NULL AS IDLICENCAESP, ");	
+		sql.append("tb_tipolicenca.id AS IDTIPOLICENCA, ");		
+		sql.append("tb_licenca.nrprocesso AS NRPROCESSO, ");
+		sql.append("tb_licenca.obs AS OBS, ");
+		sql.append("null AS DOE, ");
+		sql.append("null AS IDTIPOPUBLICACAO, ");
+		sql.append("null AS CONTARDIASEMDOBRO, ");
+		sql.append("tb_tipolicenca.descricao AS DESCRICAO ");
+		sql.append("FROM   srh.tb_licenca ");
+		sql.append("INNER JOIN srh.tb_pessoal ");
+		sql.append("ON srh.tb_licenca.idpessoal = srh.tb_pessoal.id ");
+		sql.append("INNER JOIN srh.tb_tipolicenca ");
+		sql.append("ON srh.tb_licenca.idtipolicenca = srh.tb_tipolicenca.id ");
+		sql.append("INNER JOIN srh.tb_funcional ");
+		sql.append("ON  srh.tb_funcional.idpessoal = srh.tb_pessoal.id ");
+		sql.append("INNER JOIN srh.tb_ocupacao ");
+		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
+		sql.append("WHERE  tb_funcional.id = :idFuncional  ");
+		sql.append("AND  tb_tipolicenca.id in (:tiposLicencas)  ");
+		sql.append("AND  tb_licenca.fim not in (select DT_TERM_AFAST from srh.esocial_afastamento)  ");
+		
+		return sql.toString();
 	}
 }
 

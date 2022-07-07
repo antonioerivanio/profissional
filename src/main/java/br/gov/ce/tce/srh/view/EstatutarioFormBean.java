@@ -31,11 +31,13 @@ public class EstatutarioFormBean implements Serializable {
 
 	@Autowired
 	private EstatutarioESocialService estatutarioESocialService;
+	
 	@Autowired
 	private DependenteEsocialTCEService dependenteEsocialTCEService;
 	
 	@Autowired
 	private FuncionalService funcionalService;
+	
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
 	
@@ -55,7 +57,7 @@ public class EstatutarioFormBean implements Serializable {
 	private void init() {
 		EstatutarioESocial flashParameter = (EstatutarioESocial)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new EstatutarioESocial());
-		this.servidorEnvioList = funcionalService.findEstagiarioservidoresEvento2300();
+		this.servidorEnvioList = funcionalService.findServidorEvento2300();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
 			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
 			estagiarioFuncional = getEntidade().getFuncional();
@@ -155,7 +157,13 @@ public class EstatutarioFormBean implements Serializable {
 	public UIDataTable getDataTable() {return dataTable;}
 	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
 
-	
+	public List<DependenteEsocial> getDependentesList() {
+		return dependentesList;
+	}
+
+	public void setDependentesList(List<DependenteEsocial> dependentesList) {
+		this.dependentesList = dependentesList;
+	}
 
 	public List<EstatutarioESocial> getPagedList() {return pagedList;}
 	public void setPagedList(List<EstatutarioESocial> pagedList) {this.pagedList = pagedList;}

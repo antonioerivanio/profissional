@@ -556,4 +556,11 @@ public class LicencaServiceImpl implements LicencaService {
 		return dao.getById(id);
 	}
 
+
+	@Override
+	public List<Licenca> search(Funcional funcional, List<Integer> listaCodigo) {
+		// TODO Auto-generated method stub
+		return dao.search(funcional, listaCodigo);
+	}
+
 }

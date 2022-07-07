@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 
 import br.gov.ce.tce.srh.domain.AfastamentoESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Licenca;
+import br.gov.ce.tce.srh.enums.TipoLicencaEnum;
+import br.gov.ce.tce.srh.exception.AfastamentoEsocialException;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.AfastamentoESocialService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -41,7 +44,7 @@ public class AfastamentoFormBean implements Serializable {
 
 	// entidades das telas
 	private List<Funcional> servidorEnvioList;
-	private Funcional servidorFuncional;	
+	private Funcional servidorFuncional;
 	private AfastamentoESocial entidade = new AfastamentoESocial();
 	
 	boolean emEdicao = false;
@@ -50,29 +53,42 @@ public class AfastamentoFormBean implements Serializable {
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
 	private List<AfastamentoESocial> pagedList = new ArrayList<AfastamentoESocial>();
-	private List<AfastamentoESocial> afastamentoESocialList;
-	
+
+	private List<Licenca> licencaList;
+
 	@PostConstruct
 	private void init() {
-		AfastamentoESocial flashParameter = (AfastamentoESocial)FacesUtil.getFlashParameter("entidade");
+		AfastamentoESocial flashParameter = null;
+		
+		if(FacesUtil.getFlashParameter("entidade")  != null && FacesUtil.getFlashParameter("entidade") instanceof AfastamentoESocial) {
+			flashParameter = (AfastamentoESocial)FacesUtil.getFlashParameter("entidade");
+		}
+		
 		setEntidade(flashParameter != null ? flashParameter : new AfastamentoESocial());
+
 		this.servidorEnvioList = funcionalService.findServidoresEvento2230();
 		
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
 			servidorFuncional = getEntidade().getFuncional();
 			emEdicao = true;
-		}
+		}		
     }	
 	
 	public void consultar() {
 		if(servidorFuncional != null) {
 			try {				
 				boolean possuiCargo = getPossuiCargo(servidorFuncional.getId());
-				 
-				entidade.setFuncional(servidorFuncional);
-				 //entidade = afastamentoESocialService.getEvento2230ByServidor(entidade, possuiCargo);
+
+				 Licenca licenca = entidade.getLicenca();
+				 entidade = afastamentoESocialService.getEvento2230ByServidor(servidorFuncional, licenca, possuiCargo);
+				 entidade.setLicenca(licenca);
 				
-			} catch (Exception e) {		
+			}
+			catch (AfastamentoEsocialException e) {
+				FacesUtil.addErroMessage(e.getMessage());
+				logger.error(e.getMessage());
+			}
+			catch (Exception e) {		
 				e.printStackTrace();
 				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -144,11 +160,6 @@ public class AfastamentoFormBean implements Serializable {
 	public List<AfastamentoESocial> getPagedList() {return pagedList;}
 	public void setPagedList(List<AfastamentoESocial> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
-
-
-	public List<AfastamentoESocial> getAfastamentoESocialList() { return afastamentoESocialList;}
-	public void setAfastamentoESocialList(List<AfastamentoESocial> afastamentoESocialList) { 	this.afastamentoESocialList = afastamentoESocialList; }
-
 	
 	/**
 	 * @author erivanio.cruz
@@ -159,11 +170,15 @@ public class AfastamentoFormBean implements Serializable {
 		return representacaoFuncionalService.temAtivaByPessoal(idFuncional);
 	}
 	
+	public List<Licenca> getLicencaList() { return licencaList; }
+	public void setLicencaList(List<Licenca> licencaList) { this.licencaList = licencaList; }
+
 	/** metodo ajax que carrega a lista de afastamento
 	 * @author erivanio.cruz
 	 */
 	public void carregarAfastamentoListChange() {
 		boolean possuiCargo = getPossuiCargo(servidorFuncional.getId());
-		setAfastamentoESocialList(afastamentoESocialService.getEvento2230ByServidorList(servidorFuncional, possuiCargo) );		
+		
+		setLicencaList(afastamentoESocialService.getLicencaList(servidorFuncional, TipoLicencaEnum.getTodosCodigos()));
 	}
 }

@@ -39,8 +39,10 @@ public class AuthenticationService implements Serializable{
 
 			// autenticando spring security
 			//UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-			//DESENVOLVIMENTO
+			
+		    //DESENVOLVIMENTO
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, "e10adc3949ba59abbe56e057f20f883e"); //"c4ca4238a0b923820dcc509a6f75849b"
+
 
 			Authentication authenticate;
 			
