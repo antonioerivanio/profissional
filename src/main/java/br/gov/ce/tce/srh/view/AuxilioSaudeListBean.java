@@ -96,8 +96,8 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   
   @Override
-  public String salvar() {
-    return null;
+  public void salvar() {
+    
   }
   
   @Override
