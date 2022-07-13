@@ -84,6 +84,13 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   @Column(name = "DT_ALTERACAO")
   private Date dataAlteracao;
   
+  @Column(name = "FLG_DELETADO")
+  private boolean isDeletado;
+
+  @Temporal(TemporalType.DATE)
+  @Column(name = "DT_DELETE")
+  private Date dataDelete;
+  
 
   /**
    * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
@@ -119,6 +126,9 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   @Transient
   private AuxilioSaudeBaseCalculo auxilioSaudeBaseCalculo;
   
+  @Transient
+  private String nomeComprovante;
+   
 
   @Transient
   private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoBeneficiarioItemList;
@@ -317,8 +327,15 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
 
   public void setStatusAprovacao(String statusAprovacao) {
     this.statusAprovacao = statusAprovacao;
+  }  
+
+  public String getNomeComprovante() {
+    return nomeComprovante;
   }
 
+  public void setNomeComprovante(String nomeComprovante) {
+    this.nomeComprovante = nomeComprovante;
+  }
 
   public Dependente getDependenteSelecionado() {
     return dependenteSelecionado;
@@ -343,6 +360,26 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   public Double getValorMaximoAserRestituido() {
     return valorMaximoAserRestituido;
   }
+
+  public boolean isDeletado() {
+    return isDeletado;
+  }
+
+
+  public void setDeletado(boolean isDeletado) {
+    this.isDeletado = isDeletado;
+  }
+
+
+  public Date getDataDelete() {
+    return dataDelete;
+  }
+
+
+  public void setDataDelete(Date dataDelete) {
+    this.dataDelete = dataDelete;
+  }
+
 
   public void setValorMaximoAserRestituido(Double valorMaximoAserRestituido) {
     this.valorMaximoAserRestituido = valorMaximoAserRestituido;

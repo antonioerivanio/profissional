@@ -143,7 +143,7 @@
 
 				</div>
 
-				<div class="select-box box-30">
+				<div class="select-box box-70">
 					<label for="">Nome Empresa Plano Saúde * </label>
 
 					<div class="conteiner">
@@ -154,45 +154,34 @@
 							<f:selectItems
 								value="#{auxilioSaudeFormBean.comboEmpresasCadastradas}"
 								var="orgaoOrigem" itemValue="#{orgaoOrigem}"
-								itemLabel="#{orgaoOrigem.nomeFantasia} - #{orgaoOrigem.razaoSocial}" />
-							<a4j:ajax execute="@this"></a4j:ajax>
+								itemLabel="#{orgaoOrigem.nomeFantasia} - #{orgaoOrigem.razaoSocial}" />							
 						</h:selectOneMenu>
 						<rich:message for="asFrmStPjBeneficiario" rendered="false" />
-					</div>
 
+					</div>
+				</div>
+				<div class="select-box box-80">
+					<rich:fileUpload 
+						id="upload"
+						addLabel="Anexar Comprovante" doneLabel="Concluído"
+						clearLabel="Excluir"
+						clearAllLabel="" 
+						style="height: 110px!important;width:100%"
+						fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
+						 acceptedTypes=".pdf" immediateUpload="true"
+						ontyperejected="alert('Somente arquivos PDF são aceitos.');"
+						maxFilesQuantity="3">
+						<a4j:ajax event="uploadcomplete" execute="@none" render="info" />
+					</rich:fileUpload>
 				</div>
 
-				<rich:fileUpload id="fileUpload" styleClass="fileUploadFicha"
-					style="display: none"
-					fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
-					acceptedTypes="pdf"
-					ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
-					maxFilesQuantity="1" immediateUpload="true"
-					onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
-
-					<a4j:ajax event="uploadcomplete"
-						execute="@none asFrmBtnAdicionarBeneficiario"
-						render="form:fileUpload, messages," />
-				</rich:fileUpload>
-
-				<span id="" class="bt-upload fl mg-top-14"
-					onclick="document.querySelector('.fileUploadFicha input').click()">
-					Anexar </span>
-
-				<!-- Exibe informações do botão anexar quando usuário passar o mouse sobre ele -->
-				<rich:tooltip styleClass="tooltip" layout="block"
-					target="asFrmBntAnexoBeneficiario">
-					<span style="white-space: nowrap"> <strong> Anexar
-							documentação comprobatória</strong>
-					</span>
-				</rich:tooltip>
 
 				<h:commandButton id="asFrmBtnAdicionarBeneficiario"
 					actionListener="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.itemBeneficiario, true)}"
-					value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
+					value="Adicionar" styleClass="bt-padrao fl mg-left-10"
 					style="padding:10px;">
 					<a4j:ajax execute="@this asFrmItValorPlano asFrmStPjBeneficiario"
-						render="asfPgResumo asFrmItValorPlano asFrmStPjBeneficiario asCadFrmDtBeneficiario" />
+						render="upload asfPgResumo asFrmItValorPlano asFrmStPjBeneficiario asCadFrmDtBeneficiario" />
 				</h:commandButton>
 
 				<div class="tabela-dados">
@@ -264,7 +253,7 @@
 
 			<h:panelGroup id="asFrmOpDependentes">
 				<ui:fragment
-					rendered="#{not empty auxilioSaudeFormBean.entidade.dependentesComboList}">
+					rendered="#{not empty auxilioSaudeFormBean.entidade.dependentesComboList}" >
 					<!-- inicios dos campos dos dependentes -->
 					<fieldset>
 						<legend>Dependentes</legend>
@@ -299,7 +288,7 @@
 							</div>
 						</div>
 
-						<div class="select-box box-30">
+						<div class="select-box box-70">
 							<label for="asFrmSomPJDep">Nome Empresa Plano Saúde * </label>
 
 							<div class="conteiner">
@@ -317,41 +306,33 @@
 						</div>
 
 						<ui:fragment>
-							<rich:fileUpload styleClass="fileUploadFichaDep" id="cadFrmFuDep"
-								style="display: none; padding-rigth:10px"
-								fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
-								acceptedTypes="pdf"
-								ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
-								maxFilesQuantity="1" immediateUpload="true"
-								onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
+							<div class="select-box box-80">
+								<rich:fileUpload id="upload2" addLabel="Anexar Comprovante"
+									doneLabel="Concluído" clearLabel="Excluir"
+									clearAllControlLabel="Excluir tudo"
+									style="height: 100px!important;width:100%"
+									fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
+									acceptedTypes=".pdf" immediateUpload="true"
+									ontyperejected="alert('Somente arquivos PDF são aceitos.');"
+									maxFilesQuantity="3">
 
-								<a4j:ajax event="uploadcomplete" execute="@none"
-									render="messages, asCadFrmRBenef, asFrmItValorPlanoDep, asFrmSomPJDep, cadFrmFuDep" />
-							</rich:fileUpload>
-
-
-							<span id="asFrmBntAnexoDep" class="bt-upload fl mg-top-14"
-								onclick="document.querySelector('.fileUploadFichaDep input').click()">Anexar</span>
-
-							<!-- Exibe informações do botão Novo quando usuário passar o mouse sobre ele -->
-							<rich:tooltip styleClass="tooltip" layout="block"
-								target="asFrmBntAnexoDep">
-								<span style="white-space: nowrap"> <strong>
-										Anexar documentação comprobatória</strong>
-								</span>
-							</rich:tooltip>
+									<a4j:ajax event="uploadcomplete" execute="@none"
+										render="messages, asCadFrmRBenef, asFrmItValorPlanoDep, asFrmSomPJDep, cadFrmFuDep" />
+								</rich:fileUpload>
+							</div>
 						</ui:fragment>
 
 
 						<h:commandButton id="asFrmBtnSalvarDep"
 							actionListener="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.itemDependente, false)}"
-							value="Adicionar" styleClass="bt-padrao fl mg-top-14 mg-left-10"
+							value="Adicionar" styleClass="bt-padrao fl mg-left-10"
 							style="padding:10px;">
 							<a4j:ajax execute="asFrmOpDependentes"
 								render="asFrmItValorPlanoDep asFrmSomPJDep asfPgResumo asFrmDtDep "></a4j:ajax>
 						</h:commandButton>
 
 						<div class="tabela-dados">
+							<h:panelGroup id="asFrmPgDep">
 							<rich:dataTable id="asFrmDtDep" var="beanDep"
 								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList.size()}"
 								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList}">
@@ -408,12 +389,13 @@
 											actionListener="#{auxilioSaudeFormBean.deletarDependente(beanDep)}"
 											style="padding-left:10px">
 											<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
-											<a4j:ajax render="form:asFrmDtDep asfPgResumo"></a4j:ajax>
+											<a4j:ajax render="asFrmPgDep asFrmDtDep asfPgResumo"></a4j:ajax>
 										</h:commandLink>
 									</center>
 								</h:column>
 
 							</rich:dataTable>
+							</h:panelGroup>
 						</div>
 					</fieldset>
 				</ui:fragment>
@@ -530,10 +512,10 @@
 			</a4j:outputPanel>
 
 			<div class="bt-conteiner">
-				
+
 				<h:commandButton id="asFrmBtnSalvar"
 					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
-					action="#{auxilioSaudeFormBean.salvar()}" value="Salvar"
+					action="#{auxilioSaudeFormBean.salvar}" value="Salvar"
 					styleClass="bt-padrao fr mg-right-10" />
 
 				<h:commandLink id="asFrmBtnIndeferir"

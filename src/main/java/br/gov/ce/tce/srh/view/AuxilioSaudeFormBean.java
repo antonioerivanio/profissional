@@ -42,7 +42,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   private boolean exibirCamposDependente = Boolean.FALSE;
   int contadorBeneficiario = 1;
   int contadorDependente = 1;
-  
+
   @Autowired
   private RelatorioUtil relatorioUtil;
 
@@ -72,6 +72,9 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeDocBeneficiarioTempList;
   private List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeDocDependenteTempList;
+  private List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoDeletadoList;
+  private List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaDependesDeletadoList;
+
 
   @PostConstruct
   private void init() {
@@ -84,6 +87,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       } else {
         inicializar();
       }
+     
 
       exibirTableAuxilioSaudeBase();
 
@@ -105,7 +109,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     entidadeEditar.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidadeEditar);
 
     entidadeService.setValorSolicitado(entidadeEditar);
-    entidadeService.setValorMaximoSolicitadoPorIdade(entidadeEditar);
+    // entidadeService.setValorMaximoSolicitadoPorIdade(entidadeEditar);
+    entidadeEditar.setValorMaximoAserRestituido(entidadeEditar.getValorTotalSolicitado());
 
     setEntidade(entidadeEditar);
   }
@@ -124,7 +129,10 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void consultar() {
     try {
       entidadeService.setDadosIniciaisDaEntidade(getEntidade());
-      entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
+      
+      if (!isEdicao) {       
+        entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
+      }
 
     } catch (NullPointerException e) {
       FacesUtil.addErroMessage(e.getMessage());
@@ -140,6 +148,17 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void salvar() {
     try {
       if (isEdicao) {
+
+        /*** atualizar a flag de deletado no banco **/    
+        if(auxilioSaudeRequisicaoDeletadoList != null) {
+          for(AuxilioSaudeRequisicao bean : auxilioSaudeRequisicaoDeletadoList) {
+            getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().add(bean);            
+          }            
+        }
+        if(auxilioSaudeRequisicaDependesDeletadoList != null) {
+          getEntidade().setAuxilioSaudeRequisicaoDependenteList(auxilioSaudeRequisicaDependesDeletadoList);
+        }
+        
         entidadeService.atualizar(getEntidade());
       } else {
         entidadeService.executarAntesSalvar(getEntidade(), getEntidade().getObservacao(), getEntidade().getFlAfirmaSerVerdadeiraInformacao());
@@ -155,8 +174,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
        * Message enviada para tela após registro ser salvo
        */
       FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
-      
-      if(!isAnalista()) {
+
+      if (!isAnalista()) {
         inicializar();
       }
     } catch (Exception e) {
@@ -441,6 +460,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
     AuxilioSaudeRequisicao auxilioSaudeRequisicaoLocal = new AuxilioSaudeRequisicao(getEntidade().getFuncional(), loginBean.getUsuarioLogado(), pessoaJuridica, null, bean.getValorGastoPlanoSaude());
     auxilioSaudeRequisicaoLocal.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(auxilioSaudeDocBeneficiarioTempList);
+
     getEntidade().adicionarDadosRequisicaoList(auxilioSaudeRequisicaoLocal);
 
     this.itemBeneficiario = new AuxilioSaudeRequisicao();
@@ -456,18 +476,18 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return new AuxilioSaudeRequisicaoDocumento(getEntidade(), new Date(), arquivoVO);
   }
 
-  public void deletarAnexo(AuxilioSaudeRequisicaoDocumento bean, boolean isBeneficiario) {
-    if (isBeneficiario) {
-      getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().remove(bean);
 
-      FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
-    } else {
-      getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList().remove(bean);
-      FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
-    }
-
-  }
-
+  /*
+   * public void deletarAnexo(AuxilioSaudeRequisicaoDocumento bean, boolean isBeneficiario) { if
+   * (isBeneficiario) {
+   * getEntidade().getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().remove(bean);
+   * 
+   * FacesUtil.addInfoMessage(REMOVIDO_SUCESSO); } else {
+   * getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList().remove(bean);
+   * FacesUtil.addInfoMessage(REMOVIDO_SUCESSO); }
+   * 
+   * }
+   */
   /**
    * deletar os registro da lista e arquivo
    * 
@@ -483,12 +503,26 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         if (auxDoc.getId() == null) {
           FileUtils.removerArquivo(auxDoc.getCaminhoCompleto());
         } else {
+          auxDoc.setDataDelete(new Date());
           auxDoc.setDeletado(Boolean.TRUE);
         }
       }
     }
 
-    getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().remove(bean);
+    if (bean.getId() != null) {
+      bean.setDataDelete(new Date());
+      bean.setDeletado(Boolean.TRUE);
+
+      if (auxilioSaudeRequisicaoDeletadoList == null) {
+        auxilioSaudeRequisicaoDeletadoList = new ArrayList<AuxilioSaudeRequisicao>();
+      }
+
+      auxilioSaudeRequisicaoDeletadoList.add(bean);
+
+      getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().remove(bean);
+    } else {
+      getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().remove(bean);
+    }
     entidadeService.setValorSolicitado(getEntidade());
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
   }
@@ -498,22 +532,35 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
    * 
    * @param bean
    */
-  public void deletarDependente(AuxilioSaudeRequisicaoDependente bean) {
-    if (getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList() == null) {
+  public void deletarDependente(AuxilioSaudeRequisicaoDependente bean) {    
+    if (bean.getAuxilioSaudeRequisicaoDocumentoList() == null) {
       throw new NullPointerException("Ops!. A lista de documentos do(s) dependente(s) está vazia!");
     }
 
-    for (AuxilioSaudeRequisicaoDocumento auxDoc : getEntidade().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
+    for (AuxilioSaudeRequisicaoDocumento auxDoc : bean.getAuxilioSaudeRequisicaoDocumentoList()) {
       if (auxDoc.getAuxilioSaudeRequisicaoDependente().equals(bean)) {
         if (auxDoc.getId() == null) {
           FileUtils.removerArquivo(auxDoc.getCaminhoCompleto());
-        } else {
+        }else {
+          auxDoc.setDataDelete(new Date());
           auxDoc.setDeletado(Boolean.TRUE);
         }
       }
     }
+    if(bean.getId() != null) {      
+      
+      bean.setFlgDeletado(Boolean.TRUE);
+      
+      if(auxilioSaudeRequisicaDependesDeletadoList == null) {
+        auxilioSaudeRequisicaDependesDeletadoList = new ArrayList<AuxilioSaudeRequisicaoDependente>();
+      }
+      auxilioSaudeRequisicaDependesDeletadoList.add(bean);
+      
+      getEntidade().getAuxilioSaudeRequisicaoDependenteList().remove(bean);
+    }else {
+      getEntidade().getAuxilioSaudeRequisicaoDependenteList().remove(bean);    
 
-    getEntidade().getAuxilioSaudeRequisicaoDependenteList().remove(bean);
+    }
     entidadeService.setValorSolicitado(getEntidade());
     FacesUtil.addInfoMessage(REMOVIDO_SUCESSO);
   }
