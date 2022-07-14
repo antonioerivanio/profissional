@@ -22,6 +22,7 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase.FlagAtivo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoItem;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Funcional;
@@ -53,8 +54,12 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
 
   @Override
-  public void salvar(AuxilioSaudeRequisicao bean) {
+  @Transactional
+  public void salvar(AuxilioSaudeRequisicao bean) throws IOException {
     dao.salvar(bean);
+
+    salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
+    salvarDependentes(bean);
   }
 
 
@@ -68,8 +73,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
         for (AuxilioSaudeRequisicao bean : beanList) {
           dao.salvar(bean);
 
+          salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
           salvarDependentes(bean);
-          salvarDocumentosBeneficiario(bean);
 
           if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
             atualizarDadosTabelaAuxilioSaudeBase(bean);
@@ -89,35 +94,38 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     try {
       logger.info("Iniciando o Edicao do auxilio saude requisição");
 
-      if (bean.checkBeneficiarioItemListNotNull()) {
-        for (AuxilioSaudeRequisicao beanAuxilio : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-          beanAuxilio.setDataAlteracao(new Date());
-          
-          if (beanAuxilio.getId() != null) {
-            dao.atualizar(beanAuxilio);
-          } else {
-            beanAuxilio.setStatusFuncional(bean.getStatusFuncional());
-            beanAuxilio.setDataInicioRequisicao(new Date());
-            beanAuxilio.setObservacao(bean.getObservacao());
-            beanAuxilio.setFlAfirmaSerVerdadeiraInformacao(bean.getFlAfirmaSerVerdadeiraInformacao());
-            beanAuxilio.setAuxilioSaudeRequisicaoDependenteList(bean.getAuxilioSaudeRequisicaoDependenteList()); 
-            
-            dao.salvar(beanAuxilio);
-          }
+      if (bean.getId() != null) {
+        dao.atualizar(bean);
+      } else {
+        salvar(bean);
+      }
 
-          salvarDependentes(beanAuxilio);
-          salvarDocumentosBeneficiario(beanAuxilio);
+      salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
+      salvarDependentes(bean);
 
-          if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
-            atualizarDadosTabelaAuxilioSaudeBase(beanAuxilio);
-          }
-        }
-
+      if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
+        atualizarDadosTabelaAuxilioSaudeBase(bean);
       }
 
     } catch (Exception e) {
       logger.error("Erro ao atualizar o auxilio-saúde " + e.getMessage());
       e.printStackTrace();
+    }
+  }
+
+  private void salvarOuAtualizarItems(List<AuxilioSaudeRequisicaoItem> beanAuxilioSaudeItems, AuxilioSaudeRequisicao bean) throws IOException {
+    if (beanAuxilioSaudeItems != null) {
+      for (AuxilioSaudeRequisicaoItem beanItem : beanAuxilioSaudeItems) {
+        beanItem.setAuxilioSaudeRequisicao(bean);
+
+        if (beanItem.getId() != null) {
+          dao.atualizar(beanItem);
+        } else {
+          dao.salvar(beanItem);
+        }
+
+        salvarDocumentosBeneficiario(beanItem);
+      }
     }
   }
 
@@ -191,26 +199,23 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
   @Override
-  public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException {
+  public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicaoItem bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
-    
-    if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() != null) {      
-        salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), bean);      
-    }
-  }
 
-  private void salvarDocumento(List<AuxilioSaudeRequisicaoDocumento> beanList, AuxilioSaudeRequisicao bean) throws IOException {
-    for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : beanList) {
-      beanAuxDoc.setAuxilioSaudeRequisicaoDependente(null);
+    if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() != null) {
+      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
+        beanAuxDoc.setAuxilioSaudeRequisicaoDependente(null);
 
-      if (beanAuxDoc.getId() != null) {
-        dao.atualizar(beanAuxDoc);
-      } else {
-        beanAuxDoc.setAuxilioSaudeRequisicao(bean);
-        dao.salvar(beanAuxDoc);
+        if (beanAuxDoc.getId() != null) {
+          dao.atualizar(beanAuxDoc);
+        } else {
+          beanAuxDoc.setAuxilioSaudeRequisicaoItem(bean);
+          dao.salvar(beanAuxDoc);
+        }
+
+        fazerUploadArquivo(beanAuxDoc);
       }
 
-      fazerUploadArquivo(beanAuxDoc);
     }
   }
 
@@ -219,7 +224,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição dependente");
     if (bean.getAuxilioSaudeRequisicao().checkDependenteItemListNotNull()) {
       for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoList()) {
-        beanAuxDoc.setAuxilioSaudeRequisicao(null);
+        beanAuxDoc.setAuxilioSaudeRequisicaoItem(null);
 
         if (beanAuxDoc.getId() != null) {
           dao.atualizar(beanAuxDoc);
@@ -270,24 +275,25 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     if (bean.getDependenteSelecionado() == null) {// não tem dependentes
 
-      if (bean.checkBeneficiarioItemListNotNull()) {
-        for (AuxilioSaudeRequisicao beanAux : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-          if (beanAux.getValorGastoPlanoSaude() == null) {
+      if (bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() != null) {
+        for (AuxilioSaudeRequisicaoItem beanItem : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+          if (beanItem.getValorGastoPlanoSaude() == null) {
             FacesUtil.addErroMessage("O campo Valor Mensal é obrigatório.");
             return false;
           }
 
-          if (beanAux.getPessoaJuridica() == null) {
+          if (beanItem.getPessoaJuridica() == null) {
             FacesUtil.addErroMessage("O campo Nome da Empresa de Saúde é obrigatório.");
             return false;
           }
         }
       }
-
-      if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() != null && bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().isEmpty()) {
-        FacesUtil.addErroMessage("O anexo é Obrigatório. Clique no botão Anexar para adicionar-lo antes de salvar");
-        return false;
-      }
+      /*
+       * if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() != null &&
+       * bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().isEmpty()) { FacesUtil.
+       * addErroMessage("O anexo é Obrigatório. Clique no botão Anexar para adicionar-lo antes de salvar"
+       * ); return false; }
+       */
 
     } else {// tem dependentes
       if (bean.getAuxilioSaudeRequisicaoDependenteList() != null && bean.getAuxilioSaudeRequisicaoDependenteList().isEmpty()) {
@@ -328,27 +334,18 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
 
   @Override
-  public void executarAntesSalvar(AuxilioSaudeRequisicao entidade, String observacao, Boolean flgAfirmaSerVerdadeiraInformacao) {
-    if (entidade.getId() == null) {
-      if (entidade.checkBeneficiarioItemListNotNull()) {// um
-                                                        // registro
-        for (AuxilioSaudeRequisicao beanAux : entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-          beanAux.setStatusFuncional(entidade.getStatusFuncional());
-          beanAux.setDataInicioRequisicao(new Date());
-          beanAux.setObservacao(entidade.getObservacao());
-          beanAux.setFlAfirmaSerVerdadeiraInformacao(entidade.getFlAfirmaSerVerdadeiraInformacao());
-          beanAux.setAuxilioSaudeRequisicaoDependenteList(entidade.getAuxilioSaudeRequisicaoDependenteList());
-          // beanAux.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
-          // beanAux.setAuxilioSaudeRequisicaoDocumentoDependenteList(entidade.getAuxilioSaudeRequisicaoDocumentoDependenteList());
-        }
-      } else {// apenas um registro adicionar na lista        
-        entidade.setValorGastoPlanoSaude(null);
-        entidade.setPessoaJuridica(null);
-        entidade.setDataInicioRequisicao(new Date());
-        entidade.setAuxilioSaudeRequisicaoBeneficiarioItemList(new ArrayList<AuxilioSaudeRequisicao>());
-        entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidade);
-      }
-    }
+  public void executarAntesSalvar(AuxilioSaudeRequisicao bean, String observacao, Boolean flgAfirmaSerVerdadeiraInformacao) {
+
+    /*
+     * if(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() != null) { for (AuxilioSaudeRequisicao
+     * beanAux : entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+     * beanAux.setStatusFuncional(entidade.getStatusFuncional()); beanAux.setDataInicioRequisicao(new
+     * Date()); beanAux.setObservacao(entidade.getObservacao());
+     * beanAux.setFlAfirmaSerVerdadeiraInformacao(entidade.getFlAfirmaSerVerdadeiraInformacao());
+     * beanAux.setAuxilioSaudeRequisicaoDependenteList(entidade.getAuxilioSaudeRequisicaoDependenteList(
+     * )); } }
+     */
+
   }
 
 
@@ -393,8 +390,16 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj) {
     AuxilioSaudeRequisicao auxilioSaudeRequisicao = ((AuxilioSaudeRequisicao) dao.find(obj));
-    List<AuxilioSaudeRequisicaoDocumento> doclist = dao.getListaAnexos(auxilioSaudeRequisicao);
-    auxilioSaudeRequisicao.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(doclist);
+
+    List<AuxilioSaudeRequisicaoItem> itemsList = dao.getListaAuxilioSaudeItems(auxilioSaudeRequisicao);
+
+    if (itemsList != null && !itemsList.isEmpty()) {
+      for (AuxilioSaudeRequisicaoItem beanItem : itemsList) {
+        List<AuxilioSaudeRequisicaoDocumento> doclist = dao.getListaAnexos(beanItem);
+        beanItem.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(doclist);
+      }
+    }
+    auxilioSaudeRequisicao.setAuxilioSaudeRequisicaoBeneficiarioItemList(itemsList);
     return auxilioSaudeRequisicao;
   }
 
@@ -444,25 +449,31 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows) {
-    List<AuxilioSaudeRequisicao> beanList = dao.search(bean, first, rows);
 
-    for (AuxilioSaudeRequisicao beanBeneficiario : beanList) {
+    List<AuxilioSaudeRequisicao> beanAuxilioSaudeList = dao.search(bean, first, rows);
+    Double valorPlanoBeneficiario = 0.0;
 
-      if (beanList != null && !beanList.isEmpty()) {
-        List<AuxilioSaudeRequisicaoDependente> beanDependenteList = dao.getAuxilioSaudeRequisicaoDependentePorId(beanBeneficiario.getId());
-        if (beanDependenteList != null && !beanDependenteList.isEmpty()) {
-          Double valorPlanoBeneficiario = beanBeneficiario.getValorGastoPlanoSaude();
-          Double valorPlanoSaudeDependente = getValorDependente(beanDependenteList);
-          Double valorTotalSolicitado = somarValoBeneficiarioMaisDependente(valorPlanoBeneficiario, valorPlanoSaudeDependente);
+    if (beanAuxilioSaudeList != null && !beanAuxilioSaudeList.isEmpty()) {
+      for (AuxilioSaudeRequisicao beanAuxilioSaude : beanAuxilioSaudeList) {
+        List<AuxilioSaudeRequisicaoItem> auxilioSaudeRequisicaoItemList = dao.getListaAuxilioSaudeItems(beanAuxilioSaude);
+        for (AuxilioSaudeRequisicaoItem beanItem : auxilioSaudeRequisicaoItemList) {
+          List<AuxilioSaudeRequisicaoDependente> beanDependenteList = dao.getAuxilioSaudeRequisicaoDependentePorId(beanItem.getId());
 
-          beanBeneficiario.setValorTotalSolicitado(valorTotalSolicitado);
-        } else {
-          beanBeneficiario.setValorTotalSolicitado(beanBeneficiario.getValorGastoPlanoSaude());
+          if (beanDependenteList != null && !beanDependenteList.isEmpty()) {
+            valorPlanoBeneficiario = beanItem.getValorGastoPlanoSaude();
+            Double valorPlanoSaudeDependente = getValorDependente(beanDependenteList);
+            Double valorTotalSolicitado = somarValoBeneficiarioMaisDependente(valorPlanoBeneficiario, valorPlanoSaudeDependente);
+
+            bean.setValorTotalSolicitado(valorTotalSolicitado);
+          } else {
+            valorPlanoBeneficiario = beanItem.getValorGastoPlanoSaude();
+            bean.setValorTotalSolicitado(valorPlanoBeneficiario);
+          }
         }
       }
     }
 
-    return beanList;
+    return beanAuxilioSaudeList;
   }
 
   @Override
@@ -487,9 +498,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
    */
   public void setValorSolicitado(AuxilioSaudeRequisicao bean) {
     Double valor = 0.0;
-
-    if (bean.checkBeneficiarioItemListNotNull()) {
-      for (AuxilioSaudeRequisicao auxBenef : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+    if (bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() != null) {
+      for (AuxilioSaudeRequisicaoItem auxBenef : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
         if (bean.getValorTotalSolicitado() == null) {
           valor = auxBenef.getValorGastoPlanoSaude();
         } else {

@@ -6,6 +6,7 @@ import java.util.List;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoItem;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Funcional;
@@ -16,7 +17,7 @@ public interface AuxilioSaudeRequisicaoService {
   
   public int count(AuxilioSaudeRequisicao bean);
     
-  public void salvar(AuxilioSaudeRequisicao bean);  
+  public void salvar(AuxilioSaudeRequisicao bean) throws IOException;  
   
   public void salvar(List<AuxilioSaudeRequisicao> beanList);
   
@@ -31,7 +32,7 @@ public interface AuxilioSaudeRequisicaoService {
   
   public List<AuxilioSaudeRequisicaoDocumento> getListaArquivosPorIdAuxilio(BeanEntidade bean);
   
-  public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException;
+  public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicaoItem bean) throws IOException;
   
   public void salvarDocumentosDependente(AuxilioSaudeRequisicaoDependente bean) throws IOException;
   

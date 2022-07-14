@@ -26,21 +26,21 @@ import br.gov.ce.tce.srh.util.SRHUtils;
  * @since 03/06/2022
  */
 @Entity
-@Table(name = "FP_AUXILIOSAUDEDOC", schema = DatabaseMetadata.SCHEMA_SRH)
-@SequenceGenerator(name = "SEQ_FP_AUXILIOSAUDEDOC", sequenceName = "SEQ_FP_AUXILIOSAUDEDOC",
+@Table(name = "FP_AUXILIOSAUDEREQDOC", schema = DatabaseMetadata.SCHEMA_SRH)
+@SequenceGenerator(name = "SEQ_FP_AUXILIOSAUDEREQDOC", sequenceName = "SEQ_FP_AUXILIOSAUDEREQDOC",
                           schema = DatabaseMetadata.SCHEMA_SRH, allocationSize = 1, initialValue = 1)
 public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implements BeanEntidade {
 
   private static final long serialVersionUID = 481877607288972254L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FP_AUXILIOSAUDEDOC")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FP_AUXILIOSAUDEREQDOC")
   private Long id;
 
 
   @ManyToOne
-  @JoinColumn(name = "IDAUXILIOSAUDEREQ")
-  private AuxilioSaudeRequisicao auxilioSaudeRequisicao;
+  @JoinColumn(name = "IDAUXILIOSAUDEREQITEM")
+  private AuxilioSaudeRequisicaoItem auxilioSaudeRequisicaoItem;
 
   @ManyToOne
   @JoinColumn(name = "IDAUXILIOSAUDEREQDEP")
@@ -84,23 +84,21 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
   }
 
 
-  public AuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicao auxilioSaudeRequisicao, 
-                            Date dataInclusao, ArquivoVO arquivoVO) {
-    super();
-    this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
+  public AuxilioSaudeRequisicaoDocumento(ArquivoVO arquivoVO,Date dataInclusao) {
+    super();    
     this.dataInclusao = dataInclusao;
     this.nomeArquivo = arquivoVO.getNome();
     this.descricaoArquivo = arquivoVO.getDescricacao();
     this.arquivoVO = arquivoVO;
   }
 
-  public void adicionarDependente(AuxilioSaudeRequisicao bean) {
-    AuxilioSaudeRequisicaoDependente dependente =
-                              new AuxilioSaudeRequisicaoDependente(bean, bean.getDependenteSelecionado(),
-                                                        bean.getPessoaJuridica(), bean.getValorGastoPlanoSaude());
-
-    setAuxilioSaudeRequisicaoDependente(dependente);
-  }
+  /*
+   * public void adicionarDependente(AuxilioSaudeRequisicao bean, PessoaJuridica beanPJ, Double
+   * valorSolicitado) { AuxilioSaudeRequisicaoDependente dependente = new
+   * AuxilioSaudeRequisicaoDependente(bean, bean.getDependenteSelecionado(), beanPJ, valorSolicitado);
+   * 
+   * setAuxilioSaudeRequisicaoDependente(dependente); }
+   */
 
   public void adicionarComprovanteList(AuxilioSaudeRequisicaoDocumento beanDoc) {
 
@@ -142,12 +140,14 @@ public class AuxilioSaudeRequisicaoDocumento extends BasicEntity<Long> implement
     this.id = id;
   }
 
-  public AuxilioSaudeRequisicao getAuxilioSaudeRequisicao() {
-    return auxilioSaudeRequisicao;
+
+  
+  public AuxilioSaudeRequisicaoItem getAuxilioSaudeRequisicaoItem() {
+    return auxilioSaudeRequisicaoItem;
   }
 
-  public void setAuxilioSaudeRequisicao(AuxilioSaudeRequisicao auxilioSaudeRequisicao) {
-    this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
+  public void setAuxilioSaudeRequisicaoItem(AuxilioSaudeRequisicaoItem auxilioSaudeRequisicaoItem) {
+    this.auxilioSaudeRequisicaoItem = auxilioSaudeRequisicaoItem;
   }
 
   public AuxilioSaudeRequisicaoDependente getAuxilioSaudeRequisicaoDependente() {

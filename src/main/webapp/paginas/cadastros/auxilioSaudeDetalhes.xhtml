@@ -95,14 +95,7 @@
 				<div class="tabela-dados">
 					<rich:dataTable id="asCadFrmDtBeneficiario" var="beanBenef"
 						rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList.size()}"
-						value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList}">
-						<h:column>
-							<f:facet name="header">
-		                            NOME DO BENEFICIÁRIO
-		                        </f:facet>
-
-							<h:outputText value="#{beanBenef.funcional.pessoal.nomeCompleto}" />
-						</h:column>
+						value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList}">				
 
 						<h:column>
 							<f:facet name="header">

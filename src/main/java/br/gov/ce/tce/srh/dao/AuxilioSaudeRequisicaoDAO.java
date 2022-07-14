@@ -12,6 +12,7 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase.FlagAtivo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoItem;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -151,15 +152,30 @@ public class AuxilioSaudeRequisicaoDAO {
 
   public List<AuxilioSaudeRequisicaoDocumento> getListaAnexos(BeanEntidade beanEntidade) {
     Query query = null;
-    if(beanEntidade instanceof AuxilioSaudeRequisicao) {
-      query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicao.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
-      query.setParameter(ID, (((AuxilioSaudeRequisicao) beanEntidade)).getId());
+    
+    if(beanEntidade instanceof AuxilioSaudeRequisicaoItem) {
+      query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicaoItem.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
+      query.setParameter(ID, (((AuxilioSaudeRequisicaoItem) beanEntidade)).getId());
     }
     
     if(beanEntidade instanceof AuxilioSaudeRequisicaoDependente) {
       query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicaoDependente.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
       query.setParameter(ID, (((AuxilioSaudeRequisicaoDependente) beanEntidade)).getId());
     }
+      
+    return query.getResultList();
+  }
+  
+  
+  public List<AuxilioSaudeRequisicaoItem> getListaAuxilioSaudeItems(BeanEntidade beanEntidade) {
+    Query query = null;
+    final boolean  flagDeletado = Boolean.TRUE;
+    
+    if(beanEntidade instanceof AuxilioSaudeRequisicao) {
+      query = entityManager.createQuery("from AuxilioSaudeRequisicaoItem asd where asd.auxilioSaudeRequisicao.id =:id and asd.flgDeletado != :flgDeletado", AuxilioSaudeRequisicaoItem.class);
+      query.setParameter(ID, (((AuxilioSaudeRequisicao) beanEntidade)).getId());
+      query.setParameter(FLG_DELETADO, flagDeletado);
+    } 
     
     return query.getResultList();
   }
