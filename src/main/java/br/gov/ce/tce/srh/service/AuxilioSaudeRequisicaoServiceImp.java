@@ -92,10 +92,16 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       if (bean.checkBeneficiarioItemListNotNull()) {
         for (AuxilioSaudeRequisicao beanAuxilio : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
           beanAuxilio.setDataAlteracao(new Date());
-
+          
           if (beanAuxilio.getId() != null) {
             dao.atualizar(beanAuxilio);
           } else {
+            beanAuxilio.setStatusFuncional(bean.getStatusFuncional());
+            beanAuxilio.setDataInicioRequisicao(new Date());
+            beanAuxilio.setObservacao(bean.getObservacao());
+            beanAuxilio.setFlAfirmaSerVerdadeiraInformacao(bean.getFlAfirmaSerVerdadeiraInformacao());
+            beanAuxilio.setAuxilioSaudeRequisicaoDependenteList(bean.getAuxilioSaudeRequisicaoDependenteList()); 
+            
             dao.salvar(beanAuxilio);
           }
 
@@ -335,9 +341,10 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
           // beanAux.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
           // beanAux.setAuxilioSaudeRequisicaoDocumentoDependenteList(entidade.getAuxilioSaudeRequisicaoDocumentoDependenteList());
         }
-      } else {// apenas um registro adicionar na lista
+      } else {// apenas um registro adicionar na lista        
         entidade.setValorGastoPlanoSaude(null);
         entidade.setPessoaJuridica(null);
+        entidade.setDataInicioRequisicao(new Date());
         entidade.setAuxilioSaudeRequisicaoBeneficiarioItemList(new ArrayList<AuxilioSaudeRequisicao>());
         entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidade);
       }

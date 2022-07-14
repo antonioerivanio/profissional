@@ -30,6 +30,8 @@ public class AuxilioSaudeRequisicaoDAO {
   private static final String DATA_INICIO = "dataInicioRequisicao";
   private static final String DATA_FIM = "dataFimRequisicao";
   private static final String FLG_ATIVO = "flgAtivo";
+  private static final String FLG_DELETADO = "flgDeletado";
+  
 
   public static final Double TRES_POR_CENTO = 0.03;
   public static final Double TRES_PONTO_CINCO_POR_CENTO = 0.035;
@@ -100,6 +102,8 @@ public class AuxilioSaudeRequisicaoDAO {
     } else if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {      
         sql.append("and asr.dataInicioRequisicao= :dataInicioRequisicao or asr.dataFimRequisicao= :dataFimRequisicao ");        
     }
+    
+    sql.append("and asr.isDeletado = 0 ");
   }
 
 
@@ -131,7 +135,7 @@ public class AuxilioSaudeRequisicaoDAO {
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows) {
     Query query = null;
     StringBuilder sql = new StringBuilder();
-    sql.append("from AuxilioSaudeRequisicao asr where 1=1");
+    sql.append("from AuxilioSaudeRequisicao asr where 1=1 ");
     
     setFiltrosWhere(sql, bean);    
     query = entityManager.createQuery(sql.toString());
@@ -251,8 +255,10 @@ public class AuxilioSaudeRequisicaoDAO {
   }
   
   public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeRequisicaoDependentePorId(Long id){    
-      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoDependente asd where asd.auxilioSaudeRequisicao.id=:id ", AuxilioSaudeRequisicaoDependente.class);
-      query.setParameter(ID, id);      
+      final boolean  flagDeletado = Boolean.TRUE;
+      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoDependente asd where asd.auxilioSaudeRequisicao.id=:id and asd.flgDeletado != :flgDeletado ", AuxilioSaudeRequisicaoDependente.class);
+      query.setParameter(ID, id);  
+      query.setParameter(FLG_DELETADO, flagDeletado);
       return query.getResultList();
   }
   
