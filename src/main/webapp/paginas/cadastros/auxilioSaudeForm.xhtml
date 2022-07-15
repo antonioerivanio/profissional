@@ -11,7 +11,28 @@
 
 
 	<ui:define name="content">
+		<!-- Manter o scroll parado após reloading da paginas-->
+		<h:outputScript>
+			function storePagePosition() {
+			  var page_y = window.pageYOffset;
+			  localStorage.setItem("page_y", page_y);
+			}
 
+			window.addEventListener("scroll", storePagePosition);
+			var currentPageY;
+
+			try {
+			  currentPageY = localStorage.getItem("page_y");
+			
+			  if (currentPageY === undefined) {
+			    localStorage.setItem("page_y") = 0;
+			  }
+			
+			  window.scrollTo( 0, currentPageY );
+			} catch (e) {
+			    // no localStorage available
+			}
+		</h:outputScript>
 
 		<!-- Esta tela é composta de campos para o cadastro das solicitações de auxilio do BENEFICIARIO E SEU DEPENDENTES-->
 		<!-- Após o envio dos dados, estes ficaram aguardando aprovação da área Gerência de Remuneração e Benefícios -->
@@ -154,30 +175,28 @@
 								var="orgaoOrigem" itemValue="#{orgaoOrigem}"
 								itemLabel="#{orgaoOrigem.nomeFantasia} - #{orgaoOrigem.razaoSocial}" />
 						</h:selectOneMenu>
-						<rich:message for="selectNomeEmpresaBenef" rendered="false" />
-
 					</div>
 				</div>
+
 				<div class="select-box box-80">
 					<rich:fileUpload id="upload" addLabel="Anexar Comprovante"
 						doneLabel="Concluído" clearLabel="Excluir"
 						clearAllLabel="Excluir tudo"
-						style="height: 110px!important;width:100%"
+						style="height: 120px!!important; width:100%"
 						fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
 						acceptedTypes=".pdf" immediateUpload="true"
 						ontyperejected="alert('Somente arquivos PDF são aceitos.');"
-						maxFilesQuantity="3">
+						maxFilesQuantity="1">
 						<a4j:ajax event="uploadcomplete" execute="@none" />
 					</rich:fileUpload>
 				</div>
 
-
-				<h:commandButton id="asFrmBtnAdicionarBeneficiario"
-					actionListener="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem, true)}"
+				<h:commandButton
+					action="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem, true)}"
 					value="Adicionar" styleClass="bt-padrao fl mg-left-10"
-					style="padding:10px;">
+					style="padding:10px;" onclick="window.location.reload(false)">
 					<a4j:ajax execute="valorPlanoBenef selectNomeEmpresaBenef"
-						render="upload, messages, panelGroupResumo, valorPlanoBenef, selectNomeEmpresaBenef, asCadFrmDtBeneficiario" />
+						render="upload, valorPlanoBenef, selectNomeEmpresaBenef, asCadFrmDtBeneficiario, panelGroupResumo}" />
 				</h:commandButton>
 
 				<div class="tabela-dados">
@@ -298,14 +317,13 @@
 								<rich:fileUpload id="upload2" addLabel="Anexar Comprovante"
 									doneLabel="Concluido" clearLabel="Excluir"
 									clearAllControlLabel=""
-									style="height: 120px!important;width:100%"
+									style="height: 120px!important; width:100%"
 									fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
 									acceptedTypes=".pdf" immediateUpload="true"
 									ontyperejected="alert('Somente arquivos PDF são aceitos.');"
-									maxFilesQuantity="3">
+									maxFilesQuantity="1">
 
-									<a4j:ajax event="uploadcomplete" execute="@none"
-										render="panelGroupDependente" />
+									<a4j:ajax event="uploadcomplete" execute="@none" />
 								</rich:fileUpload>
 							</div>
 						</ui:fragment>
@@ -420,12 +438,13 @@
 							value="#{auxilioSaudeFormBean.entidade.flAfirmaSerVerdadeiraInformacao}" />
 						Concordo
 					</div>
-					<rich:message for="asFrmSbcxAcordo" />
+					<rich:message for="asFrmSbcxAcordo" ajaxRendered="true" />
 				</div>
 			</fieldset>
 
-			<a4j:outputPanel id="panelGroupResumo"
-				rendered="#{auxilioSaudeFormBean.entidade.statusAprovacao ne null}">
+			<a4j:region id="panelGroupResumo"
+				rendered="#{auxilioSaudeFormBean.entidade.statusAprovacao ne null}"
+				>
 				<fieldset>
 					<legend>
 						<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
@@ -437,8 +456,7 @@
 									<strong>Valor total solicitado: </strong>
 									<h:outputText id="valorTotalSolicitado"
 										value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
-										<f:convertNumber type="currency" currencySymbol="R$"
-											locale="pt_br" />
+										<f:convertNumber type="currency" currencySymbol="R$" />
 									</h:outputText>
 								</p>
 							</div>
@@ -447,8 +465,7 @@
 									<strong>Valor a ser restituído: </strong>
 									<h:outputText id="valorRestituido"
 										value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
-										<f:convertNumber type="currency" currencySymbol="R$"
-											locale="pt_br" />
+										<f:convertNumber type="currency" currencySymbol="R$" />
 									</h:outputText>
 								</p>
 							</div>
@@ -462,6 +479,7 @@
 								</p>
 							</div>
 						</div>
+
 						<div class="tabela-dados"
 							style="padding-left: 15px; margin-left: 10px;">
 							<h5>#{auxilioSaudeFormBean.titulo}</h5>
@@ -498,7 +516,7 @@
 						</div>
 					</div>
 				</fieldset>
-			</a4j:outputPanel>
+			</a4j:region>
 
 			<div class="bt-conteiner">
 				<h:commandButton id="btnSalvar"

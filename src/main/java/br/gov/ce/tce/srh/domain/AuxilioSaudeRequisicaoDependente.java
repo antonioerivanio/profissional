@@ -70,12 +70,13 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
   
   
   public AuxilioSaudeRequisicaoDependente(AuxilioSaudeRequisicao auxilioSaudeRequisicao,
-      Dependente dependente, PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude) {
+      Dependente dependente, PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude, ArquivoVO arquivoVO) {
     super();
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
     this.dependente = dependente;
     this.pessoaJuridica = pessoaJuridica;
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
+    this.arquivoVO = arquivoVO;
   }
 
 

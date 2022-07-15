@@ -68,13 +68,12 @@ public class AuxilioSaudeRequisicaoItem extends BasicEntity<Long> implements Bea
   }
   
 
-  public AuxilioSaudeRequisicaoItem(AuxilioSaudeRequisicao auxilioSaudeRequisicao, PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude, Date dataInclusao, List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoBeneficiarioList) {
+  public AuxilioSaudeRequisicaoItem(AuxilioSaudeRequisicao auxilioSaudeRequisicao, PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude, Date dataInclusao) {
     super();
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
     this.pessoaJuridica = pessoaJuridica;
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
-    this.dataInclusao = dataInclusao;
-    this.auxilioSaudeRequisicaoDocumentoBeneficiarioList = auxilioSaudeRequisicaoDocumentoBeneficiarioList;
+    this.dataInclusao = dataInclusao;    
   }
 
 
