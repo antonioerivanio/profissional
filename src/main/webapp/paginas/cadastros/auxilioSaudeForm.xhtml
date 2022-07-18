@@ -11,29 +11,6 @@
 
 
 	<ui:define name="content">
-		<!-- Manter o scroll parado após reloading da paginas-->
-		<h:outputScript>
-			function storePagePosition() {
-			  var page_y = window.pageYOffset;
-			  localStorage.setItem("page_y", page_y);
-			}
-
-			window.addEventListener("scroll", storePagePosition);
-			var currentPageY;
-
-			try {
-			  currentPageY = localStorage.getItem("page_y");
-			
-			  if (currentPageY === undefined) {
-			    localStorage.setItem("page_y") = 0;
-			  }
-			
-			  window.scrollTo( 0, currentPageY );
-			} catch (e) {
-			    // no localStorage available
-			}
-		</h:outputScript>
-
 		<!-- Esta tela é composta de campos para o cadastro das solicitações de auxilio do BENEFICIARIO E SEU DEPENDENTES-->
 		<!-- Após o envio dos dados, estes ficaram aguardando aprovação da área Gerência de Remuneração e Benefícios -->
 		<!-- O campo do dependentes será carregado automatica se existir na tabela SRH.TB_DEPENDENTEDependentes-->
@@ -66,11 +43,10 @@
 
 		<a4j:outputPanel ajaxRendered="true">
 			<h:messages id="messages" infoClass="infoMessage"
-				errorClass="errorMessage" />
+				errorClass="errorMessage" globalOnly="true" />
 		</a4j:outputPanel>
 
-		<h:form id="form" styleClass="formularios"
-			enctype="multipart/form-data" prependId="true">
+		<h:form id="form" styleClass="formularios">
 
 			<!-- Inicio dos campos do Beneficiário -->
 			<fieldset>
@@ -97,8 +73,9 @@
 				<h:commandButton rendered="#{auxilioSaudeFormBean.isAnalista()}"
 					actionListener="#{auxilioSaudeFormBean.consultar}"
 					value="Consultar" styleClass="bt-padrao fr mg-right-10"
-					immediate="true" onclick="#{rich:component('dependentes')}.show()">
-					<a4j:ajax render="dadosBeneficiario dependentes panelGroupResumo"></a4j:ajax>
+					onclick="#{rich:component('dependentes')}.show()">
+					<a4j:ajax
+						render="dependentes, dadosBeneficiario, selectNomeDepente, panelGroupResumo"></a4j:ajax>
 				</h:commandButton>
 
 				<h:panelGroup class="input-box" id="dadosBeneficiario">
@@ -178,26 +155,43 @@
 					</div>
 				</div>
 
-				<div class="select-box box-80">
-					<rich:fileUpload id="upload" addLabel="Anexar Comprovante"
-						doneLabel="Concluído" clearLabel="Excluir"
-						clearAllLabel="Excluir tudo"
-						style="height: 120px!!important; width:100%"
-						fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
-						acceptedTypes=".pdf" immediateUpload="true"
-						ontyperejected="alert('Somente arquivos PDF são aceitos.');"
-						maxFilesQuantity="1">
-						<a4j:ajax event="uploadcomplete" execute="@none" />
-					</rich:fileUpload>
-				</div>
+				<fieldset class="clr"
+					style="display: flex; align-items: center; padding-bottom: 10px;">
+					<legend>Comprovante</legend>
+
+					<h:panelGroup id="upload">
+						<rich:fileUpload id="fileUpload" styleClass="fileUploadFicha"
+							style="display: none"
+							fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteBeneficario}"
+							acceptedTypes="pdf"
+							ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
+							maxFilesQuantity="1" immediateUpload="true"
+							onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
+							<a4j:ajax event="uploadcomplete"
+								execute="@none, valorPlanoBenef, selectNomeEmpresaBenef"
+								render="comprovante, upload  messages" />
+						</rich:fileUpload>
+
+						<span class="bt-upload fl"
+							onclick="document.querySelector('.fileUploadFicha input').click()">
+							Selecionar arquivo </span>
+
+						<a4j:outputPanel ajaxRendered="true">
+							<span class="link-arquivo">
+								#{auxilioSaudeFormBean.auxSaudeRequisicaoDoc.nomeArquivo} </span>
+						</a4j:outputPanel>
+
+					</h:panelGroup>
+				</fieldset>
 
 				<h:commandButton
 					action="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem, true)}"
 					value="Adicionar" styleClass="bt-padrao fl mg-left-10"
-					style="padding:10px;" onclick="window.location.reload(false)">
+					style="padding:10px;">
 					<a4j:ajax execute="valorPlanoBenef selectNomeEmpresaBenef"
-						render="upload, valorPlanoBenef, selectNomeEmpresaBenef, asCadFrmDtBeneficiario, panelGroupResumo}" />
+						render="upload, comprovante, valorPlanoBenef, selectNomeEmpresaBenef, asCadFrmDtBeneficiario, panelGroupResumo" />
 				</h:commandButton>
+
 
 				<div class="tabela-dados">
 					<rich:dataTable id="asCadFrmDtBeneficiario" var="beanBenef"
@@ -256,159 +250,170 @@
 					</rich:dataTable>
 				</div>
 			</fieldset>
-			<!-- fim campo Beneficiario -->
-
 
 			<h:panelGroup id="dependentes">
-				<ui:fragment
+					<ui:fragment
 					rendered="#{not empty auxilioSaudeFormBean.entidade.dependentesComboList}">
 					<!-- inicios dos campos dos dependentes -->
-					<fieldset>
-						<legend>Dependentes</legend>
+				<fieldset>
+					<legend>Dependentes</legend>
 
-						<div class="select-box box-100">
-							<label for=""> Nome do dependente </label>
+					<div class="select-box box-100">
+						<label for=""> Nome do dependente </label>
 
-							<div class="conteiner">
-								<h:selectOneMenu converter="entityConverter"
-									id="selectNomeDepente"
-									value="#{auxilioSaudeFormBean.entidade.dependenteSelecionado}">
-									<f:selectItem itemLabel="Selecione..." />
-									<f:selectItems
-										value="#{auxilioSaudeFormBean.entidade.dependentesComboList}"
-										var="beanDep" itemValue="#{beanDep}"
-										itemLabel="#{beanDep.dependente.nomeCompleto}" />
-									<f:ajax execute="@this"></f:ajax>
-								</h:selectOneMenu>
-							</div>
+						<div class="conteiner">
+							<h:selectOneMenu converter="entityConverter"
+								id="selectNomeDepente"
+								value="#{auxilioSaudeFormBean.entidade.dependenteSelecionado}">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems
+									value="#{auxilioSaudeFormBean.entidade.dependentesComboList}"
+									var="beanDep" itemValue="#{beanDep}"
+									itemLabel="#{beanDep.dependente.nomeCompleto}" />
+								<f:ajax execute="@this"></f:ajax>
+							</h:selectOneMenu>
 						</div>
+					</div>
 
-						<div class="input-box box-20 ">
-							<label for="valorPlanoDep">Valor Mensal R$: *</label>
+					<div class="input-box box-20 ">
+						<label for="valorPlanoDep">Valor Mensal R$: *</label>
 
-							<div class="conteiner">
-								<h:inputText id="valorPlanoDep"
-									value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem.valorGastoPlanoSaude}"
-									maxlength="20" styleClass="maskSalario">
-									<f:convertNumber type="currency" currencySymbol="R$"
-										locale="pt_br" />
-								</h:inputText>
-							</div>
+						<div class="conteiner">
+							<h:inputText id="valorPlanoDep"
+								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem.valorGastoPlanoSaude}"
+								maxlength="20" styleClass="maskSalario">
+								<f:convertNumber type="currency" currencySymbol="R$"
+									locale="pt_br" />
+							</h:inputText>
 						</div>
+					</div>
 
-						<div class="select-box box-70">
-							<label for="nomeEmpresaDep">Nome Empresa Plano Saúde * </label>
+					<div class="select-box box-70">
+						<label for="nomeEmpresaDep">Nome Empresa Plano Saúde * </label>
 
-							<div class="conteiner">
-								<h:selectOneMenu id="nomeEmpresaDep"
-									value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem.pessoaJuridica}"
-									converter="entityConverter">
-									<f:selectItem itemLabel="Selecione..." itemValue="" />
-									<f:selectItems
-										value="#{auxilioSaudeFormBean.comboEmpresasCadastradas}"
-										var="orgaoOrigem" itemValue="#{orgaoOrigem}"
-										itemLabel="#{orgaoOrigem.nomeFantasia} - #{orgaoOrigem.razaoSocial}" />
-								</h:selectOneMenu>
-							</div>
+						<div class="conteiner">
+							<h:selectOneMenu id="nomeEmpresaDep"
+								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem.pessoaJuridica}"
+								converter="entityConverter">
+								<f:selectItem itemLabel="Selecione..." itemValue="" />
+								<f:selectItems
+									value="#{auxilioSaudeFormBean.comboEmpresasCadastradas}"
+									var="orgaoOrigem" itemValue="#{orgaoOrigem}"
+									itemLabel="#{orgaoOrigem.nomeFantasia} - #{orgaoOrigem.razaoSocial}" />
+								<a4j:ajax execute="@this"></a4j:ajax>
+							</h:selectOneMenu>
 						</div>
+					</div>
 
-						<ui:fragment>
-							<div class="select-box box-80">
-								<rich:fileUpload id="upload2" addLabel="Anexar Comprovante"
-									doneLabel="Concluido" clearLabel="Excluir"
-									clearAllControlLabel=""
-									style="height: 120px!important; width:100%"
-									fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
-									acceptedTypes=".pdf" immediateUpload="true"
-									ontyperejected="alert('Somente arquivos PDF são aceitos.');"
-									maxFilesQuantity="1">
+					<fieldset class="clr"
+						style="display: flex; align-items: center; padding-bottom: 10px;">
+						<legend>Comprovante</legend>
 
-									<a4j:ajax event="uploadcomplete" execute="@none" />
-								</rich:fileUpload>
-							</div>
-						</ui:fragment>
+						<h:panelGroup id="upload2">
+							<rich:fileUpload id="fileUpload2" styleClass="fileUploadFicha2"
+								style="display: none"
+								fileUploadListener="#{auxilioSaudeFormBean.uploadComprovanteDependente}"
+								acceptedTypes="pdf"
+								ontyperejected="alerta('Somente arquivos PDF são aceitos.');"
+								maxFilesQuantity="1" immediateUpload="true"
+								onsizerejected="alerta('O tamanho do arquivo excedeu o limite do sistema.');">
+								<a4j:ajax event="uploadcomplete"
+									execute="@none, selectNomeDepente, valorPlanoDep, nomeEmpresaDep"
+									render="upload2  messages" />
+							</rich:fileUpload>
+
+							<span class="bt-upload fl"
+								onclick="document.querySelector('.fileUploadFicha2 input').click()">
+								Selecionar arquivo </span>
 
 
-						<h:commandButton id="btnSalvarDep"
-							actionListener="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem, false)}"
-							value="Adicionar" styleClass="bt-padrao fl mg-left-10"
-							style="padding:10px;">
-							<a4j:ajax execute="valorPlanoDep nomeEmpresaDep"
-								render="upload2, messages, valorPlanoDep, nomeEmpresaDep, selectNomeDepente, panelGroupResumo, panelGroupDependente,"></a4j:ajax>
-						</h:commandButton>
+							<a4j:outputPanel ajaxRendered="true">
+								<span class="link-arquivo">
+									#{auxilioSaudeFormBean.auxSaudeRequisicaoDoc.nomeArquivo} </span>
+							</a4j:outputPanel>
 
-						<div class="tabela-dados">
-							<h:panelGroup id="panelGroupDependente">
-								<rich:dataTable id="asFrmDtDep" var="beanDep"
-									rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList.size()}"
-									value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList}">
+						</h:panelGroup>
+					</fieldset>
 
-									<h:column>
-										<f:facet name="header">
+					<h:commandButton
+						action="#{auxilioSaudeFormBean.adicionar(auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoItem, false)}"
+						value="Adicionar" styleClass="bt-padrao fl mg-left-10"
+						style="padding:10px;">
+						<a4j:ajax execute="valorPlanoDep, nomeEmpresaDep"
+							render="upload2, panelGroupDependente, panelGroupResumo" />
+					</h:commandButton>
+
+					<div class="tabela-dados">
+						<h:panelGroup id="panelGroupDependente">
+							<rich:dataTable id="asFrmDtDep" var="beanDep"
+								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList.size()}"
+								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDependenteList}">
+
+								<h:column>
+									<f:facet name="header">
 		                            NOME DO DEPENDENTE
 		                        </f:facet>
-										<h:outputText
-											value="#{beanDep.dependente.dependente.nomeCompleto}" />
-									</h:column>
+									<h:outputText
+										value="#{beanDep.dependente.dependente.nomeCompleto}" />
+								</h:column>
 
-									<h:column>
-										<f:facet name="header">
+								<h:column>
+									<f:facet name="header">
 		                            NOME DA EMPRESA DO PLANO DE SAÚDE
 		                        </f:facet>
 
-										<h:outputText value="#{beanDep.pessoaJuridica.nomeFantasia}" />
-									</h:column>
+									<h:outputText value="#{beanDep.pessoaJuridica.nomeFantasia}" />
+								</h:column>
 
-									<h:column>
-										<f:facet name="header">
+								<h:column>
+									<f:facet name="header">
 		                           Valor Mensal (R$)
 		                        </f:facet>
 
-										<h:outputText value="#{beanDep.valorGastoPlanoSaude}">
-											<f:convertNumber type="currency" currencySymbol="R$"
-												locale="pt_br" />
-										</h:outputText>
-									</h:column>
+									<h:outputText value="#{beanDep.valorGastoPlanoSaude}">
+										<f:convertNumber type="currency" currencySymbol="R$"
+											locale="pt_br" />
+									</h:outputText>
+								</h:column>
 
-									<h:column>
-										<center>
-											<f:facet name="header">
+								<h:column>
+									<center>
+										<f:facet name="header">
 		                          Anexos
 		                        </f:facet>
-											<ui:repeat var="anexo"
-												value="#{beanDep.auxilioSaudeRequisicaoDocumentoList}">
-												<h:commandLink value="#{anexo.nomeArquivo}"
-													style="color:blue" immediate="true"
-													actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
-													target="_blank" />
-												<br />
-											</ui:repeat>
-										</center>
-									</h:column>
+										<ui:repeat var="anexo"
+											value="#{beanDep.auxilioSaudeRequisicaoDocumentoList}">
+											<h:commandLink value="#{anexo.nomeArquivo}"
+												style="color:blue" immediate="true"
+												actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
+												target="_blank" />
+											<br />
+										</ui:repeat>
+									</center>
+								</h:column>
 
-									<h:column>
-										<center>
-											<f:facet name="header">
+								<h:column>
+									<center>
+										<f:facet name="header">
 		                          Ação
 		                        </f:facet>
-											<h:commandLink
-												actionListener="#{auxilioSaudeFormBean.deletarDependente(beanDep)}"
-												style="padding-left:10px">
-												<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
-												<a4j:ajax
-													render="panelGroupDependente asFrmDtDep panelGroupResumo"></a4j:ajax>
-											</h:commandLink>
-										</center>
-									</h:column>
+										<h:commandLink
+											actionListener="#{auxilioSaudeFormBean.deletarDependente(beanDep)}"
+											style="padding-left:10px">
+											<h:graphicImage value="/img/ico-delete.png"></h:graphicImage>
+											<a4j:ajax
+												render="panelGroupDependente asFrmDtDep panelGroupResumo"></a4j:ajax>
+										</h:commandLink>
+									</center>
+								</h:column>
 
-								</rich:dataTable>
-							</h:panelGroup>
-						</div>
-					</fieldset>
+							</rich:dataTable>
+						</h:panelGroup>
+					</div>
+				</fieldset>
 				</ui:fragment>
 			</h:panelGroup>
-			<!-- Fim campos Dependentes -->
-
+		
 			<h:panelGroup rendered="#{auxilioSaudeFormBean.isAnalista()}">
 				<!-- Campo obrigatório apenas para área gestora -->
 				<div class="textarea-box box-100">
@@ -442,9 +447,8 @@
 				</div>
 			</fieldset>
 
-			<a4j:region id="panelGroupResumo"
-				rendered="#{auxilioSaudeFormBean.entidade.statusAprovacao ne null}"
-				>
+			<a4j:outputPanel id="panelGroupResumo"
+				rendered="#{auxilioSaudeFormBean.entidade.statusAprovacao ne null}">
 				<fieldset>
 					<legend>
 						<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
@@ -516,30 +520,35 @@
 						</div>
 					</div>
 				</fieldset>
-			</a4j:region>
+				</a4j:outputPanel>
 
-			<div class="bt-conteiner">
-				<h:commandButton id="btnSalvar"
-					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
-					action="#{auxilioSaudeFormBean.salvar}" value="Salvar"
-					styleClass="bt-padrao fr mg-right-10" />
+				<div class="bt-conteiner">
+					<h:commandButton id="btnSalvar"
+						rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
+						action="#{auxilioSaudeFormBean.salvar}" value="Salvar"
+						styleClass="bt-padrao fr mg-right-10">
+						<a4j:ajax execute="campoConcordo" render="messages"></a4j:ajax>
+					</h:commandButton>
 
-				<h:commandLink id="btnIndeferir"
-					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoDeferirEIndeferir()}"
-					action="#{auxilioSaudeFormBean.deferir(false)}"
-					styleClass="bt-padrao fr mg-right-10" value="INDEFERIR"
-					style="background: #081e5c;" />
+					<h:commandLink id="btnIndeferir"
+						rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoDeferirEIndeferir()}"
+						action="#{auxilioSaudeFormBean.deferir(false)}"
+						styleClass="bt-padrao fr mg-right-10" value="INDEFERIR"
+						style="background: #081e5c;">
+						<a4j:ajax execute="campoConcordo" render="messages"></a4j:ajax>
+					</h:commandLink>
 
-				<h:commandLink id="btnDeferir"
-					rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoDeferirEIndeferir()}"
-					action="#{auxilioSaudeFormBean.deferir(true)}"
-					styleClass="bt-padrao fr mg-right-10" value="DEFERIR">
-				</h:commandLink>
+					<h:commandLink id="btnDeferir"
+						rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoDeferirEIndeferir()}"
+						action="#{auxilioSaudeFormBean.deferir(true)}"
+						styleClass="bt-padrao fr mg-right-10" value="DEFERIR">
+						<a4j:ajax execute="campoConcordo" render="messages"></a4j:ajax>
+					</h:commandLink>
 
-				<h:commandButton action="#{auxilioSaudeFormBean.voltar}"
-					immediate="true" value="Voltar"
-					styleClass="bt-padrao fr mg-right-10" />
-			</div>
+					<h:commandButton action="#{auxilioSaudeFormBean.voltar}"
+						immediate="true" value="Voltar"
+						styleClass="bt-padrao fr mg-right-10" />
+				</div>
 		</h:form>
 
 	</ui:define>

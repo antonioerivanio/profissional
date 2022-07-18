@@ -46,8 +46,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FP_AUXILIOSAUDEREQ")
   private Long id;
-
-  @NotNull(message = "Campo funcional é obrigatório")
+  
   @ManyToOne
   @JoinColumn(name = "IDFUNCIONAL")
   private Funcional funcional;
@@ -88,8 +87,7 @@ public class AuxilioSaudeRequisicao extends BasicEntity<Long> implements BeanEnt
 
   /**
    * flag que será marcada quando o Titular ou solicitante marca o campo (CONCORDO) da declaração
-   */
-  @AssertTrue(message = "Campo concordo é obrigatório")
+   */  
   @Column(name = "FLG_AFIRMACAOSERVERDADE")
   private boolean flAfirmaSerVerdadeiraInformacao;
 

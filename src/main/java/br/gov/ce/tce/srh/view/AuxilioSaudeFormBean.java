@@ -90,7 +90,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       }
 
       exibirTableAuxilioSaudeBase();
-
     } catch (UsuarioException e) {
       logger.fatal(e.getMessage());
     } catch (Exception e) {
@@ -114,6 +113,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
     exibirTableAuxilioSaudeBase();
+    consultar();
   }
 
   @Override
@@ -154,17 +154,18 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
           }
         }
 
-        entidadeService.atualizar(getEntidade());
-        FacesUtil.addInfoMessage("Registro Atualizado com sucesso!");
+        entidadeService.atualizar(getEntidade());       
       } else {
         if (Boolean.TRUE.equals(entidadeService.isOK(getEntidade()))) {
           entidadeService.salvar(getEntidade());
 
           isRegistroSalvo = Boolean.TRUE;
-          FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
+         
         }
       }
 
+      FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
+      
       if (!isAnalista()) {
         inicializar();
       }
@@ -419,7 +420,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
       entidadeService.setValorSolicitado(getEntidade());
       entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
-
+      auxSaudeRequisicaoDoc = new AuxilioSaudeRequisicaoDocumento();
+      
       validarValorTotalSolicitacao();
 
       fazerUploadArquivos(isBeneficiario);
@@ -670,4 +672,14 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     return "/paginas/cadastros/auxilioSaudeList.xhtml?faces-redirect=true";
   }
 
+  public AuxilioSaudeRequisicaoDocumento getAuxSaudeRequisicaoDoc() {
+    return auxSaudeRequisicaoDoc;
+  }
+
+  public void setAuxSaudeRequisicaoDoc(AuxilioSaudeRequisicaoDocumento auxSaudeRequisicaoDoc) {
+    this.auxSaudeRequisicaoDoc = auxSaudeRequisicaoDoc;
+  }
+
+  
+  
 }
