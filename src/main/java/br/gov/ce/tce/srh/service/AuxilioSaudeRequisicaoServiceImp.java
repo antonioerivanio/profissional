@@ -266,35 +266,18 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     if (bean.getFuncional() == null) {
       throw new NullPointerException("OPs!.Selecionar o Beneficiário e clicar no botão consulta");      
-    }
-    
+    }  
+       
     if (bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() == null && bean.getAuxilioSaudeRequisicaoDependenteList() == null) {
-      throw new NullPointerException("Ops!. Adicione os dados do benficário ou dependentes para continuar.");      
+      FacesUtil.addErroMessage("Você deve Clicar no botão adicionar para incluir os dados na lista.");
+      throw new NullPointerException("Lista de dados do benficário ou dos dependentes estão vazias.");      
+    }       
+
+    if(!bean.getFlAfirmaSerVerdadeiraInformacao()) {
+      FacesUtil.addErroMessage("form:campoConcordo",  "Campo obrigatório!");
+      throw new NullPointerException("OPs!. O campo Concordo é obrigatório");
     }
     
-    if (bean.getDependenteSelecionado() == null) {// não tem dependentes
-
-      if (bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() != null) {
-        for (AuxilioSaudeRequisicaoItem beanItem : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-          if (beanItem.getValorGastoPlanoSaude() == null) {
-            FacesUtil.addErroMessage("O campo Valor Mensal é obrigatório.");
-            return false;
-          }
-
-          if (beanItem.getPessoaJuridica() == null) {
-            FacesUtil.addErroMessage("O campo Nome da Empresa de Saúde é obrigatório.");
-            return false;
-          }
-        }
-      }  
-    } else {// tem dependentes
-      if (bean.getAuxilioSaudeRequisicaoDependenteList() != null && bean.getAuxilioSaudeRequisicaoDependenteList().isEmpty()) {
-
-        FacesUtil.addErroMessage("O valor mensal e Nome da Empresa de Saúde deve ser adicionado");
-        return false;
-      }
-    }
-
     if (bean.getObservacao() != null && !bean.getObservacao().isEmpty()) {
       if (bean.getObservacao().contains("xxx") || bean.getObservacao().contains("...") || bean.getObservacao().length() < 5) {
         throw new NullPointerException("Digite mais" + bean.getObservacao().length() + "caracteres para a observação");
@@ -348,7 +331,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public void setDadosIniciaisDaEntidade(AuxilioSaudeRequisicao entidade) {
     if (entidade.getFuncional() == null) {
-      throw new NullPointerException("Ops!. Por favor escolha um servidor para continuar");
+      throw new NullPointerException("Vamos iniciar!. Escolha um servidor e clique em consultar para continuar");
     }
     Funcional funcional = funcionalService.getById(entidade.getFuncional().getId());
 

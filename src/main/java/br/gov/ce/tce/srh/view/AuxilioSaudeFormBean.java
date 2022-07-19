@@ -74,7 +74,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   private List<AuxilioSaudeRequisicaoItem> auxilioSaudeRequisicaoItemsDeletadoList;
   private List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaDependesDeletadoList;
   private AuxilioSaudeRequisicaoItem auxilioSaudeRequisicaoItem;
-  private AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente;
+  private AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente;  
 
 
   @PostConstruct
@@ -108,7 +108,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void inicializar() throws Exception {
-    createInstanceEntidade();
+    createInstanceEntidade();    
     getEntidade().setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
@@ -154,17 +154,16 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
           }
         }
 
-        entidadeService.atualizar(getEntidade());       
+        entidadeService.atualizar(getEntidade());
+        FacesUtil.addInfoMessage("Registro atualizado com sucesso!");
       } else {
         if (Boolean.TRUE.equals(entidadeService.isOK(getEntidade()))) {
           entidadeService.salvar(getEntidade());
 
           isRegistroSalvo = Boolean.TRUE;
-         
+          FacesUtil.addInfoMessage("Registro salvo com sucesso!");
         }
-      }
-
-      FacesUtil.addInfoMessage("Registro Salvo com sucesso!");
+      }    
       
       if (!isAnalista()) {
         inicializar();
