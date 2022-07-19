@@ -61,6 +61,10 @@ public class FacesUtil {
 		getCurrentInstance().addMessage(null, new FacesMessage(SEVERITY_ERROR, message, message));
 	}
 	
+	public static void addErroMessage(String idComponent, String message) {
+      getCurrentInstance().addMessage(idComponent, new FacesMessage(SEVERITY_ERROR, message, message));
+  }
+	
 	public static void addAvisoMessage(String message) {
       getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, message));
     }

@@ -25,14 +25,14 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
  */
 @Entity
 @Table(name = "FP_AUXILIOSAUDEBASE", schema = DatabaseMetadata.SCHEMA_SRH)
-@SequenceGenerator(name = "SEQ_AUXILIOSAUDEREQBASE", sequenceName = "SEQ_AUXILIOSAUDEREQBASE", allocationSize = 1)
+@SequenceGenerator(name = "SEQ_FP_AUXILIOSAUDEREQBASE", sequenceName = "SEQ_FP_AUXILIOSAUDEREQBASE", allocationSize = 1)
 public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements BeanEntidade {
 
   private static final long serialVersionUID = 1L;
 
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_AUXILIOSAUDEREQBASE")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FP_AUXILIOSAUDEREQBASE")
   private Long id;
   
   @ManyToOne
@@ -63,10 +63,6 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
   @Column(name = "FLATIVO")
   private FlagAtivo flgAtivo;
 
-  @Temporal(TemporalType.DATE)
-  @Column(name = "CREATED_AT")
-  private Date dataCriacao;
-
 
   public enum FlagAtivo {
     NAO, SIM
@@ -79,7 +75,7 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
 
 
   public AuxilioSaudeRequisicaoBase(Pessoal pessoal, Usuario usuario, Double custoPlanoBase, String observacao,
-                            Date dataAtualizacao, FlagAtivo flgAtivo, Date dataCriacao) {
+                            Date dataAtualizacao, FlagAtivo flgAtivo, Date dataCriacao, Double custAdicional) {
     super();
     this.pessoal = pessoal;
     this.usuario = usuario;
@@ -87,7 +83,7 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
     this.observacao = observacao;
     this.dataAtualizacao = dataAtualizacao;
     this.flgAtivo = flgAtivo;
-    this.dataCriacao = dataCriacao;
+    this.custoAdicional= custAdicional;
   }
 
 
@@ -186,16 +182,4 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
   public void setFlgAtivo(FlagAtivo flgAtivo) {
     this.flgAtivo = flgAtivo;
   }
-
-
-  public Date getDataCriacao() {
-    return dataCriacao;
-  }
-
-
-  public void setDataCriacao(Date dataCriacao) {
-    this.dataCriacao = dataCriacao;
-  }
-
-
 }
