@@ -9,10 +9,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:rich="http://richfaces.org/rich">
 
-
 	<ui:define name="content">
-
-
 		<!-- Esta tela é composta de campos para o cadastro das solicitações de auxilio do BENEFICIARIO E SEU DEPENDENTES-->
 		<!-- Após o envio dos dados, estes ficaram aguardando aprovação da área Gerência de Remuneração e Benefícios -->
 		<!-- O campo do dependentes será carregado automatica se existir na tabela SRH.TB_DEPENDENTEDependentes-->
@@ -22,7 +19,7 @@
 
 
 		<div class="titulo-pagina">
-			<h2>Cadastro - Requerimento Auxílio-Saúde</h2>
+			<h2>Detalhes - Requerimento Auxílio-Saúde</h2>
 		</div>
 
 		<h:panelGroup rendered="false">
@@ -126,8 +123,6 @@
 										actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
 										style="padding:5px; color:blue;" 
 										value="#{anexo.nomeArquivo}" target="_blank" >
-										<a4j:ajax render="asCadFrmDtBeneficiario asfPgResumo"></a4j:ajax>
-
 									</h:commandLink>
 									<br />
 								</ui:repeat>

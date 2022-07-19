@@ -112,6 +112,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     getEntidade().setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
+    getEntidade().setValorMaximoAserRestituido(0.0);
     exibirTableAuxilioSaudeBase();
     consultar();
   }
@@ -121,9 +122,9 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
       entidadeService.setDadosIniciaisDaEntidade(getEntidade());
 
-      if (!isEdicao) {
-        entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
-      }
+      /*
+       * if (!isEdicao) { entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade()); }
+       */
 
     } catch (NullPointerException e) {
       FacesUtil.addErroMessage(e.getMessage());
