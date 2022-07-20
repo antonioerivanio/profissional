@@ -433,7 +433,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   public void adicionarDadosDependente(AuxilioSaudeRequisicaoItem bean) {
     checkDepedenteSeleciona();
-    // checkPessoaJuridicaIsNull(bean);
     checkListaAnexoDependenteIsNull();
 
     PessoaJuridica pessoaJuridica = getPessoaJuridicaPorId(bean);
@@ -447,8 +446,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     getEntidade().adicionarDadosDependenteList(auxilioSaudeRequisicaoDependente);
 
     getEntidade().setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
-    getEntidade().setDependenteSelecionado(null);
-    getEntidade().setDependenteSelecionado(null);
+    getEntidade().setDependenteSelecionado(null);    
     contadorDependente++;
   }
 
