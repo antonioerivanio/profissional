@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.AuxilioSaudeRequisicaoDAO;
+import br.gov.ce.tce.srh.dao.DAO;
 import br.gov.ce.tce.srh.domain.ArquivoVO;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase;
@@ -33,6 +37,7 @@ import br.gov.ce.tce.srh.exception.UsuarioException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("auxilioSaudeRequisicaoService")
 public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoService {
@@ -52,6 +57,12 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Autowired
   private DependenteService dependenteService;
 
+  public static final Double TRES_POR_CENTO = 0.03;
+  public static final Double TRES_PONTO_CINCO_POR_CENTO = 0.035;
+  public static final Double QUATRO_POR_CENTO = 0.04;
+  public static final Double QUATRO_PONTO_CINCO_POR_CENTO = 0.045;
+  public static final Double CINCO_POR_CENTO = 0.05;
+
 
   @Override
   @Transactional
@@ -59,8 +70,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     dao.salvar(bean);
 
     salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
-    salvarDependentes(bean);  
-    
+    salvarDependentes(bean);
+
     if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
       atualizarDadosTabelaAuxilioSaudeBase(bean);
     }
@@ -103,7 +114,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
       salvarDependentes(bean);
 
-    
+
     } catch (Exception e) {
       logger.error("Erro ao atualizar o auxilio-saúde " + e.getMessage());
       e.printStackTrace();
@@ -123,8 +134,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       }
     }
   }
- 
-  @Override  
+
+  @Override
   public void atualizarDadosTabelaAuxilioSaudeBase(AuxilioSaudeRequisicao bean) {
     if (bean.getStatusAprovacao() != null) {
       Funcional funcional = dao.getEntityManager().find(Funcional.class, bean.getFuncional().getId());
@@ -139,7 +150,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       } else {
 
         auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), bean.getUsuario(), bean.getValorTotalSolicitado(),
-                                  "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date(),0.0);        
+                                  "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date(), 0.0);
         dao.salvar(auxilioSaudeRequisicaoBase);
         dao.getEntityManager().flush();
       }
@@ -265,19 +276,19 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     Boolean isResultadoOk = Boolean.TRUE;
 
     if (bean.getFuncional() == null) {
-      throw new NullPointerException("OPs!.Selecionar o Beneficiário e clicar no botão consulta");      
-    }  
-       
+      throw new NullPointerException("OPs!.Selecionar o Beneficiário e clicar no botão consulta");
+    }
+
     if (bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() == null && bean.getAuxilioSaudeRequisicaoDependenteList() == null) {
       FacesUtil.addErroMessage("Você deve Clicar no botão adicionar para incluir os dados na lista.");
-      throw new NullPointerException("Lista de dados do benficário ou dos dependentes estão vazias.");      
-    }       
+      throw new NullPointerException("Lista de dados do benficário ou dos dependentes estão vazias.");
+    }
 
-    if(!bean.getFlAfirmaSerVerdadeiraInformacao()) {
-      FacesUtil.addErroMessage("form:campoConcordo",  "Campo obrigatório!");
+    if (!bean.getFlAfirmaSerVerdadeiraInformacao()) {
+      FacesUtil.addErroMessage("form:campoConcordo", "Campo obrigatório!");
       throw new NullPointerException("OPs!. O campo Concordo é obrigatório");
     }
-    
+
     if (bean.getObservacao() != null && !bean.getObservacao().isEmpty()) {
       if (bean.getObservacao().contains("xxx") || bean.getObservacao().contains("...") || bean.getObservacao().length() < 5) {
         throw new NullPointerException("Digite mais" + bean.getObservacao().length() + "caracteres para a observação");
@@ -371,6 +382,13 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     return dao.getValorSalarioComBaseIdadePorPercentual(percentual);
   }
 
+  /****
+   * valida se o percentual a restitui de acordo com a idade, se o Servidor do TCE fizer aniversario
+   * no mesmo mes, no qual ele esta solicitanto o auxilio-saude, o percentual maior será acrescentado
+   * no mês posterior ao de seu aniversario. exe: se ele aniversario no mês 07/2022 e fez tem 41 anos,
+   * ele vai receber o valor equilente ao a seus 40 anos ou ser 3% no mes 08/2020 ele vai receber o
+   * valor equivalente a 3,5%
+   */
   @Override
   public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean) {
     final int TRINTA_ANOS = 30;
@@ -381,19 +399,46 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     if (bean.getFuncional() != null && bean.getFuncional().getPessoal() != null) {
       int idade = bean.getFuncional().getPessoal().getIdade();
 
+      LocalDate dataNascimento = SRHUtils.convertToLocalDateViaInstant(bean.getFuncional().getPessoal().getNascimento());
+      boolean isMesAniversario = SRHUtils.isMesAniversarioEdataMenorQueDataAtual(dataNascimento.getDayOfMonth(), dataNascimento.getMonthValue(), dataNascimento.getYear());
+      double valorMaximoTresPorCento = 0.0;
+
       if (idade <= TRINTA_ANOS) {
-        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_ATE_30ANOS.getValor());
-      }
-      if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {
-        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_31_ATE_40ANOS.getValor());
-      }
-      if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {
-        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_41_ATE_50ANOS.getValor());
-      }
-      if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {
-        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_51_ATE_60ANOS.getValor());
+        valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_POR_CENTO).doubleValue();
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
+      } else if ((idade > TRINTA_ANOS && idade <= QUARENTA_ANOS)) {
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_POR_CENTO).doubleValue();
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_PONTO_CINCO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
+      } else if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_PONTO_CINCO_POR_CENTO).doubleValue();
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
+      } else if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_POR_CENTO).doubleValue();
+
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_PONTO_CINCO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
       } else {
-        bean.setValorMaximoAserRestituido(BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_SUPERIOR_60ANOS.getValor());
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_PONTO_CINCO_POR_CENTO).doubleValue();
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(CINCO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
       }
     }
   }

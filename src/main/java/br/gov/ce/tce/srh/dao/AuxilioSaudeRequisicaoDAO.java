@@ -15,6 +15,7 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoItem;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Pessoal;
+import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoServiceImp;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
@@ -23,22 +24,13 @@ public class AuxilioSaudeRequisicaoDAO {
   @PersistenceContext
   private EntityManager entityManager;
 
-
   private static final String NOME = "nome";
-  private static final String ID = "id";
-  private static final String IDFUNCIONAL = "idFuncional";
+  private static final String ID = "id";  
   private static final String CPF = "cpf";
   private static final String DATA_INICIO = "dataInicioRequisicao";
   private static final String DATA_FIM = "dataFimRequisicao";
   private static final String FLG_ATIVO = "flgAtivo";
   private static final String FLG_DELETADO = "flgDeletado";
-  
-
-  public static final Double TRES_POR_CENTO = 0.03;
-  public static final Double TRES_PONTO_CINCO_POR_CENTO = 0.035;
-  public static final Double QUATRO_POR_CENTO = 0.04;
-  public static final Double QUATRO_PONTO_CINCO_POR_CENTO = 0.045;
-  public static final Double CINCO_POR_CENTO = 0.05;
 
   public EntityManager getEntityManager() {
     return entityManager;
@@ -181,19 +173,19 @@ public class AuxilioSaudeRequisicaoDAO {
   }
 
   public BigDecimal getValorSalarioComBaseIdadePorPercentual(Double percentual) {
-    if (percentual.equals(TRES_POR_CENTO)) {
+    if (percentual.equals(AuxilioSaudeRequisicaoServiceImp.TRES_POR_CENTO)) {
       return getSalarioColaboradorComIdadeAte30Anos();
     }
-    if (percentual.equals(TRES_PONTO_CINCO_POR_CENTO)) {
+    if (percentual.equals(AuxilioSaudeRequisicaoServiceImp.TRES_PONTO_CINCO_POR_CENTO)) {
       return getSalarioColaboradorComIdade30a40Anos();
     }
-    if (percentual.equals(QUATRO_POR_CENTO)) {
+    if (percentual.equals(AuxilioSaudeRequisicaoServiceImp.QUATRO_POR_CENTO)) {
       return getSalarioColaboradorComIdade41a50Anos();
     }
-    if (percentual.equals(QUATRO_PONTO_CINCO_POR_CENTO)) {
+    if (percentual.equals(AuxilioSaudeRequisicaoServiceImp.QUATRO_PONTO_CINCO_POR_CENTO)) {
       return getSalarioColaboradorComIdade51a60Anos();
     }
-    if (percentual.equals(CINCO_POR_CENTO)) {
+    if (percentual.equals(AuxilioSaudeRequisicaoServiceImp.CINCO_POR_CENTO)) {
       return getSalarioColaboradorComIdadeAcima60Anos();
     }
 
@@ -201,27 +193,27 @@ public class AuxilioSaudeRequisicaoDAO {
   }
 
   private BigDecimal getSalarioColaboradorComIdadeAte30Anos() {
-    Query query = entityManager.createNativeQuery("select 0.03 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery("select round(0.03 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)),2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdade30a40Anos() {
-    Query query = entityManager.createNativeQuery(" select 0.35 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery("select round(0.035 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdade41a50Anos() {
-    Query query = entityManager.createNativeQuery("select 0.04 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery("select round(0.04 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdade51a60Anos() {
-    Query query = entityManager.createNativeQuery("select 0.045 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery("select round(0.045 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdadeAcima60Anos() {
-    Query query = entityManager.createNativeQuery("select 0.05 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null) from fp_cargos");
+    Query query = entityManager.createNativeQuery("select round(0.05 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 

@@ -101,10 +101,10 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   private void inicializarDadosParaEdicao() {
     AuxilioSaudeRequisicao entidadeEditar = entidadeService.getAuxilioSaudePorId((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter("entidade"));
     entidadeEditar.setAuxilioSaudeRequisicaoDependenteList(entidadeService.getAuxilioSaudeDependenteList(entidadeEditar.getId()));
-    entidadeService.setValorSolicitado(entidadeEditar);
-    entidadeEditar.setValorMaximoAserRestituido(entidadeEditar.getValorTotalSolicitado());
+    entidadeService.setValorSolicitado(entidadeEditar); 
     entidadeEditar.setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
     setEntidade(entidadeEditar);
+    validarValorTotalSolicitacao();
   }
 
   private void inicializar() throws Exception {
@@ -652,14 +652,19 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     this.exibirCamposDependente = exibirCamposDependente;
   }
 
+  /***
+   * valida se o valor solicitado é menor que o valor maximo a ser restituido
+   * se o valor solicitado for maior que o maximo a ser restituido,
+   * o valor maximo será exibido.
+   */
   public void validarValorTotalSolicitacao() {
     Double valorMaximo =  getEntidade().getValorTotalSolicitado();
 
     if (getEntidade().getFuncional() != null && getEntidade().getFuncional().getPessoal() != null) {
+      entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
+      
       if (valorMaximo < getEntidade().getValorMaximoAserRestituido()) {
         getEntidade().setValorMaximoAserRestituido(valorMaximo);
-      } else {
-        entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
       }
     }
   }

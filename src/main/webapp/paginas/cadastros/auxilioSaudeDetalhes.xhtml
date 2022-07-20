@@ -230,41 +230,77 @@
 				</div>
 			</fieldset>
 
-			<a4j:outputPanel id="asfPgResumo"
+			<a4j:outputPanel id="panelGroupResumo"
 				rendered="#{auxilioSaudeFormBean.entidade.statusAprovacao ne null}">
 				<fieldset>
 					<legend>
 						<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
 					</legend>
+					<div style="display: flex; with: 100%;">
+						<div style="width: 50%">
+							<div class="conteiner" style="padding: 5px">
+								<p>
+									<strong>Valor total solicitado: </strong>
+									<h:outputText id="valorTotalSolicitado"
+										value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
+										<f:convertNumber type="currency" currencySymbol="R$" />
+									</h:outputText>
+								</p>
+							</div>
+							<div class="conteiner" style="padding: 5px">
+								<p>
+									<strong>Valor a ser restituído: </strong>
+									<h:outputText id="valorRestituido"
+										value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
+										<f:convertNumber type="currency" currencySymbol="R$" />
+									</h:outputText>
+								</p>
+							</div>
 
-					<div class="conteiner" style="padding: 5px">
-						<p>
-							<strong>Valor total solicitado: </strong>
-							<h:outputText id="valorTotalSolicitado"
-								value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
-								<f:convertNumber type="currency" currencySymbol="R$"
-									locale="pt_br" />
-							</h:outputText>
-						</p>
-					</div>
-					<div class="conteiner" style="padding: 5px">
-						<p>
-							<strong>Valor a ser restituído: </strong>
-							<h:outputText id="valorRestituido"
-								value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
-								<f:convertNumber type="currency" currencySymbol="R$"
-									locale="pt_br" />
-							</h:outputText>
-						</p>
-					</div>
+							<div class="conteiner" style="padding: 5px">
+								<p>
+									<strong>Status: </strong>
+									<h:outputText
+										value="#{auxilioSaudeFormBean.entidade.statusAprovacao}"
+										styleClass="cel-25" />
+								</p>
+							</div>
+						</div>
 
-					<div class="conteiner" style="padding: 5px">
-						<p>
-							<strong>Status: </strong>
-							<h:outputText
-								value="#{auxilioSaudeFormBean.entidade.statusAprovacao}"
-								styleClass="cel-25" />
-						</p>
+						<div class="tabela-dados"
+							style="padding-left: 15px; margin-left: 10px;">
+							<h5>#{auxilioSaudeFormBean.titulo}</h5>
+							<rich:dataTable id="asCadFrmDtTabelBase" var="beanBase"
+								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeBaseCalculo.auxilioSaudeBaseCalculos.size()}"
+								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeBaseCalculo.auxilioSaudeBaseCalculos}"
+								style="text-align: center; ">
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[0]}" />
+
+									</f:facet>
+									<h:outputText value="#{beanBase.intervaloIdade}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[1]}" />
+									</f:facet>
+									<h:outputText
+										value="#{beanBase.baseCalculoValorRestituido.percentual}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[2]}" />
+									</f:facet>
+									<h:outputText
+										value="#{beanBase.baseCalculoValorRestituido.valor}">
+										<f:convertNumber type="currency" currencySymbol="R$"
+											locale="pt_br" />
+									</h:outputText>
+								</h:column>
+							</rich:dataTable>
+						</div>
 					</div>
 				</fieldset>
 			</a4j:outputPanel>
