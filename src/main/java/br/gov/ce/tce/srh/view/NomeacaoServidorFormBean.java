@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,7 @@ import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.domain.Vinculo;
 
 import br.gov.ce.tce.srh.enums.LeiIncorporacao;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Entidade;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
@@ -680,8 +682,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 		try {
 
-			if ( this.instituicaoEnsinoList == null )
-				this.instituicaoEnsinoList = pessoaJuridicaService.findAll();
+			if ( this.instituicaoEnsinoList == null ) {
+				this.instituicaoEnsinoList = pessoaJuridicaService.findAllByTipo(TipodeEmpresa.INSTITUICAO_ENSINO);
+			}
 
 		} catch (Exception e) {
 			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");
