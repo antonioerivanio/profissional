@@ -424,17 +424,51 @@ public class FuncionalDAO {
 		}
 	}
 
+
+	@SuppressWarnings("unchecked")
 	public List<Funcional> findServidoresEvento1200(String anoReferencia, String mesReferencia) {
-		try {
+			
+		
+		/*try {
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
 					+ "FROM Funcional f "
-					+ "WHERE f.ocupacao.id = 33 "				 					
+					+ "WHERE f.id IN (:idsFuncional) "				 					
 					+ "AND f.id  NOT IN (SELECT r.funcional.id FROM RemuneracaoTrabalhador r where r.referencia like :referencia) "
 					+ "ORDER BY f.nome", Funcional.class);
 			 
 			 
 			query.setParameter("referencia", "%" + anoReferencia+mesReferencia + "%");
+			query.setParameter("idsFuncional", findIdFuncional1200(anoReferencia, mesReferencia));
 			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}*/
+		StringBuffer sql = new StringBuffer();
+
+		
+
+		sql.append(" select distinct f.ID, f.IDPESSOAL, f.IDORGAOORIGEM, f.IDSETOR, f.IDOCUPACAO, f.IDCLASSEREFERENCIA,   ");
+		sql.append(" f.idespecialidadecargo, f.idorientacaocargo, f.IDTIPOMOVIMENTOENTRADA, f.IDTIPOMOVIMENTOSAIDA, ");
+		sql.append(" f.IDCBO, f.IDFOLHA, f.IDTIPOPUBLICACAONOMEACAO, IDTIPOPUBLICACAOSAIDA, f.IDSITUACAO, f.IDTIPOVINCULO, ");
+		sql.append(" f.NOME, f.NOMECOMPLETO, f.NOMEPESQUISA, f.MATRICULA, f.MATRICULAESTADUAL, f.CALCULOPCC, f.QTDQUINTOS, ");
+		sql.append(" f.LEIINCORPORACAO, f.PONTO, f.STATUS, f.ATIVOFP, f.FLPORTALTRANSPARENCIA, f.IRRF, f.SUPSECINTEGRAL, ");
+		sql.append(" f.PROPORCIONALIDADE, f.SALARIOORIGEM, f.ABONOPREVIDENCIARIO, f.DATAPOSSE, f.DATAEXERCICIO, f.DATASAIDA, ");
+		sql.append(" f.DOENOMEACAO, f.DOESAIDA, f.DESCRICAONOMEACAO, f.DESCRICAOSAIDA, f.PREVIDENCIA, f.REGIME, f.IDREPRESENTACAOCARGO, ");
+		sql.append(" f.IDSETORDESIGNADO, f.IDPESSOAJURIDICA, f.IDAPOSENTADORIA, f.CODCATEGORIA ");
+		
+		sql.append("  from tb_funcional f  "); 
+		sql.append(" inner join fp_dadospagto dp on f.id = dp.idfuncional  ");
+		sql.append(" inner join fp_pagamentos pg on pg.arquivo = dp.arquivo  ");
+		sql.append(" where previdencia = 3  ");
+		sql.append(" and pg.ano_esocial = '"+anoReferencia+"'");
+		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
+		
+		sql.append(" ORDER BY f.NOME ");
+		
+		try {
+			Query query = entityManager.createNativeQuery(sql.toString(), Funcional.class);
+			
+			return  query.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -454,5 +488,6 @@ public class FuncionalDAO {
 			return null;
 		}
 	}
+	
 
 }

@@ -27,14 +27,30 @@
 			
 				<div class="input-box box-10">
 					<label for="">Ano Referência: *</label>
-					<div class="conteiner">
+					<!--  <div class="conteiner">
 						<h:inputText id="anoReferencia" 
 									 name="anoReferencia"
 									 value="#{remuneracaoTrabalhadorFormBean.anoReferencia}" 
 									 maxlength="4"
 									 onkeyup="SoNumeros(this)">
 						</h:inputText>
-					</div>
+					</div>-->
+					<div class="conteiner">
+					<rich:select 						
+							defaultLabel="Selecione..."	
+							id="ano"							
+							value="#{remuneracaoTrabalhadorFormBean.anoReferencia}">							
+							<f:selectItems 
+								id="comboAno"
+								value="#{remuneracaoTrabalhadorFormBean.comboAno}"
+					  			var="servidor"
+					  			itemValue="#{servidor}"
+					  			itemLabel="#{servidor}"/>
+					  			<a4j:ajax event="change" 
+							  				 execute="@this"
+							  				 />
+						</rich:select>
+				</div>
 				</div>
 			
 			<div class="select-box box-16">
@@ -101,429 +117,449 @@
 				
 			</fieldset>
 			
-			
-			<fieldset>
-
-				<legend>Dados Evento S-1200</legend>
-
-				<br/>
-
-            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
-			<!-- 	<fieldset>
-					<legend>ideEmpregador:</legend>
-						<div class="input-box box-10">
-							<label for="">tpInsc</label>
-							<div class="conteiner">
-								<h:inputText id="tpInsc" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.tpInsc}" />
-							</div>
-						</div>
-
-						<div class="input-box box-25">
-							<label for="">nrInsc</label>
-							<div class="conteiner">
-								<h:inputText id="nrInsc" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.nrInsc}" />
-							</div>
-						</div>
-				</fieldset>
-				
+			<ui:fragment  rendered="#{remuneracaoTrabalhadorFormBean.emConsulta}">
 				<fieldset>
-					<legend>trabalhador:</legend>
-						<div class="input-box box-15">
-							<label for="">cpfTrab</label>
-							<div class="conteiner">
-								<h:inputText id="cpf" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.cpfTrab}" />
-							</div>
-						</div>
-
-						<div class="input-box box-40">
-							<label for="">nmTrab</label>
-							<div class="conteiner">
-								<h:inputText id="nmTrab" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.nmTrab}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">sexo</label>
-							<div class="conteiner">
-								<h:inputText id="sexo" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.sexo}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">racaCor</label>
-							<div class="conteiner">
-								<h:inputText id="racaCor" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.racaCor}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">estCiv</label>
-							<div class="conteiner">
-								<h:inputText id="estCiv" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.estCiv}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">grauInstr</label>
-							<div class="conteiner">
-								<h:inputText id="grauInstr" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.grauInstr}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-8">
-							<label for="">nmSoc</label>
-							<div class="conteiner">
-								<h:inputText id="nmSoc" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.nmSoc}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-15">
-							<label for="">dtNascto</label>
-							<div class="conteiner">
-								<h:inputText id="dtNascto" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.dtNascto}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">paisNascto</label>
-							<div class="conteiner">
-								<h:inputText id="paisNascto" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.paisNascto}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-8">
-							<label for="">paisNac</label>
-							<div class="conteiner">
-								<h:inputText id="paisNac" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.paisNac}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-15">
-							<label for="">fonePrinc</label>
-							<div class="conteiner">
-								<h:inputText id="fonePrinc" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.fonePrinc}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-30">
-							<label for="">emailPrinc</label>
-							<div class="conteiner">
-								<h:inputText id="emailPrinc" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.emailPrinc}" />
-							</div>
-						</div>
-					
-				</fieldset>
-				
-				<fieldset>
-					<legend>vinculo:</legend>
-						<div class="input-box box-15">
-							<label for="">matricula</label>
-							<div class="conteiner">
-								<h:inputText id="matricula" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.matricula}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">tpRegTrab</label>
-							<div class="conteiner">
-								<h:inputText id="tpRegTrab" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.tpRegTrab}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">tpRegPrev</label>
-							<div class="conteiner">
-								<h:inputText id="tpRegPrev" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.tpRegPrev}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">cadIni</label>
-							<div class="conteiner">
-								<h:inputText id="cadIni" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.cadIni}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">tpProv</label>
-							<div class="conteiner">
-								<h:inputText id="tpProv" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.tpProv}" />
-							</div>
-						</div>
-
-						<div class="input-box box-15">
-							<label for="">dtExercicio</label>
-							<div class="conteiner">
-								<h:inputText id="dtExercicio" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.dtExercicio}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-8">
-							<label for="">tpPlanRP</label>
-							<div class="conteiner">
-								<h:inputText id="tpPlanRP" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.tpPlanRP}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-8">
-							<label for="">indTetoRGPS</label>
-							<div class="conteiner">
-								<h:inputText id="indTetoRGPS" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.indTetoRGPS}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">indAbonoPerm</label>
-							<div class="conteiner">
-								<h:inputText id="indAbonoPerm" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.indAbonoPerm}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-15">
-							<label for="">dtIniAbono</label>
-							<div class="conteiner">
-								<h:inputText id="dtIniAbono" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.dtIniAbono}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-25">
-							<label for="">nmCargo</label>
-							<div class="conteiner">
-								<h:inputText id="nmCargo" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.nmCargo}" />
-							</div>
-						</div>
-						
-						<div class="input-box box-15">
-							<label for="">dtIngrCargo</label>
-							<div class="conteiner">
-								<h:inputText id="dtIngrCargo" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.dtIngrCargo}" />
-							</div>
-						</div>
-						<div class="input-box box-15">
-							<label for="">nmFuncao</label>
-							<div class="conteiner">
-								<h:inputText id="nmFuncao" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.nmFuncao}" />
-							</div>
-						</div>
-
-						<div class="input-box box-8">
-							<label for="">acumCargo</label>
-							<div class="conteiner">
-								<h:inputText id="acumCargo" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.acumCargo}" />
-							</div>
-						</div>
-						<div class="input-box box-8">
-							<label for="">codCateg</label>
-							<div class="conteiner">
-								<h:inputText id="codCateg" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.codCateg}" />
-							</div>
-						</div>
-
-						<div class="input-box box-12">
-							<label for="">cbocargo</label>
-							<div class="conteiner">
-								<h:inputText id="cbocargo" 
-											 maxlength="10"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.CBOCargo}" />
-							</div>
-						</div>
-						<div class="input-box box-12">
-							<label for="">cbofuncao</label>
-							<div class="conteiner">
-								<h:inputText id="cbofuncao" 
-											 maxlength="15"
-											 disabled="true"
-											 value="#{remuneracaoTrabalhadorFormBean.entidade.CBOFuncao}" />
-							</div>
-						</div>
-			
-					
-				</fieldset>
-				
+					<legend style="font-size: 15px;">
+							<strong> 
+								 Dados Evento S-1200
+							</strong>
+					</legend>
+	
+					<br/>
+	
+	            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
 					<fieldset>
-
-				<legend>Dependentes</legend>
-
-				<br/>
-			
-				<div class="tabela-dados">			
 						
-					<rich:dataTable id="listaDependenteId"
-									var="dep"
-									value="#{remuneracaoTrabalhadorFormBean.dependentesList}"
-									noDataLabel="Nenhum dependente lançado"	>
+							<legend style="font-size: 15px;">
+								<strong> 
+									 Remuneração RGPS:
+								</strong>
+							</legend>
+							<div class="input-box box-10">
+								<label for="">indApuracao</label>
+								<div class="conteiner">
+									<h:inputText id="indApuracao" 
+												 maxlength="5"
+												 disabled="true"
+												 value="#{remuneracaoTrabalhadorFormBean.entidade.indApuracao}" />
+								</div>
+							</div>
+	
+							<div class="input-box box-10">
+								<label for="">perApur</label>
+								<div class="conteiner">
+									<h:inputText id="perApur" 
+												 maxlength="10"
+												 disabled="true"
+												 value="#{remuneracaoTrabalhadorFormBean.entidade.perApur}" />
+								</div>
+							</div>
+					
+							<div class="input-box box-15">
+								<label for="">cpfTrab</label>
+								<div class="conteiner">
+									<h:inputText id="cpf" 
+												 maxlength="15"
+												 disabled="true"
+												 value="#{remuneracaoTrabalhadorFormBean.entidade.cpfTrab}" />
+								</div>
+							</div>
+	
+							<div class="input-box box-10">
+								<label for="">indMV</label>
+								<div class="conteiner">
+									<h:inputText id="indMV" 
+												 maxlength="5"
+												 disabled="true"
+												 value="#{remuneracaoTrabalhadorFormBean.entidade.indMV}" />
+								</div>
+							</div>
+							
+							<div class="input-box box-8">
+								<label for="">nmTrab</label>
+								<div class="conteiner">
+									<h:inputText id="nmTrab" 
+												 maxlength="10"
+												 disabled="true"
+												 value="#{remuneracaoTrabalhadorFormBean.entidade.nmTrab}" />
+								</div>
+							</div>
+							
+							<div class="input-box box-10">
+								<label for="">dtNascto</label>
+								<div class="conteiner">
+									<h:inputText id="dtNascto" 
+												 maxlength="15"
+												 disabled="true"
+												 value="#{remuneracaoTrabalhadorFormBean.entidade.dtNascto}" />
+								</div>
+							</div>					
+						
+					</fieldset>
+					<ui:fragment  rendered="#{remuneracaoTrabalhadorFormBean.entidade.indMV != 1}">
+						<fieldset>
+								<legend style="font-size: 15px;">
+									<strong> 
+										 Remuneração Outra Empresas:
+									</strong>
+								</legend>
+								<rich:dataTable id="remuneracaoOutraEmpresasId"
+										var="remuneracaoOutraEmpresas"
+										value="#{remuneracaoTrabalhadorFormBean.remuneracaoOutraEmpresaList}"
+										noDataLabel="Nenhum Item Remuneracao Outra Empresas"	>
+							
+										<h:column id="col1" headerClass="cel-15">
+											<f:facet name="header">
+												tpInscOutrEmpr
+											</f:facet>
+											<center>
+						                        <h:outputText id="item1" value="#{remuneracaoOutraEmpresas.tpInscOutrEmpr}" styleClass="cel-15" />		                        	
+				                        	</center>
+										</h:column>
+										
+										<h:column id="col2" headerClass="cel-15">
+											<f:facet name="header">
+												nrInscOutrEmpr
+											</f:facet>
+											<center>
+						                        <h:outputText id="item2" value="#{remuneracaoOutraEmpresas.nrInscOutrEmpr}" styleClass="cel-15"/>
+				                        	</center>
+										</h:column>												
+										
+										<h:column id="col4" headerClass="cel-70">
+											<f:facet name="header">
+												codCategOutrEmpr
+											</f:facet>							
+					                        <h:outputText id="item4" value="#{remuneracaoOutraEmpresas.codCategOutrEmpr}" styleClass="cel-70" >
+					                        	
+					                        </h:outputText>                        	
+										</h:column>		
+										<h:column id="col5" headerClass="cel-70">
+											<f:facet name="header">
+												vlrRemunOE
+											</f:facet>							
+					                        <h:outputText id="item5" value="#{remuneracaoOutraEmpresas.vlrRemunOE}" styleClass="cel-70" >
+					                        	
+					                        </h:outputText>                        	
+										</h:column>		
 									
-						<h:column id="col1" headerClass="cel-15">
-							<f:facet name="header">
-								nmDep
-							</f:facet>
-							<center>
-		                        <h:outputText id="item1" value="#{dep.nmDep}" styleClass="cel-15" />		                        	
-                        	</center>
-						</h:column>
+																													
+							</rich:dataTable>	
 						
-						<h:column id="col2" headerClass="cel-15">
-							<f:facet name="header">
-								tpDep
-							</f:facet>
-							<center>
-		                        <h:outputText id="item2" value="#{dep.tpDep}" styleClass="cel-15"/>
-                        	</center>
-						</h:column>
+						</fieldset>
+					</ui:fragment>
+					<ui:repeat var="dmDev" varStatus="i" value="#{remuneracaoTrabalhadorFormBean.demonstrativosDeValoresList}">
+						<fieldset >
+							<legend style="font-size: 15px; color: #004581; font-weight:bolder;">
+								<strong> 
+									 Demonstrativos de Valores
+								</strong>
+							</legend>
+							<div class="input-box box-20">
+									<label for="">ideDmDev</label>
+									<div class="conteiner">
+										<h:inputText id="ideDmDev" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{dmDev.ideDmDev}" />
+									</div>
+								</div>
+								
+								<div class="input-box box-20">
+									<label for="">codCateg</label>
+									<div class="conteiner">
+										<h:inputText id="codCateg" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{dmDev.codCateg}" />
+									</div>
+								</div>								
+								
+								<div class="input-box box-20">
+									<label for="">codCBO</label>
+									<div class="conteiner">
+										<h:inputText id="codCBO" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{dmDev.codCBO}" />
+									</div>
+								</div>
+								
+								<div class="input-box box-20">
+									<label for="">natAtividade</label>
+									<div class="conteiner">
+										<h:inputText id="natAtividade" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{dmDev.natAtividade}" />
+									</div>
+								</div>
+								
+								<div class="input-box box-20">
+									<label for="">qtdDiasTrab</label>
+									<div class="conteiner">
+										<h:inputText id="qtdDiasTrab" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{dmDev.qtdDiasTrab}" />
+									</div>
+								</div>
+								<ui:fragment  rendered="#{dmDev.flInfoRemunPerAnteriores == 0}">
+									<fieldset>
+											<legend style="font-size: 15px;">
+												<strong> 
+													  Informação Remuneracao de Período Apuração
+												</strong>
+											</legend>
+											<div class="input-box box-15">
+												<label for="">matricula</label>
+												<div class="conteiner">
+													<h:inputText id="matricula" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.matricula}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">tpInsc</label>
+												<div class="conteiner">
+													<h:inputText id="tpInsc" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.tpInsc}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">nrInsc</label>
+												<div class="conteiner">
+													<h:inputText id="nrInsc" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.nrInsc}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">codLotacao</label>
+												<div class="conteiner">
+													<h:inputText id="codLotacao" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.codLotacao}" />
+												</div>
+											</div>																	
+											
+											<div class="input-box box-15">
+												<label for="">indSimples</label>
+												<div class="conteiner">
+													<h:inputText id="indSimples" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.indSimples}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">grauEX</label>
+												<div class="conteiner">
+													<h:inputText id="grauEX" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.grauEX}" />
+												</div>
+											</div>
+											
+									</fieldset>
+								</ui:fragment>
+								<ui:fragment  rendered="#{dmDev.flInfoRemunPerAnteriores == 1}">
+								
+									<fieldset >
+										<legend style="font-size: 15px;">
+											<strong> 
+												 Informação Remuneracao de Periodo Anteriores
+											</strong>
+										</legend>
+										<div class="input-box box-15">
+											<label for="">perRef</label>
+											<div class="conteiner">
+												<h:inputText id="perRef" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.perRef}" />
+											</div>
+										</div>										
+										
+										<div class="input-box box-15">
+											<label for="">tpAcConv</label>
+											<div class="conteiner">
+												<h:inputText id="tpAcConv" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.tpAcConv}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">matricula</label>
+											<div class="conteiner">
+												<h:inputText id="matriculaInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.matricula}" />
+											</div>
+										</div>									
+										
+										<div class="input-box box-15">
+											<label for="">remunSuc</label>
+											<div class="conteiner">
+												<h:inputText id="remunSuc" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.remunSuc}" />
+											</div>
+										</div>
+										
+										
+										<div class="input-box box-15">
+											<label for="">tpInsc</label>
+											<div class="conteiner">
+												<h:inputText id="tpInscInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.tpInsc}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">nrInsc</label>
+											<div class="conteiner">
+												<h:inputText id="nrInscInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.nrInsc}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">codLotacao</label>
+											<div class="conteiner">
+												<h:inputText id="codLotacaoInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.codLotacao}" />
+											</div>
+										</div>
+										
+										
+										<div class="input-box box-15">
+											<label for="">indSimples</label>
+											<div class="conteiner">
+												<h:inputText id="indSimplesInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.indSimples}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">grauEX</label>
+											<div class="conteiner">
+												<h:inputText id="grauEXInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.grauEX}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">dtAcConv</label>
+											<div class="conteiner">
+												<h:inputText id="dtAcConv" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.dtAcConv}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">dsc</label>
+											<div class="conteiner">
+												<h:inputText id="dsc" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.dsc}" />
+											</div>
+										</div>
+										
+									</fieldset>
+								</ui:fragment>
+									  <fieldset >
+										<legend style="font-size: 15px;">
+											<strong> 
+												 Itens de Remuneração do Trabalhador
+											</strong>
+											
+										</legend>
+										<rich:dataTable id="remuneracaoTrabId"
+										var="remuneracaoTrab"
+										value="#{dmDev.itensRemuneracaoTrabalhadorList}"
+										noDataLabel="Nenhum Item Remuneracao do Trabalhador"	>
+							
+											<h:column id="col1" headerClass="cel-70">
+												<f:facet name="header">
+													codRubr
+												</f:facet>
+												<center>
+							                        <h:outputText id="item1" value="#{remuneracaoTrab.codRubr}" styleClass="cel-70" />		                        	
+					                        	</center>
+											</h:column>
+											
+											<h:column id="col2" headerClass="cel-70">
+												<f:facet name="header">
+													ideTabRubr
+												</f:facet>
+												<center>
+							                        <h:outputText id="item2" value="#{remuneracaoTrab.ideTabRubr}" styleClass="cel-70"/>
+					                        	</center>
+											</h:column>												
+											
+											<h:column id="col4" headerClass="cel-70">
+												<f:facet name="header">
+													qtdRubr
+												</f:facet>							
+						                        <h:outputText id="item4" value="#{remuneracaoTrab.qtdRubr}" styleClass="cel-70" >
+						                        	
+						                        </h:outputText>                        	
+											</h:column>		
+											<h:column id="col5" headerClass="cel-70">
+												<f:facet name="header">
+													fatorRubr
+												</f:facet>							
+						                        <h:outputText id="item5" value="#{remuneracaoTrab.fatorRubr}" styleClass="cel-70" >
+						                        	
+						                        </h:outputText>                        	
+											</h:column>
+											<h:column id="col6" headerClass="cel-70">
+												<f:facet name="header">
+													indApurIr
+												</f:facet>							
+						                        <h:outputText id="item6" value="#{remuneracaoTrab.indApurIr}" styleClass="cel-70" >
+						                        	
+						                        </h:outputText>                        	
+											</h:column>			
+									
+																													
+									</rich:dataTable>	
+										
+									</fieldset>
+							</fieldset>	
 						
-						<h:column id="col3" headerClass="cel-15">
-							<f:facet name="header">
-								dtNascto
-							</f:facet>
-							<center>
-		                        <h:outputText id="item3" value="#{dep.dtNascto}" styleClass="cel-15" >
-		                        	<f:convertDateTime id="dtUtilizacao" type="date" pattern="dd/MM/yyyy" />
-		                        </h:outputText>
-                        	</center>
-						</h:column>
-						
-						<h:column id="col4" headerClass="cel-70">
-							<f:facet name="header">
-								cpfDep
-							</f:facet>							
-	                        <h:outputText id="item4" value="#{dep.cpfDep}" styleClass="cel-70" >
-	                        	
-	                        </h:outputText>                        	
-						</h:column>		
-						<h:column id="col5" headerClass="cel-70">
-							<f:facet name="header">
-								sexoDep
-							</f:facet>							
-	                        <h:outputText id="item5" value="#{dep.sexoDep}" styleClass="cel-70" >
-	                        	
-	                        </h:outputText>                        	
-						</h:column>		
-						<h:column id="col6" headerClass="cel-70">
-							<f:facet name="header">
-								depIRRF
-							</f:facet>							
-	                        <h:outputText id="item6" value="#{dep.depIRRF}" styleClass="cel-70" >
-	                        	
-	                        </h:outputText>                        	
-						</h:column>	
-						<h:column id="col7" headerClass="cel-70">
-							<f:facet name="header">
-								depSF
-							</f:facet>							
-	                        <h:outputText id="item7" value="#{dep.depSF}" styleClass="cel-70" >
-	                        	
-	                        </h:outputText>                        	
-						</h:column>		
-						<h:column id="col8" headerClass="cel-70">
-							<f:facet name="header">
-								incTrab
-							</f:facet>							
-	                        <h:outputText id="item8" value="#{dep.incTrab}" styleClass="cel-70" >
-	                        	
-	                        </h:outputText>                        	
-						</h:column>	
-						<h:column id="col9" headerClass="cel-70">
-							<f:facet name="header">
-								incFisMen
-							</f:facet>							
-	                        <h:outputText id="item9" value="#{dep.incFisMen}" styleClass="cel-70" >
-	                        	
-	                        </h:outputText>                        	
-						</h:column>													
-																												
-					</rich:dataTable>		 
-				
-				</div>
-			
-			</fieldset>	 -->
-				
-
-			</fieldset>
-			
+					</ui:repeat>
+	
+				</fieldset>
+			</ui:fragment>
 			
 			
 			<h:commandButton action="#{remuneracaoTrabalhadorFormBean.salvarEvento}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />

@@ -24,9 +24,9 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 @SuppressWarnings("serial")
 @Component("remuneracaoTrabalhadorListBean")
 @Scope("view")
-public class RemuneracaoTrabalhadorLisBean implements Serializable {
+public class RemuneracaoTrabalhadorLislBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorLisBean.class);
+	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorLislBean.class);
 
 	@Autowired
 	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorESocialTCEService;
@@ -37,6 +37,8 @@ public class RemuneracaoTrabalhadorLisBean implements Serializable {
 	// parametro da tela de consulta
 	private String nome = new String();
 	private String cpf = new String();
+	private String anoReferencia;
+	private String mesReferencia;
 
 	// entidades das telas
 	private List<RemuneracaoTrabalhador> lista;
@@ -56,22 +58,27 @@ public class RemuneracaoTrabalhadorLisBean implements Serializable {
     }
 	
 	public void consultar() {
+		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("")) {
 
-		try {
-
-			count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf );
-
-			if (count == 0) {
-				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-				logger.info("Nenhum registro foi encontrado.");
+			try {
+	
+				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia );
+	
+				if (count == 0) {
+					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+					logger.info("Nenhum registro foi encontrado.");
+				}
+	
+				flagRegistroInicial = -1;
+	
+			} catch (Exception e) {
+				limparListas();
+				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
-
-			flagRegistroInicial = -1;
-
-		} catch (Exception e) {
-			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		else {
+			FacesUtil.addErroMessage("É necessário informar o Ano, o Mês Referência.");
 		}
 	}
 	
@@ -120,8 +127,6 @@ public class RemuneracaoTrabalhadorLisBean implements Serializable {
 		}
 
 	}
-	
-
 
 	public String getNome() {
 		return nome;
@@ -137,6 +142,22 @@ public class RemuneracaoTrabalhadorLisBean implements Serializable {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+	
+	public String getAnoReferencia() {
+		return anoReferencia;
+	}
+
+	public void setAnoReferencia(String anoReferencia) {
+		this.anoReferencia = anoReferencia;
+	}
+
+	public String getMesReferencia() {
+		return mesReferencia;
+	}
+
+	public void setMesReferencia(String mesReferencia) {
+		this.mesReferencia = mesReferencia;
 	}
 
 	public RemuneracaoTrabalhador getEntidade() {return entidade;}
@@ -157,7 +178,7 @@ public class RemuneracaoTrabalhadorLisBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(remuneracaoTrabalhadorESocialTCEService.search(this.nome, this.cpf, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(remuneracaoTrabalhadorESocialTCEService.search(this.nome, this.cpf, anoReferencia, mesReferencia, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

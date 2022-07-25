@@ -1,7 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,15 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_INFOREMUNPERANTERIORES", schema=DatabaseMetadata.SCHEMA_SRH)
-public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implements Serializable, Cloneable {
-
+@Table(name = "ESOCIAL_INFOREMUNPERAPUR", schema=DatabaseMetadata.SCHEMA_SRH)
+public class InfoRemuneracaoPeriodoApuracao  extends BasicEntity<Long> implements Serializable, Cloneable {
+	
 	@Id
 	@Column(name = "ID")	
 	private Long id;
@@ -26,22 +23,6 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	@JoinColumn(name = "IDDMDEV")
 	private DemonstrativosDeValores demonstrativosDeValores;
 	
-	@Column(name = "DT_AC_CONV")
-	@Temporal(TemporalType.DATE)
-	private Date dtAcConv;
-	
-	@Column(name = "TP_AC_CONV")
-	private Character tpAcConv;
-	
-	@Column(name = "DSC")
-	private String dsc;
-	
-	@Column(name = "REMUN_SUC")
-	private Character remunSuc;
-	
-	@Column(name = "PER_REF")
-	private String perRef;
-
 	@Column(name = "TP_INSC")
 	private Byte tpInsc;
 	
@@ -60,60 +41,13 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	@Column(name = "GRAU_EXP")
 	private Byte grauEX;
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	public DemonstrativosDeValores getDemonstrativosDeValores() {
 		return demonstrativosDeValores;
 	}
 
 	public void setDemonstrativosDeValores(DemonstrativosDeValores demonstrativosDeValores) {
 		this.demonstrativosDeValores = demonstrativosDeValores;
-	}
-	
-	public Date getDtAcConv() {
-		return dtAcConv;
-	}
-
-	public void setDtAcConv(Date dtAcConv) {
-		this.dtAcConv = dtAcConv;
-	}
-
-	public Character getTpAcConv() {
-		return tpAcConv;
-	}
-
-	public void setTpAcConv(Character tpAcConv) {
-		this.tpAcConv = tpAcConv;
-	}
-
-	public String getDsc() {
-		return dsc;
-	}
-
-	public void setDsc(String dsc) {
-		this.dsc = dsc;
-	}
-
-	public Character getRemunSuc() {
-		return remunSuc;
-	}
-
-	public void setRemunSuc(Character remunSuc) {
-		this.remunSuc = remunSuc;
-	}
-
-	public String getPerRef() {
-		return perRef;
-	}
-
-	public void setPerRef(String perRef) {
-		this.perRef = perRef;
 	}
 
 	public Byte getTpInsc() {
@@ -156,6 +90,14 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 		this.indSimples = indSimples;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Byte getGrauEX() {
 		return grauEX;
 	}
@@ -163,9 +105,10 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 	public void setGrauEX(Byte grauEX) {
 		this.grauEX = grauEX;
 	}
-		
+
 	@Override
-    public InfoRemuneracaoPeriodoAnteriores clone() throws CloneNotSupportedException {
-        return (InfoRemuneracaoPeriodoAnteriores) super.clone();
+    public InfoRemuneracaoPeriodoApuracao clone() throws CloneNotSupportedException {
+        return (InfoRemuneracaoPeriodoApuracao) super.clone();
     }
+
 }

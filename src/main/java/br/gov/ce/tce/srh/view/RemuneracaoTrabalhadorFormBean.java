@@ -12,10 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
+import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoApuracao;
+import br.gov.ce.tce.srh.domain.ItensRemuneracaoTrabalhador;
+import br.gov.ce.tce.srh.domain.RemuneracaoOutraEmpresa;
 import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.service.DemonstrativosDeValoresService;
 import br.gov.ce.tce.srh.service.FuncionalService;
+import br.gov.ce.tce.srh.service.InfoRemuneracaoPeriodoAnterioresService;
+import br.gov.ce.tce.srh.service.InfoRemuneracaoPeriodoApuracaoService;
+import br.gov.ce.tce.srh.service.ItensRemuneracaoTrabalhadorService;
+import br.gov.ce.tce.srh.service.RemuneracaoOutraEmpresaService;
 import br.gov.ce.tce.srh.service.RemuneracaoTrabalhadorEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -31,6 +41,16 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorEsocialService;	
 	@Autowired
 	private FuncionalService funcionalService;
+	@Autowired
+	private DemonstrativosDeValoresService demonstrativosDeValoresService;	
+	@Autowired
+	private InfoRemuneracaoPeriodoAnterioresService infoRemuneracaoPeriodoAnterioresService;
+	@Autowired
+	private InfoRemuneracaoPeriodoApuracaoService infoRemuneracaoPeriodoApuracaoService;
+	@Autowired
+	private ItensRemuneracaoTrabalhadorService itensRemuneracaoTrabalhadorService;	
+	@Autowired
+	private RemuneracaoOutraEmpresaService remuneracaoOutraEmpresaService;
 
 	
 
@@ -40,8 +60,14 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	private Funcional servidorFuncional;
 	private RemuneracaoTrabalhador entidade = new RemuneracaoTrabalhador();
 	boolean emEdicao = false;
+	boolean emConsulta = false;
 	private String anoReferencia;
 	private String mesReferencia;
+	private List<DemonstrativosDeValores> demonstrativosDeValoresList;
+	private List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList;
+	private List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList; 
+	private List<RemuneracaoOutraEmpresa> remuneracaoOutraEmpresaList;
+	private List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoList;
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -55,15 +81,22 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 			servidorFuncional = getEntidade().getFuncional();
 			emEdicao = true;
 		}
+		//carregaServidores();
     }	
 	
 	public void carregaServidores() {
 		this.servidorEnvioList = funcionalService.findServidoresEvento1200(anoReferencia, mesReferencia);
 	}
 	public void consultar() {
-		if(servidorFuncional != null) {
+		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("") && servidorFuncional != null) {
 			try {
-				//entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200ByServidor(servidorFuncional);	
+				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200(mesReferencia, anoReferencia, servidorFuncional);
+				remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, entidade.getId(), servidorFuncional.getId());
+				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValores(mesReferencia, anoReferencia, entidade.getId(), servidorFuncional.getId());
+				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
+				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
+				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
+				emConsulta = true;
 			} catch (Exception e) {		
 				e.printStackTrace();
 				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
@@ -71,7 +104,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 			}
 		}
 		else {
-			FacesUtil.addErroMessage("Selecione um servidor.");
+			FacesUtil.addErroMessage("É necessário informar o Ano, o Mês e o Servidor.");
 		}
 	}
 
@@ -152,12 +185,62 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 		this.mesReferencia = mesReferencia;
 	}
 
+	public List<DemonstrativosDeValores> getDemonstrativosDeValoresList() {
+		return demonstrativosDeValoresList;
+	}
+
+	public void setDemonstrativosDeValoresList(List<DemonstrativosDeValores> demonstrativosDeValoresList) {
+		this.demonstrativosDeValoresList = demonstrativosDeValoresList;
+	}
+
+	public List<InfoRemuneracaoPeriodoAnteriores> getInfoRemuneracaoPeriodoAnterioresList() {
+		return infoRemuneracaoPeriodoAnterioresList;
+	}
+
+	public void setInfoRemuneracaoPeriodoAnterioresList(
+			List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList) {
+		this.infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresList;
+	}
+
+	public List<ItensRemuneracaoTrabalhador> getItensRemuneracaoTrabalhadorList() {
+		return itensRemuneracaoTrabalhadorList;
+	}
+
+	public void setItensRemuneracaoTrabalhadorList(List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList) {
+		this.itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorList;
+	}
+
+	public List<RemuneracaoOutraEmpresa> getRemuneracaoOutraEmpresaList() {
+		return remuneracaoOutraEmpresaList;
+	}
+
+	public void setRemuneracaoOutraEmpresaList(List<RemuneracaoOutraEmpresa> remuneracaoOutraEmpresaList) {
+		this.remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaList;
+	}
+
+	public List<InfoRemuneracaoPeriodoApuracao> getInfoRemuneracaoPeriodoApuracaoList() {
+		return infoRemuneracaoPeriodoApuracaoList;
+	}
+
+	public void setInfoRemuneracaoPeriodoApuracaoList(
+			List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoList) {
+		this.infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoList;
+	}
+
 	public boolean isEmEdicao() {
 		return emEdicao;
 	}
 
 	public void setEmEdicao(boolean emEdicao) {
 		this.emEdicao = emEdicao;
+	}
+	
+	public boolean isEmConsulta() {
+		return emConsulta;
+	}
+
+	public void setEmConsulta(boolean emConsulta) {
+		this.emConsulta = emConsulta;
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}

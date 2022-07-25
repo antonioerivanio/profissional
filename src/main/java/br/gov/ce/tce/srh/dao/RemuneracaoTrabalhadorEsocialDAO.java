@@ -49,12 +49,14 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		return entityManager.find(RemuneracaoTrabalhador.class, id);
 	}
 	
-	public int count(String nome, String cpf) {
+	public int count(String nome, String cpf, String periodoApuracao) {
 		
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(a) FROM RemuneracaoTrabalhador a inner join a.funcional f WHERE 1=1 ");
+		sql.append(" Select count(rt) FROM RemuneracaoTrabalhador rt inner join rt.funcional f WHERE 1=1 ");
 
+		sql.append(" and rt.perApur = :periodoApuracao ");
+		
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
 		}
@@ -64,6 +66,7 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		}
 						
 		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("periodoApuracao", periodoApuracao);
 
 		if (nome != null && !nome.isEmpty()) {
 			query.setParameter("nome", "%" + nome.toUpperCase() + "%");
@@ -76,11 +79,13 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<RemuneracaoTrabalhador> search(String nome, String cpf, Integer first, Integer rows) {
+	public List<RemuneracaoTrabalhador> search(String nome, String cpf, String periodoApuracao, Integer first, Integer rows) {
 
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT e FROM RemuneracaoTrabalhador e inner join fetch e.funcional f WHERE 1=1 ");
+		sql.append("  SELECT rt FROM RemuneracaoTrabalhador rt inner join fetch rt.funcional f WHERE 1=1 ");
+		
+		sql.append(" and rt.perApur = :periodoApuracao ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -92,7 +97,8 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		sql.append("  ORDER BY f.nome ");
 
 		Query query = entityManager.createQuery(sql.toString());
-
+		query.setParameter("periodoApuracao", periodoApuracao);
+		
 		if (nome != null && !nome.isEmpty()) {
 			query.setParameter("nome", "%" + nome.toUpperCase() + "%");
 		}
@@ -109,7 +115,7 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RemuneracaoTrabalhador> getEventoS1200ByServidor(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
+	public List<RemuneracaoTrabalhador> getEventoS1200(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
 		try {
 			Query query = entityManager.createNativeQuery(getSQLEventoS1200(servidorFuncional), RemuneracaoTrabalhador.class);
 			query.setParameter("mesReferencia", mesReferencia);
@@ -127,31 +133,21 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	
 	public String getSQLEventoS1200(Funcional servidorFuncional) {
 		StringBuffer sql = new StringBuffer();
-		
-		
-		
-		sql.append(" SELECT distinct dp.nome,   "); 
-		sql.append(" (f.id * -1) as id, ");
+
+		sql.append(" SELECT distinct ( f.id * -1) as id,   "); 
+		sql.append(" dp.nome as NM_TRAB_DESC, ");
 		sql.append(" f.id as idfuncional, ");
-		sql.append(" f.id||'-'||:periodoApuracao as referencia, ");
+		sql.append(" p.cpf||'-'||:periodoApuracao as referencia, ");
 		sql.append("  1 as IND_APURACAO, ");
 		sql.append(" :periodoApuracao as PER_APUR,       ");
 		sql.append("  p.cpf as CPF_TRAB, ");
-		sql.append(" 1 as IND_MV, ");
-		sql.append("  1 as TP_INSC_OUTR_EMPR, ");
-		sql.append(" pj.cnpj as NR_INSC_OUTR_EMPR, ");
-		sql.append(" v.tipoesocial as COD_CATEG_OUTR_EMPR, ");
-		sql.append(" v.valoroutraempresa as VLR_REMUN_OE, ");
+		sql.append(" CASE ");
+		sql.append("  WHEN v.valoroutraempresa IS NULL THEN 1 ");
+		sql.append("  ELSE 2 ");
+		sql.append(" END AS IND_MV,  ");				
 		sql.append("  null as NM_TRAB, ");
-		sql.append(" null as DT_NASCTO, ");
-		sql.append(" null as TP_INSC_SUC_VINC, ");
-		sql.append(" null as NR_INSC_SUC_VINC, ");
-		sql.append("  null as MATRIC_ANT,   ");
-		sql.append("  null as DT_ADM, ");
-		sql.append(" null as OBSERVACAO, ");
-		sql.append(" null as TP_TRIB, ");
-		sql.append(" null as NR_PROC_JUD, ");
-		sql.append(" null as COD_SUSP ");
+		sql.append(" null as DT_NASCTO ");
+		
 		
 		sql.append(" FROM srh.fp_pagamentos pg ");
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");

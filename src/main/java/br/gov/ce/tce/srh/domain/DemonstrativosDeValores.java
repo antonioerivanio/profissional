@@ -1,6 +1,8 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,11 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @SuppressWarnings("serial")
 @Table(name = "ESOCIAL_DMDEV", schema=DatabaseMetadata.SCHEMA_SRH)
-public class DemonstrativosDeValores  extends BasicEntity<Long> implements Serializable{
+public class DemonstrativosDeValores  extends BasicEntity<Long> implements Serializable, Cloneable {
 	
 	@Id
 	@Column(name = "ID")	
@@ -28,30 +31,6 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	@Column(name = "COD_CATEG")
 	private Integer codCateg;
 	
-	@Column(name = "TP_INSC")
-	private Byte tpInsc;
-	
-	@Column(name = "NR_INSC")
-	private String nrInsc;
-	
-	@Column(name = "COD_LOTACAO")
-	private String codLotacao;
-	
-	@Column(name = "QTD_DIAS_AV")
-	private Integer qtdDiasAv;
-	
-	@Column(name = "CEP")
-	private String cep;
-	
-	@Column(name = "MATRICULA")
-	private String matricula;
-	
-	@Column(name = "IND_SIMPLES")
-	private Byte indSimples;
-	
-	@Column(name = "GRAU_EXP")
-	private Byte grauEX;
-	
 	@Column(name = "COD_CBO")
 	private String codCBO;
 	
@@ -63,6 +42,15 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	
 	@Column(name="FLINFOREMUNPERANTERIORES")
 	private Integer flInfoRemunPerAnteriores;
+	
+	@Transient
+	private InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores;
+	
+	@Transient
+	private InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao;
+	
+	@Transient
+	private List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList;
 	
 	public String getIdeDmDev() {
 		return ideDmDev;
@@ -80,62 +68,6 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 		this.codCateg = codCateg;
 	}
 
-	public Byte getTpInsc() {
-		return tpInsc;
-	}
-
-	public void setTpInsc(Byte tpInsc) {
-		this.tpInsc = tpInsc;
-	}
-
-	public String getNrInsc() {
-		return nrInsc;
-	}
-
-	public void setNrInsc(String nrInsc) {
-		this.nrInsc = nrInsc;
-	}
-
-	public String getCodLotacao() {
-		return codLotacao;
-	}
-
-	public void setCodLotacao(String codLotacao) {
-		this.codLotacao = codLotacao;
-	}
-
-	public Integer getQtdDiasAv() {
-		return qtdDiasAv;
-	}
-
-	public void setQtdDiasAv(Integer qtdDiasAv) {
-		this.qtdDiasAv = qtdDiasAv;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-
-	public Byte getIndSimples() {
-		return indSimples;
-	}
-
-	public void setIndSimples(Byte indSimples) {
-		this.indSimples = indSimples;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -150,14 +82,6 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 
 	public void setRemuneracaoTrabalhador(RemuneracaoTrabalhador remuneracaoTrabalhador) {
 		this.remuneracaoTrabalhador = remuneracaoTrabalhador;
-	}
-
-	public Byte getGrauEX() {
-		return grauEX;
-	}
-
-	public void setGrauEX(Byte grauEX) {
-		this.grauEX = grauEX;
 	}
 
 	public String getCodCBO() {
@@ -190,6 +114,35 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 
 	public void setFlInfoRemunPerAnteriores(Integer flInfoRemunPerAnteriores) {
 		this.flInfoRemunPerAnteriores = flInfoRemunPerAnteriores;
-	}		
+	}
+
+	public InfoRemuneracaoPeriodoAnteriores getInfoRemuneracaoPeriodoAnteriores() {
+		return infoRemuneracaoPeriodoAnteriores;
+	}
+
+	public void setInfoRemuneracaoPeriodoAnteriores(InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores) {
+		this.infoRemuneracaoPeriodoAnteriores = infoRemuneracaoPeriodoAnteriores;
+	}
+
+	public List<ItensRemuneracaoTrabalhador> getItensRemuneracaoTrabalhadorList() {
+		return itensRemuneracaoTrabalhadorList;
+	}
+
+	public void setItensRemuneracaoTrabalhadorList(List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList) {
+		this.itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorList;
+	}	
+
+	public InfoRemuneracaoPeriodoApuracao getInfoRemuneracaoPeriodoApuracao() {
+		return infoRemuneracaoPeriodoApuracao;
+	}
+
+	public void setInfoRemuneracaoPeriodoApuracao(InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao) {
+		this.infoRemuneracaoPeriodoApuracao = infoRemuneracaoPeriodoApuracao;
+	}
+
+	@Override
+    public DemonstrativosDeValores clone() throws CloneNotSupportedException {
+        return (DemonstrativosDeValores) super.clone();
+    }
 
 }

@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.ItensRemuneracaoTrabalhadorDAO;
+import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
 import br.gov.ce.tce.srh.domain.ItensRemuneracaoTrabalhador;
 
 @Service("itensRemuneracaoTrabalhadorService")
@@ -31,12 +33,30 @@ public class ItensRemuneracaoTrabalhadorService{
 		return dao.getById(id);
 	}	
 	
-	public List<ItensRemuneracaoTrabalhador> findByIdfuncional(Long idFuncional) {
-		List<ItensRemuneracaoTrabalhador> depentendes = dao.findByIdfuncional(idFuncional);
-		for (ItensRemuneracaoTrabalhador ItensRemuneracaoTrabalhador : depentendes) {
-			ItensRemuneracaoTrabalhador.setId(null);
+	public List<ItensRemuneracaoTrabalhador> findByDemonstrativosDeValores(List<DemonstrativosDeValores> demonstrativosDeValoresList) {
+		List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorReturnList = new  ArrayList<ItensRemuneracaoTrabalhador>();
+		String matricula = "";
+		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
+			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
+				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(1)) {
+					matricula = demonstrativosDeValores.getInfoRemuneracaoPeriodoAnteriores().getMatricula().substring(1);
+				}
+				else {
+					matricula = demonstrativosDeValores.getInfoRemuneracaoPeriodoApuracao().getMatricula().substring(1);
+				}
+				
+				List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList = dao.findByDemonstrativosDeValores(demonstrativosDeValores, matricula);
+				if(itensRemuneracaoTrabalhadorList != null && !itensRemuneracaoTrabalhadorList.isEmpty()) {			
+					itensRemuneracaoTrabalhadorReturnList.addAll(itensRemuneracaoTrabalhadorList);	
+					demonstrativosDeValores.setItensRemuneracaoTrabalhadorList(itensRemuneracaoTrabalhadorList);
+				}
+				
+			}
+			for (ItensRemuneracaoTrabalhador itensRemuneracaoTrabalhador : itensRemuneracaoTrabalhadorReturnList) {
+				itensRemuneracaoTrabalhador.setId(null);
+			}
 		}
-		return depentendes;
+		return itensRemuneracaoTrabalhadorReturnList;
 	}
 
 	@Transactional

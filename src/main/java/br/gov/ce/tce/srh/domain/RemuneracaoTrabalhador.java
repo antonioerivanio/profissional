@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @SuppressWarnings("serial")
 @Table(name = "ESOCIAL_REMUNERACAOTRABALHADOR", schema=DatabaseMetadata.SCHEMA_SRH)
-public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Serializable{
+public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Serializable, Cloneable {
 
 	@Id
 	@Column(name = "ID")	
@@ -44,17 +44,8 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 	@Column(name = "IND_MV")
 	private Byte indMV;
 	
-	@Column(name = "TP_INSC_OUTR_EMPR")
-	private Byte tpInscOutrEmpr;
-	
-	@Column(name = "NR_INSC_OUTR_EMPR")
-	private String nrInscOutrEmpr;
-	
-	@Column(name = "COD_CATEG_OUTR_EMPR")
-	private Integer codCategOutrEmpr;
-	
-	@Column(name="VLR_REMUN_OE")
-	private BigDecimal vlrRemunOE;
+	@Column(name = "NM_TRAB_DESC")
+	private String nmTrabDesc;
 	
 	@Column(name = "NM_TRAB")
 	private String nmTrab;
@@ -63,34 +54,7 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 	@Temporal(TemporalType.DATE)
 	private Date dtNascto;
 	
-	@Column(name = "TP_INSC_SUC_VINC")
-	private Byte tpInscSucVinc;
 	
-	@Column(name = "NR_INSC_SUC_VINC")
-	private String nrInscSucVinc;
-
-	@Column(name = "MATRIC_ANT")
-	private String matriculaAnt;	
-	
-	@Column(name = "DT_ADM")
-	@Temporal(TemporalType.DATE)
-	private Date dtAdm;
-		
-	@Column(name = "OBSERVACAO")
-	@Length(min = 1, max = 255, message = "Tamanho fora do permitido para Observação")
-	private String observacao;
-	
-	@Column(name = "TP_TRIB")
-	private Byte tpTrib;
-	
-	@Column(name = "NR_PROC_JUD")
-	private String nrProcJud;
-	
-	@Column(name = "COD_SUSP")
-	private Integer codSusp;
-	@Transient
-	private String nome;
-
 	public Long getId() {
 		return id;
 	}
@@ -147,38 +111,7 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 		this.indMV = indMV;
 	}
 
-	public Byte getTpInscOutrEmpr() {
-		return tpInscOutrEmpr;
-	}
-
-	public void setTpInscOutrEmpr(Byte tpInscOutrEmpr) {
-		this.tpInscOutrEmpr = tpInscOutrEmpr;
-	}
-
-	public String getNrInscOutrEmpr() {
-		return nrInscOutrEmpr;
-	}
-
-	public void setNrInscOutrEmpr(String nrInscOutrEmpr) {
-		this.nrInscOutrEmpr = nrInscOutrEmpr;
-	}
-
-	public Integer getCodCategOutrEmpr() {
-		return codCategOutrEmpr;
-	}
-
-	public void setCodCategOutrEmpr(Integer codCategOutrEmpr) {
-		this.codCategOutrEmpr = codCategOutrEmpr;
-	}
-
-	public BigDecimal getVlrRemunOE() {
-		return vlrRemunOE;
-	}
-
-	public void setVlrRemunOE(BigDecimal vlrRemunOE) {
-		this.vlrRemunOE = vlrRemunOE;
-	}
-
+	
 	public String getNmTrab() {
 		return nmTrab;
 	}
@@ -194,77 +127,18 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 	public void setDtNascto(Date dtNascto) {
 		this.dtNascto = dtNascto;
 	}
-
-	public Byte getTpInscSucVinc() {
-		return tpInscSucVinc;
+	
+	public String getNmTrabDesc() {
+		return nmTrabDesc;
 	}
 
-	public void setTpInscSucVinc(Byte tpInscSucVinc) {
-		this.tpInscSucVinc = tpInscSucVinc;
+	public void setNmTrabDesc(String nmTrabDesc) {
+		this.nmTrabDesc = nmTrabDesc;
 	}
 
-	public String getNrInscSucVinc() {
-		return nrInscSucVinc;
-	}
-
-	public void setNrInscSucVinc(String nrInscSucVinc) {
-		this.nrInscSucVinc = nrInscSucVinc;
-	}
-
-	public String getMatriculaAnt() {
-		return matriculaAnt;
-	}
-
-	public void setMatriculaAnt(String matriculaAnt) {
-		this.matriculaAnt = matriculaAnt;
-	}
-
-	public Date getDtAdm() {
-		return dtAdm;
-	}
-
-	public void setDtAdm(Date dtAdm) {
-		this.dtAdm = dtAdm;
-	}
-
-	public String getObservacao() {
-		return observacao;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
-	}
-
-	public Byte getTpTrib() {
-		return tpTrib;
-	}
-
-	public void setTpTrib(Byte tpTrib) {
-		this.tpTrib = tpTrib;
-	}
-
-	public String getNrProcJud() {
-		return nrProcJud;
-	}
-
-	public void setNrProcJud(String nrProcJud) {
-		this.nrProcJud = nrProcJud;
-	}
-
-	public Integer getCodSusp() {
-		return codSusp;
-	}
-
-	public void setCodSusp(Integer codSusp) {
-		this.codSusp = codSusp;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}	
+	@Override
+    public RemuneracaoTrabalhador clone() throws CloneNotSupportedException {
+        return (RemuneracaoTrabalhador) super.clone();
+    }
 	
 }
