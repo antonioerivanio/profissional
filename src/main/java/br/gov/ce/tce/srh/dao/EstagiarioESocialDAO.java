@@ -82,7 +82,7 @@ public class EstagiarioESocialDAO {
 		sql.append("	CASE WHEN fd.FLMENTAL IS NULL THEN 'N' ELSE 'S' END AS DEF_MENTAL, ");
 		sql.append("	CASE WHEN fd.FLFISICA IS NULL THEN 'N' ELSE 'S' END AS DEF_INTELECTUAL, ");
 		sql.append("	CASE WHEN fd.FLREADAPTADO IS NULL THEN 'N' ELSE 'S' END AS DEF_REAB_READAP, ");
-		sql.append("	TRIM(' ' from tb_pessoal.TELEFONE) AS FONE_PRINC, ");
+		sql.append("	TRIM(' ' from tb_pessoal.CELULAR) AS FONE_PRINC, ");
 		sql.append("	CASE WHEN fp_cadastro.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ELSE 'S' END AS CAD_INI, ");
 		sql.append("	901 AS COD_CATEG, ");
 		sql.append("	5 AS UND_SAL_FIXO, ");
