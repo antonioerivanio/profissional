@@ -1236,5 +1236,20 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<!-- GTR -->
+	<navigation-rule>
+		<from-view-id>/paginas/funcional/gtrList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/funcional/gtrForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+			<from-view-id>/paginas/funcional/gtrForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/funcional/gtrList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

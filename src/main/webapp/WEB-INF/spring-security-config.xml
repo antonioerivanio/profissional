@@ -221,6 +221,9 @@
         <intercept-url pattern="/paginas/funcional/feriasList.faces" access="ROLE_FERIAS" />
         <intercept-url pattern="/paginas/funcional/feriasForm.faces" access="ROLE_FERIAS" />
         
+        <intercept-url pattern="/paginas/funcional/gtrList.faces" access="ROLE_GTR" />
+        <intercept-url pattern="/paginas/funcional/gtrForm.faces" access="ROLE_GTR" />
+        
         <intercept-url pattern="/paginas/funcional/folgaList.faces" access="ROLE_FOLGA" />
         <intercept-url pattern="/paginas/funcional/folgaForm.faces" access="ROLE_FOLGA" />
 

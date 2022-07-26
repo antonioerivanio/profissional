@@ -479,6 +479,12 @@
                                 <a href="/srh/paginas/funcional/folgaList.faces">
 									Folga </a>
                             </li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_GTR')}">
+                            <li>
+                                <a href="/srh/paginas/funcional/gtrList.faces">
+									GTR </a>
+                            </li>
                         </ui:fragment>                        
                         <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_FUNCIONAL_LICENCA')}">
                             <li class="third-menu">

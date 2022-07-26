@@ -39,6 +39,7 @@
 	<class>br.gov.ce.tce.srh.domain.FuncionalAnotacao</class>
 	<class>br.gov.ce.tce.srh.domain.FuncionalAreaSetor</class>
 	<class>br.gov.ce.tce.srh.domain.FuncionalSetor</class>
+	<class>br.gov.ce.tce.srh.domain.GTR</class>
 	<class>br.gov.ce.tce.srh.domain.Instituicao</class>
 	<class>br.gov.ce.tce.srh.domain.Licenca</class>
 	<class>br.gov.ce.tce.srh.domain.LicencaEspecial</class>

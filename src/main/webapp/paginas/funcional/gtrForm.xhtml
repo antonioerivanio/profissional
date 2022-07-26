@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
+
+	<ui:define name="content">
+		<script type="text/javascript" charset="ISO-8859-1">
+		function openwindow()
+		{	
+			nome = document.getElementById('form:nomeCompletoPessoa').value;
+			if (nome.length > 2) {
+				window.open("/srh/paginas/funcional/funcionalConsulta.faces?nome=" + nome,"mywindow","scrollbars=1,menubar=0,resizable=0,width=800,height=300");
+			} else {
+				alerta('Digite pelo menos 3 caracteres para a pesquisa.');
+			}
+		}
+
+		</script>
+
+		<div class="titulo-pagina">
+
+			<h2>Lançamento de GTR</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios" >
+
+			<fieldset>
+
+				<legend>Dados Pessoais</legend>
+
+				<br/>
+
+            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+
+				<div class="input-box box-10">
+					<label for="">Matrícula</label>
+					<div class="conteiner">
+						<h:inputText id="matricula" 
+									 name="matricula"
+									 maxlength="6"
+									 styleClass="maskMatricula"									 
+									 disabled="#{gtrFormBean.alterar or (not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR'))}"
+									 value="#{gtrFormBean.matricula}">
+							<a4j:ajax event="change"
+									  render="messages, nomeCompletoPessoa, mae, cpf, rg, rgEmissor, rgUf"
+									  execute="@this" />
+						</h:inputText>
+					</div>
+				</div>
+
+				<div class="input-box box-75">
+					<label for="">Nome</label>
+					<div class="conteiner">
+						<h:inputText id="nomeCompletoPessoa" 
+									 name="nomeCompletoPessoa"
+									 disabled="#{gtrFormBean.alterar or (not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR'))}"
+									 value="#{gtrFormBean.nome}" />
+					</div>
+				</div>
+
+				<ui:fragment rendered="#{!gtrFormBean.alterar and LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}">
+					<a id="form:Pesquisar" 
+					   href="#" 
+					   onclick="openwindow()"
+					   class="bt-padrao fl mg-top-18">Pesquisar</a>
+				</ui:fragment>
+	
+				<div class="input-box box-100">
+					<label for="">Mãe</label>
+					<div class="conteiner">
+						<h:inputText id="mae"
+									 name="mae"
+									 disabled="true"
+									 value="#{gtrFormBean.entidade.funcional.pessoal.nomeMae}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">CPF</label>
+					<div class="conteiner">
+						<h:inputText id="cpf" 
+									 maxlength="14"
+									 styleClass="maskCpf"
+									 converter="cpfConverter"
+									 disabled="true"
+									 value="#{gtrFormBean.entidade.funcional.pessoal.cpf}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">RG</label>
+					<div class="conteiner">
+						<h:inputText id="rg" 
+									 maxlength="15"
+									 disabled="true"
+									 value="#{gtrFormBean.entidade.funcional.pessoal.rg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">Emissor</label>
+					<div class="conteiner">
+						<h:inputText id="rgEmissor" 
+									 maxlength="10"
+									 disabled="true"
+									 value="#{gtrFormBean.entidade.funcional.pessoal.emissorRg}" />
+					</div>
+				</div>
+
+				<div class="input-box box-25">
+					<label for="">UF</label>
+					<div class="conteiner">
+						<h:inputText id="rgUf" 
+									 maxlength="2"
+									 disabled="true"
+									 value="#{gtrFormBean.entidade.funcional.pessoal.ufEmissorRg.id}" />
+					</div>
+				</div>
+
+			</fieldset>
+
+
+			<fieldset>
+
+				<legend>Lançamento de GTR</legend>
+
+				<br/>
+
+				<div class="input-box box-10"/>
+
+				<div class="input-box box-20">
+					<label for="">Inicio*</label>
+					<div class="conteiner">
+						<h:inputText id="inicio" 
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{gtrFormBean.inicio}"
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}" >
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
+						</h:inputText>
+					</div>
+				</div>				
+
+				
+				<div class="input-box box-40"/>
+
+				<div class="input-box box-20">
+					<label for="">Fim*</label>
+					<div class="conteiner">
+						<h:inputText id="fim" 
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{gtrFormBean.fim}"
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}" >
+							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
+						</h:inputText>
+					</div>
+				</div>
+
+				
+			<div class="input-box box-10"/>
+			
+			</fieldset> 
+			
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}">
+				<a4j:commandLink id="salvar"
+	                 			 value="Salvar"
+	                 			 onclick="validarGTR()"
+	                 			 styleClass="bt-padrao fr">                     
+                </a4j:commandLink>
+                <a4j:jsFunction name="salvar" 
+                				action="#{gtrFormBean.salvar}" 
+                				execute="form" 
+                				render="messages"
+                				/>
+			</ui:fragment>
+			
+			<h:commandButton value="Voltar" styleClass="bt-voltar fr mg-right-10 mg-bottom-10" action="#{gtrFormBean.voltar}" />
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+		
+	
