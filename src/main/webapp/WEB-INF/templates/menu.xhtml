@@ -352,7 +352,7 @@
                     <a id="link-menu-cadastros" href="#" title="">Cadastros</a>
                     <ul class="sub-menu">
                         <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ANOTACAO_SERVIDOR')}">
-                            <li>
+                            <li>                            	
                                 <a href="/srh/paginas/cadastros/pessoaAnotacaoList.faces">
 									Anotações do Servidor </a>
                             </li>
@@ -430,8 +430,7 @@
                                     
                                     <ui:fragment rendered="#{LoginBean.anyGranted('ROLE_PESSOA, ROLE_DEPENDENTE')}">
                                         <li>
-                                            <a href="/srh/paginas/cadastros/auxilioSaudeList.faces">
-												Auxílio-Saúde </a>
+                                       		 <h:commandLink action="#{auxilioSaudeListBean.listar}" immediate="true" value="Auxílio-Saúde"/>												
                                         </li>
                                     </ui:fragment>
                                 </ul>

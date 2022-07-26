@@ -29,7 +29,6 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   private AuxilioSaudeRequisicao entidadeEditar;
 
 
-
   @PostConstruct
   private void init() {
     
@@ -41,6 +40,9 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     
     getEntidade().setFuncional(new Funcional());
     getEntidade().getFuncional().setPessoal(new Pessoal()); 
+    
+    consultar();
+    
   }
 
   public void consultar() {
@@ -111,6 +113,10 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   public void setEntidadeEditar(AuxilioSaudeRequisicao entidadeEditar) {
     this.entidadeEditar = entidadeEditar;
+  }
+  
+  public String listar() {    
+    return "/paginas/cadastros/auxilioSaudeList.xhtml?faces-redirect=true";
   }
 
 

@@ -121,11 +121,6 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void consultar() {
     try {
       entidadeService.setDadosIniciaisDaEntidade(getEntidade());
-
-      /*
-       * if (!isEdicao) { entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade()); }
-       */
-
     } catch (NullPointerException e) {
       FacesUtil.addErroMessage(e.getMessage());
     } catch (Exception e) {
@@ -136,26 +131,17 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
 
+  /***
+   * salvar ou alterar dados
+   */
   @Override
   public void salvar() {
     try {
-      if (isEdicao) {
-
-        /*** atualizar a flag de deletado no banco **/
-
-        if (auxilioSaudeRequisicaoItemsDeletadoList != null) {
-          for (AuxilioSaudeRequisicaoItem bean : auxilioSaudeRequisicaoItemsDeletadoList) {
-            getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().add(bean);
-          }
-        }
-
-        if (auxilioSaudeRequisicaDependesDeletadoList != null) {
-          for (AuxilioSaudeRequisicaoDependente bean : auxilioSaudeRequisicaDependesDeletadoList) {
-            getEntidade().getAuxilioSaudeRequisicaoDependenteList().add(bean);
-          }
-        }
-
+      if (isEdicao) {        
+        adicionarDadosDeletadosList();
+        
         entidadeService.atualizar(getEntidade());
+        
         FacesUtil.addInfoMessage("Registro atualizado com sucesso!");
       } else {
         if (Boolean.TRUE.equals(entidadeService.isOK(getEntidade()))) {
@@ -232,6 +218,23 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
   }
 
+  private void adicionarDadosDeletadosList() {
+    getEntidade().setDataAlteracao(new Date());
+    
+    /*** atualizar a flag de deletado no banco **/
+    if (auxilioSaudeRequisicaoItemsDeletadoList != null) {
+      for (AuxilioSaudeRequisicaoItem bean : auxilioSaudeRequisicaoItemsDeletadoList) {
+        getEntidade().getAuxilioSaudeRequisicaoBeneficiarioItemList().add(bean);
+      }
+    }
+
+    if (auxilioSaudeRequisicaDependesDeletadoList != null) {
+      for (AuxilioSaudeRequisicaoDependente bean : auxilioSaudeRequisicaDependesDeletadoList) {
+        getEntidade().getAuxilioSaudeRequisicaoDependenteList().add(bean);
+      }
+    }
+
+  }
   /***
    * Metodo procura o item da lista de documentos, cria o diretorio se não existir e Faz o upload do
    * arquivo

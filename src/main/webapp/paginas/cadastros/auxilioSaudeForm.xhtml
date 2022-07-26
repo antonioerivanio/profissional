@@ -412,7 +412,7 @@
 				<div class="textarea-box box-100">
 					<label for="">Observações da área</label>
 					<div class="conteiner">
-						<h:inputTextarea id="asFrmIttObs"
+						<h:inputTextarea id="observacao"
 							disabled="#{not auxilioSaudeFormBean.isAnalista()}"
 							value="#{auxilioSaudeFormBean.entidade.observacao}" />
 					</div>
@@ -521,7 +521,7 @@
 						rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoSalvar()}"
 						action="#{auxilioSaudeFormBean.salvar}" value="Salvar"
 						styleClass="bt-padrao fr mg-right-10">
-						<a4j:ajax execute="campoConcordo" render="messages"></a4j:ajax>
+						<a4j:ajax execute="campoConcordo observacao" render="messages"></a4j:ajax>
 					</h:commandButton>
 
 					<h:commandLink id="btnIndeferir"
@@ -529,14 +529,14 @@
 						action="#{auxilioSaudeFormBean.deferir(false)}"
 						styleClass="bt-padrao fr mg-right-10" value="INDEFERIR"
 						style="background: #081e5c;">
-						<a4j:ajax execute="campoConcordo" render="messages"></a4j:ajax>
+						<a4j:ajax execute="campoConcordo observacao" render="messages"></a4j:ajax>
 					</h:commandLink>
 
 					<h:commandLink id="btnDeferir"
 						rendered="#{auxilioSaudeFormBean.validarExibicaoBotaoDeferirEIndeferir()}"
 						action="#{auxilioSaudeFormBean.deferir(true)}"
 						styleClass="bt-padrao fr mg-right-10" value="DEFERIR">
-						<a4j:ajax execute="campoConcordo" render="messages"></a4j:ajax>
+						<a4j:ajax execute="campoConcordo observacao" render="messages"></a4j:ajax>
 					</h:commandLink>
 				</a4j:outputPanel>
 				

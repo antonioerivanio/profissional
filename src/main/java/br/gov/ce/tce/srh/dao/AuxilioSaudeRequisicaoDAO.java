@@ -25,7 +25,7 @@ public class AuxilioSaudeRequisicaoDAO {
   private EntityManager entityManager;
 
   private static final String NOME = "nome";
-  private static final String ID = "id";  
+  private static final String ID = "id";
   private static final String CPF = "cpf";
   private static final String DATA_INICIO = "dataInicioRequisicao";
   private static final String DATA_FIM = "dataFimRequisicao";
@@ -66,45 +66,46 @@ public class AuxilioSaudeRequisicaoDAO {
     return getEntityManager().find(AuxilioSaudeRequisicaoDocumento.class, obj.getId());
   }
 
-  
+
   public int count(AuxilioSaudeRequisicao bean) {
     Query query = null;
     StringBuilder sql = new StringBuilder();
     sql.append("select count(asr) from AuxilioSaudeRequisicao asr where 1=1 ");
-    
-    setFiltrosWhere(sql, bean);    
+
+    setFiltrosWhere(sql, bean);
     query = entityManager.createQuery(sql.toString());
     setParametroQuery(query, bean);
-    
+
     long countResult = (long) query.getSingleResult();
 
     return (int) countResult;
   }
-  
+
   private void setFiltrosWhere(StringBuilder sql, AuxilioSaudeRequisicao bean) {
-    if (isNomeNotNull(bean)) {
-      sql.append(" and upper(asr.funcional.nome) like :nome ");
-    } else if (isCpfNotNull(bean)) {
-      sql.append(" and asr.funcional.pessoal.cpf =:cpf ");
-    } else if (isNomeNotNull(bean) && isCpfNotNull(bean)) {
-      sql.append("and upper(asr.funcional.nome) like :nome and asr.funcional.cpf=:cpf");
-    } else if (isDataInicioNotNull(bean)) {
-      sql.append("and asr.dataInicioRequisicao= :dataInicioRequisicao ");
-    } else if (isDataFimNotNull(bean)) {
-      sql.append("and asr.dataFimRequisicao= :dataFimRequisicao ");
-    } else if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {      
-        sql.append("and asr.dataInicioRequisicao= :dataInicioRequisicao or asr.dataFimRequisicao= :dataFimRequisicao ");        
+    if (bean != null && bean.getFuncional() != null) {
+      if (isNomeNotNull(bean)) {
+        sql.append(" and upper(asr.funcional.nome) like :nome ");
+      } else if (isCpfNotNull(bean)) {
+        sql.append(" and asr.funcional.pessoal.cpf =:cpf ");
+      } else if (isNomeNotNull(bean) && isCpfNotNull(bean)) {
+        sql.append("and upper(asr.funcional.nome) like :nome and asr.funcional.cpf=:cpf");
+      } else if (isDataInicioNotNull(bean)) {
+        sql.append("and asr.dataInicioRequisicao= :dataInicioRequisicao ");
+      } else if (isDataFimNotNull(bean)) {
+        sql.append("and asr.dataFimRequisicao= :dataFimRequisicao ");
+      } else if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {
+        sql.append("and asr.dataInicioRequisicao= :dataInicioRequisicao or asr.dataFimRequisicao= :dataFimRequisicao ");
+      }
     }
-    
+
     sql.append("and asr.isDeletado = 0 ");
   }
 
 
-  private void setParametroQuery(Query query, AuxilioSaudeRequisicao bean) {    
+  private void setParametroQuery(Query query, AuxilioSaudeRequisicao bean) {
     if (isNomeNotNull(bean)) {
       query.setParameter(NOME, "%" + bean.getFuncional().getPessoal().getNome() + "%");
-    }
-    else if (isCpfNotNull(bean)) {
+    } else if (isCpfNotNull(bean)) {
       query.setParameter(CPF, SRHUtils.removerMascara(bean.getFuncional().getPessoal().getCpf()));
     } else if (isNomeNotNull(bean) && isCpfNotNull(bean)) {
       query.setParameter(NOME, "%" + bean.getFuncional().getPessoal().getNomeCompleto() + "%");
@@ -113,11 +114,10 @@ public class AuxilioSaudeRequisicaoDAO {
 
     else if (isDataInicioNotNull(bean)) {
       query.setParameter(DATA_INICIO, bean.getDataInicioRequisicao(), TemporalType.DATE);
-    }
-    else if (isDataFimNotNull(bean)) {
+    } else if (isDataFimNotNull(bean)) {
       query.setParameter(DATA_FIM, bean.getDataFimRequisicao(), TemporalType.DATE);
     }
-    
+
     else if (isDataInicioNotNull(bean) && isDataFimNotNull(bean)) {
       query.setParameter(DATA_INICIO, bean.getDataInicioRequisicao(), TemporalType.DATE);
       query.setParameter(DATA_FIM, bean.getDataFimRequisicao(), TemporalType.DATE);
@@ -129,11 +129,11 @@ public class AuxilioSaudeRequisicaoDAO {
     Query query = null;
     StringBuilder sql = new StringBuilder();
     sql.append("from AuxilioSaudeRequisicao asr where 1=1 ");
-    
-    setFiltrosWhere(sql, bean);    
+
+    setFiltrosWhere(sql, bean);
     query = entityManager.createQuery(sql.toString());
     setParametroQuery(query, bean);
-    
+
     if (first != null && first >= 0)
       query.setFirstResult(first);
     if (rows != null && rows > 0)
@@ -144,31 +144,31 @@ public class AuxilioSaudeRequisicaoDAO {
 
   public List<AuxilioSaudeRequisicaoDocumento> getListaAnexos(BeanEntidade beanEntidade) {
     Query query = null;
-    
-    if(beanEntidade instanceof AuxilioSaudeRequisicaoItem) {
+
+    if (beanEntidade instanceof AuxilioSaudeRequisicaoItem) {
       query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicaoItem.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
       query.setParameter(ID, (((AuxilioSaudeRequisicaoItem) beanEntidade)).getId());
     }
-    
-    if(beanEntidade instanceof AuxilioSaudeRequisicaoDependente) {
+
+    if (beanEntidade instanceof AuxilioSaudeRequisicaoDependente) {
       query = entityManager.createQuery("from AuxilioSaudeRequisicaoDocumento asd where asd.auxilioSaudeRequisicaoDependente.id =:id ", AuxilioSaudeRequisicaoDocumento.class);
       query.setParameter(ID, (((AuxilioSaudeRequisicaoDependente) beanEntidade)).getId());
     }
-      
+
     return query.getResultList();
   }
-  
-  
+
+
   public List<AuxilioSaudeRequisicaoItem> getListaAuxilioSaudeItems(BeanEntidade beanEntidade) {
     Query query = null;
-    final boolean  flagDeletado = Boolean.TRUE;
-    
-    if(beanEntidade instanceof AuxilioSaudeRequisicao) {
+    final boolean flagDeletado = Boolean.TRUE;
+
+    if (beanEntidade instanceof AuxilioSaudeRequisicao) {
       query = entityManager.createQuery("from AuxilioSaudeRequisicaoItem asd where asd.auxilioSaudeRequisicao.id =:id and asd.flgDeletado != :flgDeletado", AuxilioSaudeRequisicaoItem.class);
       query.setParameter(ID, (((AuxilioSaudeRequisicao) beanEntidade)).getId());
       query.setParameter(FLG_DELETADO, flagDeletado);
-    } 
-    
+    }
+
     return query.getResultList();
   }
 
@@ -193,27 +193,32 @@ public class AuxilioSaudeRequisicaoDAO {
   }
 
   private BigDecimal getSalarioColaboradorComIdadeAte30Anos() {
-    Query query = entityManager.createNativeQuery("select round(0.03 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)),2) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery(
+                              "select round(0.03 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)),2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdade30a40Anos() {
-    Query query = entityManager.createNativeQuery("select round(0.035 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery(
+                              "select round(0.035 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdade41a50Anos() {
-    Query query = entityManager.createNativeQuery("select round(0.04 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery(
+                              "select round(0.04 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdade51a60Anos() {
-    Query query = entityManager.createNativeQuery("select round(0.045 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery(
+                              "select round(0.045 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
   private BigDecimal getSalarioColaboradorComIdadeAcima60Anos() {
-    Query query = entityManager.createNativeQuery("select round(0.05 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
+    Query query = entityManager.createNativeQuery(
+                              "select round(0.05 * (select max(ACE23) from fp_vencimentoscargos where ace23 is not null and vigencia = (select trunc(sysdate, 'MM') from dual)), 2) valor_por_percentual from dual");
     return (BigDecimal) query.getSingleResult();
   }
 
@@ -257,18 +262,19 @@ public class AuxilioSaudeRequisicaoDAO {
       query.setParameter(ID, pessoal.getId());
       query.setParameter(FLG_ATIVO, flagAtivo);
       return (AuxilioSaudeRequisicaoBase) query.getSingleResult();
-    }catch (Exception e) {
+    } catch (Exception e) {
       return null;
     }
   }
-  
-  public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeRequisicaoDependentePorId(Long id){    
-      final boolean  flagDeletado = Boolean.TRUE;
-      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoDependente asd where asd.auxilioSaudeRequisicao.id=:id and asd.flgDeletado != :flgDeletado ", AuxilioSaudeRequisicaoDependente.class);
-      query.setParameter(ID, id);  
-      query.setParameter(FLG_DELETADO, flagDeletado);
-      return query.getResultList();
+
+  public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeRequisicaoDependentePorId(Long id) {
+    final boolean flagDeletado = Boolean.TRUE;
+    Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoDependente asd where asd.auxilioSaudeRequisicao.id=:id and asd.flgDeletado != :flgDeletado ",
+                              AuxilioSaudeRequisicaoDependente.class);
+    query.setParameter(ID, id);
+    query.setParameter(FLG_DELETADO, flagDeletado);
+    return query.getResultList();
   }
-  
+
 }
 
