@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.EstagiarioESocial;
 import br.gov.ce.tce.srh.domain.Funcional;
@@ -44,6 +45,7 @@ public class EstagiarioFormBean implements Serializable {
 	private List<Funcional> servidorEnvioList;
 	private Funcional estagiarioFuncional;
 	private EstagiarioESocial entidade = new EstagiarioESocial();
+	private EstagiarioESocial estagiarioESocialAnterior = new EstagiarioESocial();
 	private List<DependenteEsocial> dependentesList;
 	boolean emEdicao = false;
 	
@@ -57,10 +59,13 @@ public class EstagiarioFormBean implements Serializable {
 		setEntidade(flashParameter != null ? flashParameter : new EstagiarioESocial());
 		this.servidorEnvioList = funcionalService.findEstagiarioservidoresEvento2300();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
+			estagiarioESocialAnterior = getEntidade();		
 			estagiarioFuncional = getEntidade().getFuncional();
+			consultar();			
 			emEdicao = true;
 		}
+		
+		
 		
     }	
 	
@@ -85,13 +90,24 @@ public class EstagiarioFormBean implements Serializable {
 
 		try {
 			if(estagiarioFuncional != null) {
+				
+				if(emEdicao) {
+					if(estagiarioESocialAnterior != null) {
+						List<DependenteEsocial> dependentesListExcluir = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(estagiarioESocialAnterior.getFuncional().getId());
+						if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
+							dependenteEsocialTCEService.excluirAll(dependentesListExcluir);
+						}
+						estagiarioESocialService.excluir(estagiarioESocialAnterior);
+					}
+					  	 	
+				}
 				estagiarioESocialService.salvar(entidade);
 				
 				if(dependentesList != null && !dependentesList.isEmpty()) {
 					dependenteEsocialTCEService.salvar(dependentesList);
 				}
 			}
-			setEntidade( new EstagiarioESocial() );
+				
 
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
