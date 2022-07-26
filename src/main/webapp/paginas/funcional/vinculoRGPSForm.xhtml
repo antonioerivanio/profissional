@@ -131,6 +131,25 @@
 						</rich:select>
 					</div>
 				</div>
+				<div class="select-box box-30">
+					<label for="">Codigo Categoria:* </label>
+					<div class="conteiner">
+						<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="350"
+							id="codigoCategoria"
+							value="#{vinculoRGPSFormBean.codigoCategoria}">							
+							<f:selectItems 
+								id="comboCategoria"
+								value="#{vinculoRGPSFormBean.comboCodigoCategoria}" 
+								var="tipo"
+								itemLabel="#{tipo.codigo} - #{tipo.descricao}" 
+								itemValue="#{tipo}" />
+						</rich:select>
+					</div>
+				</div>
 				
 				<div class="select-box box-65">
 				<label for="">Empresa Vinculada *</label>

@@ -10,13 +10,12 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
-import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
+import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoApuracao;
 
 @Repository
-public class InfoRemuneracaoPeriodoAnterioresDAO {
+public class InfoRemuneracaoPeriodoApuracaoDAO {
 
-	static Logger logger = Logger.getLogger(InfoRemuneracaoPeriodoAnterioresDAO.class);
+	static Logger logger = Logger.getLogger(InfoRemuneracaoPeriodoApuracaoDAO.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -26,11 +25,11 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 	}
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from InfoRemuneracaoPeriodoAnteriores e ");
+		Query query = entityManager.createQuery("Select max(e.id) from InfoRemuneracaoPeriodoApuracao e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
-	public InfoRemuneracaoPeriodoAnteriores salvar(InfoRemuneracaoPeriodoAnteriores entidade) {
+	public InfoRemuneracaoPeriodoApuracao salvar(InfoRemuneracaoPeriodoApuracao entidade) {
 
 		if (entidade.getId() == null || entidade.getId().equals(0l)) {
 			entidade.setId(getMaxId());
@@ -39,19 +38,19 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 		return entityManager.merge(entidade);
 	}
 
-	public void excluir(InfoRemuneracaoPeriodoAnteriores entidade) {
+	public void excluir(InfoRemuneracaoPeriodoApuracao entidade) {
 		entidade = entityManager.merge(entidade);
 		entityManager.remove(entidade);
 	}
 
-	public InfoRemuneracaoPeriodoAnteriores getById(Long id) {
-		return entityManager.find(InfoRemuneracaoPeriodoAnteriores.class, id);
+	public InfoRemuneracaoPeriodoApuracao getById(Long id) {
+		return entityManager.find(InfoRemuneracaoPeriodoApuracao.class, id);
 	}
 	
 
 	@SuppressWarnings("unchecked")
-	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(String mesReferencia, String anoReferencia, DemonstrativosDeValores demonstrativosDeValores, Long idFuncional) {	
-		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoAnteriores(idFuncional), InfoRemuneracaoPeriodoAnteriores.class);
+	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracao(String mesReferencia, String anoReferencia, DemonstrativosDeValores demonstrativosDeValores, Long idFuncional) {	
+		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoApuracao(idFuncional), InfoRemuneracaoPeriodoApuracao.class);
 		query.setParameter("mesReferencia", mesReferencia);
 		query.setParameter("anoReferencia", anoReferencia);
 		
@@ -68,17 +67,12 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 	}
 
 	
-	public String getSQLInfoRemuneracaoPeriodoAnteriores(Long idFuncional) {
+	public String getSQLInfoRemuneracaoPeriodoApuracao(Long idFuncional) {
 		StringBuffer sql = new StringBuffer();
 
 		sql.append(" SELECT  ");    
 		sql.append(" ( ROWNUM * -1) as id, "); 
-		sql.append(" :idDmDev as IDDMDEV,  ");
-		sql.append(" null as DT_AC_CONV, "); 
-		sql.append(" 'B' as TP_AC_CONV,  ");
-		sql.append(" null as DSC,  ");
-		sql.append(" 'N'  as REMUN_SUC,  ");
-		sql.append(" ano_esocial||dp.num_mes as PER_REF,  ");
+		sql.append(" :idDmDev as IDDMDEV,  ");		
 		sql.append(" 1 as TP_INSC,  ");
 		sql.append(" '09499757'  as NR_INSC,  ");
 		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 		 
@@ -95,7 +89,7 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 		sql.append(" AND mes_esocial = :mesReferencia");
 		sql.append(" AND dp.contribui_inss = 'S' ");
 		sql.append(" AND dp.num_mes <> '13' ");
-		sql.append(" AND dp.num_mes <> :mesReferencia ");
+		sql.append(" AND dp.num_mes = :mesReferencia ");
 		sql.append(" AND dp.arquivo = :ideDmDev ");
 		if(idFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");
@@ -107,8 +101,8 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnterioresByIdfuncional(Long idFuncional) {
-		Query query = entityManager.createQuery("Select e from InfoRemuneracaoPeriodoAnteriores e where e.remuneracaoTrabalhador.funcional.id = :idFuncional", InfoRemuneracaoPeriodoAnteriores.class);
+	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracaoByIdfuncional(Long idFuncional) {
+		Query query = entityManager.createQuery("Select e from InfoRemuneracaoPeriodoApuracao e where e.remuneracaoTrabalhador.funcional.id = :idFuncional", InfoRemuneracaoPeriodoApuracao.class);
 		query.setParameter("idFuncional",idFuncional );
 		return query.getResultList();
 	}

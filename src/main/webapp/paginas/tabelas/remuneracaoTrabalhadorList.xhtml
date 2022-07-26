@@ -20,8 +20,43 @@
 
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 			
+				<div class="input-box box-8">
+					<label for="">Ano*: </label>
+					<div class="conteiner">
+						<h:inputText id="anoReferencia" 
+									 name="anoReferencia"
+									 value="#{remuneracaoTrabalhadorListBean.anoReferencia}" 
+									 maxlength="4"
+									 onkeyup="SoNumeros(this)">
+						</h:inputText>
+					</div>
+				</div>
+			
+			<div class="select-box box-15">
+				<label for="mes">Mês*: </label>
+				<div class="conteiner">
+					<h:selectOneMenu id="mesF" value="#{remuneracaoTrabalhadorListBean.mesReferencia}">							  
+						<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0"/>
+						<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01"/>
+						<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
+						<f:selectItem id="mes3F" itemLabel="Março" itemValue="03"/>
+						<f:selectItem id="mes4F" itemLabel="Abril" itemValue="04" />
+						<f:selectItem id="mes5F" itemLabel="Maio" itemValue="05"/>
+						<f:selectItem id="mes6F" itemLabel="Junho" itemValue="06" />
+						<f:selectItem id="mes7F" itemLabel="Julho" itemValue="07"/>
+						<f:selectItem id="mes8F" itemLabel="Agosto" itemValue="08" />
+						<f:selectItem id="mes9F" itemLabel="Setembro" itemValue="09"/>
+						<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
+						<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11"/>
+						<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
+						<f:selectItem id="mes13F" itemLabel="Anual (13° salário)" itemValue="13" />	
+																						
+					</h:selectOneMenu>
+				</div>
+			</div>	
+			
 				
-				<div class="input-box box-50">
+				<div class="input-box box-40">
 					<label for="">Nome</label>
 					<div class="conteiner">
 						<h:inputText id="nome"
@@ -30,7 +65,7 @@
 					</div>
 				</div>
 	
-				<div class="input-box box-25">
+				<div class="input-box box-20">
 					<label for="">CPF</label>
 					<div class="conteiner">
 						<h:inputText id="cpf" 
@@ -99,7 +134,7 @@
 				
 			</div>
 
-			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESOCIAL')}">
 			
 				<h:commandButton id="incluir"
 								 value="Incluir"

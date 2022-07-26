@@ -30,10 +30,12 @@ public class DemonstrativosDeValoresService{
 		return dao.getById(id);
 	}	
 	
-	public List<DemonstrativosDeValores> findByIdfuncional(Long idFuncional) {
-		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findByIdfuncional(idFuncional);
+	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idFuncional) {
+		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValores(mesReferencia, anoReferencia, idRemuneracaoTrabalhador, idFuncional);
 		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
-			demonstrativosDeValores.setId(null);
+			if(demonstrativosDeValores.getId() < 0) {
+				demonstrativosDeValores.setId(null);
+			}
 		}
 		return demonstrativosDeValoresList;
 	}

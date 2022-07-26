@@ -99,7 +99,7 @@
 				
 			</div>
 
-			<ui:fragment rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESOCIAL')}">
 			
 				<h:commandButton id="incluir"
 								 value="Incluir"

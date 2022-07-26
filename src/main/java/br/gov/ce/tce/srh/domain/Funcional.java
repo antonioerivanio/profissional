@@ -300,6 +300,13 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
     this.ocupacao = ocupacao;
     this.vinculo = vinculo;
   }
+  
+  public Funcional(Long id, String matricula,  String nome) {
+	    // Para Dynamic Instatiation
+	    this.id = id;
+	    this.matricula = matricula;	   
+	    this.nome = nome;
+  }
 
   public Pessoal getPessoal() {
     return pessoal;
