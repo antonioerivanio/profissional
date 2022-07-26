@@ -178,8 +178,8 @@
 
 		<intercept-url pattern="/paginas/cadastros/*" access="ROLE_CADASTROS" />
 		
-		 <intercept-url pattern="/paginas/cadastros/auxilioSaudeList.faces" access="ROLE_PESSOA" />
-        <intercept-url pattern="/paginas/cadastros/auxilioSaudeForm.faces" access="ROLE_PESSOA" />
+		 <intercept-url pattern="/paginas/cadastros/auxilioSaudeList.faces" access="ROLE_PESSOA_SERVIDOR" />
+        <intercept-url pattern="/paginas/cadastros/auxilioSaudeForm.faces" access="ROLE_PESSOA_SERVIDOR" />
 
 		<!-- FUNCIONAL -->
 				

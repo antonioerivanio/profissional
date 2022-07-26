@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Pessoal;
+import br.gov.ce.tce.srh.enums.BaseCalculoValorRestituido;
 import br.gov.ce.tce.srh.service.AuxilioSaudeRequisicaoService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -28,10 +29,18 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   private AuxilioSaudeRequisicao entidadeEditar;
 
 
+
   @PostConstruct
   private void init() {
+    
+    if(FacesUtil.getFlashParameter(ENTIDADE) != null) {
+      setEntidade((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter(ENTIDADE));
+      consultar();
+      FacesUtil.setFlashParameter(ENTIDADE, null);
+    }
+    
     getEntidade().setFuncional(new Funcional());
-    getEntidade().getFuncional().setPessoal(new Pessoal());
+    getEntidade().getFuncional().setPessoal(new Pessoal()); 
   }
 
   public void consultar() {
@@ -76,24 +85,23 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   public String editar() {
-    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());    
-    return "incluirAlterar";
+    FacesUtil.setFlashParameter(ENTIDADE, getEntidadeEditar());    
+    return INCLUIR_OU_ALTERAR;
   }
 
   public String detalhar() {
-    FacesUtil.setFlashParameter("entidade", getEntidadeEditar());    
+    FacesUtil.setFlashParameter(ENTIDADE, getEntidadeEditar());    
     return "auxilioSaudeDetalhes.xhtml?faces-redirect=true";
   }
 
   
   @Override
-  public String salvar() {
-    return null;
+  public void salvar() {
+    
   }
   
   @Override
   public void salvar(boolean finalizar) {
-    // TODO Auto-generated method stub
     
   }
 
@@ -104,6 +112,7 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void setEntidadeEditar(AuxilioSaudeRequisicao entidadeEditar) {
     this.entidadeEditar = entidadeEditar;
   }
+
 
 
 

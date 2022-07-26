@@ -18,7 +18,7 @@
 			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
 
 			<ui:fragment
-				rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+				rendered="#{LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
 
 				<div class="input-box box-25">
 					<label for="">Nome</label>
@@ -56,10 +56,10 @@
 					action="#{auxilioSaudeListBean.consultar}"
 					styleClass="bt-padrao fl mg-top-18" render="scroller,lista" />
 
-				<h:commandButton id="relatorio" value="Relatório"
+				<!-- <h:commandButton id="relatorio" value="Relatório" 
 					action="#{auxilioSaudeFormBean.relatorio}"
 					styleClass="bt-padrao fl mg-top-18 mg-left-10"
-					style="margin-left: 10px" />
+					style="margin-left: 10px" /> -->
 
 			</ui:fragment>
 
@@ -139,7 +139,7 @@
 					</rich:column>
 
 					<rich:column
-						rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+						>
 						<f:facet name="header">
                             DETALHAR
                         </f:facet>
@@ -150,7 +150,7 @@
 						</h:commandLink>
 					</rich:column>
 					<rich:column
-						rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+						>
 						<f:facet name="header">
                             AÇÃO
                         </f:facet>
@@ -182,11 +182,11 @@
 			</div>
 
 			<ui:fragment
-				rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_SERVIDOR')}">
+				>
 
 				<h:commandButton id="incluir" value="Incluir"
 					action="incluirAlterar" styleClass="bt-padrao fr mg-right-15"
-					rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_INSERIR')}" />
+					/>
 
 				<h:commandButton id="limpaTela" value="Limpar" action="listar"
 					styleClass="bt-padrao fr mg-right-15" />

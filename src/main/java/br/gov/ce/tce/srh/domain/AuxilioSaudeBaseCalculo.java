@@ -1,15 +1,9 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.ArrayList;
+import java.util.List;
+import br.gov.ce.tce.srh.enums.BaseCalculoValorRestituido;
 
 /***
  * 
@@ -18,28 +12,30 @@ import javax.persistence.TemporalType;
  *
  */
 public class AuxilioSaudeBaseCalculo implements Serializable {
+  
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
+  
+  
+  private String intervaloIdade;  
+  private BaseCalculoValorRestituido baseCalculoValorRestituido; 
+  
+  private List<AuxilioSaudeBaseCalculo>  auxilioSaudeBaseCalculos;
 
-  private String nomeColuna;
-  private String intervaloIdade;
-  private String percentual;
-  private Double ValorCorrespondentes;  
-
-  public AuxilioSaudeBaseCalculo(String nomeColuna, String intervaloIdade, String percentual, Double valorCorrespondentes) {
+  
+  public AuxilioSaudeBaseCalculo() {
     super();
-    this.nomeColuna = nomeColuna;
-    this.intervaloIdade = intervaloIdade;
-    this.percentual = percentual;
-    ValorCorrespondentes = valorCorrespondentes;
   }
 
-  public String getNomeColuna() {
-    return nomeColuna;
+  public AuxilioSaudeBaseCalculo(String intervaloIdade, BaseCalculoValorRestituido baseCalculoValorRestituido) {
+    super();    
+    this.intervaloIdade = intervaloIdade;    
+    this.baseCalculoValorRestituido = baseCalculoValorRestituido;
   }
 
-  public void setNomeColuna(String nomeColuna) {
-    this.nomeColuna = nomeColuna;
-  }
-
+ 
   public String getIntervaloIdade() {
     return intervaloIdade;
   }
@@ -48,24 +44,31 @@ public class AuxilioSaudeBaseCalculo implements Serializable {
     this.intervaloIdade = intervaloIdade;
   }
 
-  public String getPercentual() {
-    return percentual;
+  public List<AuxilioSaudeBaseCalculo> getAuxilioSaudeBaseCalculos() {   
+    return auxilioSaudeBaseCalculos;
   }
 
-  public void setPercentual(String percentual) {
-    this.percentual = percentual;
+  public void setAuxilioSaudeBaseCalculos(List<AuxilioSaudeBaseCalculo> auxilioSaudeBaseCalculos) {
+    this.auxilioSaudeBaseCalculos = auxilioSaudeBaseCalculos;
   }
 
-  public Double getValorCorrespondentes() {
-    return ValorCorrespondentes;
+  public BaseCalculoValorRestituido getBaseCalculoValorRestituido() {
+    return baseCalculoValorRestituido;
   }
 
-  public void setValorCorrespondentes(Double valorCorrespondentes) {
-    ValorCorrespondentes = valorCorrespondentes;
+  public void setBaseCalculoValorRestituido(BaseCalculoValorRestituido baseCalculoValorRestituido) {
+    this.baseCalculoValorRestituido = baseCalculoValorRestituido;
   }
-  
-  
 
-
+  public void gerarTabelaAuxilioSaudeBase() {    
+    List<AuxilioSaudeBaseCalculo> auxilioSaudeBaseCalculoList = new ArrayList<AuxilioSaudeBaseCalculo>();
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("ATÉ 30", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_ATE_30ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("31-40", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_31_ATE_40ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("41-50", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_41_ATE_50ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("51-60", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_51_ATE_60ANOS));
+    auxilioSaudeBaseCalculoList.add(new AuxilioSaudeBaseCalculo("A PARTIR DE 61", BaseCalculoValorRestituido.VALOR_MAXIMO_PARA_PESSOA_IDADE_SUPERIOR_60ANOS));
+    
+    setAuxilioSaudeBaseCalculos(auxilioSaudeBaseCalculoList);
+  }
 }
 

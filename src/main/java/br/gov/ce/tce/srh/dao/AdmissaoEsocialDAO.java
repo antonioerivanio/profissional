@@ -8,11 +8,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.Cbo;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
@@ -22,6 +24,8 @@ public class AdmissaoEsocialDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	@Autowired
+	private AmbienteService ambienteService;
 
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
@@ -160,10 +164,18 @@ public class AdmissaoEsocialDAO {
 		sql.append("  1     AS LTRAB_GERAL_TP_INSC, ");
 		sql.append(" '09499757000146' AS LTRAB_GERAL_NR_INSC, ");
 		sql.append("  NULL  AS LTRAB_GERAL_DESC_COMP, ");
-		sql.append("  CASE ");
-		sql.append("  WHEN c.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END AS cad_ini, ");
+		
+		if(ambienteService.ambiente().isProducao()) {
+			sql.append("  CASE ");
+			sql.append("  WHEN c.exercicio > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN 'N' ");
+			sql.append("  ELSE 'S' ");
+			sql.append(" END AS cad_ini, ");
+		}else {
+			sql.append("  CASE ");
+			sql.append("  WHEN c.exercicio > TO_DATE('28/02/2017', 'dd/mm/yyyy') THEN 'N' ");
+			sql.append("  ELSE 'S' ");
+			sql.append(" END AS cad_ini, ");			
+		}
 		sql.append("  c.exercicio AS dt_exercicio, ");
 		sql.append("  CASE o.id ");
 		sql.append("   WHEN 33 THEN 2 ");

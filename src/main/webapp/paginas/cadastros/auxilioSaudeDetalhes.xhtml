@@ -9,10 +9,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:rich="http://richfaces.org/rich">
 
-
 	<ui:define name="content">
-	
-
 		<!-- Esta tela é composta de campos para o cadastro das solicitações de auxilio do BENEFICIARIO E SEU DEPENDENTES-->
 		<!-- Após o envio dos dados, estes ficaram aguardando aprovação da área Gerência de Remuneração e Benefícios -->
 		<!-- O campo do dependentes será carregado automatica se existir na tabela SRH.TB_DEPENDENTEDependentes-->
@@ -22,7 +19,7 @@
 
 
 		<div class="titulo-pagina">
-			<h2>Cadastro - Requerimento Auxílio-Saúde</h2>
+			<h2>Detalhes - Requerimento Auxílio-Saúde</h2>
 		</div>
 
 		<h:panelGroup rendered="false">
@@ -45,7 +42,7 @@
 			<fieldset>
 				<legend>Beneficiários</legend>
 
-<h:panelGroup class="input-box" id="dadosInputBeneficiario">
+				<h:panelGroup class="input-box" id="dadosInputBeneficiario">
 					<div class="input-box box-20">
 						<label for="asFrmOtNome">Nome</label>
 						<h:outputText styleClass="textSmall" name="asFrmOtNome"
@@ -91,18 +88,11 @@
 							value="#{auxilioSaudeFormBean.entidade.dataInicioRequisicao}" />
 					</div>
 				</h:panelGroup>
-				
+
 				<div class="tabela-dados">
 					<rich:dataTable id="asCadFrmDtBeneficiario" var="beanBenef"
 						rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList.size()}"
-						value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList}">
-						<h:column>
-							<f:facet name="header">
-		                            NOME DO BENEFICIÁRIO
-		                        </f:facet>
-
-							<h:outputText value="#{beanBenef.funcional.pessoal.nomeCompleto}" />
-						</h:column>
+						value="#{auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoBeneficiarioItemList}">				
 
 						<h:column>
 							<f:facet name="header">
@@ -127,13 +117,15 @@
 		                          Anexos
 		                        </f:facet>
 
-								<h:commandLink
-									rendered="#{not empty auxilioSaudeFormBean.entidade.auxilioSaudeRequisicaoDocumentoBeneficiarioList}"
-									actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
-									immediate="true" target="_blank">
-									<h:graphicImage url="/img/icon-pdf.png"
-										style="cursor: pointer; width: 24px;height: 24px;"></h:graphicImage>
-								</h:commandLink>
+								<ui:repeat var="anexo"
+									value="#{beanBenef.auxilioSaudeRequisicaoDocumentoBeneficiarioList}">
+									<h:commandLink immediate="true"
+										actionListener="#{auxilioSaudeFormBean.visualizarAnexoBeneficiario(beanBenef)}"
+										style="padding:5px; color:blue;" 
+										value="#{anexo.nomeArquivo}" target="_blank" >
+									</h:commandLink>
+									<br />
+								</ui:repeat>
 							</center>
 						</h:column>
 					</rich:dataTable>
@@ -147,7 +139,7 @@
 					rendered="#{not empty auxilioSaudeFormBean.entidade.dependentesComboList}">
 					<!-- inicios dos campos dos dependentes -->
 					<fieldset>
-						<legend>Dependentes</legend>	
+						<legend>Dependentes</legend>
 
 						<div class="tabela-dados">
 							<rich:dataTable id="asFrmDtDep" var="beanDep"
@@ -180,18 +172,21 @@
 											locale="pt_br" />
 									</h:outputText>
 								</h:column>
-								
+
 								<h:column>
 									<center>
 										<f:facet name="header">
 		                          Anexos
 		                        </f:facet>
-										<h:commandLink immediate="true"
-											actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
-											target="_blank">
-											<h:graphicImage url="/img/icon-pdf.png"
-												style="width: 24px;height: 24px;"></h:graphicImage>
-										</h:commandLink>
+										<ui:repeat var="anexo"
+											value="#{beanDep.auxilioSaudeRequisicaoDocumentoList}">
+											<h:commandLink value="#{anexo.nomeArquivo}"
+												style="color:blue" immediate="true"
+												actionListener="#{auxilioSaudeFormBean.visualizarAnexoDependente(beanDep)}"
+												target="_blank" />
+											<br />
+										</ui:repeat>
+
 									</center>
 								</h:column>
 
@@ -202,13 +197,12 @@
 			</h:panelGroup>
 			<!-- Fim campos Dependentes -->
 
-			<h:panelGroup >
+			<h:panelGroup>
 				<!-- Campo obrigatório apenas para área gestora -->
 				<div class="textarea-box box-100">
 					<label for="">Observações da área</label>
 					<div class="conteiner">
-						<h:inputTextarea id="asFrmIttObs"
-							disabled="true"
+						<h:inputTextarea id="asFrmIttObs" disabled="true"
 							value="#{auxilioSaudeFormBean.entidade.observacao}" />
 					</div>
 				</div>
@@ -227,56 +221,94 @@
 
 				<div class="conteiner" style="padding: 15px; font-size: 15px">
 					<div class="radio-box box-25">
-						<h:selectBooleanCheckbox required="true" id="asFrmSbcxAcordo" disabled="true"
+						<h:selectBooleanCheckbox required="true" id="asFrmSbcxAcordo"
+							disabled="true"
 							value="#{auxilioSaudeFormBean.entidade.flAfirmaSerVerdadeiraInformacao}" />
 						Concordo
 					</div>
-					
+
 				</div>
 			</fieldset>
 
-			<a4j:outputPanel id="asfPgResumo"
+			<a4j:outputPanel id="panelGroupResumo"
 				rendered="#{auxilioSaudeFormBean.entidade.statusAprovacao ne null}">
 				<fieldset>
 					<legend>
 						<strong> <span style="color: #024ffb;important!">RESUMO</span></strong>
 					</legend>
+					<div style="display: flex; with: 100%;">
+						<div style="width: 50%">
+							<div class="conteiner" style="padding: 5px">
+								<p>
+									<strong>Valor total solicitado: </strong>
+									<h:outputText id="valorTotalSolicitado"
+										value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
+										<f:convertNumber type="currency" currencySymbol="R$" />
+									</h:outputText>
+								</p>
+							</div>
+							<div class="conteiner" style="padding: 5px">
+								<p>
+									<strong>Valor a ser restituído: </strong>
+									<h:outputText id="valorRestituido"
+										value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
+										<f:convertNumber type="currency" currencySymbol="R$" />
+									</h:outputText>
+								</p>
+							</div>
 
-					<div class="conteiner" style="padding: 5px">
-						<p>
-							<strong>Valor total solicitado: </strong>
-							<h:outputText id="valorTotalSolicitado"
-								value="#{auxilioSaudeFormBean.entidade.valorTotalSolicitado}">
-								<f:convertNumber type="currency" currencySymbol="R$"
-									locale="pt_br" />
-							</h:outputText>
-						</p>
-					</div>
-					<div class="conteiner" style="padding: 5px">
-						<p>
-							<strong>Valor a ser restituído: </strong>
-							<h:outputText id="valorRestituido"
-								value="#{auxilioSaudeFormBean.entidade.valorMaximoAserRestituido}">
-								<f:convertNumber type="currency" currencySymbol="R$"
-									locale="pt_br" />
-							</h:outputText>
-						</p>
-					</div>
+							<div class="conteiner" style="padding: 5px">
+								<p>
+									<strong>Status: </strong>
+									<h:outputText
+										value="#{auxilioSaudeFormBean.entidade.statusAprovacao}"
+										styleClass="cel-25" />
+								</p>
+							</div>
+						</div>
 
-					<div class="conteiner" style="padding: 5px">
-						<p>
-							<strong>Status: </strong>
-							<h:outputText
-								value="#{auxilioSaudeFormBean.entidade.statusAprovacao}"
-								styleClass="cel-25" />
-						</p>
+						<div class="tabela-dados"
+							style="padding-left: 15px; margin-left: 10px;">
+							<h5>#{auxilioSaudeFormBean.titulo}</h5>
+							<rich:dataTable id="asCadFrmDtTabelBase" var="beanBase"
+								rows="#{auxilioSaudeFormBean.entidade.auxilioSaudeBaseCalculo.auxilioSaudeBaseCalculos.size()}"
+								value="#{auxilioSaudeFormBean.entidade.auxilioSaudeBaseCalculo.auxilioSaudeBaseCalculos}"
+								style="text-align: center; ">
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[0]}" />
+
+									</f:facet>
+									<h:outputText value="#{beanBase.intervaloIdade}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[1]}" />
+									</f:facet>
+									<h:outputText
+										value="#{beanBase.baseCalculoValorRestituido.percentual}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="#{auxilioSaudeFormBean.nomeColuna[2]}" />
+									</f:facet>
+									<h:outputText
+										value="#{beanBase.baseCalculoValorRestituido.valor}">
+										<f:convertNumber type="currency" currencySymbol="R$"
+											locale="pt_br" />
+									</h:outputText>
+								</h:column>
+							</rich:dataTable>
+						</div>
 					</div>
 				</fieldset>
 			</a4j:outputPanel>
-			
-			<a href="/srh/paginas/cadastros/auxilioSaudeList.faces"
-					class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
-		
+
+			<h:commandButton action="#{auxilioSaudeFormBean.voltar}"
+				immediate="true" value="Voltar"
+				styleClass="bt-padrao fr mg-right-10" />
+
 		</h:form>
 
 	</ui:define>

@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,21 +19,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.AuxilioSaudeRequisicaoDAO;
+import br.gov.ce.tce.srh.dao.DAO;
 import br.gov.ce.tce.srh.domain.ArquivoVO;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicao;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoBase.FlagAtivo;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDependente;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
+import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoItem;
 import br.gov.ce.tce.srh.domain.BeanEntidade;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
 import br.gov.ce.tce.srh.domain.Pessoal;
+import br.gov.ce.tce.srh.enums.BaseCalculoValorRestituido;
 import br.gov.ce.tce.srh.exception.UsuarioException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.sca.service.AuthenticationService;
 import br.gov.ce.tce.srh.util.FacesUtil;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("auxilioSaudeRequisicaoService")
 public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoService {
@@ -50,10 +57,24 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Autowired
   private DependenteService dependenteService;
 
+  public static final Double TRES_POR_CENTO = 0.03;
+  public static final Double TRES_PONTO_CINCO_POR_CENTO = 0.035;
+  public static final Double QUATRO_POR_CENTO = 0.04;
+  public static final Double QUATRO_PONTO_CINCO_POR_CENTO = 0.045;
+  public static final Double CINCO_POR_CENTO = 0.05;
+
 
   @Override
-  public void salvar(AuxilioSaudeRequisicao bean) {
+  @Transactional
+  public void salvar(AuxilioSaudeRequisicao bean) throws IOException {
     dao.salvar(bean);
+
+    salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
+    salvarDependentes(bean);
+
+    if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
+      atualizarDadosTabelaAuxilioSaudeBase(bean);
+    }
   }
 
 
@@ -67,12 +88,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
         for (AuxilioSaudeRequisicao bean : beanList) {
           dao.salvar(bean);
 
+          salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
           salvarDependentes(bean);
-          salvarDocumentosBeneficiario(bean);
-
-          if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
-            atualizarDadosTabelaAuxilioSaudeBase(bean);
-          }
         }
       }
     } catch (Exception e) {
@@ -88,25 +105,15 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     try {
       logger.info("Iniciando o Edicao do auxilio saude requisição");
 
-      if (bean.checkBeneficiarioItemListNotNull()) {
-        for (AuxilioSaudeRequisicao beanAuxilio : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-          beanAuxilio.setDataAlteracao(new Date());
-
-          if (beanAuxilio.getId() != null) {
-            dao.atualizar(beanAuxilio);
-          } else {
-            dao.salvar(beanAuxilio);
-          }
-
-          salvarDependentes(beanAuxilio);
-          salvarDocumentosBeneficiario(beanAuxilio);
-
-          if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
-            atualizarDadosTabelaAuxilioSaudeBase(beanAuxilio);
-          }
-        }
-
+      if (bean.getId() != null) {
+        dao.atualizar(bean);
+      } else {
+        salvar(bean);
       }
+
+      salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
+      salvarDependentes(bean);
+
 
     } catch (Exception e) {
       logger.error("Erro ao atualizar o auxilio-saúde " + e.getMessage());
@@ -114,22 +121,38 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     }
   }
 
-  private void atualizarDadosTabelaAuxilioSaudeBase(AuxilioSaudeRequisicao bean) {
+  private void salvarOuAtualizarItems(List<AuxilioSaudeRequisicaoItem> beanAuxilioSaudeItems, AuxilioSaudeRequisicao bean) throws IOException {
+    if (beanAuxilioSaudeItems != null) {
+      for (AuxilioSaudeRequisicaoItem beanItem : beanAuxilioSaudeItems) {
+        if (beanItem.getId() != null) {
+          dao.atualizar(beanItem);
+        } else {
+          dao.salvar(beanItem);
+        }
+
+        salvarDocumentosBeneficiario(beanItem);
+      }
+    }
+  }
+
+  @Override
+  public void atualizarDadosTabelaAuxilioSaudeBase(AuxilioSaudeRequisicao bean) {
     if (bean.getStatusAprovacao() != null) {
       Funcional funcional = dao.getEntityManager().find(Funcional.class, bean.getFuncional().getId());
       AuxilioSaudeRequisicaoBase auxilioSaudeRequisicaoBase = dao.getAuxilioSaudeBasePorPessoaIdeAtivo(funcional.getPessoal(), FlagAtivo.SIM);
 
       if (auxilioSaudeRequisicaoBase != null) {
         auxilioSaudeRequisicaoBase.setCustoPlanoBase(bean.getValorTotalSolicitado());
+        auxilioSaudeRequisicaoBase.setCustoAdicional(0.0);
         auxilioSaudeRequisicaoBase.setDataAtualizacao(new Date());
         auxilioSaudeRequisicaoBase.setObservacao("Valor adicionar automaticamente a partir da tela do Auxilio-Saúde");
         dao.atualizar(auxilioSaudeRequisicaoBase);
       } else {
 
         auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), bean.getUsuario(), bean.getValorTotalSolicitado(),
-                                  "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date());
-
+                                  "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date(), 0.0);
         dao.salvar(auxilioSaudeRequisicaoBase);
+        dao.getEntityManager().flush();
       }
     }
   }
@@ -184,29 +207,22 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
   @Override
-  public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicao bean) throws IOException {
+  public void salvarDocumentosBeneficiario(AuxilioSaudeRequisicaoItem bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição");
-    if (bean.checkBeneficiarioItemListNotNull()) {
-      for (AuxilioSaudeRequisicao auxilioSaudeRequisicao : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-        salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), auxilioSaudeRequisicao);
-      }
-    } else {
-      salvarDocumento(bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList(), bean);
-    }
-  }
 
-  private void salvarDocumento(List<AuxilioSaudeRequisicaoDocumento> beanList, AuxilioSaudeRequisicao bean) throws IOException {
-    for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : beanList) {
-      beanAuxDoc.setAuxilioSaudeRequisicaoDependente(null);
+    if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() != null) {
+      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList()) {
+        beanAuxDoc.setAuxilioSaudeRequisicaoDependente(null);
 
-      if (beanAuxDoc.getId() != null) {
-        dao.atualizar(beanAuxDoc);
-      } else {
-        beanAuxDoc.setAuxilioSaudeRequisicao(bean);
-        dao.salvar(beanAuxDoc);
+        if (beanAuxDoc.getId() != null) {
+          dao.atualizar(beanAuxDoc);
+        } else {
+          dao.salvar(beanAuxDoc);
+        }
+
+        fazerUploadArquivo(beanAuxDoc);
       }
 
-      fazerUploadArquivo(beanAuxDoc);
     }
   }
 
@@ -214,8 +230,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   public void salvarDocumentosDependente(AuxilioSaudeRequisicaoDependente bean) throws IOException {
     logger.info("Iniciando o salvamento dos anexos do auxilio saude requisição dependente");
     if (bean.getAuxilioSaudeRequisicao().checkDependenteItemListNotNull()) {
-      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicao().getAuxilioSaudeRequisicaoDocumentoDependenteList()) {
-        beanAuxDoc.setAuxilioSaudeRequisicao(null);
+      for (AuxilioSaudeRequisicaoDocumento beanAuxDoc : bean.getAuxilioSaudeRequisicaoDocumentoList()) {
+        beanAuxDoc.setAuxilioSaudeRequisicaoItem(null);
 
         if (beanAuxDoc.getId() != null) {
           dao.atualizar(beanAuxDoc);
@@ -260,43 +276,22 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     Boolean isResultadoOk = Boolean.TRUE;
 
     if (bean.getFuncional() == null) {
-      FacesUtil.addErroMessage("Você precisa selecionar o Beneficiário e clicar no Botão consulta");
-      return false;
+      throw new NullPointerException("OPs!.Selecionar o Beneficiário e clicar no botão consulta");
     }
 
-    if (bean.getDependenteSelecionado() == null) {// não tem dependentes
+    if (bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() == null && bean.getAuxilioSaudeRequisicaoDependenteList() == null) {
+      FacesUtil.addErroMessage("Você deve Clicar no botão adicionar para incluir os dados na lista.");
+      throw new NullPointerException("Lista de dados do benficário ou dos dependentes estão vazias.");
+    }
 
-      if (bean.checkBeneficiarioItemListNotNull()) {
-        for (AuxilioSaudeRequisicao beanAux : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-          if (beanAux.getValorGastoPlanoSaude() == null) {
-            FacesUtil.addErroMessage("O campo Valor Mensal é obrigatório.");
-            return false;
-          }
-
-          if (beanAux.getPessoaJuridica() == null) {
-            FacesUtil.addErroMessage("O campo Nome da Empresa de Saúde é obrigatório.");
-            return false;
-          }
-        }
-      }
-
-      if (bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList() != null && bean.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList().isEmpty()) {
-        FacesUtil.addErroMessage("O anexo é Obrigatório. Clique no botão Anexar para adicionar-lo antes de salvar");
-        return false;
-      }
-
-    } else {// tem dependentes
-      if (bean.getAuxilioSaudeRequisicaoDependenteList() != null && bean.getAuxilioSaudeRequisicaoDependenteList().isEmpty()) {
-
-        FacesUtil.addErroMessage("O valor mensal e Nome da Empresa de Saúde deve ser adicionado");
-        return false;
-      }
+    if (!bean.getFlAfirmaSerVerdadeiraInformacao()) {
+      FacesUtil.addErroMessage("form:campoConcordo", "Campo obrigatório!");
+      throw new NullPointerException("OPs!. O campo Concordo é obrigatório");
     }
 
     if (bean.getObservacao() != null && !bean.getObservacao().isEmpty()) {
-      if (bean.getObservacao().contains("...") || bean.getObservacao().length() <= 5) {
-        FacesUtil.addErroMessage("Digite mais" + bean.getObservacao().length() + "caracteres para a observação");
-        isResultadoOk = Boolean.FALSE;
+      if (bean.getObservacao().contains("xxx") || bean.getObservacao().contains("...") || bean.getObservacao().length() < 5) {
+        throw new NullPointerException("Digite mais" + bean.getObservacao().length() + "caracteres para a observação");
       }
     }
 
@@ -321,31 +316,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     int index = dependentesComboList.indexOf(dependente);
     return dependentesComboList.get(index);
   }
-
-
-  @Override
-  public void executarAntesSalvar(AuxilioSaudeRequisicao entidade, String observacao, Boolean flgAfirmaSerVerdadeiraInformacao) {
-    if (entidade.getId() == null) {
-      if (entidade.checkBeneficiarioItemListNotNull()) {// um
-                                                        // registro
-        for (AuxilioSaudeRequisicao beanAux : entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
-          beanAux.setStatusFuncional(entidade.getStatusFuncional());
-          beanAux.setDataInicioRequisicao(new Date());
-          beanAux.setObservacao(entidade.getObservacao());
-          beanAux.setFlAfirmaSerVerdadeiraInformacao(entidade.getFlAfirmaSerVerdadeiraInformacao());
-          beanAux.setAuxilioSaudeRequisicaoDependenteList(entidade.getAuxilioSaudeRequisicaoDependenteList());
-          beanAux.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(entidade.getAuxilioSaudeRequisicaoDocumentoBeneficiarioList());
-          beanAux.setAuxilioSaudeRequisicaoDocumentoDependenteList(entidade.getAuxilioSaudeRequisicaoDocumentoDependenteList());
-        }
-      } else {// apenas um registro adicionar na lista
-        entidade.setValorGastoPlanoSaude(null);
-        entidade.setPessoaJuridica(null);
-        entidade.setAuxilioSaudeRequisicaoBeneficiarioItemList(new ArrayList<AuxilioSaudeRequisicao>());
-        entidade.getAuxilioSaudeRequisicaoBeneficiarioItemList().add(entidade);
-      }
-    }
-  }
-
 
   @Override
   public void setDadosIniciaisDaEntidadePorCpf(AuxilioSaudeRequisicao entidade, String cpf) throws UsuarioException {
@@ -372,7 +342,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   @Override
   public void setDadosIniciaisDaEntidade(AuxilioSaudeRequisicao entidade) {
     if (entidade.getFuncional() == null) {
-      throw new NullPointerException("Ops!. Por favor escolha um servidor para continuar");
+      throw new NullPointerException("Vamos iniciar!. Escolha um servidor e clique em consultar para continuar");
     }
     Funcional funcional = funcionalService.getById(entidade.getFuncional().getId());
 
@@ -387,7 +357,18 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public AuxilioSaudeRequisicao getAuxilioSaudePorId(AuxilioSaudeRequisicao obj) {
-    return ((AuxilioSaudeRequisicao) dao.find(obj));
+    AuxilioSaudeRequisicao auxilioSaudeRequisicao = ((AuxilioSaudeRequisicao) dao.find(obj));
+
+    List<AuxilioSaudeRequisicaoItem> itemsList = dao.getListaAuxilioSaudeItems(auxilioSaudeRequisicao);
+
+    if (itemsList != null && !itemsList.isEmpty()) {
+      for (AuxilioSaudeRequisicaoItem beanItem : itemsList) {
+        List<AuxilioSaudeRequisicaoDocumento> doclist = dao.getListaAnexos(beanItem);
+        beanItem.setAuxilioSaudeRequisicaoDocumentoBeneficiarioList(doclist);
+      }
+    }
+    auxilioSaudeRequisicao.setAuxilioSaudeRequisicaoBeneficiarioItemList(itemsList);
+    return auxilioSaudeRequisicao;
   }
 
   @Override
@@ -395,59 +376,71 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     return dao.getListaAnexos(bean);
   }
 
+
   @Override
   public BigDecimal getValorSalarioComBaseIdadePorPercentual(Double percentual) {
     return dao.getValorSalarioComBaseIdadePorPercentual(percentual);
   }
 
+  /****
+   * valida se o percentual a restitui de acordo com a idade, se o Servidor do TCE fizer aniversario
+   * no mesmo mes, no qual ele esta solicitanto o auxilio-saude, o percentual maior será acrescentado
+   * no mês posterior ao de seu aniversario. exe: se ele aniversario no mês 07/2022 e fez tem 41 anos,
+   * ele vai receber o valor equilente ao a seus 40 anos ou ser 3% no mes 08/2020 ele vai receber o
+   * valor equivalente a 3,5%
+   */
   @Override
   public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean) {
     final int TRINTA_ANOS = 30;
     final int QUARENTA_ANOS = 40;
     final int CINQUENTA_ANOS = 50;
     final int SESSENTA_ANOS = 60;
+
     if (bean.getFuncional() != null && bean.getFuncional().getPessoal() != null) {
       int idade = bean.getFuncional().getPessoal().getIdade();
 
+      LocalDate dataNascimento = SRHUtils.convertToLocalDateViaInstant(bean.getFuncional().getPessoal().getNascimento());
+      boolean isMesAniversario = SRHUtils.isMesAniversarioEdataMenorQueDataAtual(dataNascimento.getDayOfMonth(), dataNascimento.getMonthValue(), dataNascimento.getYear());
+      double valorMaximoTresPorCento = 0.0;
+
       if (idade <= TRINTA_ANOS) {
-        String valor = "814.12";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
-      }
-      if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {
-        String valor = "949.80";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
-      }
-      if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {
-        String valor = "1085.49";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
-      }
-      if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {
-        String valor = "1221.17";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
-      }
-      if (idade > SESSENTA_ANOS) {
-        String valor = "1356.86";
-        bean.setValorMaximoAserRestituido(Double.parseDouble(valor));
+        valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_POR_CENTO).doubleValue();
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
+      } else if ((idade > TRINTA_ANOS && idade <= QUARENTA_ANOS)) {
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_POR_CENTO).doubleValue();
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_PONTO_CINCO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
+      } else if (idade > QUARENTA_ANOS && idade <= CINQUENTA_ANOS) {
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(TRES_PONTO_CINCO_POR_CENTO).doubleValue();
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
+      } else if (idade > CINQUENTA_ANOS && idade <= SESSENTA_ANOS) {
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_POR_CENTO).doubleValue();
+
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_PONTO_CINCO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
+      } else {
+        if (isMesAniversario) {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(QUATRO_PONTO_CINCO_POR_CENTO).doubleValue();
+        } else {
+          valorMaximoTresPorCento = dao.getValorSalarioComBaseIdadePorPercentual(CINCO_POR_CENTO).doubleValue();
+        }
+
+        bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
       }
     }
-
-    /*
-     * if (idade <= TRINTA_ANOS) { Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.TRES_POR_CENTO).doubleValue();
-     * bean.setValorMaximoAserRestituido(valor); } if (idade > TRINTA_ANOS && idade <= QUARENTA_ANOS) {
-     * Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.TRES_PONTO_CINCO_POR_CENTO).
-     * doubleValue(); bean.setValorMaximoAserRestituido(valor); } if (idade > QUARENTA_ANOS && idade <=
-     * CINQUENTA_ANOS) { Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.QUATRO_POR_CENTO).doubleValue(
-     * ); bean.setValorMaximoAserRestituido(valor); } if (idade > CINQUENTA_ANOS && idade <=
-     * SESSENTA_ANOS) { Double valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.QUATRO_PONTO_CINCO_POR_CENTO).
-     * doubleValue(); bean.setValorMaximoAserRestituido(valor); } if (idade > SESSENTA_ANOS) { Double
-     * valor =
-     * getValorSalarioComBaseIdadePorPercentual(AuxilioSaudeRequisicaoDAO.CINCO_POR_CENTO).doubleValue()
-     * ; bean.setValorMaximoAserRestituido(valor); } }
-     */
   }
 
 
@@ -458,27 +451,46 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
   @Override
   public List<AuxilioSaudeRequisicao> search(AuxilioSaudeRequisicao bean, Integer first, Integer rows) {
-    List<AuxilioSaudeRequisicao> beanList = dao.search(bean, first, rows);
 
-    for (AuxilioSaudeRequisicao beanBeneficiario : beanList) {
-      if (beanList != null && !beanList.isEmpty()) {
-        List<AuxilioSaudeRequisicaoDependente> beanDependenteList = dao.getAuxilioSaudeRequisicaoDependentePorId(beanBeneficiario.getId());
-        if (beanDependenteList != null && !beanDependenteList.isEmpty()) {
-          Double valorPlanoBeneficiario = beanBeneficiario.getValorGastoPlanoSaude();
-          Double valorPlanoSaudeDependente = getValorDependente(beanDependenteList);
-          Double valorTotalSolicitado = somarValoBeneficiarioMaisDependente(valorPlanoBeneficiario, valorPlanoSaudeDependente);
+    List<AuxilioSaudeRequisicao> beanAuxilioSaudeList = dao.search(bean, first, rows);
+    Double valorPlanoBeneficiario = 0.0;
 
-          beanBeneficiario.setValorTotalSolicitado(valorTotalSolicitado);
+    if (beanAuxilioSaudeList != null && !beanAuxilioSaudeList.isEmpty()) {
+      for (AuxilioSaudeRequisicao beanAuxilioSaude : beanAuxilioSaudeList) {
+        List<AuxilioSaudeRequisicaoItem> auxilioSaudeRequisicaoItemList = dao.getListaAuxilioSaudeItems(beanAuxilioSaude);
+        for (AuxilioSaudeRequisicaoItem beanItem : auxilioSaudeRequisicaoItemList) {
+          List<AuxilioSaudeRequisicaoDependente> beanDependenteList = dao.getAuxilioSaudeRequisicaoDependentePorId(beanItem.getId());
+
+          if (beanDependenteList != null && !beanDependenteList.isEmpty()) {
+            valorPlanoBeneficiario = beanItem.getValorGastoPlanoSaude();
+            Double valorPlanoSaudeDependente = getValorDependente(beanDependenteList);
+            Double valorTotalSolicitado = somarValoBeneficiarioMaisDependente(valorPlanoBeneficiario, valorPlanoSaudeDependente);
+
+            bean.setValorTotalSolicitado(valorTotalSolicitado);
+          } else {
+            valorPlanoBeneficiario = beanItem.getValorGastoPlanoSaude();
+            bean.setValorTotalSolicitado(valorPlanoBeneficiario);
+          }
         }
       }
     }
 
-    return beanList;
+    return beanAuxilioSaudeList;
   }
 
   @Override
   public List<AuxilioSaudeRequisicaoDependente> getAuxilioSaudeDependenteList(Long id) {
-    return dao.getAuxilioSaudeRequisicaoDependentePorId(id);
+    List<AuxilioSaudeRequisicaoDependente> dependenteList = dao.getAuxilioSaudeRequisicaoDependentePorId(id);
+
+    if (dependenteList != null) {
+      // adicionar os anexos
+      for (AuxilioSaudeRequisicaoDependente beanDep : dependenteList) {
+        List<AuxilioSaudeRequisicaoDocumento> doclist = dao.getListaAnexos(beanDep);
+        beanDep.setAuxilioSaudeRequisicaoDocumentoList(doclist);
+      }
+    }
+
+    return dependenteList;
   }
 
   /***
@@ -488,9 +500,8 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
    */
   public void setValorSolicitado(AuxilioSaudeRequisicao bean) {
     Double valor = 0.0;
-
-    if (bean.checkBeneficiarioItemListNotNull()) {
-      for (AuxilioSaudeRequisicao auxBenef : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+    if (bean.getAuxilioSaudeRequisicaoBeneficiarioItemList() != null) {
+      for (AuxilioSaudeRequisicaoItem auxBenef : bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
         if (bean.getValorTotalSolicitado() == null) {
           valor = auxBenef.getValorGastoPlanoSaude();
         } else {
@@ -515,7 +526,15 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   }
 
   private Double somarValoBeneficiarioMaisDependente(Double valorBeneficiario, Double valorDependente) {
-    return valorBeneficiario + valorDependente;
+    double valorBeneficiarioTemp = 0.0;
+    double valorDependenteTemp = 0.0;
+    if (valorBeneficiario != null) {
+      valorBeneficiarioTemp = valorBeneficiario;
+    }
+    if (valorDependente != null) {
+      valorDependenteTemp = valorDependente;
+    }
+    return valorBeneficiarioTemp + valorDependenteTemp;
   }
 
 

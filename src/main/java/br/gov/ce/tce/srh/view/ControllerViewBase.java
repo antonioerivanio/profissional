@@ -27,8 +27,18 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   @Autowired
   protected LoginBean loginBean;
   
+  protected static final String MESSAGEM = "mensagem";
+  protected static final String ENTIDADE = "entidade";
+  protected static final String LISTAR = "listar";
+  protected static final String INCLUIR_OU_ALTERAR = "incluirAlterar";
+  
+  
+  private String titulo = "Base de Cálculo: Valor do vencimento correspondente à  referência 23 do cargo de Analista de Controle Externo.";
+  private String[] nomeColuna = {"FAIXA DE IDADE DO BENEFICIÁRIO EM ANOS", "PERCENTUAL DO AUXÍLIO-SAÚDE", "VALOR CORRESPONDENTE"};
+  
   private T entidade;
 
+  protected boolean isRegistroSalvo = Boolean.FALSE;
   // paginação
   public Integer count = 0;
   public PagedListDataModel dataModel;
@@ -101,6 +111,9 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   }
 
   public UIDataTable getDataTable() {
+    if(dataTable == null) {
+      setDataTable(new UIDataTable());
+    }
     return dataTable;
   }
 
@@ -146,13 +159,29 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   public void setEdicao(boolean isEdicao) {
     this.isEdicao = isEdicao;
   }
+  
+  public String getTitulo() {
+    return titulo;
+  }
+
+  public void setTitulo(String titulo) {
+    this.titulo = titulo;
+  }
+
+  public String[] getNomeColuna() {
+    return nomeColuna;
+  }
+
+  public void setNomeColuna(String[] nomeColuna) {
+    this.nomeColuna = nomeColuna;
+  }
 
   public boolean temPermisssaoParaAlterar() {
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_INSERIR") || authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_ALTERAR");
   }
 
   // Alteração para o perfil consulta ser igual ao do servidor
-  public boolean isServidor() {
+  public boolean isServidor() {    
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR");
   }
 
@@ -162,7 +191,7 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
    * 
    * @return
    */
-  public boolean isAnalista() {
+  public boolean isAnalista() {    
     return authenticationService.getUsuarioLogado().hasAuthority("ROLE_APROVADOR_AUXILIO_SAUDE");
   }
     
@@ -178,14 +207,19 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   }
   
   public boolean validarExibicaoBotaoSalvar() {
-    if(isEdicao && isAnalista()) {
+    if(isAnalista() && !isRegistroSalvo) {
       return Boolean.TRUE;
     }    
-    else if(!isEdicao && isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
+    else if(!isAnalista() && !isRegistroSalvo) {
       return Boolean.TRUE;
     }
-    
-    else if(!isEdicao && !isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
+    else {
+      return Boolean.FALSE;
+    }
+  }
+  
+  public boolean validarExibicaoBotaoDeferirEIndeferir() {
+    if(isAnalista() && ((AuxilioSaudeRequisicao)getEntidade()).getDataFimRequisicao() == null) {
       return Boolean.TRUE;
     }
     else {

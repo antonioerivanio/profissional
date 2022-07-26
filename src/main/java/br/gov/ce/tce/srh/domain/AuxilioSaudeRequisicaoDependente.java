@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,6 +57,12 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
   @Transient
   AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento;
   
+  @Transient
+  List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList;
+  
+  @Transient
+  private ArquivoVO arquivoVO;
+  
   
   public AuxilioSaudeRequisicaoDependente() {
 
@@ -63,12 +70,13 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
   
   
   public AuxilioSaudeRequisicaoDependente(AuxilioSaudeRequisicao auxilioSaudeRequisicao,
-      Dependente dependente, PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude) {
+      Dependente dependente, PessoaJuridica pessoaJuridica, Double valorGastoPlanoSaude, ArquivoVO arquivoVO) {
     super();
     this.auxilioSaudeRequisicao = auxilioSaudeRequisicao;
     this.dependente = dependente;
     this.pessoaJuridica = pessoaJuridica;
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
+    this.arquivoVO = arquivoVO;
   }
 
 
@@ -98,32 +106,26 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
     return id;
   }
 
-
   @Override
   public void setId(Long id) {
     this.id=id;
   }
 
-
   public PessoaJuridica getPessoaJuridica() {
     return pessoaJuridica;
   }
-
 
   public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
     this.pessoaJuridica = pessoaJuridica;
   }
 
-
   public Double getValorGastoPlanoSaude() {
     return valorGastoPlanoSaude;
   }
 
-
   public void setValorGastoPlanoSaude(Double valorGastoPlanoSaude) {
     this.valorGastoPlanoSaude = valorGastoPlanoSaude;
   }
-
 
   public boolean getFlgDeletado() {
     return flgDeletado;
@@ -131,6 +133,31 @@ public class AuxilioSaudeRequisicaoDependente extends BasicEntity<Long>  impleme
 
   public void setFlgDeletado(boolean flgDeletado) {
     this.flgDeletado = flgDeletado;
-  }  
+  }
+
+  public ArquivoVO getArquivoVO() {
+    return arquivoVO;
+  }
+
+  public void setArquivoVO(ArquivoVO arquivoVO) {
+    this.arquivoVO = arquivoVO;
+  }
+
+  public AuxilioSaudeRequisicaoDocumento getAuxilioSaudeRequisicaoDocumento() {
+    return auxilioSaudeRequisicaoDocumento;
+  }
+
+  public void setAuxilioSaudeRequisicaoDocumento(AuxilioSaudeRequisicaoDocumento auxilioSaudeRequisicaoDocumento) {
+    this.auxilioSaudeRequisicaoDocumento = auxilioSaudeRequisicaoDocumento;
+  }
+
+  public List<AuxilioSaudeRequisicaoDocumento> getAuxilioSaudeRequisicaoDocumentoList() {
+    return auxilioSaudeRequisicaoDocumentoList;
+  }
+
+  public void setAuxilioSaudeRequisicaoDocumentoList(List<AuxilioSaudeRequisicaoDocumento> auxilioSaudeRequisicaoDocumentoList) {
+    this.auxilioSaudeRequisicaoDocumentoList = auxilioSaudeRequisicaoDocumentoList;
+  }   
+  
   
 }

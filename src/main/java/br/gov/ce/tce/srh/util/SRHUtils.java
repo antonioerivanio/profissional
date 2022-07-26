@@ -10,7 +10,10 @@ import java.math.RoundingMode;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.text.MaskFormatter;
 import org.springframework.security.core.context.SecurityContextHolder;
+import com.ibm.icu.impl.coll.BOCSU;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
@@ -753,6 +757,13 @@ public class SRHUtils {
     return idade;
 
   }
+  
+  public static LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+    return Instant.ofEpochMilli(dateToConvert.getTime())
+                              .atZone(ZoneId.systemDefault())
+                              .toLocalDate();
+}
+
 
   public static Usuario getUsuarioLogado() {
     if (SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -886,5 +897,31 @@ public class SRHUtils {
     long idade = ChronoUnit.YEARS.between(startDate, endDate);
 
     return idade;
+  }
+  
+  /****
+   * 
+   * @param diaAniversario
+   * @param mesAniversario
+   * @param anoAniversario
+   * @return
+   */
+  public static boolean isMesAniversarioEdataMenorQueDataAtual(int diaAniversario, int mesAniversario, int anoAniversario) {    
+    LocalDate endDate = LocalDate.now();
+    int mesAtual = endDate.getMonthValue();
+    int diaMesAtual = endDate.getDayOfMonth();
+    int anoAtual = endDate.getYear();        
+    boolean isMesAniversario = Boolean.FALSE;    
+    
+    /**
+     * data nascimento 13/05/1982
+     * data atual 20/07/2022
+     * checar se o mês do aniversario é igual ao mês atual
+     */
+    if(anoAniversario < anoAtual && mesAniversario == mesAtual) {
+      isMesAniversario = Boolean.TRUE;
+    }
+
+    return  isMesAniversario;
   }
 }
