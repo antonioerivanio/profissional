@@ -19,6 +19,10 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.GTRService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
+/****
+ * Gratificação por Execução de Trabalho Relevante, Técnico ou Científico – GTR
+ * A GTR, somente será concedida para servidor público efetivo do TCE-CE. 
+ */
 @SuppressWarnings("serial")
 @Component("gtrFormBean")
 @Scope("view")
