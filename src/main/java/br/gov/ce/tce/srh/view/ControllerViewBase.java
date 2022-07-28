@@ -67,7 +67,7 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   public T getEntidade() {
     try {
       if (entidade == null) {
-        createInstanceEntidade();
+        createInstanceEntidade();        
       }
     } catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
@@ -138,7 +138,7 @@ public abstract class ControllerViewBase<T> implements ControllerViewCrudBase {
   }
 
   // PAGINAÇÃO
-  public void limparListas() {
+  public void limparListas() {   
     dataModel = new PagedListDataModel();
     pagedList = new ArrayList<>();
     pagina = 1;

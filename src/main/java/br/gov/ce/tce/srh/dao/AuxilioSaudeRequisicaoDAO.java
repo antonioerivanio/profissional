@@ -83,8 +83,10 @@ public class AuxilioSaudeRequisicaoDAO {
 
   private void setFiltrosWhere(StringBuilder sql, AuxilioSaudeRequisicao bean) {
     if (bean != null && bean.getFuncional() != null) {
-      if (isNomeNotNull(bean)) {
-        sql.append(" and upper(asr.funcional.nome) like :nome ");
+      if (bean.getId() != null) {
+        sql.append(" and asr.id = :id ");
+      } else if (isNomeNotNull(bean)) {
+        sql.append(" and upper(asr.funcional.nome) like upper(:nome) ");
       } else if (isCpfNotNull(bean)) {
         sql.append(" and asr.funcional.pessoal.cpf =:cpf ");
       } else if (isNomeNotNull(bean) && isCpfNotNull(bean)) {
@@ -103,7 +105,9 @@ public class AuxilioSaudeRequisicaoDAO {
 
 
   private void setParametroQuery(Query query, AuxilioSaudeRequisicao bean) {
-    if (isNomeNotNull(bean)) {
+    if (bean.getId() != null) {
+      query.setParameter(ID, bean.getId());
+    } else if (isNomeNotNull(bean)) {
       query.setParameter(NOME, "%" + bean.getFuncional().getPessoal().getNome() + "%");
     } else if (isCpfNotNull(bean)) {
       query.setParameter(CPF, SRHUtils.removerMascara(bean.getFuncional().getPessoal().getCpf()));
@@ -131,6 +135,7 @@ public class AuxilioSaudeRequisicaoDAO {
     sql.append("from AuxilioSaudeRequisicao asr where 1=1 ");
 
     setFiltrosWhere(sql, bean);
+    sql.append(" order by asr.id desc ");
     query = entityManager.createQuery(sql.toString());
     setParametroQuery(query, bean);
 

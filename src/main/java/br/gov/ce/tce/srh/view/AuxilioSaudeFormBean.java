@@ -20,7 +20,9 @@ import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoDocumento;
 import br.gov.ce.tce.srh.domain.AuxilioSaudeRequisicaoItem;
 import br.gov.ce.tce.srh.domain.Dependente;
 import br.gov.ce.tce.srh.domain.ExibeCampoFormAuxilioSaude;
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.exception.UsuarioException;
@@ -74,7 +76,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   private List<AuxilioSaudeRequisicaoItem> auxilioSaudeRequisicaoItemsDeletadoList;
   private List<AuxilioSaudeRequisicaoDependente> auxilioSaudeRequisicaDependesDeletadoList;
   private AuxilioSaudeRequisicaoItem auxilioSaudeRequisicaoItem;
-  private AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente;  
+  private AuxilioSaudeRequisicaoDependente auxilioSaudeRequisicaoDependente;
+  private List<Funcional> servidorEnvioList;
 
 
   @PostConstruct
@@ -84,7 +87,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       if (FacesUtil.getFlashParameter(ENTIDADE) instanceof AuxilioSaudeRequisicao) {
         inicializarDadosParaEdicao();
         isEdicao = true;
-        consultar();
+        consultar();        
       } else {
         inicializar();
       }
@@ -99,6 +102,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void inicializarDadosParaEdicao() {
+  //carregar todos os servidor do tce, excluido os estágios
+    setServidorEnvioList(funcionalService.findServidoresEvento2200());    
     AuxilioSaudeRequisicao entidadeEditar = entidadeService.getAuxilioSaudePorId((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter("entidade"));
     entidadeEditar.setAuxilioSaudeRequisicaoDependenteList(entidadeService.getAuxilioSaudeDependenteList(entidadeEditar.getId()));
     entidadeService.setValorSolicitado(entidadeEditar); 
@@ -108,6 +113,9 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void inicializar() throws Exception {
+    //carregar todos os servidor do tce, excluindo os estágios
+    setServidorEnvioList(funcionalService.findServidoresEvento2200()); 
+    
     createInstanceEntidade();    
     getEntidade().setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
@@ -173,8 +181,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   public void deferir(boolean deferido) {
     logger.info("Iniciando o deferimento dos dados!");
-    try {  
-
+    try {
+      
       if (deferido) {
         getEntidade().setDataFimRequisicao(new Date());
         getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.DEFERIDO);
@@ -184,11 +192,12 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.INDEFERIDO);       
       }
 
-      if (getEntidade().getId() == null) {
-        salvar();
-      } else {
-        entidadeService.atualizar(getEntidade());
-      }
+      salvar();
+      
+      /*
+       * if (getEntidade().getId() == null) { salvar(); } else {
+       * //entidadeService.atualizar(getEntidade()); salvar(); }
+       */
 
       voltar();      
     } catch (Exception e) {
@@ -674,6 +683,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
 
   public String voltar() {
+    getEntidade().setDataInicioRequisicao(null);
     FacesUtil.setFlashParameter(ENTIDADE, getEntidade());
     return "/paginas/cadastros/auxilioSaudeList.xhtml?faces-redirect=true";
   }
@@ -686,6 +696,11 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     this.auxSaudeRequisicaoDoc = auxSaudeRequisicaoDoc;
   }
 
-  
-  
+  public List<Funcional> getServidorEnvioList() {
+    return servidorEnvioList;
+  }
+
+  public void setServidorEnvioList(List<Funcional> servidorEnvioList) {
+    this.servidorEnvioList = servidorEnvioList;
+  }
 }

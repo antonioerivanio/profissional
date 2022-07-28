@@ -289,7 +289,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     }
 
     if (bean.getObservacao() != null && !bean.getObservacao().isEmpty()) {
-      if (bean.getObservacao().contains("xxx") || bean.getObservacao().contains("...") || bean.getObservacao().length() < 5) {
+      if (bean.getObservacao().contains("xxx") || bean.getObservacao().contains("....") || bean.getObservacao().length() < 5) {
         throw new NullPointerException("Digite mais" + bean.getObservacao().length() + "caracteres para a observação");
       }
     }

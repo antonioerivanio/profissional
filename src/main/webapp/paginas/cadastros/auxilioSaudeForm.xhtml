@@ -56,7 +56,7 @@
 							disabled="#{!auxilioSaudeFormBean.isAnalista()}">
 							<f:selectItem id="selecioneServidor" itemLabel="Selecione..." />
 							<f:selectItems id="comboServidor"
-								value="#{auxilioSaudeFormBean.afastamentoFormBean.servidorEnvioList}"
+								value="#{auxilioSaudeFormBean.servidorEnvioList}"
 								var="servidor" itemValue="#{servidor}"
 								itemLabel="#{servidor.nome}" />
 							<a4j:ajax execute="@this"></a4j:ajax>
@@ -115,9 +115,9 @@
 					</div>
 
 					<div class="input-box box-15">
-						<label for="dataInicio">Data da Aprovação</label>
+						<h:outputLabel  for="dataInicio" value="Data de Análise" rendered="#{auxilioSaudeFormBean.entidade.dataFimRequisicao ne null}"/>
 						<h:outputText styleClass="textSmall" name="dataInicio"
-							value="#{auxilioSaudeFormBean.entidade.dataInicioRequisicao}" />
+							value="#{auxilioSaudeFormBean.entidade.dataFimRequisicao}" />
 					</div>
 				</h:panelGroup>
 
@@ -541,7 +541,7 @@
 				</a4j:outputPanel>
 				
 				<h:commandButton action="#{auxilioSaudeFormBean.voltar}"
-					immediate="true" value="Voltar"
+					value="Voltar"
 					styleClass="bt-padrao fr mg-right-10" />
 			</div>
 		</h:form>

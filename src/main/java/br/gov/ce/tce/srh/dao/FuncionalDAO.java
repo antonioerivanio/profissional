@@ -350,7 +350,11 @@ public class FuncionalDAO {
 			return 0;
 		}
 	}
-
+	/*** 
+	 * Ocupação 14 - Estagiário Nível Médio 
+	 * Ocupação 15 - Estagiário Nível Universitário
+	 * @return
+	 */
 	public List<Funcional> findServidoresEvento2200() {
 		try {
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
