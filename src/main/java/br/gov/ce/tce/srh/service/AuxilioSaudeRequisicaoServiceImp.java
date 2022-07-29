@@ -75,6 +75,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
       atualizarDadosTabelaAuxilioSaudeBase(bean);
     }
+
   }
 
 
@@ -114,6 +115,10 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
       salvarDependentes(bean);
 
+      if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
+        atualizarDadosTabelaAuxilioSaudeBase(bean);
+      }
+
     } catch (Exception e) {
       logger.error("Erro ao atualizar o auxilio-saúde " + e.getMessage());
       e.printStackTrace();
@@ -144,15 +149,14 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
         auxilioSaudeRequisicaoBase.setCustoPlanoBase(bean.getValorTotalSolicitado());
         auxilioSaudeRequisicaoBase.setCustoAdicional(0.0);
         auxilioSaudeRequisicaoBase.setDataAtualizacao(new Date());
-        auxilioSaudeRequisicaoBase.setObservacao("Valor adicionar automaticamente a partir da tela do Auxilio-Saúde");
-        dao.atualizar(auxilioSaudeRequisicaoBase);
+        auxilioSaudeRequisicaoBase.setObservacao("Valor adicionar automaticamente a partir da tela do Auxilio-Saúde");        
       } else {
-
         auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), bean.getUsuario(), bean.getValorTotalSolicitado(),
                                   "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date(), 0.0);
-        dao.salvar(auxilioSaudeRequisicaoBase);
-        dao.getEntityManager().flush();
+        auxilioSaudeRequisicaoBase.setId(dao.getMaxId());
       }
+      dao.atualizar(auxilioSaudeRequisicaoBase);
+      dao.getEntityManager().flush();
     }
   }
 
@@ -347,7 +351,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     List<Dependente> dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
 
-    entidade.setDataInicioRequisicao(new Date());
     entidade.setFuncional(funcional);
     entidade.setStatusFuncional(funcional.getStatus() != null && funcional.getStatus() == 1 ? AuxilioSaudeRequisicao.ATIVO : AuxilioSaudeRequisicao.INATIVO);
     entidade.setDependentesComboList(dependenteList);

@@ -152,7 +152,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
         
         FacesUtil.addInfoMessage("Registro atualizado com sucesso!");
       } else {
-        if (Boolean.TRUE.equals(entidadeService.isOK(getEntidade()))) {
+        if (entidadeService.isOK(getEntidade())) {
           entidadeService.salvar(getEntidade());
 
           isRegistroSalvo = Boolean.TRUE;
@@ -199,7 +199,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
        * //entidadeService.atualizar(getEntidade()); salvar(); }
        */
 
-      voltar();      
+      //voltar();      
     } catch (Exception e) {
       FacesUtil.addErroMessage("Erro ao salvar o deferimentos dados dados");
       logger.error(e.getMessage());

@@ -32,6 +32,12 @@ public class AuxilioSaudeRequisicaoDAO {
   private static final String FLG_ATIVO = "flgAtivo";
   private static final String FLG_DELETADO = "flgDeletado";
 
+  
+  public Long getMaxId() {
+    Query query = entityManager.createNativeQuery("SELECT max(ID) FROM srh.fp_auxiliosaudebase ");
+    return query.getSingleResult() == null ? 1 : ((BigDecimal) query.getSingleResult()).longValue() + 1;
+  }
+  
   public EntityManager getEntityManager() {
     return entityManager;
   }
