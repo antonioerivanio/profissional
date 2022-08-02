@@ -54,7 +54,7 @@ public class FuncionalCedidoFormBean implements Serializable {
   private PessoaJuridica pessoaJuridica;
 
   private boolean bloquearDatas = false;
-  private boolean alterar = false;
+  private boolean isEdicao = false;
   private boolean isExibidoTodosOsCampos = false;
 
   private List<CodigoCategoria> comboCodCateg;
@@ -68,15 +68,19 @@ public class FuncionalCedidoFormBean implements Serializable {
 
     if (FacesUtil.getFlashParameter("entidade") != null && FacesUtil.getFlashParameter("entidade") instanceof FuncionalCedido) {
       flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
+      setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());
+      
+      afastamentoFormBean.setServidorFuncional(getEntidade().getFuncional());
+    }else {
+      inicializarEntidade();
     }
-
-    setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());
-
-    inicializarEntidade();
 
     try {
       if (this.entidade.getId() != null) {
-        this.alterar = true;
+         this.servidorEnvioList = funcionalService.findServidoresEvento2230();
+         setCnpjPessoaJuridicaChange();
+        
+        this.isEdicao = true;
       }
     } catch (Exception e) {
       FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -107,7 +111,8 @@ public class FuncionalCedidoFormBean implements Serializable {
     inicializarEntidade();
   }
 
-  private void inicializarEntidade() {
+  private void inicializarEntidade() {    
+    setEntidade(new FuncionalCedido());    
     getEntidade().setFuncional(new Funcional());
     getEntidade().setDtAdmCed(null);
     getEntidade().setMatricOrig(null);
@@ -121,8 +126,8 @@ public class FuncionalCedidoFormBean implements Serializable {
   }
 
   public void setCnpjPessoaJuridicaChange() {
-    int index = nomeacaoServidorFormBean.getComboEmpresasCadastradas().indexOf(entidade.getPessoaJuridica());
-    PessoaJuridica pessoaJuridicaEncontrada = nomeacaoServidorFormBean.getComboEmpresasCadastradas().get(index);
+    int index = getComboEmpresasCadastradas().indexOf(entidade.getPessoaJuridica());
+    PessoaJuridica pessoaJuridicaEncontrada = getComboEmpresasCadastradas().get(index);
     setPessoaJuridica(pessoaJuridicaEncontrada);
   }
 
@@ -197,11 +202,16 @@ public class FuncionalCedidoFormBean implements Serializable {
 
   public boolean isBloquearDatas() {
     return bloquearDatas;
+  }  
+
+  public boolean getIsEdicao() {
+    return isEdicao;
   }
 
-  public boolean isAlterar() {
-    return alterar;
+  public void setEdicao(boolean isEdicao) {
+    this.isEdicao = isEdicao;
   }
+
 
   public boolean getIsExibidoTodosOsCampos() {
     return isExibidoTodosOsCampos;

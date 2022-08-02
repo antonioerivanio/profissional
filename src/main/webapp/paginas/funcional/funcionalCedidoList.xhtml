@@ -102,6 +102,7 @@
                        				  value="Editar"
                        				  action="#{funcionalCedidoListBean.editar}"
                        				  styleClass="ico-editar" >
+                       				  <a4j:ajax render="fcCadCnpj"></a4j:ajax>
                             <f:setPropertyActionListener target="#{funcionalCedidoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>

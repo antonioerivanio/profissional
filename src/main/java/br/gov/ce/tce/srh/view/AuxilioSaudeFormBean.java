@@ -87,7 +87,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       if (FacesUtil.getFlashParameter(ENTIDADE) instanceof AuxilioSaudeRequisicao) {
         inicializarDadosParaEdicao();
         isEdicao = true;
-        consultar();        
+        consultar();
       } else {
         inicializar();
       }
@@ -102,21 +102,21 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void inicializarDadosParaEdicao() {
-  //carregar todos os servidor do tce, excluido os estágios
-    setServidorEnvioList(funcionalService.findServidoresEvento2200());    
+    // carregar todos os servidor do tce, excluido os estágios
+    setServidorEnvioList(funcionalService.findServidoresEvento2200());
     AuxilioSaudeRequisicao entidadeEditar = entidadeService.getAuxilioSaudePorId((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter("entidade"));
     entidadeEditar.setAuxilioSaudeRequisicaoDependenteList(entidadeService.getAuxilioSaudeDependenteList(entidadeEditar.getId()));
-    entidadeService.setValorSolicitado(entidadeEditar); 
+    entidadeService.setValorSolicitado(entidadeEditar);
     entidadeEditar.setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
     setEntidade(entidadeEditar);
     validarValorTotalSolicitacao();
   }
 
   private void inicializar() throws Exception {
-    //carregar todos os servidor do tce, excluindo os estágios
-    setServidorEnvioList(funcionalService.findServidoresEvento2200()); 
-    
-    createInstanceEntidade();    
+    // carregar todos os servidor do tce, excluindo os estágios
+    setServidorEnvioList(funcionalService.findServidoresEvento2200());
+
+    createInstanceEntidade();
     getEntidade().setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
     getEntidade().setUsuario(loginBean.getUsuarioLogado());
     entidadeService.setDadosIniciaisDaEntidadePorCpf(getEntidade(), getEntidade().getUsuario().getCpf());
@@ -145,11 +145,11 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   @Override
   public void salvar() {
     try {
-      if (isEdicao) {        
+      if (isEdicao) {
         adicionarDadosDeletadosList();
-        
+
         entidadeService.atualizar(getEntidade());
-        
+
         FacesUtil.addInfoMessage("Registro atualizado com sucesso!");
       } else {
         if (entidadeService.isOK(getEntidade())) {
@@ -158,17 +158,18 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
           isRegistroSalvo = Boolean.TRUE;
           FacesUtil.addInfoMessage("Registro salvo com sucesso!");
         }
-      }    
-      
+      }
+
       if (!isAnalista()) {
         inicializar();
       }
     } catch (NullPointerException e) {
-      e.printStackTrace();
+      getEntidade().setDataFimRequisicao(null);
+      //e.printStackTrace();
       FacesUtil.addErroMessage(e.getMessage());
       logger.error(e);
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception e) {      
+      //e.printStackTrace();
       FacesUtil.addErroMessage("Ops! Não foi possível salvar a requisição, Por gentileza entre em contato o setor responsável");
       logger.error(e);
     }
@@ -182,28 +183,31 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   public void deferir(boolean deferido) {
     logger.info("Iniciando o deferimento dos dados!");
     try {
-      
+
       if (deferido) {
+        if (isValorSolicitadoMaiorValorAserRestituido()) {
+          double valorSolicitado = getEntidade().getValorMaximoAserRestituido();
+          getEntidade().setValorTotalSolicitado(valorSolicitado);
+        }
+
         getEntidade().setDataFimRequisicao(new Date());
         getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.DEFERIDO);
-       
+
       } else {
         getEntidade().setDataFimRequisicao(new Date());
-        getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.INDEFERIDO);       
+
+        getEntidade().setStatusAprovacao(AuxilioSaudeRequisicao.INDEFERIDO);
       }
 
       salvar();
-      
-      /*
-       * if (getEntidade().getId() == null) { salvar(); } else {
-       * //entidadeService.atualizar(getEntidade()); salvar(); }
-       */
-
-      //voltar();      
     } catch (Exception e) {
       FacesUtil.addErroMessage("Erro ao salvar o deferimentos dados dados");
       logger.error(e.getMessage());
     }
+  }
+
+  private boolean isValorSolicitadoMaiorValorAserRestituido() {
+    return getEntidade().getValorTotalSolicitado() > getEntidade().getValorMaximoAserRestituido();
   }
 
 
@@ -229,7 +233,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   private void adicionarDadosDeletadosList() {
     getEntidade().setDataAlteracao(new Date());
-    
+
     /*** atualizar a flag de deletado no banco **/
     if (auxilioSaudeRequisicaoItemsDeletadoList != null) {
       for (AuxilioSaudeRequisicaoItem bean : auxilioSaudeRequisicaoItemsDeletadoList) {
@@ -244,6 +248,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     }
 
   }
+
   /***
    * Metodo procura o item da lista de documentos, cria o diretorio se não existir e Faz o upload do
    * arquivo
@@ -373,12 +378,12 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
       auxilioSaudeDocBeneficiarioTempList = new ArrayList<AuxilioSaudeRequisicaoDocumento>();
       this.auxilioSaudeRequisicaoItem = new AuxilioSaudeRequisicaoItem();
-      
+
       UploadedFile comprovante = event.getUploadedFile();
-      
+
       arquivoVO = getInstanciaArquivoVO(AuxilioSaudeRequisicaoDocumento.NOME_ARQUIVO_BENEFICIARIO, comprovante.getName(), comprovante.getData(), contadorBeneficiario);
       auxSaudeRequisicaoDoc = new AuxilioSaudeRequisicaoDocumento(arquivoVO, new Date());
-     
+
       auxSaudeRequisicaoDoc.setAuxilioSaudeRequisicaoItem(auxilioSaudeRequisicaoItem);
       auxSaudeRequisicaoDoc.adicionarNovoCaminhoArquivo(new Date(), getEntidade().getFuncional().getMatricula());
       auxilioSaudeDocBeneficiarioTempList.add(auxSaudeRequisicaoDoc);
@@ -394,7 +399,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
       auxilioSaudeDocDependenteTempList = new ArrayList<AuxilioSaudeRequisicaoDocumento>();
       auxilioSaudeRequisicaoDependente = new AuxilioSaudeRequisicaoDependente();
-      
+
       UploadedFile comprovante = event.getUploadedFile();
 
       arquivoVO = getInstanciaArquivoVO(AuxilioSaudeRequisicaoDocumento.NOME_ARQUIVO_DEPENDENTE, comprovante.getName(), comprovante.getData(), contadorDependente);
@@ -433,7 +438,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
       entidadeService.setValorSolicitado(getEntidade());
       entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
       auxSaudeRequisicaoDoc = new AuxilioSaudeRequisicaoDocumento();
-      
+
       validarValorTotalSolicitacao();
 
       fazerUploadArquivos(isBeneficiario);
@@ -458,7 +463,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     getEntidade().adicionarDadosDependenteList(auxilioSaudeRequisicaoDependente);
 
     getEntidade().setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
-    getEntidade().setDependenteSelecionado(null);    
+    getEntidade().setDependenteSelecionado(null);
     contadorDependente++;
   }
 
@@ -665,18 +670,16 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   /***
-   * valida se o valor solicitado é menor que o valor maximo a ser restituido
-   * se o valor solicitado for maior que o maximo a ser restituido,
-   * o valor maximo será exibido.
+   * valida se o valor solicitado é menor que o valor a ser restituido   * 
    */
   public void validarValorTotalSolicitacao() {
-    Double valorMaximo =  getEntidade().getValorTotalSolicitado();
+    Double valorSolicitado = getEntidade().getValorTotalSolicitado();
 
     if (getEntidade().getFuncional() != null && getEntidade().getFuncional().getPessoal() != null) {
       entidadeService.setValorMaximoSolicitadoPorIdade(getEntidade());
-      
-      if (valorMaximo < getEntidade().getValorMaximoAserRestituido()) {
-        getEntidade().setValorMaximoAserRestituido(valorMaximo);
+
+      if (valorSolicitado < getEntidade().getValorMaximoAserRestituido()) {
+        getEntidade().setValorMaximoAserRestituido(valorSolicitado);
       }
     }
   }
