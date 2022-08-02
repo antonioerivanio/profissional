@@ -61,7 +61,8 @@ public class FeriasListBean implements Serializable {
 	private Long idFuncionalChefe = null;
 	
 	@PostConstruct
-	public void init() {		
+	public void init() {
+	  try {
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 			setCpf(authenticationService.getUsuarioLogado().getCpf());			
 			consultarAutomaticamente();		
@@ -80,7 +81,12 @@ public class FeriasListBean implements Serializable {
 			if (getMatricula() != null) {
 				consultarAutomaticamente();
 			}
-		}		
+		}	
+		
+	  }catch (Exception e) {
+	    logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+	    FacesUtil.addErroMessage(e.getMessage());
+      }
 	}
 
 	public void consultar() {

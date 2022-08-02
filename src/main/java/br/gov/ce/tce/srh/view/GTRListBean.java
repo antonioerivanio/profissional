@@ -60,7 +60,8 @@ public class GTRListBean implements Serializable {
 	private Long idFuncionalChefe = null;
 	
 	@PostConstruct
-	public void init() {		
+	public void init() {
+	  try {
 		if(authenticationService.getUsuarioLogado().hasAuthority("ROLE_PESSOA_SERVIDOR")){
 			setCpf(authenticationService.getUsuarioLogado().getCpf());			
 			consultarAutomaticamente();		
@@ -79,8 +80,13 @@ public class GTRListBean implements Serializable {
 			if (getMatricula() != null) {
 				consultarAutomaticamente();
 			}
-		}		
+		}
+	  }catch (Exception e) {
+	    logger.error("Ocorreu o seguinte erro: " + e.getMessage());
+	    FacesUtil.addErroMessage(e.getMessage());
+      }
 	}
+	  
 
 	public void consultar() {
 
@@ -90,8 +96,6 @@ public class GTRListBean implements Serializable {
 
 			if( getEntidade().getFuncional() == null )
 				throw new SRHRuntimeException("Selecione um funcionário.");
-			
-			//validarPermissaoDeConsulta();			
 
 			count = gtrService.count( getEntidade().getFuncional().getPessoal().getId() );
 
