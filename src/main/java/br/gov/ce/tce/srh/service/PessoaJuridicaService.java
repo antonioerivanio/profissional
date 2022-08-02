@@ -1,8 +1,8 @@
 package br.gov.ce.tce.srh.service;
 
 import java.util.List;
-
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
 /**
@@ -22,5 +22,7 @@ public interface PessoaJuridicaService {
 	public void excluir(PessoaJuridica entidade);
 	
 	public List<PessoaJuridica> findAll();
+	public List<PessoaJuridica> findAllByTipo(TipodeEmpresa tipodeEmpresa);
+	public List<PessoaJuridica> findAllNotTipo(List<TipodeEmpresa> tipodeEmpresaList);
 	public PessoaJuridica findById(Long parseLong);
 }

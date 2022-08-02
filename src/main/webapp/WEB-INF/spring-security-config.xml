@@ -177,6 +177,9 @@
         <intercept-url pattern="/paginas/cadastros/publicacaoForm.faces" access="ROLE_PUBLICACAO" />        
 
 		<intercept-url pattern="/paginas/cadastros/*" access="ROLE_CADASTROS" />
+		
+		 <intercept-url pattern="/paginas/cadastros/auxilioSaudeList.faces" access="ROLE_PESSOA_SERVIDOR" />
+        <intercept-url pattern="/paginas/cadastros/auxilioSaudeForm.faces" access="ROLE_PESSOA_SERVIDOR" />
 
 		<!-- FUNCIONAL -->
 				
@@ -277,7 +280,7 @@
 	
 	
 	<!-- SCA - DESENVOLVIMENTO -->
-	<authentication-manager alias="authenticationManager" >
+	 <authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
     </authentication-manager>
 
@@ -285,7 +288,7 @@
 <!--***********************************************************************************************************************************************************-->	
 		
 	<!-- AD - PRODUÇÃO -->
- <!--   <beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+  <!-- <beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
 
         <beans:constructor-arg value="tce.ce.gov.br" />
         <beans:constructor-arg value="ldap://tce.ce.gov.br:389/"/> 

@@ -1,8 +1,9 @@
 package br.gov.ce.tce.srh.dao;
 
 import java.util.List;
-
+import javax.persistence.Query;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 
 /**
  * Referente a tabela: TB_PESSOAJURIDICA
@@ -24,6 +25,9 @@ public interface PessoaJuridicaDAO {
 	public PessoaJuridica getBynomeFantasia(String nomeFantasia);
 
 	public List<PessoaJuridica> findAll();
+	public List<PessoaJuridica> findAllByTipo(TipodeEmpresa tipodeEmpresa);
+	public List<PessoaJuridica> findAllNotTipo(List<TipodeEmpresa> tipodeEmpresaList);
+	   
 	public PessoaJuridica findById(Long id);
 	
 

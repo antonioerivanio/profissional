@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.InfoRemuneracaoPeriodoAnterioresDAO;
+import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
 import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
 
 @Service("infoRemuneracaoPeriodoAnterioresService")
@@ -31,12 +33,28 @@ public class InfoRemuneracaoPeriodoAnterioresService{
 		return dao.getById(id);
 	}	
 	
-	public List<InfoRemuneracaoPeriodoAnteriores> findByIdfuncional(Long idFuncional) {
-		List<InfoRemuneracaoPeriodoAnteriores> depentendes = dao.findByIdfuncional(idFuncional);
-		for (InfoRemuneracaoPeriodoAnteriores InfoRemuneracaoPeriodoAnteriores : depentendes) {
-			InfoRemuneracaoPeriodoAnteriores.setId(null);
+	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(String mesReferencia, String anoReferencia, List<DemonstrativosDeValores> demonstrativosDeValoresList, Long idFuncional) {
+		List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresListReturn = new ArrayList<InfoRemuneracaoPeriodoAnteriores>();
+		
+		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
+			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
+				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(1)) {
+					List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList = dao.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional);
+					infoRemuneracaoPeriodoAnterioresListReturn.addAll(infoRemuneracaoPeriodoAnterioresList);
+					if(infoRemuneracaoPeriodoAnterioresList != null && !infoRemuneracaoPeriodoAnterioresList.isEmpty()) {
+						demonstrativosDeValores.setInfoRemuneracaoPeriodoAnteriores(infoRemuneracaoPeriodoAnterioresList.get(0));
+					}
+				}
+				
+			}
+			for (InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores : infoRemuneracaoPeriodoAnterioresListReturn) {
+				if(infoRemuneracaoPeriodoAnteriores.getId() < 0) {
+					infoRemuneracaoPeriodoAnteriores.setId(null);
+				}
+			}
 		}
-		return depentendes;
+		
+		return infoRemuneracaoPeriodoAnterioresListReturn;
 	}
 
 	@Transactional

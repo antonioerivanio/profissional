@@ -2,7 +2,6 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
 import javax.persistence.FieldResult;

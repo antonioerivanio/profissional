@@ -2,7 +2,6 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +16,7 @@ import javax.persistence.TemporalType;
 @Entity
 @SuppressWarnings("serial")
 @Table(name = "ESOCIAL_INFOREMUNPERANTERIORES", schema=DatabaseMetadata.SCHEMA_SRH)
-public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implements Serializable{
+public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implements Serializable, Cloneable {
 
 	@Id
 	@Column(name = "ID")	
@@ -165,5 +164,8 @@ public class InfoRemuneracaoPeriodoAnteriores extends BasicEntity<Long> implemen
 		this.grauEX = grauEX;
 	}
 		
-	
+	@Override
+    public InfoRemuneracaoPeriodoAnteriores clone() throws CloneNotSupportedException {
+        return (InfoRemuneracaoPeriodoAnteriores) super.clone();
+    }
 }

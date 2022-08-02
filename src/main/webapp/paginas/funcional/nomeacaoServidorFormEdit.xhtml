@@ -255,6 +255,25 @@
 							</h:inputText>
 						</div>
 					</div>
+					
+					<div class="select-box box-25">
+						<label for=""> Categoria </label>
+						<div class="conteiner">
+							<h:selectOneMenu id="nomCodCateg"		
+											 required="true" requiredMessage="Categoria é obrigatorio"									
+											 value="#{nomeacaoServidorFormBean.entidade.codigoCategoria}"
+											 converter="entityConverter" 
+											 >
+								<f:selectItem id="selecioneCODCATEG" itemLabel="Selecione..." itemValue="" />
+							   	<f:selectItems id="comboCODCATEG" 
+							   				   value="#{funcionalCedidoFormBean.comboCodCateg}"
+							   				   var="codCateg"
+							   				   itemValue="#{codCateg}"
+							   				   itemLabel="#{codCateg.codigo} - #{codCateg.descricao}"/>		
+								
+							</h:selectOneMenu>
+						</div>
+					</div>
 	
 				</rich:tab>
 	

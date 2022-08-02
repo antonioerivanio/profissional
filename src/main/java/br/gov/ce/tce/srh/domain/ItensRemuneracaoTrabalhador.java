@@ -2,7 +2,6 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,33 +10,24 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 @Entity
 @SuppressWarnings("serial")
 @Table(name = "ESOCIAL_INFOREMUNPERANTERIORES", schema=DatabaseMetadata.SCHEMA_SRH)
-public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Serializable{
+public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Serializable, Cloneable {
 
 	@Id
 	@Column(name = "ID")	
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "IDDMDEV")
-	private DemonstrativosDeValores demonstrativosDeValores;
+	@JoinColumn(name = "IDINFOREMUNPERAPUR")
+	private InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "IDINFOREMUNPERANTERIORES")
 	private InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores;
-	
-	@Column(name = "DT_AC_CONV")
-	@Temporal(TemporalType.DATE)
-	private Date dtAcConv;
-	
-	@Column(name = "TP_AC_CONV")
-	private Character tpAcConv;
 	
 	@Column(name = "COD_RUBR")
 	private String codRubr;
@@ -57,9 +47,6 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 	@Column(name = "IND_APUR_IR")
 	private Byte indApurIr;
 	
-	@Column(name = "GRAU_EXP")
-	private Byte grauExp;
-	
 	
 	public Long getId() {
 		return id;
@@ -69,12 +56,12 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 		this.id = id;
 	}
 	
-	public DemonstrativosDeValores getDemonstrativosDeValores() {
-		return demonstrativosDeValores;
+	public InfoRemuneracaoPeriodoApuracao getInfoRemuneracaoPeriodoApuracao() {
+		return infoRemuneracaoPeriodoApuracao;
 	}
 
-	public void setDemonstrativosDeValores(DemonstrativosDeValores demonstrativosDeValores) {
-		this.demonstrativosDeValores = demonstrativosDeValores;
+	public void setInfoRemuneracaoPeriodoApuracao(InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao) {
+		this.infoRemuneracaoPeriodoApuracao = infoRemuneracaoPeriodoApuracao;
 	}
 
 	public InfoRemuneracaoPeriodoAnteriores getInfoRemuneracaoPeriodoAnteriores() {
@@ -83,22 +70,6 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 
 	public void setInfoRemuneracaoPeriodoAnteriores(InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores) {
 		this.infoRemuneracaoPeriodoAnteriores = infoRemuneracaoPeriodoAnteriores;
-	}
-
-	public Date getDtAcConv() {
-		return dtAcConv;
-	}
-
-	public void setDtAcConv(Date dtAcConv) {
-		this.dtAcConv = dtAcConv;
-	}
-
-	public Character getTpAcConv() {
-		return tpAcConv;
-	}
-
-	public void setTpAcConv(Character tpAcConv) {
-		this.tpAcConv = tpAcConv;
 	}
 
 	public String getCodRubr() {
@@ -148,15 +119,10 @@ public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Se
 	public void setIndApurIr(Byte indApurIr) {
 		this.indApurIr = indApurIr;
 	}
-
-	public Byte getGrauExp() {
-		return grauExp;
-	}
-
-	public void setGrauExp(Byte grauExp) {
-		this.grauExp = grauExp;
-	}
 	
-	
+	@Override
+    public ItensRemuneracaoTrabalhador clone() throws CloneNotSupportedException {
+        return (ItensRemuneracaoTrabalhador) super.clone();
+    }
 		
 }

@@ -2,7 +2,6 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,10 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
-
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
 import br.gov.ce.tce.srh.util.SRHUtils;
 

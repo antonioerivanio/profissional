@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
 import br.gov.ce.tce.srh.domain.ItensRemuneracaoTrabalhador;
 
 @Repository
@@ -48,9 +49,11 @@ public class ItensRemuneracaoTrabalhadorDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<ItensRemuneracaoTrabalhador> findByIdfuncional(Long idFuncional) {	
+	public List<ItensRemuneracaoTrabalhador> findByDemonstrativosDeValores(DemonstrativosDeValores demonstrativosDeValores, String matricula) {	
 		Query query = entityManager.createNativeQuery(getSQLItensRemuneracaoTrabalhador(), ItensRemuneracaoTrabalhador.class);
-		query.setParameter("idFuncional",idFuncional );
+		query.setParameter("idDmDev", demonstrativosDeValores.getId() );
+		query.setParameter("ideDmDev", demonstrativosDeValores.getIdeDmDev() );
+		query.setParameter("matricula", matricula);
 		return query.getResultList();
 	}
 
@@ -58,24 +61,24 @@ public class ItensRemuneracaoTrabalhadorDAO {
 	public String getSQLItensRemuneracaoTrabalhador() {
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" SELECT ");
-		sql.append(" tb_dependente.id AS id, ");
-		sql.append(" tb_pessoal.nome AS NM_DEP,  ");
-		sql.append(" tb_pessoal.cpf AS CPF_DEP, ");
-		sql.append(" tb_pessoal.sexo AS SEXO_DEP,  ");         
-		sql.append(" tb_pessoal.datanascimento AS DT_NASC,  ");
-		sql.append(" Decode(tb_dependente.depir ,1, 'S', 'N') AS DEP_IRRF, ");
-		sql.append(" Decode(tb_dependente.depsf ,1, 'S', 'N') AS DEP_SF,    ");          
-		sql.append(" 'N' AS INC_TRAB, ");
-		sql.append(" 'N' AS INC_FIS_MEN, ");
-		sql.append(" trim(to_char(tb_tipodependencia.codigoesocial,'00')) AS TP_DEP, ");
-		sql.append(" :idFuncional AS IDFUNCIONAL   ");                                                                                                                                                                                                                                                                                                                    
-		sql.append(" FROM srh.tb_dependente ");
-		sql.append(" INNER JOIN srh.tb_pessoal ON srh.tb_dependente.idpessoaldep = srh.tb_pessoal.id ");
-		sql.append(" INNER JOIN srh.tb_tipodependencia ON srh.tb_dependente.idtipodependencia = srh.tb_tipodependencia.id ");
-		sql.append(" INNER JOIN srh.tb_funcional ON srh.tb_funcional.idpessoal = srh.tb_dependente.idpessoalresp ");
-		sql.append(" WHERE (tb_dependente.depprev = 1 OR tb_dependente.depir = 1) ");
-		sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
+		sql.append(" Select " );
+		sql.append(" ( ROWNUM * -1) as id, ");
+		sql.append(" :idDmDev as IDDMDEV," );
+		sql.append(" null as IDINFOREMUNPERANTERIORES," );
+		sql.append(" ip.rubrica as COD_RUBR, " );
+		sql.append(" rt.CODIGO as IDE_TAB_RUBR," );
+		sql.append(" ip.valor as VR_RUBR," );
+		sql.append(" null as QTD_RUBR," );
+		sql.append(" null as FATOR_RUBR," );
+		sql.append(" 0 as IND_APUR_IR" );
+		sql.append(" from srh.fp_dadospagto dp inner join srh.fp_itenspagto ip on dp.idpagto = ip.idpagto" );
+		sql.append(" inner join srh.ESOCIAL_RUBRICACONFIG rc on ip.rubrica = rc.CODIGORUBRICA" );
+		sql.append(" inner join srh.ESOCIAL_RUBRICA_TABELA rt on rt.id = rc.IDTABELARUBRICA" );
+		sql.append(" where dp.arquivo = :ideDmDev" );
+		sql.append(" and dp.cod_func = :matricula" );
+		sql.append(" and rubrica not in ('BRU','DES','LIQ') " );
+		sql.append(" order by dp.num_ano desc, dp.num_mes desc, dp.arquivo, rubrica" );
+		//sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
 	    
 	    return sql.toString();
 	}

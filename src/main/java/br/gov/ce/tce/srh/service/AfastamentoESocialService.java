@@ -70,8 +70,8 @@ public class AfastamentoESocialService {
 		return entidade;
 	}
 	
-	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional,Licenca licenca, boolean possuiCargo) {
-		return afastamentoESocialDAO.getEvento2230ByServidor(servidorFuncional, licenca, possuiCargo);
+	public AfastamentoESocial getEvento2230ByServidor(Funcional servidorFuncional,Licenca licenca) {
+		return afastamentoESocialDAO.getEvento2230ByServidor(servidorFuncional, licenca);
 	}
 	
 	/**

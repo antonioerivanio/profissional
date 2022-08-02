@@ -3,7 +3,6 @@ package br.gov.ce.tce.srh.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,13 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
-
 import br.gov.ce.tce.srh.sca.domain.Usuario;
-import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @Entity
@@ -38,8 +33,8 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	@JoinColumn(name = "IDPESSOAJURIDICA")
 	private PessoaJuridica pessoaJuridica;
 
-	@JoinColumn(name = "IDTIPOESOCIAL")
-	private Integer tipoEsocial;
+	@JoinColumn(name = "CODIGOCATEGORIA")
+	private String codigoCategoria;
 	
 	@Column(name="VALOROUTRAEMPRESA")
 	private BigDecimal valorOutraEmpresa;
@@ -59,6 +54,9 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DATAALTERACAO")
     private Date dataAlteracao;
+	
+	@JoinColumn(name = "TIPOESOCIAL")
+	private Integer tipoEsocial;
 	
 
 	@Override
@@ -134,6 +132,15 @@ public class VinculoRGPS extends BasicEntity<Long> implements Serializable {
 
 	public void setDataAlteracao(Date dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
+	}
+
+	public String getCodigoCategoria() {
+		return codigoCategoria;
+	}
+
+	public void setCodigoCategoria(String codigoCategoria) {
+		this.codigoCategoria = codigoCategoria;
 	}	
+	
 	
 }

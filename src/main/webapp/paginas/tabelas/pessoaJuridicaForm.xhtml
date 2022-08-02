@@ -61,6 +61,21 @@
 								 maxlength="250"  />    
 				</div>
 			</div>
+			
+			<div class="select-box box-80">
+					<label for="">Tipo de Empresa *</label>
+					<div class="conteiner">
+						<h:selectOneMenu id="tipoempresa" 
+							value="#{pessoaJuridicaBean.entidade.tipodeEmpresa}">						
+							<f:selectItem id="selecioneServidor" itemLabel="Selecione..." />
+							<f:selectItems id="comboServidor"
+								value="#{pessoaJuridicaBean.entidade.getTipoEmpresaList()}"
+								var="tipo" itemValue="#{tipo}"
+								itemLabel="#{tipo.descricao}" />
+							<f:ajax execute="@this"></f:ajax> 
+						</h:selectOneMenu>
+					</div>
+				</div>
 			</fieldset>
 
 			<h:commandButton action="#{pessoaJuridicaBean.salvar}" value="Salvar" styleClass="bt-padrao fr" />

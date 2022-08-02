@@ -66,6 +66,10 @@ textarea:disabled, input:not([type]):disabled, input[type="color" i]:disabled, i
 	margin-top: 5px !important;
 }
 
+.mg-top-14 {
+	margin-top: 14px !important;
+}
+
 .mg-top-15 {
 	margin-top: 15px !important;
 }
@@ -501,7 +505,7 @@ img.ambiente {
 
 .titulo-pagina h2 {
 	color: #1c5ba7;
-	font-size: 16px;
+	font-size: 14px;
 	padding: 10px;
 }
 
@@ -1123,7 +1127,7 @@ img.ambiente {
 /* INICIO BOTOES */
 .bt-padrao, .bt-voltar {
 	border: 1px solid #195297;
-	font-size: 13px;
+	font-size: 12px;
 	color: #fff;
 	padding: 8px 12px;
 	background: #195297;
@@ -1638,4 +1642,35 @@ input.rf-insp-inp[type="text"] {
     background: #f1f1f1;
     border-radius: 4px;
     opacity: 0.9;
+}
+
+.textSmall{
+	font-size:small;	
+}
+
+/**** alterar o css do fileUpload do richfaces */
+.rf-fu-lst {
+	height: 110px!important;	
+	overflow:scroll;
+}
+
+.rf-fu {
+    background: #ffffff !important;
+    border-color: #C0C0C0; 
+    border-style: solid;
+    border-width: 1px;
+    width: 400px;
+    outline: none;
+}
+
+.rf-fu-hdr {
+    background-color: #195297 !important;;
+    /* background-image: url(../org.richfaces.images/gradientA.png); */
+    background-repeat: repeat-x;
+    border-color: #4A75B5;
+    border-style: solid;
+    border-width: 1px;
+    margin-left: 1px;
+    margin-top: 1px;
+    white-space: nowrap;
 }

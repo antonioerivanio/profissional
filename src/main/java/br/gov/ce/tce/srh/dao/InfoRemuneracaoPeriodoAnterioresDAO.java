@@ -9,6 +9,8 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
+import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
 
 @Repository
@@ -48,34 +50,58 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<InfoRemuneracaoPeriodoAnteriores> findByIdfuncional(Long idFuncional) {	
-		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoAnteriores(), InfoRemuneracaoPeriodoAnteriores.class);
-		query.setParameter("idFuncional",idFuncional );
+	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(String mesReferencia, String anoReferencia, DemonstrativosDeValores demonstrativosDeValores, Long idFuncional) {	
+		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoAnteriores(idFuncional), InfoRemuneracaoPeriodoAnteriores.class);
+		query.setParameter("mesReferencia", mesReferencia);
+		query.setParameter("anoReferencia", anoReferencia);
+		
+		if(demonstrativosDeValores != null && demonstrativosDeValores.getId() != null && demonstrativosDeValores.getId() > 0 ) {
+			query.setParameter("idDmDev", demonstrativosDeValores.getId());
+		}
+		else {
+			query.setParameter("idDmDev", null);
+		}
+		
+		query.setParameter("ideDmDev", demonstrativosDeValores.getIdeDmDev() );
+		query.setParameter("idFuncional", idFuncional );
 		return query.getResultList();
 	}
 
 	
-	public String getSQLInfoRemuneracaoPeriodoAnteriores() {
+	public String getSQLInfoRemuneracaoPeriodoAnteriores(Long idFuncional) {
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" SELECT ");
-		sql.append(" tb_dependente.id AS id, ");
-		sql.append(" tb_pessoal.nome AS NM_DEP,  ");
-		sql.append(" tb_pessoal.cpf AS CPF_DEP, ");
-		sql.append(" tb_pessoal.sexo AS SEXO_DEP,  ");         
-		sql.append(" tb_pessoal.datanascimento AS DT_NASC,  ");
-		sql.append(" Decode(tb_dependente.depir ,1, 'S', 'N') AS DEP_IRRF, ");
-		sql.append(" Decode(tb_dependente.depsf ,1, 'S', 'N') AS DEP_SF,    ");          
-		sql.append(" 'N' AS INC_TRAB, ");
-		sql.append(" 'N' AS INC_FIS_MEN, ");
-		sql.append(" trim(to_char(tb_tipodependencia.codigoesocial,'00')) AS TP_DEP, ");
-		sql.append(" :idFuncional AS IDFUNCIONAL   ");                                                                                                                                                                                                                                                                                                                    
-		sql.append(" FROM srh.tb_dependente ");
-		sql.append(" INNER JOIN srh.tb_pessoal ON srh.tb_dependente.idpessoaldep = srh.tb_pessoal.id ");
-		sql.append(" INNER JOIN srh.tb_tipodependencia ON srh.tb_dependente.idtipodependencia = srh.tb_tipodependencia.id ");
-		sql.append(" INNER JOIN srh.tb_funcional ON srh.tb_funcional.idpessoal = srh.tb_dependente.idpessoalresp ");
-		sql.append(" WHERE (tb_dependente.depprev = 1 OR tb_dependente.depir = 1) ");
-		sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
+		sql.append(" SELECT  ");    
+		sql.append(" ( ROWNUM * -1) as id, "); 
+		sql.append(" :idDmDev as IDDMDEV,  ");
+		sql.append(" null as DT_AC_CONV, "); 
+		sql.append(" 'B' as TP_AC_CONV,  ");
+		sql.append(" null as DSC,  ");
+		sql.append(" 'N'  as REMUN_SUC,  ");
+		sql.append(" ano_esocial||dp.num_mes as PER_REF,  ");
+		sql.append(" 1 as TP_INSC,  ");
+		sql.append(" '09499757'  as NR_INSC,  ");
+		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 		 
+		sql.append("  0||dp.cod_func as matricula,  ");
+		sql.append(" null as IND_SIMPLES,  ");
+		sql.append("  null as GRAU_EXP  ");
+		  
+		sql.append(" FROM srh.fp_pagamentos pg ");
+		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
+		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
+		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
+		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		sql.append(" WHERE ano_esocial = :anoReferencia ");
+		sql.append(" AND mes_esocial = :mesReferencia");
+		sql.append(" AND dp.contribui_inss = 'S' ");
+		sql.append(" AND dp.num_mes <> '13' ");
+		sql.append(" AND dp.num_mes <> :mesReferencia ");
+		sql.append(" AND dp.arquivo = :ideDmDev ");
+		if(idFuncional != null) {
+			sql.append("AND f.id = :idFuncional ");
+		}
+		sql.append(" ORDER BY dp.nome ");
+
 	    
 	    return sql.toString();
 	}
@@ -86,5 +112,7 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 		query.setParameter("idFuncional",idFuncional );
 		return query.getResultList();
 	}
+
+
 
 }

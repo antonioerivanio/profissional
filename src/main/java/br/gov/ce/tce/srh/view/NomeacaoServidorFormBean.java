@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import br.gov.ce.tce.srh.domain.CodigoCategoria;
 import br.gov.ce.tce.srh.domain.EspecialidadeCargo;
 import br.gov.ce.tce.srh.domain.Folha;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.FuncionalCedido;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.OrientacaoCargo;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
@@ -26,7 +28,9 @@ import br.gov.ce.tce.srh.domain.TipoMovimento;
 import br.gov.ce.tce.srh.domain.TipoOcupacao;
 import br.gov.ce.tce.srh.domain.TipoPublicacao;
 import br.gov.ce.tce.srh.domain.Vinculo;
+
 import br.gov.ce.tce.srh.enums.LeiIncorporacao;
+import br.gov.ce.tce.srh.enums.TipodeEmpresa;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sapjava.domain.Entidade;
 import br.gov.ce.tce.srh.sapjava.domain.Setor;
@@ -106,8 +110,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private EntidadeService entidadeService;
 	
 	@Autowired
-	private PessoaJuridicaService pessoaJuridicaService;
-
+	private PessoaJuridicaService pessoaJuridicaService;	
 
 	// entidades das telas
 	private Funcional entidade = new Funcional();
@@ -153,15 +156,19 @@ public class NomeacaoServidorFormBean implements Serializable {
 	private List<LeiIncorporacao> comboLeiIncorporacao;
 	private List<Entidade> comboOrgaoOrigem;
 	private List<PessoaJuridica> instituicaoEnsinoList;
+	private List<CodigoCategoria> comboCodCategList;
 
 
 	@PostConstruct
 	public void init() {
 		
-		Funcional flashParameter = (Funcional)FacesUtil.getFlashParameter("entidade");
+		Funcional flashParameter = null; 
 		
-		if (flashParameter == null) {
-			
+		if (FacesUtil.getFlashParameter("entidade") != null && FacesUtil.getFlashParameter("entidade") instanceof Funcional) {
+	      flashParameter = (Funcional) FacesUtil.getFlashParameter("entidade");
+	    }
+		
+		if (flashParameter == null) {			
 			setEntidade( new Funcional() );
 			getEntidade().setProporcionalidade( 100l );
 			getEntidade().setQtdQuintos( 0l );
@@ -169,7 +176,7 @@ public class NomeacaoServidorFormBean implements Serializable {
 			getEntidade().setIRRF(true);
 			getEntidade().setAtivoPortal(true);
 			exibirTodosOsCampos = true;
-			
+
 		} else {			
 			
 			try {
@@ -216,7 +223,8 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 			if(alterar) {
 				nomeacaoFuncionalService.alterarNomeacao(entidade);
-			} else {				
+			} else {		
+				entidade.setCodigoCategoria(entidade.getCodigoCategoria().getCodigoCategoraByList(getComboCodCateg()));
 				nomeacaoFuncionalService.nomear(entidade);			
 			}
 			
@@ -668,10 +676,10 @@ public class NomeacaoServidorFormBean implements Serializable {
 	public Boolean getExibirOrgaoEhSalario() {return exibirOrgaoEhSalario;}
 
 	public Boolean getDigitarMatricula() {return digitarMatricula;}
-	public void setDigitarMatricula(Boolean digitarMatricula) {
-		this.digitarMatricula = digitarMatricula;
+	public void setDigitarMatricula(boolean digitarMatricula) {
+		
 		if(!digitarMatricula){
-			entidade.setMatricula(new String());
+			entidade.setMatricula("");
 		}
 	}	
 	
@@ -679,8 +687,9 @@ public class NomeacaoServidorFormBean implements Serializable {
 
 		try {
 
-			if ( this.instituicaoEnsinoList == null )
-				this.instituicaoEnsinoList = pessoaJuridicaService.findAll();
+			if ( this.instituicaoEnsinoList == null ) {
+				this.instituicaoEnsinoList = pessoaJuridicaService.findAllByTipo(TipodeEmpresa.INSTITUICAO_ENSINO);
+			}
 
 		} catch (Exception e) {
 			FacesUtil.addInfoMessage("Erro ao carregar o campo tipo de publicação. Operação cancelada.");
@@ -688,7 +697,16 @@ public class NomeacaoServidorFormBean implements Serializable {
 		}
 
 		return this.instituicaoEnsinoList;
-	}	
-
-
+	}
+	
+	public List<CodigoCategoria> getComboCodCateg(){
+		try {
+			this.comboCodCategList = nomeacaoFuncionalService.getCategoriaListAll();
+		} catch (Exception e) {
+			FacesUtil.addErroMessage("Erro ao carregar o campo Codigo Categoria. Operação cancelada.");
+        	logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+		}
+		
+		return this.comboCodCategList;
+	}
 }

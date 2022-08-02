@@ -1,10 +1,7 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -135,30 +132,6 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
-
-//	public Long getCodCateg() {
-//		return codCateg;
-//	}
-
-//	public void setCodCateg(Long codCateg) {
-//		this.codCateg = codCateg;
-//	}
-
-//	public String getTpInsc() {
-//		return tpInsc;
-//	}
-
-//	public void setTpInsc(String tpInsc) {
-//		this.tpInsc = tpInsc;
-//	}
-
-//	public String getNrInsc() {
-//		return nrInsc;
-//	}
-
-//	public void setNrInsc(String nrInsc) {
-//		this.nrInsc = nrInsc;
-//	}
 
 	public Date getDtIniAfast() {
 		return dtIniAfast;

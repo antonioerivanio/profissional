@@ -30,7 +30,7 @@ public class DemonstrativosDeValoresDAO {
 
 	public DemonstrativosDeValores salvar(DemonstrativosDeValores entidade) {
 
-		if (entidade.getId() == null || entidade.getId().equals(0l)) {
+		if (entidade.getId() == null || entidade.getId() < 0) {
 			entidade.setId(getMaxId());
 		}
 
@@ -48,34 +48,48 @@ public class DemonstrativosDeValoresDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<DemonstrativosDeValores> findByIdfuncional(Long idFuncional) {	
-		Query query = entityManager.createNativeQuery(getSQLDemonstrativosDeValores(), DemonstrativosDeValores.class);
+	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idFuncional) {	
+		Query query = entityManager.createNativeQuery(getSQLDemonstrativosDeValores(idFuncional), DemonstrativosDeValores.class);
+		query.setParameter("mesReferencia", mesReferencia);
+		query.setParameter("anoReferencia", anoReferencia);
+		if(idRemuneracaoTrabalhador != null && idRemuneracaoTrabalhador > 0 ) {
+			query.setParameter("idRemuneracaoTrabalhador", idRemuneracaoTrabalhador);
+		}
+		else {
+			query.setParameter("idRemuneracaoTrabalhador", null);
+		}
 		query.setParameter("idFuncional",idFuncional );
 		return query.getResultList();
 	}
 
 	
-	public String getSQLDemonstrativosDeValores() {
+	public String getSQLDemonstrativosDeValores(Long idFuncional) {
 		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT    "); 
+		sql.append(" ( ROWNUM * -1) as id, ");
+		sql.append(" :idRemuneracaoTrabalhador as IDREMUNERACAOTRABALHADOR, ");
+		sql.append(" dp.arquivo as IDE_DM_DEV, ");
+		sql.append(" 302 as COD_CATEG, ");
+		sql.append(" null as COD_CBO, ");
+		sql.append(" null as NAT_ATIVIDADE, ");
+		sql.append(" null as QTD_DIAS_TRAB, ");
+		sql.append(" CASE pg.mes_esocial WHEN to_number(dp.num_mes) THEN 0 ELSE 1 END AS FLINFOREMUNPERANTERIORES ");
+				  
+		sql.append(" FROM srh.fp_pagamentos pg ");
+		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
+		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
+		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
+		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		sql.append(" WHERE ano_esocial = :anoReferencia ");
+		sql.append(" AND mes_esocial = :mesReferencia");
+		sql.append(" AND dp.contribui_inss = 'S' ");
+		sql.append("AND dp.num_mes <> '13' ");
+		if(idFuncional != null) {
+			sql.append("AND f.id = :idFuncional ");
+		}
+		sql.append(" ORDER BY dp.nome ");
 
-		sql.append(" SELECT ");
-		sql.append(" tb_dependente.id AS id, ");
-		sql.append(" tb_pessoal.nome AS NM_DEP,  ");
-		sql.append(" tb_pessoal.cpf AS CPF_DEP, ");
-		sql.append(" tb_pessoal.sexo AS SEXO_DEP,  ");         
-		sql.append(" tb_pessoal.datanascimento AS DT_NASC,  ");
-		sql.append(" Decode(tb_dependente.depir ,1, 'S', 'N') AS DEP_IRRF, ");
-		sql.append(" Decode(tb_dependente.depsf ,1, 'S', 'N') AS DEP_SF,    ");          
-		sql.append(" 'N' AS INC_TRAB, ");
-		sql.append(" 'N' AS INC_FIS_MEN, ");
-		sql.append(" trim(to_char(tb_tipodependencia.codigoesocial,'00')) AS TP_DEP, ");
-		sql.append(" :idFuncional AS IDFUNCIONAL   ");                                                                                                                                                                                                                                                                                                                    
-		sql.append(" FROM srh.tb_dependente ");
-		sql.append(" INNER JOIN srh.tb_pessoal ON srh.tb_dependente.idpessoaldep = srh.tb_pessoal.id ");
-		sql.append(" INNER JOIN srh.tb_tipodependencia ON srh.tb_dependente.idtipodependencia = srh.tb_tipodependencia.id ");
-		sql.append(" INNER JOIN srh.tb_funcional ON srh.tb_funcional.idpessoal = srh.tb_dependente.idpessoalresp ");
-		sql.append(" WHERE (tb_dependente.depprev = 1 OR tb_dependente.depir = 1) ");
-		sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
 	    
 	    return sql.toString();
 	}
