@@ -1,10 +1,5 @@
 package br.gov.ce.tce.srh.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.GTRDAO;
-import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.GTR;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 
@@ -22,9 +16,6 @@ public class GTRServiceImpl implements GTRService {
 
 	@Autowired
 	private GTRDAO dao;
-
-	@Autowired
-	private FuncionalService funcionalService;
 
 	@Override
 	@Transactional
@@ -76,7 +67,13 @@ public class GTRServiceImpl implements GTRService {
 			 throw new SRHRuntimeException("O Funcionário é obrigatório. Digite o nome e efetue a pesquisa.");
 		
 		if ( entidade.getInicio() == null )
-			throw new SRHRuntimeException("A Data Inicial é obrigatória.");
+			throw new SRHRuntimeException("A data inicial é obrigatória.");
+		
+		if ( entidade.getPortaria() == null )
+			throw new SRHRuntimeException("A portaria é obrigatória.");
+		
+		if ( entidade.getDtPublicacao() == null )
+			throw new SRHRuntimeException("A data de publicação é obrigatória.");
 
 	}	
 		

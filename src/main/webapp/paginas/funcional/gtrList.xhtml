@@ -30,7 +30,7 @@
 		</style>
 
 		<div class="titulo-pagina">
-			<h2>Consultar GTR</h2>
+			<h2>Consultar gratificação por execução de trabalho relevante, técnico ou científico - GTR</h2>
 		</div>
 
 		<h:form id="form" styleClass="formularios">
@@ -87,12 +87,14 @@
 								 action="#{gtrListBean.consultar}"
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 render="scroller,lista"/>
-								 
+					
+			<!-- 				 
 			 	<h:commandButton id="relatorio"
 								 value="Relatório"
 								 action="#{gtrListBean.relatorio}" 
 								 styleClass="bt-padrao fl mg-top-18 mg-left-10" 
 								 style="margin-left: 10px" />
+								  -->
 				
 			</ui:fragment>			
 			
@@ -103,14 +105,61 @@
 								rows="#{gtrListBean.dataModel.pageSize}"
 								value="#{gtrListBean.dataModel}" 
 								>
-
-		
 					<h:column id="col1" headerClass="cel-25">
+                        <f:facet name="header">
+                            Nome
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item1" 
+                        		value="#{item.funcional.nome}" 
+                        		styleClass="cel-25" >
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                    
+                     <h:column id="col2" headerClass="cel-25">
+                        <f:facet name="header">
+                            Portaria
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item2" 
+                        		value="#{item.portaria}" 
+                        		styleClass="cel-25 #" >
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                    
+                    <h:column id="col3" headerClass="cel-25">
+                        <f:facet name="header">
+                            Grupo/Comissão
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item3" 
+                        		value="#{item.grupo}" 
+                        		styleClass="cel-25 #" >
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+                    
+                     <h:column id="col4" headerClass="cel-25">
+                        <f:facet name="header">
+                            Data Publicação
+                        </f:facet>
+                        <center>
+                        	<h:outputText id="item4" 
+                        		value="#{item.dtPublicacao}" 
+                        		styleClass="cel-25 #" >
+                        		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
+                        	</h:outputText>
+                        </center>
+                    </h:column>
+		
+					<h:column id="col5" headerClass="cel-25">
                         <f:facet name="header">
                             Início
                         </f:facet>
                         <center>
-                        	<h:outputText id="item1" 
+                        	<h:outputText id="item5" 
                         		value="#{item.inicio}" 
                         		styleClass="cel-25" >
                         		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
@@ -118,12 +167,12 @@
                         </center>
                     </h:column>
                     
-                    <h:column id="col2" headerClass="cel-25">
+                    <h:column id="col6" headerClass="cel-25">
                         <f:facet name="header">
                             Fim
                         </f:facet>
                         <center>
-                        	<h:outputText id="item2" 
+                        	<h:outputText id="item6" 
                         		value="#{item.fim}" 
                         		styleClass="cel-25 #" >
                         		<f:convertDateTime id="convInicio" type="date" pattern="dd/MM/yyyy" />
@@ -132,7 +181,7 @@
                     </h:column>
 
                    
-               		<h:column id="col3" rendered="#{LoginBean.anyGranted('ROLE_GTR_ALTERAR')}">
+               		<h:column id="col7" rendered="#{LoginBean.anyGranted('ROLE_GTR_ALTERAR')}">
                         <f:facet name="header">
                             EDITAR
                         </f:facet>
@@ -143,7 +192,7 @@
                             <f:setPropertyActionListener target="#{gtrListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </h:column>
-                	<h:column id="col4" rendered="#{LoginBean.anyGranted('ROLE_GTR_EXCLUIR')}">
+                	<h:column id="col8" rendered="#{LoginBean.anyGranted('ROLE_GTR_EXCLUIR')}">
                         <f:facet name="header">
                             EXCLUIR
                         </f:facet>
