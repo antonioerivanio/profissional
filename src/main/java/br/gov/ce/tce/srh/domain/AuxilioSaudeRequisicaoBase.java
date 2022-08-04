@@ -71,11 +71,12 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
   }
 
 
-  public AuxilioSaudeRequisicaoBase(Pessoal pessoal, Usuario usuario, Double custoPlanoBase, String observacao,
+  public AuxilioSaudeRequisicaoBase(Pessoal pessoal, Long idDependente, Usuario usuario, Double custoPlanoBase, String observacao,
                             Date dataAtualizacao, FlagAtivo flgAtivo, Date dataCriacao, Double custAdicional) {
     super();
     this.pessoal = pessoal;
-    this.usuario = usuario;
+    this.idBeneficiario = idDependente;
+    this.usuario = usuario;    
     this.custoPlanoBase = custoPlanoBase;    
     this.observacao = observacao;
     this.dataAtualizacao = dataAtualizacao;
