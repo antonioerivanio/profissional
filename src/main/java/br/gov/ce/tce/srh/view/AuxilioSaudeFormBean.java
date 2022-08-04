@@ -102,8 +102,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void inicializarDadosParaEdicao() {
-    // carregar todos os servidor do tce, excluido os estágios
-    setServidorEnvioList(funcionalService.findServidoresEvento2200());
+    // carregar todos os servidor do tce, excluido os estágios    
+    setServidorEnvioList(funcionalService.findServidoresEvento2230());
     AuxilioSaudeRequisicao entidadeEditar = entidadeService.getAuxilioSaudePorId((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter("entidade"));
     entidadeEditar.setAuxilioSaudeRequisicaoDependenteList(entidadeService.getAuxilioSaudeDependenteList(entidadeEditar.getId()));
     entidadeService.setValorSolicitado(entidadeEditar);
@@ -114,7 +114,7 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
 
   private void inicializar() throws Exception {
     // carregar todos os servidor do tce, excluindo os estágios
-    setServidorEnvioList(funcionalService.findServidoresEvento2200());
+    setServidorEnvioList(funcionalService.findServidoresEvento2230());
 
     createInstanceEntidade();
     getEntidade().setAuxilioSaudeRequisicaoItem(new AuxilioSaudeRequisicaoItem());
@@ -185,6 +185,8 @@ public class AuxilioSaudeFormBean extends ControllerViewBase<AuxilioSaudeRequisi
     try {
 
       if (deferido) {
+        isEdicao = Boolean.TRUE;
+        
         if (isValorSolicitadoMaiorValorAserRestituido()) {
           double valorSolicitado = getEntidade().getValorMaximoAserRestituido();
           getEntidade().setValorTotalSolicitado(valorSolicitado);

@@ -269,8 +269,26 @@ public class AuxilioSaudeRequisicaoDAO {
    */
   public AuxilioSaudeRequisicaoBase getAuxilioSaudeBasePorPessoaIdeAtivo(Pessoal pessoal, FlagAtivo flagAtivo) {
     try {
-      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoBase asb where asb.pessoal.id=:id and asb.flgAtivo=:flgAtivo", AuxilioSaudeRequisicaoBase.class);
+      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoBase asb where asb.pessoal.id=:id and asb.flgAtivo=:flgAtivo and asb.idBeneficiario is null", AuxilioSaudeRequisicaoBase.class);
       query.setParameter(ID, pessoal.getId());
+      query.setParameter(FLG_ATIVO, flagAtivo);
+      return (AuxilioSaudeRequisicaoBase) query.getSingleResult();
+    } catch (Exception e) {
+      return null;
+    }
+  }
+  
+  /**
+   * Obter os dependentes 
+   * @autor Antonio Erivanio F. Cruz
+   * @param id
+   * @param flagAtivo
+   * @return AuxilioSaudeRequisicaoBase
+   */
+  public AuxilioSaudeRequisicaoBase getBeneficiarioAuxilioSaudeBasePorIdeAtivo(Long id, FlagAtivo flagAtivo) {
+    try {
+      Query query = entityManager.createQuery(" from AuxilioSaudeRequisicaoBase asb where asb.idBeneficiario=:id and asb.flgAtivo=:flgAtivo and asb.idBeneficiario is not null", AuxilioSaudeRequisicaoBase.class);
+      query.setParameter(ID, id);
       query.setParameter(FLG_ATIVO, flagAtivo);
       return (AuxilioSaudeRequisicaoBase) query.getSingleResult();
     } catch (Exception e) {
