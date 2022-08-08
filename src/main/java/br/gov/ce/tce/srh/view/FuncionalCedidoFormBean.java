@@ -66,9 +66,10 @@ public class FuncionalCedidoFormBean implements Serializable {
   public void init() {
     FuncionalCedido flashParameter = null;
 
-    if (FacesUtil.getFlashParameter("entidade") != null && FacesUtil.getFlashParameter("entidade") instanceof FuncionalCedido) {
+    if (FacesUtil.getFlashParameter("entidade") instanceof FuncionalCedido) {
       flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
-      setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());
+      
+      entidade = funcionalCedidoService.getById(flashParameter.getId());
       
       afastamentoFormBean.setServidorFuncional(getEntidade().getFuncional());
     }else {
@@ -92,9 +93,8 @@ public class FuncionalCedidoFormBean implements Serializable {
   public void salvar() {
     try {
       if (funcionalCedidoService.isOk(entidade)) {
+        entidade.setDataAtualizacao(new Date());
         entidade.setIdUsuarioAtualizacao(loginBean.getUsuarioLogado().getId());
-        entidade.setTpRegTrab(entidade.getFuncional().getRegime().intValue());
-        entidade.setTpRegPrev(entidade.getFuncional().getPrevidencia().intValue());
         entidade.setFuncional(getFuncionalByServidorFuncional());
         entidade.setPessoaJuridica(pessoaJuridica);
         entidade.setCodigoCategoria(entidade.getCodigoCategoria().getCodigoCategoraByList(getComboCodCateg()));
