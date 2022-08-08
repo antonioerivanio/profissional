@@ -69,19 +69,19 @@ public class FuncionalCedidoFormBean implements Serializable {
 
     if (FacesUtil.getFlashParameter("entidade") instanceof FuncionalCedido) {
       flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
-      
+
       entidade = funcionalCedidoService.getById(flashParameter.getId());
-      
+
       afastamentoFormBean.setServidorFuncional(getEntidade().getFuncional());
-    }else {
+    } else {
       inicializarEntidade();
     }
 
     try {
       if (this.entidade.getId() != null) {
-         this.servidorEnvioList = funcionalService.findServidoresEvento2230();
-         setCnpjPessoaJuridicaChange();
-        
+        this.servidorEnvioList = funcionalService.findServidoresEvento2230();
+        setCnpjPessoaJuridicaChange();
+
         this.isEdicao = true;
       }
     } catch (Exception e) {
@@ -102,7 +102,12 @@ public class FuncionalCedidoFormBean implements Serializable {
 
         funcionalCedidoService.salvar(entidade);
 
-        FacesUtil.addInfoMessage("Registro salvar com sucesso!");
+        if (entidade.getId() != null) {
+          FacesUtil.addInfoMessage(FacesUtil.MENSAGEM_ALTERACAO_SUCESSO);
+        } else {
+          FacesUtil.addInfoMessage(FacesUtil.MENSAGEM_SUCESSO);
+        }
+
       }
     } catch (Exception e) {
       FacesUtil.addErroMessage("Ocorreu um erro ao Salvar os dados. Operação cancelada.");
@@ -112,8 +117,8 @@ public class FuncionalCedidoFormBean implements Serializable {
     inicializarEntidade();
   }
 
-  private void inicializarEntidade() {    
-    setEntidade(new FuncionalCedido());    
+  private void inicializarEntidade() {
+    setEntidade(new FuncionalCedido());
     getEntidade().setFuncional(new Funcional());
     getEntidade().setDtAdmCed(null);
     getEntidade().setMatricOrig(null);
@@ -203,7 +208,7 @@ public class FuncionalCedidoFormBean implements Serializable {
 
   public boolean isBloquearDatas() {
     return bloquearDatas;
-  }  
+  }
 
   public boolean getIsEdicao() {
     return isEdicao;
