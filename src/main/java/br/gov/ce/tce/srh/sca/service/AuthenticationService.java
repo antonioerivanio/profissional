@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -21,7 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
+import br.gov.ce.tce.srh.domain.DatabaseMetadata;
+import br.gov.ce.tce.srh.sca.domain.GrupoUsuario;
+import br.gov.ce.tce.srh.sca.domain.Permissao;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.service.AmbienteService;
 
@@ -39,18 +41,19 @@ public class AuthenticationService implements Serializable {
 
   @Autowired
   private AmbienteService ambienteService;
+  @Autowired
+  private UsuarioService usuarioService;
 
-  
+
   @Transactional
   public String login(String username, String password) {
     UsernamePasswordAuthenticationToken token = null;
-    
-    if (ambienteService.isAmbienteDesenvolvimento()) {
-      // DESENVOLVIMENTO
-       token = new UsernamePasswordAuthenticationToken(username, TOKEN123456); 
+
+    if (ambienteService.isAmbienteDesenvolvimento()) {   
+      token = getTokenDevPorNomeUsuario(username, password);
     } else {
       // autenticando spring security
-       token = new UsernamePasswordAuthenticationToken(username, password);
+      token = new UsernamePasswordAuthenticationToken(username, password);
     }
 
     Authentication authenticate;
@@ -113,6 +116,43 @@ public class AuthenticationService implements Serializable {
     }
 
     return null;
+  }
+
+/***
+ * Valida os dados dos usuarios em desenvolvimento e homologacao
+ * e gera o token de acordo com a senha defina no banco de desenvolvimento ou homologação
+ * Não é obrigátorio digitar a senha corretamente
+ * @param username
+ */
+  private UsernamePasswordAuthenticationToken getTokenDevPorNomeUsuario(String username, String password) {
+    //digitar qualquer senha passa na validação
+    if(password == null || password.isEmpty()) {
+      throw new BadCredentialsException("Por gentileza digitar a senha!");
+    }
+    
+    UsernamePasswordAuthenticationToken token = null;    
+    Usuario usuario = usuarioService.findByUsername(username);
+    boolean temPermissaoSRH = false;
+    
+    for (GrupoUsuario grupoUsuarios : usuario.getGrupoUsuario()) {      
+      // verifica se o grupo pertence ao sistema SRH
+      if (grupoUsuarios.getGrupo().getSistema().getSigla().equalsIgnoreCase("SRH")){  
+        temPermissaoSRH= true;
+        break;
+      }
+    }
+
+    if(temPermissaoSRH) {
+      if (usuario.getPassword() != null && usuario.getPassword().equals(TOKEN1)) {
+         token = new UsernamePasswordAuthenticationToken(username, TOKEN1);
+      } else {
+         token = new UsernamePasswordAuthenticationToken(username, TOKEN123456);
+      }
+    } else {
+      throw new BadCredentialsException("Usuário não tem permissão de acesso!");
+    }
+    
+     return token;
   }
 
 
