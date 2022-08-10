@@ -47,7 +47,10 @@ public class GTRFormBean implements Serializable {
 
 	private Date inicio;
 	private Date fim;
-
+	private String portaria;
+	private Date dtPublicacao;
+	private String grupo;
+	
 	private boolean bloquearDatas = false;
 	private boolean alterar = false;
 
@@ -74,6 +77,10 @@ public class GTRFormBean implements Serializable {
 				this.inicio = entidade.getInicio();
 				this.fim = entidade.getFim();
 				
+				this.dtPublicacao = entidade.getDtPublicacao();
+				this.portaria = entidade.getPortaria();
+				this.grupo = entidade.getGrupo();
+				
 			}
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -89,6 +96,9 @@ public class GTRFormBean implements Serializable {
 			this.entidade.setFim(this.fim);
 			this.entidade.setUsuarioAlteracao(authenticationService.getUsuarioLogado());
 			this.entidade.setDtAlteracao(new Date());
+			this.entidade.setPortaria(this.portaria);
+			this.entidade.setDtPublicacao(this.dtPublicacao);
+			this.entidade.setGrupo(this.grupo);
 			
 			gtrService.salvar(entidade);
 
@@ -162,7 +172,33 @@ public class GTRFormBean implements Serializable {
 	
 	public boolean isBloquearDatas() {return bloquearDatas;}
 	public boolean isAlterar() {return alterar;}
-			
+	
+	
+	
+	public String getPortaria() {
+		return portaria;
+	}
+
+	public void setPortaria(String portaria) {
+		this.portaria = portaria;
+	}
+
+	public Date getDtPublicacao() {
+		return dtPublicacao;
+	}
+
+	public void setDtPublicacao(Date dtPublicacao) {
+		this.dtPublicacao = dtPublicacao;
+	}
+
+	public String getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(String grupo) {
+		this.grupo = grupo;
+	}
+
 	public void atualizaBloqueioDeDatas(){
 		
 		this.inicio = null;

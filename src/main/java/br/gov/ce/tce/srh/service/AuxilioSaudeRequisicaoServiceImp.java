@@ -62,6 +62,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
   public static final Double QUATRO_POR_CENTO = 0.04;
   public static final Double QUATRO_PONTO_CINCO_POR_CENTO = 0.045;
   public static final Double CINCO_POR_CENTO = 0.05;
+  private static final String MSG_SUCESSO = "Valor adicionar automaticamente a partir da tela do Auxilio-Saúde";
 
 
   @Override
@@ -71,10 +72,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
     salvarDependentes(bean);
-
-    if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
-      atualizarDadosTabelaAuxilioSaudeBase(bean);
-    }
   }
 
 
@@ -114,6 +111,10 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       salvarOuAtualizarItems(bean.getAuxilioSaudeRequisicaoBeneficiarioItemList(), bean);
       salvarDependentes(bean);
 
+      if (bean.getStatusAprovacao() != null && bean.getStatusAprovacao().equals(AuxilioSaudeRequisicao.DEFERIDO)) {
+        atualizarDadosTabelaAuxilioSaudeBase(bean);
+      }
+
     } catch (Exception e) {
       logger.error("Erro ao atualizar o auxilio-saúde " + e.getMessage());
       e.printStackTrace();
@@ -140,21 +141,67 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
       Funcional funcional = dao.getEntityManager().find(Funcional.class, bean.getFuncional().getId());
       AuxilioSaudeRequisicaoBase auxilioSaudeRequisicaoBase = dao.getAuxilioSaudeBasePorPessoaIdeAtivo(funcional.getPessoal(), FlagAtivo.SIM);
 
+      Double valorGastoBenef = 0.0;
+      for(AuxilioSaudeRequisicaoItem beanItem: bean.getAuxilioSaudeRequisicaoBeneficiarioItemList()) {
+        valorGastoBenef += beanItem.getValorGastoPlanoSaude();
+      }
+      
       if (auxilioSaudeRequisicaoBase != null) {
-        auxilioSaudeRequisicaoBase.setCustoPlanoBase(bean.getValorTotalSolicitado());
+        //atualizar dados beneficiario/pai
+        auxilioSaudeRequisicaoBase.setCustoPlanoBase(valorGastoBenef);
         auxilioSaudeRequisicaoBase.setCustoAdicional(0.0);
         auxilioSaudeRequisicaoBase.setDataAtualizacao(new Date());
-        auxilioSaudeRequisicaoBase.setObservacao("Valor adicionar automaticamente a partir da tela do Auxilio-Saúde");
-        dao.atualizar(auxilioSaudeRequisicaoBase);
-      } else {
+        auxilioSaudeRequisicaoBase.setObservacao(MSG_SUCESSO);        
+        dao.atualizar(auxilioSaudeRequisicaoBase);        
+        
+        if(bean.checkDependenteItemListNotNull()) {
+          //atualizar dependentes
+          for (AuxilioSaudeRequisicaoDependente beanAuxDep : bean.getAuxilioSaudeRequisicaoDependenteList()) {
+            //id dependente na tabela de pessoal
+            Long id = beanAuxDep.getDependente().getDependente().getId();
+            AuxilioSaudeRequisicaoBase dependentesAuxilioSaudeRequisicaoBase = dao.getBeneficiarioAuxilioSaudeBasePorIdeAtivo(id, FlagAtivo.SIM);
+            if(dependentesAuxilioSaudeRequisicaoBase != null) {
+              dependentesAuxilioSaudeRequisicaoBase.setCustoPlanoBase(beanAuxDep.getValorGastoPlanoSaude());
+              dependentesAuxilioSaudeRequisicaoBase.setCustoAdicional(0.0);
+              dependentesAuxilioSaudeRequisicaoBase.setDataAtualizacao(new Date()); 
+              dependentesAuxilioSaudeRequisicaoBase.setObservacao(MSG_SUCESSO);
 
-        auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), bean.getUsuario(), bean.getValorTotalSolicitado(),
-                                  "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date(), 0.0);
-        dao.salvar(auxilioSaudeRequisicaoBase);
+              dao.atualizar(dependentesAuxilioSaudeRequisicaoBase);
+            }else {              
+                //adicionar dependentes
+                AuxilioSaudeRequisicaoBase dependentesAuxilioSaudeRequisicaoBaseNovo = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), id, bean.getUsuario(), beanAuxDep.getValorGastoPlanoSaude(),
+                                          MSG_SUCESSO, new Date(), FlagAtivo.SIM, new Date(), 0.0);
+                dependentesAuxilioSaudeRequisicaoBaseNovo.setId(dao.getMaxId());
+                dao.atualizar(dependentesAuxilioSaudeRequisicaoBaseNovo);
+            }
+          }
+          
+        }
+      } else {
+        //adicionar beneficiario/pai
+        auxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), null, bean.getUsuario(), valorGastoBenef,
+                                  MSG_SUCESSO, new Date(), FlagAtivo.SIM, new Date(), 0.0);
+        auxilioSaudeRequisicaoBase.setId(dao.getMaxId());
+        dao.atualizar(auxilioSaudeRequisicaoBase);
         dao.getEntityManager().flush();
+        
+        if(bean.checkDependenteItemListNotNull()) {
+          for (AuxilioSaudeRequisicaoDependente beanAuxDep : bean.getAuxilioSaudeRequisicaoDependenteList()) {
+            //adicionar dependente
+            Long id = beanAuxDep.getDependente().getDependente().getId();
+            AuxilioSaudeRequisicaoBase dependentesAuxilioSaudeRequisicaoBase = new AuxilioSaudeRequisicaoBase(funcional.getPessoal(), id, bean.getUsuario(), beanAuxDep.getValorGastoPlanoSaude(),
+                                      "Registro criado automaticamente a partir da tela do Auxilio-Saúde", new Date(), FlagAtivo.SIM, new Date(), 0.0);
+            dependentesAuxilioSaudeRequisicaoBase.setId(dao.getMaxId());
+            
+            dao.atualizar(dependentesAuxilioSaudeRequisicaoBase); 
+            dao.getEntityManager().flush();
+          }  
+        }
       }
+     
     }
   }
+
 
   @Override
   public void salvarDependentes(List<AuxilioSaudeRequisicao> beanList) {
@@ -289,7 +336,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
     }
 
     if (bean.getObservacao() != null && !bean.getObservacao().isEmpty()) {
-      if (bean.getObservacao().contains("xxx") || bean.getObservacao().contains("...") || bean.getObservacao().length() < 5) {
+      if (bean.getObservacao().contains("xxx") || bean.getObservacao().contains("....") || bean.getObservacao().length() < 5) {
         throw new NullPointerException("Digite mais" + bean.getObservacao().length() + "caracteres para a observação");
       }
     }
@@ -347,7 +394,6 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
     List<Dependente> dependenteList = dependenteService.findByResponsavel(funcional.getPessoal().getId());
 
-    entidade.setDataInicioRequisicao(new Date());
     entidade.setFuncional(funcional);
     entidade.setStatusFuncional(funcional.getStatus() != null && funcional.getStatus() == 1 ? AuxilioSaudeRequisicao.ATIVO : AuxilioSaudeRequisicao.INATIVO);
     entidade.setDependentesComboList(dependenteList);
@@ -390,6 +436,7 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
    */
   @Override
   public void setValorMaximoSolicitadoPorIdade(AuxilioSaudeRequisicao bean) {
+    try {
     final int TRINTA_ANOS = 30;
     final int QUARENTA_ANOS = 40;
     final int CINQUENTA_ANOS = 50;
@@ -439,6 +486,10 @@ public class AuxilioSaudeRequisicaoServiceImp implements AuxilioSaudeRequisicaoS
 
         bean.setValorMaximoAserRestituido(valorMaximoTresPorCento);
       }
+    }
+    }catch (Exception e) {
+      throw new NullArgumentException("Falhar ao calcular o valor a ser restituído\n "
+                                + "pois a data de vigência da tabela fp_vencimentoscargos ainda não foi cadastrada para o mês atual");
     }
   }
 

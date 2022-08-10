@@ -19,6 +19,7 @@ import br.gov.ce.tce.srh.domain.CodigoCategoria;
 import br.gov.ce.tce.srh.domain.EspecialidadeCargo;
 import br.gov.ce.tce.srh.domain.Folha;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.FuncionalCedido;
 import br.gov.ce.tce.srh.domain.Ocupacao;
 import br.gov.ce.tce.srh.domain.OrientacaoCargo;
 import br.gov.ce.tce.srh.domain.PessoaJuridica;
@@ -161,7 +162,11 @@ public class NomeacaoServidorFormBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		
-		Funcional flashParameter = (Funcional)FacesUtil.getFlashParameter("entidade");
+		Funcional flashParameter = null; 
+		
+		if (FacesUtil.getFlashParameter("entidade") != null && FacesUtil.getFlashParameter("entidade") instanceof Funcional) {
+	      flashParameter = (Funcional) FacesUtil.getFlashParameter("entidade");
+	    }
 		
 		if (flashParameter == null) {			
 			setEntidade( new Funcional() );

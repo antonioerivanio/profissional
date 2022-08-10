@@ -43,6 +43,15 @@ public class GTR extends BasicEntity<Long> implements Serializable{
     @Column(name = "DTALTERACAO")
     private Date dtAlteracao;
     
+    @Column(name = "PORTARIA")
+    private String portaria;
+    
+    @Column(name = "GRUPO")
+    private String grupo;
+    
+    @Temporal(TemporalType.DATE)
+    @Column(name = "DTPUBLICACAO")
+    private Date dtPublicacao;
     
     //Getters e Setters
 	@Override
@@ -93,6 +102,30 @@ public class GTR extends BasicEntity<Long> implements Serializable{
 
 	public void setDtAlteracao(Date dtAlteracao) {
 		this.dtAlteracao = dtAlteracao;
+	}
+
+	public String getPortaria() {
+		return portaria;
+	}
+
+	public void setPortaria(String portaria) {
+		this.portaria = portaria;
+	}
+
+	public Date getDtPublicacao() {
+		return dtPublicacao;
+	}
+
+	public void setDtPublicacao(Date dtPublicacao) {
+		this.dtPublicacao = dtPublicacao;
+	}
+
+	public String getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(String grupo) {
+		this.grupo = grupo;
 	}
 	
 	

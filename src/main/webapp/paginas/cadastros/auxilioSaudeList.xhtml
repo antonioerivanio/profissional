@@ -9,6 +9,17 @@
 	xmlns:rich="http://richfaces.org/rich">
 
 	<ui:define name="content">
+		<h:outputStylesheet>
+		       .even-row {
+		           background-color: #FCFFFE;
+		       }      
+		
+		       .even-row:hover,
+		       .odd-row:hover {
+		           background-color: #FFEBDA;
+		           cursor: pointer;
+		       }
+		   </h:outputStylesheet>
 
 		<div class="titulo-pagina">
 			<h2>Consulta de Servidor com Auxilio Saúde</h2>
@@ -55,12 +66,6 @@
 				<h:commandButton id="consultar" value="Consultar"
 					action="#{auxilioSaudeListBean.consultar}"
 					styleClass="bt-padrao fl mg-top-18" render="scroller,lista" />
-
-				<!-- <h:commandButton id="relatorio" value="Relatório" 
-					action="#{auxilioSaudeFormBean.relatorio}"
-					styleClass="bt-padrao fl mg-top-18 mg-left-10"
-					style="margin-left: 10px" /> -->
-
 			</ui:fragment>
 
 			<ui:insert name="camposEntrada"></ui:insert>
@@ -71,6 +76,8 @@
 					<h:outputText value="#{auxilioSaudeListBean.count}" /></strong>
 				</center>
 				<rich:dataTable id="lista" var="item"
+				 	styleClass="stable"
+				 	rowClasses="even-row"
 					rows="#{auxilioSaudeListBean.dataModel.pageSize}"
 					value="#{auxilioSaudeListBean.dataModel}">
 
@@ -188,8 +195,8 @@
 					action="incluirAlterar" styleClass="bt-padrao fr mg-right-15"
 					/>
 
-				<h:commandButton id="limpaTela" value="Limpar" action="listar"
-					styleClass="bt-padrao fr mg-right-15" />
+				<a4j:commandButton id="limpaTela" value="Limpar" actionListener="#{auxilioSaudeListBean.limpar}"
+					styleClass="bt-padrao fr mg-right-15" render="form"/>
 			</ui:fragment>
 
 			<!-- <h:commandButton id="relatorio2"

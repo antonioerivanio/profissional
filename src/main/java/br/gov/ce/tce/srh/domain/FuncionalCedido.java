@@ -54,6 +54,10 @@ public class FuncionalCedido extends BasicEntity<Long> implements Serializable {
 	@Column(name = "IDUSUARIOATUALIZACAO")
 	private Long IdUsuarioAtualizacao;
 	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DATAATUALIZACAO")
+	private Date dataAtualizacao;
+	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "IDFUNCIONAL" , referencedColumnName = "ID")	
 	private Funcional funcional;
@@ -134,5 +138,14 @@ public class FuncionalCedido extends BasicEntity<Long> implements Serializable {
 	public void setIdUsuarioAtualizacao(Long idUsuarioAtualizacao) {
 		IdUsuarioAtualizacao = idUsuarioAtualizacao;
 	}
+
+  public Date getDataAtualizacao() {
+    return dataAtualizacao;
+  }
+
+  public void setDataAtualizacao(Date dataAtualizacao) {
+    this.dataAtualizacao = dataAtualizacao;
+  }
+	
 	
 }

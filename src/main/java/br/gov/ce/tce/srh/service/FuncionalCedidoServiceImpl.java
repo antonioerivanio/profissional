@@ -84,4 +84,9 @@ public class FuncionalCedidoServiceImpl implements FuncionalCedidoService {
 
 	public void setDAO(FuncionalCedidoDAO dao) {this.dao = dao;}
 
+  @Override
+  public void excluir(FuncionalCedido entidade) {
+    dao.excluir(entidade);
+  }
+
 }

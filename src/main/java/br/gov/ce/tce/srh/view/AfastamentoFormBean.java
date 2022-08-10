@@ -100,8 +100,7 @@ public class AfastamentoFormBean implements Serializable {
 			if(servidorFuncional != null) {
 				afastamentoESocialService.salvar(entidade);
 			}
-			//setEntidade( new Admissao() );
-
+			
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");
 

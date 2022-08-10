@@ -132,9 +132,7 @@
 
 				<br/>
 
-				<div class="input-box box-10"/>
-
-				<div class="input-box box-20">
+				<div class="input-box box-10">
 					<label for="">Inicio*</label>
 					<div class="conteiner">
 						<h:inputText id="inicio" 
@@ -143,15 +141,14 @@
 									 value="#{gtrFormBean.inicio}"
 									 maxlength="10"
 									 disabled="#{not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}" >
-							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>				
 
 				
-				<div class="input-box box-40"/>
+				
 
-				<div class="input-box box-20">
+				<div class="input-box box-10">
 					<label for="">Fim*</label>
 					<div class="conteiner">
 						<h:inputText id="fim" 
@@ -160,11 +157,44 @@
 									 value="#{gtrFormBean.fim}"
 									 maxlength="10"
 									 disabled="#{not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}" >
-							<a4j:ajax event="change" render="qtdeDias, messages" execute="@this"/>		 
 						</h:inputText>
 					</div>
 				</div>
 
+				<div class="input-box box-25">
+					<label for="">Portaria*</label>
+					<div class="conteiner">
+						<h:inputText id="portaria" 
+									 value="#{gtrFormBean.portaria}"
+									 maxlength="50"
+									 disabled="#{not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}" >
+						</h:inputText>
+					</div>
+				</div>
+				
+				<div class="input-box box-40">
+					<label for="">Grupo/Comissão*</label>
+					<div class="conteiner">
+						<h:inputText id="grupo" 
+									 value="#{gtrFormBean.grupo}"
+									 maxlength="200"
+									 disabled="#{not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}" >
+						</h:inputText>
+					</div>
+				</div>
+				
+				<div class="input-box box-15">
+					<label for="">Data da publicação*</label>
+					<div class="conteiner">
+						<h:inputText id="publicacao" 
+									 styleClass="maskData" 
+									 converter="dateConverter"
+									 value="#{gtrFormBean.dtPublicacao}"
+									 maxlength="10"
+									 disabled="#{not LoginBean.anyGranted('ROLE_GTR_INSERIR,ROLE_GTR_ALTERAR')}" >
+						</h:inputText>
+					</div>
+				</div>
 				
 			<div class="input-box box-10"/>
 			

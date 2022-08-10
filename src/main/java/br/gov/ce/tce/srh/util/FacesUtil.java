@@ -16,7 +16,10 @@ import org.springframework.web.context.WebApplicationContext;
  * 
  */
 public class FacesUtil {
-
+    
+    public final static String MENSAGEM_SUCESSO = "Registro salvar com sucesso!";
+    public final static String MENSAGEM_ALTERACAO_SUCESSO = "Alteração foi gravada com sucesso!";
+    
 	public static final String springVar = "org.springframework.web.context.WebApplicationContext.ROOT";
 
 	public static Object getBean(String bean) {

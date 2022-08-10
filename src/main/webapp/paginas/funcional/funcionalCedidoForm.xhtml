@@ -29,6 +29,10 @@
 		</div>
 
 		<h:form id="form" styleClass="formularios" >
+			<br/>
+
+            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+            
 
 			<fieldset>
 
@@ -42,8 +46,7 @@
 					<div class="conteiner">
 						<rich:select id="servidor"	
 									 required="true" requiredMessage="Servidor é obrigatorio"								
-									 converter="entityConverter" 
-									 rendered="#{!funcionalCedidoFormBean.afastamentoFormBean.emEdicao}"
+									 converter="entityConverter"									 
 									 value="#{funcionalCedidoFormBean.afastamentoFormBean.servidorFuncional}"
 									 listWidth="800"
 									 enableManualInput="true"
@@ -143,9 +146,10 @@
 					<div class="radio-box">
 					<h:selectOneRadio id="regimeTrab" 
 									  disabled="#{funcionalCedidoFormBean.nomeacaoServidorFormBean.tpOcupacaoCargoComissionado or not funcionalCedidoFormBean.nomeacaoServidorFormBean.exibirTodosOsCampos}" 
-									  value="#{funcionalCedidoFormBean.entidade.funcional.regime}" >
+									  value="#{funcionalCedidoFormBean.entidade.tpRegTrab}" >
 						<f:selectItem itemLabel="CLT" itemValue="1" />
 						<f:selectItem itemLabel="Estatutário" itemValue="2" />
+						<f:ajax execute="@this"></f:ajax>
 					</h:selectOneRadio>
 					</div>
 				</div>
@@ -156,10 +160,11 @@
 				<div class="conteiner">
 					<div class="radio-box">
 					<h:selectOneRadio id="regimePrev" 									   
-									  value="#{funcionalCedidoFormBean.entidade.funcional.previdencia}" >
+									  value="#{funcionalCedidoFormBean.entidade.tpRegPrev}" >
 						<f:selectItem itemLabel="RGPS" itemValue="1" />
 						<f:selectItem itemLabel="RPPS ou Sistema de Proteção Social dos Militares" itemValue="2" />
 						<f:selectItem itemLabel="Regime de Previdência Social no exterior" itemValue="3" />
+						<f:ajax execute="@this"></f:ajax>
 					</h:selectOneRadio>
 					</div>
 				</div>

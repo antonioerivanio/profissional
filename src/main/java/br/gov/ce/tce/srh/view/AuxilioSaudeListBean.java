@@ -1,6 +1,7 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
@@ -34,15 +35,14 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     
     if(FacesUtil.getFlashParameter(ENTIDADE) != null) {
       setEntidade((AuxilioSaudeRequisicao) FacesUtil.getFlashParameter(ENTIDADE));
-      consultar();
+      //consultar();
       FacesUtil.setFlashParameter(ENTIDADE, null);
     }
     
     getEntidade().setFuncional(new Funcional());
     getEntidade().getFuncional().setPessoal(new Pessoal()); 
     
-    consultar();
-    
+    consultar();    
   }
 
   public void consultar() {
@@ -61,6 +61,8 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
       }
 
       flagRegistroInicial = -1;
+      
+      limpar();
 
     } catch (Exception e) {
       limparListas();
@@ -70,10 +72,10 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
   }
 
   private void consultarTudo() {
-    count = entidadeService.count(getEntidade());
-    
-    setPagedList(entidadeService.search(getEntidade(), getDataTable().getFirst(),
-                              getDataTable().getRows()));    
+    count = entidadeService.count(getEntidade());    
+    List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList = entidadeService.search(getEntidade(), getDataTable().getFirst(),
+                              getDataTable().getRows());
+    setPagedList(auxilioSaudeRequisicaoList);   
   }
   
   private void consultarApenasSeusRegistros() {    
@@ -81,8 +83,8 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     getEntidade().setFuncional(funcional);
     
     count = entidadeService.count(getEntidade());
-    setPagedList(entidadeService.search(getEntidade(), getDataTable().getFirst(),
-                              getDataTable().getRows()));    
+    List<AuxilioSaudeRequisicao> auxilioSaudeRequisicaoList = entidadeService.search(getEntidade(), getDataTable().getFirst(), getDataTable().getRows());
+    setPagedList(auxilioSaudeRequisicaoList);    
   }
 
 
@@ -119,7 +121,16 @@ public class AuxilioSaudeListBean extends ControllerViewBase<AuxilioSaudeRequisi
     return "/paginas/cadastros/auxilioSaudeList.xhtml?faces-redirect=true";
   }
 
-
+  public void limpar() {
+    try {
+      createInstanceEntidade();
+      getEntidade().setFuncional(new Funcional());
+      getEntidade().getFuncional().setPessoal(new Pessoal());
+    } catch (InstantiationException | IllegalAccessException e) {
+      logger.debug(e);
+    }
+  }
+  
 
 
 }

@@ -2,6 +2,7 @@ package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -54,7 +55,7 @@ public class FuncionalCedidoFormBean implements Serializable {
   private PessoaJuridica pessoaJuridica;
 
   private boolean bloquearDatas = false;
-  private boolean alterar = false;
+  private boolean isEdicao = false;
   private boolean isExibidoTodosOsCampos = false;
 
   private List<CodigoCategoria> comboCodCateg;
@@ -66,17 +67,22 @@ public class FuncionalCedidoFormBean implements Serializable {
   public void init() {
     FuncionalCedido flashParameter = null;
 
-    if (FacesUtil.getFlashParameter("entidade") != null && FacesUtil.getFlashParameter("entidade") instanceof FuncionalCedido) {
+    if (FacesUtil.getFlashParameter("entidade") instanceof FuncionalCedido) {
       flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
+
+      entidade = funcionalCedidoService.getById(flashParameter.getId());
+
+      afastamentoFormBean.setServidorFuncional(getEntidade().getFuncional());
+    } else {
+      inicializarEntidade();
     }
-
-    setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());
-
-    inicializarEntidade();
 
     try {
       if (this.entidade.getId() != null) {
-        this.alterar = true;
+        this.servidorEnvioList = funcionalService.findServidoresEvento2230();
+        setCnpjPessoaJuridicaChange();
+
+        this.isEdicao = true;
       }
     } catch (Exception e) {
       FacesUtil.addErroMessage("Ocorreu um erro ao carregar os dados. Operação cancelada.");
@@ -88,16 +94,20 @@ public class FuncionalCedidoFormBean implements Serializable {
   public void salvar() {
     try {
       if (funcionalCedidoService.isOk(entidade)) {
+        entidade.setDataAtualizacao(new Date());
         entidade.setIdUsuarioAtualizacao(loginBean.getUsuarioLogado().getId());
-        entidade.setTpRegTrab(entidade.getFuncional().getRegime().intValue());
-        entidade.setTpRegPrev(entidade.getFuncional().getPrevidencia().intValue());
         entidade.setFuncional(getFuncionalByServidorFuncional());
         entidade.setPessoaJuridica(pessoaJuridica);
         entidade.setCodigoCategoria(entidade.getCodigoCategoria().getCodigoCategoraByList(getComboCodCateg()));
 
         funcionalCedidoService.salvar(entidade);
 
-        FacesUtil.addInfoMessage("Registro salvar com sucesso!");
+        if (entidade.getId() != null) {
+          FacesUtil.addInfoMessage(FacesUtil.MENSAGEM_ALTERACAO_SUCESSO);
+        } else {
+          FacesUtil.addInfoMessage(FacesUtil.MENSAGEM_SUCESSO);
+        }
+
       }
     } catch (Exception e) {
       FacesUtil.addErroMessage("Ocorreu um erro ao Salvar os dados. Operação cancelada.");
@@ -108,6 +118,7 @@ public class FuncionalCedidoFormBean implements Serializable {
   }
 
   private void inicializarEntidade() {
+    setEntidade(new FuncionalCedido());
     getEntidade().setFuncional(new Funcional());
     getEntidade().setDtAdmCed(null);
     getEntidade().setMatricOrig(null);
@@ -121,8 +132,8 @@ public class FuncionalCedidoFormBean implements Serializable {
   }
 
   public void setCnpjPessoaJuridicaChange() {
-    int index = nomeacaoServidorFormBean.getComboEmpresasCadastradas().indexOf(entidade.getPessoaJuridica());
-    PessoaJuridica pessoaJuridicaEncontrada = nomeacaoServidorFormBean.getComboEmpresasCadastradas().get(index);
+    int index = getComboEmpresasCadastradas().indexOf(entidade.getPessoaJuridica());
+    PessoaJuridica pessoaJuridicaEncontrada = getComboEmpresasCadastradas().get(index);
     setPessoaJuridica(pessoaJuridicaEncontrada);
   }
 
@@ -199,9 +210,14 @@ public class FuncionalCedidoFormBean implements Serializable {
     return bloquearDatas;
   }
 
-  public boolean isAlterar() {
-    return alterar;
+  public boolean getIsEdicao() {
+    return isEdicao;
   }
+
+  public void setEdicao(boolean isEdicao) {
+    this.isEdicao = isEdicao;
+  }
+
 
   public boolean getIsExibidoTodosOsCampos() {
     return isExibidoTodosOsCampos;

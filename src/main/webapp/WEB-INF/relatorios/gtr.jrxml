@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.3.0  -->
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ferias" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1338f3e-c07c-4002-9492-107bab59e822">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value="^VEJfRlVOQ0lPTkFMICwxMDIsMTUsZjFkZWM2MTYtMGI4My00NDE3LTg5M2MtZTNmZjNkNWIyNjBjO1RCX0dUUiAsMTUsMTUsZjIyNjg4N2MtYTMxNi00YzVlLWI2OGUtNzU4ZGQ3OGMyMTc3Ow=="/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="FILTRO" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="BACK" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\bg-topo.png"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/mnt/Data/srh/WebContent/img/bg-topo.png"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGO" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-srh.png"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/mnt/Data/srh/WebContent/imglogo-srh.png"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="LOGO_TCE" class="java.lang.String">
-		<defaultValueExpression><![CDATA["C:\\Program Files\\Java\\eclipse\\workspace\\srh\\WebContent\\img\\logo-tce-report.png"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/mnt/Data/srh/WebContent/img/logo-tce-report.png"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT NOMECOMPLETO,
 	MATRICULA,
 	INICIO,
-	FIM
+	FIM,
+	PORTARIA,
+	DTPUBLICACAO,
 FROM SRH.TB_GTR g
 	INNER JOIN SRH.TB_FUNCIONAL f ON 
 	g.IDFUNCIONAL = f.ID
@@ -32,6 +35,8 @@ ORDER BY INICIO DESC]]>
 	<field name="INICIO" class="java.sql.Timestamp"/>
 	<field name="FIM" class="java.sql.Timestamp"/>
 	<field name="MATRICULA" class="java.lang.String"/>
+	<field name="DTPUBLICACAO" class="java.sql.Timestamp"/>
+	<field name="PORTARIA" class="java.lang.String"/>
 	<field name="NOMECOMPLETO" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -98,40 +103,26 @@ ORDER BY INICIO DESC]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="19" splitType="Stretch">
+		<band height="25" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="554" height="19" backcolor="#195297" uuid="bc78cea1-3a46-4a5c-b521-bac6c2b9bff5"/>
+				<reportElement x="0" y="0" width="554" height="17" backcolor="#195297" uuid="bc78cea1-3a46-4a5c-b521-bac6c2b9bff5"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="120" y="0" width="152" height="18" forecolor="#FFFFFF" uuid="223dc867-4440-4e4d-ace5-66973b65764a"/>
+				<reportElement x="152" y="0" width="98" height="18" forecolor="#FFFFFF" uuid="223dc867-4440-4e4d-ace5-66973b65764a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INÍCIO]]></text>
 			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="18" splitType="Stretch">
-			<rectangle>
-				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="554" height="16" forecolor="#EFEFEF" backcolor="#EFEFEF" uuid="8046377d-879d-4bb0-8861-cea1901e5a24">
-					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
-				</reportElement>
-			</rectangle>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="120" y="0" width="152" height="16" uuid="85cba0b2-dbb3-4984-b592-44ebb338346c"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="290" y="1" width="152" height="16" uuid="7c1b6039-d113-4fd1-ad62-ab971d976763">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="290" y="-19" width="152" height="18" forecolor="#FFFFFF" uuid="32ddd4b7-a4f6-4425-84e4-2c62dab27d36">
+				<reportElement x="0" y="0" width="152" height="18" forecolor="#FFFFFF" uuid="fd8772d0-1221-4560-8a33-e609f68693f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="0" width="98" height="18" forecolor="#FFFFFF" uuid="32ddd4b7-a4f6-4425-84e4-2c62dab27d36">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -139,6 +130,58 @@ ORDER BY INICIO DESC]]>
 				</textElement>
 				<text><![CDATA[FIM]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="348" y="0" width="98" height="18" forecolor="#FFFFFF" uuid="3bf54a03-9c18-44a3-a8a2-aea1e6f223f7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PORTARIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="446" y="0" width="108" height="18" forecolor="#FFFFFF" uuid="51463313-fecf-410c-a6db-f50407ae77dd">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PUBLICAÇÃO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-2" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="-7" width="554" height="17" forecolor="#EFEFEF" backcolor="#EFEFEF" uuid="8046377d-879d-4bb0-8861-cea1901e5a24">
+					<printWhenExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="152" y="-8" width="98" height="18" uuid="85cba0b2-dbb3-4984-b592-44ebb338346c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{INICIO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="250" y="-7" width="98" height="17" uuid="7c1b6039-d113-4fd1-ad62-ab971d976763"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FIM}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="-7" width="151" height="17" uuid="61814c32-1fa3-45b6-9e50-fabb4f4f5f3d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NOMECOMPLETO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="348" y="-7" width="98" height="17" uuid="56a346f1-0fc6-4e96-87f6-ea75cd45e058"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{PORTARIA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="446" y="-7" width="108" height="17" uuid="8c6da5f4-55c5-44b8-a455-d009f6cd4429"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{DTPUBLICACAO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 import br.gov.ce.tce.srh.enums.CategoriaCNH;
@@ -278,13 +279,18 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Column(name="FLREADAPTADO")
 	private String isReadaptado;
+	
+	/***
+	 * campo usando {@link DependenteServiceImp#atualizaQtdDependentes(long)} 
+	 */
+	@Transient 
+	private boolean isPermitidoValidarCampoTipoDeficiencia = Boolean.TRUE;
 
 	
 	public Pessoal(){
 		//seguindo padrao Java Beans...
 	}
-
-
+	   
 	public Pessoal(Long id, String cpf, String nomeCompleto) {
 		//Para Dynamic Instatiation
 		this.id = id;
@@ -530,5 +536,13 @@ public class Pessoal extends BasicEntity<Long> implements Serializable {
 	
 	@Override
 	public void setId(Long id) {this.id = id;}
+
+  public boolean isPermitidoValidarCampoTipoDeficiencia() {
+    return isPermitidoValidarCampoTipoDeficiencia;
+  }
+
+  public void setPermitidoValidarCampoTipoDeficiencia(boolean isPermitidoValidarCampoTipoDeficiencia) {
+    this.isPermitidoValidarCampoTipoDeficiencia = isPermitidoValidarCampoTipoDeficiencia;
+  }
 	
 }

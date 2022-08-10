@@ -11,13 +11,14 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -320,7 +321,11 @@ public class FuncionalDAO {
 	}
 	
 	public List<Funcional> findByUsuariologado(Usuario usuarioLogado) {
+	  try {
 		return findByNome(pessoalService.getByCpf(SRHUtils.removerMascara(usuarioLogado.getCpf())).getNomeCompleto());
+	  }catch (Exception e) {
+        throw new NullPointerException("Ops!. Usuario não tem permissão"); 
+      }
 	}
 	
 	public List<Funcional> findByPessoal(Long idPessoal, String orderBy) {
@@ -351,7 +356,11 @@ public class FuncionalDAO {
 			return 0;
 		}
 	}
-
+	/*** 
+	 * Ocupação 14 - Estagiário Nível Médio 
+	 * Ocupação 15 - Estagiário Nível Universitário
+	 * @return
+	 */
 	public List<Funcional> findServidoresEvento2200() {
 		try {
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "

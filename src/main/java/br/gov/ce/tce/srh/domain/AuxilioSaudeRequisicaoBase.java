@@ -25,14 +25,11 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
  */
 @Entity
 @Table(name = "FP_AUXILIOSAUDEBASE", schema = DatabaseMetadata.SCHEMA_SRH)
-@SequenceGenerator(name = "SEQ_FP_AUXILIOSAUDEREQBASE", sequenceName = "SEQ_FP_AUXILIOSAUDEREQBASE", allocationSize = 1)
 public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements BeanEntidade {
 
   private static final long serialVersionUID = 1L;
 
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FP_AUXILIOSAUDEREQBASE")
+  @Id  
   private Long id;
   
   @ManyToOne
@@ -74,11 +71,12 @@ public class AuxilioSaudeRequisicaoBase extends BasicEntity<Long> implements Bea
   }
 
 
-  public AuxilioSaudeRequisicaoBase(Pessoal pessoal, Usuario usuario, Double custoPlanoBase, String observacao,
+  public AuxilioSaudeRequisicaoBase(Pessoal pessoal, Long idDependente, Usuario usuario, Double custoPlanoBase, String observacao,
                             Date dataAtualizacao, FlagAtivo flgAtivo, Date dataCriacao, Double custAdicional) {
     super();
     this.pessoal = pessoal;
-    this.usuario = usuario;
+    this.idBeneficiario = idDependente;
+    this.usuario = usuario;    
     this.custoPlanoBase = custoPlanoBase;    
     this.observacao = observacao;
     this.dataAtualizacao = dataAtualizacao;

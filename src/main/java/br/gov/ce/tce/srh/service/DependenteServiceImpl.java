@@ -169,7 +169,7 @@ public class DependenteServiceImpl implements DependenteService{
 		responsavel.setQtdDepir(qtdDepIr);
 		responsavel.setQtdDepprev(qtdDepPrev);
 		responsavel.setQtdDepsf(qtdDepSf);
-		
+		responsavel.setPermitidoValidarCampoTipoDeficiencia(Boolean.FALSE);
 		pessoalService.salvar(responsavel);
 		
 	}

@@ -26,198 +26,227 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 @Component("funcionalCedidoListBean")
 @Scope("view")
 public class FuncionalCedidoListBean implements Serializable {
-	
-	static Logger logger = Logger.getLogger(FuncionalCedidoListBean.class);
 
-	@Autowired
-	private FuncionalCedidoService funcionalCedidoService;
-	
-	@Autowired
-	private FuncionalService funcionalService;
+  static Logger logger = Logger.getLogger(FuncionalCedidoListBean.class);
 
-	private String matricula = new String();
-	private String cpf = new String();
-	private String nome = new String();
-	
+  @Autowired
+  private FuncionalCedidoService funcionalCedidoService;
 
-	private List<FuncionalCedido> lista;
-	private FuncionalCedido entidade = new FuncionalCedido();
-	
-	private int count;
-	private PagedListDataModel dataModel = new PagedListDataModel();
-	private List<FuncionalCedido> pagedList = new ArrayList<FuncionalCedido>();
-	private int registroInicial = 0;
-	private Integer pagina = 1;
-	
-	
-	
-	@PostConstruct
-	public void init() {		
-		FuncionalCedido flashParameter = (FuncionalCedido)FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());			
-	}
+  @Autowired
+  private FuncionalService funcionalService;
 
-	public void consultar() {
-
-		try {
-			
-			limparListas();
-			
-			if(getEntidade().getFuncional() != null &&  getEntidade().getFuncional().getMatricula() != null) {
-				count = funcionalCedidoService.count( getEntidade().getFuncional().getMatricula());
-			}else {
-				count = funcionalCedidoService.count(null);
-			}
-
-			if (count == 0) {
-				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-				logger.info("Nenhum registro foi encontrado.");
-			}
-
-			registroInicial = -1;
-			
-			getDataModel();
-
-		} catch(SRHRuntimeException e) {
-			limparListas();
-			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (Exception e) {
-			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-	}
-	
-	public String editar() {
-		/*
-		 * FacesUtil.setFlashParameter("entidade", getEntidade());
-		 * FacesUtil.setFlashParameter("matricula", matricula);
-		 * FacesUtil.setFlashParameter("pagina", pagina);
-		 */
-        return "incluirAlterar";
-	}
-	
-	public String incluir() {
-		FacesUtil.setFlashParameter("matricula", matricula);
-		FacesUtil.setFlashParameter("pagina", pagina);
-        return "incluirAlterar";
-	}
-	
-	public void excluir() {
-
-		try {
-
-			//funcionalCedidoService.excluir(entidade);
-
-			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
-			logger.info("Registro excluído com sucesso.");
-
-		} catch (SRHRuntimeException e) {
-			FacesUtil.addErroMessage(e.getMessage());
-			logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclusão não poderá ser realizada.");
-			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-		consultar();
-	}
+  private String matricula = new String();
+  private String cpf = new String();
+  private String nome = new String();
 
 
-	public String getMatricula() {return matricula;	}
-	public void setMatricula(String matricula) {
-		if ( matricula != null && (this.matricula == null || !this.matricula.equals(matricula)) ) {
-			this.matricula = matricula;
+  private List<FuncionalCedido> lista;
+  private FuncionalCedido entidade = new FuncionalCedido();
 
-			try {
+  private int count;
+  private PagedListDataModel dataModel = new PagedListDataModel();
+  private List<FuncionalCedido> pagedList = new ArrayList<FuncionalCedido>();
+  private int registroInicial = 0;
+  private Integer pagina = 1;
 
-				getEntidade().setFuncional( funcionalService.getCpfAndNomeByMatriculaAtiva( this.matricula ));
-				if ( getEntidade().getFuncional() != null ) {
-					this.nome = getEntidade().getFuncional().getPessoal().getNomeCompleto();
-					this.cpf = getEntidade().getFuncional().getPessoal().getCpf();	
-				} else {
-					FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
-				}
 
-			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta da matrícula. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
+  @PostConstruct
+  public void init() {
+    FuncionalCedido flashParameter = (FuncionalCedido) FacesUtil.getFlashParameter("entidade");
+    setEntidade(flashParameter != null ? flashParameter : new FuncionalCedido());
+  }
 
-		}
-	}
+  public void consultar() {
 
-	public String getCpf() {return cpf;	}
-	public void setCpf(String cpf) {
-		if (!cpf.equals("") && !this.cpf.equals(cpf) ) {
-			this.cpf = cpf;
+    try {
 
-			try {
+      limparListas();
 
-				getEntidade().setFuncional( funcionalService.getMatriculaAndNomeByCpfAtiva( this.cpf ));
-				if ( getEntidade().getFuncional() != null ) {
-					this.nome = getEntidade().getFuncional().getPessoal().getNomeCompleto();
-					this.matricula = getEntidade().getFuncional().getMatricula();
-				} else {
-					FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
-				}
+      if (getEntidade().getFuncional() != null && getEntidade().getFuncional().getMatricula() != null) {
+        count = funcionalCedidoService.count(getEntidade().getFuncional().getMatricula());
+      } else {
+        count = funcionalCedidoService.count(null);
+      }
 
-			} catch (Exception e) {
-				FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
-				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
+      if (count == 0) {
+        FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+        logger.info("Nenhum registro foi encontrado.");
+      }
 
-		}
-	}
-	
-	public String getNome() {return nome;}
-	public void setNome(String nome) {this.nome = nome;}
+      registroInicial = -1;
 
-	public List<FuncionalCedido> getLista() {return lista;}
-	public void setLista(List<FuncionalCedido> lista) {this.lista = lista;}
+      getDataModel();
 
-	public FuncionalCedido getEntidade() {return entidade;}
-	public void setEntidade(FuncionalCedido entidade) {this.entidade = entidade;}
-	
-	//PAGINAÇÃO
-	private void limparListas() {
-		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<FuncionalCedido>();
-		pagina = 1;
-	}
+    } catch (SRHRuntimeException e) {
+      limparListas();
+      FacesUtil.addErroMessage(e.getMessage());
+      logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (Exception e) {
+      limparListas();
+      FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    }
+  }
 
-	public PagedListDataModel getDataModel() {
-		if( registroInicial != getPrimeiroDaPagina() ) {
-			registroInicial = getPrimeiroDaPagina();
-			if(getEntidade().getFuncional() != null && getEntidade().getFuncional().getMatricula() != null)
-				setPagedList(funcionalCedidoService.search(getEntidade().getFuncional().getMatricula(), registroInicial, dataModel.getPageSize()));
-			else {
-				setPagedList(funcionalCedidoService.search(null, registroInicial, dataModel.getPageSize()));
-			}
-			
-			if(count != 0){
-				dataModel = new PagedListDataModel(getPagedList(), count);
-			} else {
-				limparListas();
-			}
-		}
- 		return dataModel;
-	}
+  public String editar() {
 
-	public List<FuncionalCedido> getPagedList() {return pagedList;}
-	public void setPagedList(List<FuncionalCedido> pagedList) {this.pagedList = pagedList;}
-	
-	public Integer getPagina() {return pagina;}
-	public void setPagina(Integer pagina) {this.pagina = pagina;}
-	
-	
-	private int getPrimeiroDaPagina() {return dataModel.getPageSize() * (pagina - 1);}	
-	//FIM PAGINAÇÃO
-	
-	
-	
+    FacesUtil.setFlashParameter("entidade", getEntidade());
+    FacesUtil.setFlashParameter("matricula", matricula);
+    FacesUtil.setFlashParameter("pagina", pagina);
+
+    return "incluirAlterar";
+  }
+
+  public String incluir() {
+    FacesUtil.setFlashParameter("matricula", matricula);
+    FacesUtil.setFlashParameter("pagina", pagina);
+    return "incluirAlterar";
+  }
+
+  public void excluir() {
+    try {
+      funcionalCedidoService.excluir(entidade);
+
+      FacesUtil.addInfoMessage("Registro excluído com sucesso.");
+      logger.info("Registro excluído com sucesso.");
+      
+      consultar();
+    } catch (SRHRuntimeException e) {
+      FacesUtil.addErroMessage(e.getMessage());
+      logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (DataAccessException e) {
+      FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclusão não poderá ser realizada.");
+      logger.error("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (Exception e) {
+      FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    }
+    
+  }
+
+
+  public String getMatricula() {
+    return matricula;
+  }
+
+  public void setMatricula(String matricula) {
+    if (matricula != null && (this.matricula == null || !this.matricula.equals(matricula))) {
+      this.matricula = matricula;
+
+      try {
+
+        getEntidade().setFuncional(funcionalService.getCpfAndNomeByMatriculaAtiva(this.matricula));
+        if (getEntidade().getFuncional() != null) {
+          this.nome = getEntidade().getFuncional().getPessoal().getNomeCompleto();
+          this.cpf = getEntidade().getFuncional().getPessoal().getCpf();
+        } else {
+          FacesUtil.addInfoMessage("Matrícula não encontrada ou inativa.");
+        }
+
+      } catch (Exception e) {
+        FacesUtil.addErroMessage("Ocorreu um erro na consulta da matrícula. Operação cancelada.");
+        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+      }
+
+    }
+  }
+
+  public String getCpf() {
+    return cpf;
+  }
+
+  public void setCpf(String cpf) {
+    if (!cpf.equals("") && !this.cpf.equals(cpf)) {
+      this.cpf = cpf;
+
+      try {
+
+        getEntidade().setFuncional(funcionalService.getMatriculaAndNomeByCpfAtiva(this.cpf));
+        if (getEntidade().getFuncional() != null) {
+          this.nome = getEntidade().getFuncional().getPessoal().getNomeCompleto();
+          this.matricula = getEntidade().getFuncional().getMatricula();
+        } else {
+          FacesUtil.addInfoMessage("CPF não encontrado ou inativo.");
+        }
+
+      } catch (Exception e) {
+        FacesUtil.addErroMessage("Ocorreu um erro na consulta do CPF. Operação cancelada.");
+        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+      }
+
+    }
+  }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public List<FuncionalCedido> getLista() {
+    return lista;
+  }
+
+  public void setLista(List<FuncionalCedido> lista) {
+    this.lista = lista;
+  }
+
+  public FuncionalCedido getEntidade() {
+    return entidade;
+  }
+
+  public void setEntidade(FuncionalCedido entidade) {
+    this.entidade = entidade;
+  }
+
+  // PAGINAÇÃO
+  private void limparListas() {
+    dataModel = new PagedListDataModel();
+    pagedList = new ArrayList<FuncionalCedido>();
+    pagina = 1;
+  }
+
+  public PagedListDataModel getDataModel() {
+    if (registroInicial != getPrimeiroDaPagina()) {
+      registroInicial = getPrimeiroDaPagina();
+      if (getEntidade().getFuncional() != null && getEntidade().getFuncional().getMatricula() != null)
+        setPagedList(funcionalCedidoService.search(getEntidade().getFuncional().getMatricula(), registroInicial, dataModel.getPageSize()));
+      else {
+        setPagedList(funcionalCedidoService.search(null, registroInicial, dataModel.getPageSize()));
+      }
+
+      if (count != 0) {
+        dataModel = new PagedListDataModel(getPagedList(), count);
+      } else {
+        limparListas();
+      }
+    }
+    return dataModel;
+  }
+
+  public List<FuncionalCedido> getPagedList() {
+    return pagedList;
+  }
+
+  public void setPagedList(List<FuncionalCedido> pagedList) {
+    this.pagedList = pagedList;
+  }
+
+  public Integer getPagina() {
+    return pagina;
+  }
+
+  public void setPagina(Integer pagina) {
+    this.pagina = pagina;
+  }
+
+
+  private int getPrimeiroDaPagina() {
+    return dataModel.getPageSize() * (pagina - 1);
+  }
+  // FIM PAGINAÇÃO
+
+
 }
