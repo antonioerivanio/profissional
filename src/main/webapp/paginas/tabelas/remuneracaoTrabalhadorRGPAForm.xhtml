@@ -12,7 +12,7 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Cadastro de Remuneracao RGPS</h2>
+			<h2>Cadastro de Remuneracao RGPS - RPA</h2>
 
 		</div>
 
@@ -30,7 +30,7 @@
 					<!--  <div class="conteiner">
 						<h:inputText id="anoReferencia" 
 									 name="anoReferencia"
-									 value="#{remuneracaoTrabalhadorFormBean.anoReferencia}" 
+									 value="#{remuneracaoTrabalhadorRGPAFormBean.anoReferencia}" 
 									 maxlength="4"
 									 onkeyup="SoNumeros(this)">
 						</h:inputText>
@@ -39,11 +39,11 @@
 					<rich:select 						
 							defaultLabel="Selecione..."	
 							id="ano"							
-							value="#{remuneracaoTrabalhadorFormBean.anoReferencia}"
-							disabled="#{remuneracaoTrabalhadorFormBean.emEdicao}">							
+							value="#{remuneracaoTrabalhadorRGPAFormBean.anoReferencia}"
+							disabled="#{remuneracaoTrabalhadorRGPAFormBean.emEdicao}">							
 							<f:selectItems 
 								id="comboAno"
-								value="#{remuneracaoTrabalhadorFormBean.comboAno}"
+								value="#{remuneracaoTrabalhadorRGPAFormBean.comboAno}"
 					  			var="servidor"
 					  			itemValue="#{servidor}"
 					  			itemLabel="#{servidor}"/>
@@ -57,7 +57,7 @@
 			<div class="select-box box-16">
 				<label for="mes">Mês: </label>
 				<div class="conteiner">
-					<h:selectOneMenu id="mesF" value="#{remuneracaoTrabalhadorFormBean.mesReferencia}" disabled="#{remuneracaoTrabalhadorFormBean.emEdicao}">							  
+					<h:selectOneMenu id="mesF" value="#{remuneracaoTrabalhadorRGPAFormBean.mesReferencia}" disabled="#{remuneracaoTrabalhadorRGPAFormBean.emEdicao}">							  
 						<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0"/>
 						<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01"/>
 						<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
@@ -74,7 +74,7 @@
 						<f:selectItem id="mes13F" itemLabel="Anual (13° salário)" itemValue="13" />	
 						<a4j:ajax event="change" 
 							  				 execute="@this"
-							  				 listener="#{remuneracaoTrabalhadorFormBean.carregaServidores}"
+							  				 listener="#{remuneracaoTrabalhadorRGPAFormBean.carregaServidores}"
 							  				 render="tipo"/>																
 					</h:selectOneMenu>
 				</div>
@@ -90,35 +90,35 @@
 							listWidth="500"
 							id="tipo"
 							converter="entityConverter" 
-							rendered="#{!remuneracaoTrabalhadorFormBean.emEdicao}"
-							value="#{remuneracaoTrabalhadorFormBean.servidorFuncional}">							
+							rendered="#{!remuneracaoTrabalhadorRGPAFormBean.emEdicao}"
+							value="#{remuneracaoTrabalhadorRGPAFormBean.servidorFuncional}">							
 							<f:selectItems 
 								id="comboServidor"
-								value="#{remuneracaoTrabalhadorFormBean.servidorEnvioList}"
+								value="#{remuneracaoTrabalhadorRGPAFormBean.servidorEnvioList}"
 					  			var="servidor"
 					  			itemValue="#{servidor}"
 					  			itemLabel="#{servidor.nome}"/>
 						</rich:select>
 				</div>
-				<ui:fragment  rendered="#{remuneracaoTrabalhadorFormBean.emEdicao}">
+				<ui:fragment  rendered="#{remuneracaoTrabalhadorRGPAFormBean.emEdicao}">
 					<div class="input-box box-60">						
 							<div class="conteiner">
 								<h:inputText id="nomeEdicao" 
 											 maxlength="46"
 											 size="46"
 											 disabled="true"
-											 rendered="#{remuneracaoTrabalhadorFormBean.emEdicao}"
-											 value="#{remuneracaoTrabalhadorFormBean.servidorFuncional.nome}" />
+											 rendered="#{remuneracaoTrabalhadorRGPAFormBean.emEdicao}"
+											 value="#{remuneracaoTrabalhadorRGPAFormBean.servidorFuncional.nome}" />
 							</div>
 					</div>
 				</ui:fragment>
 				
 			</div>
-				<h:commandButton action="#{remuneracaoTrabalhadorFormBean.consultar}" value="Consultar"  rendered="#{!remuneracaoTrabalhadorFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" />
+				<h:commandButton action="#{remuneracaoTrabalhadorRGPAFormBean.consultar}" value="Consultar"  rendered="#{!remuneracaoTrabalhadorRGPAFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" />
 				
 			</fieldset>
 			
-			<ui:fragment  rendered="#{remuneracaoTrabalhadorFormBean.emConsulta}">
+			<ui:fragment  rendered="#{remuneracaoTrabalhadorRGPAFormBean.emConsulta}">
 				<fieldset>
 					<legend style="font-size: 15px;">
 							<strong> 
@@ -142,7 +142,7 @@
 									<h:inputText id="indApuracao" 
 												 maxlength="5"
 												 disabled="true"
-												 value="#{remuneracaoTrabalhadorFormBean.entidade.indApuracao}" />
+												 value="#{remuneracaoTrabalhadorRGPAFormBean.entidade.indApuracao}" />
 								</div>
 							</div>
 	
@@ -152,7 +152,7 @@
 									<h:inputText id="perApur" 
 												 maxlength="10"
 												 disabled="true"
-												 value="#{remuneracaoTrabalhadorFormBean.entidade.perApur}" />
+												 value="#{remuneracaoTrabalhadorRGPAFormBean.entidade.perApur}" />
 								</div>
 							</div>
 					
@@ -162,7 +162,7 @@
 									<h:inputText id="cpf" 
 												 maxlength="15"
 												 disabled="true"
-												 value="#{remuneracaoTrabalhadorFormBean.entidade.cpfTrab}" />
+												 value="#{remuneracaoTrabalhadorRGPAFormBean.entidade.cpfTrab}" />
 								</div>
 							</div>
 	
@@ -172,7 +172,7 @@
 									<h:inputText id="indMV" 
 												 maxlength="5"
 												 disabled="true"
-												 value="#{remuneracaoTrabalhadorFormBean.entidade.indMV}" />
+												 value="#{remuneracaoTrabalhadorRGPAFormBean.entidade.indMV}" />
 								</div>
 							</div>
 							
@@ -182,7 +182,7 @@
 									<h:inputText id="nmTrab" 
 												 maxlength="10"
 												 disabled="true"
-												 value="#{remuneracaoTrabalhadorFormBean.entidade.nmTrab}" />
+												 value="#{remuneracaoTrabalhadorRGPAFormBean.entidade.nmTrab}" />
 								</div>
 							</div>
 							
@@ -192,21 +192,22 @@
 									<h:inputText id="dtNascto" 
 												 maxlength="15"
 												 disabled="true"
-												 value="#{remuneracaoTrabalhadorFormBean.entidade.dtNascto}" />
+												 value="#{remuneracaoTrabalhadorRGPAFormBean.entidade.dtNascto}" />
 								</div>
 							</div>					
 						
 					</fieldset>
-					<ui:fragment  rendered="#{remuneracaoTrabalhadorFormBean.entidade.indMV != 1}">
+					<ui:fragment  rendered="#{remuneracaoTrabalhadorRGPAFormBean.entidade.indMV != 1}">
 						<fieldset>
 								<legend style="font-size: 15px;">
 									<strong> 
 										 Remuneração Outra Empresas:
 									</strong>
 								</legend>
+								<div class="tabela-dados">
 								<rich:dataTable id="remuneracaoOutraEmpresasId"
 										var="remuneracaoOutraEmpresas"
-										value="#{remuneracaoTrabalhadorFormBean.remuneracaoOutraEmpresaList}"
+										value="#{remuneracaoTrabalhadorRGPAFormBean.remuneracaoOutraEmpresaList}"
 										noDataLabel="Nenhum Item Remuneracao Outra Empresas"	>
 							
 										<h:column id="col1" headerClass="cel-15">
@@ -246,10 +247,10 @@
 									
 																													
 							</rich:dataTable>	
-						
+						</div>
 						</fieldset>
 					</ui:fragment>
-					<ui:repeat var="dmDev" varStatus="i" value="#{remuneracaoTrabalhadorFormBean.demonstrativosDeValoresList}">
+					<ui:repeat var="dmDev" varStatus="i" value="#{remuneracaoTrabalhadorRGPAFormBean.demonstrativosDeValoresList}">
 						<fieldset >
 							<legend style="font-size: 15px; color: #004581; font-weight:bolder;">
 								<strong> 
@@ -574,12 +575,12 @@
 			
 			
 			<h:commandButton 
-				action="#{remuneracaoTrabalhadorFormBean.salvarEvento}" 
+				action="#{remuneracaoTrabalhadorRGPAFormBean.salvarEvento}" 
 				value="Salvar" 
 				onclick="var x= confirm('Deseja realmente gerar o evento para todos os servidores?');if(!x){return false;}" 
 				styleClass="bt-padrao fr mg-right-10" />
 			
-			<a href="/srh/paginas/tabelas/remuneracaoTrabalhadorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			<a href="/srh/paginas/tabelas/remuneracaoTrabalhadorRGPAList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 			
 			
 

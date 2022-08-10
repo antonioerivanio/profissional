@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.FuncionalDAO;
+import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.ReferenciaFuncional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -151,6 +152,10 @@ public class FuncionalService {
 
 	public List<Funcional> findServidoresEvento1200(String anoReferencia, String mesReferencia) {
 		return dao.findServidoresEvento1200(anoReferencia, mesReferencia);
+	}
+
+	public List<CadastroPrestador> findRGPAEvento1200(String anoReferencia, String mesReferencia) {
+		return dao.findRGPAEvento1200(anoReferencia, mesReferencia);
 	}
 	
 }

@@ -130,18 +130,24 @@ public class BeneficioEsocialDAO {
 		sql.append("  f.matricula AS MATRICULA, ");
 		sql.append(" NULL AS CNPJ_ORIGEM, ");
 		sql.append(" CASE  ");
-		sql.append(" WHEN c.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N'  ");
+		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN 'N'  ");
 		sql.append(" ELSE 'S' ");
 		sql.append(" END AS CAD_INI, ");
 		sql.append(" NULL AS INC_SIT_BENEF, ");
 		sql.append(" NULL AS NR_BENEFICIO, ");
-		sql.append(" a.datainiciobeneficio AS DT_INI_BENEFICIO, ");
+		
+		//sql.append(" a.datainiciobeneficio AS DT_INI_BENEFICIO, ");
+		
+		sql.append(" CASE  ");
+		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN a.datainiciobeneficio  ");
+		sql.append(" ELSE TO_DATE('21/11/2021', 'dd/mm/yyyy') ");
+		sql.append(" END AS DT_INI_BENEFICIO, ");		
 		sql.append("  a.datapublicacaoato AS DT_PUBLIC, ");
 		sql.append("  '0101' AS TP_BENEFICIO, ");
 		sql.append(" 2 AS TP_PLAN_RP, ");
 		sql.append("  NULL AS DSC, ");
 		sql.append("  CASE  ");
-		sql.append("  WHEN c.exercicio > TO_DATE('22/11/2021', 'dd/mm/yyyy') THEN 'N' ");
+		sql.append("  WHEN a.datainiciobeneficio > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN 'N' ");
 		sql.append("  ELSE NULL ");
 		sql.append("  END AS IND_DEC_JUD, ");
 		sql.append(" NULL AS TP_PEN_MORTE, ");

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.RemuneracaoOutraEmpresaDAO;
 import br.gov.ce.tce.srh.domain.RemuneracaoOutraEmpresa;
+import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 
 @Service("remuneracaoOutraEmpresaService")
 public class RemuneracaoOutraEmpresaService{
@@ -30,14 +31,15 @@ public class RemuneracaoOutraEmpresaService{
 		return dao.getById(id);
 	}	
 	
-	public List<RemuneracaoOutraEmpresa> findRemuneracaoOutraEmpresa(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idFuncional) {
-		List<RemuneracaoOutraEmpresa> RemuneracaoOutraEmpresaList = dao.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, idRemuneracaoTrabalhador, idFuncional);
-		for (RemuneracaoOutraEmpresa RemuneracaoOutraEmpresa : RemuneracaoOutraEmpresaList) {
-			if(RemuneracaoOutraEmpresa.getId() < 0) {
-				RemuneracaoOutraEmpresa.setId(null);
+	public List<RemuneracaoOutraEmpresa> findRemuneracaoOutraEmpresa(String mesReferencia, String anoReferencia, RemuneracaoTrabalhador remuneracaoTrabalhador, Long idFuncional) {
+		List<RemuneracaoOutraEmpresa> remuneracaoOutraEmpresaList = dao.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, remuneracaoTrabalhador.getId(), idFuncional);
+		for (RemuneracaoOutraEmpresa remuneracaoOutraEmpresa : remuneracaoOutraEmpresaList) {
+			if(remuneracaoOutraEmpresa.getId() < 0) {
+				remuneracaoOutraEmpresa.setId(null);
+				remuneracaoOutraEmpresa.setRemuneracaoTrabalhador(remuneracaoTrabalhador);
 			}
 		}
-		return RemuneracaoOutraEmpresaList;
+		return remuneracaoOutraEmpresaList;
 	}
 
 	@Transactional
@@ -49,6 +51,19 @@ public class RemuneracaoOutraEmpresaService{
 
 	public List<RemuneracaoOutraEmpresa> findRemuneracaoOutraEmpresaByIdfuncional(Long idFuncional) {
 		return dao.findRemuneracaoOutraEmpresaByIdfuncional(idFuncional);
+	}
+
+	public List<RemuneracaoOutraEmpresa> findRemuneracaoOutraEmpresaRPA(String mesReferencia, String anoReferencia,
+			RemuneracaoTrabalhador remuneracaoTrabalhador, Long idPrestador) {
+		
+		List<RemuneracaoOutraEmpresa> remuneracaoOutraEmpresaList = dao.findRemuneracaoOutraEmpresaRPA(mesReferencia, anoReferencia, remuneracaoTrabalhador.getId(), idPrestador);
+		for (RemuneracaoOutraEmpresa remuneracaoOutraEmpresa : remuneracaoOutraEmpresaList) {
+			if(remuneracaoOutraEmpresa.getId() < 0) {
+				remuneracaoOutraEmpresa.setId(null);
+				remuneracaoOutraEmpresa.setRemuneracaoTrabalhador(remuneracaoTrabalhador);
+			}
+		}
+		return remuneracaoOutraEmpresaList;
 	}
 
 	

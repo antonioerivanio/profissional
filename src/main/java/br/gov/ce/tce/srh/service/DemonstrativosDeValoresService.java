@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.DemonstrativosDeValoresDAO;
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
+import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 
 @Service("demonstrativosDeValoresService")
 public class DemonstrativosDeValoresService{
@@ -30,10 +31,11 @@ public class DemonstrativosDeValoresService{
 		return dao.getById(id);
 	}	
 	
-	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idFuncional) {
-		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValores(mesReferencia, anoReferencia, idRemuneracaoTrabalhador, idFuncional);
+	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, RemuneracaoTrabalhador remuneracaoTrabalhador, Long idFuncional) {
+		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValores(mesReferencia, anoReferencia, remuneracaoTrabalhador.getId(), idFuncional);
 		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
 			if(demonstrativosDeValores.getId() < 0) {
+				demonstrativosDeValores.setRemuneracaoTrabalhador(remuneracaoTrabalhador);
 				demonstrativosDeValores.setId(null);
 			}
 		}
@@ -49,6 +51,18 @@ public class DemonstrativosDeValoresService{
 
 	public List<DemonstrativosDeValores> findDemonstrativosDeValoresByIdfuncional(Long idFuncional) {
 		return dao.findDemonstrativosDeValoresByIdfuncional(idFuncional);
+	}
+
+	public List<DemonstrativosDeValores> findDemonstrativosDeValoresRPA(String mesReferencia, String anoReferencia, RemuneracaoTrabalhador remuneracaoTrabalhador, Long idPrestador) {
+		
+		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValoresRPA(mesReferencia, anoReferencia, remuneracaoTrabalhador.getId(), idPrestador);
+		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
+			if(demonstrativosDeValores.getId() < 0) {
+				demonstrativosDeValores.setRemuneracaoTrabalhador(remuneracaoTrabalhador);
+				demonstrativosDeValores.setId(null);
+			}
+		}
+		return demonstrativosDeValoresList;
 	}
 
 	

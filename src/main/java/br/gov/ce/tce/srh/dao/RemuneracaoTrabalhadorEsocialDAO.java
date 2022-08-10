@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
+import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -34,10 +35,13 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	public RemuneracaoTrabalhador salvar(RemuneracaoTrabalhador entidade) {
 
 		if (entidade.getId() == null || entidade.getId() < 0) {
-			entidade.setId(getMaxId());
+			entityManager.persist(entidade);
 		}
-
-		return entityManager.merge(entidade);
+		else {
+			entityManager.merge(entidade);
+		}
+		
+		return entidade;
 	}
 
 	public void excluir(RemuneracaoTrabalhador entidade) {
@@ -49,20 +53,27 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		return entityManager.find(RemuneracaoTrabalhador.class, id);
 	}
 	
-	public int count(String nome, String cpf, String periodoApuracao) {
+	public int count(String nome, String cpf, String periodoApuracao, boolean isRGPA) {
 		
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(rt) FROM RemuneracaoTrabalhador rt inner join rt.funcional f WHERE 1=1 ");
+		sql.append(" Select count(rt) FROM RemuneracaoTrabalhador rt  WHERE 1=1 ");
 
 		sql.append(" and rt.perApur = :periodoApuracao ");
 		
 		if (nome != null && !nome.isEmpty()) {
-			sql.append("  and upper( f.nome ) like :nome ");
+			sql.append("  and upper( rt.nmTrabDesc ) like :nome ");
 		}
 		
 		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND f.cpf = :cpf ");
+			sql.append("  AND rt.cpfTrab = :cpf ");
+		}
+		
+		if(isRGPA) {
+			sql.append("  AND rt.funcional is  null ");
+		}
+		else {
+			sql.append("  AND rt.funcional is not null ");
 		}
 						
 		Query query = entityManager.createQuery(sql.toString());
@@ -79,22 +90,30 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<RemuneracaoTrabalhador> search(String nome, String cpf, String periodoApuracao, Integer first, Integer rows) {
+	public List<RemuneracaoTrabalhador> search(String nome, String cpf, String periodoApuracao, boolean isRGPA, Integer first, Integer rows) {
 
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT rt FROM RemuneracaoTrabalhador rt inner join fetch rt.funcional f WHERE 1=1 ");
+		sql.append("  SELECT rt FROM RemuneracaoTrabalhador rt  WHERE 1=1 ");
 		
 		sql.append(" and rt.perApur = :periodoApuracao ");
 
 		if (nome != null && !nome.isEmpty()) {
-			sql.append("  and upper( f.nome ) like :nome ");
+			sql.append("  and upper( rt.nmTrabDesc ) like :nome ");
 		}
 		
-		if (cpf != null && !cpf.isEmpty())
-			sql.append("  AND f.cpf = :cpf ");
+		if (cpf != null && !cpf.isEmpty()) {
+			sql.append("  AND rt.cpfTrab = :cpf ");
+		}
+		
+		if(isRGPA) {
+			sql.append("  AND rt.funcional is null ");
+		}
+		else {
+			sql.append("  AND rt.funcional is not null");
+		}
 
-		sql.append("  ORDER BY f.nome ");
+		sql.append("  ORDER BY rt.nmTrabDesc ");
 
 		Query query = entityManager.createQuery(sql.toString());
 		query.setParameter("periodoApuracao", periodoApuracao);
@@ -115,16 +134,15 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RemuneracaoTrabalhador> getEventoS1200(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
+	public RemuneracaoTrabalhador getEventoS1200(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
 		try {
 			Query query = entityManager.createNativeQuery(getSQLEventoS1200(servidorFuncional), RemuneracaoTrabalhador.class);
 			query.setParameter("mesReferencia", mesReferencia);
 			query.setParameter("anoReferencia", anoReferencia);
 			query.setParameter("periodoApuracao",periodoApuracao);
-			if(servidorFuncional != null) {
-				query.setParameter("idFuncional",servidorFuncional.getId() );
-			}
-			return  query.getResultList();
+			query.setParameter("idFuncional",servidorFuncional.getId() );
+			
+			return  (RemuneracaoTrabalhador) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -142,11 +160,12 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		sql.append(" :periodoApuracao as PER_APUR,       ");
 		sql.append("  p.cpf as CPF_TRAB, ");
 		sql.append(" CASE ");
-		sql.append("  WHEN v.valoroutraempresa IS NULL THEN 1 ");
+		sql.append("  WHEN v.valoroutraempresa IS NULL THEN null ");
 		sql.append("  ELSE 2 ");
 		sql.append(" END AS IND_MV,  ");				
 		sql.append("  null as NM_TRAB, ");
-		sql.append(" null as DT_NASCTO ");
+		sql.append(" null as DT_NASCTO, ");
+		sql.append(" null as IDPRESTADOR ");
 		
 		
 		sql.append(" FROM srh.fp_pagamentos pg ");
@@ -164,6 +183,53 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 			sql.append("AND f.id = :idFuncional ");
 		}
 		sql.append("ORDER BY dp.nome ");
+
+		
+	    
+	    return sql.toString();
+	}
+
+	public RemuneracaoTrabalhador getEventoS1200RPA(String mesReferencia, String anoReferencia, String periodoApuracao,
+			CadastroPrestador servidorFuncional) {
+		try {
+			Query query = entityManager.createNativeQuery(getSQLEventoS1200RPA(servidorFuncional), RemuneracaoTrabalhador.class);
+			query.setParameter("periodoApuracao",periodoApuracao);
+			query.setParameter("idprestador",servidorFuncional.getId() );
+			query.setParameter("competencia", anoReferencia+mesReferencia  );
+			
+			return  (RemuneracaoTrabalhador) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	public String getSQLEventoS1200RPA(CadastroPrestador servidorFuncional) {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" SELECT distinct ( cp.idprestador * -1) as id,   "); 	
+		    
+		sql.append(" dp.nome as NM_TRAB_DESC,   "); 
+		sql.append(" null as idfuncional,   "); 
+		sql.append(" translate(cp.cpf, ' .-', ' ')||'-'||:periodoApuracao as referencia,   "); 
+		sql.append(" 1 as IND_APURACAO,   "); 
+		sql.append(" :periodoApuracao as PER_APUR,     ");     
+		sql.append(" translate(cp.cpf, ' .-', ' ') as CPF_TRAB,   "); 
+		sql.append(" CASE   "); 
+		sql.append(" WHEN vp.remuneracao IS NULL THEN null   "); 
+		sql.append(" ELSE 2   "); 
+		sql.append(" END AS IND_MV,    "); 				
+		sql.append("  dp.nome as NM_TRAB,   "); 
+		sql.append(" cp.datanascimento as DT_NASCTO,   "); 
+		sql.append(" cp.idprestador as IDPRESTADOR   "); 
+		
+		sql.append(" FROM fp_dadospagtoprestador dp  "); 
+		sql.append("  INNER JOIN fp_cadastroprestador cp ON dp.idprestador = cp.idprestador  "); 
+		sql.append(" LEFT JOIN FP_VINCULORGPSPRESTADOR vp ON cp.idprestador = vp.idprestador  "); 
+		sql.append(" where  competencia = :competencia  "); 
+		if(servidorFuncional != null) {
+			sql.append("  AND cp.idprestador = :idprestador   "); 
+		}
+		sql.append("  ORDER BY dp.nome    "); 
 
 		
 	    

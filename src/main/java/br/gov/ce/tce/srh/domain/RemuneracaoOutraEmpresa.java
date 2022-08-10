@@ -6,9 +6,12 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -18,10 +21,12 @@ import javax.persistence.Table;
 public class RemuneracaoOutraEmpresa extends BasicEntity<Long> implements Serializable, Cloneable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_REMUNOUTRAEMPRESA")
+	@SequenceGenerator(name="SEQ_REMUNOUTRAEMPRESA", sequenceName="SEQ_REMUNOUTRAEMPRESA", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
 	@Column(name = "ID")	
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "IDREMUNERACAOTRABALHADOR")
 	private RemuneracaoTrabalhador remuneracaoTrabalhador;
 	
@@ -76,6 +81,14 @@ public class RemuneracaoOutraEmpresa extends BasicEntity<Long> implements Serial
 
 	public void setVlrRemunOE(BigDecimal vlrRemunOE) {
 		this.vlrRemunOE = vlrRemunOE;
+	}
+
+	public RemuneracaoTrabalhador getRemuneracaoTrabalhador() {
+		return remuneracaoTrabalhador;
+	}
+
+	public void setRemuneracaoTrabalhador(RemuneracaoTrabalhador remuneracaoTrabalhador) {
+		this.remuneracaoTrabalhador = remuneracaoTrabalhador;
 	}
 
 	@Override

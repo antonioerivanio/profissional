@@ -31,11 +31,14 @@ public class ItensRemuneracaoTrabalhadorDAO {
 
 	public ItensRemuneracaoTrabalhador salvar(ItensRemuneracaoTrabalhador entidade) {
 
-		if (entidade.getId() == null || entidade.getId().equals(0l)) {
-			entidade.setId(getMaxId());
+		if (entidade.getId() == null || entidade.getId() < 0) {
+			entityManager.persist(entidade);
 		}
-
-		return entityManager.merge(entidade);
+		else {
+			entityManager.merge(entidade);
+		}
+		
+		return entidade;
 	}
 
 	public void excluir(ItensRemuneracaoTrabalhador entidade) {
@@ -64,7 +67,8 @@ public class ItensRemuneracaoTrabalhadorDAO {
 		sql.append(" Select " );
 		sql.append(" ( ROWNUM * -1) as id, ");
 		sql.append(" :idDmDev as IDDMDEV," );
-		sql.append(" null as IDINFOREMUNPERANTERIORES," );
+		sql.append(" null as IDINFOREMUNPERANTERIORES, " );
+		sql.append(" null as IDINFOREMUNPERAPUR, " );
 		sql.append(" ip.rubrica as COD_RUBR, " );
 		sql.append(" rt.CODIGO as IDE_TAB_RUBR," );
 		sql.append(" ip.valor as VR_RUBR," );

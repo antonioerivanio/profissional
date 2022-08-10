@@ -12,7 +12,7 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Consulta de Envios S-1200</h2>
+			<h2>Consulta de Envios S-1200 - RGPA</h2>
 
 		</div>
 
@@ -25,7 +25,7 @@
 					<div class="conteiner">
 						<h:inputText id="anoReferencia" 
 									 name="anoReferencia"
-									 value="#{remuneracaoTrabalhadorListBean.anoReferencia}" 
+									 value="#{remuneracaoTrabalhadorRGPAListBean.anoReferencia}" 
 									 maxlength="4"
 									 onkeyup="SoNumeros(this)">
 						</h:inputText>
@@ -35,7 +35,7 @@
 			<div class="select-box box-15">
 				<label for="mes">Mês*: </label>
 				<div class="conteiner">
-					<h:selectOneMenu id="mesF" value="#{remuneracaoTrabalhadorListBean.mesReferencia}">							  
+					<h:selectOneMenu id="mesF" value="#{remuneracaoTrabalhadorRGPAListBean.mesReferencia}">							  
 						<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0"/>
 						<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01"/>
 						<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
@@ -61,7 +61,7 @@
 					<div class="conteiner">
 						<h:inputText id="nome"
 									 name="nome"
-									 value="#{remuneracaoTrabalhadorListBean.nome}" />
+									 value="#{remuneracaoTrabalhadorRGPAListBean.nome}" />
 					</div>
 				</div>
 	
@@ -72,13 +72,13 @@
 									 name="cpf"
 									 maxlength="14"
 									 styleClass="maskCnpj"
-									 value="#{remuneracaoTrabalhadorListBean.cpf}" />
+									 value="#{remuneracaoTrabalhadorRGPAListBean.cpf}" />
 					</div>
 				</div>
 
 				<h:commandButton id="consultar"
 								 value="Consultar" 
-								 action="#{remuneracaoTrabalhadorListBean.consultar}" 
+								 action="#{remuneracaoTrabalhadorRGPAListBean.consultar}" 
 								 styleClass="bt-padrao fl mg-top-18" 
 								 render="scroller,lista"/>					
 			
@@ -87,8 +87,8 @@
 
 				<rich:dataTable id="lista" 
 								var="item" 
-								rows="#{remuneracaoTrabalhadorListBean.dataModel.pageSize}" 
-								value="#{remuneracaoTrabalhadorListBean.dataModel}" >
+								rows="#{remuneracaoTrabalhadorRGPAListBean.dataModel.pageSize}" 
+								value="#{remuneracaoTrabalhadorRGPAListBean.dataModel}" >
 
                     <rich:column id="col2" headerClass="cel-25">
                         <f:facet name="header">
@@ -112,9 +112,9 @@
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{remuneracaoTrabalhadorListBean.editar}"
+                       				  action="#{remuneracaoTrabalhadorRGPAListBean.editar}"
                        				  styleClass="ico-detail" >
-                            <f:setPropertyActionListener target="#{remuneracaoTrabalhadorListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{remuneracaoTrabalhadorRGPAListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>                    
                 	<rich:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
@@ -123,9 +123,9 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{remuneracaoTrabalhadorListBean.editar}"
+                       				  action="#{remuneracaoTrabalhadorRGPAListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{remuneracaoTrabalhadorListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{remuneracaoTrabalhadorRGPAListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>
                 	

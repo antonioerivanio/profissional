@@ -40,18 +40,22 @@ public class InfoRemuneracaoPeriodoAnterioresService{
 			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
 				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(1)) {
 					List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList = dao.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional);
+					demonstrativosDeValores.setInfoPerAnt(infoRemuneracaoPeriodoAnterioresList.get(0));
+					for (InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores : infoRemuneracaoPeriodoAnterioresList) {
+						if(infoRemuneracaoPeriodoAnteriores.getId() < 0) {
+							infoRemuneracaoPeriodoAnteriores.setId(null);
+							infoRemuneracaoPeriodoAnteriores.setDemonstrativosDeValores(demonstrativosDeValores);							
+						}
+					}
 					infoRemuneracaoPeriodoAnterioresListReturn.addAll(infoRemuneracaoPeriodoAnterioresList);
 					if(infoRemuneracaoPeriodoAnterioresList != null && !infoRemuneracaoPeriodoAnterioresList.isEmpty()) {
 						demonstrativosDeValores.setInfoRemuneracaoPeriodoAnteriores(infoRemuneracaoPeriodoAnterioresList.get(0));
+						
 					}
 				}
 				
 			}
-			for (InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores : infoRemuneracaoPeriodoAnterioresListReturn) {
-				if(infoRemuneracaoPeriodoAnteriores.getId() < 0) {
-					infoRemuneracaoPeriodoAnteriores.setId(null);
-				}
-			}
+			
 		}
 		
 		return infoRemuneracaoPeriodoAnterioresListReturn;

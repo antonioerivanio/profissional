@@ -23,18 +23,21 @@ public class DemonstrativosDeValoresDAO {
 		this.entityManager = entityManager;
 	}
 
-	private Long getMaxId() {
+	/*private Long getMaxId() {
 		Query query = entityManager.createQuery("Select max(e.id) from DemonstrativosDeValores e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
-	}
+	}*/
 
 	public DemonstrativosDeValores salvar(DemonstrativosDeValores entidade) {
 
 		if (entidade.getId() == null || entidade.getId() < 0) {
-			entidade.setId(getMaxId());
+			entityManager.persist(entidade);
 		}
-
-		return entityManager.merge(entidade);
+		else {
+			entityManager.merge(entidade);
+		}
+		
+		return entidade;
 	}
 
 	public void excluir(DemonstrativosDeValores entidade) {
@@ -99,6 +102,50 @@ public class DemonstrativosDeValoresDAO {
 		Query query = entityManager.createQuery("Select e from DemonstrativosDeValores e where e.remuneracaoTrabalhador.funcional.id = :idFuncional", DemonstrativosDeValores.class);
 		query.setParameter("idFuncional",idFuncional);
 		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<DemonstrativosDeValores> findDemonstrativosDeValoresRPA(String mesReferencia, String anoReferencia,
+			Long idRemuneracaoTrabalhador, Long idPrestador) {
+		Query query = entityManager.createNativeQuery(getSQLDemonstrativosDeValoresRPA(idPrestador), DemonstrativosDeValores.class);
+		query.setParameter("competencia",anoReferencia+mesReferencia);
+		if(idRemuneracaoTrabalhador != null && idRemuneracaoTrabalhador > 0 ) {
+			query.setParameter("idRemuneracaoTrabalhador", idRemuneracaoTrabalhador);
+		}
+		else {
+			query.setParameter("idRemuneracaoTrabalhador", null);
+		}
+		query.setParameter("idPrestador",idPrestador );
+		return query.getResultList();
+	}
+
+	
+	public String getSQLDemonstrativosDeValoresRPA(Long idPrestador) {
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT    "); 
+		sql.append(" ( ROWNUM * -1) as id, ");
+		sql.append(" :idRemuneracaoTrabalhador as IDREMUNERACAOTRABALHADOR, ");
+		sql.append(" 'RPA_'||dp.idpagtoprestador as IDE_DM_DEV, ");
+		sql.append(" 701 as COD_CATEG, ");
+		sql.append("  dp.novocbo as COD_CBO, ");
+		sql.append(" null as NAT_ATIVIDADE, ");
+		sql.append(" null as QTD_DIAS_TRAB, ");
+		sql.append(" 0 AS FLINFOREMUNPERANTERIORES ");
+		
+		sql.append(" FROM   ");
+		sql.append("  fp_dadospagtoprestador dp  ");
+		sql.append("  INNER JOIN fp_cadastroprestador cp ON dp.idprestador = cp.idprestador ");
+		sql.append(" where  TO_CHAR(data_np, 'yyyymm') = :competencia  ");
+				  
+		
+		 if(idPrestador != null) {
+			 sql.append(" AND cp.idprestador = :idPrestador ");
+		  }
+		sql.append(" ORDER BY dp.nome ");
+
+	    
+	    return sql.toString();
 	}
 
 }

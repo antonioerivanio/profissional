@@ -22,11 +22,11 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
-@Component("remuneracaoTrabalhadorListBean")
+@Component("remuneracaoTrabalhadorRGPAListBean")
 @Scope("view")
-public class RemuneracaoTrabalhadorLislBean implements Serializable {
+public class RemuneracaoTrabalhadorRGPALislBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorLislBean.class);
+	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorRGPALislBean.class);
 
 	@Autowired
 	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorESocialTCEService;
@@ -62,7 +62,7 @@ public class RemuneracaoTrabalhadorLislBean implements Serializable {
 
 			try {
 	
-				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, false );
+				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, true );
 	
 				if (count == 0) {
 					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -178,7 +178,7 @@ public class RemuneracaoTrabalhadorLislBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(remuneracaoTrabalhadorESocialTCEService.search(this.nome, this.cpf, anoReferencia, mesReferencia, false, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(remuneracaoTrabalhadorESocialTCEService.search(this.nome, this.cpf, anoReferencia, mesReferencia, true, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

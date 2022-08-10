@@ -31,11 +31,14 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 
 	public InfoRemuneracaoPeriodoApuracao salvar(InfoRemuneracaoPeriodoApuracao entidade) {
 
-		if (entidade.getId() == null || entidade.getId().equals(0l)) {
-			entidade.setId(getMaxId());
+		if (entidade.getId() == null || entidade.getId() < 0) {
+			entityManager.persist(entidade);
 		}
-
-		return entityManager.merge(entidade);
+		else {
+			entityManager.merge(entidade);
+		}
+		
+		return entidade;
 	}
 
 	public void excluir(InfoRemuneracaoPeriodoApuracao entidade) {
@@ -74,11 +77,11 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 		sql.append(" ( ROWNUM * -1) as id, "); 
 		sql.append(" :idDmDev as IDDMDEV,  ");		
 		sql.append(" 1 as TP_INSC,  ");
-		sql.append(" '09499757'  as NR_INSC,  ");
+		sql.append(" '09499757000146'  as NR_INSC,  ");
 		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 		 
 		sql.append("  0||dp.cod_func as matricula,  ");
 		sql.append(" null as IND_SIMPLES,  ");
-		sql.append("  null as GRAU_EXP  ");
+		sql.append("  1 as GRAU_EXP  ");
 		  
 		sql.append(" FROM srh.fp_pagamentos pg ");
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");

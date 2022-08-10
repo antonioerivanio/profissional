@@ -34,27 +34,31 @@ public class InfoRemuneracaoPeriodoApuracaoService{
 	}	
 	
 	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracao(String mesReferencia, String anoReferencia, List<DemonstrativosDeValores> demonstrativosDeValoresList, Long idFuncional) {
-		List<InfoRemuneracaoPeriodoApuracao> InfoRemuneracaoPeriodoApuracaoListReturn = new ArrayList<InfoRemuneracaoPeriodoApuracao>();
+		List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoListReturn = new ArrayList<InfoRemuneracaoPeriodoApuracao>();
 		
 		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
 			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
 				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(0)) {
-					List<InfoRemuneracaoPeriodoApuracao> InfoRemuneracaoPeriodoApuracaoList = dao.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional);
-					InfoRemuneracaoPeriodoApuracaoListReturn.addAll(InfoRemuneracaoPeriodoApuracaoList);
-					if(InfoRemuneracaoPeriodoApuracaoList != null && !InfoRemuneracaoPeriodoApuracaoList.isEmpty()) {
-						demonstrativosDeValores.setInfoRemuneracaoPeriodoApuracao(InfoRemuneracaoPeriodoApuracaoList.get(0));
+					List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoList = dao.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional);
+					demonstrativosDeValores.setInfoPerApur(infoRemuneracaoPeriodoApuracaoList.get(0));
+					for (InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao : infoRemuneracaoPeriodoApuracaoList) {
+						if(infoRemuneracaoPeriodoApuracao.getId() < 0) {
+							infoRemuneracaoPeriodoApuracao.setId(null);
+							infoRemuneracaoPeriodoApuracao.setDemonstrativosDeValores(demonstrativosDeValores);							
+						}
+					}
+					infoRemuneracaoPeriodoApuracaoListReturn.addAll(infoRemuneracaoPeriodoApuracaoList);
+					if(infoRemuneracaoPeriodoApuracaoList != null && !infoRemuneracaoPeriodoApuracaoList.isEmpty()) {
+						demonstrativosDeValores.setInfoRemuneracaoPeriodoApuracao(infoRemuneracaoPeriodoApuracaoList.get(0));
 					}
 				}
 				
 			}
-			for (InfoRemuneracaoPeriodoApuracao InfoRemuneracaoPeriodoApuracao : InfoRemuneracaoPeriodoApuracaoListReturn) {
-				if(InfoRemuneracaoPeriodoApuracao.getId() < 0) {
-					InfoRemuneracaoPeriodoApuracao.setId(null);
-				}
-			}
+			
 		}
 		
-		return InfoRemuneracaoPeriodoApuracaoListReturn;
+		
+		return infoRemuneracaoPeriodoApuracaoListReturn;
 	}
 
 	@Transactional
@@ -67,6 +71,42 @@ public class InfoRemuneracaoPeriodoApuracaoService{
 
 	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracaoByIdfuncional(Long idFuncional) {
 		return dao.findInfoRemuneracaoPeriodoApuracaoByIdfuncional(idFuncional);
+	}
+
+	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracaoRPA( List<DemonstrativosDeValores> demonstrativosDeValoresList, Long idPrestador) {
+		List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoListReturn = new ArrayList<InfoRemuneracaoPeriodoApuracao>();
+		
+		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
+			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
+				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(0)) {
+					InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao = geraInfoRemuneracaoPeriodoApuracaoRPA( demonstrativosDeValores, idPrestador);
+					demonstrativosDeValores.setInfoPerApur(infoRemuneracaoPeriodoApuracao);
+					infoRemuneracaoPeriodoApuracao.setDemonstrativosDeValores(demonstrativosDeValores);	
+					infoRemuneracaoPeriodoApuracaoListReturn.add(infoRemuneracaoPeriodoApuracao);
+				}
+				
+			}
+					
+					
+			
+		}
+		
+		
+		return infoRemuneracaoPeriodoApuracaoListReturn;
+	}
+
+	private InfoRemuneracaoPeriodoApuracao geraInfoRemuneracaoPeriodoApuracaoRPA(
+			DemonstrativosDeValores demonstrativosDeValores, Long idPrestador) {
+		
+		InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao = new InfoRemuneracaoPeriodoApuracao();
+		infoRemuneracaoPeriodoApuracao.setId(null);
+		infoRemuneracaoPeriodoApuracao.setDemonstrativosDeValores(demonstrativosDeValores);
+		infoRemuneracaoPeriodoApuracao.setCodLotacao("LOTACAO-BASICA");
+		infoRemuneracaoPeriodoApuracao.setNrInsc("09499757000146");
+		infoRemuneracaoPeriodoApuracao.setTpInsc(new Byte("1"));
+		infoRemuneracaoPeriodoApuracao.setGrauEX(new Byte("1"));
+		
+		return infoRemuneracaoPeriodoApuracao;
 	}
 
 	

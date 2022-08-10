@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.service.PessoalService;
@@ -428,24 +429,7 @@ public class FuncionalDAO {
 	@SuppressWarnings("unchecked")
 	public List<Funcional> findServidoresEvento1200(String anoReferencia, String mesReferencia) {
 			
-		
-		/*try {
-			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
-					+ "FROM Funcional f "
-					+ "WHERE f.id IN (:idsFuncional) "				 					
-					+ "AND f.id  NOT IN (SELECT r.funcional.id FROM RemuneracaoTrabalhador r where r.referencia like :referencia) "
-					+ "ORDER BY f.nome", Funcional.class);
-			 
-			 
-			query.setParameter("referencia", "%" + anoReferencia+mesReferencia + "%");
-			query.setParameter("idsFuncional", findIdFuncional1200(anoReferencia, mesReferencia));
-			return query.getResultList();
-		} catch (NoResultException e) {
-			return null;
-		}*/
 		StringBuffer sql = new StringBuffer();
-
-		
 
 		sql.append(" select distinct f.ID, f.IDPESSOAL, f.IDORGAOORIGEM, f.IDSETOR, f.IDOCUPACAO, f.IDCLASSEREFERENCIA,   ");
 		sql.append(" f.idespecialidadecargo, f.idorientacaocargo, f.IDTIPOMOVIMENTOENTRADA, f.IDTIPOMOVIMENTOSAIDA, ");
@@ -484,6 +468,34 @@ public class FuncionalDAO {
 					+ "AND f.id  NOT IN (SELECT e.funcional.id FROM EstagiarioESocial e) "
 					+ "ORDER BY f.nome", Funcional.class);
 			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<CadastroPrestador> findRGPAEvento1200(String anoReferencia, String mesReferencia) {
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("select   ");
+		sql.append("fp_cadastroprestador.idprestador,  "); 
+		sql.append("fp_dadospagtoprestador.nome,  ");
+		//sql.append("fp_cadastroprestador.cpf,  ");
+		sql.append("translate(fp_cadastroprestador.cpf,' .-', ' ') as cpf, ");
+		sql.append("fp_cadastroprestador.datanascimento,   ");
+		sql.append("fp_dadospagtoprestador.novocbo  ");
+		
+		sql.append("from fp_dadospagtoprestador   ");
+		sql.append("inner join fp_cadastroprestador on fp_dadospagtoprestador.idprestador = fp_cadastroprestador.idprestador   ");
+		sql.append("where to_char(data_np,'yyyymm') = '"+anoReferencia+mesReferencia+"'  ");
+		sql.append("order by fp_dadospagtoprestador.data_np, fp_dadospagtoprestador.nome  ");
+	
+		
+		try {
+			Query query = entityManager.createNativeQuery(sql.toString(), CadastroPrestador.class);
+			
+			return  query.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}

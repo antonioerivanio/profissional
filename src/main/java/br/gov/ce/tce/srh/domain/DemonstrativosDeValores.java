@@ -3,12 +3,17 @@ package br.gov.ce.tce.srh.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -18,13 +23,15 @@ import javax.persistence.Transient;
 public class DemonstrativosDeValores  extends BasicEntity<Long> implements Serializable, Cloneable {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_DMDEV")
+	@SequenceGenerator(name="SEQ_DMDEV", sequenceName="SEQ_DMDEV", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
 	@Column(name = "ID")	
 	private Long id;
 	
 	@Column(name = "IDE_DM_DEV")
 	private String ideDmDev;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "IDREMUNERACAOTRABALHADOR")
 	private RemuneracaoTrabalhador remuneracaoTrabalhador;
 	
@@ -42,6 +49,12 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	
 	@Column(name="FLINFOREMUNPERANTERIORES")
 	private Integer flInfoRemunPerAnteriores;
+	
+	@OneToOne(mappedBy = "demonstrativosDeValores", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private InfoRemuneracaoPeriodoApuracao infoPerApur;
+	
+	@OneToOne(mappedBy = "demonstrativosDeValores", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private InfoRemuneracaoPeriodoAnteriores infoPerAnt;
 	
 	@Transient
 	private InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores;
@@ -138,6 +151,22 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 
 	public void setInfoRemuneracaoPeriodoApuracao(InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao) {
 		this.infoRemuneracaoPeriodoApuracao = infoRemuneracaoPeriodoApuracao;
+	}
+	
+	public InfoRemuneracaoPeriodoApuracao getInfoPerApur() {
+		return infoPerApur;
+	}
+
+	public void setInfoPerApur(InfoRemuneracaoPeriodoApuracao infoPerApur) {
+		this.infoPerApur = infoPerApur;
+	}
+
+	public InfoRemuneracaoPeriodoAnteriores getInfoPerAnt() {
+		return infoPerAnt;
+	}
+
+	public void setInfoPerAnt(InfoRemuneracaoPeriodoAnteriores infoPerAnt) {
+		this.infoPerAnt = infoPerAnt;
 	}
 
 	@Override

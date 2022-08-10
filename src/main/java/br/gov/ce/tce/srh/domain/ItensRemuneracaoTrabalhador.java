@@ -5,27 +5,31 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_INFOREMUNPERANTERIORES", schema=DatabaseMetadata.SCHEMA_SRH)
+@Table(name = "ESOCIAL_ITENSREMUNERACAOTRAB", schema=DatabaseMetadata.SCHEMA_SRH)
 public class ItensRemuneracaoTrabalhador extends BasicEntity<Long> implements Serializable, Cloneable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_ITENSREMUNERACAOTRAB")
+	@SequenceGenerator(name="SEQ_ITENSREMUNERACAOTRAB", sequenceName="SEQ_ITENSREMUNERACAOTRAB", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
 	@Column(name = "ID")	
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "IDINFOREMUNPERAPUR")
 	private InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "IDINFOREMUNPERANTERIORES")
 	private InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores;
 	

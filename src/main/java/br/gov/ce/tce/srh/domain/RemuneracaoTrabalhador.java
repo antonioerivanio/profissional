@@ -1,19 +1,25 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import org.hibernate.validator.constraints.Length;
 
 
 @Entity
@@ -22,12 +28,18 @@ import org.hibernate.validator.constraints.Length;
 public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Serializable, Cloneable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_REMUNERACAOTRABALHADOR")
+	@SequenceGenerator(name="SEQ_REMUNERACAOTRABALHADOR", sequenceName="SEQ_REMUNERACAOTRABALHADOR", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
 	@Column(name = "ID")	
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "IDFUNCIONAL")
 	private Funcional funcional;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "IDPRESTADOR")
+	private CadastroPrestador cadastroPrestador;
 	
 	@Column(name = "REFERENCIA")
 	private String referencia;
@@ -53,6 +65,12 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 	@Column(name = "DT_NASCTO")
 	@Temporal(TemporalType.DATE)
 	private Date dtNascto;
+	
+	@OneToMany(mappedBy = "remuneracaoTrabalhador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<RemuneracaoOutraEmpresa> remunOutrEmpr = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "remuneracaoTrabalhador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<DemonstrativosDeValores> dmDev = new ArrayList<>();
 	
 	
 	public Long getId() {
@@ -134,6 +152,30 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 
 	public void setNmTrabDesc(String nmTrabDesc) {
 		this.nmTrabDesc = nmTrabDesc;
+	}	
+
+	public List<RemuneracaoOutraEmpresa> getRemunOutrEmpr() {
+		return remunOutrEmpr;
+	}
+
+	public void setRemunOutrEmpr(List<RemuneracaoOutraEmpresa> remunOutrEmpr) {
+		this.remunOutrEmpr = remunOutrEmpr;
+	}
+
+	public List<DemonstrativosDeValores> getDmDev() {
+		return dmDev;
+	}
+
+	public void setDmDev(List<DemonstrativosDeValores> dmDev) {
+		this.dmDev = dmDev;
+	}
+	
+	public CadastroPrestador getCadastroPrestador() {
+		return cadastroPrestador;
+	}
+
+	public void setCadastroPrestador(CadastroPrestador cadastroPrestador) {
+		this.cadastroPrestador = cadastroPrestador;
 	}
 
 	@Override

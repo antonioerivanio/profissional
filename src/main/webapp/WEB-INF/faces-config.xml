@@ -1251,5 +1251,25 @@
 			<to-view-id>/paginas/funcional/gtrList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- Remuneracao Trabalhador eSocial/TCE RGPA-->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoTrabalhadorRGPAList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoTrabalhadorRGPAList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoTrabalhadorRGPAForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoTrabalhadorRGPAForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoTrabalhadorRGPAList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

@@ -31,10 +31,13 @@ public class RemuneracaoOutraEmpresaDAO {
 	public RemuneracaoOutraEmpresa salvar(RemuneracaoOutraEmpresa entidade) {
 
 		if (entidade.getId() == null || entidade.getId() < 0) {
-			entidade.setId(getMaxId());
+			entityManager.persist(entidade);
 		}
-
-		return entityManager.merge(entidade);
+		else {
+			entityManager.merge(entidade);
+		}
+		
+		return entidade;
 	}
 
 	public void excluir(RemuneracaoOutraEmpresa entidade) {
@@ -79,8 +82,8 @@ public class RemuneracaoOutraEmpresaDAO {
 		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
 		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
 		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
-		sql.append(" LEFT JOIN srh.tb_vinculorgps v ON v.idfuncional = f.id ");
-		sql.append(" LEFT JOIN srh.tb_pessoajuridica pj ON pj.id = v.idpessoajuridica ");
+		sql.append(" INNER JOIN srh.tb_vinculorgps v ON v.idfuncional = f.id ");
+		sql.append(" INNER JOIN srh.tb_pessoajuridica pj ON pj.id = v.idpessoajuridica ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia");
 		sql.append(" AND dp.contribui_inss = 'S' ");
@@ -100,6 +103,47 @@ public class RemuneracaoOutraEmpresaDAO {
 		Query query = entityManager.createQuery("Select e from RemuneracaoOutraEmpresa e where e.remuneracaoTrabalhador.funcional.id = :idFuncional", RemuneracaoOutraEmpresa.class);
 		query.setParameter("idFuncional",idFuncional);
 		return query.getResultList();
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	public List<RemuneracaoOutraEmpresa> findRemuneracaoOutraEmpresaRPA(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idPrestador) {
+		Query query = entityManager.createNativeQuery(getSQLRemuneracaoOutraEmpresaRPA(idPrestador), RemuneracaoOutraEmpresa.class);
+		query.setParameter("competencia", anoReferencia+mesReferencia);
+		
+		if(idRemuneracaoTrabalhador != null && idRemuneracaoTrabalhador > 0 ) {
+			query.setParameter("idRemuneracaoTrabalhador", idRemuneracaoTrabalhador);
+		}
+		else {
+			query.setParameter("idRemuneracaoTrabalhador", null);
+		}
+		query.setParameter("idPrestador",idPrestador );
+		return query.getResultList();
+	}
+
+	
+	public String getSQLRemuneracaoOutraEmpresaRPA(Long idPrestador) {
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append("SELECT     ");   
+		sql.append("( ROWNUM * -1) as id,   "); 
+		sql.append(":idRemuneracaoTrabalhador as IDREMUNERACAOTRABALHADOR,   "); 
+		sql.append("1 as TP_INSC_OUTR_EMPR,   "); 
+		sql.append("vp.cnpj as NR_INSC_OUTR_EMPR,   "); 
+		sql.append("vp.codigocategoria as COD_CATEG_OUTR_EMPR,  ");  
+		sql.append("vp.remuneracao as VLR_REMUN_OE   "); 
+		 
+		sql.append("from FP_VINCULORGPSPRESTADOR vp   "); 
+		sql.append("where vp.competencia = :competencia  "); 
+		 
+		 if(idPrestador != null) {
+			 sql.append("AND vp.idprestador = :idPrestador   "); 
+		}
+		//sql.append("ORDER BY dp.nome   "); 
+		
+		
+	    
+	    return sql.toString();
 	}
 
 }

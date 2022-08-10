@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
-import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
 
 @Repository
@@ -32,11 +31,14 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 
 	public InfoRemuneracaoPeriodoAnteriores salvar(InfoRemuneracaoPeriodoAnteriores entidade) {
 
-		if (entidade.getId() == null || entidade.getId().equals(0l)) {
-			entidade.setId(getMaxId());
+		if (entidade.getId() == null || entidade.getId() < 0) {
+			entityManager.persist(entidade);
 		}
-
-		return entityManager.merge(entidade);
+		else {
+			entityManager.merge(entidade);
+		}
+		
+		return entidade;
 	}
 
 	public void excluir(InfoRemuneracaoPeriodoAnteriores entidade) {
@@ -78,13 +80,13 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 		sql.append(" 'B' as TP_AC_CONV,  ");
 		sql.append(" null as DSC,  ");
 		sql.append(" 'N'  as REMUN_SUC,  ");
-		sql.append(" ano_esocial||dp.num_mes as PER_REF,  ");
+		sql.append(" ano_esocial||'-'||dp.num_mes as PER_REF,  ");
 		sql.append(" 1 as TP_INSC,  ");
-		sql.append(" '09499757'  as NR_INSC,  ");
+		sql.append(" '09499757000146'  as NR_INSC,  ");
 		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 		 
 		sql.append("  0||dp.cod_func as matricula,  ");
 		sql.append(" null as IND_SIMPLES,  ");
-		sql.append("  null as GRAU_EXP  ");
+		sql.append("  1 as GRAU_EXP  ");
 		  
 		sql.append(" FROM srh.fp_pagamentos pg ");
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
