@@ -36,12 +36,12 @@ public class FuncionalCedidoServiceImpl implements FuncionalCedidoService {
 	 */
 	@Override
 	public boolean isOk(FuncionalCedido entidade) {
-		if(entidade.getFuncional().getRegimeTrabalhistaIsnull()) {
+		if(entidade.getTpRegTrab() == null) {
 			FacesUtil.addErroMessage("Regime Trabalhista é obrigatório!");
 			return Boolean.FALSE;
 		}
 		
-		if(entidade.getFuncional().getRegimePrevidenciarioIsnull()) {
+		if(entidade.getTpRegPrev() == null) {
 			FacesUtil.addErroMessage("Regime Previdênciario é obrigatório!");
 			return Boolean.FALSE;
 		}
