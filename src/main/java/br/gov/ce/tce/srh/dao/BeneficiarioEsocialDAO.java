@@ -129,9 +129,9 @@ public class BeneficiarioEsocialDAO {
     String dataLimiteEsocial = "";
     
     if (ambienteService.ambiente().isProducao()) {
-      dataLimiteEsocial = "21/11/2021";
+      dataLimiteEsocial = "22/11/2021";
     } else {
-      dataLimiteEsocial = "30/04/2020";
+      dataLimiteEsocial = "01/05/2020";
     }
 
     StringBuffer sql = new StringBuffer();
@@ -156,7 +156,7 @@ public class BeneficiarioEsocialDAO {
     // sql.append(" c.atoaposentadoria as DT_INICIO, ");
 
     sql.append(" CASE  ");
-    sql.append(" WHEN c.atoaposentadoria  > TO_DATE('" + dataLimiteEsocial + "', 'dd/mm/yyyy') THEN c.atoaposentadoria  ");
+    sql.append(" WHEN c.atoaposentadoria  >= TO_DATE('" + dataLimiteEsocial + "', 'dd/mm/yyyy') THEN c.atoaposentadoria  ");
     sql.append(" ELSE TO_DATE('" + dataLimiteEsocial + "', 'dd/mm/yyyy') ");
     sql.append(" END as DT_INICIO, ");
 

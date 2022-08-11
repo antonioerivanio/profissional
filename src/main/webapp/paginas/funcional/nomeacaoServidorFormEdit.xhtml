@@ -430,7 +430,7 @@
 							enableManualInput="true"
 							defaultLabel="Selecione..."	
 							clientFilterFunction="customFilter"
-							listWidth="500"
+							listWidth="550"
 							id="instituicaoEncino"
 							converter="entityConverter" 							
 							value="#{nomeacaoServidorFormBean.entidade.pessoaJuridica}">							
@@ -439,7 +439,7 @@
 								value="#{nomeacaoServidorFormBean.comboEmpresasCadastradas}"
 					  			var="instituicao"
 					  			itemValue="#{instituicao}"
-					  			itemLabel="#{instituicao.razaoSocial}"/>
+					  			itemLabel="#{instituicao.nomeFantasia}"/>
 						</rich:select>
 				</div>
 			</div>				
