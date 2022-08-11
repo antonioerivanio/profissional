@@ -90,7 +90,7 @@ public class EstatutarioESocialDAO {
 		sql.append("	5 AS UND_SAL_FIXO, ");
 		sql.append("	tb_funcional.datasaida AS DT_TERMINO, ");
 		sql.append("	tb_funcionalcedidos.codigocategoria AS CATEG_ORIG, ");
-		sql.append("	TB_PESSOAJURIDICA.cnpj AS CNPJ_CEDNT, ");
+		sql.append("	TRIM (TB_PESSOAJURIDICA.cnpj) AS CNPJ_CEDNT, ");
 		sql.append("	tb_funcionalcedidos.matriculaorigem AS MATRIC_CED, ");
 		sql.append("	tb_funcionalcedidos.dataorigemadmissao AS DT_ADM_CED, ");
 		sql.append("	tb_funcionalcedidos.tiporegtrab AS TP_REG_TRAB, ");

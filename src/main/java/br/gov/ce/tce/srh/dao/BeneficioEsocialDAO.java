@@ -8,10 +8,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Beneficio;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
@@ -21,6 +23,8 @@ public class BeneficioEsocialDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	@Autowired
+	private AmbienteService ambienteService;
 
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
@@ -120,6 +124,15 @@ public class BeneficioEsocialDAO {
 	}	
 	
 	public String getSQLEventoS2410() {
+		
+		
+		String dataLimiteEsocial="";
+		if(ambienteService.ambiente().isProducao()) {
+			dataLimiteEsocial = "21/11/2021";
+		}
+		else {
+			dataLimiteEsocial = "31/04/2020";
+		}
 		StringBuffer sql = new StringBuffer();
 
 		sql.append(" SELECT    ");
@@ -130,7 +143,7 @@ public class BeneficioEsocialDAO {
 		sql.append("  f.matricula AS MATRICULA, ");
 		sql.append(" NULL AS CNPJ_ORIGEM, ");
 		sql.append(" CASE  ");
-		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN 'N'  ");
+		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N'  ");
 		sql.append(" ELSE 'S' ");
 		sql.append(" END AS CAD_INI, ");
 		sql.append(" NULL AS INC_SIT_BENEF, ");
@@ -139,15 +152,15 @@ public class BeneficioEsocialDAO {
 		//sql.append(" a.datainiciobeneficio AS DT_INI_BENEFICIO, ");
 		
 		sql.append(" CASE  ");
-		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN a.datainiciobeneficio  ");
-		sql.append(" ELSE TO_DATE('21/11/2021', 'dd/mm/yyyy') ");
+		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN a.datainiciobeneficio  ");
+		sql.append(" ELSE TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') ");
 		sql.append(" END AS DT_INI_BENEFICIO, ");		
 		sql.append("  a.datapublicacaoato AS DT_PUBLIC, ");
 		sql.append("  '0101' AS TP_BENEFICIO, ");
 		sql.append(" 2 AS TP_PLAN_RP, ");
 		sql.append("  NULL AS DSC, ");
 		sql.append("  CASE  ");
-		sql.append("  WHEN a.datainiciobeneficio > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN 'N' ");
+		sql.append("  WHEN a.datainiciobeneficio > TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N' ");
 		sql.append("  ELSE NULL ");
 		sql.append("  END AS IND_DEC_JUD, ");
 		sql.append(" NULL AS TP_PEN_MORTE, ");

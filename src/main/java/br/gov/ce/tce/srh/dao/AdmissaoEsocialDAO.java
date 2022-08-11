@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Admissao;
-import br.gov.ce.tce.srh.domain.Cbo;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -126,6 +125,14 @@ public class AdmissaoEsocialDAO {
 	
 	public String getSQLEventoS2200(boolean possuiCargo) {
 		StringBuffer sql = new StringBuffer();
+		String dataLimiteEsocial="";
+		
+		if(ambienteService.ambiente().isProducao()) {
+			dataLimiteEsocial = "21/11/2021";
+		}
+		else {
+			dataLimiteEsocial = "28/02/2017";
+		}
 
 		sql.append(" SELECT ");
 		sql.append(" * ");
@@ -164,18 +171,10 @@ public class AdmissaoEsocialDAO {
 		sql.append("  1     AS LTRAB_GERAL_TP_INSC, ");
 		sql.append(" '09499757000146' AS LTRAB_GERAL_NR_INSC, ");
 		sql.append("  NULL  AS LTRAB_GERAL_DESC_COMP, ");
-		
-		if(ambienteService.ambiente().isProducao()) {
-			sql.append("  CASE ");
-			sql.append("  WHEN c.exercicio > TO_DATE('21/11/2021', 'dd/mm/yyyy') THEN 'N' ");
-			sql.append("  ELSE 'S' ");
-			sql.append(" END AS cad_ini, ");
-		}else {
-			sql.append("  CASE ");
-			sql.append("  WHEN c.exercicio > TO_DATE('28/02/2017', 'dd/mm/yyyy') THEN 'N' ");
-			sql.append("  ELSE 'S' ");
-			sql.append(" END AS cad_ini, ");			
-		}
+		sql.append("  CASE ");
+		sql.append("  WHEN c.exercicio > TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N' ");
+		sql.append("  ELSE 'S' ");
+		sql.append(" END AS cad_ini, ");
 		sql.append("  c.exercicio AS dt_exercicio, ");
 		sql.append("  CASE o.id ");
 		sql.append("   WHEN 33 THEN 2 ");
