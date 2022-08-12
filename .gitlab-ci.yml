@@ -35,7 +35,8 @@ project_build_and_test:
     MAVEN_SPRING_PROFILE_ACTIVE: ${MAVEN_SPRING_PROFILE_ACTIVE}
   before_script:
     # Seleção do perfil apropriado antes do build
-    - sed -i "s|application.properties|application-${MAVEN_SPRING_PROFILE_ACTIVE}.properties|g" $(find . -name "applicationContext.xml")
+    - grep -lriF "application.properties" src/ | xargs sed -i "s|application.properties|application-${MAVEN_SPRING_PROFILE_ACTIVE}.properties|"; \
+    - sed -i "s|<base-name>application</base-name>|<base-name>application-${MAVEN_SPRING_PROFILE_ACTIVE}</base-name>|" $(find ./src -name "faces-config.xml"); \
   needs: []
 
 

@@ -13,7 +13,8 @@ COPY src ./src
 
 RUN set -eux; \
     # Seleção do perfil correto
-    sed -i "s|application.properties|application-local.properties|g" $(find ./src -name "applicationContext.xml"); \
+    grep -lriF "application.properties" src/ | xargs sed -i "s|application.properties|application-kubernetes.properties|"; \
+    sed -i "s|<base-name>application</base-name>|<base-name>application-kubernetes</base-name>|" $(find ./src -name "faces-config.xml"); \
     mvn ${MAVEN_CLI_OPTS} clean package
 
 
