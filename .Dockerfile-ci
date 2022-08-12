@@ -40,8 +40,8 @@ FROM ${REGISTRY_ADRESS}/devops/docker/tomcat:7.0-openjdk8-jre-alpine
 
 ARG SERVER_CONFIG_FILE=server.xml
 ARG SSL_KEY_STORE_DEFAULT_PATH
-
-ENV SSL_KEY_STORE_DEFAULT_PATH=${SSL_KEY_STORE_DEFAULT_PATH}
+# Para evitar uso de cache
+ARG CACHEBUST=1
 
 # Cópia do keystore a partir do estágio "keystore"
 COPY --from=keystore --chown=${TOMCAT_USER}:${TOMCAT_GROUP} /tmp/keystore.p12 ${SSL_KEY_STORE_DEFAULT_PATH}
@@ -52,7 +52,9 @@ RUN set -eux; \
     # Configuração da permissão apropriada para o arquivo de configuração
     chmod 600 conf/${SERVER_CONFIG_FILE}; \
     # Remoção do conteúdo default do Tomcat do path webapps
-    rm -rf ${TOMCAT_HOME_DIR}/webapps/ROOT
+    rm -rf webapps/ROOT/*; \
+    # Configurando redirecionamento de / para /project_name
+    echo "<% response.sendRedirect(\"/srh\"); %>" > webapps/ROOT/index.jsp
 
 # Cópia do arquivo .war, gerado no job project_release da pipeline
 COPY --chown=${TOMCAT_USER}:${TOMCAT_GROUP} target/*.war ${TOMCAT_HOME_DIR}/webapps/srh.war
