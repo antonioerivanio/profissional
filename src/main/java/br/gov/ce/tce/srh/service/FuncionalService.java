@@ -157,5 +157,9 @@ public class FuncionalService {
 	public List<CadastroPrestador> findRGPAEvento1200(String anoReferencia, String mesReferencia) {
 		return dao.findRGPAEvento1200(anoReferencia, mesReferencia);
 	}
+
+	public List<Funcional> findEstagiarioEvento1200(String anoReferencia, String mesReferencia) {
+		return dao.findEstagiarioEvento1200(anoReferencia, mesReferencia);
+	}
 	
 }

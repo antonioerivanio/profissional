@@ -22,11 +22,11 @@ import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
-@Component("remuneracaoTrabalhadorRGPAListBean")
+@Component("remuneracaoEstagiarioListBean")
 @Scope("view")
-public class RemuneracaoTrabalhadorRGPALislBean implements Serializable {
+public class RemuneracaoEstagiarioListBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorRGPALislBean.class);
+	static Logger logger = Logger.getLogger(RemuneracaoEstagiarioListBean.class);
 
 	@Autowired
 	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorESocialTCEService;
@@ -62,7 +62,7 @@ public class RemuneracaoTrabalhadorRGPALislBean implements Serializable {
 
 			try {
 	
-				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, true );
+				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, false );
 	
 				if (count == 0) {
 					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");

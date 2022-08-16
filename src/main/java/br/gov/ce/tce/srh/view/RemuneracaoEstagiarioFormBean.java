@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
@@ -31,11 +32,11 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
-@Component("remuneracaoServidorFormBean")
+@Component("remuneracaoEstagiarioFormBean")
 @Scope("view")
-public class RemuneracaoTrabalhadorFormBean implements Serializable {
+public class RemuneracaoEstagiarioFormBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorFormBean.class);
+	static Logger logger = Logger.getLogger(RemuneracaoEstagiarioFormBean.class);
 
 	@Autowired
 	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorEsocialService;	
@@ -57,7 +58,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	// entidades das telas
 	private List<Funcional> servidorEnvioList;
 	private List<Integer> comboAno;
-	private Funcional servidorFuncional;
+	private CadastroPrestador servidorFuncional;
 	private RemuneracaoTrabalhador entidade = new RemuneracaoTrabalhador();
 	private RemuneracaoTrabalhador remuneracaoTrabalhadorAnterior = new RemuneracaoTrabalhador();
 	boolean emEdicao = false;
@@ -79,7 +80,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 		RemuneracaoTrabalhador flashParameter = (RemuneracaoTrabalhador)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new RemuneracaoTrabalhador());
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			servidorFuncional = getEntidade().getFuncional();
+			servidorFuncional = getEntidade().getCadastroPrestador();
 			remuneracaoTrabalhadorAnterior = entidade;
 			String[] referencia = entidade.getPerApur().split("-");			
 			anoReferencia = referencia[0];
@@ -90,17 +91,16 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
     }	
 	
 	public void carregaServidores() {
-		this.servidorEnvioList = funcionalService.findServidoresEvento1200(anoReferencia, mesReferencia);
+		this.servidorEnvioList = funcionalService.findEstagiarioEvento1200(anoReferencia, mesReferencia);
 	}
 	public void consultar() {
 		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("") && servidorFuncional != null) {
 			try {
-				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200(mesReferencia, anoReferencia, servidorFuncional);
-				remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
-				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValores(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
-				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
-				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
-				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
+				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200RPA(mesReferencia, anoReferencia, servidorFuncional);
+				remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresaRPA(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
+				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresRPA(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());				
+				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracaoRPA( demonstrativosDeValoresList, servidorFuncional.getId());
+				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValoresRPA(mesReferencia, anoReferencia,demonstrativosDeValoresList);
 				
 				entidade.setDmDev(demonstrativosDeValoresList);
 				entidade.setRemunOutrEmpr(remuneracaoOutraEmpresaList);
@@ -170,6 +170,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	public RemuneracaoTrabalhador getEntidade() {return entidade;}
 	public void setEntidade(RemuneracaoTrabalhador entidade) {this.entidade = entidade;}
 
+	
 	public List<Funcional> getServidorEnvioList() {
 		return servidorEnvioList;
 	}
@@ -178,15 +179,14 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 		this.servidorEnvioList = servidorEnvioList;
 	}
 
-	public Funcional getServidorFuncional() {
+	public CadastroPrestador getServidorFuncional() {
 		return servidorFuncional;
 	}
 
-	public void setServidorFuncional(Funcional servidorFuncional) {
+	public void setServidorFuncional(CadastroPrestador servidorFuncional) {
 		this.servidorFuncional = servidorFuncional;
-	}	
+	}
 
-	
 	public String getAnoReferencia() {
 		return anoReferencia;
 	}

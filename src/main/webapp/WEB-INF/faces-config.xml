@@ -1271,5 +1271,25 @@
 			<to-view-id>/paginas/tabelas/remuneracaoTrabalhadorRGPAList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- Remuneracao Trabalhador eSocial/TCE Estagiários-->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoEstagiarioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoEstagiarioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoEstagiarioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoEstagiarioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoEstagiarioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>
