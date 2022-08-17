@@ -260,13 +260,13 @@ public class AdmissaoEsocialDAO {
 		sql.append(" INNER JOIN srh.esocial_tipologradouro tl ON p.tipologradouro = tl.id ");
 		sql.append(" INNER JOIN srh.tb_municipio m ON p.municipioendereco = m.id ");
 		//sql.append(" LEFT JOIN srh.tb_representacaofuncional rf ON rf.idfuncional = f.id ");
-		sql.append(" LEFT JOIN srh.tb_representacaofuncional rf ON rf.id in  (select id from srh.tb_representacaofuncional where idfuncional = :idFuncional and fim IS NULL) ");
+		sql.append(" LEFT JOIN srh.tb_representacaofuncional rf ON rf.id in  (select id from srh.tb_representacaofuncional where idfuncional = :idFuncional and fim IS NULL and rf.tiponomeacao = 1) ");
 		sql.append(" LEFT JOIN srh.tb_representacaocargo rc ON rf.idrepresentacaocargo = rc.id ");
 		sql.append(" LEFT JOIN srh.tb_funcionaldeficiencia fd ON fd.idfuncional = f.id	 ");		
 		sql.append(" WHERE f.id = :idFuncional ");
-		if(possuiCargo) {
-			sql.append(" and (rf.tiponomeacao = 1 AND rf.fim IS NULL) ");
-		}
+        /*
+         * if(possuiCargo) { sql.append(" and (rf.tiponomeacao = 1 AND rf.fim IS NULL) "); }
+         */
 	    sql.append(" ) ");
 	    
 	    return sql.toString();

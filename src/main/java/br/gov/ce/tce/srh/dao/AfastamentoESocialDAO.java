@@ -84,7 +84,7 @@ public class AfastamentoESocialDAO {
 		sql.append("tb_pessoal.cpf AS CPF_TRAB, ");
 		sql.append("tb_funcional.matricula AS MATRICULA, ");
 		sql.append("tb_licenca.inicio AS DT_INI_AFAST, ");
-		sql.append("tb_tipolicenca.id AS COD_MOT_AFAST, ");
+		sql.append("TO_CHAR(tb_tipolicenca.id,'09') AS COD_MOT_AFAST, ");
 		sql.append("tb_tipolicenca.descricao AS OBSERVACAO, ");
 		sql.append("tb_licenca.fim AS DT_TERM_AFAST ");
 		sql.append("FROM   srh.tb_licenca ");
@@ -97,7 +97,7 @@ public class AfastamentoESocialDAO {
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
 		sql.append("WHERE  tb_funcional.id = :idFuncional  ");
-		          
+	    
 		return sql;
 	}
 	
