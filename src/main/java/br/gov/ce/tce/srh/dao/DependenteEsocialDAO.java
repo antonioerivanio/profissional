@@ -74,7 +74,7 @@ public class DependenteEsocialDAO {
 		sql.append(" INNER JOIN srh.tb_pessoal ON srh.tb_dependente.idpessoaldep = srh.tb_pessoal.id ");
 		sql.append(" INNER JOIN srh.tb_tipodependencia ON srh.tb_dependente.idtipodependencia = srh.tb_tipodependencia.id ");
 		sql.append(" INNER JOIN srh.tb_funcional ON srh.tb_funcional.idpessoal = srh.tb_dependente.idpessoalresp ");
-		sql.append(" WHERE (tb_dependente.depprev = 1 OR tb_dependente.depir = 1) ");
+		sql.append(" WHERE tb_dependente.depir = 1 "); //(tb_dependente.depprev = 1 OR tb_dependente.depir = 1)
 		sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
 	    
 	    return sql.toString();

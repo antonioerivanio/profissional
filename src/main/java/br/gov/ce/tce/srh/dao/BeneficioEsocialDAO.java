@@ -140,7 +140,7 @@ public class BeneficioEsocialDAO {
 		sql.append("  f.id idfuncional,  ");
 		sql.append("  f.id||'-'||o.id AS referencia,  ");
 		sql.append("  p.cpf as CPF_BENEF, ");
-		sql.append("  f.matricula AS MATRICULA, ");
+		sql.append("  '0'||f.matricula  AS MATRICULA, ");
 		sql.append(" NULL AS CNPJ_ORIGEM, ");
 		sql.append(" CASE  ");
 		sql.append(" WHEN a.datainiciobeneficio  >= TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N'  ");
@@ -157,7 +157,7 @@ public class BeneficioEsocialDAO {
          * sql.append(" ELSE TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') ");         
 		 * sql.append(" END AS DT_INI_BENEFICIO, ");		*/
 		sql.append("  a.datapublicacaoato AS DT_PUBLIC, ");
-		sql.append("  '0101' AS TP_BENEFICIO, ");
+		sql.append("  a.codigoesocial AS TP_BENEFICIO, ");
 		sql.append(" 2 AS TP_PLAN_RP, ");
 		sql.append("  NULL AS DSC, ");
 		sql.append("  CASE  ");
