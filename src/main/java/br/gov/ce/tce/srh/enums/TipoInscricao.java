@@ -1,40 +1,44 @@
 package br.gov.ce.tce.srh.enums;
 
 public enum TipoInscricao {
-	
-	CNPJ(1),
-	CPF(2),
-	//CAEPF(3),
-	CNO(4)/*,
-	CGC(5) */;
-	
-	private Integer codigo;
 
-	private TipoInscricao(Integer codigo) {
-		this.codigo = codigo;
-	}
+  CNPJ(1, "CNPJ"), CPF(2, "CPF"),
+  // CAEPF(3),
+  CNO(4, "CNO")/*
+                * , CGC(5)
+                */;
 
-	public Integer getCodigo() {
-		return codigo;
-	}
+  private Integer codigo;
+  private String descricao;
+  
 
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
-	}
+  private TipoInscricao(Integer codigo, String desc) {
+    this.codigo = codigo;
+    this.descricao = desc;
+  }
 
-	public static TipoInscricao getByCodigo(Integer codigo) {
+  public Integer getCodigo() {
+    return codigo;
+  }
 
-		if (codigo == null) {
-			return null;
-		}
+  public String getDescricao() {
+    return descricao;
+  }
 
-		for (TipoInscricao tipo : TipoInscricao.values()) {
-			if (codigo.equals(tipo.getCodigo())) {
-				return tipo;
-			}
-		}
 
-		throw new IllegalArgumentException("Código de Tipo de Inscrição inválido: " + codigo);
-	}
+  public static TipoInscricao getByCodigo(Integer codigo) {
+
+    if (codigo == null) {
+      return null;
+    }
+
+    for (TipoInscricao tipo : TipoInscricao.values()) {
+      if (codigo.equals(tipo.getCodigo())) {
+        return tipo;
+      }
+    }
+
+    throw new IllegalArgumentException("Código de Tipo de Inscrição inválido: " + codigo);
+  }
 
 }
