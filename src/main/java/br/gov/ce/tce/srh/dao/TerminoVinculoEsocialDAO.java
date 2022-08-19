@@ -8,15 +8,15 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import br.gov.ce.tce.srh.domain.Desligamento;
+import br.gov.ce.tce.srh.domain.TerminoVinculo;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
-public class DesligamentoEsocialDAO {
+public class TerminoVinculoEsocialDAO {
 
-  static Logger logger = Logger.getLogger(DesligamentoEsocialDAO.class);
+  static Logger logger = Logger.getLogger(TerminoVinculoEsocialDAO.class);
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -29,11 +29,11 @@ public class DesligamentoEsocialDAO {
   }
 
   private Long getMaxId() {
-    Query query = entityManager.createQuery("Select max(e.id) from Desligamento e ");
+    Query query = entityManager.createQuery("Select max(e.id) from TerminoVinculo e ");
     return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
   }
 
-  public Desligamento salvar(Desligamento entidade) {
+  public TerminoVinculo salvar(TerminoVinculo entidade) {
 
     if (entidade.getId() == null || entidade.getId().equals(0l)) {
       entidade.setId(getMaxId());
@@ -42,20 +42,20 @@ public class DesligamentoEsocialDAO {
     return entityManager.merge(entidade);
   }
 
-  public void excluir(Desligamento entidade) {
+  public void excluir(TerminoVinculo entidade) {
     entidade = entityManager.merge(entidade);
     entityManager.remove(entidade);
   }
 
-  public Desligamento getById(Long id) {
-    return entityManager.find(Desligamento.class, id);
+  public TerminoVinculo getById(Long id) {
+    return entityManager.find(TerminoVinculo.class, id);
   }
 
   public int count(String nome, String cpf) {
 
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" Select count(b) FROM Desligamento b inner join b.funcional f WHERE 1=1 ");
+    sql.append(" Select count(b) FROM TerminoVinculo b inner join b.funcional f WHERE 1=1 ");
 
     if (nome != null && !nome.isEmpty()) {
       sql.append("  and upper( f.nome ) like :nome ");
@@ -78,11 +78,11 @@ public class DesligamentoEsocialDAO {
   }
 
   @SuppressWarnings("unchecked")
-  public List<Desligamento> search(String nome, String cpf, Integer first, Integer rows) {
+  public List<TerminoVinculo> search(String nome, String cpf, Integer first, Integer rows) {
 
     StringBuffer sql = new StringBuffer();
 
-    sql.append("  SELECT b FROM Desligamento b inner join fetch b.funcional f WHERE 1=1 ");
+    sql.append("  SELECT b FROM TerminoVinculo b inner join fetch b.funcional f WHERE 1=1 ");
 
     if (nome != null && !nome.isEmpty()) {
       sql.append("  and upper( f.nome ) like :nome ");
@@ -110,51 +110,49 @@ public class DesligamentoEsocialDAO {
     return query.getResultList();
   }
 
-  public Desligamento getEventoS2299yServidor(Funcional servidorFuncional) {
+  public TerminoVinculo getEventoS2399yServidor(Funcional servidorFuncional) {
     try {
-      Query query = entityManager.createNativeQuery(getSQLEventoS2299(), Desligamento.class);
+      Query query = entityManager.createNativeQuery(getSQLEventoS2399(), TerminoVinculo.class);
       query.setParameter("idFuncional", servidorFuncional.getId());
-      return (Desligamento) query.getSingleResult();
+      return (TerminoVinculo) query.getSingleResult();
     } catch (NoResultException e) {
       return null;
     }
 
   }
 
-  public String getSQLEventoS2299() {
+  public String getSQLEventoS2399() {
     StringBuffer sql = new StringBuffer();
 
-    sql.append("SELECT ");
+    sql.append(" SELECT   ");
     sql.append("  0  AS id, ");
     sql.append("  f.id  idfuncional, ");
     sql.append("  f.id || '-' || to_char(f.datasaida, 'ddMMyyyy') AS referencia, ");
     sql.append("  p.cpf  AS cpf_trab, ");
     sql.append("  f.matricula  AS matricula, ");
-    sql.append("  null  AS mtv_deslig, ");
-    sql.append("  f.datasaida  AS dt_deslig, ");
+    sql.append("  null  AS COD_CATEGORIA, ");    
+    sql.append("  f.datasaida  AS dt_term, ");
     sql.append("  null  AS nr_proctrabalho, ");
-    sql.append("  null  AS observacao, ");
     sql.append("  1     AS tp_insc_empregador, ");
-    sql.append("  null  AS nr_insc_empregador, ");
-    sql.append("  1     AS mudanca_cpf, ");
+    sql.append("  null  AS nr_insc_empregador,  ");
     sql.append("  null  AS novo_cpf, ");
     sql.append("  null  AS cod_lotacao, ");
     sql.append("  1     AS tp_insc_lotacao, ");
     sql.append("  null  AS nr_insc_lotacao, ");
-    sql.append("  null     AS grau_exp ");
-    sql.append("FROM  srh.tb_funcional f ");
+    sql.append("  null     AS dt_fimquar ");
+    sql.append(" FROM  srh.tb_funcional f ");
     sql.append(" INNER JOIN srh.tb_pessoal   p ON f.idpessoal = p.id ");
-    sql.append("WHERE f.id = :idFuncional ");
+    sql.append(" WHERE f.id = :idFuncional ");
 
     return sql.toString();
   }
 
 
-  public Desligamento getByIdFuncional(Long idFuncional) {
+  public TerminoVinculo getByIdFuncional(Long idFuncional) {
     try {
-      Query query = entityManager.createQuery("SELECT a FROM Desligamento a where a.funcional.id = :idFuncional");
+      Query query = entityManager.createQuery("SELECT a FROM TerminoVinculo a where a.funcional.id = :idFuncional");
       query.setParameter("idFuncional", idFuncional);
-      return (Desligamento) query.getSingleResult();
+      return (TerminoVinculo) query.getSingleResult();
     } catch (NoResultException e) {
       return null;
     }

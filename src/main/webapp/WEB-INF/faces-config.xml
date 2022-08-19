@@ -1196,6 +1196,26 @@
 		</navigation-case>
 	</navigation-rule>
 	
+		<!-- Desligamento eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/terminoVinculoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/terminoVinculoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/terminoVinculoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/terminoVinculoForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/terminoVinculoList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 	<!-- Afastamento eSocial/TCE -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/afastamentoList.xhtml</from-view-id>

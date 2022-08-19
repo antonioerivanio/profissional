@@ -15,8 +15,8 @@ import javax.persistence.TemporalType;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_DESLIGAMENTO", schema = DatabaseMetadata.SCHEMA_SRH)
-public class Desligamento extends BasicEntity<Long> implements Serializable {
+@Table(name = "ESOCIAL_TERMINOVINCULO", schema = DatabaseMetadata.SCHEMA_SRH)
+public class TerminoVinculo extends BasicEntity<Long> implements Serializable {
 
   @Id
   @Column(name = "ID")
@@ -35,34 +35,24 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   @Column(name = "MATRICULA")
   private String matricula;
   
-  @Column(name = "MTV_DESLIG")
-  private String mtvDesligamento;
+  @Column(name = "COD_CATEGORIA")
+  private Integer codCategoria;
   
   @Temporal(TemporalType.DATE)
-  @Column(name = "DT_DESLIG")
+  @Column(name = "DT_TERM")
   private Date dtDesligamento;
   
   @Column(name = "NR_PROCTRABALHO")
   private String numeroProcessoTrabalhista;
-
-  @Column(name = "OBSERVACAO")
-  private String observacao;
   
   @Column(name = "TP_INSC_EMPREGADOR")
   private String tipoInscricaoEmpregador;
   
   @Column(name = "NR_INSC_EMPREGADOR")
   private String numeroInscricaoEmpregador;  
- 
-  @Column(name = "MUDANCA_CPF")
-  private String mudancaCpf;  
     
   @Column(name = "NOVO_CPF")
-  private String novoCpf;
-  
-  
-  @Column(name = "COD_LOTACAO")
-  private Integer codLotacao;
+  private String novoCpf; 
 
   @Column(name = "TP_INSC_LOTACAO")
   private String tipoInscricaoLotacao;
@@ -70,8 +60,12 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   @Column(name = "NR_INSC_LOTACAO")
   private String numeroInscricaoLotacao;
   
-  @Column(name = "GRAU_EXP")
-  private String grauExposicao;
+  @Column(name = "COD_LOTACAO")
+  private Integer codLotacao;
+  
+  @Temporal(TemporalType.DATE)
+  @Column(name = "DT_FIMQUAR")
+  private Date dtFimQuarentena;
 
   public Long getId() {
     return id;
@@ -103,15 +97,7 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
 
   public void setMatricula(String matricula) {
     this.matricula = matricula;
-  }
-
-  public String getMtvDesligamento() {
-    return mtvDesligamento;
-  }
-
-  public void setMtvDesligamento(String mtvDesligamento) {
-    this.mtvDesligamento = mtvDesligamento;
-  }
+  } 
 
   public Date getDtDesligamento() {
     return dtDesligamento;
@@ -129,14 +115,6 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
     this.numeroProcessoTrabalhista = numeroProcessoTrabalhista;
   }
 
-  public String getObservacao() {
-    return observacao;
-  }
-
-  public void setObservacao(String observacao) {
-    this.observacao = observacao;
-  }
-
   public String getTipoInscricaoEmpregador() {
     return tipoInscricaoEmpregador;
   }
@@ -152,15 +130,7 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   public void setNumeroInscricaoEmpregador(String numeroInscricaoEmpregador) {
     this.numeroInscricaoEmpregador = numeroInscricaoEmpregador;
   }
-
-  public String getMudancaCpf() {
-    return mudancaCpf;
-  }
-
-  public void setMudancaCpf(String mudancaCpf) {
-    this.mudancaCpf = mudancaCpf;
-  }
-
+ 
   public String getNovoCpf() {
     return novoCpf;
   }
@@ -191,15 +161,7 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
 
   public void setNumeroInscricaoLotacao(String numeroInscricaoLotacao) {
     this.numeroInscricaoLotacao = numeroInscricaoLotacao;
-  }
-
-  public String getGrauExposicao() {
-    return grauExposicao;
-  }
-
-  public void setGrauExposicao(String grauExposicao) {
-    this.grauExposicao = grauExposicao;
-  }
+  }  
 
   public Funcional getFuncional() {
     return funcional;
@@ -208,6 +170,21 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   public void setFuncional(Funcional funcional) {
     this.funcional = funcional;
   }
-  
+
+  public Integer getCodCategoria() {
+    return codCategoria;
+  }
+
+  public void setCodCategoria(Integer codCategoria) {
+    this.codCategoria = codCategoria;
+  }
+
+  public Date getDtFimQuarentena() {
+    return dtFimQuarentena;
+  }
+
+  public void setDtFimQuarentena(Date dtFimQuarentena) {
+    this.dtFimQuarentena = dtFimQuarentena;
+  }
   
 }

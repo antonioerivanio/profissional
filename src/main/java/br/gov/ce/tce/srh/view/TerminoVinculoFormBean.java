@@ -11,28 +11,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import br.gov.ce.tce.srh.domain.DependenteEsocial;
-import br.gov.ce.tce.srh.domain.Desligamento;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.TerminoVinculo;
 import br.gov.ce.tce.srh.enums.NaturezaRubricaFolhaPagamento;
 import br.gov.ce.tce.srh.enums.TipoInscricao;
 import br.gov.ce.tce.srh.enums.TipoMotivoDesligamento;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.DependenteEsocialTCEService;
-import br.gov.ce.tce.srh.service.DesligamentoEsocialService;
 import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.RepresentacaoFuncionalService;
+import br.gov.ce.tce.srh.service.TerminoVinculoEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 
 @SuppressWarnings("serial")
-@Component("desligamentoFormBean")
+@Component("terminoVinculoFormBean")
 @Scope("view")
-public class DesligamentoFormBean implements Serializable {
+public class TerminoVinculoFormBean implements Serializable {
 
-  static Logger logger = Logger.getLogger(DesligamentoFormBean.class);
+  static Logger logger = Logger.getLogger(TerminoVinculoFormBean.class);
 
   @Autowired
-  private DesligamentoEsocialService desligamentoEsocialService;
+  private TerminoVinculoEsocialService terminoVinculoEsocialService;
   @Autowired
   private DependenteEsocialTCEService dependenteEsocialTCEService;
 
@@ -45,8 +44,8 @@ public class DesligamentoFormBean implements Serializable {
   // entidades das telas
   private List<Funcional> servidorEnvioList;
   private Funcional servidorFuncional;
-  private Desligamento entidade = new Desligamento();
-  private Desligamento admissaoAnterior = new Desligamento();  
+  private TerminoVinculo entidade = new TerminoVinculo();
+  private TerminoVinculo admissaoAnterior = new TerminoVinculo();  
   private List<TipoMotivoDesligamento> tipoMotivoDesligamentoList;  
   private List<TipoInscricao> tipoInscricaoList; 
   private List<NaturezaRubricaFolhaPagamento> naturezaRubricaFolhaPagamentoList;
@@ -57,12 +56,12 @@ public class DesligamentoFormBean implements Serializable {
 
   // paginação
   private UIDataTable dataTable = new UIDataTable();
-  private List<Desligamento> pagedList = new ArrayList<Desligamento>();
+  private List<TerminoVinculo> pagedList = new ArrayList<TerminoVinculo>();
 
   @PostConstruct
   private void init() {
-    Desligamento flashParameter = (Desligamento) FacesUtil.getFlashParameter("entidade");
-    setEntidade(flashParameter != null ? flashParameter : new Desligamento());
+    TerminoVinculo flashParameter = (TerminoVinculo) FacesUtil.getFlashParameter("entidade");
+    setEntidade(flashParameter != null ? flashParameter : new TerminoVinculo());
     this.servidorEnvioList = funcionalService.findServidoresEvento2299();
 
     if (getEntidade() != null && getEntidade().getFuncional() != null) {
@@ -78,7 +77,7 @@ public class DesligamentoFormBean implements Serializable {
     if (servidorFuncional != null) {
       try {
 
-        entidade =  desligamentoEsocialService.getEventoS2299ByServidor(servidorFuncional);
+        entidade =  terminoVinculoEsocialService.getEventoS2399ByServidor(servidorFuncional);
         
         if( getEntidade().getNumeroInscricaoEmpregador() == null) {
           getEntidade().setNumeroInscricaoEmpregador("09499757");
@@ -105,11 +104,11 @@ public class DesligamentoFormBean implements Serializable {
            * dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(admissaoAnterior.getFuncional().
            * getId()); if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
            * dependenteEsocialTCEService.excluirAll(dependentesListExcluir); }
-           * desligamentoEsocialService.excluir(admissaoAnterior); }
+           * TerminoVinculoEsocialService.excluir(admissaoAnterior); }
            */
 
         }
-        desligamentoEsocialService.salvar(entidade);
+        terminoVinculoEsocialService.salvar(entidade);
 
       }
       // setEntidade( new Admissao() );
@@ -134,11 +133,11 @@ public class DesligamentoFormBean implements Serializable {
   }
 
 
-  public Desligamento getEntidade() {
+  public TerminoVinculo getEntidade() {
     return entidade;
   }
 
-  public void setEntidade(Desligamento entidade) {
+  public void setEntidade(TerminoVinculo entidade) {
     this.entidade = entidade;
   }
 
@@ -175,15 +174,15 @@ public class DesligamentoFormBean implements Serializable {
   }
 
 
-  public List<Desligamento> getPagedList() {
+  public List<TerminoVinculo> getPagedList() {
     return pagedList;
   }
 
-  public void setPagedList(List<Desligamento> pagedList) {
+  public void setPagedList(List<TerminoVinculo> pagedList) {
     this.pagedList = pagedList;
   }
 
-  public List<TipoMotivoDesligamento> getTipoMotivoDesligamentoList() {
+  public List<TipoMotivoDesligamento> getTipoMotivoTerminoVinculoList() {
     return Arrays.asList(TipoMotivoDesligamento.values());    
   }
 
