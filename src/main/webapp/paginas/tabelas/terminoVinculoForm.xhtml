@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Termino Vínculo</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+			<br />
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<fieldset>
+				<div class="select-box box-46">
+					<label for="">Beneficiario *</label>
+					<div class="conteiner">
+						<rich:select enableManualInput="true" 
+						defaultLabel="Selecione..."
+							clientFilterFunction="customFilter" listWidth="500" id="tipo"
+							converter="entityConverter"
+							rendered="#{!terminoVinculoFormBean.emEdicao}"
+							value="#{terminoVinculoFormBean.servidorFuncional}" >
+							
+							<f:selectItems 
+								value="#{terminoVinculoFormBean.servidorEnvioList}" var="servidor"
+								itemValue="#{servidor}" itemLabel="#{servidor.nome}" />	
+								<a4j:ajax execute="@this"></a4j:ajax>							
+						</rich:select>
+					</div>
+
+					<ui:fragment rendered="#{terminoVinculoFormBean.emEdicao}">
+						<div class="input-box box-60">
+							<div class="conteiner">
+								<h:inputText id="nomeEdicao" maxlength="46" size="46"
+									disabled="true" rendered="#{terminoVinculoFormBean.emEdicao}"
+									value="#{terminoVinculoFormBean.funcional.nome}" />
+							</div>
+						</div>
+					</ui:fragment>
+				</div>
+				<h:commandButton actionListener="#{terminoVinculoFormBean.consultar}"
+					
+					rendered="#{!beneficiarioFormBean.emEdicao}" value="Consultar"					
+					styleClass="bt-padrao fr mg-right-10" />
+			</fieldset>
+
+
+			<fieldset>
+
+				<legend>Dados Evento S-2399</legend>
+
+				<br />
+
+				<fieldset>
+					<legend>Identificação do trabalhador e do vínculo.</legend>
+					<div class="input-box box-15">
+						<label for="">cpfTrab</label>
+						<div class="conteiner">
+							<h:inputText id="cpf" maxlength="11" disabled="true"
+								value="#{terminoVinculoFormBean.entidade.cpfTrab}" />
+						</div>
+					</div>
+
+					<div class="input-box box-15">
+						<label for="">matricula</label>
+						<div class="conteiner">
+							<h:inputText id="matricula" maxlength="15" disabled="true"
+								value="#{terminoVinculoFormBean.entidade.matricula}" />
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Informações de identificação do empregador</legend>
+					<div class="select-box box-10">
+						<label for="">tpInsc</label>
+						<div class="conteiner">
+
+							<h:selectOneMenu 
+								rendered="#{!terminoVinculoFormBean.emEdicao}"
+								value="#{terminoVinculoFormBean.entidade.tipoInscricaoEmpregador}">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems value="#{terminoVinculoFormBean.tipoInscricaoList}"
+									var="motivo" itemValue="#{motivo.codigo}"
+									itemLabel="#{motivo.descricao}" />
+								<f:ajax execute="@this" />
+							</h:selectOneMenu>
+						</div>
+
+					</div>
+
+					<div class="input-box box-25">
+						<label for="">nrInsc</label>
+						<div class="conteiner">
+							<h:inputText id="nrInscEmp" maxlength="10" disabled="true"
+								value="#{terminoVinculoFormBean.entidade.numeroInscricaoEmpregador}" />
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Informação do Término:</legend>				
+
+					<div class="input-box box-15">
+						<label for="">Data Saída</label>
+						<div class="conteiner">
+							<h:inputText 
+								name="datasaida" 								
+								disabled="true"
+								value="#{terminoVinculoFormBean.entidade.dtDesligamento}">
+							</h:inputText>
+						</div>
+					</div>
+
+					<div class="input-box box-15">
+						<label for="">NrProcTrab</label>
+						<div class="conteiner">
+							<h:inputText								
+								value="#{terminoVinculoFormBean.entidade.numeroProcessoTrabalhista}">
+							</h:inputText>
+						</div>
+					</div>
+
+					<div class="input-box box-15">
+						<label for="">Novo CPF</label>
+						<div class="conteiner">
+							<h:inputText id="deslCadNovoCpf" 
+								requiredMessage="cpf é obrigatorio" maxlength="11"
+								styleClass="maskCpf"
+								value="#{terminoVinculoFormBean.entidade.novoCpf}">
+							</h:inputText>
+						</div>
+					</div>
+
+				</fieldset>
+
+				<fieldset>
+					<legend>Identificação do estabelecimento</legend>
+
+					<div class="select-box box-12">
+						<label for="">tpInsc</label>
+						<div class="conteiner">
+							<h:selectOneMenu 
+								rendered="#{!terminoVinculoFormBean.emEdicao}"
+								value="#{terminoVinculoFormBean.entidade.tipoInscricaoLotacao}">
+								<f:selectItem itemLabel="Selecione..." />
+								<f:selectItems value="#{terminoVinculoFormBean.tipoInscricaoList}"
+									var="motivo" itemValue="#{motivo.codigo}"
+									itemLabel="#{motivo.descricao}" />
+								<f:ajax execute="@this" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+					<div class="input-box box-25">
+						<label for="">nrInsc</label>
+						<div class="conteiner">
+							<h:inputText id="nrInscLot" maxlength="10"
+								value="#{terminoVinculoFormBean.entidade.numeroInscricaoLotacao}" />
+						</div>
+					</div>
+
+					<div class="input-box box-25">
+						<label for="">codLotacao</label>
+						<div class="conteiner">
+							<h:inputText id="codInscLot" maxlength="10" 
+								value="#{terminoVinculoFormBean.entidade.codLotacao}" />
+						</div>
+					</div>
+
+				</fieldset>
+
+				<fieldset>
+					<legend>informação de Agente Nócivo</legend>					
+					
+					<div class="input-box box-25">
+						<label for="">dtFimQuar</label>
+						<div class="conteiner">
+							
+							<h:inputText  
+								name="dtFimQuar" converter="dateConverter"
+								styleClass="maskData" maxlength="10"
+								value="#{terminoVinculoFormBean.entidade.dtFimQuarentena}">
+							</h:inputText>
+							
+						</div>
+					</div>
+				</fieldset>
+			</fieldset>
+
+			<h:commandButton actionListener="#{terminoVinculoFormBean.salvarEvento}"
+				value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			<h:commandButton value="Voltar"
+				styleClass="bt-voltar fr mg-right-10 mg-bottom-10"
+				action="#{terminoVinculoFormBean.voltar}" immediate="true" />
+		</h:form>
+
+	</ui:define>
+</ui:composition>

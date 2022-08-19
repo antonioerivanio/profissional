@@ -376,6 +376,18 @@ public class FuncionalDAO {
 		}
 	}
 	
+	   public List<Funcional> findServidoresEvento2299() {
+	     TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+	                               + "FROM Funcional f "
+	                               + "WHERE "
+	                               + " f.status = 1 "
+	                               + "AND f.ocupacao.id not in (14,15) "
+	                               + "AND f.id  NOT IN (SELECT a.funcional.id FROM Admissao a) "	                               
+	                               + "AND f.saida > '21/11/2021' " 
+	                               + "ORDER BY f.nome", Funcional.class);
+	       return query.getResultList();
+	    }
+	
 	public List<Funcional> findServidoresEvento2230() {
 		try {	  
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
@@ -397,6 +409,7 @@ public class FuncionalDAO {
 					+ "FROM Funcional f "
 					+ "WHERE f.status = 5"				 
 					+ "AND f.id  IN (SELECT a.funcional.id FROM Aposentadoria a) "
+					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
 					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
 					+ "ORDER BY f.nome", Funcional.class);
 			return query.getResultList();

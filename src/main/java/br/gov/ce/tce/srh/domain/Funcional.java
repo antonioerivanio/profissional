@@ -452,7 +452,11 @@ public class Funcional extends BasicEntity<Long> implements Serializable {
     this.nomePesquisa = nomePesquisa.toLowerCase();
   }
 
-  public String getMatricula() {
+  public String getMatricula() {    
+    if(matricula != null && matricula.replace("-", "").length() == 4) {
+      matricula = "0" + matricula; 
+    }
+    
     return matricula;
   }
 

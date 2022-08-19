@@ -1114,6 +1114,26 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<!-- Desligamento eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/desligamentoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/desligamentoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/desligamentoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/desligamentoForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/desligamentoList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 
 	<!-- Beneficiario eSocial/TCE -->
 	<navigation-rule>
@@ -1173,6 +1193,26 @@
 		<navigation-case>
 			<from-outcome>listar</from-outcome>
 			<to-view-id>/paginas/tabelas/estatutarioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+		<!-- Desligamento eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/terminoVinculoList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/terminoVinculoList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/terminoVinculoForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/terminoVinculoForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/terminoVinculoList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
