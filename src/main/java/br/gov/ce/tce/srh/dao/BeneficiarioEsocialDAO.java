@@ -178,7 +178,7 @@ public class BeneficiarioEsocialDAO {
     sql.append(" INNER JOIN srh.esocial_pais pnd ON p.paisnacionalidade = pnd.id ");
     sql.append(" INNER JOIN srh.esocial_tipologradouro tl ON p.tipologradouro = tl.id ");
     sql.append(" INNER JOIN srh.tb_municipio m ON p.municipioendereco = m.id ");
-    sql.append(" WHERE f.id = :idFuncional ");
+    sql.append(" WHERE f.id = :idFuncional");
 
     return sql.toString();
   }

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 
 @Entity
@@ -49,29 +50,28 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   private String observacao;
   
   @Column(name = "TP_INSC_EMPREGADOR")
-  private String tipoInscricaoEmpregador;
+  private Integer tipoInscricaoEmpregador;
   
   @Column(name = "NR_INSC_EMPREGADOR")
   private String numeroInscricaoEmpregador;  
- 
-  @Column(name = "MUDANCA_CPF")
-  private String mudancaCpf;  
-    
-  @Column(name = "NOVO_CPF")
-  private String novoCpf;
-  
   
   @Column(name = "COD_LOTACAO")
   private Integer codLotacao;
 
   @Column(name = "TP_INSC_LOTACAO")
-  private String tipoInscricaoLotacao;
+  private Integer tipoInscricaoLotacao;
   
   @Column(name = "NR_INSC_LOTACAO")
   private String numeroInscricaoLotacao;
   
   @Column(name = "GRAU_EXP")
-  private String grauExposicao;
+  private Integer grauExposicao;
+  
+  /*
+   * @Temporal(TemporalType.DATE)
+   * 
+   * @Column(name = "DT_FIMQUAR") private Date dtFimQuarentena;
+   */
 
   public Long getId() {
     return id;
@@ -81,7 +81,7 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
     this.id = id;
   }
 
-  public String getReferencia() {
+  public String getReferencia() {   
     return referencia;
   }
 
@@ -103,7 +103,7 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
 
   public void setMatricula(String matricula) {
     this.matricula = matricula;
-  }
+  } 
 
   public String getMtvDesligamento() {
     return mtvDesligamento;
@@ -137,11 +137,11 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
     this.observacao = observacao;
   }
 
-  public String getTipoInscricaoEmpregador() {
+  public Integer getTipoInscricaoEmpregador() {
     return tipoInscricaoEmpregador;
   }
 
-  public void setTipoInscricaoEmpregador(String tipoInscricaoEmpregador) {
+  public void setTipoInscricaoEmpregador(Integer tipoInscricaoEmpregador) {
     this.tipoInscricaoEmpregador = tipoInscricaoEmpregador;
   }
 
@@ -153,22 +153,6 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
     this.numeroInscricaoEmpregador = numeroInscricaoEmpregador;
   }
 
-  public String getMudancaCpf() {
-    return mudancaCpf;
-  }
-
-  public void setMudancaCpf(String mudancaCpf) {
-    this.mudancaCpf = mudancaCpf;
-  }
-
-  public String getNovoCpf() {
-    return novoCpf;
-  }
-
-  public void setNovoCpf(String novoCpf) {
-    this.novoCpf = novoCpf;
-  }
-
   public Integer getCodLotacao() {
     return codLotacao;
   }
@@ -177,15 +161,18 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
     this.codLotacao = codLotacao;
   }
 
-  public String getTipoInscricaoLotacao() {
+  public Integer getTipoInscricaoLotacao() {
     return tipoInscricaoLotacao;
   }
 
-  public void setTipoInscricaoLotacao(String tipoInscricaoLotacao) {
+  public void setTipoInscricaoLotacao(Integer tipoInscricaoLotacao) {
     this.tipoInscricaoLotacao = tipoInscricaoLotacao;
   }
 
   public String getNumeroInscricaoLotacao() {
+    if(numeroInscricaoLotacao ==  null) {
+      numeroInscricaoLotacao = "09499757000146";//cnpj tce
+    }
     return numeroInscricaoLotacao;
   }
 
@@ -193,11 +180,11 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
     this.numeroInscricaoLotacao = numeroInscricaoLotacao;
   }
 
-  public String getGrauExposicao() {
+  public Integer getGrauExposicao() {    
     return grauExposicao;
   }
 
-  public void setGrauExposicao(String grauExposicao) {
+  public void setGrauExposicao(Integer grauExposicao) {
     this.grauExposicao = grauExposicao;
   }
 

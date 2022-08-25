@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
+import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.domain.TerminoVinculo;
 import br.gov.ce.tce.srh.service.TerminoVinculoEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
@@ -50,6 +52,8 @@ public class TerminoVinculoListBean implements Serializable {
 	private void init() {
 		TerminoVinculo flashParameter = (TerminoVinculo)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new TerminoVinculo());
+		entidade.setFuncional(new Funcional());
+		entidade.getFuncional().setPessoal(new Pessoal());
     }
 	
 	public void consultar() {

@@ -6,14 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.TerminoVinculo;
 import br.gov.ce.tce.srh.enums.NaturezaRubricaFolhaPagamento;
+import br.gov.ce.tce.srh.enums.TipoConstraintException;
 import br.gov.ce.tce.srh.enums.TipoInscricao;
 import br.gov.ce.tce.srh.enums.TipoMotivoDesligamento;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -64,11 +66,11 @@ public class TerminoVinculoFormBean implements Serializable {
     setEntidade(flashParameter != null ? flashParameter : new TerminoVinculo());
     this.servidorEnvioList = funcionalService.findServidoresEvento2299();
 
-    if (getEntidade() != null && getEntidade().getFuncional() != null) {
-      admissaoAnterior = getEntidade();
+    if (getEntidade() != null && getEntidade().getFuncional() != null) {     
       servidorFuncional = getEntidade().getFuncional();
-      consultar();
       emEdicao = true;
+      consultar();
+      
     }
 
   }
@@ -90,28 +92,19 @@ public class TerminoVinculoFormBean implements Serializable {
       }
     } else {
       FacesUtil.addErroMessage("Selecione um servidor.");
-    }
+    }    
+    
   }
-
-  @Transactional
+  
   public void salvarEvento() {
 
     try {
       if (servidorFuncional != null) {
-        if (emEdicao) {
-          /*
-           * if(admissaoAnterior != null) { List<DependenteEsocial> dependentesListExcluir =
-           * dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(admissaoAnterior.getFuncional().
-           * getId()); if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
-           * dependenteEsocialTCEService.excluirAll(dependentesListExcluir); }
-           * TerminoVinculoEsocialService.excluir(admissaoAnterior); }
-           */
-
-        }
+     
         terminoVinculoEsocialService.salvar(entidade);
-
-      }
-      // setEntidade( new Admissao() );
+        
+        entidade = new TerminoVinculo();
+      }    
 
       FacesUtil.addInfoMessage("Operação realizada com sucesso.");
       logger.info("Operação realizada com sucesso.");
@@ -119,7 +112,14 @@ public class TerminoVinculoFormBean implements Serializable {
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage(e.getMessage());
       logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-    } catch (Exception e) {
+    }  catch (DataIntegrityViolationException e) {
+      if (e.getCause() instanceof ConstraintViolationException && e.getCause().getCause().getMessage().contains(TipoConstraintException.CONSTRAINT_UNIQUE_TERMINOVINCULO.getNome())) {
+        FacesUtil.addErroMessage(TipoConstraintException.CONSTRAINT_UNIQUE_TERMINOVINCULO.getMensageError());
+        logger.fatal("Ocorreu o seguinte erro: " + e.getCause().getCause().getMessage());
+      }
+
+    }
+    catch (Exception e) {
       e.printStackTrace();
       FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
       logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());

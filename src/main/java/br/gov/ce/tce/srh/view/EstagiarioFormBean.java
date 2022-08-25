@@ -59,20 +59,18 @@ public class EstagiarioFormBean implements Serializable {
 		setEntidade(flashParameter != null ? flashParameter : new EstagiarioESocial());
 		this.servidorEnvioList = funcionalService.findEstagiarioservidoresEvento2300();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			estagiarioESocialAnterior = getEntidade();		
+			//estagiarioESocialAnterior = getEntidade();		
 			estagiarioFuncional = getEntidade().getFuncional();
 			consultar();			
 			emEdicao = true;
 		}
-		
-		
 		
     }	
 	
 	public void consultar() {
 		if(estagiarioFuncional != null) {
 			try {
-				entidade =  estagiarioESocialService.getEventoS2300ByEstagiario(estagiarioFuncional);
+				entidade =  estagiarioESocialService.getEventoS2300ByEstagiarioById(getEntidade().getId());
 				dependentesList = dependenteEsocialTCEService.findByIdfuncional(estagiarioFuncional.getId());
 	
 			} catch (Exception e) {		
@@ -91,16 +89,16 @@ public class EstagiarioFormBean implements Serializable {
 		try {
 			if(estagiarioFuncional != null) {
 				
-				if(emEdicao) {
-					if(estagiarioESocialAnterior != null) {
-						List<DependenteEsocial> dependentesListExcluir = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(estagiarioESocialAnterior.getFuncional().getId());
-						if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
-							dependenteEsocialTCEService.excluirAll(dependentesListExcluir);
-						}
-						estagiarioESocialService.excluir(estagiarioESocialAnterior);
-					}
-					  	 	
-				}
+              /*
+               * if(emEdicao) { if(estagiarioESocialAnterior != null) { List<DependenteEsocial>
+               * dependentesListExcluir =
+               * dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(estagiarioESocialAnterior.
+               * getFuncional().getId()); if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty())
+               * { dependenteEsocialTCEService.excluirAll(dependentesListExcluir); }
+               * estagiarioESocialService.excluir(estagiarioESocialAnterior); }
+               * 
+               * }
+               */
 				estagiarioESocialService.salvar(entidade);
 				
 				if(dependentesList != null && !dependentesList.isEmpty()) {

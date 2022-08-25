@@ -1,20 +1,23 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Desligamento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.enums.NaturezaRubricaFolhaPagamento;
+import br.gov.ce.tce.srh.enums.TipoConstraintException;
 import br.gov.ce.tce.srh.enums.TipoInscricao;
 import br.gov.ce.tce.srh.enums.TipoMotivoDesligamento;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
@@ -46,12 +49,11 @@ public class DesligamentoFormBean implements Serializable {
   private List<Funcional> servidorEnvioList;
   private Funcional servidorFuncional;
   private Desligamento entidade = new Desligamento();
-  private Desligamento admissaoAnterior = new Desligamento();  
-  private List<TipoMotivoDesligamento> tipoMotivoDesligamentoList;  
-  private List<TipoInscricao> tipoInscricaoList; 
+  private List<TipoMotivoDesligamento> tipoMotivoDesligamentoList;
+  private List<TipoInscricao> tipoInscricaoList;
   private List<NaturezaRubricaFolhaPagamento> naturezaRubricaFolhaPagamentoList;
 
-  
+
   boolean emEdicao = false;
 
 
@@ -66,60 +68,66 @@ public class DesligamentoFormBean implements Serializable {
     this.servidorEnvioList = funcionalService.findServidoresEvento2299();
 
     if (getEntidade() != null && getEntidade().getFuncional() != null) {
-      admissaoAnterior = getEntidade();
       servidorFuncional = getEntidade().getFuncional();
-      consultar();
       emEdicao = true;
+      consultar();
+
     }
 
   }
 
   public void consultar() {
-    if (servidorFuncional != null) {
-      try {
+    try {
 
-        entidade =  desligamentoEsocialService.getEventoS2299ByServidor(servidorFuncional);
-        
-        if( getEntidade().getNumeroInscricaoEmpregador() == null) {
-          getEntidade().setNumeroInscricaoEmpregador("09499757");
+      if (emEdicao) {
+        entidade = desligamentoEsocialService.getDesligamentoById(entidade.getId());
+      } else {
+        if (servidorFuncional != null) {
+          entidade = desligamentoEsocialService.getEventoS2299ByServidor(servidorFuncional);
+         // entidade.setFuncional(servidorFuncional);
+          if (getEntidade().getNumeroInscricaoEmpregador() == null) {
+            getEntidade().setNumeroInscricaoEmpregador("09499757");
+          }
+        } else {
+          FacesUtil.addErroMessage("Selecione um servidor.");
         }
-        
-      } catch (Exception e) {
-        e.printStackTrace();
-        FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-      }
-    } else {
-      FacesUtil.addErroMessage("Selecione um servidor.");
+      }      
+     
+    } catch (Exception e) {
+      e.printStackTrace();
+      FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
     }
   }
 
-  @Transactional
+
   public void salvarEvento() {
 
     try {
       if (servidorFuncional != null) {
-        if (emEdicao) {
-          /*
-           * if(admissaoAnterior != null) { List<DependenteEsocial> dependentesListExcluir =
-           * dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(admissaoAnterior.getFuncional().
-           * getId()); if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
-           * dependenteEsocialTCEService.excluirAll(dependentesListExcluir); }
-           * desligamentoEsocialService.excluir(admissaoAnterior); }
-           */
-
+        if (desligamentoEsocialService.isOk(entidade)) {
+          desligamentoEsocialService.salvar(entidade);
         }
-        desligamentoEsocialService.salvar(entidade);
-
       }
-      // setEntidade( new Admissao() );
 
       FacesUtil.addInfoMessage("Operação realizada com sucesso.");
       logger.info("Operação realizada com sucesso.");
+      
+      entidade = new Desligamento();
 
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage(e.getMessage());
       logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
+
+    } catch (DataIntegrityViolationException e) {
+      if (e.getCause() instanceof ConstraintViolationException && e.getCause().getCause().getMessage().contains(TipoConstraintException.CONSTRAINT_UNIQUE_DESLIGAMENTO.getNome())) {
+        FacesUtil.addErroMessage(TipoConstraintException.CONSTRAINT_UNIQUE_DESLIGAMENTO.getMensageError());
+        logger.fatal("Ocorreu o seguinte erro: " + e.getCause().getCause().getMessage());
+      }
+    } catch (NullPointerException e) {
+      FacesUtil.addErroMessage(e.getMessage());
+
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
     } catch (Exception e) {
       e.printStackTrace();
       FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
@@ -184,11 +192,11 @@ public class DesligamentoFormBean implements Serializable {
   }
 
   public List<TipoMotivoDesligamento> getTipoMotivoDesligamentoList() {
-    return Arrays.asList(TipoMotivoDesligamento.values());    
+    return Arrays.asList(TipoMotivoDesligamento.values());
   }
 
   public List<TipoInscricao> getTipoInscricaoList() {
-    return Arrays.asList(TipoInscricao.values());    
+    return Arrays.asList(TipoInscricao.values());
   }
 
   public List<NaturezaRubricaFolhaPagamento> getNaturezaRubricaFolhaPagamentoList() {

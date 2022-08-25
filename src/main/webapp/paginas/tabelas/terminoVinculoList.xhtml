@@ -12,7 +12,7 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Consulta de Envios S-2299</h2>
+			<h2>Consulta de Envios S-2399</h2>
 
 		</div>
 
@@ -24,7 +24,7 @@
 					<div class="conteiner">
 						<h:inputText id="nome"
 									 name="nome"
-									 value="#{terminoVinculoListBean.nome}" />
+									 value="#{terminoVinculoListBean.entidade.funcional.pessoal.nome}" />
 					</div>
 				</div>
 	
@@ -35,7 +35,7 @@
 									 name="cpf"
 									 maxlength="14"
 									 styleClass="maskCnpj"
-									 value="#{terminoVinculoListBean.cpf}" />
+									 value="#{terminoVinculoListBean.entidade.funcional.pessoal.cpf}" />
 					</div>
 				</div>
 
@@ -69,7 +69,7 @@
                         <f:facet name="header">
                             Nome
                         </f:facet>
-                        <h:outputText id="item3" value="#{item.nmTrab}" styleClass="cel-50" />
+                        <h:outputText id="item3" value="#{item.funcional.pessoal.nome}" styleClass="cel-50" />
                     </rich:column>
                     <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">

@@ -29,7 +29,11 @@ public class EstagiarioESocialDAO {
 	public void excluir(EstagiarioESocial entidade) {
 		entityManager.remove(entidade);
 	}
-
+	
+	public EstagiarioESocial getEventoS2300ByEstagiarioById(Long id) {
+	  return entityManager.find(EstagiarioESocial.class, id);
+	}
+	
 	public EstagiarioESocial getEventoS2300ByEstagiario(Funcional estagiarioFuncional) {
 		try {
 			Query query = entityManager.createNativeQuery(getSQLEventoS2300(), EstagiarioESocial.class);

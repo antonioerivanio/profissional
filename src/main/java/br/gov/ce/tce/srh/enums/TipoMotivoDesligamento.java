@@ -6,20 +6,21 @@ package br.gov.ce.tce.srh.enums;
  * @author erivanio.cruz
  *
  */
-public enum TipoMotivoDesligamento {
-
-  APOSENTADORIA_COMPUSORIA(18, "Aposentadoria compulsória", "Todos, exceto [104]"), 
-  APOSENTADORIA_POR_IDADE(19, "Aposentadoria por idade", "[301, 302, 303, 306, 307, 309]"), 
-  APOSENTADORIA_POR_IDADE_E_TEMPOCONTRIBUICAO(20,"Aposentadoria por idade e tempo de contribuição", "[301, 302, 303, 306, 307, 309]");
-
+public enum TipoMotivoDesligamento {  
+  RESCISAO_ANTECIPADA_CONTRATO_INICIADA_EMPREGADOR(03, "Rescisão antecipada do contrato a termo por iniciativa do empregador"),
+  RESCISAO_ANTECIPADA_CONTRATO_INICIADA_PELO_EMPREGADO(04, "Rescisão antecipada do contrato a termo por iniciativa do empregado"),
+  RESCISAO_TERMINO_CONTRATO_A_TERMO(06, "Rescisão por término do contrato a termo"),
+  RESCISAO_POR_FALECIMENTO_EMPREGADO(10, "Rescisão por falecimento do empregado"),  
+  EXONERACAO(23, "Exoneração"), 
+  APOSENTADORIA_COMPUSORIA(38, "Aposentadoria, exceto por invalidez"), 
+  APOSENTADORIA_POR_IDADE(39, "Aposentadoria de servidor estatutário, por invalidez"); 
+  
   private Integer codigo;
   private String descricao;
-  private String categorias;
-
-  private TipoMotivoDesligamento(Integer codigo, String descricao, String categorias) {
+  
+  private TipoMotivoDesligamento(Integer codigo, String descricao) {
     this.descricao = descricao;
-    this.codigo = codigo;
-    this.categorias = categorias;
+    this.codigo = codigo;    
   }
 
   public Integer getCodigo() {
@@ -36,14 +37,6 @@ public enum TipoMotivoDesligamento {
 
   public void setDescricao(String descricao) {
     this.descricao = descricao;
-  }
-
-  public String getCategorias() {
-    return categorias;
-  }
-
-  public void setCategorias(String categorias) {
-    this.categorias = categorias;
   }
 
   public static TipoMotivoDesligamento getByCodigo(String codigo) {

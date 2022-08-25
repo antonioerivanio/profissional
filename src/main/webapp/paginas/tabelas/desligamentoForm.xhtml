@@ -24,18 +24,17 @@
 
 			<fieldset>
 				<div class="select-box box-46">
-					<label for="">Beneficiario *</label>
+					<label for="">Servidor *</label>
 					<div class="conteiner">
-						<rich:select enableManualInput="true" defaultLabel="Selecione..."
-							clientFilterFunction="customFilter" listWidth="500" id="tipo"
-							converter="entityConverter"
+						<rich:select id="servidor" enableManualInput="true"
+							defaultLabel="Selecione..." clientFilterFunction="customFilter"
+							listWidth="500" converter="entityConverter"
 							rendered="#{!desligamentoFormBean.emEdicao}"
-							value="#{desligamentoFormBean.servidorFuncional}" >
-							
-							<f:selectItems 
-								value="#{desligamentoFormBean.servidorEnvioList}" var="servidor"
-								itemValue="#{servidor}" itemLabel="#{servidor.nome}" />	
-								<a4j:ajax execute="@this"></a4j:ajax>							
+							value="#{desligamentoFormBean.servidorFuncional}">
+
+							<f:selectItems value="#{desligamentoFormBean.servidorEnvioList}"
+								var="servidor" itemValue="#{servidor}"
+								itemLabel="#{servidor.nome}" />							
 						</rich:select>
 					</div>
 
@@ -43,211 +42,166 @@
 						<div class="input-box box-60">
 							<div class="conteiner">
 								<h:inputText id="nomeEdicao" maxlength="46" size="46"
-									disabled="true" rendered="#{besligamentoFormBean.emEdicao}"
-									value="#{desligamentoFormBean.funcional.nome}" />
+																	disabled="true" 
+									value="#{desligamentoFormBean.entidade.funcional.nome}" />
 							</div>
 						</div>
 					</ui:fragment>
 				</div>
-				<h:commandButton actionListener="#{desligamentoFormBean.consultar}"							
-					rendered="#{!beneficiarioFormBean.emEdicao}" value="Consultar"					
-					styleClass="bt-padrao fr mg-right-10" />
+				<h:commandButton actionListener="#{desligamentoFormBean.consultar}"
+					rendered="#{!desligamentoFormBean.emEdicao}"
+					value="Consultar" styleClass="bt-padrao fr mg-right-10">					
+				</h:commandButton>
 			</fieldset>
 
-
-			<fieldset>
-
-				<legend>Dados Evento S-2299</legend>
-
-				<br />
-
+			<h:panelGroup id="dadosEvento2299">
 				<fieldset>
-					<legend>Identificação do trabalhador e do vínculo.</legend>
-					<div class="input-box box-15">
-						<label for="">cpfTrab</label>
-						<div class="conteiner">
-							<h:inputText id="cpf" maxlength="11" disabled="true"
-								value="#{desligamentoFormBean.entidade.cpfTrab}" />
-						</div>
-					</div>
 
-					<div class="input-box box-15">
-						<label for="">matricula</label>
-						<div class="conteiner">
-							<h:inputText id="matricula" maxlength="15" disabled="true"
-								value="#{desligamentoFormBean.entidade.matricula}" />
-						</div>
-					</div>
-				</fieldset>
+					<legend>Dados Evento S-2299</legend>
 
-				<fieldset>
-					<legend>Informações de identificação do empregador</legend>
-					<div class="select-box box-10">
-						<label for="">tpInsc</label>
-						<div class="conteiner">
+					<br />
 
-							<h:selectOneMenu 
-								rendered="#{!desligamentoFormBean.emEdicao}"
-								value="#{desligamentoFormBean.entidade.tipoInscricaoEmpregador}">
-								<f:selectItem itemLabel="Selecione..." />
-								<f:selectItems value="#{desligamentoFormBean.tipoInscricaoList}"
-									var="motivo" itemValue="#{motivo.codigo}"
-									itemLabel="#{motivo.descricao}" />
-								<f:ajax execute="@this" />
-							</h:selectOneMenu>
+					<fieldset>
+						<legend>Identificação do trabalhador e do vínculo.</legend>
+						<div class="input-box box-15">
+							<label for="">cpfTrab * </label>
+							<div class="conteiner">
+								<h:inputText id="cpf" maxlength="11" disabled="true"
+									value="#{desligamentoFormBean.entidade.cpfTrab}" />
+							</div>
 						</div>
 
-					</div>
-
-					<div class="input-box box-25">
-						<label for="">nrInsc</label>
-						<div class="conteiner">
-							<h:inputText id="nrInscEmp" maxlength="10" disabled="true"
-								value="#{desligamentoFormBean.entidade.numeroInscricaoEmpregador}" />
+						<div class="input-box box-15">
+							<label for="">matricula *</label>
+							<div class="conteiner">
+								<h:inputText id="matricula" maxlength="15" disabled="true"
+									value="#{desligamentoFormBean.entidade.matricula}" />
+							</div>
 						</div>
-					</div>
-				</fieldset>
+					</fieldset>
 
+					<fieldset>
+						<legend>Informações de identificação do empregador</legend>
+						<div class="select-box box-10">
+							<label for="">tpInsc *</label>
+							<div class="conteiner">
 
-
-
-				<fieldset>
-					<legend>Informação do Desligamento:</legend>
-					<div class="select-box box-30">
-						<label for="">codMotivo</label>
-						<div class="conteiner">
-							<h:selectOneMenu 
-								rendered="#{!desligamentoFormBean.emEdicao}"
-								value="#{desligamentoFormBean.entidade.mtvDesligamento}">
-								<f:selectItem itemLabel="Selecione..." />
-								<f:selectItems
-									value="#{desligamentoFormBean.tipoMotivoDesligamentoList}"
-									var="motivo" itemValue="#{motivo.codigo}"
-									itemLabel="#{motivo.descricao}" />
-								<f:ajax execute="@this" />
-							</h:selectOneMenu>
+								<h:selectOneMenu disabled="true"
+									value="#{desligamentoFormBean.entidade.tipoInscricaoEmpregador}">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{desligamentoFormBean.tipoInscricaoList}" var="motivo"
+										itemValue="#{motivo.codigo}" itemLabel="#{motivo.descricao}" />
+									<f:ajax execute="@this" />
+								</h:selectOneMenu>
+							</div>
 
 						</div>
-					</div>
 
-					<div class="input-box box-15">
-						<label for="">Data</label>
-						<div class="conteiner">
-							<h:inputText 
-								name="datadesligamento"
-								 styleClass="maskData"
-								value="#{desligamentoFormBean.entidade.dtDesligamento}">
-							</h:inputText>
+						<div class="input-box box-25">
+							<label for="">nrInsc * </label>
+							<div class="conteiner">
+								<h:inputText id="nrInscEmp" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.numeroInscricaoEmpregador}" />
+							</div>
 						</div>
-					</div>
+					</fieldset>
 
-					<div class="input-box box-15">
-						<label for="">NrProcTrab </label>
-						<div class="conteiner">
-							<h:inputText
-								 maxlength="20"
-								value="#{desligamentoFormBean.entidade.numeroProcessoTrabalhista}">
-							</h:inputText>
+					<fieldset>
+						<legend>Informação do Desligamento:</legend>
+						<div class="select-box box-45">
+							<label for="">Motivo *</label>
+							<div class="conteiner">
+								<h:selectOneMenu id="motivoDesligamento"
+									
+									value="#{desligamentoFormBean.entidade.mtvDesligamento}">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{desligamentoFormBean.tipoMotivoDesligamentoList}"
+										var="motivo" itemValue="#{motivo.codigo}"
+										itemLabel="#{motivo.descricao}" />
+									<f:ajax execute="@this" />
+								</h:selectOneMenu>
+								<rich:message for="motivoDesligamento" ajaxRendered="true"></rich:message>
+
+							</div>
 						</div>
-					</div>
 
-
-					<div class="input-box box-15">
-						<label for="">Mudança CPF</label>
-						<div class="conteiner">
-							<h:inputText id="deslCadMudancaCpf"
-								 maxlength="14"
-								styleClass="maskCpf"
-								value="#{desligamentoFormBean.entidade.mudancaCpf}">
-							</h:inputText>
-						</div>
-					</div>
-
-					<div class="input-box box-15">
-						<label for="">Novo CPF</label>
-						<div class="conteiner">
-							<h:inputText id="deslCadNovoCpf" 
-								requiredMessage="cpf é obrigatorio" maxlength="14"
-								styleClass="maskCpf"
-								value="#{desligamentoFormBean.entidade.novoCpf}">
-							</h:inputText>
-						</div>
-					</div>
-
-					<div class="textarea-box box-100">
-						<label for="">Observação</label>
-						<div class="conteiner">
-							<h:inputTextarea id="observacao" maxlength="255"
-								value="#{desligamentoFormBean.entidade.observacao}" />
-						</div>
-					</div>
-
-				</fieldset>
-
-				<fieldset>
-					<legend>Identificação do estabelecimento</legend>
-
-					<div class="select-box box-12">
-						<label for="">tpInsc</label>
-						<div class="conteiner">
-							<h:selectOneMenu 
-								rendered="#{!desligamentoFormBean.emEdicao}"
-								value="#{desligamentoFormBean.entidade.tipoInscricaoLotacao}">
-								<f:selectItem itemLabel="Selecione..." />
-								<f:selectItems value="#{desligamentoFormBean.tipoInscricaoList}"
-									var="motivo" itemValue="#{motivo.codigo}"
-									itemLabel="#{motivo.descricao}" />
-								<f:ajax execute="@this" />
-							</h:selectOneMenu>
-						</div>
-					</div>
-
-					<div class="input-box box-25">
-						<label for="">nrInsc</label>
-						<div class="conteiner">
-							<h:inputText id="nrInscLot" maxlength="10"
-								value="#{desligamentoFormBean.entidade.numeroInscricaoLotacao}" />
-						</div>
-					</div>
-
-					<div class="input-box box-25">
-						<label for="">codLotacao</label>
-						<div class="conteiner">
-							<h:inputText id="codInscLot" maxlength="10" 
-								value="#{desligamentoFormBean.entidade.codLotacao}" />
-						</div>
-					</div>
-
-				</fieldset>
-
-				<fieldset>
-					<legend>informação de Agente Nócivo</legend>					
-					
-					<div class="select-box box-60">
-						<label for="">grauExp</label>
-						<div class="conteiner">
-							<h:selectOneMenu 
-								id="grauExp"															
-								rendered="#{!desligamentoFormBean.emEdicao}"
-								value="#{desligamentoFormBean.entidade.grauExposicao}">
-								<f:selectItem itemLabel="Selecione..." />
-								<f:selectItems value="#{desligamentoFormBean.naturezaRubricaFolhaPagamentoList}"
-									var="motivo" itemValue="#{motivo.codigo}"
-									itemLabel="#{motivo.descricao}" />
-								<f:ajax execute="@this" />
-							</h:selectOneMenu>
-							
+						<div class="input-box box-15">
+							<label for="">Data *</label>
+							<div class="conteiner">
+								<h:inputText name="dataDesligamento"
+									styleClass="maskData"
+									value="#{desligamentoFormBean.entidade.dtDesligamento}">
+								</h:inputText>								
+							</div>
 							
 						</div>
-					</div>
-				</fieldset>
-			</fieldset>
 
-			<h:commandButton actionListener="#{desligamentoFormBean.salvarEvento}"
-				value="Salvar" styleClass="bt-padrao fr mg-right-10" />
-			<h:commandButton value="Voltar"
-				styleClass="bt-voltar fr mg-right-10 mg-bottom-10"
-				action="#{desligamentoFormBean.voltar}" immediate="true" />
+						<div class="textarea-box box-100">
+							<label for="">Observação</label>
+							<div class="conteiner">
+								<h:inputTextarea id="observacao" maxlength="255"
+									value="#{desligamentoFormBean.entidade.observacao}" />
+							</div>
+						</div>
+
+					</fieldset>
+
+					<fieldset>
+						<legend>Identificação do estabelecimento</legend>
+
+						<div class="select-box box-12">
+							<label for="">tpInsc *</label>
+							<div class="conteiner">
+								<h:selectOneMenu rendered="#{!desligamentoFormBean.emEdicao}"
+									value="#{desligamentoFormBean.entidade.tipoInscricaoLotacao}"
+									disabled="true">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{desligamentoFormBean.tipoInscricaoList}" var="motivo"
+										itemValue="#{motivo.codigo}" itemLabel="#{motivo.descricao}" />
+									<f:ajax execute="@this" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+
+						<div class="input-box box-25">
+							<label for="">nrInsc *</label>
+							<div class="conteiner">
+								<h:inputText id="nrInscLot" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.numeroInscricaoLotacao}" />
+							</div>
+						</div>
+
+						<div class="input-box box-10">
+							<label for="">codLotacao</label>
+							<div class="conteiner">
+								<h:inputText id="codInscLot" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.codLotacao}" />
+							</div>
+						</div>
+
+					</fieldset>
+
+					<fieldset>
+						<legend>informação de Agente Nócivo</legend>
+
+						<div class="input-box box-10">
+							<label for="">grauExp</label>
+							<div class="conteiner">
+								<h:inputText id="grauExp" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.grauExposicao}" />
+							</div>
+						</div>
+					</fieldset>
+				</fieldset>
+			</h:panelGroup>
+			<h:commandButton
+				actionListener="#{desligamentoFormBean.salvarEvento}" value="Salvar"
+				styleClass="bt-padrao fr mg-right-10" />
+			<a href="/srh/paginas/tabelas/desligamentoList.faces"
+				class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 		</h:form>
 
 	</ui:define>

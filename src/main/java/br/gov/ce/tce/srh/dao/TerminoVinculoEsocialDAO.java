@@ -47,10 +47,6 @@ public class TerminoVinculoEsocialDAO {
     entityManager.remove(entidade);
   }
 
-  public TerminoVinculo getById(Long id) {
-    return entityManager.find(TerminoVinculo.class, id);
-  }
-
   public int count(String nome, String cpf) {
 
     StringBuffer sql = new StringBuffer();
@@ -129,14 +125,12 @@ public class TerminoVinculoEsocialDAO {
     sql.append("  f.id  idfuncional, ");
     sql.append("  f.id || '-' || to_char(f.datasaida, 'ddMMyyyy') AS referencia, ");
     sql.append("  p.cpf  AS cpf_trab, ");
-    sql.append("  f.matricula  AS matricula, ");
-    sql.append("  null  AS COD_CATEGORIA, ");    
-    sql.append("  f.datasaida  AS dt_term, ");
-    sql.append("  null  AS nr_proctrabalho, ");
+    sql.append("  '0' || f.matricula  AS matricula, ");
+    sql.append("  null  as cod_categoria, ");    
+    sql.append("  f.datasaida  AS dt_term, ");    
     sql.append("  1     AS tp_insc_empregador, ");
-    sql.append("  null  AS nr_insc_empregador,  ");
-    sql.append("  null  AS novo_cpf, ");
-    sql.append("  null  AS cod_lotacao, ");
+    sql.append("  null  AS nr_insc_empregador,  ");    
+    sql.append("  1  AS cod_lotacao, ");
     sql.append("  1     AS tp_insc_lotacao, ");
     sql.append("  null  AS nr_insc_lotacao, ");
     sql.append("  null     AS dt_fimquar ");
@@ -148,10 +142,10 @@ public class TerminoVinculoEsocialDAO {
   }
 
 
-  public TerminoVinculo getByIdFuncional(Long idFuncional) {
+  public TerminoVinculo getTerminoVinculoById(Long id) {
     try {
-      Query query = entityManager.createQuery("SELECT a FROM TerminoVinculo a where a.funcional.id = :idFuncional");
-      query.setParameter("idFuncional", idFuncional);
+      Query query = entityManager.createQuery("SELECT tv FROM TerminoVinculo tv JOIN FETCH tv.funcional  where tv.id = :id ", TerminoVinculo.class);
+      query.setParameter("id", id);
       return (TerminoVinculo) query.getSingleResult();
     } catch (NoResultException e) {
       return null;

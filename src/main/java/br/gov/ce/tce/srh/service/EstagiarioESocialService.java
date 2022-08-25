@@ -18,56 +18,61 @@ import br.gov.ce.tce.srh.enums.TipoNotificacao;
 @Service("estagiarioESocialService")
 public class EstagiarioESocialService {
 
-	@Autowired
-	private EstagiarioESocialDAO estagiarioESocialDAO;
+  @Autowired
+  private EstagiarioESocialDAO estagiarioESocialDAO;
 
-	@Autowired
-	private EventoService eventoService;
-	
-	@Autowired
-	private NotificacaoService notificacaoService;
-	
-	public int count(String nome, String cpf) {		
-		return estagiarioESocialDAO.count(nome, cpf);
-	}
+  @Autowired
+  private EventoService eventoService;
 
-	@Transactional
-	public void excluir(EstagiarioESocial entidade) {
-		estagiarioESocialDAO.excluir(entidade);
-		
-	}
+  @Autowired
+  private NotificacaoService notificacaoService;
 
-	public List<EstagiarioESocial> search(String nome, String cpf, int first, int rows) {
-		return estagiarioESocialDAO.search(nome, cpf, first, rows);
-	}
+  public int count(String nome, String cpf) {
+    return estagiarioESocialDAO.count(nome, cpf);
+  }
 
-	public EstagiarioESocial salvar(EstagiarioESocial entidade) {
-		
-		
-		entidade = estagiarioESocialDAO.salvar(entidade);
+  @Transactional
+  public void excluir(EstagiarioESocial entidade) {
+    estagiarioESocialDAO.excluir(entidade);
 
-		// salvando notificação
-		Evento evento = this.eventoService.getById(TipoEventoESocial.S2300.getCodigo());
-		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferencia());
-		if (notificacao == null) {
-			notificacao = new Notificacao();
-			notificacao.setDescricao("Evento S2300 com pendência de envio.");
-			notificacao.setData(new Date());
-			notificacao.setTipo(TipoNotificacao.N);
-			notificacao.setEvento(evento);
-			notificacao.setReferencia(entidade.getReferencia());
-		} else {
-			notificacao.setData(new Date());
-		}
+  }
 
-		this.notificacaoService.salvar(notificacao);
+  public List<EstagiarioESocial> search(String nome, String cpf, int first, int rows) {
+    return estagiarioESocialDAO.search(nome, cpf, first, rows);
+  }
 
-		return entidade;
-		
-	}
+  public EstagiarioESocial salvar(EstagiarioESocial entidade) {
 
-	public EstagiarioESocial getEventoS2300ByEstagiario(Funcional estagiarioFuncional) {
-		return estagiarioESocialDAO.getEventoS2300ByEstagiario(estagiarioFuncional);
-	}
-	
+
+    entidade = estagiarioESocialDAO.salvar(entidade);
+
+    // salvando notificação
+    Evento evento = this.eventoService.getById(TipoEventoESocial.S2300.getCodigo());
+    Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferencia());
+    if (notificacao == null) {
+      notificacao = new Notificacao();
+      notificacao.setDescricao("Evento S2300 com pendência de envio.");
+      notificacao.setData(new Date());
+      notificacao.setTipo(TipoNotificacao.N);
+      notificacao.setEvento(evento);
+      notificacao.setReferencia(entidade.getReferencia());
+    } else {
+      notificacao.setData(new Date());
+    }
+
+    this.notificacaoService.salvar(notificacao);
+
+    return entidade;
+
+  }
+
+
+  public EstagiarioESocial getEventoS2300ByEstagiarioById(Long id) {
+    return estagiarioESocialDAO.getEventoS2300ByEstagiarioById(id);
+  }
+
+  public EstagiarioESocial getEventoS2300ByEstagiario(Funcional estagiarioFuncional) {
+    return estagiarioESocialDAO.getEventoS2300ByEstagiario(estagiarioFuncional);
+  }
+
 }

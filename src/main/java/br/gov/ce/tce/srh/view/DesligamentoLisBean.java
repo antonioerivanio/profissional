@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import br.gov.ce.tce.srh.domain.Desligamento;
+import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.service.DesligamentoEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
@@ -50,6 +52,9 @@ public class DesligamentoLisBean implements Serializable {
 	private void init() {
 		Desligamento flashParameter = (Desligamento)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new Desligamento());
+		
+		getEntidade().setFuncional(new Funcional());
+		getEntidade().getFuncional().setPessoal(new Pessoal());
     }
 	
 	public void consultar() {

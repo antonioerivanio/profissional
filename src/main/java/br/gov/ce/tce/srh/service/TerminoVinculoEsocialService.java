@@ -58,12 +58,8 @@ public class TerminoVinculoEsocialService {
     dao.excluir(entidade);
   }
 
-  public TerminoVinculo getByIdFuncional(Long idFuncional) {
-    return dao.getByIdFuncional(idFuncional);
-  }
-
-  public TerminoVinculo getById(Long id) {
-    return dao.getById(id);
+  public TerminoVinculo getTerminoVinculoById(Long id) {
+    return dao.getTerminoVinculoById(id);
   }
 
   public int count(String nome, String cpf) {

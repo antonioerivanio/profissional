@@ -23,7 +23,7 @@
 
 			<fieldset>
 				<div class="select-box box-46">
-					<label for="">Beneficiario *</label>
+					<label for="">Servidor *</label>
 					<div class="conteiner">
 						<rich:select enableManualInput="true" 
 						defaultLabel="Selecione..."
@@ -44,7 +44,7 @@
 							<div class="conteiner">
 								<h:inputText id="nomeEdicao" maxlength="46" size="46"
 									disabled="true" rendered="#{terminoVinculoFormBean.emEdicao}"
-									value="#{terminoVinculoFormBean.funcional.nome}" />
+									value="#{terminoVinculoFormBean.funcional.pessoal.nome}" />
 							</div>
 						</div>
 					</ui:fragment>
@@ -65,7 +65,7 @@
 				<fieldset>
 					<legend>Identificação do trabalhador e do vínculo.</legend>
 					<div class="input-box box-15">
-						<label for="">cpfTrab</label>
+						<label for="">cpfTrab *</label>
 						<div class="conteiner">
 							<h:inputText id="cpf" maxlength="11" disabled="true"
 								value="#{terminoVinculoFormBean.entidade.cpfTrab}" />
@@ -73,7 +73,7 @@
 					</div>
 
 					<div class="input-box box-15">
-						<label for="">matricula</label>
+						<label for="">matricula *</label>
 						<div class="conteiner">
 							<h:inputText id="matricula" maxlength="15" disabled="true"
 								value="#{terminoVinculoFormBean.entidade.matricula}" />
@@ -84,7 +84,7 @@
 				<fieldset>
 					<legend>Informações de identificação do empregador</legend>
 					<div class="select-box box-10">
-						<label for="">tpInsc</label>
+						<label for="">tpInsc *</label>
 						<div class="conteiner">
 
 							<h:selectOneMenu 
@@ -101,7 +101,7 @@
 					</div>
 
 					<div class="input-box box-25">
-						<label for="">nrInsc</label>
+						<label for="">nrInsc *</label>
 						<div class="conteiner">
 							<h:inputText id="nrInscEmp" maxlength="10" disabled="true"
 								value="#{terminoVinculoFormBean.entidade.numeroInscricaoEmpregador}" />
@@ -113,7 +113,7 @@
 					<legend>Informação do Término:</legend>				
 
 					<div class="input-box box-15">
-						<label for="">Data Saída</label>
+						<label for="">Data Saída *</label>
 						<div class="conteiner">
 							<h:inputText 
 								name="datasaida" 								
@@ -132,24 +132,13 @@
 						</div>
 					</div>
 
-					<div class="input-box box-15">
-						<label for="">Novo CPF</label>
-						<div class="conteiner">
-							<h:inputText id="deslCadNovoCpf" 
-								requiredMessage="cpf é obrigatorio" maxlength="11"
-								styleClass="maskCpf"
-								value="#{terminoVinculoFormBean.entidade.novoCpf}">
-							</h:inputText>
-						</div>
-					</div>
-
 				</fieldset>
 
 				<fieldset>
 					<legend>Identificação do estabelecimento</legend>
 
 					<div class="select-box box-12">
-						<label for="">tpInsc</label>
+						<label for="">tpInsc *</label>
 						<div class="conteiner">
 							<h:selectOneMenu 
 								rendered="#{!terminoVinculoFormBean.emEdicao}"
@@ -164,7 +153,7 @@
 					</div>
 
 					<div class="input-box box-25">
-						<label for="">nrInsc</label>
+						<label for="">nrInsc *</label>
 						<div class="conteiner">
 							<h:inputText id="nrInscLot" maxlength="10"
 								value="#{terminoVinculoFormBean.entidade.numeroInscricaoLotacao}" />
@@ -172,7 +161,7 @@
 					</div>
 
 					<div class="input-box box-25">
-						<label for="">codLotacao</label>
+						<label for="">codLotacao *</label>
 						<div class="conteiner">
 							<h:inputText id="codInscLot" maxlength="10" 
 								value="#{terminoVinculoFormBean.entidade.codLotacao}" />
@@ -182,7 +171,7 @@
 				</fieldset>
 
 				<fieldset>
-					<legend>informação de Agente Nócivo</legend>					
+					<legend>Quarentena</legend>					
 					
 					<div class="input-box box-25">
 						<label for="">dtFimQuar</label>
