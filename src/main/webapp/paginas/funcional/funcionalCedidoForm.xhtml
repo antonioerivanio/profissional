@@ -47,14 +47,14 @@
 						<rich:select id="servidor"	
 									 required="true" requiredMessage="Servidor é obrigatorio"								
 									 converter="entityConverter"									 
-									 value="#{funcionalCedidoFormBean.afastamentoFormBean.servidorFuncional}"
+									 value="#{funcionalCedidoFormBean.servidorFuncional}"
 									 listWidth="800"
 									 enableManualInput="true"
 									 defaultLabel="Digite o nome do servidor"									 
 									 >
 						  	<f:selectItem id="selecioneServidor" itemLabel="Selecione..."/>
 						  	<f:selectItems 	id="comboServidor"
-						  					value="#{funcionalCedidoFormBean.afastamentoFormBean.servidorEnvioList}"
+						  					value="#{funcionalCedidoFormBean.servidorEnvioList}"
 						  					var="servidor"
 						  					itemValue="#{servidor}"
 						  					itemLabel="#{servidor.nome}"/>

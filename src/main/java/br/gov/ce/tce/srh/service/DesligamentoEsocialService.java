@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import br.gov.ce.tce.srh.domain.Desligamento;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -102,4 +105,10 @@ public class DesligamentoEsocialService {
 
     return Boolean.TRUE;
   }
+  
+
+  public Funcional getFuncionalById(Long idFuncional) {
+    return dao.getFuncionalById(idFuncional);
+  }  
+
 }

@@ -155,7 +155,6 @@ public class LicencaDAOImpl implements LicencaDAO {
 	public List<Licenca> search(Funcional funcional, List<Integer> listaCodigo) {		
 		Query query = entityManager.createNativeQuery(getSqlNativeLicenca(), Licenca.class);
 		query.setParameter("idFuncional", funcional.getId());
-		query.setParameter("tiposLicencas", listaCodigo);
 
 		return query.getResultList();
 	}

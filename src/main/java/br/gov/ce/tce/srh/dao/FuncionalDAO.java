@@ -389,15 +389,18 @@ public class FuncionalDAO {
 	    }
 	
 	public List<Funcional> findServidoresEvento2230() {
-		try {
-		  Query query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) FROM Funcional f "
-		                            + "WHERE "
-		                            + " f.pessoal.id in (Select l.pessoal.id from Licenca l where l.tipoLicenca.codigoEsocial IS not NULL and l.fim > '21/08/2022' ) and f.saida is null "
-		                            + ""
-		                            + " ORDER BY f.nome ", Funcional.class
-		                            );
-		                            
-			return query.getResultList();
+		try {		  
+		  StringBuffer sql =  new StringBuffer(" SELECT distinct f.* FROM tb_licenca l INNER JOIN tb_tipolicenca tl on l.idtipolicenca = tl.id ");
+		  sql.append(" INNER JOIN tb_pessoal p on l.idpessoal = p.id ");
+		  sql.append(" INNER JOIN tb_funcional f on f.idpessoal = p.id ");
+		  sql.append(" WHERE fim > '21/08/2022' ");
+		  sql.append(" AND inicio < sysdate ");
+		  sql.append(" AND tl.codigoesocial is not null ");
+		  sql.append(" AND f.datasaida is null ");
+		  sql.append(" AND f.id  NOT IN (SELECT e.IDFUNCIONAL FROM ESOCIAL_AFASTAMENTO e  where e.dt_ini_afast = l.inicio) ");
+		  sql.append(" order by f.nome ");
+		  Query query = entityManager.createNativeQuery(sql.toString(), Funcional.class);
+		  return query.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}

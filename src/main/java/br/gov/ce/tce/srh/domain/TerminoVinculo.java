@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import br.gov.ce.tce.srh.enums.DadoTCE;
 
 
 @Entity
@@ -121,6 +122,9 @@ public class TerminoVinculo extends BasicEntity<Long> implements Serializable {
   }
 
   public String getNumeroInscricaoEmpregador() {
+    if(numeroInscricaoEmpregador == null) {
+      numeroInscricaoEmpregador = DadoTCE.NR_INSC;
+    }
     return numeroInscricaoEmpregador;
   }
 
@@ -145,6 +149,9 @@ public class TerminoVinculo extends BasicEntity<Long> implements Serializable {
   }
 
   public String getNumeroInscricaoLotacao() {
+    if(numeroInscricaoLotacao ==  null) {
+      numeroInscricaoLotacao = DadoTCE.CNPJ;//cnpj tce
+    }
     return numeroInscricaoLotacao;
   }
 

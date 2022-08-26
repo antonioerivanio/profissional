@@ -7,13 +7,14 @@ package br.gov.ce.tce.srh.enums;
  *
  */
 public enum TipoMotivoDesligamento {  
-  RESCISAO_ANTECIPADA_CONTRATO_INICIADA_EMPREGADOR(03, "Rescisão antecipada do contrato a termo por iniciativa do empregador"),
-  RESCISAO_ANTECIPADA_CONTRATO_INICIADA_PELO_EMPREGADO(04, "Rescisão antecipada do contrato a termo por iniciativa do empregado"),
-  RESCISAO_TERMINO_CONTRATO_A_TERMO(06, "Rescisão por término do contrato a termo"),
-  RESCISAO_POR_FALECIMENTO_EMPREGADO(10, "Rescisão por falecimento do empregado"),  
-  EXONERACAO(23, "Exoneração"), 
   APOSENTADORIA_COMPUSORIA(38, "Aposentadoria, exceto por invalidez"), 
-  APOSENTADORIA_POR_IDADE(39, "Aposentadoria de servidor estatutário, por invalidez"); 
+  APOSENTADORIA_POR_IDADE(39, "Aposentadoria de servidor estatutário, por invalidez"),
+  EXONERACAO(23, "Exoneração"), 
+  RESCISAO_POR_FALECIMENTO_EMPREGADO(10, "Rescisão por falecimento do empregado"),
+  RESCISAO_TERMINO_CONTRATO_A_TERMO(06, "Rescisão por término do contrato a termo"),
+  RESCISAO_ANTECIPADA_CONTRATO_INICIADA_EMPREGADOR(03, "Rescisão antecipada do contrato a termo por iniciativa do empregador"),
+  RESCISAO_ANTECIPADA_CONTRATO_INICIADA_PELO_EMPREGADO(04, "Rescisão antecipada do contrato a termo por iniciativa do empregado");
+   
   
   private Integer codigo;
   private String descricao;

@@ -44,14 +44,13 @@
 							<div class="conteiner">
 								<h:inputText id="nomeEdicao" maxlength="46" size="46"
 									disabled="true" rendered="#{terminoVinculoFormBean.emEdicao}"
-									value="#{terminoVinculoFormBean.funcional.pessoal.nome}" />
+									value="#{terminoVinculoFormBean.entidade.funcional.pessoal.nome}" />
 							</div>
 						</div>
 					</ui:fragment>
 				</div>
 				<h:commandButton actionListener="#{terminoVinculoFormBean.consultar}"
-					
-					rendered="#{!beneficiarioFormBean.emEdicao}" value="Consultar"					
+					rendered="#{!terminoVinculoFormBean.emEdicao}" value="Consultar"					
 					styleClass="bt-padrao fr mg-right-10" />
 			</fieldset>
 
@@ -88,6 +87,7 @@
 						<div class="conteiner">
 
 							<h:selectOneMenu 
+								disabled="true"
 								rendered="#{!terminoVinculoFormBean.emEdicao}"
 								value="#{terminoVinculoFormBean.entidade.tipoInscricaoEmpregador}">
 								<f:selectItem itemLabel="Selecione..." />
@@ -100,7 +100,7 @@
 
 					</div>
 
-					<div class="input-box box-25">
+					<div class="input-box box-15">
 						<label for="">nrInsc *</label>
 						<div class="conteiner">
 							<h:inputText id="nrInscEmp" maxlength="10" disabled="true"
@@ -123,10 +123,11 @@
 						</div>
 					</div>
 
-					<div class="input-box box-15">
+					<div class="input-box box-20">
 						<label for="">NrProcTrab</label>
 						<div class="conteiner">
-							<h:inputText								
+							<h:inputText					
+								disabled="true"								
 								value="#{terminoVinculoFormBean.entidade.numeroProcessoTrabalhista}">
 							</h:inputText>
 						</div>
@@ -141,6 +142,7 @@
 						<label for="">tpInsc *</label>
 						<div class="conteiner">
 							<h:selectOneMenu 
+								disabled="true"		
 								rendered="#{!terminoVinculoFormBean.emEdicao}"
 								value="#{terminoVinculoFormBean.entidade.tipoInscricaoLotacao}">
 								<f:selectItem itemLabel="Selecione..." />
@@ -152,18 +154,19 @@
 						</div>
 					</div>
 
-					<div class="input-box box-25">
+					<div class="input-box box-15">
 						<label for="">nrInsc *</label>
 						<div class="conteiner">
-							<h:inputText id="nrInscLot" maxlength="10"
+							<h:inputText id="nrInscLot" 
+								disabled="true"	maxlength="10"
 								value="#{terminoVinculoFormBean.entidade.numeroInscricaoLotacao}" />
 						</div>
 					</div>
 
-					<div class="input-box box-25">
+					<div class="input-box box-10">
 						<label for="">codLotacao *</label>
 						<div class="conteiner">
-							<h:inputText id="codInscLot" maxlength="10" 
+							<h:inputText id="codInscLot"  disabled="true" maxlength="10" 
 								value="#{terminoVinculoFormBean.entidade.codLotacao}" />
 						</div>
 					</div>
@@ -190,9 +193,7 @@
 
 			<h:commandButton actionListener="#{terminoVinculoFormBean.salvarEvento}"
 				value="Salvar" styleClass="bt-padrao fr mg-right-10" />
-			<h:commandButton value="Voltar"
-				styleClass="bt-voltar fr mg-right-10 mg-bottom-10"
-				action="#{terminoVinculoFormBean.voltar}" immediate="true" />
+			<a href="/srh/paginas/tabelas/terminoVinculoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 		</h:form>
 
 	</ui:define>

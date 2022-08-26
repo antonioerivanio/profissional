@@ -120,23 +120,24 @@ public class TerminoVinculoEsocialDAO {
   public String getSQLEventoS2399() {
     StringBuffer sql = new StringBuffer();
 
-    sql.append(" SELECT   ");
-    sql.append("  0  AS id, ");
-    sql.append("  f.id  idfuncional, ");
-    sql.append("  f.id || '-' || to_char(f.datasaida, 'ddMMyyyy') AS referencia, ");
+    sql.append("SELECT   ");
+    sql.append("  0     AS  id, ");
+    sql.append("  f.id  AS idfuncional, ");
+    sql.append("  f.id || '-' || to_char(f.datasaida, 'ddmmyyyy') AS referencia, ");
     sql.append("  p.cpf  AS cpf_trab, ");
-    sql.append("  '0' || f.matricula  AS matricula, ");
-    sql.append("  null  as cod_categoria, ");    
-    sql.append("  f.datasaida  AS dt_term, ");    
+    sql.append("  '0' || f.matricula AS matricula, ");
+    sql.append("  null   AS cod_categoria, ");    
+    sql.append("  f.datasaida  AS dt_term, ");
+    sql.append("  null  AS nr_proctrabalho, ");    
     sql.append("  1     AS tp_insc_empregador, ");
     sql.append("  null  AS nr_insc_empregador,  ");    
-    sql.append("  1  AS cod_lotacao, ");
+    sql.append("  1     AS cod_lotacao, ");
     sql.append("  1     AS tp_insc_lotacao, ");
     sql.append("  null  AS nr_insc_lotacao, ");
-    sql.append("  null     AS dt_fimquar ");
-    sql.append(" FROM  srh.tb_funcional f ");
-    sql.append(" INNER JOIN srh.tb_pessoal   p ON f.idpessoal = p.id ");
-    sql.append(" WHERE f.id = :idFuncional ");
+    sql.append("  null  AS dt_fimquar ");
+    sql.append("FROM  srh.tb_funcional f ");
+    sql.append("INNER JOIN srh.tb_pessoal   p ON f.idpessoal = p.id ");
+    sql.append("WHERE f.id = :idFuncional ");
 
     return sql.toString();
   }

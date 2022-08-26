@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import br.gov.ce.tce.srh.domain.Desligamento;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.Pessoal;
 import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
@@ -36,12 +37,12 @@ public class DesligamentoEsocialDAO {
     return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
   }
 
-  public Desligamento salvar(Desligamento entidade) {  
-      if (entidade.getId() == null || entidade.getId().equals(0l)) {
-        entidade.setId(getMaxId());
-      }
+  public Desligamento salvar(Desligamento entidade) {
+    if (entidade.getId() == null || entidade.getId().equals(0l)) {
+      entidade.setId(getMaxId());
+    }
 
-      return entityManager.merge(entidade);
+    return entityManager.merge(entidade);
   }
 
 
@@ -150,7 +151,7 @@ public class DesligamentoEsocialDAO {
 
   public Desligamento getDesligamentoById(Long id) {
     try {
-      Query query = entityManager.createQuery("SELECT d FROM Desligamento d JOIN fetch d.funcional where d.id = :id",  Desligamento.class);
+      Query query = entityManager.createQuery("SELECT d FROM Desligamento d JOIN fetch d.funcional where d.id = :id", Desligamento.class);
       query.setParameter("id", id);
       return (Desligamento) query.getSingleResult();
     } catch (NoResultException e) {
@@ -158,5 +159,14 @@ public class DesligamentoEsocialDAO {
     }
   }
 
+  public Funcional getFuncionalById(Long idFuncional) {
+    try {
+      Query query = entityManager.createQuery("SELECT f FROM Funcional f JOIN f.pessoal p where f.id = :id");
+      query.setParameter("id", idFuncional);
+      return (Funcional) query.getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
 }
 

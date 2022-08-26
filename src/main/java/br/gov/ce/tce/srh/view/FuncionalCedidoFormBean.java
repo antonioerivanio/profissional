@@ -61,7 +61,7 @@ public class FuncionalCedidoFormBean implements Serializable {
   private List<CodigoCategoria> comboCodCateg;
   private List<PessoaJuridica> comboEmpresasCadastradas;
   private List<Funcional> servidorEnvioList;
-
+  private Funcional servidorFuncional;
 
   @PostConstruct
   public void init() {
@@ -72,14 +72,14 @@ public class FuncionalCedidoFormBean implements Serializable {
 
       entidade = funcionalCedidoService.getById(flashParameter.getId());
 
-      afastamentoFormBean.setServidorFuncional(getEntidade().getFuncional());
+      setServidorFuncional(getEntidade().getFuncional());
     } else {
       inicializarEntidade();
     }
 
     try {
       if (this.entidade.getId() != null) {
-        this.servidorEnvioList = funcionalService.findServidoresEvento2230();
+        this.servidorEnvioList = funcionalService.findServidoresEventoAuxilioSaude();
         setCnpjPessoaJuridicaChange();
 
         this.isEdicao = true;
@@ -126,9 +126,9 @@ public class FuncionalCedidoFormBean implements Serializable {
     pessoaJuridica = new PessoaJuridica();
     getEntidade().setPessoaJuridica(pessoaJuridica);
     getEntidade().setCodigoCategoria(null);
-    getAfastamentoFormBean().setServidorFuncional(null);
+    setServidorFuncional(null);
 
-    this.servidorEnvioList = funcionalService.findServidoresEvento2230();
+    this.servidorEnvioList = funcionalService.findServidoresEventoAuxilioSaude();
   }
 
   public void setCnpjPessoaJuridicaChange() {
@@ -148,8 +148,8 @@ public class FuncionalCedidoFormBean implements Serializable {
    * @return funcional encontrado
    */
   private Funcional getFuncionalByServidorFuncional() {
-    int index = afastamentoFormBean.getServidorEnvioList().indexOf(afastamentoFormBean.getServidorFuncional());
-    Funcional funcionalEncontrado = afastamentoFormBean.getServidorEnvioList().get(index);
+    int index = getServidorEnvioList().indexOf(getServidorFuncional());
+    Funcional funcionalEncontrado = getServidorEnvioList().get(index);
     return funcionalEncontrado;
   }
 
@@ -230,5 +230,17 @@ public class FuncionalCedidoFormBean implements Serializable {
   public NomeacaoServidorFormBean getNomeacaoServidorFormBean() {
     return nomeacaoServidorFormBean;
   }
+
+
+  public Funcional getServidorFuncional() {
+    return servidorFuncional;
+  }
+
+
+  public void setServidorFuncional(Funcional servidorFuncional) {
+    this.servidorFuncional = servidorFuncional;
+  }
+  
+  
 
 }

@@ -76,7 +76,7 @@ public class AfastamentoESocialDAO {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT 0 AS ID, ");
-		sql.append(" tb_funcional.id||'-'||tb_tipolicenca.id ||'-'||tb_licenca.inicio AS REFERENCIA, ");
+		sql.append(" tb_funcional.id||'-'||tb_tipolicenca.id ||'-'|| to_char(tb_licenca.inicio, 'ddmmyyyy') AS REFERENCIA, ");
 		sql.append("tb_funcional.id AS idfuncional,  ");
 		sql.append("NULL                  AS RETIFICAR_RECIBO, ");
 		sql.append("NULL                  AS OCORRENCIA_ID, ");
@@ -97,6 +97,9 @@ public class AfastamentoESocialDAO {
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
 		sql.append("WHERE  tb_funcional.id = :idFuncional  ");
+		sql.append("AND tb_licenca.fim > '21/08/2022' ");
+		sql.append("AND tb_licenca.inicio < sysdate ");
+		sql.append("AND tb_tipolicenca.codigoesocial is not null ");
 	    
 		return sql;
 	}

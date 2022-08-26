@@ -120,17 +120,15 @@
 										value="#{desligamentoFormBean.tipoMotivoDesligamentoList}"
 										var="motivo" itemValue="#{motivo.codigo}"
 										itemLabel="#{motivo.descricao}" />
-									<f:ajax execute="@this" />
+									<f:ajax execute="@this" listener="#{desligamentoFormBean.setDataDesligamentoChange()}" render="dataDesligamento" />
 								</h:selectOneMenu>
-								<rich:message for="motivoDesligamento" ajaxRendered="true"></rich:message>
-
 							</div>
 						</div>
 
 						<div class="input-box box-15">
 							<label for="">Data *</label>
 							<div class="conteiner">
-								<h:inputText name="dataDesligamento"
+								<h:inputText id="dataDesligamento" name="dataDesligamento"
 									styleClass="maskData"
 									value="#{desligamentoFormBean.entidade.dtDesligamento}">
 								</h:inputText>								

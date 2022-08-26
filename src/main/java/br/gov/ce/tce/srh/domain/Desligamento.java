@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import br.gov.ce.tce.srh.enums.DadoTCE;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 
@@ -146,6 +147,10 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   }
 
   public String getNumeroInscricaoEmpregador() {
+    if(numeroInscricaoEmpregador == null) {
+      numeroInscricaoEmpregador = DadoTCE.NR_INSC;
+    }
+    
     return numeroInscricaoEmpregador;
   }
 
@@ -171,7 +176,7 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
 
   public String getNumeroInscricaoLotacao() {
     if(numeroInscricaoLotacao ==  null) {
-      numeroInscricaoLotacao = "09499757000146";//cnpj tce
+      numeroInscricaoLotacao = DadoTCE.CNPJ;//cnpj tce
     }
     return numeroInscricaoLotacao;
   }

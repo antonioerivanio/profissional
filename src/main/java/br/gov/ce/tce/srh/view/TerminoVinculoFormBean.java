@@ -79,12 +79,7 @@ public class TerminoVinculoFormBean implements Serializable {
     if (servidorFuncional != null) {
       try {
 
-        entidade =  terminoVinculoEsocialService.getEventoS2399ByServidor(servidorFuncional);
-        
-        if( getEntidade().getNumeroInscricaoEmpregador() == null) {
-          getEntidade().setNumeroInscricaoEmpregador("09499757");
-        }
-        
+        entidade =  terminoVinculoEsocialService.getEventoS2399ByServidor(servidorFuncional);        
       } catch (Exception e) {
         e.printStackTrace();
         FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");

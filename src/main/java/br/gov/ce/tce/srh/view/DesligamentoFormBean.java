@@ -84,10 +84,6 @@ public class DesligamentoFormBean implements Serializable {
       } else {
         if (servidorFuncional != null) {
           entidade = desligamentoEsocialService.getEventoS2299ByServidor(servidorFuncional);
-         // entidade.setFuncional(servidorFuncional);
-          if (getEntidade().getNumeroInscricaoEmpregador() == null) {
-            getEntidade().setNumeroInscricaoEmpregador("09499757");
-          }
         } else {
           FacesUtil.addErroMessage("Selecione um servidor.");
         }
@@ -102,7 +98,6 @@ public class DesligamentoFormBean implements Serializable {
 
 
   public void salvarEvento() {
-
     try {
       if (servidorFuncional != null) {
         if (desligamentoEsocialService.isOk(entidade)) {
@@ -201,5 +196,17 @@ public class DesligamentoFormBean implements Serializable {
 
   public List<NaturezaRubricaFolhaPagamento> getNaturezaRubricaFolhaPagamentoList() {
     return Arrays.asList(NaturezaRubricaFolhaPagamento.values());
+  }
+  
+  public void setDataDesligamentoChange() {
+    Funcional funcional = desligamentoEsocialService.getFuncionalById(getServidorFuncional().getId());
+    
+    /*
+     * if(getEntidade().getMtvDesligamento().equals(TipoMotivoDesligamento.EXONERACAO.getCodigo().
+     * toString())) { getEntidade().setDtDesligamento(funcional.getSaida()); }
+     */ 
+    if(getEntidade().getMtvDesligamento().equals(TipoMotivoDesligamento.RESCISAO_POR_FALECIMENTO_EMPREGADO.getCodigo().toString())) {
+      getEntidade().setDtDesligamento(funcional.getPessoal().getObito());
+    }
   }
 }
