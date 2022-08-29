@@ -97,8 +97,8 @@ public class AfastamentoESocialDAO {
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
 		sql.append("WHERE  tb_funcional.id = :idFuncional  ");
-		sql.append("AND tb_licenca.fim > '21/08/2022' ");
-		sql.append("AND tb_licenca.inicio < sysdate ");
+		sql.append("AND tb_licenca.fim > to_date('21/08/2022', 'dd/mm/yyyy') ");
+		sql.append("AND to_char(tb_licenca.inicio, 'dd/mm/yyyy') < TO_char(sysdate, 'dd/mm/yyyy') ");
 		sql.append("AND tb_tipolicenca.codigoesocial is not null ");
 	    
 		return sql;
