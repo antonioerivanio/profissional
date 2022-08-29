@@ -157,4 +157,51 @@ public class RemuneracaoTrabalhadorEsocialService{
 		return dao.getEventoS1200RPA(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
 	}
 
+	
+
+	@Transactional
+	public void salvarRGPA(String mesReferencia, String anoReferencia, CadastroPrestador funcionarioRGPA) throws CloneNotSupportedException {
+		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		if(funcionarioRGPA == null) {
+			List<CadastroPrestador> servidorEnvioList = funcionalService.findRGPAEvento1200(anoReferencia, mesReferencia);
+			
+			for (CadastroPrestador servidorFuncional : servidorEnvioList) {
+				RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200RPA(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional );
+				RemuneracaoTrabalhador remuneracaoTrabalhadorClone = remuneracaoTrabalhador.clone();
+				salvaTrabalhadorRGPA(mesReferencia, anoReferencia, remuneracaoTrabalhadorClone, servidorFuncional.getId());
+				if( remuneracaoTrabalhador != null) {
+					if(mesReferencia.equals("13")) {
+						remuneracaoTrabalhador.setIndApuracao(new Byte("2"));
+					}
+					if(remuneracaoTrabalhador.getRemunOutrEmpr() != null && remuneracaoTrabalhador.getRemunOutrEmpr().isEmpty()) {
+						remuneracaoTrabalhador.setIndMV(getIndMVRemunOutrEmpr(remuneracaoTrabalhador.getRemunOutrEmpr()));
+						
+					}
+					List<RemuneracaoOutraEmpresa> remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, remuneracaoTrabalhador, servidorFuncional.getId());
+					List<DemonstrativosDeValores> demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValores(mesReferencia, anoReferencia, remuneracaoTrabalhador, servidorFuncional.getId());
+					List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
+					List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
+					List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
+					
+					remuneracaoTrabalhador.setDmDev(demonstrativosDeValoresList);
+					remuneracaoTrabalhador.setRemunOutrEmpr(remuneracaoOutraEmpresaList);
+					salvar(remuneracaoTrabalhador);
+				}			
+				
+			}
+		}else {
+			RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200RPA(mesReferencia, anoReferencia, periodoApuracao, funcionarioRGPA );
+			RemuneracaoTrabalhador remuneracaoTrabalhadorClone = remuneracaoTrabalhador.clone();
+			salvaTrabalhadorRGPA(mesReferencia, anoReferencia, remuneracaoTrabalhadorClone, funcionarioRGPA.getId());
+		}
+	}
+
+	@Transactional
+	private void salvaTrabalhadorRGPA(String mesReferencia, String anoReferencia, RemuneracaoTrabalhador remuneracaoTrabalhador, Long id) {
+		remuneracaoTrabalhador.setId(null);
+		dao.salvar(remuneracaoTrabalhador);
+		salvaNotificacaoEsocial(remuneracaoTrabalhador);
+		
+	}
+
 }

@@ -110,6 +110,37 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 		return query.getResultList();
 	}
 
+	
+	public InfoRemuneracaoPeriodoApuracao findInfoRemuneracaoPeriodoApuracao(DemonstrativosDeValores demonstrativosDeValores) {
+		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoApuracaoRPA(), InfoRemuneracaoPeriodoApuracao.class);
 
+		if(demonstrativosDeValores != null && demonstrativosDeValores.getId() != null && demonstrativosDeValores.getId() > 0 ) {
+			query.setParameter("idDmDev", demonstrativosDeValores.getId());
+		}
+		else {
+			query.setParameter("idDmDev", null);
+		}
+	
+		return (InfoRemuneracaoPeriodoApuracao) query.getSingleResult();
+	}
+	
+	public String getSQLInfoRemuneracaoPeriodoApuracaoRPA() {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" SELECT  ");    
+		sql.append(" ( ROWNUM * -1) as id, "); 
+		sql.append(" :idDmDev as IDDMDEV,  ");		
+		sql.append(" 1 as TP_INSC,  ");
+		sql.append(" '09499757000146'  as NR_INSC,  ");
+		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 	
+		sql.append("  null as matricula,  ");
+		sql.append("  null as IND_SIMPLES,  ");
+		sql.append("  1 as GRAU_EXP  ");
+
+		sql.append("  from tb_funcional ");
+				sql.append("  WHERE id = 1 ");
+
+	    return sql.toString();
+	}
 
 }

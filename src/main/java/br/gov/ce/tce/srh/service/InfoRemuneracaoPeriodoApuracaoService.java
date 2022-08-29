@@ -79,8 +79,9 @@ public class InfoRemuneracaoPeriodoApuracaoService{
 		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
 			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
 				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(0)) {
-					InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao = geraInfoRemuneracaoPeriodoApuracaoRPA( demonstrativosDeValores, idPrestador);
+					InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao = dao.findInfoRemuneracaoPeriodoApuracao(demonstrativosDeValores);
 					demonstrativosDeValores.setInfoPerApur(infoRemuneracaoPeriodoApuracao);
+					demonstrativosDeValores.setInfoRemuneracaoPeriodoApuracao(infoRemuneracaoPeriodoApuracao); 
 					infoRemuneracaoPeriodoApuracao.setDemonstrativosDeValores(demonstrativosDeValores);	
 					infoRemuneracaoPeriodoApuracaoListReturn.add(infoRemuneracaoPeriodoApuracao);
 				}
@@ -95,11 +96,11 @@ public class InfoRemuneracaoPeriodoApuracaoService{
 		return infoRemuneracaoPeriodoApuracaoListReturn;
 	}
 
-	private InfoRemuneracaoPeriodoApuracao geraInfoRemuneracaoPeriodoApuracaoRPA(
-			DemonstrativosDeValores demonstrativosDeValores, Long idPrestador) {
+private InfoRemuneracaoPeriodoApuracao geraInfoRemuneracaoPeriodoApuracaoRPA(
+			DemonstrativosDeValores demonstrativosDeValores) {
 		
 		InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao = new InfoRemuneracaoPeriodoApuracao();
-		infoRemuneracaoPeriodoApuracao.setId(null);
+		//infoRemuneracaoPeriodoApuracao.setId(null);
 		infoRemuneracaoPeriodoApuracao.setDemonstrativosDeValores(demonstrativosDeValores);
 		infoRemuneracaoPeriodoApuracao.setCodLotacao("LOTACAO-BASICA");
 		infoRemuneracaoPeriodoApuracao.setNrInsc("09499757000146");

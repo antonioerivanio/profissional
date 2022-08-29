@@ -31,7 +31,7 @@ import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @SuppressWarnings("serial")
-@Component("remuneracaoServidorFormBean")
+@Component("remuneracaoTrabalhadorFormBean")
 @Scope("view")
 public class RemuneracaoTrabalhadorFormBean implements Serializable {
 

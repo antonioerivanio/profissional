@@ -22,7 +22,6 @@ import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.service.DemonstrativosDeValoresService;
 import br.gov.ce.tce.srh.service.FuncionalService;
-import br.gov.ce.tce.srh.service.InfoRemuneracaoPeriodoAnterioresService;
 import br.gov.ce.tce.srh.service.InfoRemuneracaoPeriodoApuracaoService;
 import br.gov.ce.tce.srh.service.ItensRemuneracaoTrabalhadorService;
 import br.gov.ce.tce.srh.service.RemuneracaoOutraEmpresaService;
@@ -43,8 +42,6 @@ public class RemuneracaoTrabalhadorRGPAFormBean implements Serializable {
 	private FuncionalService funcionalService;
 	@Autowired
 	private DemonstrativosDeValoresService demonstrativosDeValoresService;	
-	@Autowired
-	private InfoRemuneracaoPeriodoAnterioresService infoRemuneracaoPeriodoAnterioresService;
 	@Autowired
 	private InfoRemuneracaoPeriodoApuracaoService infoRemuneracaoPeriodoApuracaoService;
 	@Autowired
@@ -124,10 +121,13 @@ public class RemuneracaoTrabalhadorRGPAFormBean implements Serializable {
 			}
 			
 			if(servidorFuncional != null && entidade != null) {
-				remuneracaoTrabalhadorEsocialService.salvar(entidade);
+				RemuneracaoTrabalhador entidadeRPGA = entidade.clone();
+				entidadeRPGA.setId(null);
+				remuneracaoTrabalhadorEsocialService.salvar(entidadeRPGA);
+				//remuneracaoTrabalhadorEsocialService.salvarRGPA(mesReferencia, anoReferencia, servidorFuncional);
 			}
 			else {
-			 //remuneracaoTrabalhadorEsocialService.salvar(mesReferencia, anoReferencia);
+			 remuneracaoTrabalhadorEsocialService.salvarRGPA(mesReferencia, anoReferencia, servidorFuncional);
 				System.out.println("Gera todo mundo!");
 			}	
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");

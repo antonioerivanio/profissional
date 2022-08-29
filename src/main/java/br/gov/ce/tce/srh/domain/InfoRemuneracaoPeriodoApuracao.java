@@ -50,7 +50,7 @@ public class InfoRemuneracaoPeriodoApuracao  extends BasicEntity<Long> implement
 	@Column(name = "GRAU_EXP")
 	private Byte grauEX;
 	
-	@OneToMany(mappedBy = "infoRemuneracaoPeriodoApuracao", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "infoRemuneracaoPeriodoApuracao", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<ItensRemuneracaoTrabalhador> itensRemun = new ArrayList<>();
 
 

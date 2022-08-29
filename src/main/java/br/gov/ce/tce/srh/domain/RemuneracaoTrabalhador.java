@@ -66,10 +66,10 @@ public class RemuneracaoTrabalhador extends BasicEntity<Long> implements Seriali
 	@Temporal(TemporalType.DATE)
 	private Date dtNascto;
 	
-	@OneToMany(mappedBy = "remuneracaoTrabalhador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "remuneracaoTrabalhador", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<RemuneracaoOutraEmpresa> remunOutrEmpr = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "remuneracaoTrabalhador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "remuneracaoTrabalhador", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<DemonstrativosDeValores> dmDev = new ArrayList<>();
 	
 	

@@ -135,7 +135,7 @@ public class ItensRemuneracaoTrabalhadorService{
 		List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorRPAList = new  ArrayList<ItensRemuneracaoTrabalhador>();
 		if(dadosPagtoPrestador.getVlrBruto().compareTo(new BigDecimal(0)) > 0){
 			ItensRemuneracaoTrabalhador vlrBruto = new ItensRemuneracaoTrabalhador();
-			vlrBruto.setId(null);
+			//vlrBruto.setId(null);
 			vlrBruto.setCodRubr("252");
 			vlrBruto.setIdeTabRubr("001");
 			vlrBruto.setIndApurIr(new Byte("1"));
@@ -145,7 +145,7 @@ public class ItensRemuneracaoTrabalhadorService{
 		
 		if(dadosPagtoPrestador.getVlrInssOrigem().compareTo(new BigDecimal(0)) > 0){
 			ItensRemuneracaoTrabalhador vlrInssOrigem = new ItensRemuneracaoTrabalhador();
-			vlrInssOrigem.setId(null);
+			//vlrInssOrigem.setId(null);
 			vlrInssOrigem.setCodRubr("612");
 			vlrInssOrigem.setIdeTabRubr("001");
 			vlrInssOrigem.setIndApurIr(new Byte("1"));
@@ -156,7 +156,7 @@ public class ItensRemuneracaoTrabalhadorService{
 		
 		if(dadosPagtoPrestador.getVlrIss().compareTo(new BigDecimal(0)) > 0){
 			ItensRemuneracaoTrabalhador vlrIss = new ItensRemuneracaoTrabalhador();
-			vlrIss.setId(null);
+			//vlrIss.setId(null);
 			vlrIss.setCodRubr("640");
 			vlrIss.setIdeTabRubr("001");
 			vlrIss.setIndApurIr(new Byte("1"));
@@ -166,7 +166,7 @@ public class ItensRemuneracaoTrabalhadorService{
 		
 		if(dadosPagtoPrestador.getVlrInss().compareTo(new BigDecimal(0)) > 0){
 			ItensRemuneracaoTrabalhador vlrInss = new ItensRemuneracaoTrabalhador();
-			vlrInss.setId(null);
+			//vlrInss.setId(null);
 			vlrInss.setCodRubr("252");
 			vlrInss.setIdeTabRubr("001");
 			vlrInss.setIndApurIr(new Byte("1"));
