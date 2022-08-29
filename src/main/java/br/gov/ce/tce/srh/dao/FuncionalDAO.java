@@ -425,8 +425,9 @@ public class FuncionalDAO {
 		try {
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
 					+ "FROM Funcional f "
-					+ "WHERE f.status = 5 and f.saida is null "				 
-					+ "AND f.id  IN (SELECT a.funcional.id FROM Aposentadoria a) "
+					+ "WHERE f.status = 5 and f.saida is null "		
+					+ "AND f.pessoal.id  IN (SELECT a.funcional.pessoal.id FROM Aposentadoria a) "
+					//+ "AND f.id  IN (SELECT a.funcional.id FROM Aposentadoria a) "
 					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
 					//+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
 					+ "ORDER BY f.nome", Funcional.class);
