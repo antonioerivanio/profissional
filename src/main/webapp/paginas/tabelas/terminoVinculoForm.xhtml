@@ -87,8 +87,7 @@
 						<div class="conteiner">
 
 							<h:selectOneMenu 
-								disabled="true"
-								rendered="#{!terminoVinculoFormBean.emEdicao}"
+								disabled="true"								
 								value="#{terminoVinculoFormBean.entidade.tipoInscricaoEmpregador}">
 								<f:selectItem itemLabel="Selecione..." />
 								<f:selectItems value="#{terminoVinculoFormBean.tipoInscricaoList}"
@@ -142,8 +141,7 @@
 						<label for="">tpInsc *</label>
 						<div class="conteiner">
 							<h:selectOneMenu 
-								disabled="true"		
-								rendered="#{!terminoVinculoFormBean.emEdicao}"
+								disabled="true"
 								value="#{terminoVinculoFormBean.entidade.tipoInscricaoLotacao}">
 								<f:selectItem itemLabel="Selecione..." />
 								<f:selectItems value="#{terminoVinculoFormBean.tipoInscricaoList}"

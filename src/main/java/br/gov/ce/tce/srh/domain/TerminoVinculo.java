@@ -47,13 +47,13 @@ public class TerminoVinculo extends BasicEntity<Long> implements Serializable {
   private String numeroProcessoTrabalhista;
   
   @Column(name = "TP_INSC_EMPREGADOR")
-  private String tipoInscricaoEmpregador;
+  private Integer tipoInscricaoEmpregador;
   
   @Column(name = "NR_INSC_EMPREGADOR")
   private String numeroInscricaoEmpregador;
 
   @Column(name = "TP_INSC_LOTACAO")
-  private String tipoInscricaoLotacao;
+  private Integer tipoInscricaoLotacao;
   
   @Column(name = "NR_INSC_LOTACAO")
   private String numeroInscricaoLotacao;
@@ -113,11 +113,11 @@ public class TerminoVinculo extends BasicEntity<Long> implements Serializable {
     this.numeroProcessoTrabalhista = numeroProcessoTrabalhista;
   }
 
-  public String getTipoInscricaoEmpregador() {
+  public Integer getTipoInscricaoEmpregador() {
     return tipoInscricaoEmpregador;
   }
 
-  public void setTipoInscricaoEmpregador(String tipoInscricaoEmpregador) {
+  public void setTipoInscricaoEmpregador(Integer tipoInscricaoEmpregador) {
     this.tipoInscricaoEmpregador = tipoInscricaoEmpregador;
   }
 
@@ -140,11 +140,11 @@ public class TerminoVinculo extends BasicEntity<Long> implements Serializable {
     this.codLotacao = codLotacao;
   }
 
-  public String getTipoInscricaoLotacao() {
+  public Integer getTipoInscricaoLotacao() {
     return tipoInscricaoLotacao;
   }
 
-  public void setTipoInscricaoLotacao(String tipoInscricaoLotacao) {
+  public void setTipoInscricaoLotacao(Integer tipoInscricaoLotacao) {
     this.tipoInscricaoLotacao = tipoInscricaoLotacao;
   }
 

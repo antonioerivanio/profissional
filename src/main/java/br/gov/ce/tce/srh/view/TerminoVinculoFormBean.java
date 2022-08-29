@@ -47,12 +47,12 @@ public class TerminoVinculoFormBean implements Serializable {
   private List<Funcional> servidorEnvioList;
   private Funcional servidorFuncional;
   private TerminoVinculo entidade = new TerminoVinculo();
-  private TerminoVinculo admissaoAnterior = new TerminoVinculo();  
-  private List<TipoMotivoDesligamento> tipoMotivoDesligamentoList;  
-  private List<TipoInscricao> tipoInscricaoList; 
+  private TerminoVinculo admissaoAnterior = new TerminoVinculo();
+  private List<TipoMotivoDesligamento> tipoMotivoDesligamentoList;
+  private List<TipoInscricao> tipoInscricaoList;
   private List<NaturezaRubricaFolhaPagamento> naturezaRubricaFolhaPagamentoList;
 
-  
+
   boolean emEdicao = false;
 
 
@@ -66,40 +66,45 @@ public class TerminoVinculoFormBean implements Serializable {
     setEntidade(flashParameter != null ? flashParameter : new TerminoVinculo());
     this.servidorEnvioList = funcionalService.findServidoresEvento2299();
 
-    if (getEntidade() != null && getEntidade().getFuncional() != null) {     
+    if (getEntidade() != null && getEntidade().getFuncional() != null) {
       servidorFuncional = getEntidade().getFuncional();
       emEdicao = true;
-      consultar();
-      
     }
+
+    consultar();
 
   }
 
   public void consultar() {
-    if (servidorFuncional != null) {
-      try {
 
-        entidade =  terminoVinculoEsocialService.getEventoS2399ByServidor(servidorFuncional);        
-      } catch (Exception e) {
-        e.printStackTrace();
-        FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    try {
+      if (emEdicao) {
+        entidade = terminoVinculoEsocialService.getTerminoVinculoById(getEntidade().getId());
+      } else {
+        if (servidorFuncional != null) {
+          entidade = terminoVinculoEsocialService.getEventoS2399ByServidor(servidorFuncional);
+        } else {
+          FacesUtil.addErroMessage("Selecione um servidor.");
+        }
       }
-    } else {
-      FacesUtil.addErroMessage("Selecione um servidor.");
-    }    
-    
+    } catch (Exception e) {
+      e.printStackTrace();
+      FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    }
+
+
   }
-  
+
   public void salvarEvento() {
 
     try {
       if (servidorFuncional != null) {
-     
+
         terminoVinculoEsocialService.salvar(entidade);
-        
+
         entidade = new TerminoVinculo();
-      }    
+      }
 
       FacesUtil.addInfoMessage("Operação realizada com sucesso.");
       logger.info("Operação realizada com sucesso.");
@@ -107,14 +112,13 @@ public class TerminoVinculoFormBean implements Serializable {
     } catch (SRHRuntimeException e) {
       FacesUtil.addErroMessage(e.getMessage());
       logger.warn("Ocorreu o seguinte erro: " + e.getMessage());
-    }  catch (DataIntegrityViolationException e) {
+    } catch (DataIntegrityViolationException e) {
       if (e.getCause() instanceof ConstraintViolationException && e.getCause().getCause().getMessage().contains(TipoConstraintException.CONSTRAINT_UNIQUE_TERMINOVINCULO.getNome())) {
         FacesUtil.addErroMessage(TipoConstraintException.CONSTRAINT_UNIQUE_TERMINOVINCULO.getMensageError());
         logger.fatal("Ocorreu o seguinte erro: " + e.getCause().getCause().getMessage());
       }
 
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
       FacesUtil.addErroMessage("Ocorreu algum erro ao salvar. Operação cancelada.");
       logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
@@ -178,11 +182,11 @@ public class TerminoVinculoFormBean implements Serializable {
   }
 
   public List<TipoMotivoDesligamento> getTipoMotivoTerminoVinculoList() {
-    return Arrays.asList(TipoMotivoDesligamento.values());    
+    return Arrays.asList(TipoMotivoDesligamento.values());
   }
 
   public List<TipoInscricao> getTipoInscricaoList() {
-    return Arrays.asList(TipoInscricao.values());    
+    return Arrays.asList(TipoInscricao.values());
   }
 
   public List<NaturezaRubricaFolhaPagamento> getNaturezaRubricaFolhaPagamentoList() {

@@ -70,10 +70,9 @@ public class DesligamentoFormBean implements Serializable {
     if (getEntidade() != null && getEntidade().getFuncional() != null) {
       servidorFuncional = getEntidade().getFuncional();
       emEdicao = true;
-      consultar();
-
     }
-
+    
+    consultar();
   }
 
   public void consultar() {
