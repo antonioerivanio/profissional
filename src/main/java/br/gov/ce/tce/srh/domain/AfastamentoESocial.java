@@ -132,7 +132,11 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 		this.dtIniAfast = dtIniAfast;
 	}
 
-	public String getCodMotAfast() {
+	public String getCodMotAfast() {	  
+	    if(codMotAfast != null) {
+	      codMotAfast = codMotAfast.trim();
+	    }
+	    
 		return codMotAfast;
 	}
 

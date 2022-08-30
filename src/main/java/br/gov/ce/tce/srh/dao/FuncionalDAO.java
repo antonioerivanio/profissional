@@ -377,13 +377,14 @@ public class FuncionalDAO {
 	}
 	
 	public List<Funcional> findServidoresEvento2299() {
-	     TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+	     TypedQuery<Funcional> query = entityManager.createQuery("SELECT DISTINCT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
 	                               + "FROM Funcional f "
 	                               + "WHERE "
 	                               + " f.status < 3 " //pegar todos que sao 1,2
-	                               + " AND f.id IN (SELECT a.funcional.id FROM Admissao a) "
-	                               + "AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy') " 
-	                               + "OR (f.id  IN (SELECT fc.funcional.id FROM FuncionalCedido fc)) "
+	                               + " AND f.id IN (SELECT a.funcional.id FROM Admissao a) " //2200
+	                               + " AND f.saida IS NOT NULL AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy')  "
+	                               + " AND f.id NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
+	                               + " OR f.id IN (SELECT a.funcional.id FROM Aposentadoria a) "
 	                               + "ORDER BY f.nome", Funcional.class);
 	     return query.getResultList();
 	}
@@ -394,8 +395,8 @@ public class FuncionalDAO {
                                + "WHERE "
                                + " f.status < 3 " //pegar todos que sao 1,2
                                + " AND f.id IN (SELECT a.funcional.id FROM AfastamentoESocial a) "
-                               + "AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy') " 
-                               + "OR (f.id  IN (SELECT fc.funcional.id FROM FuncionalCedido fc)) "
+                               + " AND f.saida IS NOT NULL AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy') " 
+                               + " OR f.id  IN (SELECT fc.funcional.id FROM FuncionalCedido fc) "
                                + "ORDER BY f.nome", Funcional.class);
          return query.getResultList();
     }
@@ -405,7 +406,7 @@ public class FuncionalDAO {
 		  StringBuffer sql =  new StringBuffer(" SELECT distinct f.* FROM tb_licenca l INNER JOIN tb_tipolicenca tl on l.idtipolicenca = tl.id ");
 		  sql.append(" INNER JOIN tb_pessoal p on l.idpessoal = p.id ");
 		  sql.append(" INNER JOIN tb_funcional f on f.idpessoal = p.id ");
-		  sql.append(" WHERE fim > to_date('21/08/2022', 'dd/mm/yyyy') ");		  
+		  sql.append(" WHERE fim > to_date('21/08/2022', 'dd/mm/yyyy') ");
 		  sql.append(" AND to_char(inicio, 'dd/mm/yyyy') < to_char(sysdate, 'dd/mm/yyyy') ");
 		  sql.append(" AND tl.codigoesocial is not null ");
 		  sql.append(" AND f.datasaida is null ");
@@ -418,8 +419,8 @@ public class FuncionalDAO {
 		}
 	}
 	
-	   public List<Funcional> findServidoresEventoAuxilioSaude() {
-	        try {     
+	public List<Funcional> findServidoresEventoAuxilioSaude() {
+	  try {     
 	            TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
 	                    + "FROM Funcional f "
 	                    + "WHERE f.saida IS NULL "
@@ -429,8 +430,8 @@ public class FuncionalDAO {
 	            return query.getResultList();
 	        } catch (NoResultException e) {
 	            return null;
-	        }
-	    }
+       }
+	}
 
 	public List<Funcional> findBeneficiariosEvento2400() {
 		try {

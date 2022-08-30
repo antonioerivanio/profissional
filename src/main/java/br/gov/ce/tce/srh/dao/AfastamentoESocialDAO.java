@@ -130,7 +130,7 @@ public class AfastamentoESocialDAO {
 		}
 		
 		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND f.cpf = :cpf ");
+			sql.append("  AND f.pessoal.cpf = :cpf ");
 		}
 						
 		Query query = entityManager.createQuery(sql.toString());
@@ -157,7 +157,7 @@ public class AfastamentoESocialDAO {
 		}
 		
 		if (cpf != null && !cpf.isEmpty())
-			sql.append("  AND f.cpf = :cpf ");
+			sql.append("  AND f.pessoal.cpf = :cpf ");
 
 		sql.append("  ORDER BY f.nome ");
 

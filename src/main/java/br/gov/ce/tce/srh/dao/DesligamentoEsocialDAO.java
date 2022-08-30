@@ -114,8 +114,7 @@ public class DesligamentoEsocialDAO {
     try {
       Query query = entityManager.createNativeQuery(getSQLEventoS2299(), Desligamento.class);
       query.setParameter("idFuncional", servidorFuncional.getId());
-      Object local = (Object) query.getSingleResult();
-      return (Desligamento) local;
+     return  (Desligamento) query.getSingleResult();
     } catch (NoResultException e) {
       return null;
     }
@@ -124,7 +123,6 @@ public class DesligamentoEsocialDAO {
 
   public String getSQLEventoS2299() {
     StringBuffer sql = new StringBuffer();
-
     sql.append("SELECT ");
     sql.append("  0  AS id, ");
     sql.append("  f.id  idfuncional, ");
@@ -140,9 +138,12 @@ public class DesligamentoEsocialDAO {
     sql.append("  1  AS cod_lotacao, ");
     sql.append("  1     AS tp_insc_lotacao, ");
     sql.append("  null  AS nr_insc_lotacao, ");
-    sql.append("  1     AS grau_exp ");
+    sql.append("  1     AS grau_exp, ");
+    sql.append("  CASE o.id   WHEN 33 THEN 302 ");
+    sql.append("  ELSE 301 END AS cod_categ ");    
     sql.append("FROM  srh.tb_funcional f ");
     sql.append(" INNER JOIN srh.tb_pessoal  p ON f.idpessoal = p.id ");
+    sql.append(" INNER JOIN srh.tb_ocupacao o ON f.idocupacao = o.id ");
     sql.append("WHERE f.id = :idFuncional ");
 
     return sql.toString();

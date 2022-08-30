@@ -83,10 +83,14 @@ public class DesligamentoFormBean implements Serializable {
       } else {
         if (servidorFuncional != null) {
           entidade = desligamentoEsocialService.getEventoS2299ByServidor(servidorFuncional);
+          entidade.setFuncional(servidorFuncional);
         } else {
           FacesUtil.addErroMessage("Selecione um servidor.");
         }
-      }      
+      }    
+      
+      
+     
      
     } catch (Exception e) {
       e.printStackTrace();
