@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
@@ -58,7 +57,7 @@ public class RemuneracaoEstagiarioFormBean implements Serializable {
 	// entidades das telas
 	private List<Funcional> servidorEnvioList;
 	private List<Integer> comboAno;
-	private CadastroPrestador servidorFuncional;
+	private Funcional servidorFuncional;
 	private RemuneracaoTrabalhador entidade = new RemuneracaoTrabalhador();
 	private RemuneracaoTrabalhador remuneracaoTrabalhadorAnterior = new RemuneracaoTrabalhador();
 	boolean emEdicao = false;
@@ -80,7 +79,7 @@ public class RemuneracaoEstagiarioFormBean implements Serializable {
 		RemuneracaoTrabalhador flashParameter = (RemuneracaoTrabalhador)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new RemuneracaoTrabalhador());
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			servidorFuncional = getEntidade().getCadastroPrestador();
+			servidorFuncional = getEntidade().getFuncional();
 			remuneracaoTrabalhadorAnterior = entidade;
 			String[] referencia = entidade.getPerApur().split("-");			
 			anoReferencia = referencia[0];
@@ -96,11 +95,13 @@ public class RemuneracaoEstagiarioFormBean implements Serializable {
 	public void consultar() {
 		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("") && servidorFuncional != null) {
 			try {
-				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200RPA(mesReferencia, anoReferencia, servidorFuncional);
-				remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresaRPA(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
-				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresRPA(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());				
-				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracaoRPA( demonstrativosDeValoresList, servidorFuncional.getId());
-				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValoresRPA(mesReferencia, anoReferencia,demonstrativosDeValoresList);
+				boolean isEstagiario = true;
+				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200(mesReferencia, anoReferencia, servidorFuncional, isEstagiario);
+				//remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresaRPA(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
+				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValores(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());				
+				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
+				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
+				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
 				
 				entidade.setDmDev(demonstrativosDeValoresList);
 				entidade.setRemunOutrEmpr(remuneracaoOutraEmpresaList);
@@ -118,6 +119,7 @@ public class RemuneracaoEstagiarioFormBean implements Serializable {
 	}
 
 	public void salvarEvento() { 
+		boolean isEstagiario = true;
 		try {
 			
 			if(emEdicao && remuneracaoTrabalhadorAnterior != null) {	
@@ -128,7 +130,7 @@ public class RemuneracaoEstagiarioFormBean implements Serializable {
 				remuneracaoTrabalhadorEsocialService.salvar(entidade);
 			}
 			else {
-			 //remuneracaoTrabalhadorEsocialService.salvar(mesReferencia, anoReferencia);
+				remuneracaoTrabalhadorEsocialService.salvar(mesReferencia, anoReferencia, isEstagiario);
 				System.out.println("Gera todo mundo!");
 			}	
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
@@ -179,11 +181,11 @@ public class RemuneracaoEstagiarioFormBean implements Serializable {
 		this.servidorEnvioList = servidorEnvioList;
 	}
 
-	public CadastroPrestador getServidorFuncional() {
+	public Funcional getServidorFuncional() {
 		return servidorFuncional;
 	}
 
-	public void setServidorFuncional(CadastroPrestador servidorFuncional) {
+	public void setServidorFuncional(Funcional servidorFuncional) {
 		this.servidorFuncional = servidorFuncional;
 	}
 

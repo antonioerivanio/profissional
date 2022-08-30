@@ -50,10 +50,10 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	@Column(name="FLINFOREMUNPERANTERIORES")
 	private Integer flInfoRemunPerAnteriores;
 	
-	@OneToOne(mappedBy = "demonstrativosDeValores", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@OneToOne(mappedBy = "demonstrativosDeValores", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private InfoRemuneracaoPeriodoApuracao infoPerApur;
 	
-	@OneToOne(mappedBy = "demonstrativosDeValores", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@OneToOne(mappedBy = "demonstrativosDeValores", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private InfoRemuneracaoPeriodoAnteriores infoPerAnt;
 	
 	@Transient

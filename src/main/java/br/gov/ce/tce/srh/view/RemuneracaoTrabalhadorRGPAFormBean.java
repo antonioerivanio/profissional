@@ -120,10 +120,8 @@ public class RemuneracaoTrabalhadorRGPAFormBean implements Serializable {
 				remuneracaoTrabalhadorEsocialService.excluir(remuneracaoTrabalhadorAnterior);
 			}
 			
-			if(servidorFuncional != null && entidade != null) {
-				RemuneracaoTrabalhador entidadeRPGA = entidade.clone();
-				entidadeRPGA.setId(null);
-				remuneracaoTrabalhadorEsocialService.salvar(entidadeRPGA);
+			if(servidorFuncional != null && entidade != null) {				
+				remuneracaoTrabalhadorEsocialService.salvar(entidade);
 				//remuneracaoTrabalhadorEsocialService.salvarRGPA(mesReferencia, anoReferencia, servidorFuncional);
 			}
 			else {

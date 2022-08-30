@@ -79,19 +79,15 @@ public class InfoRemuneracaoPeriodoApuracaoService{
 		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
 			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
 				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(0)) {
-					InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao = dao.findInfoRemuneracaoPeriodoApuracao(demonstrativosDeValores);
+					InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao = geraInfoRemuneracaoPeriodoApuracaoRPA(demonstrativosDeValores);
 					demonstrativosDeValores.setInfoPerApur(infoRemuneracaoPeriodoApuracao);
 					demonstrativosDeValores.setInfoRemuneracaoPeriodoApuracao(infoRemuneracaoPeriodoApuracao); 
 					infoRemuneracaoPeriodoApuracao.setDemonstrativosDeValores(demonstrativosDeValores);	
 					infoRemuneracaoPeriodoApuracaoListReturn.add(infoRemuneracaoPeriodoApuracao);
 				}
 				
-			}
-					
-					
-			
-		}
-		
+			}						
+		}		
 		
 		return infoRemuneracaoPeriodoApuracaoListReturn;
 	}

@@ -45,12 +45,12 @@ public class RemuneracaoTrabalhadorEsocialService{
 	private RemuneracaoOutraEmpresaService remuneracaoOutraEmpresaService;
 	
 	@Transactional
-	public void salvar(String mesReferencia, String anoReferencia) throws CloneNotSupportedException {
+	public void salvar(String mesReferencia, String anoReferencia, boolean isEstagiario) throws CloneNotSupportedException {
 		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 		List<Funcional> servidorEnvioList = funcionalService.findServidoresEvento1200(anoReferencia, mesReferencia);
 		
 		for (Funcional servidorFuncional : servidorEnvioList) {
-			RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional );
+			RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional, isEstagiario );
 			
 			if( remuneracaoTrabalhador != null) {
 				if(mesReferencia.equals("13")) {
@@ -140,9 +140,9 @@ public class RemuneracaoTrabalhadorEsocialService{
 	}
 	
 	public RemuneracaoTrabalhador getEventoS1200(String mesReferencia, String anoReferencia,
-			Funcional servidorFuncional) {
+			Funcional servidorFuncional, boolean isEstagiario) {
 		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
-		return dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
+		return dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional, isEstagiario);
 	}
 
 	@Transactional
@@ -152,9 +152,12 @@ public class RemuneracaoTrabalhadorEsocialService{
 	}
 
 	public RemuneracaoTrabalhador getEventoS1200RPA(String mesReferencia, String anoReferencia,
-			CadastroPrestador servidorFuncional) {
+			CadastroPrestador servidorFuncional) throws CloneNotSupportedException {
 		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
-		return dao.getEventoS1200RPA(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
+		RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200RPA(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
+		RemuneracaoTrabalhador remuneracaoTrabalhadorClonado = remuneracaoTrabalhador.clone();
+		remuneracaoTrabalhadorClonado.setId(null);
+		return remuneracaoTrabalhadorClonado;
 	}
 
 	

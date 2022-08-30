@@ -95,7 +95,8 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	public void consultar() {
 		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("") && servidorFuncional != null) {
 			try {
-				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200(mesReferencia, anoReferencia, servidorFuncional);
+				boolean isEstagiario = false;
+				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200(mesReferencia, anoReferencia, servidorFuncional, isEstagiario);
 				remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
 				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValores(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
 				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
@@ -118,6 +119,8 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 	}
 
 	public void salvarEvento() { 
+		boolean isEstagiario = false;
+		
 		try {
 			
 			if(emEdicao && remuneracaoTrabalhadorAnterior != null) {	
@@ -128,7 +131,7 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 				remuneracaoTrabalhadorEsocialService.salvar(entidade);
 			}
 			else {
-			 //remuneracaoTrabalhadorEsocialService.salvar(mesReferencia, anoReferencia);
+				remuneracaoTrabalhadorEsocialService.salvar(mesReferencia, anoReferencia, isEstagiario);
 				System.out.println("Gera todo mundo!");
 			}	
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");

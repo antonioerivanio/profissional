@@ -10,9 +10,9 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.Funcional;
+import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
@@ -134,9 +134,9 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public RemuneracaoTrabalhador getEventoS1200(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
+	public RemuneracaoTrabalhador getEventoS1200(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional, boolean isEstagiario) {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS1200(servidorFuncional), RemuneracaoTrabalhador.class);
+			Query query = entityManager.createNativeQuery(getSQLEventoS1200(servidorFuncional, isEstagiario), RemuneracaoTrabalhador.class);
 			query.setParameter("mesReferencia", mesReferencia);
 			query.setParameter("anoReferencia", anoReferencia);
 			query.setParameter("periodoApuracao",periodoApuracao);
@@ -149,7 +149,7 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 
 	}	
 	
-	public String getSQLEventoS1200(Funcional servidorFuncional) {
+	public String getSQLEventoS1200(Funcional servidorFuncional, boolean isEstagiario) {
 		StringBuffer sql = new StringBuffer();
 
 		sql.append(" SELECT distinct ( f.id * -1) as id,   "); 
@@ -177,7 +177,10 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		sql.append(" LEFT JOIN srh.tb_pessoajuridica pj ON pj.id = v.idpessoajuridica ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia");
-		sql.append(" AND dp.contribui_inss = 'S' ");
+		
+		if(!isEstagiario) {
+			sql.append(" AND dp.contribui_inss = 'S' ");
+		}
 		sql.append("AND dp.num_mes <> '13' ");
 		if(servidorFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");
