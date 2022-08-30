@@ -15,6 +15,8 @@ import br.gov.ce.tce.srh.domain.Licenca;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("afastamentoESocialService")
 public class AfastamentoESocialService {
@@ -49,6 +51,13 @@ public class AfastamentoESocialService {
 	}
 	
 	public AfastamentoESocial salvar(AfastamentoESocial entidade) {
+	    if(entidade.getId() == null || entidade.getId() == 0) {	      
+	      int quantidade = count(null, entidade.getCpfTrab());
+	      if(quantidade > 0) {
+	        throw new SRHRuntimeException("Ops!. Este servidor já foi cadastrado para o evento 2230!");
+	      }
+	    }
+	    
 		entidade = afastamentoESocialDAO.salvar(entidade);
 		
 		//salvando notificação

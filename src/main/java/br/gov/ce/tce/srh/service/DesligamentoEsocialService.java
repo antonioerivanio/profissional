@@ -4,6 +4,8 @@ package br.gov.ce.tce.srh.service;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -18,8 +20,11 @@ import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.domain.Pessoal;
+import br.gov.ce.tce.srh.enums.CodigoCategoria;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
+import br.gov.ce.tce.srh.enums.TipoMotivoDesligamento;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
+import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("desligamentoESocialService")
@@ -86,7 +91,14 @@ public class DesligamentoEsocialService {
    * valida campos obrigatórios
    */
   public boolean isOk(Desligamento bean) {
-
+    boolean resultado = Boolean.TRUE;
+    
+    if (bean.getMtvDesligamento() == null || bean.getMtvDesligamento().isEmpty()) {
+      throw new NullPointerException("Campo motivo desligamento é obrigatório");
+    }
+    
+    resultado  = isCategoriaValida(bean.getMtvDesligamento(), bean.getCodigoCategoria().toString());        
+    
     if (bean.getDtDesligamento() == null) {
       throw new NullPointerException("Campo data desligamento é obrigatório");
     } else {
@@ -99,10 +111,53 @@ public class DesligamentoEsocialService {
       }
     }
 
-    if (bean.getMtvDesligamento() == null) {
-      throw new NullPointerException("Campo motivo desligamento é obrigatório");
+    return  resultado;
+  }
+  
+  private Boolean isCategoriaValida(String codMotivoDesligamento, String codigoCategoria) {
+    if(Integer.valueOf(codMotivoDesligamento).equals(TipoMotivoDesligamento.APOSENTADORIA_EXCERTO_POR_INVALIDEZ.getCodigo())) { 
+      //Aposentadoria, exceto por invalidez                               
+      ArrayList<CodigoCategoria> codigosCategoiraValidoParaDesligamento38 = new ArrayList<CodigoCategoria>();
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG101);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG301);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG302);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG303);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG306);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG307);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG309);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG310);
+      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG312);
+      
+      if(!codigosCategoiraValidoParaDesligamento38.contains(CodigoCategoria.getByCodigo(codigoCategoria))) {
+        throw new SRHRuntimeException("Ops!, Os codigos da categorias permitido para o motivo " + TipoMotivoDesligamento.APOSENTADORIA_EXCERTO_POR_INVALIDEZ.getDescricao() + " é [101, 301, 302, 303, 306, 307, 309, 310, 312]");
+      }
+    } else if(Integer.valueOf(codMotivoDesligamento).equals(TipoMotivoDesligamento.APOSENTADORIA_SERVIDOR_ESTATUTARIO_POR_INVALIDEZ.getCodigo())){
+      //Aposentadoria de servidor estatutário, por invalidez
+      ArrayList<CodigoCategoria> codigosCategoiraValidoParaDesligamento39 = new ArrayList<CodigoCategoria>();    
+      codigosCategoiraValidoParaDesligamento39.add(CodigoCategoria.CATEG301);
+      codigosCategoiraValidoParaDesligamento39.add(CodigoCategoria.CATEG306);    
+      codigosCategoiraValidoParaDesligamento39.add(CodigoCategoria.CATEG309);
+      
+      if(!codigosCategoiraValidoParaDesligamento39.contains(CodigoCategoria.getByCodigo(codigoCategoria))) {
+        throw new SRHRuntimeException("Ops!, Os codigos da categorias permitido para o motivo " + TipoMotivoDesligamento.APOSENTADORIA_SERVIDOR_ESTATUTARIO_POR_INVALIDEZ.getDescricao() + " é [301, 306, 309]");
+      }      
+    }else if(Integer.valueOf(codMotivoDesligamento).equals(TipoMotivoDesligamento.EXONERACAO.getCodigo())){
+      //exoneracao 
+      ArrayList<CodigoCategoria> codigosCategoiraValidoParaDesligamento23 = new ArrayList<CodigoCategoria>();
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG301);
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG302);
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG303);
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG306);
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG307);
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG309);
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG310);
+      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG312);
+      
+      if(!codigosCategoiraValidoParaDesligamento23.contains(CodigoCategoria.getByCodigo(codigoCategoria))) {       
+          throw new SRHRuntimeException("Ops!, Os codigos da categorias permitido para o motivo " + TipoMotivoDesligamento.EXONERACAO.getDescricao() + " é [301, 302, 303, 306, 307, 309, 310, 312]" );        
+      }     
     }
-
+    
     return Boolean.TRUE;
   }
   

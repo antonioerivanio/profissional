@@ -67,6 +67,9 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   
   @Column(name = "GRAU_EXP")
   private Integer grauExposicao;
+
+  @Column(name = "COD_CATEG")
+  private Integer codigoCategoria;
   
   /*
    * @Temporal(TemporalType.DATE)
@@ -200,6 +203,12 @@ public class Desligamento extends BasicEntity<Long> implements Serializable {
   public void setFuncional(Funcional funcional) {
     this.funcional = funcional;
   }
-  
-  
+
+  public Integer getCodigoCategoria() {
+    return codigoCategoria;
+  }
+
+  public void setCodigoCategoria(Integer codigoCategoria) {
+    this.codigoCategoria = codigoCategoria;
+  }
 }

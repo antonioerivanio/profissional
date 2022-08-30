@@ -64,7 +64,7 @@ public class TerminoVinculoFormBean implements Serializable {
   private void init() {
     TerminoVinculo flashParameter = (TerminoVinculo) FacesUtil.getFlashParameter("entidade");
     setEntidade(flashParameter != null ? flashParameter : new TerminoVinculo());
-    this.servidorEnvioList = funcionalService.findServidoresEvento2299();
+    this.servidorEnvioList = funcionalService.findServidoresEvento2399();
 
     if (getEntidade() != null && getEntidade().getFuncional() != null) {
       servidorFuncional = getEntidade().getFuncional();
