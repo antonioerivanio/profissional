@@ -406,11 +406,12 @@ public class FuncionalDAO {
 		  StringBuffer sql =  new StringBuffer(" SELECT distinct f.* FROM tb_licenca l INNER JOIN tb_tipolicenca tl on l.idtipolicenca = tl.id ");
 		  sql.append(" INNER JOIN tb_pessoal p on l.idpessoal = p.id ");
 		  sql.append(" INNER JOIN tb_funcional f on f.idpessoal = p.id ");
-		  sql.append(" WHERE fim > to_date('21/08/2022', 'dd/mm/yyyy') ");
-		  sql.append(" AND to_char(inicio, 'dd/mm/yyyy') < to_char(sysdate, 'dd/mm/yyyy') ");
+		  sql.append(" WHERE  to_char(inicio, 'dd/mm/yyyy') < to_char(sysdate, 'dd/mm/yyyy') ");
+		  sql.append(" AND (l.fim > to_date('21/08/2022', 'dd/mm/yyyy') and l.fim > to_char(sysdate, 'dd/mm/yyyy') ) ");
 		  sql.append(" AND tl.codigoesocial is not null ");
-		  sql.append(" AND f.datasaida is null ");
-		  sql.append(" AND f.id  NOT IN (SELECT e.IDFUNCIONAL FROM ESOCIAL_AFASTAMENTO e  where e.dt_ini_afast = l.inicio) ");
+		  sql.append(" AND f.datasaida is null ");		  
+		  sql.append(" AND (f.id IN (SELECT a.idFuncional FROM esocial_admissao a) OR  f.id IN (SELECT a.idFuncional FROM esocial_estagiario a) ) ");
+		  sql.append(" AND f.id  NOT IN (SELECT e.idFuncional FROM esocial_afastamento e  where e.dt_ini_afast = l.inicio) ");
 		  sql.append(" order by f.nome ");
 		  Query query = entityManager.createNativeQuery(sql.toString(), Funcional.class);
 		  return query.getResultList();
