@@ -33,6 +33,8 @@ import br.gov.ce.tce.srh.sca.domain.Usuario;
 public class SRHUtils {
 
   public static final String FORMATO_DATA = "dd/MM/yyyy";
+  
+  public static final String FORMATO_DATA_SEM_BARRAS = "ddMMyyyy";
 
   public static final String FORMATO_DATA_ANO = "yyyy";
 

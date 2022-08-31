@@ -76,18 +76,18 @@ public class AfastamentoESocialDAO {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT 0 AS ID, ");
-		sql.append(" tb_funcional.id||'-'||tb_tipolicenca.id ||'-'||tb_licenca.inicio AS REFERENCIA, ");
+		sql.append(" tb_funcional.id||'-'||tb_tipolicenca.id ||'-'|| to_char(tb_licenca.inicio, 'ddmmyyyy') AS REFERENCIA, ");
 		sql.append("tb_funcional.id AS idfuncional,  ");
 		sql.append("NULL                  AS RETIFICAR_RECIBO, ");
 		sql.append("NULL                  AS OCORRENCIA_ID, ");
 		sql.append("NULL                  AS OCORRENCIA_COD_ESTADO, ");
 		sql.append("tb_pessoal.cpf AS CPF_TRAB, ");
-		sql.append("tb_funcional.matricula AS MATRICULA, ");
+		sql.append(" '0'|| tb_funcional.matricula AS MATRICULA, ");
 		sql.append("tb_licenca.inicio AS DT_INI_AFAST, ");
-		sql.append("tb_tipolicenca.id AS COD_MOT_AFAST, ");
+		sql.append("TO_CHAR(tb_tipolicenca.id,'09') AS COD_MOT_AFAST, ");
 		sql.append("tb_tipolicenca.descricao AS OBSERVACAO, ");
 		sql.append("tb_licenca.fim AS DT_TERM_AFAST ");
-		sql.append("FROM   srh.tb_licenca ");
+		sql.append("FROM srh.tb_licenca ");
 		sql.append("INNER JOIN srh.tb_pessoal ");
 		sql.append("ON srh.tb_licenca.idpessoal = srh.tb_pessoal.id ");
 		sql.append("INNER JOIN srh.tb_tipolicenca ");
@@ -97,7 +97,10 @@ public class AfastamentoESocialDAO {
 		sql.append("INNER JOIN srh.tb_ocupacao ");
 		sql.append("ON  srh.tb_funcional.IDOCUPACAO = srh.tb_ocupacao.id ");
 		sql.append("WHERE  tb_funcional.id = :idFuncional  ");
-		          
+		sql.append("AND tb_licenca.fim > to_date('21/08/2022', 'dd/mm/yyyy') ");
+		sql.append("AND to_char(tb_licenca.inicio, 'dd/mm/yyyy') < TO_char(sysdate, 'dd/mm/yyyy') ");
+		sql.append("AND tb_tipolicenca.codigoesocial is not null ");
+	    
 		return sql;
 	}
 	
@@ -127,7 +130,7 @@ public class AfastamentoESocialDAO {
 		}
 		
 		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND f.cpf = :cpf ");
+			sql.append("  AND f.pessoal.cpf = :cpf ");
 		}
 						
 		Query query = entityManager.createQuery(sql.toString());
@@ -154,7 +157,7 @@ public class AfastamentoESocialDAO {
 		}
 		
 		if (cpf != null && !cpf.isEmpty())
-			sql.append("  AND f.cpf = :cpf ");
+			sql.append("  AND f.pessoal.cpf = :cpf ");
 
 		sql.append("  ORDER BY f.nome ");
 

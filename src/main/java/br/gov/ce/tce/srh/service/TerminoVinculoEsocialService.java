@@ -2,24 +2,23 @@ package br.gov.ce.tce.srh.service;
 
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import br.gov.ce.tce.srh.dao.EstagiarioESocialDAO;
-import br.gov.ce.tce.srh.domain.EstagiarioESocial;
+import br.gov.ce.tce.srh.dao.TerminoVinculoEsocialDAO;
+import br.gov.ce.tce.srh.dao.TerminoVinculoEsocialDAO;
+import br.gov.ce.tce.srh.domain.TerminoVinculo;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
 
-@Service("estagiarioESocialService")
-public class EstagiarioESocialService {
+@Service("terminoVinculoESocialService")
+public class TerminoVinculoEsocialService {
 
   @Autowired
-  private EstagiarioESocialDAO estagiarioESocialDAO;
+  private TerminoVinculoEsocialDAO dao;
 
   @Autowired
   private EventoService eventoService;
@@ -27,31 +26,19 @@ public class EstagiarioESocialService {
   @Autowired
   private NotificacaoService notificacaoService;
 
-  public int count(String nome, String cpf) {
-    return estagiarioESocialDAO.count(nome, cpf);
-  }
-
   @Transactional
-  public void excluir(EstagiarioESocial entidade) {
-    estagiarioESocialDAO.excluir(entidade);
-
-  }
-
-  public List<EstagiarioESocial> search(String nome, String cpf, int first, int rows) {
-    return estagiarioESocialDAO.search(nome, cpf, first, rows);
-  }
-
-  public EstagiarioESocial salvar(EstagiarioESocial entidade) {
+  public TerminoVinculo salvar(TerminoVinculo entidade) {
 
 
-    entidade = estagiarioESocialDAO.salvar(entidade);
+    entidade = dao.salvar(entidade);
 
     // salvando notificação
-    Evento evento = this.eventoService.getById(TipoEventoESocial.S2300.getCodigo());
+
+    Evento evento = this.eventoService.getById(TipoEventoESocial.S2399.getCodigo());
     Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferencia());
     if (notificacao == null) {
       notificacao = new Notificacao();
-      notificacao.setDescricao("Evento S2300 com pendência de envio.");
+      notificacao.setDescricao("Evento S2399 com pendência de envio.");
       notificacao.setData(new Date());
       notificacao.setTipo(TipoNotificacao.N);
       notificacao.setEvento(evento);
@@ -62,17 +49,29 @@ public class EstagiarioESocialService {
 
     this.notificacaoService.salvar(notificacao);
 
+
     return entidade;
-
   }
 
-
-  public EstagiarioESocial getEventoS2300ByEstagiarioById(Long id) {
-    return estagiarioESocialDAO.getEventoS2300ByEstagiarioById(id);
+  @Transactional
+  public void excluir(TerminoVinculo entidade) {
+    dao.excluir(entidade);
   }
 
-  public EstagiarioESocial getEventoS2300ByEstagiario(Funcional estagiarioFuncional) {
-    return estagiarioESocialDAO.getEventoS2300ByEstagiario(estagiarioFuncional);
+  public TerminoVinculo getTerminoVinculoById(Long id) {
+    return dao.getTerminoVinculoById(id);
+  }
+
+  public int count(String nome, String cpf) {
+    return dao.count(nome, cpf);
+  }
+
+  public List<TerminoVinculo> search(String nome, String cpf, Integer first, Integer rows) {
+    return dao.search(nome, cpf, first, rows);
+  }
+
+  public TerminoVinculo getEventoS2399ByServidor(Funcional servidorFuncional) {
+    return dao.getEventoS2399yServidor(servidorFuncional);
   }
 
 }

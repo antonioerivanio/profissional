@@ -12,21 +12,19 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Consulta de Envios S-2410</h2>
+			<h2>Consulta de Envios S-2399</h2>
 
 		</div>
 
 		<h:form id="form" styleClass="formularios">
 
-			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
-			
-				
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />				
 				<div class="input-box box-50">
 					<label for="">Nome</label>
 					<div class="conteiner">
 						<h:inputText id="nome"
 									 name="nome"
-									 value="#{beneficioListBean.nome}" />
+									 value="#{terminoVinculoListBean.entidade.funcional.pessoal.nome}" />
 					</div>
 				</div>
 	
@@ -36,14 +34,14 @@
 						<h:inputText id="cpf" 
 									 name="cpf"
 									 maxlength="14"
-									 styleClass="maskCpf"
-									 value="#{beneficioListBean.cpf}" />
+									 styleClass="maskCnpj"
+									 value="#{terminoVinculoListBean.entidade.funcional.pessoal.cpf}" />
 					</div>
 				</div>
 
 				<h:commandButton id="consultar"
 								 value="Consultar" 
-								 action="#{beneficioListBean.consultar}" 
+								 action="#{terminoVinculoListBean.consultar}" 
 								 styleClass="bt-padrao fl mg-top-18" 
 								 render="scroller,lista"/>					
 			
@@ -52,15 +50,17 @@
 
 				<rich:dataTable id="lista" 
 								var="item" 
-								rows="#{beneficioListBean.dataModel.pageSize}" 
-								value="#{beneficioListBean.dataModel}" >
+								rows="10" 
+								value="#{terminoVinculoListBean.dataModel}"
+								binding="#{terminoVinculoListBean.dataTable}"
+								 >
 
                     <rich:column id="col2" headerClass="cel-25">
                         <f:facet name="header">
                             CPF
                         </f:facet>
                         <center>
-	                        <h:outputText id="item2" value="#{item.cpfBenef}" styleClass="cel-25" >
+	                        <h:outputText id="item2" value="#{item.cpfTrab}" styleClass="cel-25" >
 	                        	  <f:converter converterId="cpfConverter" /> 
 	                        </h:outputText>
 	                    </center>
@@ -69,7 +69,7 @@
                         <f:facet name="header">
                             Nome
                         </f:facet>
-                        <h:outputText id="item3" value="#{item.nmTrab}" styleClass="cel-50" />
+                        <h:outputText id="item3" value="#{item.funcional.pessoal.nome}" styleClass="cel-50" />
                     </rich:column>
                     <rich:column id="col4" rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
                         <f:facet name="header">
@@ -77,9 +77,9 @@
                         </f:facet>
                        <h:commandLink id="detalhar"
                        				  value="Detalhar"
-                       				  action="#{beneficioListBean.editar}"
+                       				  action="#{terminoVinculoListBean.editar}"
                        				  styleClass="ico-detail" >
-                            <f:setPropertyActionListener target="#{beneficioListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{terminoVinculoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>                    
                 	<rich:column id="col5" rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
@@ -88,14 +88,15 @@
                         </f:facet>
                        <h:commandLink id="editar"
                        				  value="Editar"
-                       				  action="#{beneficioListBean.editar}"
+                       				  action="#{terminoVinculoListBean.editar}"
                        				  styleClass="ico-editar" >
-                            <f:setPropertyActionListener target="#{beneficioListBean.entidade}" value="#{item}" />
+                            <f:setPropertyActionListener target="#{terminoVinculoListBean.entidade}" value="#{item}" />
                         </h:commandLink>
                     </rich:column>
                 	
 
-				</rich:dataTable>			
+				</rich:dataTable>	
+				<rich:dataScroller id="scroller" for="lista" stepControls="hide" align="center" renderIfSinglePage="false"/>		
 				
 			</div>
 

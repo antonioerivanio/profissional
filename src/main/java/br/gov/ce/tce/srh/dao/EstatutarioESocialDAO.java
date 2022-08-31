@@ -73,8 +73,10 @@ public class EstatutarioESocialDAO {
 		sql.append("    tb_pessoal.email as EMAIL_PRINC, ");
 		sql.append("    '0'||tb_funcional.matricula as MATRICULA, ");
 		sql.append("    tb_funcional.dataexercicio as DT_INICIO, ");	
-		sql.append("    tb_ocupacao.nomenclatura as NM_CARGO, ");
-		sql.append("    tb_ocupacao.cbo as CBO_CARGO, ");
+		//sql.append("    tb_ocupacao.nomenclatura as NM_CARGO, ");
+		sql.append("    NULL as NM_CARGO, ");
+		//sql.append("    tb_ocupacao.cbo as CBO_CARGO, ");
+		sql.append("    NULL as CBO_CARGO, ");
 		sql.append("    tb_representacaocargo.nomenclatura as NM_FUNCAO, ");
 		sql.append("    tb_representacaocargo.cbo as CBO_FUNCAO, ");
 		sql.append("    fp_cadastro.vpad as VR_SAL_FX, ");

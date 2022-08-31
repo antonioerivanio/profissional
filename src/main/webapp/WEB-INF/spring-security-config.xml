@@ -280,15 +280,15 @@
 	
 	
 	<!-- SCA - DESENVOLVIMENTO -->
-	 <authentication-manager alias="authenticationManager" >
+	 <!--  <authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
-    </authentication-manager>
+    </authentication-manager> -->
 
 		
 <!--***********************************************************************************************************************************************************-->	
 		
 	<!-- AD - PRODUÇÃO -->
-  <!-- <beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
+	<beans:bean id="ldapActiveDirectoryAuthProvider" class="org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider">
 
         <beans:constructor-arg value="tce.ce.gov.br" />
         <beans:constructor-arg value="ldap://tce.ce.gov.br:389/"/> 
@@ -300,7 +300,7 @@
 	<authentication-manager alias="authenticationManager">
 	    <authentication-provider ref="ldapActiveDirectoryAuthProvider" />
 
-	</authentication-manager>-->
+	</authentication-manager>
 	
 
 </beans:beans>

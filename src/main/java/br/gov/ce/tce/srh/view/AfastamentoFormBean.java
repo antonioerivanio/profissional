@@ -170,7 +170,9 @@ public class AfastamentoFormBean implements Serializable {
 	/** metodo ajax que carrega a lista de afastamento
 	 * @author erivanio.cruz
 	 */
-	public void carregarAfastamentoListChange() {
-		setLicencaList(afastamentoESocialService.getLicencaList(servidorFuncional, TipoLicencaEnum.getTodosCodigos()));
-	}
+    /*
+     * public void carregarAfastamentoListChange() {
+     * setLicencaList(afastamentoESocialService.getLicencaList(servidorFuncional,
+     * TipoLicencaEnum.getTodosCodigos())); }
+     */
 }

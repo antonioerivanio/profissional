@@ -128,10 +128,10 @@ public class BeneficioEsocialDAO {
 		
 		String dataLimiteEsocial="";
 		if(ambienteService.ambiente().isProducao()) {
-			dataLimiteEsocial = "21/11/2021";
+			dataLimiteEsocial = "22/11/2021";
 		}
 		else {
-			dataLimiteEsocial = "31/04/2020";
+			dataLimiteEsocial = "01/05/2020";
 		}
 		StringBuffer sql = new StringBuffer();
 
@@ -140,23 +140,24 @@ public class BeneficioEsocialDAO {
 		sql.append("  f.id idfuncional,  ");
 		sql.append("  f.id||'-'||o.id AS referencia,  ");
 		sql.append("  p.cpf as CPF_BENEF, ");
-		sql.append("  f.matricula AS MATRICULA, ");
+		sql.append("  '0'||f.matricula  AS MATRICULA, ");
 		sql.append(" NULL AS CNPJ_ORIGEM, ");
 		sql.append(" CASE  ");
-		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N'  ");
+		sql.append(" WHEN a.datainiciobeneficio  >= TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N'  ");
 		sql.append(" ELSE 'S' ");
 		sql.append(" END AS CAD_INI, ");
 		sql.append(" NULL AS INC_SIT_BENEF, ");
-		sql.append(" NULL AS NR_BENEFICIO, ");
+		sql.append(" a.NRBENEFICIO AS NR_BENEFICIO, ");
 		
-		//sql.append(" a.datainiciobeneficio AS DT_INI_BENEFICIO, ");
+		sql.append(" a.datainiciobeneficio AS DT_INI_BENEFICIO, ");
 		
-		sql.append(" CASE  ");
-		sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN a.datainiciobeneficio  ");
-		sql.append(" ELSE TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') ");
-		sql.append(" END AS DT_INI_BENEFICIO, ");		
+        /*
+         * sql.append(" CASE  "); sql.append(" WHEN a.datainiciobeneficio  > TO_DATE('"
+         * +dataLimiteEsocial+"', 'dd/mm/yyyy') THEN a.datainiciobeneficio  ");
+         * sql.append(" ELSE TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') ");         
+		 * sql.append(" END AS DT_INI_BENEFICIO, ");		*/
 		sql.append("  a.datapublicacaoato AS DT_PUBLIC, ");
-		sql.append("  '0101' AS TP_BENEFICIO, ");
+		sql.append("  a.codigoesocial AS TP_BENEFICIO, ");
 		sql.append(" 2 AS TP_PLAN_RP, ");
 		sql.append("  NULL AS DSC, ");
 		sql.append("  CASE  ");

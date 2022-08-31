@@ -43,15 +43,6 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 	@Column(name = "MATRICULA")
 	private String matricula;
 
-//	@Column(name = "COD_CATEG")
-//	private Long codCateg;
-
-//	@Column(name = "TP_INSC")
-//	private String tpInsc;
-
-//	@Column(name = "NR_INSC")
-//	private String nrInsc;
-
 	@Column(name = "DT_INI_AFAST")
 	@Temporal(TemporalType.DATE)
 	private Date dtIniAfast;
@@ -141,7 +132,11 @@ public class AfastamentoESocial extends BasicEntity<Long> implements Serializabl
 		this.dtIniAfast = dtIniAfast;
 	}
 
-	public String getCodMotAfast() {
+	public String getCodMotAfast() {	  
+	    if(codMotAfast != null) {
+	      codMotAfast = codMotAfast.trim();
+	    }
+	    
 		return codMotAfast;
 	}
 

@@ -72,7 +72,7 @@ public class BeneficioEsocialService{
 
 	public Beneficio getEventoS2410ByServidor(Funcional servidorFuncional) {
 		Beneficio beneficio = dao.getEventoS2410ByServidor(servidorFuncional);
-		beneficio.setNrBeneficio(getNumeroBenecio(beneficio));
+		//beneficio.setNrBeneficio(getNumeroBenecio(beneficio));
 		return beneficio;
 	}
 

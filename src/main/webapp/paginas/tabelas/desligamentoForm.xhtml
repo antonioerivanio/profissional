@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Desligamento</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+			<br />
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+
+			<fieldset>
+				<div class="select-box box-46">
+					<label for="">Servidor *</label>
+					<div class="conteiner">
+						<rich:select id="servidor" enableManualInput="true"
+							defaultLabel="Selecione..." clientFilterFunction="customFilter"
+							listWidth="500" converter="entityConverter"
+							rendered="#{!desligamentoFormBean.emEdicao}"
+							value="#{desligamentoFormBean.servidorFuncional}">
+
+							<f:selectItems value="#{desligamentoFormBean.servidorEnvioList}"
+								var="servidor" itemValue="#{servidor}"
+								itemLabel="#{servidor.nome}" />
+								<a4j:ajax execute="@this"></a4j:ajax>							
+						</rich:select>
+					</div>
+
+					<ui:fragment rendered="#{desligamentoFormBean.emEdicao}">
+						<div class="input-box box-60">
+							<div class="conteiner">
+								<h:inputText id="nomeEdicao" maxlength="46" size="46"
+																	disabled="true" 
+									value="#{desligamentoFormBean.entidade.funcional.nome}" />
+							</div>
+						</div>
+					</ui:fragment>
+				</div>
+				<h:commandButton actionListener="#{desligamentoFormBean.consultar}"
+					rendered="#{!desligamentoFormBean.emEdicao}"
+					value="Consultar" styleClass="bt-padrao fr mg-right-10">					
+				</h:commandButton>
+			</fieldset>
+
+			<h:panelGroup id="dadosEvento2299">
+				<fieldset>
+
+					<legend>Dados Evento S-2299</legend>
+
+					<br />
+
+					<fieldset>
+						<legend>Identificação do trabalhador e do vínculo.</legend>
+						<div class="input-box box-15">
+							<label for="">cpfTrab * </label>
+							<div class="conteiner">
+								<h:inputText id="cpf" maxlength="11" disabled="true"
+									value="#{desligamentoFormBean.entidade.cpfTrab}" />
+							</div>
+						</div>
+
+						<div class="input-box box-15">
+							<label for="">matricula *</label>
+							<div class="conteiner">
+								<h:inputText id="matricula" maxlength="15" disabled="true"
+									value="#{desligamentoFormBean.entidade.matricula}" />
+							</div>
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<legend>Informações de identificação do empregador</legend>
+						<div class="select-box box-10">
+							<label for="">tpInsc *</label>
+							<div class="conteiner">
+
+								<h:selectOneMenu disabled="true"
+									value="#{desligamentoFormBean.entidade.tipoInscricaoEmpregador}">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{desligamentoFormBean.tipoInscricaoList}" var="motivo"
+										itemValue="#{motivo.codigo}" itemLabel="#{motivo.descricao}" />
+									<f:ajax execute="@this" />
+								</h:selectOneMenu>
+							</div>
+
+						</div>
+
+						<div class="input-box box-25">
+							<label for="">nrInsc * </label>
+							<div class="conteiner">
+								<h:inputText id="nrInscEmp" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.numeroInscricaoEmpregador}" />
+							</div>
+						</div>
+						
+						<div class="input-box box-25">
+							<label for="">CodCategoria * </label>
+							<div class="conteiner">
+								<h:inputText id="codCategoria" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.codigoCategoria}" />
+							</div>
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<legend>Informação do Desligamento:</legend>
+						<div class="select-box box-45">
+							<label for="">Motivo *</label>
+							<div class="conteiner">
+								<h:selectOneMenu id="motivoDesligamento"
+									
+									value="#{desligamentoFormBean.entidade.mtvDesligamento}">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{desligamentoFormBean.tipoMotivoDesligamentoList}"
+										var="motivo" itemValue="#{motivo.codigo}"
+										itemLabel="#{motivo.descricao}" />
+									<f:ajax execute="@this" listener="#{desligamentoFormBean.setDataDesligamentoChange()}" render="dataDesligamento" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+
+						<div class="input-box box-15">
+							<label for="">Data *</label>
+							<div class="conteiner">
+								<h:inputText id="dataDesligamento" name="dataDesligamento"
+									styleClass="maskData"
+									value="#{desligamentoFormBean.entidade.dtDesligamento}">
+								</h:inputText>								
+							</div>
+							
+						</div>
+
+						<div class="textarea-box box-100">
+							<label for="">Observação</label>
+							<div class="conteiner">
+								<h:inputTextarea id="observacao" maxlength="255"
+									value="#{desligamentoFormBean.entidade.observacao}" />
+							</div>
+						</div>
+
+					</fieldset>
+
+					<fieldset>
+						<legend>Identificação do estabelecimento</legend>
+
+						<div class="select-box box-12">
+							<label for="">tpInsc *</label>
+							<div class="conteiner">
+								<h:selectOneMenu
+									value="#{desligamentoFormBean.entidade.tipoInscricaoLotacao}"
+									disabled="true">
+									<f:selectItem itemLabel="Selecione..." />
+									<f:selectItems
+										value="#{desligamentoFormBean.tipoInscricaoList}" var="motivo"
+										itemValue="#{motivo.codigo}" itemLabel="#{motivo.descricao}" />
+									<f:ajax execute="@this" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+
+						<div class="input-box box-25">
+							<label for="">nrInsc *</label>
+							<div class="conteiner">
+								<h:inputText id="nrInscLot" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.numeroInscricaoLotacao}" />
+							</div>
+						</div>
+
+						<div class="input-box box-10">
+							<label for="">codLotacao</label>
+							<div class="conteiner">
+								<h:inputText id="codInscLot" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.codLotacao}" />
+							</div>
+						</div>
+
+					</fieldset>
+
+					<fieldset>
+						<legend>informação de Agente Nócivo</legend>
+
+						<div class="input-box box-10">
+							<label for="">grauExp</label>
+							<div class="conteiner">
+								<h:inputText id="grauExp" maxlength="10" disabled="true"
+									value="#{desligamentoFormBean.entidade.grauExposicao}" />
+							</div>
+						</div>
+					</fieldset>
+				</fieldset>
+			</h:panelGroup>
+			<h:commandButton
+				actionListener="#{desligamentoFormBean.salvarEvento}" value="Salvar"
+				styleClass="bt-padrao fr mg-right-10" />
+			<a href="/srh/paginas/tabelas/desligamentoList.faces"
+				class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
