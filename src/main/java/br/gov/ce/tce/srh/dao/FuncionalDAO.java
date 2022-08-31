@@ -380,11 +380,11 @@ public class FuncionalDAO {
 	     TypedQuery<Funcional> query = entityManager.createQuery("SELECT DISTINCT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
 	                               + "FROM Funcional f "
 	                               + "WHERE "
-	                               + " f.status < 3 " //pegar todos que sao 1,2
-	                               + " AND f.id IN (SELECT a.funcional.id FROM Admissao a) " //2200
-	                               + " AND f.saida IS NOT NULL AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy')  "
-	                               + " AND f.id NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
-	                               + " OR f.id IN (SELECT a.funcional.id FROM Aposentadoria a) "
+	                               //+ " f.status < 3 " //pegar todos que sao 1,2
+	                               + "  (f.id IN (SELECT a.funcional.id FROM Admissao a) " //2200
+	                               + "  AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy') ) "
+	                               + " OR (f.id IN (SELECT a.funcional.id FROM Aposentadoria a) AND f.id NOT IN (SELECT b.funcional.id FROM Beneficiario b)) "
+	                               + "   AND f.id  NOT IN (SELECT a.funcional.id FROM Desligamento a) "
 	                               + "ORDER BY f.nome", Funcional.class);
 	     return query.getResultList();
 	}
@@ -393,10 +393,10 @@ public class FuncionalDAO {
          TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
                                + "FROM Funcional f "
                                + "WHERE "
-                               + " f.status < 3 " //pegar todos que sao 1,2
-                               + " AND f.id IN (SELECT a.funcional.id FROM AfastamentoESocial a) "
-                               + " AND f.saida IS NOT NULL AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy') " 
-                               + " OR f.id  IN (SELECT fc.funcional.id FROM FuncionalCedido fc) "
+                              // + " f.status < 3 " //pegar todos que sao 1,2
+                               + "  f.id IN (SELECT a.funcional.id FROM EstagiarioESocial a) "
+                               + " AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy') " 
+                               + " AND f.id  NOT IN (SELECT a.funcional.id FROM TerminoVinculo a) "
                                + "ORDER BY f.nome", Funcional.class);
          return query.getResultList();
     }

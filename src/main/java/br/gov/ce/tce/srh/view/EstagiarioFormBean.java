@@ -70,7 +70,7 @@ public class EstagiarioFormBean implements Serializable {
 	public void consultar() {
 		if(estagiarioFuncional != null) {
 			try {
-				entidade =  estagiarioESocialService.getEventoS2300ByEstagiarioById(getEntidade().getId());
+				entidade =  estagiarioESocialService.getEventoS2300ByEstagiario(estagiarioFuncional);
 				dependentesList = dependenteEsocialTCEService.findByIdfuncional(estagiarioFuncional.getId());
 	
 			} catch (Exception e) {		
