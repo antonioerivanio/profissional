@@ -35,6 +35,10 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	@JoinColumn(name = "IDREMUNERACAOTRABALHADOR")
 	private RemuneracaoTrabalhador remuneracaoTrabalhador;
 	
+	@ManyToOne
+	@JoinColumn(name = "IDREMUNERACAOSERVIDOR")
+	private RemuneracaoServidor remuneracaoServidor;
+	
 	@Column(name = "COD_CATEG")
 	private Integer codCateg;
 	
