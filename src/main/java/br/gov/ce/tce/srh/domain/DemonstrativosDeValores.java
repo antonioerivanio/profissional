@@ -172,6 +172,15 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	public void setInfoPerAnt(InfoRemuneracaoPeriodoAnteriores infoPerAnt) {
 		this.infoPerAnt = infoPerAnt;
 	}
+	
+
+	public RemuneracaoServidor getRemuneracaoServidor() {
+		return remuneracaoServidor;
+	}
+
+	public void setRemuneracaoServidor(RemuneracaoServidor remuneracaoServidor) {
+		this.remuneracaoServidor = remuneracaoServidor;
+	}
 
 	@Override
     public DemonstrativosDeValores clone() throws CloneNotSupportedException {

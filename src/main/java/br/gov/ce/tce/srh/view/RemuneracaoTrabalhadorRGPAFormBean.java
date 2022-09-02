@@ -75,7 +75,7 @@ public class RemuneracaoTrabalhadorRGPAFormBean implements Serializable {
 	private void init() {
 		RemuneracaoTrabalhador flashParameter = (RemuneracaoTrabalhador)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new RemuneracaoTrabalhador());
-		if(getEntidade() != null && getEntidade().getFuncional() != null) {
+		if(getEntidade() != null && getEntidade().getCadastroPrestador() != null) {
 			servidorFuncional = getEntidade().getCadastroPrestador();
 			remuneracaoTrabalhadorAnterior = entidade;
 			String[] referencia = entidade.getPerApur().split("-");			

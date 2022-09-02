@@ -204,6 +204,7 @@
 										 Remuneração Outra Empresas:
 									</strong>
 								</legend>
+								<div class="tabela-dados">
 								<rich:dataTable id="remuneracaoOutraEmpresasId"
 										var="remuneracaoOutraEmpresas"
 										value="#{remuneracaoTrabalhadorFormBean.remuneracaoOutraEmpresaList}"
@@ -246,7 +247,7 @@
 									
 																													
 							</rich:dataTable>	
-						
+						</div>
 						</fieldset>
 					</ui:fragment>
 					<ui:repeat var="dmDev" varStatus="i" value="#{remuneracaoTrabalhadorFormBean.demonstrativosDeValoresList}">

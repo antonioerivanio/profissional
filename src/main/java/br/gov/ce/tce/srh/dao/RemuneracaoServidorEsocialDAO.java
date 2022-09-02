@@ -10,15 +10,14 @@ import javax.persistence.Query;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
+import br.gov.ce.tce.srh.domain.RemuneracaoServidor;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
-public class RemuneracaoTrabalhadorEsocialDAO {
+public class RemuneracaoServidorEsocialDAO {
 
-	static Logger logger = Logger.getLogger(RemuneracaoTrabalhadorEsocialDAO.class);
+	static Logger logger = Logger.getLogger(RemuneracaoServidorEsocialDAO.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -28,11 +27,11 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from RemuneracaoTrabalhador e ");
+		Query query = entityManager.createQuery("Select max(e.id) from RemuneracaoServidor e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
-	public RemuneracaoTrabalhador salvar(RemuneracaoTrabalhador entidade) {
+	public RemuneracaoServidor salvar(RemuneracaoServidor entidade) {
 
 		if (entidade.getId() == null || entidade.getId() < 0) {
 			entityManager.persist(entidade);
@@ -44,20 +43,20 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		return entidade;
 	}
 
-	public void excluir(RemuneracaoTrabalhador entidade) {
+	public void excluir(RemuneracaoServidor entidade) {
 		entidade = entityManager.merge(entidade);
 		entityManager.remove(entidade);
 	}
 
-	public RemuneracaoTrabalhador getById(Long id) {
-		return entityManager.find(RemuneracaoTrabalhador.class, id);
+	public RemuneracaoServidor getById(Long id) {
+		return entityManager.find(RemuneracaoServidor.class, id);
 	}
 	
-	public int count(String nome, String cpf, String periodoApuracao, boolean isRGPA, boolean isEstagiario) {
+	public int count(String nome, String cpf, String periodoApuracao, boolean isRGPA) {
 		
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(rt) FROM RemuneracaoTrabalhador rt  WHERE 1=1 ");
+		sql.append(" Select count(rt) FROM RemuneracaoServidor rt  WHERE 1=1 ");
 
 		sql.append(" and rt.perApur = :periodoApuracao ");
 		
@@ -75,13 +74,6 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		else {
 			sql.append("  AND rt.funcional is not null ");
 		}
-		
-		if(isEstagiario) {
-			sql.append("  AND rt.funcional.ocupacao.id in (14,15) ");
-		}
-		else if(!isRGPA) {
-			sql.append("  AND rt.funcional.ocupacao.id not in (14,15) ");
-		}
 						
 		Query query = entityManager.createQuery(sql.toString());
 		query.setParameter("periodoApuracao", periodoApuracao);
@@ -97,11 +89,11 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<RemuneracaoTrabalhador> search(String nome, String cpf, String periodoApuracao, boolean isRGPA, boolean isEstagiario, Integer first, Integer rows) {
+	public List<RemuneracaoServidor> search(String nome, String cpf, String periodoApuracao, boolean isRGPA, Integer first, Integer rows) {
 
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT rt FROM RemuneracaoTrabalhador rt  WHERE 1=1 ");
+		sql.append("  SELECT rt FROM RemuneracaoServidor rt  WHERE 1=1 ");
 		
 		sql.append(" and rt.perApur = :periodoApuracao ");
 
@@ -118,13 +110,6 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		}
 		else {
 			sql.append("  AND rt.funcional is not null");
-		}
-		
-		if(isEstagiario) {
-			sql.append("  AND rt.funcional.ocupacao.id in (14,15) ");
-		}
-		else if(!isRGPA) {
-			sql.append("  AND rt.funcional.ocupacao.id not in (14,15) ");
 		}
 
 		sql.append("  ORDER BY rt.nmTrabDesc ");
@@ -148,22 +133,22 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public RemuneracaoTrabalhador getEventoS1200(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
+	public RemuneracaoServidor getEventoS1202(String mesReferencia, String anoReferencia, String periodoApuracao, Funcional servidorFuncional) {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS1200(servidorFuncional), RemuneracaoTrabalhador.class);
+			Query query = entityManager.createNativeQuery(getSQLEventoS1202(servidorFuncional), RemuneracaoServidor.class);
 			query.setParameter("mesReferencia", mesReferencia);
 			query.setParameter("anoReferencia", anoReferencia);
 			query.setParameter("periodoApuracao",periodoApuracao);
 			query.setParameter("idFuncional",servidorFuncional.getId() );
 			
-			return  (RemuneracaoTrabalhador) query.getSingleResult();
+			return  (RemuneracaoServidor) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 
 	}	
 	
-	public String getSQLEventoS1200(Funcional servidorFuncional) {
+	public String getSQLEventoS1202(Funcional servidorFuncional) {
 		StringBuffer sql = new StringBuffer();
 
 		sql.append(" SELECT distinct ( f.id * -1) as id,   "); 
@@ -191,7 +176,7 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		sql.append(" LEFT JOIN srh.tb_pessoajuridica pj ON pj.id = v.idpessoajuridica ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia");
-		
+	
 		sql.append(" AND dp.num_mes <> '13' ");
 		if(servidorFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");
@@ -203,51 +188,6 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 	    return sql.toString();
 	}
 
-	public RemuneracaoTrabalhador getEventoS1200RPA(String mesReferencia, String anoReferencia, String periodoApuracao,
-			CadastroPrestador servidorFuncional) {
-		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS1200RPA(servidorFuncional), RemuneracaoTrabalhador.class);
-			query.setParameter("periodoApuracao",periodoApuracao);
-			query.setParameter("idprestador",servidorFuncional.getId() );
-			query.setParameter("competencia", anoReferencia+mesReferencia  );
-			
-			return  (RemuneracaoTrabalhador) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-	
-	public String getSQLEventoS1200RPA(CadastroPrestador servidorFuncional) {
-		StringBuffer sql = new StringBuffer();
 
-		sql.append(" SELECT distinct ( cp.idprestador * -1) as id,   "); 	
-		    
-		sql.append(" dp.nome as NM_TRAB_DESC,   "); 
-		sql.append(" null as idfuncional,   "); 
-		sql.append(" translate(cp.cpf, ' .-', ' ')||'-'||:periodoApuracao as referencia,   "); 
-		sql.append(" 1 as IND_APURACAO,   "); 
-		sql.append(" :periodoApuracao as PER_APUR,     ");     
-		sql.append(" translate(cp.cpf, ' .-', ' ') as CPF_TRAB,   "); 
-		sql.append(" CASE   "); 
-		sql.append(" WHEN vp.remuneracao IS NULL THEN null   "); 
-		sql.append(" ELSE 2   "); 
-		sql.append(" END AS IND_MV,    "); 				
-		sql.append("  dp.nome as NM_TRAB,   "); 
-		sql.append(" cp.datanascimento as DT_NASCTO,   "); 
-		sql.append(" cp.idprestador as IDPRESTADOR   "); 
-		
-		sql.append(" FROM fp_dadospagtoprestador dp  "); 
-		sql.append("  INNER JOIN fp_cadastroprestador cp ON dp.idprestador = cp.idprestador  "); 
-		sql.append(" LEFT JOIN FP_VINCULORGPSPRESTADOR vp ON cp.idprestador = vp.idprestador  "); 
-		sql.append(" where  competencia = :competencia  "); 
-		if(servidorFuncional != null) {
-			sql.append("  AND cp.idprestador = :idprestador   "); 
-		}
-		sql.append("  ORDER BY dp.nome    "); 
-
-		
-	    
-	    return sql.toString();
-	}
 
 }

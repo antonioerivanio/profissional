@@ -45,12 +45,12 @@ public class RemuneracaoTrabalhadorEsocialService{
 	private RemuneracaoOutraEmpresaService remuneracaoOutraEmpresaService;
 	
 	@Transactional
-	public void salvar(String mesReferencia, String anoReferencia, boolean isEstagiario) throws CloneNotSupportedException {
+	public void salvar(String mesReferencia, String anoReferencia) throws CloneNotSupportedException {
 		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 		List<Funcional> servidorEnvioList = funcionalService.findServidoresEvento1200(anoReferencia, mesReferencia);
 		
 		for (Funcional servidorFuncional : servidorEnvioList) {
-			RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional, isEstagiario );
+			RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional );
 			
 			if( remuneracaoTrabalhador != null) {
 				if(mesReferencia.equals("13")) {
@@ -117,14 +117,14 @@ public class RemuneracaoTrabalhadorEsocialService{
 		return dao.getById(id);
 	}	
 	
-	public int count(String nome, String cpf,  String anoReferencia, String mesReferencia, boolean isRGPA) {
+	public int count(String nome, String cpf,  String anoReferencia, String mesReferencia, boolean isRGPA, boolean isEstagiario) {
 		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
-		return dao.count(nome, cpf, periodoApuracao, isRGPA);
+		return dao.count(nome, cpf, periodoApuracao, isRGPA, isEstagiario);
 	}
 	
-	public List<RemuneracaoTrabalhador> search(String nome, String cpf, String anoReferencia, String mesReferencia, boolean isRGPA, Integer first, Integer rows) {
+	public List<RemuneracaoTrabalhador> search(String nome, String cpf, String anoReferencia, String mesReferencia, boolean isRGPA, boolean isEstagiario, Integer first, Integer rows) {
 		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
-		return dao.search(nome, cpf, periodoApuracao, isRGPA, first, rows);
+		return dao.search(nome, cpf, periodoApuracao, isRGPA, isEstagiario, first, rows);
 	}
 	
 	private String getPeriodoApuracaoStr(String mesReferencia, String anoReferencia) {
@@ -140,9 +140,12 @@ public class RemuneracaoTrabalhadorEsocialService{
 	}
 	
 	public RemuneracaoTrabalhador getEventoS1200(String mesReferencia, String anoReferencia,
-			Funcional servidorFuncional, boolean isEstagiario) {
+			Funcional servidorFuncional) throws CloneNotSupportedException {
 		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
-		return dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional, isEstagiario);
+		RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
+		RemuneracaoTrabalhador remuneracaoTrabalhadorClonado = remuneracaoTrabalhador.clone();
+		remuneracaoTrabalhadorClonado.setId(null);
+		return remuneracaoTrabalhadorClonado;
 	}
 
 	@Transactional

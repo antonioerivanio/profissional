@@ -36,10 +36,6 @@ public class RemuneracaoServidor extends BasicEntity<Long> implements Serializab
 	@JoinColumn(name = "IDFUNCIONAL")
 	private Funcional funcional;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "IDPRESTADOR")
-	private CadastroPrestador cadastroPrestador;
-	
 	@Column(name = "REFERENCIA")
 	private String referencia;
 	
@@ -64,7 +60,6 @@ public class RemuneracaoServidor extends BasicEntity<Long> implements Serializab
 	@Column(name = "DT_NASCTO")
 	@Temporal(TemporalType.DATE)
 	private Date dtNascto;
-	
 	
 	@OneToMany(mappedBy = "remuneracaoTrabalhador", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<DemonstrativosDeValores> dmDev = new ArrayList<>();
@@ -160,13 +155,6 @@ public class RemuneracaoServidor extends BasicEntity<Long> implements Serializab
 		this.dmDev = dmDev;
 	}
 	
-	public CadastroPrestador getCadastroPrestador() {
-		return cadastroPrestador;
-	}
-
-	public void setCadastroPrestador(CadastroPrestador cadastroPrestador) {
-		this.cadastroPrestador = cadastroPrestador;
-	}
 
 	@Override
     public RemuneracaoServidor clone() throws CloneNotSupportedException {

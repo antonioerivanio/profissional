@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.DemonstrativosDeValoresDAO;
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
+import br.gov.ce.tce.srh.domain.RemuneracaoServidor;
 import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 
 @Service("demonstrativosDeValoresService")
@@ -32,7 +33,7 @@ public class DemonstrativosDeValoresService{
 	}	
 	
 	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, RemuneracaoTrabalhador remuneracaoTrabalhador, Long idFuncional) {
-		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValores(mesReferencia, anoReferencia, remuneracaoTrabalhador.getId(), idFuncional);
+		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValores(mesReferencia, anoReferencia, remuneracaoTrabalhador.getId(), null, idFuncional);
 		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
 			if(demonstrativosDeValores.getId() < 0) {
 				demonstrativosDeValores.setRemuneracaoTrabalhador(remuneracaoTrabalhador);
@@ -59,6 +60,18 @@ public class DemonstrativosDeValoresService{
 		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
 			if(demonstrativosDeValores.getId() < 0) {
 				demonstrativosDeValores.setRemuneracaoTrabalhador(remuneracaoTrabalhador);
+				demonstrativosDeValores.setId(null);
+			}
+		}
+		return demonstrativosDeValoresList;
+	}
+
+	public List<DemonstrativosDeValores> findDemonstrativosDeValoresServidor(String mesReferencia, String anoReferencia,
+			RemuneracaoServidor remuneracaoServidor, Long idFuncional) {
+		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValores(mesReferencia, anoReferencia, null, remuneracaoServidor.getId(), idFuncional);
+		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
+			if(demonstrativosDeValores.getId() < 0) {
+				demonstrativosDeValores.setRemuneracaoServidor(remuneracaoServidor);
 				demonstrativosDeValores.setId(null);
 			}
 		}

@@ -12,7 +12,7 @@
 
 		<div class="titulo-pagina">
 
-			<h2>Cadastro de Remuneracao RGPS - Estagiários</h2>
+			<h2>Cadastro de Remuneracao - Servidor Vinculado ao RPPS</h2>
 
 		</div>
 
@@ -30,7 +30,7 @@
 					<!--  <div class="conteiner">
 						<h:inputText id="anoReferencia" 
 									 name="anoReferencia"
-									 value="#{remuneracaoEstagiarioFormBean.anoReferencia}" 
+									 value="#{remuneracaoServidorFormBean.anoReferencia}" 
 									 maxlength="4"
 									 onkeyup="SoNumeros(this)">
 						</h:inputText>
@@ -39,11 +39,11 @@
 					<rich:select 						
 							defaultLabel="Selecione..."	
 							id="ano"							
-							value="#{remuneracaoEstagiarioFormBean.anoReferencia}"
-							disabled="#{remuneracaoEstagiarioFormBean.emEdicao}">							
+							value="#{remuneracaoServidorFormBean.anoReferencia}"
+							disabled="#{remuneracaoServidorFormBean.emEdicao}">							
 							<f:selectItems 
 								id="comboAno"
-								value="#{remuneracaoEstagiarioFormBean.comboAno}"
+								value="#{remuneracaoServidorFormBean.comboAno}"
 					  			var="servidor"
 					  			itemValue="#{servidor}"
 					  			itemLabel="#{servidor}"/>
@@ -57,7 +57,7 @@
 			<div class="select-box box-16">
 				<label for="mes">Mês: </label>
 				<div class="conteiner">
-					<h:selectOneMenu id="mesF" value="#{remuneracaoEstagiarioFormBean.mesReferencia}" disabled="#{remuneracaoEstagiarioFormBean.emEdicao}">							  
+					<h:selectOneMenu id="mesF" value="#{remuneracaoServidorFormBean.mesReferencia}" disabled="#{remuneracaoServidorFormBean.emEdicao}">							  
 						<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0"/>
 						<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01"/>
 						<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
@@ -74,7 +74,7 @@
 						<f:selectItem id="mes13F" itemLabel="Anual (13° salário)" itemValue="13" />	
 						<a4j:ajax event="change" 
 							  				 execute="@this"
-							  				 listener="#{remuneracaoEstagiarioFormBean.carregaServidores}"
+							  				 listener="#{remuneracaoServidorFormBean.carregaServidores}"
 							  				 render="tipo"/>																
 					</h:selectOneMenu>
 				</div>
@@ -90,35 +90,35 @@
 							listWidth="500"
 							id="tipo"
 							converter="entityConverter" 
-							rendered="#{!remuneracaoEstagiarioFormBean.emEdicao}"
-							value="#{remuneracaoEstagiarioFormBean.servidorFuncional}">							
+							rendered="#{!remuneracaoServidorFormBean.emEdicao}"
+							value="#{remuneracaoServidorFormBean.servidorFuncional}">							
 							<f:selectItems 
 								id="comboServidor"
-								value="#{remuneracaoEstagiarioFormBean.servidorEnvioList}"
+								value="#{remuneracaoServidorFormBean.servidorEnvioList}"
 					  			var="servidor"
 					  			itemValue="#{servidor}"
 					  			itemLabel="#{servidor.nome}"/>
 						</rich:select>
 				</div>
-				<ui:fragment  rendered="#{remuneracaoEstagiarioFormBean.emEdicao}">
+				<ui:fragment  rendered="#{remuneracaoServidorFormBean.emEdicao}">
 					<div class="input-box box-60">						
 							<div class="conteiner">
 								<h:inputText id="nomeEdicao" 
 											 maxlength="46"
 											 size="46"
 											 disabled="true"
-											 rendered="#{remuneracaoEstagiarioFormBean.emEdicao}"
-											 value="#{remuneracaoEstagiarioFormBean.servidorFuncional.nome}" />
+											 rendered="#{remuneracaoServidorFormBean.emEdicao}"
+											 value="#{remuneracaoServidorFormBean.servidorFuncional.nome}" />
 							</div>
 					</div>
 				</ui:fragment>
 				
 			</div>
-				<h:commandButton action="#{remuneracaoEstagiarioFormBean.consultar}" value="Consultar"  rendered="#{!remuneracaoEstagiarioFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" />
+				<h:commandButton action="#{remuneracaoServidorFormBean.consultar}" value="Consultar"  rendered="#{!remuneracaoServidorFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" />
 				
 			</fieldset>
 			
-			<ui:fragment  rendered="#{remuneracaoEstagiarioFormBean.emConsulta}">
+			<ui:fragment  rendered="#{remuneracaoServidorFormBean.emConsulta}">
 				<fieldset>
 					<legend style="font-size: 15px;">
 							<strong> 
@@ -142,7 +142,7 @@
 									<h:inputText id="indApuracao" 
 												 maxlength="5"
 												 disabled="true"
-												 value="#{remuneracaoEstagiarioFormBean.entidade.indApuracao}" />
+												 value="#{remuneracaoServidorFormBean.entidade.indApuracao}" />
 								</div>
 							</div>
 	
@@ -152,7 +152,7 @@
 									<h:inputText id="perApur" 
 												 maxlength="10"
 												 disabled="true"
-												 value="#{remuneracaoEstagiarioFormBean.entidade.perApur}" />
+												 value="#{remuneracaoServidorFormBean.entidade.perApur}" />
 								</div>
 							</div>
 					
@@ -162,7 +162,7 @@
 									<h:inputText id="cpf" 
 												 maxlength="15"
 												 disabled="true"
-												 value="#{remuneracaoEstagiarioFormBean.entidade.cpfTrab}" />
+												 value="#{remuneracaoServidorFormBean.entidade.cpfTrab}" />
 								</div>
 							</div>
 	
@@ -172,7 +172,7 @@
 									<h:inputText id="indMV" 
 												 maxlength="5"
 												 disabled="true"
-												 value="#{remuneracaoEstagiarioFormBean.entidade.indMV}" />
+												 value="#{remuneracaoServidorFormBean.entidade.indMV}" />
 								</div>
 							</div>
 							
@@ -182,7 +182,7 @@
 									<h:inputText id="nmTrab" 
 												 maxlength="10"
 												 disabled="true"
-												 value="#{remuneracaoEstagiarioFormBean.entidade.nmTrab}" />
+												 value="#{remuneracaoServidorFormBean.entidade.nmTrab}" />
 								</div>
 							</div>
 							
@@ -192,12 +192,12 @@
 									<h:inputText id="dtNascto" 
 												 maxlength="15"
 												 disabled="true"
-												 value="#{remuneracaoEstagiarioFormBean.entidade.dtNascto}" />
+												 value="#{remuneracaoServidorFormBean.entidade.dtNascto}" />
 								</div>
 							</div>					
 						
 					</fieldset>
-					<!-- <ui:fragment  rendered="#{remuneracaoEstagiarioFormBean.entidade.indMV != 1}">
+					<!-- <ui:fragment  rendered="#{remuneracaoServidorFormBean.entidade.indMV != 1}">
 						<fieldset>
 								<legend style="font-size: 15px;">
 									<strong> 
@@ -207,7 +207,7 @@
 								<div class="tabela-dados">
 								<rich:dataTable id="remuneracaoOutraEmpresasId"
 										var="remuneracaoOutraEmpresas"
-										value="#{remuneracaoEstagiarioFormBean.remuneracaoOutraEmpresaList}"
+										value="#{remuneracaoServidorFormBean.remuneracaoOutraEmpresaList}"
 										noDataLabel="Nenhum Item Remuneracao Outra Empresas"	>
 							
 										<h:column id="col1" headerClass="cel-15">
@@ -250,7 +250,7 @@
 						</div>
 						</fieldset>
 					</ui:fragment>-->
-					<ui:repeat var="dmDev" varStatus="i" value="#{remuneracaoEstagiarioFormBean.demonstrativosDeValoresList}">
+					<ui:repeat var="dmDev" varStatus="i" value="#{remuneracaoServidorFormBean.demonstrativosDeValoresList}">
 						<fieldset >
 							<legend style="font-size: 15px; color: #004581; font-weight:bolder;">
 								<strong> 
@@ -575,12 +575,12 @@
 			
 			
 			<h:commandButton 
-				action="#{remuneracaoEstagiarioFormBean.salvarEvento}" 
+				action="#{remuneracaoServidorFormBean.salvarEvento}" 
 				value="Salvar" 
 				onclick="var x= confirm('Deseja realmente gerar o evento para todos os servidores?');if(!x){return false;}" 
 				styleClass="bt-padrao fr mg-right-10" />
 			
-			<a href="/srh/paginas/tabelas/remuneracaoEstagiarioList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			<a href="/srh/paginas/tabelas/remuneracaoServidorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 			
 			
 

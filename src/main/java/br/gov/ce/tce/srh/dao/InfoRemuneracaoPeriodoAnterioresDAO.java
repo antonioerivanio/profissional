@@ -95,7 +95,7 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia");
-		sql.append(" AND dp.contribui_inss = 'S' ");
+		
 		sql.append(" AND dp.num_mes <> '13' ");
 		sql.append(" AND dp.num_mes <> :mesReferencia ");
 		sql.append(" AND dp.arquivo = :ideDmDev ");

@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
-import br.gov.ce.tce.srh.service.RemuneracaoTrabalhadorEsocialService;
+import br.gov.ce.tce.srh.domain.RemuneracaoServidor;
+import br.gov.ce.tce.srh.service.RemuneracaoServidorEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
@@ -29,7 +29,7 @@ public class RemuneracaoServidorListBean implements Serializable {
 	static Logger logger = Logger.getLogger(RemuneracaoServidorListBean.class);
 
 	@Autowired
-	private RemuneracaoTrabalhadorEsocialService remuneracaoTrabalhadorESocialTCEService;
+	private RemuneracaoServidorEsocialService remuneracaoServidorESocialTCEService;
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
@@ -41,20 +41,20 @@ public class RemuneracaoServidorListBean implements Serializable {
 	private String mesReferencia;
 
 	// entidades das telas
-	private List<RemuneracaoTrabalhador> lista;
-	private RemuneracaoTrabalhador entidade = new RemuneracaoTrabalhador();
+	private List<RemuneracaoServidor> lista;
+	private RemuneracaoServidor entidade = new RemuneracaoServidor();
 	
 	//paginação
 	private int count;
 	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
-	private List<RemuneracaoTrabalhador> pagedList = new ArrayList<RemuneracaoTrabalhador>();
+	private List<RemuneracaoServidor> pagedList = new ArrayList<RemuneracaoServidor>();
 	private int flagRegistroInicial = 0;
 	
 	@PostConstruct
 	private void init() {
-		RemuneracaoTrabalhador flashParameter = (RemuneracaoTrabalhador)FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new RemuneracaoTrabalhador());
+		RemuneracaoServidor flashParameter = (RemuneracaoServidor)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new RemuneracaoServidor());
     }
 	
 	public void consultar() {
@@ -62,7 +62,7 @@ public class RemuneracaoServidorListBean implements Serializable {
 
 			try {
 	
-				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, false );
+				count = remuneracaoServidorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, false );
 	
 				if (count == 0) {
 					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -91,7 +91,7 @@ public class RemuneracaoServidorListBean implements Serializable {
 
 		try {
 
-			remuneracaoTrabalhadorESocialTCEService.excluir(entidade);
+			remuneracaoServidorESocialTCEService.excluir(entidade);
 
 			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
 			logger.info("Registro excluído com sucesso.");
@@ -104,7 +104,7 @@ public class RemuneracaoServidorListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		setEntidade( new RemuneracaoTrabalhador() );
+		setEntidade( new RemuneracaoServidor() );
 		consultar();
 	}
 
@@ -119,7 +119,7 @@ public class RemuneracaoServidorListBean implements Serializable {
 				parametros.put("FILTRO", filtro);
 			}
 
-			relatorioUtil.relatorio("RemuneracaoTrabalhador.jasper", parametros, "RemuneracaoTrabalhador.pdf");
+			relatorioUtil.relatorio("RemuneracaoServidor.jasper", parametros, "RemuneracaoServidor.pdf");
 
 		} catch (Exception e) {
 			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
@@ -160,16 +160,16 @@ public class RemuneracaoServidorListBean implements Serializable {
 		this.mesReferencia = mesReferencia;
 	}
 
-	public RemuneracaoTrabalhador getEntidade() {return entidade;}
-	public void setEntidade(RemuneracaoTrabalhador entidade) {this.entidade = entidade;}
+	public RemuneracaoServidor getEntidade() {return entidade;}
+	public void setEntidade(RemuneracaoServidor entidade) {this.entidade = entidade;}
 
-	public List<RemuneracaoTrabalhador> getLista(){return lista;}
+	public List<RemuneracaoServidor> getLista(){return lista;}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<RemuneracaoTrabalhador>(); 
+		pagedList = new ArrayList<RemuneracaoServidor>(); 
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}
@@ -178,7 +178,7 @@ public class RemuneracaoServidorListBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(remuneracaoTrabalhadorESocialTCEService.search(this.nome, this.cpf, anoReferencia, mesReferencia, true, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(remuneracaoServidorESocialTCEService.search(this.nome, this.cpf, anoReferencia, mesReferencia, false, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {
@@ -188,8 +188,8 @@ public class RemuneracaoServidorListBean implements Serializable {
 		return dataModel;
 	}
 
-	public List<RemuneracaoTrabalhador> getPagedList() {return pagedList;}
-	public void setPagedList(List<RemuneracaoTrabalhador> pagedList) {this.pagedList = pagedList;}
+	public List<RemuneracaoServidor> getPagedList() {return pagedList;}
+	public void setPagedList(List<RemuneracaoServidor> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
 
 }

@@ -39,6 +39,8 @@ public class RemuneracaoTrabalhadorLislBean implements Serializable {
 	private String cpf = new String();
 	private String anoReferencia;
 	private String mesReferencia;
+	private boolean isRGPA;
+	private boolean isEstagiario;
 
 	// entidades das telas
 	private List<RemuneracaoTrabalhador> lista;
@@ -55,6 +57,8 @@ public class RemuneracaoTrabalhadorLislBean implements Serializable {
 	private void init() {
 		RemuneracaoTrabalhador flashParameter = (RemuneracaoTrabalhador)FacesUtil.getFlashParameter("entidade");
 		setEntidade(flashParameter != null ? flashParameter : new RemuneracaoTrabalhador());
+		isRGPA = false;
+		isEstagiario = false;
     }
 	
 	public void consultar() {
@@ -62,7 +66,7 @@ public class RemuneracaoTrabalhadorLislBean implements Serializable {
 
 			try {
 	
-				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, false );
+				count = remuneracaoTrabalhadorESocialTCEService.count( this.nome, this.cpf, anoReferencia, mesReferencia, isRGPA, isEstagiario );
 	
 				if (count == 0) {
 					FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -178,7 +182,7 @@ public class RemuneracaoTrabalhadorLislBean implements Serializable {
 	public PagedListDataModel getDataModel() {
 		if( flagRegistroInicial != getDataTable().getFirst() ) {
 			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(remuneracaoTrabalhadorESocialTCEService.search(this.nome, this.cpf, anoReferencia, mesReferencia, false, getDataTable().getFirst(), getDataTable().getRows()));
+			setPagedList(remuneracaoTrabalhadorESocialTCEService.search(this.nome, this.cpf, anoReferencia, mesReferencia, isRGPA, isEstagiario, getDataTable().getFirst(), getDataTable().getRows()));
 			if(count != 0){
 				dataModel = new PagedListDataModel(getPagedList(), count);
 			} else {

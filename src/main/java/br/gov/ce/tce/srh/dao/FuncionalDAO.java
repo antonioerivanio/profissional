@@ -513,6 +513,7 @@ public class FuncionalDAO {
 		sql.append(" and pg.ano_esocial = '"+anoReferencia+"'");
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
 		
+		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOTRABALHADOR where IDFUNCIONAL is not null) ");
 		sql.append(" ORDER BY f.NOME ");
 		
 		try {
@@ -555,7 +556,9 @@ public class FuncionalDAO {
 		sql.append("from fp_dadospagtoprestador   ");
 		sql.append("inner join fp_cadastroprestador on fp_dadospagtoprestador.idprestador = fp_cadastroprestador.idprestador   ");
 		sql.append("where to_char(data_np,'yyyymm') = '"+anoReferencia+mesReferencia+"'  ");
+		sql.append(" and  fp_cadastroprestador.idprestador not in (Select IDPRESTADOR from ESOCIAL_REMUNERACAOTRABALHADOR where IDPRESTADOR is not null) ");
 		sql.append("order by fp_dadospagtoprestador.data_np, fp_dadospagtoprestador.nome  ");
+		
 	
 		
 		try {
@@ -585,7 +588,38 @@ public class FuncionalDAO {
 		sql.append(" where f.IDOCUPACAO in (14,15)  ");
 		sql.append(" and pg.ano_esocial = '"+anoReferencia+"'");
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
+		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOTRABALHADOR where IDFUNCIONAL is not null) ");
+		sql.append(" ORDER BY f.NOME ");
 		
+		try {
+			Query query = entityManager.createNativeQuery(sql.toString(), Funcional.class);
+			
+			return  query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public List<Funcional> findServidoresEvento1202(String anoReferencia, String mesReferencia) {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" select distinct f.ID, f.IDPESSOAL, f.IDORGAOORIGEM, f.IDSETOR, f.IDOCUPACAO, f.IDCLASSEREFERENCIA,   ");
+		sql.append(" f.idespecialidadecargo, f.idorientacaocargo, f.IDTIPOMOVIMENTOENTRADA, f.IDTIPOMOVIMENTOSAIDA, ");
+		sql.append(" f.IDCBO, f.IDFOLHA, f.IDTIPOPUBLICACAONOMEACAO, IDTIPOPUBLICACAOSAIDA, f.IDSITUACAO, f.IDTIPOVINCULO, ");
+		sql.append(" f.NOME, f.NOMECOMPLETO, f.NOMEPESQUISA, f.MATRICULA, f.MATRICULAESTADUAL, f.CALCULOPCC, f.QTDQUINTOS, ");
+		sql.append(" f.LEIINCORPORACAO, f.PONTO, f.STATUS, f.ATIVOFP, f.FLPORTALTRANSPARENCIA, f.IRRF, f.SUPSECINTEGRAL, ");
+		sql.append(" f.PROPORCIONALIDADE, f.SALARIOORIGEM, f.ABONOPREVIDENCIARIO, f.DATAPOSSE, f.DATAEXERCICIO, f.DATASAIDA, ");
+		sql.append(" f.DOENOMEACAO, f.DOESAIDA, f.DESCRICAONOMEACAO, f.DESCRICAOSAIDA, f.PREVIDENCIA, f.REGIME, f.IDREPRESENTACAOCARGO, ");
+		sql.append(" f.IDSETORDESIGNADO, f.IDPESSOAJURIDICA, f.IDAPOSENTADORIA, f.CODCATEGORIA ");
+		
+		sql.append("  from tb_funcional f  "); 
+		sql.append(" inner join fp_dadospagto dp on f.id = dp.idfuncional  ");
+		sql.append(" inner join fp_pagamentos pg on pg.arquivo = dp.arquivo  ");
+		sql.append(" where previdencia = 2  ");
+		sql.append(" and pg.ano_esocial = '"+anoReferencia+"'");
+		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
+		
+		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOSERVIDOR where IDFUNCIONAL is not null) ");
 		sql.append(" ORDER BY f.NOME ");
 		
 		try {

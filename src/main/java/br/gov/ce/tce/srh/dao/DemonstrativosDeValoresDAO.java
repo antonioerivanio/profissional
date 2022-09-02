@@ -51,7 +51,7 @@ public class DemonstrativosDeValoresDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idFuncional) {	
+	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idRemuneracaoServidor, Long idFuncional) {	
 		Query query = entityManager.createNativeQuery(getSQLDemonstrativosDeValores(idFuncional), DemonstrativosDeValores.class);
 		query.setParameter("mesReferencia", mesReferencia);
 		query.setParameter("anoReferencia", anoReferencia);
@@ -60,6 +60,13 @@ public class DemonstrativosDeValoresDAO {
 		}
 		else {
 			query.setParameter("idRemuneracaoTrabalhador", null);
+		}
+		
+		if(idRemuneracaoServidor != null && idRemuneracaoServidor > 0 ) {
+			query.setParameter("idRemuneracaoServidor", idRemuneracaoServidor);
+		}
+		else {
+			query.setParameter("idRemuneracaoServidor", null);
 		}
 		query.setParameter("idFuncional",idFuncional );
 		return query.getResultList();
@@ -72,8 +79,23 @@ public class DemonstrativosDeValoresDAO {
 		sql.append(" SELECT    "); 
 		sql.append(" ( ROWNUM * -1) as id, ");
 		sql.append(" :idRemuneracaoTrabalhador as IDREMUNERACAOTRABALHADOR, ");
+		sql.append(" :idRemuneracaoServidor as IDREMUNERACAOSERVIDOR, ");
 		sql.append(" dp.arquivo as IDE_DM_DEV, ");
-		sql.append(" 302 as COD_CATEG, ");
+		
+		
+		
+		//sql.append(" 302 as COD_CATEG, ");
+		
+		
+		sql.append("  CASE f.idocupacao ");
+		sql.append("  WHEN 33 THEN 302 ");
+		sql.append("  WHEN 14 THEN 901 ");
+		sql.append("  WHEN 15 THEN 901 ");
+		sql.append("  ELSE 301 ");
+		sql.append(" END AS COD_CATEG, ");
+		
+		
+		
 		sql.append(" null as COD_CBO, ");
 		sql.append(" null as NAT_ATIVIDADE, ");
 		sql.append(" null as QTD_DIAS_TRAB, ");
@@ -86,12 +108,12 @@ public class DemonstrativosDeValoresDAO {
 		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia");
-		sql.append(" AND dp.contribui_inss = 'S' ");
-		sql.append("AND dp.num_mes <> '13' ");
+		
+		sql.append(" AND dp.num_mes <> '13' ");
 		if(idFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");
 		}
-		sql.append(" ORDER BY dp.nome ");
+		sql.append(" ORDER BY FLINFOREMUNPERANTERIORES, IDE_DM_DEV");
 
 	    
 	    return sql.toString();
@@ -126,6 +148,7 @@ public class DemonstrativosDeValoresDAO {
 		sql.append(" SELECT    "); 
 		sql.append(" ( ROWNUM * -1) as id, ");
 		sql.append(" :idRemuneracaoTrabalhador as IDREMUNERACAOTRABALHADOR, ");
+		sql.append(" null as IDREMUNERACAOSERVIDOR, ");
 		sql.append(" 'RPA_'||dp.idpagtoprestador as IDE_DM_DEV, ");
 		sql.append(" 701 as COD_CATEG, ");
 		sql.append("  dp.novocbo as COD_CBO, ");
