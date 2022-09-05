@@ -174,4 +174,9 @@ public class FuncionalService {
 		return dao.findEstagiarioEvento1200(anoReferencia, mesReferencia);
 	}
 	
+	public List<Funcional> findFechamentoFolhaEvento1299() {
+      return dao.findFechamentoFolhaEvento1299();
+    }
+	
+	
 }

@@ -1674,3 +1674,9 @@ input.rf-insp-inp[type="text"] {
     margin-top: 1px;
     white-space: nowrap;
 }
+.dialog-confirmacao{
+    display: flex;
+    padding: 10px;
+    margin: auto;
+    margin-left: 20%;
+}

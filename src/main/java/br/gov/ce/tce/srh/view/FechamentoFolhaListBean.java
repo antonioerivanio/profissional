@@ -12,21 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
-import br.gov.ce.tce.srh.domain.FechamentoEventoEsocial;
-import br.gov.ce.tce.srh.service.FechamentoEventoEsocialService;
+import br.gov.ce.tce.srh.domain.FechamentoFolhaEsocial;
+import br.gov.ce.tce.srh.service.FechamentoFolhaEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
-@Component("fechamentoEventoListBean")
+@Component("fechamentoFolhaList")
 @Scope("view")
-public class FechamentoEventoListBean implements Serializable {
+public class FechamentoFolhaListBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(FechamentoEventoListBean.class);
+	static Logger logger = Logger.getLogger(FechamentoFolhaListBean.class);
 
 	@Autowired
-	private FechamentoEventoEsocialService fechamentoEventoEsocialService;
+	private FechamentoFolhaEsocialService fechamentoEventoEsocialService;
 	
 	@Autowired
 	private RelatorioUtil relatorioUtil;
@@ -37,20 +37,20 @@ public class FechamentoEventoListBean implements Serializable {
 
 	
 	// entidades das telas
-	private List<FechamentoEventoEsocial> lista;
-	private FechamentoEventoEsocial entidade = new FechamentoEventoEsocial();
+	private List<FechamentoFolhaEsocial> lista;
+	private FechamentoFolhaEsocial entidade = new FechamentoFolhaEsocial();
 	
 	//paginação
 	private int count;
 	private UIDataTable dataTable = new UIDataTable();
 	private PagedListDataModel dataModel = new PagedListDataModel();
-	private List<FechamentoEventoEsocial> pagedList = new ArrayList<FechamentoEventoEsocial>();
+	private List<FechamentoFolhaEsocial> pagedList = new ArrayList<FechamentoFolhaEsocial>();
 	private int flagRegistroInicial = 0;
 	
 	@PostConstruct
 	private void init() {
-		FechamentoEventoEsocial flashParameter = (FechamentoEventoEsocial)FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new FechamentoEventoEsocial());
+		FechamentoFolhaEsocial flashParameter = (FechamentoFolhaEsocial)FacesUtil.getFlashParameter("entidade");
+		setEntidade(flashParameter != null ? flashParameter : new FechamentoFolhaEsocial());
     }
 	
 	public void consultar() {
@@ -95,7 +95,7 @@ public class FechamentoEventoListBean implements Serializable {
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 		}
 
-		setEntidade( new FechamentoEventoEsocial() );
+		setEntidade( new FechamentoFolhaEsocial() );
 		consultar();
 	}
 
@@ -137,16 +137,16 @@ public class FechamentoEventoListBean implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public FechamentoEventoEsocial getEntidade() {return entidade;}
-	public void setEntidade(FechamentoEventoEsocial entidade) {this.entidade = entidade;}
+	public FechamentoFolhaEsocial getEntidade() {return entidade;}
+	public void setEntidade(FechamentoFolhaEsocial entidade) {this.entidade = entidade;}
 
-	public List<FechamentoEventoEsocial> getLista(){return lista;}
+	public List<FechamentoFolhaEsocial> getLista(){return lista;}
 	
 	//PAGINAÇÃO
 	private void limparListas() {
 		dataTable = new UIDataTable();
 		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<FechamentoEventoEsocial>(); 
+		pagedList = new ArrayList<FechamentoFolhaEsocial>(); 
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}
@@ -165,8 +165,8 @@ public class FechamentoEventoListBean implements Serializable {
 		return dataModel;
 	}
 
-	public List<FechamentoEventoEsocial> getPagedList() {return pagedList;}
-	public void setPagedList(List<FechamentoEventoEsocial> pagedList) {this.pagedList = pagedList;}
+	public List<FechamentoFolhaEsocial> getPagedList() {return pagedList;}
+	public void setPagedList(List<FechamentoFolhaEsocial> pagedList) {this.pagedList = pagedList;}
 	//FIM PAGINAÇÃO
 
 }

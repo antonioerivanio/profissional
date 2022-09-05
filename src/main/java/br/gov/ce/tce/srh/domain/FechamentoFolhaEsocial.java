@@ -11,20 +11,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import br.gov.ce.tce.srh.enums.DadoTCE;
 
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_FECHAMENTO", schema=DatabaseMetadata.SCHEMA_SRH)
-public class FechamentoEventoEsocial extends BasicEntity<Long> implements Serializable{
+@Table(name = "ESOCIAL_FECHAMENTOFOLHA", schema=DatabaseMetadata.SCHEMA_SRH)
+public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Serializable{
  
 	@Id
 	@Column(name = "ID")
 	private Long id;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "IDFUNCIONAL")
-	private Funcional funcional;
 	
 	@Column(name = "REFERENCIA")
 	private String referencia;
@@ -45,13 +43,41 @@ public class FechamentoEventoEsocial extends BasicEntity<Long> implements Serial
     private Integer evtContratoAvulsoNaoPortuario;
 
     @Column(name = "EVT_INFOCOMPLPER")
-    private Integer evtInfoComplementarPrevidenciária;
+    private Integer evtInfoComplementarPrevidenciaria;
  
     @Column(name = "TRANS_DCTWEB")
     private Integer evtTransmissaoImediata;
     
     @Column(name = "NAO_VALID")
-    private Integer evtNaoValidacao;
+    private Integer naoValidacao;
+    
+    @Column(name = "PER_APUR")
+    private String peridoApuracao;
+    
+    @Transient
+    private String anoReferencia;
+    @Transient
+    private String mesReferencia;
+    
+    
+    
+    public FechamentoFolhaEsocial() {
+      super();
+    }
+
+    public FechamentoFolhaEsocial(Integer tipoInscricaoEmpregador, String numeroInscricaoEmpregador, Integer evtRemuneracao,
+                              Integer evtComercializacaoProduto, Integer evtContratoAvulsoNaoPortuario, Integer evtInfoComplementarPrevidenciaria, Integer evtTransmissaoImediata, Integer naoValidacao, String peridoApuracao) {
+      super();
+      this.tipoInscricaoEmpregador = tipoInscricaoEmpregador;
+      this.numeroInscricaoEmpregador = numeroInscricaoEmpregador;
+      this.evtRemuneracao = evtRemuneracao;
+      this.evtComercializacaoProduto = evtComercializacaoProduto;
+      this.evtContratoAvulsoNaoPortuario = evtContratoAvulsoNaoPortuario;
+      this.evtInfoComplementarPrevidenciaria = evtInfoComplementarPrevidenciaria;
+      this.evtTransmissaoImediata = evtTransmissaoImediata;
+      this.naoValidacao = naoValidacao;      
+      this.peridoApuracao = peridoApuracao;
+    }
 
     public Long getId() {
       return id;
@@ -61,13 +87,6 @@ public class FechamentoEventoEsocial extends BasicEntity<Long> implements Serial
       this.id = id;
     }
 
-    public Funcional getFuncional() {
-      return funcional;
-    }
-
-    public void setFuncional(Funcional funcional) {
-      this.funcional = funcional;
-    }
 
     public String getReferencia() {
       return referencia;
@@ -86,9 +105,12 @@ public class FechamentoEventoEsocial extends BasicEntity<Long> implements Serial
     }
 
     public String getNumeroInscricaoEmpregador() {
+      /*
+       * if(numeroInscricaoEmpregador == null) { numeroInscricaoEmpregador = DadoTCE.NR_INSC; }
+       */
+      
       return numeroInscricaoEmpregador;
     }
-
     public void setNumeroInscricaoEmpregador(String numeroInscricaoEmpregador) {
       this.numeroInscricaoEmpregador = numeroInscricaoEmpregador;
     }
@@ -115,14 +137,14 @@ public class FechamentoEventoEsocial extends BasicEntity<Long> implements Serial
 
     public void setEvtContratoAvulsoNaoPortuario(Integer evtContratoAvulsoNaoPortuario) {
       this.evtContratoAvulsoNaoPortuario = evtContratoAvulsoNaoPortuario;
+    } 
+
+    public Integer getEvtInfoComplementarPrevidenciaria() {
+      return evtInfoComplementarPrevidenciaria;
     }
 
-    public Integer getEvtInfoComplementarPrevidenciária() {
-      return evtInfoComplementarPrevidenciária;
-    }
-
-    public void setEvtInfoComplementarPrevidenciária(Integer evtInfoComplementarPrevidenciária) {
-      this.evtInfoComplementarPrevidenciária = evtInfoComplementarPrevidenciária;
+    public void setEvtInfoComplementarPrevidenciaria(Integer evtInfoComplementarPrevidenciaria) {
+      this.evtInfoComplementarPrevidenciaria = evtInfoComplementarPrevidenciaria;
     }
 
     public Integer getEvtTransmissaoImediata() {
@@ -133,12 +155,38 @@ public class FechamentoEventoEsocial extends BasicEntity<Long> implements Serial
       this.evtTransmissaoImediata = evtTransmissaoImediata;
     }
 
-    public Integer getEvtNaoValidacao() {
-      return evtNaoValidacao;
+    public Integer getNaoValidacao() {
+      return naoValidacao;
     }
 
-    public void setEvtNaoValidacao(Integer evtNaoValidacao) {
-      this.evtNaoValidacao = evtNaoValidacao;
+    public void setNaoValidacao(Integer naoValidacao) {
+      this.naoValidacao = naoValidacao;
     }
-}		
+
+    public String getPeridoApuracao() {
+      return peridoApuracao;
+    }
+
+    public void setPeridoApuracao(String peridoApuracao) {
+      this.peridoApuracao = peridoApuracao;
+    }
+
+    public String getAnoReferencia() {
+      return anoReferencia;
+    }
+
+    public void setAnoReferencia(String anoReferencia) {
+      this.anoReferencia = anoReferencia;
+    }
+
+    public String getMesReferencia() {
+      return mesReferencia;
+    }
+
+    public void setMesReferencia(String mesReferencia) {
+      this.mesReferencia = mesReferencia;
+    }
+    
+    
+}
 	
