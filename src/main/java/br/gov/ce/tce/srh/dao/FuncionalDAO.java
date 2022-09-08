@@ -334,12 +334,12 @@ public class FuncionalDAO {
     }
   }
 
-  public List<Funcional> findServidoresEvento2299() {
+  public List<Funcional> findServidoresEvento2299() { 
     TypedQuery<Funcional> query = entityManager.createQuery("SELECT DISTINCT new Funcional(f.id, f.matricula, f.pessoal, f.nome) " + "FROM Funcional f " + "WHERE "
     // + " f.status < 3 " //pegar todos que sao 1,2
-                              + "  (f.id IN (SELECT a.funcional.id FROM Admissao a) " // 2200
-                              + "  AND f.saida > to_date('21/11/2021', 'dd/mm/yyyy') ) "
-                              + " OR (f.id IN (SELECT a.funcional.id FROM Aposentadoria a) AND f.id NOT IN (SELECT b.funcional.id FROM Beneficiario b)) "
+                              + "  (f.status < 3 AND f.id IN (SELECT a.funcional.id FROM Admissao a) " // 2200
+                              + "  AND f.saida > TO_DATE('21/11/2021', 'dd/mm/yyyy') ) "
+                              + " OR (f.id IN (SELECT a.funcional.id FROM Aposentadoria a WHERE a.dataInicioBeneficio > TO_DATE('21/11/2021', 'dd/mm/yyyy')) AND f.id NOT IN (SELECT b.funcional.id FROM Beneficiario b)) "
                               + "   AND f.id  NOT IN (SELECT a.funcional.id FROM Desligamento a) " + "ORDER BY f.nome", Funcional.class);
     return query.getResultList();
   }

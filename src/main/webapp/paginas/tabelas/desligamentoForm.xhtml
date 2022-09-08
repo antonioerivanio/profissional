@@ -49,10 +49,11 @@
 						</div>
 					</ui:fragment>
 				</div>
-				<h:commandButton actionListener="#{desligamentoFormBean.consultar}"
+				<a4j:commandButton actionListener="#{desligamentoFormBean.consultar}"
 					rendered="#{!desligamentoFormBean.emEdicao}"
-					value="Consultar" styleClass="bt-padrao fr mg-right-10">					
-				</h:commandButton>
+					value="Consultar" styleClass="bt-padrao fr mg-right-10" execute="servidor" render="form">
+							
+				</a4j:commandButton>
 			</fieldset>
 
 			<h:panelGroup id="dadosEvento2299">
