@@ -27,7 +27,7 @@
 					<label for="">Servidor *</label>
 					<div class="conteiner">
 						<rich:select id="servidor" enableManualInput="true"
-							defaultLabel="Selecione..." clientFilterFunction="customFilter"
+							defaultLabel="Selecione..." 
 							listWidth="500" converter="entityConverter"
 							rendered="#{!desligamentoFormBean.emEdicao}"
 							value="#{desligamentoFormBean.servidorFuncional}">
@@ -35,7 +35,7 @@
 							<f:selectItems value="#{desligamentoFormBean.servidorEnvioList}"
 								var="servidor" itemValue="#{servidor}"
 								itemLabel="#{servidor.nome}" />
-								<a4j:ajax execute="@this"></a4j:ajax>							
+												
 						</rich:select>
 					</div>
 
@@ -51,7 +51,7 @@
 				</div>
 				<a4j:commandButton actionListener="#{desligamentoFormBean.consultar}"
 					rendered="#{!desligamentoFormBean.emEdicao}"
-					value="Consultar" styleClass="bt-padrao fr mg-right-10" execute="servidor" render="form">
+					value="Consultar" styleClass="bt-padrao fr mg-right-10" execute="@form" render="form">
 							
 				</a4j:commandButton>
 			</fieldset>
