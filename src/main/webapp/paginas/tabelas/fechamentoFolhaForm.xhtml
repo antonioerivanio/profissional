@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Cadastro do Fechamento do Evento ESocial</h2>
+
+		</div>
+
+		<h:outputStylesheet>		
+			.rf-pp-hdr-cnt {
+			    font-size: 14px;		    
+			}
+	
+			.rf-pp-cnt {		    
+			    font-size: 14px;
+			}		
+		</h:outputStylesheet>
+
+		<h:form id="form" styleClass="formularios">
+
+			<br />
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<fieldset>
+				<legend>Dados Evento S-1299</legend>
+
+				<br />
+
+				<fieldset>
+					<div class="input-box box-10">
+						<label for="">Ano Referência: *</label>
+						<div class="conteiner">
+							<rich:select defaultLabel="Selecione..." id="ano"
+								value="#{fechamentoFolhaForm.entidade.anoReferencia}"
+								disabled="#{fechamentoFolhaForm.emEdicao}">
+								<f:selectItems id="comboAno"
+									value="#{fechamentoFolhaForm.comboAno}" var="servidor"
+									itemValue="#{servidor}" itemLabel="#{servidor}" />
+								<a4j:ajax event="change" execute="@this" />
+							</rich:select>
+						</div>
+					</div>
+
+					<div class="select-box box-16">
+						<label for="mes">Mês: </label>
+						<div class="conteiner">
+							<h:selectOneMenu id="mesF"
+								value="#{fechamentoFolhaForm.entidade.mesReferencia}"
+								disabled="#{fechamentoFolhaForm.emEdicao}">
+								<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0" />
+								<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01" />
+								<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
+								<f:selectItem id="mes3F" itemLabel="Março" itemValue="03" />
+								<f:selectItem id="mes4F" itemLabel="Abril" itemValue="04" />
+								<f:selectItem id="mes5F" itemLabel="Maio" itemValue="05" />
+								<f:selectItem id="mes6F" itemLabel="Junho" itemValue="06" />
+								<f:selectItem id="mes7F" itemLabel="Julho" itemValue="07" />
+								<f:selectItem id="mes8F" itemLabel="Agosto" itemValue="08" />
+								<f:selectItem id="mes9F" itemLabel="Setembro" itemValue="09" />
+								<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
+								<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11" />
+								<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
+								<f:selectItem id="mes13F" itemLabel="Anual (13° salário)"
+									itemValue="13" />
+									<a4j:ajax event="change" execute="@this" />
+							</h:selectOneMenu>
+							
+						</div>
+					</div>
+
+				</fieldset>
+				<fieldset>
+					<legend for="">Informações de identificação do empregador.
+						*</legend>
+					<div class="input-box box-10">
+						<label for="">Tipo de inscrição</label>
+
+						<div class="conteiner">
+							<h:inputText id="tpInsc" maxlength="15" disabled="true"
+								value="#{fechamentoFolhaForm.entidade.tipoInscricaoEmpregador}" />
+						</div>
+
+					</div>
+
+					<div class="input-box box-25">
+						<label for="">Número de inscrição do contribuinte</label>
+						<div class="conteiner">
+							<h:inputText id="nrInsc" maxlength="10" disabled="true"
+								value="#{fechamentoFolhaForm.entidade.numeroInscricaoEmpregador}" />
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Informações do fechamento.</legend>
+					<div class="select-box box-100" style="display: inline-flex;">
+						<div class="conteiner box-80">
+							<label for="">(evtRemun) - Possui informações relativas a
+								remuneração de trabalhadores ou provento/pensão de beneficiários
+								no período de apuração?</label>
+						</div>
+						<div class="conteiner box-10" style="display: grid">
+							<h:selectOneRadio
+								value="#{fechamentoFolhaForm.entidade.evtRemuneracao}">
+								<f:selectItem itemValue="1" itemLabel="Sim" />
+								<f:selectItem itemValue="0" itemLabel="Não" />
+							</h:selectOneRadio>
+						</div>
+					</div>
+
+					<div class="select-box box-100" style="display: inline-flex;">
+						<div class="conteiner box-80">
+							<label for="">(evtComProd) - Possui informações de
+								comercialização de produção?</label>
+						</div>
+						<div class="conteiner box-10" style="display: grid">
+							<h:selectOneRadio
+								value="#{fechamentoFolhaForm.entidade.evtComercializacaoProduto}">
+								<f:selectItem itemValue="1" itemLabel="Sim" />
+								<f:selectItem itemValue="0" itemLabel="Não" />
+							</h:selectOneRadio>
+						</div>
+					</div>
+
+					<div class="select-box box-100" style="display: inline-flex;">
+						<div class="conteiner box-80">
+							<label for="">(evtContratAvNP) - Contratou, por
+								intermédio de sindicato, serviços de trabalhadores avulsos não
+								portuários?</label>
+						</div>
+						<div class="conteiner box-10" style="display: grid">
+							<h:selectOneRadio
+								value="#{fechamentoFolhaForm.entidade.evtContratoAvulsoNaoPortuario}">
+								<f:selectItem itemValue="1" itemLabel="Sim" />
+								<f:selectItem itemValue="0" itemLabel="Não" />
+							</h:selectOneRadio>
+						</div>
+					</div>
+
+					<div class="select-box box-100" style="display: inline-flex;">
+						<div class="conteiner box-80">
+							<label for="">(evtInfoComplPer) - Possui informações de
+								complementares sobre a desoneração de folha de pagamentos ou
+								atividades concomitante?</label>
+						</div>
+						<div class="conteiner box-10" style="display: grid">
+							<h:selectOneRadio
+								value="#{fechamentoFolhaForm.entidade.evtInfoComplementarPrevidenciaria}">
+								<f:selectItem itemValue="1" itemLabel="Sim" />
+								<f:selectItem itemValue="0" itemLabel="Não" />
+							</h:selectOneRadio>
+						</div>
+					</div>
+
+					<div class="select-box box-100" style="display: inline-flex;">
+						<div class="conteiner box-80">
+							<label for="">(transDCTFWeb) - Solicitação de transmissão
+								imediata da DCTFWeb?</label>
+						</div>
+						<div class="conteiner box-10" style="display: grid">
+							<h:selectOneRadio
+								value="#{fechamentoFolhaForm.entidade.evtTransmissaoImediata}">
+								<f:selectItem itemValue="1" itemLabel="Sim" />
+								<f:selectItem itemValue="0" itemLabel="Não" />
+							</h:selectOneRadio>
+						</div>
+					</div>
+
+					<div class="select-box box-100" style="display: inline-flex;">
+						<div class="conteiner box-80">
+							<label for="">(naoValid) - Indicativo de exclusão de
+								apuração das aquisições de produção rural?</label>
+						</div>
+						<div class="conteiner box-10" style="display: grid">
+							<h:selectOneRadio
+								value="#{fechamentoFolhaForm.entidade.naoValidacao}">
+								<f:selectItem itemValue="1" itemLabel="Sim" />
+								<f:selectItem itemValue="0" itemLabel="Não" />
+							</h:selectOneRadio>
+						</div>
+					</div>
+				</fieldset>
+
+			</fieldset>
+			<h:commandButton value="Salvar" styleClass="bt-padrao fr mg-right-10">
+				<rich:componentControl target="popup" operation="show" />
+			</h:commandButton>
+
+
+			<a href="/srh/paginas/tabelas/fechamentoFolhaList.faces"
+				class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+
+			<rich:popupPanel id="popup" modal="true" width="300"
+				onmaskclick="#{rich:component('popup')}.hide()" autosized="true"
+				resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="Confirmar salvamento" />
+				</f:facet>	
+		
+				<p>Deseja realmente salvar o fechamento do evento?"</p>
+				<div class="dialog-confirmacao">
+					<p>
+						<h:commandButton value="Não" styleClass="bt-padrao fr mg-right-10" 
+							style="background:#eee; color:#303030; width: 80px;"
+							onclick="#{rich:component('popup')}.hide(); return false;" />
+					</p>
+					<p>
+						<h:commandButton value="Sim" action="#{fechamentoFolhaForm.salvar()}" style="width: 80px;" 
+							styleClass="bt-padrao fr mg-right-30">
+							<a4j:ajax oncomplete="#{rich:component('popup')}.hide(); return false;"></a4j:ajax>
+						</h:commandButton>
+					</p>
+				</div>
+			</rich:popupPanel>
+
+		</h:form>
+
+		<script>
+			if (document.getElementById('form:alterar') != null) {
+				if (document.getElementById('form:alterar').value == 'true') {
+					document.getElementById('form:PesquisarServidor').style.visibility = 'hidden';
+				}
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

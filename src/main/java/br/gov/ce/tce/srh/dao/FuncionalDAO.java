@@ -531,5 +531,18 @@ public class FuncionalDAO {
     }
   }
 
+  public List<Funcional> findFechamentoFolhaEvento1299() {
+    try {
+        TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+                + "FROM Funcional f "
+                + "WHERE " //f.status = 5"
+                + "( f.id  IN (SELECT r.funcional.id FROM RemuneracaoTrabalhador r) OR f.id IN (SELECT d.funcional.id FROM Desligamento d) OR f.id IN (SELECT t.funcional.id FROM TerminoVinculo t) ) "
+                + " AND f.id  NOT IN (SELECT f.funcional.id FROM FechamentoFolhaEsocial f) "
+                + "ORDER BY f.nome", Funcional.class);
+        return query.getResultList();
+    } catch (NoResultException e) {
+        return null;
+    }
+  }
 
 }
