@@ -34,30 +34,35 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
 	private String numeroInscricaoEmpregador;
 	  
 	@Column(name = "EVT_REMUN")
-    private Integer evtRemuneracao;  
+    private char evtRemuneracao;  
     
 	@Column(name = "EVT_COMPROD")
-    private Integer evtComercializacaoProduto;
+    private char evtComercializacaoProduto;
 
     @Column(name = "EVT_CONTRAAVNP")
-    private Integer evtContratoAvulsoNaoPortuario;
+    private char evtContratoAvulsoNaoPortuario;
 
     @Column(name = "EVT_INFOCOMPLPER")
-    private Integer evtInfoComplementarPrevidenciaria;
+    private char evtInfoComplementarPrevidenciaria;
  
     @Column(name = "TRANS_DCTWEB")
-    private Integer evtTransmissaoImediata;
+    private char evtTransmissaoImediata;
     
     @Column(name = "NAO_VALID")
-    private Integer naoValidacao;
+    private char naoValidacao;
     
     @Column(name = "PER_APUR")
     private String periodoApuracao;
     
+    @Column(name = "IND_APURACAO")
+    private Integer indicativoApuracao;
+    
     @Transient
     private String anoReferencia;
     @Transient
-    private String mesReferencia;
+    private String mesReferencia;    
+    @Transient
+    private String referenciaMesAnoTransient;
     
     
     
@@ -65,8 +70,8 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
       super();
     }
 
-    public FechamentoFolhaEsocial(Integer tipoInscricaoEmpregador, String numeroInscricaoEmpregador, Integer evtRemuneracao,
-                              Integer evtComercializacaoProduto, Integer evtContratoAvulsoNaoPortuario, Integer evtInfoComplementarPrevidenciaria, Integer evtTransmissaoImediata, Integer naoValidacao, String peridoApuracao) {
+    public FechamentoFolhaEsocial(Integer tipoInscricaoEmpregador, String numeroInscricaoEmpregador, char evtRemuneracao,
+                              char evtComercializacaoProduto, char evtContratoAvulsoNaoPortuario, char evtInfoComplementarPrevidenciaria, char evtTransmissaoImediata, char naoValidacao, String peridoApuracao, Integer indicativoApuracao) {
       super();
       this.tipoInscricaoEmpregador = tipoInscricaoEmpregador;
       this.numeroInscricaoEmpregador = numeroInscricaoEmpregador;
@@ -77,6 +82,7 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
       this.evtTransmissaoImediata = evtTransmissaoImediata;
       this.naoValidacao = naoValidacao;      
       this.periodoApuracao = peridoApuracao;
+      this.indicativoApuracao = indicativoApuracao;
     }
 
     public Long getId() {
@@ -112,51 +118,51 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
       this.numeroInscricaoEmpregador = numeroInscricaoEmpregador;
     }
 
-    public Integer getEvtRemuneracao() {
+    public char getEvtRemuneracao() {
       return evtRemuneracao;
     }
 
-    public void setEvtRemuneracao(Integer evtRemuneracao) {
+    public void setEvtRemuneracao(char evtRemuneracao) {
       this.evtRemuneracao = evtRemuneracao;
     }
 
-    public Integer getEvtComercializacaoProduto() {
+    public char getEvtComercializacaoProduto() {
       return evtComercializacaoProduto;
     }
 
-    public void setEvtComercializacaoProduto(Integer evtComercializacaoProduto) {
+    public void setEvtComercializacaoProduto(char evtComercializacaoProduto) {
       this.evtComercializacaoProduto = evtComercializacaoProduto;
     }
 
-    public Integer getEvtContratoAvulsoNaoPortuario() {
+    public char getEvtContratoAvulsoNaoPortuario() {
       return evtContratoAvulsoNaoPortuario;
     }
 
-    public void setEvtContratoAvulsoNaoPortuario(Integer evtContratoAvulsoNaoPortuario) {
+    public void setEvtContratoAvulsoNaoPortuario(char evtContratoAvulsoNaoPortuario) {
       this.evtContratoAvulsoNaoPortuario = evtContratoAvulsoNaoPortuario;
     } 
 
-    public Integer getEvtInfoComplementarPrevidenciaria() {
+    public char getEvtInfoComplementarPrevidenciaria() {
       return evtInfoComplementarPrevidenciaria;
     }
 
-    public void setEvtInfoComplementarPrevidenciaria(Integer evtInfoComplementarPrevidenciaria) {
+    public void setEvtInfoComplementarPrevidenciaria(char evtInfoComplementarPrevidenciaria) {
       this.evtInfoComplementarPrevidenciaria = evtInfoComplementarPrevidenciaria;
     }
 
-    public Integer getEvtTransmissaoImediata() {
+    public char getEvtTransmissaoImediata() {
       return evtTransmissaoImediata;
     }
 
-    public void setEvtTransmissaoImediata(Integer evtTransmissaoImediata) {
+    public void setEvtTransmissaoImediata(char evtTransmissaoImediata) {
       this.evtTransmissaoImediata = evtTransmissaoImediata;
     }
 
-    public Integer getNaoValidacao() {
+    public char getNaoValidacao() {
       return naoValidacao;
     }
 
-    public void setNaoValidacao(Integer naoValidacao) {
+    public void setNaoValidacao(char naoValidacao) {
       this.naoValidacao = naoValidacao;
     }
 
@@ -183,6 +189,23 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
     public void setMesReferencia(String mesReferencia) {
       this.mesReferencia = mesReferencia;
     }
+
+    public Integer getIndicativoApuracao() {
+      return indicativoApuracao;
+    }
+
+    public void setIndicativoApuracao(Integer indicativoApuracao) {
+      this.indicativoApuracao = indicativoApuracao;
+    }
+
+    public String getReferenciaMesAnoTransient() {
+      return referenciaMesAnoTransient;
+    }
+
+    public void setReferenciaMesAnoTransient(String referenciaMesAno) {
+      this.referenciaMesAnoTransient = referenciaMesAno;
+    }
+    
     
     
 }
