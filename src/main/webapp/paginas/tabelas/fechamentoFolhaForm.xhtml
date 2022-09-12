@@ -37,7 +37,24 @@
 
 				<br />
 				<fieldset>
-				
+
+					<div class="select-box box-16">
+						<label for="mes">Periodo: </label>
+						<div class="conteiner">
+							<h:selectOneMenu
+								value="#{fechamentoFolhaForm.entidade.indicativoApuracao}"
+								disabled="#{fechamentoFolhaForm.emEdicao}">
+								<f:selectItem itemLabel="Selecione..." itemValue="0"
+									noSelectionOption="true" />
+								<f:selectItem id="id1" itemLabel="Mensal" itemValue="1" />
+								<f:selectItem id="id13" itemLabel="Anual (13° salário)"
+									itemValue="2" />
+								<a4j:ajax event="change" execute="@this" render="@this, mesF" />
+							</h:selectOneMenu>
+						</div>
+					</div>
+
+
 					<div class="input-box box-10">
 						<label for="">Ano Referência: *</label>
 						<div class="conteiner">
@@ -52,32 +69,36 @@
 						</div>
 					</div>
 
-					<div class="select-box box-16">
-						<label for="mes">Mês: </label>
-						<div class="conteiner">
-							<h:selectOneMenu id="mesF"
-								value="#{fechamentoFolhaForm.entidade.mesReferencia}"
-								disabled="#{fechamentoFolhaForm.emEdicao}">
-								<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0" />
-								<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01" />
-								<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
-								<f:selectItem id="mes3F" itemLabel="Março" itemValue="03" />
-								<f:selectItem id="mes4F" itemLabel="Abril" itemValue="04" />
-								<f:selectItem id="mes5F" itemLabel="Maio" itemValue="05" />
-								<f:selectItem id="mes6F" itemLabel="Junho" itemValue="06" />
-								<f:selectItem id="mes7F" itemLabel="Julho" itemValue="07" />
-								<f:selectItem id="mes8F" itemLabel="Agosto" itemValue="08" />
-								<f:selectItem id="mes9F" itemLabel="Setembro" itemValue="09" />
-								<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
-								<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11" />
-								<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
-								<f:selectItem id="mes13F" itemLabel="Anual (13° salário)"
-									itemValue="13" />
+					<a4j:outputPanel ajaxRendered="true">
+						<div class="select-box box-16">
+							<label for="mes">Mês: </label>
+							<div class="conteiner">
+								<h:selectOneMenu id="mesF"
+									value="#{fechamentoFolhaForm.entidade.mesReferencia}"
+									disabled="#{fechamentoFolhaForm.emEdicao}"
+									rendered="#{fechamentoFolhaForm.entidade.indicativoApuracao eq 1}">
+									<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0" />
+									<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01" />
+									<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
+									<f:selectItem id="mes3F" itemLabel="Março" itemValue="03" />
+									<f:selectItem id="mes4F" itemLabel="Abril" itemValue="04" />
+									<f:selectItem id="mes5F" itemLabel="Maio" itemValue="05" />
+									<f:selectItem id="mes6F" itemLabel="Junho" itemValue="06" />
+									<f:selectItem id="mes7F" itemLabel="Julho" itemValue="07" />
+									<f:selectItem id="mes8F" itemLabel="Agosto" itemValue="08" />
+									<f:selectItem id="mes9F" itemLabel="Setembro" itemValue="09" />
+									<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
+									<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11" />
+									<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
+									<f:selectItem id="mes13F" itemLabel="Anual (13° salário)"
+										itemValue="13" />
 									<a4j:ajax event="change" execute="@this" />
-							</h:selectOneMenu>
-							
+								</h:selectOneMenu>
+
+							</div>
 						</div>
-					</div>
+
+					</a4j:outputPanel>
 
 				</fieldset>
 				<fieldset>
@@ -113,8 +134,8 @@
 						<div class="conteiner box-10" style="display: grid">
 							<h:selectOneRadio
 								value="#{fechamentoFolhaForm.entidade.evtRemuneracao}">
-								<f:selectItem itemValue="1" itemLabel="Sim" />
-								<f:selectItem itemValue="0" itemLabel="Não" />
+								<f:selectItem itemValue="S" itemLabel="Sim" />
+								<f:selectItem itemValue="N" itemLabel="Não" />
 							</h:selectOneRadio>
 						</div>
 					</div>
@@ -127,8 +148,8 @@
 						<div class="conteiner box-10" style="display: grid">
 							<h:selectOneRadio
 								value="#{fechamentoFolhaForm.entidade.evtComercializacaoProduto}">
-								<f:selectItem itemValue="1" itemLabel="Sim" />
-								<f:selectItem itemValue="0" itemLabel="Não" />
+								<f:selectItem itemValue="S" itemLabel="Sim" />
+								<f:selectItem itemValue="N" itemLabel="Não" />
 							</h:selectOneRadio>
 						</div>
 					</div>
@@ -142,8 +163,8 @@
 						<div class="conteiner box-10" style="display: grid">
 							<h:selectOneRadio
 								value="#{fechamentoFolhaForm.entidade.evtContratoAvulsoNaoPortuario}">
-								<f:selectItem itemValue="1" itemLabel="Sim" />
-								<f:selectItem itemValue="0" itemLabel="Não" />
+								<f:selectItem itemValue="S" itemLabel="Sim" />
+								<f:selectItem itemValue="N" itemLabel="Não" />
 							</h:selectOneRadio>
 						</div>
 					</div>
@@ -157,8 +178,8 @@
 						<div class="conteiner box-10" style="display: grid">
 							<h:selectOneRadio
 								value="#{fechamentoFolhaForm.entidade.evtInfoComplementarPrevidenciaria}">
-								<f:selectItem itemValue="1" itemLabel="Sim" />
-								<f:selectItem itemValue="0" itemLabel="Não" />
+								<f:selectItem itemValue="S" itemLabel="Sim" />
+								<f:selectItem itemValue="N" itemLabel="Não" />
 							</h:selectOneRadio>
 						</div>
 					</div>
@@ -171,8 +192,8 @@
 						<div class="conteiner box-10" style="display: grid">
 							<h:selectOneRadio
 								value="#{fechamentoFolhaForm.entidade.evtTransmissaoImediata}">
-								<f:selectItem itemValue="1" itemLabel="Sim" />
-								<f:selectItem itemValue="0" itemLabel="Não" />
+								<f:selectItem itemValue="S" itemLabel="Sim" />
+								<f:selectItem itemValue="N" itemLabel="Não" />
 							</h:selectOneRadio>
 						</div>
 					</div>
@@ -185,8 +206,8 @@
 						<div class="conteiner box-10" style="display: grid">
 							<h:selectOneRadio
 								value="#{fechamentoFolhaForm.entidade.naoValidacao}">
-								<f:selectItem itemValue="1" itemLabel="Sim" />
-								<f:selectItem itemValue="0" itemLabel="Não" />
+								<f:selectItem itemValue="S" itemLabel="Sim" />
+								<f:selectItem itemValue="N" itemLabel="Não" />
 							</h:selectOneRadio>
 						</div>
 					</div>
@@ -206,19 +227,21 @@
 				resizeable="false">
 				<f:facet name="header">
 					<h:outputText value="Confirmar salvamento" />
-				</f:facet>	
-		
+				</f:facet>
+
 				<p>Deseja realmente salvar o fechamento do evento?"</p>
 				<div class="dialog-confirmacao">
 					<p>
-						<h:commandButton value="Não" styleClass="bt-padrao fr mg-right-10" 
+						<h:commandButton value="Não" styleClass="bt-padrao fr mg-right-10"
 							style="background:#eee; color:#303030; width: 80px;"
 							onclick="#{rich:component('popup')}.hide(); return false;" />
 					</p>
 					<p>
-						<h:commandButton value="Sim" action="#{fechamentoFolhaForm.salvar()}" style="width: 80px;" 
+						<h:commandButton value="Sim"
+							action="#{fechamentoFolhaForm.salvar()}" style="width: 80px;"
 							styleClass="bt-padrao fr mg-right-30">
-							<a4j:ajax oncomplete="#{rich:component('popup')}.hide(); return false;"></a4j:ajax>
+							<a4j:ajax
+								oncomplete="#{rich:component('popup')}.hide(); return false;"></a4j:ajax>
 						</h:commandButton>
 					</p>
 				</div>

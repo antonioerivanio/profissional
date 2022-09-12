@@ -30,17 +30,14 @@ public class FechamentoFolhaEsocialService {
 
   @Transactional
   public FechamentoFolhaEsocial salvar(FechamentoFolhaEsocial entidade) {
-    String periodoApuracao = getPeriodoApuracaoStr(entidade.getAnoReferencia(), entidade.getMesReferencia());
-    entidade.setPeriodoApuracao(periodoApuracao);
-    String referenciaMesAno = entidade.getMesReferencia() + entidade.getAnoReferencia();
-    
+    validarCampoAntesSalvar(entidade);
+    String referencia = entidade.getReferenciaMesAnoTransient();
     entidade = dao.salvar(entidade);
-    
-      if(entidade.getReferencia() == null) {
-        String referencia = entidade.getId()  +  "-" + referenciaMesAno;                                  
-        entidade.setReferencia(referencia);
-      }
-     
+
+    if (entidade.getReferencia() == null) {
+      referencia = entidade.getId() + "-" + referencia;
+      entidade.setReferencia(referencia);
+    }
 
     // salvando notificação
     Evento evento = this.eventoService.getById(TipoEventoESocial.S1299.getCodigo());
@@ -59,6 +56,20 @@ public class FechamentoFolhaEsocialService {
     this.notificacaoService.salvar(notificacao);
 
     return entidade;
+  }
+
+  public void validarCampoAntesSalvar(FechamentoFolhaEsocial bean) {
+    String periodoApuracao = getPeriodoApuracaoStr(bean);
+    bean.setPeriodoApuracao(periodoApuracao);
+    String referenciaMesAno = null;
+
+    if (bean.getIndicativoApuracao() == 1) {
+      referenciaMesAno = bean.getMesReferencia() + bean.getAnoReferencia();
+    } else {
+      referenciaMesAno = bean.getAnoReferencia();
+    }
+
+    bean.setReferenciaMesAnoTransient(referenciaMesAno);
   }
 
   @Transactional
@@ -84,40 +95,47 @@ public class FechamentoFolhaEsocialService {
   }
 
   public FechamentoFolhaEsocial getIncializarEventoS1299ByServidor() {
-   final Integer evtRemuneracao = 1; //SIM
-   final Integer evtComercializacaoProduto=0; //NÃO
-   final Integer evtContratoAvulsoNaoPortuario = 0; //NÃO
-   final Integer evtInfoComplementarPrevidenciaria = 0; //NÃO
-   final Integer evtTransmissaoImediata = 0; //NÃO
-   final Integer naoValidacao = 0; //NÃO  
-   final Integer tipoInscricaoEmpregador = 1; //CNPJ
-   final String periodoApuracao = "11" + "/" + SRHUtils.getAnoCorrente();
-    
-   return new FechamentoFolhaEsocial(tipoInscricaoEmpregador, DadoTCE.NR_INSC, evtRemuneracao, 
-                              evtComercializacaoProduto, evtContratoAvulsoNaoPortuario, evtInfoComplementarPrevidenciaria, evtTransmissaoImediata, naoValidacao, periodoApuracao); 
+    final char evtRemuneracao = 'S'; // SIM
+    final char evtComercializacaoProduto = 'N'; // NÃO
+    final char evtContratoAvulsoNaoPortuario = 'N'; // NÃO
+    final char evtInfoComplementarPrevidenciaria = 'N'; // NÃO
+    final char evtTransmissaoImediata = 'N'; // NÃO
+    final char naoValidacao = 'N'; // NÃO
+    final Integer tipoInscricaoEmpregador = 1; // CNPJ
+    final String periodoApuracao = "11" + "/" + SRHUtils.getAnoCorrente();
+    final Integer indicativoApuracao = 1;// 1 - Mensal
+
+    return new FechamentoFolhaEsocial(tipoInscricaoEmpregador, DadoTCE.NR_INSC, evtRemuneracao, evtComercializacaoProduto, evtContratoAvulsoNaoPortuario, evtInfoComplementarPrevidenciaria,
+                              evtTransmissaoImediata, naoValidacao, periodoApuracao, indicativoApuracao);
 
   }
-  
-  public String getPeriodoApuracaoStr(String anoReferencia, String mesReferencia) {
+
+  public String getPeriodoApuracaoStr(FechamentoFolhaEsocial bean) {
     String periodoApuracaoStr = "";
-    
-    if(anoReferencia == null) {
-      throw new NullPointerException("Ops!. O ano de referencia é obrigatório!");
+    if (bean.getIndicativoApuracao() == 1) {// MENSAL
+      if (bean.getAnoReferencia() == null) {
+        throw new NullPointerException("Ops!. O ano de referencia é obrigatório!");
+      }
+
+      if (bean.getMesReferencia() == null) {
+        throw new NullPointerException("Ops!. O mês de referencia é obrigatório!");
+      }
+
+      if (bean.getMesReferencia().equals("13")) {
+        periodoApuracaoStr = bean.getAnoReferencia();
+      } else {
+        periodoApuracaoStr = bean.getMesReferencia() + "-" + bean.getAnoReferencia();
+      }
+    } else {// ANUAL
+      if (bean.getAnoReferencia() == null) {
+        throw new NullPointerException("Ops!. O ano de referencia é obrigatório!");
+      }
+
+      periodoApuracaoStr = bean.getAnoReferencia();
     }
-    
-    if(mesReferencia == null) {
-      throw new NullPointerException("Ops!. O mês de referencia é obrigatório!");
-    }
-  
-    
-    if(mesReferencia.equals("13")) {
-        periodoApuracaoStr = anoReferencia;
-    }
-    else {
-        periodoApuracaoStr = mesReferencia + "-" + anoReferencia;
-    }
+
     return periodoApuracaoStr;
-}
+  }
 
 
 }
