@@ -23,150 +23,150 @@ import br.gov.ce.tce.srh.util.RelatorioUtil;
 @Scope("view")
 public class FechamentoFolhaListBean implements Serializable {
 
-	static Logger logger = Logger.getLogger(FechamentoFolhaListBean.class);
+  static Logger logger = Logger.getLogger(FechamentoFolhaListBean.class);
 
-	@Autowired
-	private FechamentoFolhaEsocialService fechamentoEventoEsocialService;
-	
-	@Autowired
-	private RelatorioUtil relatorioUtil;
+  @Autowired
+  private FechamentoFolhaEsocialService fechamentoEventoEsocialService;
 
-	// parametro da tela de consulta
-	private String nome = new String();
-	private String cpf = new String();
+  @Autowired
+  private RelatorioUtil relatorioUtil;
 
-	
-	// entidades das telas
-	private List<FechamentoFolhaEsocial> lista;
-	private FechamentoFolhaEsocial entidade = new FechamentoFolhaEsocial();
-	
-	//paginação
-	private int count;
-	private UIDataTable dataTable = new UIDataTable();
-	private PagedListDataModel dataModel = new PagedListDataModel();
-	private List<FechamentoFolhaEsocial> pagedList = new ArrayList<FechamentoFolhaEsocial>();
-	private int flagRegistroInicial = 0;
-	
-	@PostConstruct
-	private void init() {
-		FechamentoFolhaEsocial flashParameter = (FechamentoFolhaEsocial)FacesUtil.getFlashParameter("entidade");
-		setEntidade(flashParameter != null ? flashParameter : new FechamentoFolhaEsocial());
+  // entidades das telas
+  private List<FechamentoFolhaEsocial> lista;
+  private FechamentoFolhaEsocial entidade = new FechamentoFolhaEsocial();
+
+  // paginação
+  private int count;
+  private UIDataTable dataTable = new UIDataTable();
+  private PagedListDataModel dataModel = new PagedListDataModel();
+  private List<FechamentoFolhaEsocial> pagedList = new ArrayList<FechamentoFolhaEsocial>();
+  private int flagRegistroInicial = 0;
+  private String periodoApuracao;
+
+  @PostConstruct
+  private void init() {
+    FechamentoFolhaEsocial flashParameter = (FechamentoFolhaEsocial) FacesUtil.getFlashParameter("entidade");
+    setEntidade(flashParameter != null ? flashParameter : new FechamentoFolhaEsocial());
+  }
+
+  public void consultar() {
+
+    try {
+      if (this.getEntidade().getMesReferencia() != null && this.getEntidade().getMesReferencia() != "0" && this.getEntidade().getAnoReferencia() != null
+                                && !this.getEntidade().getAnoReferencia().isEmpty()) {
+        periodoApuracao = this.getEntidade().getMesReferencia() + "-" + this.getEntidade().getMesReferencia();
+      }
+
+      count = fechamentoEventoEsocialService.count(periodoApuracao);
+
+      if (count == 0) {
+        FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
+        logger.info("Nenhum registro foi encontrado.");
+      }
+
+      flagRegistroInicial = -1;
+
+    } catch (Exception e) {
+      limparListas();
+      FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
     }
-	
-	public void consultar() {
+  }
 
-		try {
+  public String editar() {
+    FacesUtil.setFlashParameter("entidade", getEntidade());
+    return "incluirAlterar";
+  }
 
-			count = fechamentoEventoEsocialService.count( this.nome, this.cpf );
+  public void excluir() {
 
-			if (count == 0) {
-				FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
-				logger.info("Nenhum registro foi encontrado.");
-			}
+    try {
 
-			flagRegistroInicial = -1;
+      fechamentoEventoEsocialService.excluir(entidade);
 
-		} catch (Exception e) {
-			limparListas();
-			FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-	}
-	
-	public String editar() {
-		FacesUtil.setFlashParameter("entidade", getEntidade());        
-        return "incluirAlterar";
-	}
+      FacesUtil.addInfoMessage("Registro excluído com sucesso.");
+      logger.info("Registro excluído com sucesso.");
 
-	public void excluir() {
+    } catch (DataAccessException e) {
+      FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclusão não poderá ser realizada.");
+      logger.error("Ocorreu o seguinte erro: " + e.getMessage());
+    } catch (Exception e) {
+      FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    }
 
-		try {
+    setEntidade(new FechamentoFolhaEsocial());
+    consultar();
+  }
 
-			fechamentoEventoEsocialService.excluir(entidade);
+  public void relatorio() {
 
-			FacesUtil.addInfoMessage("Registro excluído com sucesso.");
-			logger.info("Registro excluído com sucesso.");
+    try {
 
-		} catch (DataAccessException e) {
-			FacesUtil.addErroMessage("Existem registros filhos utilizando o registro selecionado. Exclusão não poderá ser realizada.");
-			logger.error("Ocorreu o seguinte erro: " + e.getMessage());			
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro ao excluir. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
+      Map<String, Object> parametros = new HashMap<String, Object>();
 
-		setEntidade( new FechamentoFolhaEsocial() );
-		consultar();
-	}
+      if (this.getEntidade().getAnoReferencia() != null && !this.getEntidade().getAnoReferencia().equalsIgnoreCase("")) {
+        String filtro = "where upper( descricao ) like '%" + this.getEntidade().getAnoReferencia().toUpperCase() + "%' ";
+        parametros.put("FILTRO", filtro);
+      }
 
-	public void relatorio() {
+      relatorioUtil.relatorio("Admissao.jasper", parametros, "Admissao.pdf");
 
-		try {
-
-			Map<String, Object> parametros = new HashMap<String, Object>();
-
-			if (this.nome != null && !this.nome.equalsIgnoreCase("")) {
-				String filtro = "where upper( descricao ) like '%" + this.nome.toUpperCase() + "%' ";
-				parametros.put("FILTRO", filtro);
-			}
-
-			relatorioUtil.relatorio("Admissao.jasper", parametros, "Admissao.pdf");
-
-		} catch (Exception e) {
-			FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
-			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-		}
-
-	}
-	
+    } catch (Exception e) {
+      FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
+    }
+  }
 
 
-	public String getNome() {
-		return nome;
-	}
+  public FechamentoFolhaEsocial getEntidade() {
+    return entidade;
+  }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+  public void setEntidade(FechamentoFolhaEsocial entidade) {
+    this.entidade = entidade;
+  }
 
-	public String getCpf() {
-		return cpf;
-	}
+  public List<FechamentoFolhaEsocial> getLista() {
+    return lista;
+  }
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+  // PAGINAÇÃO
+  private void limparListas() {
+    dataTable = new UIDataTable();
+    dataModel = new PagedListDataModel();
+    pagedList = new ArrayList<FechamentoFolhaEsocial>();
+  }
 
-	public FechamentoFolhaEsocial getEntidade() {return entidade;}
-	public void setEntidade(FechamentoFolhaEsocial entidade) {this.entidade = entidade;}
+  public UIDataTable getDataTable() {
+    return dataTable;
+  }
 
-	public List<FechamentoFolhaEsocial> getLista(){return lista;}
-	
-	//PAGINAÇÃO
-	private void limparListas() {
-		dataTable = new UIDataTable();
-		dataModel = new PagedListDataModel();
-		pagedList = new ArrayList<FechamentoFolhaEsocial>(); 
-	}
+  public void setDataTable(UIDataTable dataTable) {
+    this.dataTable = dataTable;
+  }
 
-	public UIDataTable getDataTable() {return dataTable;}
-	public void setDataTable(UIDataTable dataTable) {this.dataTable = dataTable;}
+  public PagedListDataModel getDataModel() {
+    if (flagRegistroInicial != getDataTable().getFirst()) {
+      flagRegistroInicial = getDataTable().getFirst();
 
-	public PagedListDataModel getDataModel() {
-		if( flagRegistroInicial != getDataTable().getFirst() ) {
-			flagRegistroInicial = getDataTable().getFirst();
-			setPagedList(fechamentoEventoEsocialService.search(this.nome, this.cpf, getDataTable().getFirst(), getDataTable().getRows()));
-			if(count != 0){
-				dataModel = new PagedListDataModel(getPagedList(), count);
-			} else {
-				limparListas();
-			}
-		}
-		return dataModel;
-	}
+      setPagedList(fechamentoEventoEsocialService.search(periodoApuracao, getDataTable().getFirst(), getDataTable().getRows()));
+      if (count != 0) {
+        dataModel = new PagedListDataModel(getPagedList(), count);
+      } else {
+        limparListas();
+      }
+    }
+    return dataModel;
+  }
 
-	public List<FechamentoFolhaEsocial> getPagedList() {return pagedList;}
-	public void setPagedList(List<FechamentoFolhaEsocial> pagedList) {this.pagedList = pagedList;}
-	//FIM PAGINAÇÃO
+  public List<FechamentoFolhaEsocial> getPagedList() {
+    return pagedList;
+  }
+
+  public void setPagedList(List<FechamentoFolhaEsocial> pagedList) {
+    this.pagedList = pagedList;
+  }
+  // FIM PAGINAÇÃO
 
 }

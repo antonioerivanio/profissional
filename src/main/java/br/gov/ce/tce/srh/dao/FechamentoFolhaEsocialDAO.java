@@ -50,57 +50,47 @@ public class FechamentoFolhaEsocialDAO {
 		return entityManager.find(FechamentoFolhaEsocial.class, id);
 	}
 	
-	public int count(String nome, String cpf) {
+	public int count(String periodo) {
 		
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(b) FROM FechamentoEventoEsocial b inner join b.funcional f WHERE 1=1 ");
+		sql.append(" Select count(f) FROM FechamentoFolhaEsocial f WHERE 1=1 ");
 
-		if (nome != null && !nome.isEmpty()) {
-			sql.append("  and upper( f.nome ) like :nome ");
+		if (periodo != null && !periodo.isEmpty()) {
+			sql.append("  and upper( f.periodoApuracao ) like :periodoApuracao ");
 		}
-		
-		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND f.cpf = :cpf ");
-		}
+	
 						
 		Query query = entityManager.createQuery(sql.toString());
 
-		if (nome != null && !nome.isEmpty()) {
-			query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		if (periodo != null && !periodo.isEmpty()) {
+			query.setParameter("periodoApuracao", "%" + periodo + "%");
 		}
 		
-		if (cpf != null && !cpf.isEmpty()) {
-			query.setParameter("cpf", SRHUtils.removerMascara( cpf ));
-		}
+		
 		return ((Long) query.getSingleResult()).intValue();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FechamentoFolhaEsocial> search(String nome, String cpf, Integer first, Integer rows) {
+	public List<FechamentoFolhaEsocial> search(String periodo, Integer first, Integer rows) {
 
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT b FROM FechamentoEventoEsocial b inner join fetch b.funcional f WHERE 1=1 ");
+		sql.append("  SELECT f FROM FechamentoFolhaEsocial f WHERE 1=1 ");
 
-		if (nome != null && !nome.isEmpty()) {
-			sql.append("  and upper( f.nome ) like :nome ");
+		if (periodo != null && !periodo.isEmpty()) {
+			sql.append("  and upper( f.periodoApuracao ) like :periodoApuracao ");
 		}
 		
-		if (cpf != null && !cpf.isEmpty())
-			sql.append("  AND f.cpf = :cpf ");
 
-		sql.append("  ORDER BY f.nome ");
+		sql.append("  ORDER BY f.id DESC ");
 
 		Query query = entityManager.createQuery(sql.toString());
 
-		if (nome != null && !nome.isEmpty()) {
-			query.setParameter("nome", "%" + nome.toUpperCase() + "%");
+		if (periodo != null && !periodo.isEmpty()) {
+			query.setParameter("periodoApuracao", "%" + periodo.toUpperCase() + "%");
 		}
 		
-		if (cpf != null && !cpf.isEmpty()) {
-			query.setParameter("cpf", SRHUtils.removerMascara( cpf ));
-		}
 		if (first != null && first >= 0)
 			query.setFirstResult(first);
 		if (rows != null && rows > 0)
