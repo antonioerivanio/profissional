@@ -31,7 +31,7 @@ public class FechamentoFolhaEsocialService {
   @Transactional
   public FechamentoFolhaEsocial salvar(FechamentoFolhaEsocial entidade) {
     String periodoApuracao = getPeriodoApuracaoStr(entidade.getAnoReferencia(), entidade.getMesReferencia());
-    entidade.setPeridoApuracao(periodoApuracao);
+    entidade.setPeriodoApuracao(periodoApuracao);
     String referenciaMesAno = entidade.getMesReferencia() + entidade.getAnoReferencia();
     
     entidade = dao.salvar(entidade);
@@ -70,12 +70,12 @@ public class FechamentoFolhaEsocialService {
     return dao.getById(id);
   }
 
-  public int count(String nome, String cpf) {
-    return dao.count(nome, cpf);
+  public int count(String periodo) {
+    return dao.count(periodo);
   }
 
-  public List<FechamentoFolhaEsocial> search(String nome, String cpf, Integer first, Integer rows) {
-    return dao.search(nome, cpf, first, rows);
+  public List<FechamentoFolhaEsocial> search(String periodo, Integer first, Integer rows) {
+    return dao.search(periodo, first, rows);
   }
 
   public FechamentoFolhaEsocial getEventoS1299ByServidor(Funcional servidorFuncional) {
@@ -96,9 +96,9 @@ public class FechamentoFolhaEsocialService {
    return new FechamentoFolhaEsocial(tipoInscricaoEmpregador, DadoTCE.NR_INSC, evtRemuneracao, 
                               evtComercializacaoProduto, evtContratoAvulsoNaoPortuario, evtInfoComplementarPrevidenciaria, evtTransmissaoImediata, naoValidacao, periodoApuracao); 
 
-  }  
+  }
   
-  private String getPeriodoApuracaoStr(String anoReferencia, String mesReferencia) {
+  public String getPeriodoApuracaoStr(String anoReferencia, String mesReferencia) {
     String periodoApuracaoStr = "";
     
     if(anoReferencia == null) {

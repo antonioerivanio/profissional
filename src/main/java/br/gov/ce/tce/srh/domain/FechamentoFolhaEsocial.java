@@ -52,7 +52,7 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
     private Integer naoValidacao;
     
     @Column(name = "PER_APUR")
-    private String peridoApuracao;
+    private String periodoApuracao;
     
     @Transient
     private String anoReferencia;
@@ -76,7 +76,7 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
       this.evtInfoComplementarPrevidenciaria = evtInfoComplementarPrevidenciaria;
       this.evtTransmissaoImediata = evtTransmissaoImediata;
       this.naoValidacao = naoValidacao;      
-      this.peridoApuracao = peridoApuracao;
+      this.periodoApuracao = peridoApuracao;
     }
 
     public Long getId() {
@@ -104,13 +104,10 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
       this.tipoInscricaoEmpregador = tipoInscricaoEmpregador;
     }
 
-    public String getNumeroInscricaoEmpregador() {
-      /*
-       * if(numeroInscricaoEmpregador == null) { numeroInscricaoEmpregador = DadoTCE.NR_INSC; }
-       */
-      
+    public String getNumeroInscricaoEmpregador() {  
       return numeroInscricaoEmpregador;
     }
+    
     public void setNumeroInscricaoEmpregador(String numeroInscricaoEmpregador) {
       this.numeroInscricaoEmpregador = numeroInscricaoEmpregador;
     }
@@ -163,12 +160,12 @@ public class FechamentoFolhaEsocial extends BasicEntity<Long> implements Seriali
       this.naoValidacao = naoValidacao;
     }
 
-    public String getPeridoApuracao() {
-      return peridoApuracao;
+    public String getPeriodoApuracao() {
+      return periodoApuracao;
     }
 
-    public void setPeridoApuracao(String peridoApuracao) {
-      this.peridoApuracao = peridoApuracao;
+    public void setPeriodoApuracao(String peridoApuracao) {
+      this.periodoApuracao = peridoApuracao;
     }
 
     public String getAnoReferencia() {

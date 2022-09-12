@@ -1331,5 +1331,25 @@
 			<to-view-id>/paginas/tabelas/remuneracaoEstagiarioList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- Fechamento Evento da Folha-->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/fechamentoFolhaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/fechamentoFolhaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/fechamentoFolhaForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/fechamentoFolhaForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/fechamentoFolhaList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

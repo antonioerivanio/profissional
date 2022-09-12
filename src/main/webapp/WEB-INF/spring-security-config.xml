@@ -280,7 +280,7 @@
 	
 	
 	<!-- SCA - DESENVOLVIMENTO -->
-	<!--  <authentication-manager alias="authenticationManager" >
+	<!-- <authentication-manager alias="authenticationManager" >
         <authentication-provider user-service-ref="userDetailsService" />
     </authentication-manager> -->
 
