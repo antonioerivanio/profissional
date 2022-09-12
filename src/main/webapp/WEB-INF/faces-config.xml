@@ -1332,7 +1332,7 @@
 		</navigation-case>
 	</navigation-rule>
 	
-	<!-- Fechamento Evento da Folha-->
+	<!-- Fechamento Evento da Folha 1299-->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/fechamentoFolhaList.xhtml</from-view-id>
 		<navigation-case>
@@ -1349,6 +1349,26 @@
 		<navigation-case>
 			<from-outcome>listar</from-outcome>
 			<to-view-id>/paginas/tabelas/fechamentoFolhaList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Reabertura Evento da Folha 1298 -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/reaberturaFolhaList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/reaberturaFolhaList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/reaberturaFolhaForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/reaberturaFolhaForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/reaberturaFolhaList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 

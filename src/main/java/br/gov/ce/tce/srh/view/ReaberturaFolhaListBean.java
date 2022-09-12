@@ -12,41 +12,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
-import br.gov.ce.tce.srh.domain.FechamentoFolhaEsocial;
-import br.gov.ce.tce.srh.service.FechamentoFolhaEsocialService;
+import br.gov.ce.tce.srh.domain.ReaberturaFolhaEsocial;
+import br.gov.ce.tce.srh.service.ReaberturaFolhaEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.PagedListDataModel;
 import br.gov.ce.tce.srh.util.RelatorioUtil;
 
 @SuppressWarnings("serial")
-@Component("fechamentoFolhaList")
+@Component("reaberturaFolhaList")
 @Scope("view")
-public class FechamentoFolhaListBean implements Serializable {
+public class ReaberturaFolhaListBean implements Serializable {
 
-  static Logger logger = Logger.getLogger(FechamentoFolhaListBean.class);
+  static Logger logger = Logger.getLogger(ReaberturaFolhaListBean.class);
 
   @Autowired
-  private FechamentoFolhaEsocialService fechamentoEventoEsocialService;
+  private ReaberturaFolhaEsocialService reaberturaEventoEsocialService;
 
   @Autowired
   private RelatorioUtil relatorioUtil;
 
   // entidades das telas
-  private List<FechamentoFolhaEsocial> lista;
-  private FechamentoFolhaEsocial entidade = new FechamentoFolhaEsocial();
+  private List<ReaberturaFolhaEsocial> lista;
+  private ReaberturaFolhaEsocial entidade = new ReaberturaFolhaEsocial();
 
   // paginação
   private int count;
   private UIDataTable dataTable = new UIDataTable();
   private PagedListDataModel dataModel = new PagedListDataModel();
-  private List<FechamentoFolhaEsocial> pagedList = new ArrayList<FechamentoFolhaEsocial>();
+  private List<ReaberturaFolhaEsocial> pagedList = new ArrayList<ReaberturaFolhaEsocial>();
   private int flagRegistroInicial = 0;
   private String periodoApuracao;
 
   @PostConstruct
   private void init() {
-    FechamentoFolhaEsocial flashParameter = (FechamentoFolhaEsocial) FacesUtil.getFlashParameter("entidade");
-    setEntidade(flashParameter != null ? flashParameter : new FechamentoFolhaEsocial());
+    ReaberturaFolhaEsocial flashParameter = (ReaberturaFolhaEsocial) FacesUtil.getFlashParameter("entidade");
+    setEntidade(flashParameter != null ? flashParameter : new ReaberturaFolhaEsocial());
   }
 
   public void consultar() {
@@ -57,7 +57,7 @@ public class FechamentoFolhaListBean implements Serializable {
         periodoApuracao = this.getEntidade().getMesReferencia() + "-" + this.getEntidade().getMesReferencia();
       }
 
-      count = fechamentoEventoEsocialService.count(periodoApuracao);
+      count = reaberturaEventoEsocialService.count(periodoApuracao);
 
       if (count == 0) {
         FacesUtil.addInfoMessage("Nenhum registro foi encontrado.");
@@ -82,7 +82,7 @@ public class FechamentoFolhaListBean implements Serializable {
 
     try {
 
-      fechamentoEventoEsocialService.excluir(entidade);
+      reaberturaEventoEsocialService.excluir(entidade);
 
       FacesUtil.addInfoMessage("Registro excluído com sucesso.");
       logger.info("Registro excluído com sucesso.");
@@ -95,7 +95,7 @@ public class FechamentoFolhaListBean implements Serializable {
       logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
     }
 
-    setEntidade(new FechamentoFolhaEsocial());
+    setEntidade(new ReaberturaFolhaEsocial());
     consultar();
   }
 
@@ -110,7 +110,7 @@ public class FechamentoFolhaListBean implements Serializable {
         parametros.put("FILTRO", filtro);
       }
 
-      relatorioUtil.relatorio("FechamentoFolha.jasper", parametros, "FechamentoFolha.pdf");
+      relatorioUtil.relatorio("Reabertura.jasper", parametros, "Reabertura.pdf");
 
     } catch (Exception e) {
       FacesUtil.addErroMessage("Ocorreu algum erro na geração do relatório. Operação cancelada.");
@@ -119,15 +119,15 @@ public class FechamentoFolhaListBean implements Serializable {
   }
 
 
-  public FechamentoFolhaEsocial getEntidade() {
+  public ReaberturaFolhaEsocial getEntidade() {
     return entidade;
   }
 
-  public void setEntidade(FechamentoFolhaEsocial entidade) {
+  public void setEntidade(ReaberturaFolhaEsocial entidade) {
     this.entidade = entidade;
   }
 
-  public List<FechamentoFolhaEsocial> getLista() {
+  public List<ReaberturaFolhaEsocial> getLista() {
     return lista;
   }
 
@@ -135,7 +135,7 @@ public class FechamentoFolhaListBean implements Serializable {
   private void limparListas() {
     dataTable = new UIDataTable();
     dataModel = new PagedListDataModel();
-    pagedList = new ArrayList<FechamentoFolhaEsocial>();
+    pagedList = new ArrayList<ReaberturaFolhaEsocial>();
   }
 
   public UIDataTable getDataTable() {
@@ -150,7 +150,7 @@ public class FechamentoFolhaListBean implements Serializable {
     if (flagRegistroInicial != getDataTable().getFirst()) {
       flagRegistroInicial = getDataTable().getFirst();
 
-      setPagedList(fechamentoEventoEsocialService.search(periodoApuracao, getDataTable().getFirst(), getDataTable().getRows()));
+      setPagedList(reaberturaEventoEsocialService.search(periodoApuracao, getDataTable().getFirst(), getDataTable().getRows()));
       if (count != 0) {
         dataModel = new PagedListDataModel(getPagedList(), count);
       } else {
@@ -160,11 +160,11 @@ public class FechamentoFolhaListBean implements Serializable {
     return dataModel;
   }
 
-  public List<FechamentoFolhaEsocial> getPagedList() {
+  public List<ReaberturaFolhaEsocial> getPagedList() {
     return pagedList;
   }
 
-  public void setPagedList(List<FechamentoFolhaEsocial> pagedList) {
+  public void setPagedList(List<ReaberturaFolhaEsocial> pagedList) {
     this.pagedList = pagedList;
   }
   // FIM PAGINAÇÃO

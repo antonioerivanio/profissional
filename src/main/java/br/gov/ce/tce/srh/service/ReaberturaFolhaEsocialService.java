@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import br.gov.ce.tce.srh.dao.FechamentoFolhaEsocialDAO;
+import br.gov.ce.tce.srh.dao.ReaberturaFolhaEsocialDAO;
+import br.gov.ce.tce.srh.dao.ReaberturaFolhaEsocialDAO;
 import br.gov.ce.tce.srh.domain.Evento;
-import br.gov.ce.tce.srh.domain.FechamentoFolhaEsocial;
+import br.gov.ce.tce.srh.domain.ReaberturaFolhaEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.enums.DadoTCE;
@@ -15,11 +16,11 @@ import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
-@Service("fechamentoFolhaEsocialService")
-public class FechamentoFolhaEsocialService {
+@Service("reaberturaFolhaEsocialService")
+public class ReaberturaFolhaEsocialService {
 
   @Autowired
-  private FechamentoFolhaEsocialDAO dao;
+  private ReaberturaFolhaEsocialDAO dao;
 
   @Autowired
   private EventoService eventoService;
@@ -29,7 +30,7 @@ public class FechamentoFolhaEsocialService {
 
 
   @Transactional
-  public FechamentoFolhaEsocial salvar(FechamentoFolhaEsocial entidade) {
+  public ReaberturaFolhaEsocial salvar(ReaberturaFolhaEsocial entidade) {
     validarCampoAntesSalvar(entidade);
     String referencia = entidade.getReferenciaMesAnoTransient();
     entidade = dao.salvar(entidade);
@@ -58,7 +59,7 @@ public class FechamentoFolhaEsocialService {
     return entidade;
   }
 
-  public void validarCampoAntesSalvar(FechamentoFolhaEsocial bean) {
+  public void validarCampoAntesSalvar(ReaberturaFolhaEsocial bean) {
     String periodoApuracao = getPeriodoApuracaoStr(bean);
     bean.setPeriodoApuracao(periodoApuracao);
     String referenciaMesAno = null;
@@ -73,11 +74,11 @@ public class FechamentoFolhaEsocialService {
   }
 
   @Transactional
-  public void excluir(FechamentoFolhaEsocial entidade) {
+  public void excluir(ReaberturaFolhaEsocial entidade) {
     dao.excluir(entidade);
   }
 
-  public FechamentoFolhaEsocial getById(Long id) {
+  public ReaberturaFolhaEsocial getById(Long id) {
     return dao.getById(id);
   }
 
@@ -85,33 +86,20 @@ public class FechamentoFolhaEsocialService {
     return dao.count(periodo);
   }
 
-  public List<FechamentoFolhaEsocial> search(String periodo, Integer first, Integer rows) {
+  public List<ReaberturaFolhaEsocial> search(String periodo, Integer first, Integer rows) {
     return dao.search(periodo, first, rows);
   }
 
-  public FechamentoFolhaEsocial getEventoS1299ByServidor(Funcional servidorFuncional) {
-    FechamentoFolhaEsocial fechamentoEventoEsocial = dao.getEventoS1299ByServidor(servidorFuncional);
-    return fechamentoEventoEsocial;
-  }
-
-  public FechamentoFolhaEsocial getIncializarEventoS1299ByServidor() {
+  public ReaberturaFolhaEsocial getIncializarEventoS1299ByServidor() {
     final String NOVEMBRO = "11";
-    final char evtRemuneracao = 'S'; // SIM
-    final char evtComercializacaoProduto = 'N'; // NÃO
-    final char evtContratoAvulsoNaoPortuario = 'N'; // NÃO
-    final char evtInfoComplementarPrevidenciaria = 'N'; // NÃO
-    final char evtTransmissaoImediata = 'N'; // NÃO
-    final char naoValidacao = 'N'; // NÃO
     final Integer tipoInscricaoEmpregador = 1; // CNPJ
     final String periodoApuracao = NOVEMBRO + "/" + SRHUtils.getAnoCorrente();
     final Integer indicativoApuracao = 1;// 1 - Mensal
 
-    return new FechamentoFolhaEsocial(tipoInscricaoEmpregador, DadoTCE.NR_INSC, evtRemuneracao, evtComercializacaoProduto, evtContratoAvulsoNaoPortuario, evtInfoComplementarPrevidenciaria,
-                              evtTransmissaoImediata, naoValidacao, periodoApuracao, indicativoApuracao);
-
+    return new ReaberturaFolhaEsocial(tipoInscricaoEmpregador, DadoTCE.NR_INSC, periodoApuracao, indicativoApuracao);
   }
 
-  public String getPeriodoApuracaoStr(FechamentoFolhaEsocial bean) {
+  public String getPeriodoApuracaoStr(ReaberturaFolhaEsocial bean) {
     String periodoApuracaoStr = "";
     if (bean.getIndicativoApuracao() == 1) {// MENSAL
       if (bean.getAnoReferencia() == null) {

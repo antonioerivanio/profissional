@@ -183,10 +183,12 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoTrabalhadorRGPAForm.xhtml" x="122" y="37266" id="pf1661973068799379" referenceLink="//@navigationRule.110/@fromViewId|" outlinks="pf1661973068799378" inlinks="pf1661973068799377" path="/paginas/tabelas/remuneracaoTrabalhadorRGPAForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/FList.xhtml" x="122" y="32658" id="pf1661973068799385" referenceLink="//@navigationRule.70/@fromViewId|" path="/paginas/tabelas/fechamentoEnventoList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/fechamentoEnventoForm.xhtml" x="122" y="34962" id="pf1661973068799388" referenceLink="//@navigationRule.70/@navigationCase.1/@toViewId|" path="/paginas/tabelas/fechamentoEnventoForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/fechamentoEventoList.xhtml" x="122" y="36882" id="pf16621392998660" referenceLink="//@navigationRule.114/@navigationCase.0/@toViewId|" outlinks="pf16629860003673 pf16629860003674" inlinks="pf16629860003673 pf16629860003675" path="/paginas/tabelas/fechamentoFolhaList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/fechamentoEventoForm.xhtml" x="122" y="38034" id="pf16621392998664" referenceLink="//@navigationRule.114/@fromViewId|" outlinks="pf16629860003675" inlinks="pf16629860003674" path="/paginas/tabelas/fechamentoFolhaForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoEstagiarioList.xhtml" id="pf16629860003676" referenceLink="//@navigationRule.114/@navigationCase.0/@toViewId|" outlinks="pf16629860003677 pf16629860003678" inlinks="pf16629860003677 pf16629860003679" path="/paginas/tabelas/remuneracaoEstagiarioList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoEstagiarioForm.xhtml" id="pf166298600036710" referenceLink="//@navigationRule.113/@navigationCase.1/@toViewId|" outlinks="pf16629860003679" inlinks="pf16629860003678" path="/paginas/tabelas/remuneracaoEstagiarioForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/fechamentoEventoList.xhtml" x="122" y="36882" id="pf16621392998660" referenceLink="//@navigationRule.115/@navigationCase.0/@toViewId|" outlinks="pf16629860003673 pf16629860003674" inlinks="pf16629860003673 pf16629860003675" path="/paginas/tabelas/fechamentoFolhaList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/fechamentoEventoForm.xhtml" x="122" y="38034" id="pf16621392998664" referenceLink="//@navigationRule.116/@fromViewId|" outlinks="pf16629860003675" inlinks="pf16629860003674" path="/paginas/tabelas/fechamentoFolhaForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoEstagiarioList.xhtml" id="pf16629860003676" referenceLink="//@navigationRule.112/@navigationCase.0/@toViewId|" outlinks="pf16629860003677 pf16629860003678" inlinks="pf16629860003677 pf16629860003679" path="/paginas/tabelas/remuneracaoEstagiarioList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoEstagiarioForm.xhtml" id="pf166298600036710" referenceLink="//@navigationRule.112/@fromViewId|" outlinks="pf16629860003679" inlinks="pf16629860003678" path="/paginas/tabelas/remuneracaoEstagiarioForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/RFolhaList.xhtml" id="pf166300731704414" referenceLink="//@navigationRule.116/@navigationCase.0/@toViewId|" outlinks="pf166300731704415 pf166300731704416" inlinks="pf166300731704415 pf166300731704417" path="/paginas/tabelas/reaberturaFolhaList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/reaberturaFolhaForm.xhtml" id="pf166300731704518" referenceLink="//@navigationRule.116/@fromViewId|" outlinks="pf166300731704417" inlinks="pf166300731704416" path="/paginas/tabelas/reaberturaFolhaForm.xhtml"/>
   <links id="pf16619730687962" target="pf16619730687963" source="pf16619730687950" outcome="incluirAlterar"/>
   <links id="pf16619730687966" target="pf16619730687967" source="pf16619730687964" outcome="incluirAlterar"/>
   <links id="pf166197306879610" target="pf166197306879611" source="pf16619730687968" outcome="incluirAlterar"/>
@@ -768,4 +770,7 @@
   <links id="pf16629860003673" target="pf16621392998660" source="pf16621392998660" outcome="listar"/>
   <links id="pf16629860003674" target="pf16621392998664" source="pf16621392998660" outcome="incluirAlterar"/>
   <links id="pf16629860003675" target="pf16621392998660" source="pf16621392998664" outcome="listar"/>
+  <links id="pf166300731704415" target="pf166300731704414" source="pf166300731704414" outcome="listar"/>
+  <links id="pf166300731704416" target="pf166300731704518" source="pf166300731704414" outcome="incluirAlterar"/>
+  <links id="pf166300731704417" target="pf166300731704414" source="pf166300731704518" outcome="listar"/>
 </pageflow:Pageflow>
