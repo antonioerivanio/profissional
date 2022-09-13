@@ -33,13 +33,13 @@ public class InfoRemuneracaoPeriodoAnterioresService{
 		return dao.getById(id);
 	}	
 	
-	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(String mesReferencia, String anoReferencia, List<DemonstrativosDeValores> demonstrativosDeValoresList, Long idFuncional) {
+	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(String mesReferencia, String anoReferencia, List<DemonstrativosDeValores> demonstrativosDeValoresList, Long idFuncional, boolean isEstagiario) {
 		List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresListReturn = new ArrayList<InfoRemuneracaoPeriodoAnteriores>();
 		
 		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
 			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
 				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(1)) {
-					List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList = dao.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional);
+					List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList = dao.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional, isEstagiario);
 					demonstrativosDeValores.setInfoPerAnt(infoRemuneracaoPeriodoAnterioresList.get(0));
 					for (InfoRemuneracaoPeriodoAnteriores infoRemuneracaoPeriodoAnteriores : infoRemuneracaoPeriodoAnterioresList) {
 						if(infoRemuneracaoPeriodoAnteriores.getId() < 0) {

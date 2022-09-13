@@ -26,7 +26,6 @@ import br.gov.ce.tce.srh.service.FuncionalService;
 import br.gov.ce.tce.srh.service.InfoRemuneracaoPeriodoAnterioresService;
 import br.gov.ce.tce.srh.service.InfoRemuneracaoPeriodoApuracaoService;
 import br.gov.ce.tce.srh.service.ItensRemuneracaoTrabalhadorService;
-import br.gov.ce.tce.srh.service.RemuneracaoOutraEmpresaService;
 import br.gov.ce.tce.srh.service.RemuneracaoServidorEsocialService;
 import br.gov.ce.tce.srh.util.FacesUtil;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -50,8 +49,6 @@ public class RemuneracaoServidorFormBean implements Serializable {
 	private InfoRemuneracaoPeriodoApuracaoService infoRemuneracaoPeriodoApuracaoService;
 	@Autowired
 	private ItensRemuneracaoTrabalhadorService itensRemuneracaoTrabalhadorService;	
-	@Autowired
-	private RemuneracaoOutraEmpresaService remuneracaoOutraEmpresaService;
 
 	
 
@@ -91,16 +88,17 @@ public class RemuneracaoServidorFormBean implements Serializable {
     }	
 	
 	public void carregaServidores() {
-		this.servidorEnvioList = funcionalService.findEstagiarioEvento1202(anoReferencia, mesReferencia);
+		this.servidorEnvioList = funcionalService.findServidoresEvento1202(anoReferencia, mesReferencia);
 	}
 	public void consultar() {
 		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("") && servidorFuncional != null) {
 			try {
+				boolean isEstagiario = false;
 				entidade =  remuneracaoServidorEsocialService.getEventoS1202(mesReferencia, anoReferencia, servidorFuncional);
 				//remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresaRPA(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
 				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresServidor(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());				
-				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
-				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
+				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
+				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
 				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
 				
 				entidade.setDmDev(demonstrativosDeValoresList);
@@ -120,7 +118,7 @@ public class RemuneracaoServidorFormBean implements Serializable {
 
 	public void salvarEvento() { 
 		try {
-			
+			boolean isEstagiario = false;
 			if(emEdicao && remuneracaoServidorAnterior != null) {	
 				remuneracaoServidorEsocialService.excluir(remuneracaoServidorAnterior);
 			}
@@ -129,8 +127,10 @@ public class RemuneracaoServidorFormBean implements Serializable {
 				remuneracaoServidorEsocialService.salvar(entidade);
 			}
 			else {
-				remuneracaoServidorEsocialService.salvar(mesReferencia, anoReferencia);
-				System.out.println("Gera todo mundo!");
+				ArrayList<RemuneracaoServidor> remuneracaoServidorList = remuneracaoServidorEsocialService.geraRemuneracaoServidorLote(mesReferencia, anoReferencia, isEstagiario);
+				remuneracaoServidorEsocialService.salvar(remuneracaoServidorList);
+				//remuneracaoServidorEsocialService.salvar(mesReferencia, anoReferencia, isEstagiario);
+				//System.out.println("Gera todo mundo!");
 			}	
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");

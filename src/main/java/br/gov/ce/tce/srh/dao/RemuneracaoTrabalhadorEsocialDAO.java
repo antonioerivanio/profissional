@@ -239,7 +239,9 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		sql.append(" FROM fp_dadospagtoprestador dp  "); 
 		sql.append("  INNER JOIN fp_cadastroprestador cp ON dp.idprestador = cp.idprestador  "); 
 		sql.append(" LEFT JOIN FP_VINCULORGPSPRESTADOR vp ON cp.idprestador = vp.idprestador  "); 
-		sql.append(" where  competencia = :competencia  "); 
+		//sql.append(" where  competencia = :competencia  "); 
+		
+		sql.append(" where to_char(dp.DATA_NP, 'yyyymm') = :competencia  "); 
 		if(servidorFuncional != null) {
 			sql.append("  AND cp.idprestador = :idprestador   "); 
 		}

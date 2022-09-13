@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.DemonstrativosDeValoresDAO;
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
+import br.gov.ce.tce.srh.domain.RemuneracaoBeneficio;
 import br.gov.ce.tce.srh.domain.RemuneracaoServidor;
 import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 
@@ -35,7 +36,7 @@ public class DemonstrativosDeValoresService{
 	public List<DemonstrativosDeValores> findDemonstrativosDeValores(String mesReferencia, String anoReferencia, RemuneracaoTrabalhador remuneracaoTrabalhador, Long idFuncional) {
 		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValores(mesReferencia, anoReferencia, remuneracaoTrabalhador.getId(), null, idFuncional);
 		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
-			if(demonstrativosDeValores.getId() < 0) {
+			if(demonstrativosDeValores.getId() < 0) {				
 				demonstrativosDeValores.setRemuneracaoTrabalhador(remuneracaoTrabalhador);
 				demonstrativosDeValores.setId(null);
 			}
@@ -72,6 +73,18 @@ public class DemonstrativosDeValoresService{
 		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
 			if(demonstrativosDeValores.getId() < 0) {
 				demonstrativosDeValores.setRemuneracaoServidor(remuneracaoServidor);
+				demonstrativosDeValores.setId(null);
+			}
+		}
+		return demonstrativosDeValoresList;
+	}
+
+	public List<DemonstrativosDeValores> findDemonstrativosDeValoresBeneficio(String mesReferencia,
+			String anoReferencia, RemuneracaoBeneficio remuneracaoBeneficio, Long idFuncional) {
+		List<DemonstrativosDeValores> demonstrativosDeValoresList = dao.findDemonstrativosDeValoresBeneficio(mesReferencia, anoReferencia, remuneracaoBeneficio.getId(), idFuncional);
+		for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
+			if(demonstrativosDeValores.getId() < 0) {
+				demonstrativosDeValores.setRemuneracaoBeneficio(remuneracaoBeneficio);
 				demonstrativosDeValores.setId(null);
 			}
 		}

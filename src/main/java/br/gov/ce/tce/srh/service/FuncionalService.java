@@ -174,8 +174,16 @@ public class FuncionalService {
 		return dao.findEstagiarioEvento1200(anoReferencia, mesReferencia);
 	}
 
-	public List<Funcional> findEstagiarioEvento1202(String anoReferencia, String mesReferencia) {
+	public List<Funcional> findServidoresEvento1202(String anoReferencia, String mesReferencia) {
 		return dao.findServidoresEvento1202(anoReferencia, mesReferencia);
+	}
+
+	public List<Funcional> findBeneficioesEvento1207(String anoReferencia, String mesReferencia) {
+		return dao.findBeneficioesEvento1207(anoReferencia, mesReferencia);
+	}
+
+	public List<Funcional> findServidorEvento1210(String anoReferencia, String mesReferencia) {
+		return dao.findBeneficioesEvento1210(anoReferencia, mesReferencia);
 	}
 	
 }

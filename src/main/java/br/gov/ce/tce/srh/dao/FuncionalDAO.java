@@ -11,14 +11,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import org.apache.commons.lang.NullArgumentException;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.CadastroPrestador;
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 import br.gov.ce.tce.srh.service.PessoalService;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -401,6 +400,7 @@ public class FuncionalDAO {
          return query.getResultList();
     }
 	
+	@SuppressWarnings("unchecked")
 	public List<Funcional> findServidoresEvento2230() {
 		try {		  
 		  StringBuffer sql =  new StringBuffer(" SELECT distinct f.* FROM tb_licenca l INNER JOIN tb_tipolicenca tl on l.idtipolicenca = tl.id ");
@@ -433,20 +433,7 @@ public class FuncionalDAO {
        }
 	}
 
-	public List<Funcional> findBeneficiariosEvento2400() {
-		/*try {
-			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
-					+ "FROM Funcional f "
-					+ "WHERE f.status = 5 and f.saida is null "		
-					+ "AND f.pessoal.id  IN (SELECT a.funcional.pessoal.id FROM Aposentadoria a) "
-					//+ "AND f.id  IN (SELECT a.funcional.id FROM Aposentadoria a) "
-					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
-					//+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficiario b) "
-					+ "ORDER BY f.nome", Funcional.class);
-			return query.getResultList();
-		} catch (NoResultException e) {
-			return null;
-		}*/
+	public List<Funcional> findBeneficiariosEvento2400() {	
 		
 		try {
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
@@ -514,6 +501,7 @@ public class FuncionalDAO {
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
 		
 		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOTRABALHADOR where IDFUNCIONAL is not null) ");
+		sql.append(" and f.id  in (Select IDFUNCIONAL from ESOCIAL_ADMISSAO ) ");
 		sql.append(" ORDER BY f.NOME ");
 		
 		try {
@@ -570,6 +558,7 @@ public class FuncionalDAO {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Funcional> findEstagiarioEvento1200(String anoReferencia, String mesReferencia) {
 		StringBuffer sql = new StringBuffer();
 
@@ -600,6 +589,7 @@ public class FuncionalDAO {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Funcional> findServidoresEvento1202(String anoReferencia, String mesReferencia) {
 		StringBuffer sql = new StringBuffer();
 
@@ -615,17 +605,71 @@ public class FuncionalDAO {
 		sql.append("  from tb_funcional f  "); 
 		sql.append(" inner join fp_dadospagto dp on f.id = dp.idfuncional  ");
 		sql.append(" inner join fp_pagamentos pg on pg.arquivo = dp.arquivo  ");
-		sql.append(" where previdencia = 2  ");
+		sql.append(" where previdencia in (2,4)  ");
 		sql.append(" and pg.ano_esocial = '"+anoReferencia+"'");
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
 		
 		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOSERVIDOR where IDFUNCIONAL is not null) ");
+		sql.append(" and f.id  in (Select IDFUNCIONAL from ESOCIAL_ADMISSAO ) ");
 		sql.append(" ORDER BY f.NOME ");
 		
 		try {
 			Query query = entityManager.createNativeQuery(sql.toString(), Funcional.class);
 			
 			return  query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Funcional> findBeneficioesEvento1207(String anoReferencia, String mesReferencia) {
+		
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" select distinct f.ID, f.IDPESSOAL, f.IDORGAOORIGEM, f.IDSETOR, f.IDOCUPACAO, f.IDCLASSEREFERENCIA,   ");
+		sql.append(" f.idespecialidadecargo, f.idorientacaocargo, f.IDTIPOMOVIMENTOENTRADA, f.IDTIPOMOVIMENTOSAIDA, ");
+		sql.append(" f.IDCBO, f.IDFOLHA, f.IDTIPOPUBLICACAONOMEACAO, IDTIPOPUBLICACAOSAIDA, f.IDSITUACAO, f.IDTIPOVINCULO, ");
+		sql.append(" f.NOME, f.NOMECOMPLETO, f.NOMEPESQUISA, f.MATRICULA, f.MATRICULAESTADUAL, f.CALCULOPCC, f.QTDQUINTOS, ");
+		sql.append(" f.LEIINCORPORACAO, f.PONTO, f.STATUS, f.ATIVOFP, f.FLPORTALTRANSPARENCIA, f.IRRF, f.SUPSECINTEGRAL, ");
+		sql.append(" f.PROPORCIONALIDADE, f.SALARIOORIGEM, f.ABONOPREVIDENCIARIO, f.DATAPOSSE, f.DATAEXERCICIO, f.DATASAIDA, ");
+		sql.append(" f.DOENOMEACAO, f.DOESAIDA, f.DESCRICAONOMEACAO, f.DESCRICAOSAIDA, f.PREVIDENCIA, f.REGIME, f.IDREPRESENTACAOCARGO, ");
+		sql.append(" f.IDSETORDESIGNADO, f.IDPESSOAJURIDICA, f.IDAPOSENTADORIA, f.CODCATEGORIA ");
+		
+		sql.append("  from tb_funcional f  "); 
+		sql.append(" inner join fp_dadospagto dp on f.id = dp.idfuncional  ");
+		sql.append(" inner join fp_pagamentos pg on pg.arquivo = dp.arquivo  ");
+		sql.append(" where ");
+		sql.append(" pg.ano_esocial = '"+anoReferencia+"'");
+		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
+		
+		sql.append(" and f.id  in (Select IDFUNCIONAL from ESOCIAL_BENEFICIO ) ");
+		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOBENEFICIO ) ");
+		
+		sql.append(" ORDER BY f.NOME ");
+		
+		try {
+			Query query = entityManager.createNativeQuery(sql.toString(), Funcional.class);
+			
+			return  query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public List<Funcional> findBeneficioesEvento1210(String anoReferencia, String mesReferencia) {
+		try {
+			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
+					+ "FROM Funcional f "
+					+ "WHERE 1 = 1 "				 
+					+ "AND ("
+					+ "f.id  IN (SELECT rt.funcional.id FROM RemuneracaoTrabalhador rt) "
+					+ "OR (f.id  IN (SELECT rs.funcional.id FROM RemuneracaoServidor rs) "
+					+ "OR (f.id  IN (SELECT rb.funcional.id FROM RemuneracaoBeneficio rb) "
+					+ " )"
+					+ "AND f.id  NOT IN (SELECT p.funcional.id FROM Pagamentos p) "
+					+ "ORDER BY f.nome", Funcional.class);
+			return query.getResultList();
 		} catch (NoResultException e) {
 			return null;
 		}

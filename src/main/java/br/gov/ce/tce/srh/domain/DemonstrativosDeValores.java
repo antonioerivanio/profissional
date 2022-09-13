@@ -39,6 +39,10 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	@JoinColumn(name = "IDREMUNERACAOSERVIDOR")
 	private RemuneracaoServidor remuneracaoServidor;
 	
+	@ManyToOne
+	@JoinColumn(name = "IDREMUNERACAOBENEFICIO")
+	private RemuneracaoBeneficio remuneracaoBeneficio;
+	
 	@Column(name = "COD_CATEG")
 	private Integer codCateg;
 	
@@ -53,6 +57,9 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	
 	@Column(name="FLINFOREMUNPERANTERIORES")
 	private Integer flInfoRemunPerAnteriores;
+	
+	@Column(name = "NR_BENEFICIO")
+	private String nrBeneficio;
 	
 	@OneToOne(mappedBy = "demonstrativosDeValores", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private InfoRemuneracaoPeriodoApuracao infoPerApur;
@@ -172,7 +179,14 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 	public void setInfoPerAnt(InfoRemuneracaoPeriodoAnteriores infoPerAnt) {
 		this.infoPerAnt = infoPerAnt;
 	}
-	
+
+	public String getNrBeneficio() {
+		return nrBeneficio;
+	}
+
+	public void setNrBeneficio(String nrBeneficio) {
+		this.nrBeneficio = nrBeneficio;
+	}
 
 	public RemuneracaoServidor getRemuneracaoServidor() {
 		return remuneracaoServidor;
@@ -180,6 +194,14 @@ public class DemonstrativosDeValores  extends BasicEntity<Long> implements Seria
 
 	public void setRemuneracaoServidor(RemuneracaoServidor remuneracaoServidor) {
 		this.remuneracaoServidor = remuneracaoServidor;
+	}
+
+	public RemuneracaoBeneficio getRemuneracaoBeneficio() {
+		return remuneracaoBeneficio;
+	}
+
+	public void setRemuneracaoBeneficio(RemuneracaoBeneficio remuneracaoBeneficio) {
+		this.remuneracaoBeneficio = remuneracaoBeneficio;
 	}
 
 	@Override

@@ -52,8 +52,8 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(String mesReferencia, String anoReferencia, DemonstrativosDeValores demonstrativosDeValores, Long idFuncional) {	
-		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoAnteriores(idFuncional), InfoRemuneracaoPeriodoAnteriores.class);
+	public List<InfoRemuneracaoPeriodoAnteriores> findInfoRemuneracaoPeriodoAnteriores(String mesReferencia, String anoReferencia, DemonstrativosDeValores demonstrativosDeValores, Long idFuncional, boolean isEstagiario) {	
+		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoAnteriores(idFuncional, isEstagiario), InfoRemuneracaoPeriodoAnteriores.class);
 		query.setParameter("mesReferencia", mesReferencia);
 		query.setParameter("anoReferencia", anoReferencia);
 		
@@ -70,7 +70,7 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 	}
 
 	
-	public String getSQLInfoRemuneracaoPeriodoAnteriores(Long idFuncional) {
+	public String getSQLInfoRemuneracaoPeriodoAnteriores(Long idFuncional, boolean isEstagiario) {
 		StringBuffer sql = new StringBuffer();
 
 		sql.append(" SELECT  ");    
@@ -86,8 +86,12 @@ public class InfoRemuneracaoPeriodoAnterioresDAO {
 		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 		 
 		sql.append("  0||dp.cod_func as matricula,  ");
 		sql.append(" null as IND_SIMPLES,  ");
-		sql.append("  1 as GRAU_EXP  ");
-		  
+		if(isEstagiario) {
+			sql.append("  null as GRAU_EXP  ");
+		}
+		else {
+			sql.append("  1 as GRAU_EXP  ");
+		}
 		sql.append(" FROM srh.fp_pagamentos pg ");
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
 		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");

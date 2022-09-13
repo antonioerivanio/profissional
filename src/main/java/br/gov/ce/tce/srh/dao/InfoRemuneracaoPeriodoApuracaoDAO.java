@@ -52,8 +52,8 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracao(String mesReferencia, String anoReferencia, DemonstrativosDeValores demonstrativosDeValores, Long idFuncional) {	
-		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoApuracao(idFuncional), InfoRemuneracaoPeriodoApuracao.class);
+	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracao(String mesReferencia, String anoReferencia, DemonstrativosDeValores demonstrativosDeValores, Long idFuncional, boolean isEstagiario) {	
+		Query query = entityManager.createNativeQuery(getSQLInfoRemuneracaoPeriodoApuracao(idFuncional, isEstagiario), InfoRemuneracaoPeriodoApuracao.class);
 		query.setParameter("mesReferencia", mesReferencia);
 		query.setParameter("anoReferencia", anoReferencia);
 		
@@ -70,7 +70,7 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 	}
 
 	
-	public String getSQLInfoRemuneracaoPeriodoApuracao(Long idFuncional) {
+	public String getSQLInfoRemuneracaoPeriodoApuracao(Long idFuncional, boolean isEstagiario) {
 		StringBuffer sql = new StringBuffer();
 
 		sql.append(" SELECT  ");    
@@ -81,8 +81,12 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 		 
 		sql.append("  0||dp.cod_func as matricula,  ");
 		sql.append(" null as IND_SIMPLES,  ");
-		sql.append("  1 as GRAU_EXP  ");
-		  
+		if(isEstagiario) {
+			sql.append("  null as GRAU_EXP  ");
+		}
+		else {
+			sql.append("  1 as GRAU_EXP  ");
+		}
 		sql.append(" FROM srh.fp_pagamentos pg ");
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
 		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
@@ -135,7 +139,7 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 		sql.append(" 'LOTACAO-BASICA' as COD_LOTACAO, "); 	
 		sql.append("  null as matricula,  ");
 		sql.append("  null as IND_SIMPLES,  ");
-		sql.append("  1 as GRAU_EXP  ");
+		sql.append("  null as GRAU_EXP  ");
 
 		sql.append("  from tb_funcional ");
 				sql.append("  WHERE id = 1 ");

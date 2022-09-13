@@ -1351,5 +1351,46 @@
 			<to-view-id>/paginas/tabelas/remuneracaoServidorList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	<!-- Remuneração - Benefícios - Entes Públicos-->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoBeneficioList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoBeneficioList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoBeneficioForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/remuneracaoBeneficioForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/remuneracaoBeneficioList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- Pagamentos de Rendimentos do Trabalho-->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/pagamentosList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/pagamentosList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/pagamentosForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/pagamentosForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/pagamentosList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 
 </faces-config>

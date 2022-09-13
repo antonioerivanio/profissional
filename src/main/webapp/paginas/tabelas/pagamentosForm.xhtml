@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	  xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+ 	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+ 	  xmlns:a4j="http://richfaces.org/a4j"
+ 	  xmlns:rich="http://richfaces.org/rich" >
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Cadastro de Pagamentos de Rendimentos do Trabalho</h2>
+
+		</div>
+
+         <h:form id="form" styleClass="formularios">
+
+			<br/>
+
+            <h:messages infoClass="infoMessage" errorClass="errorMessage" />
+      
+
+			<fieldset>	
+			
+				<div class="input-box box-10">
+					<label for="">Ano Referência: *</label>
+					<!--  <div class="conteiner">
+						<h:inputText id="anoReferencia" 
+									 name="anoReferencia"
+									 value="#{pagamentosFormBean.anoReferencia}" 
+									 maxlength="4"
+									 onkeyup="SoNumeros(this)">
+						</h:inputText>
+					</div>-->
+					<div class="conteiner">
+					<rich:select 						
+							defaultLabel="Selecione..."	
+							id="ano"							
+							value="#{pagamentosFormBean.anoReferencia}"
+							disabled="#{pagamentosFormBean.emEdicao}">							
+							<f:selectItems 
+								id="comboAno"
+								value="#{pagamentosFormBean.comboAno}"
+					  			var="servidor"
+					  			itemValue="#{servidor}"
+					  			itemLabel="#{servidor}"/>
+					  			<a4j:ajax event="change" 
+							  				 execute="@this"
+							  				 />
+						</rich:select>
+				</div>
+				</div>
+			
+			<div class="select-box box-16">
+				<label for="mes">Mês: </label>
+				<div class="conteiner">
+					<h:selectOneMenu id="mesF" value="#{pagamentosFormBean.mesReferencia}" disabled="#{pagamentosFormBean.emEdicao}">							  
+						<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0"/>
+						<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01"/>
+						<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
+						<f:selectItem id="mes3F" itemLabel="Março" itemValue="03"/>
+						<f:selectItem id="mes4F" itemLabel="Abril" itemValue="04" />
+						<f:selectItem id="mes5F" itemLabel="Maio" itemValue="05"/>
+						<f:selectItem id="mes6F" itemLabel="Junho" itemValue="06" />
+						<f:selectItem id="mes7F" itemLabel="Julho" itemValue="07"/>
+						<f:selectItem id="mes8F" itemLabel="Agosto" itemValue="08" />
+						<f:selectItem id="mes9F" itemLabel="Setembro" itemValue="09"/>
+						<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
+						<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11"/>
+						<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
+						<f:selectItem id="mes13F" itemLabel="Anual (13° salário)" itemValue="13" />	
+						<a4j:ajax event="change" 
+							  				 execute="@this"
+							  				 listener="#{pagamentosFormBean.carregaServidores}"
+							  				 render="tipo"/>																
+					</h:selectOneMenu>
+				</div>
+			</div>	
+				
+			<div class="select-box box-46">
+				<label for="">Servidor:</label>
+				<div class="conteiner">
+					<rich:select 
+							enableManualInput="true"
+							defaultLabel="Selecione..."	
+							clientFilterFunction="customFilter"
+							listWidth="500"
+							id="tipo"
+							converter="entityConverter" 
+							rendered="#{!pagamentosFormBean.emEdicao}"
+							value="#{pagamentosFormBean.servidorFuncional}">							
+							<f:selectItems 
+								id="comboServidor"
+								value="#{pagamentosFormBean.servidorEnvioList}"
+					  			var="servidor"
+					  			itemValue="#{servidor}"
+					  			itemLabel="#{servidor.nome}"/>
+						</rich:select>
+				</div>
+				<ui:fragment  rendered="#{pagamentosFormBean.emEdicao}">
+					<div class="input-box box-60">						
+							<div class="conteiner">
+								<h:inputText id="nomeEdicao" 
+											 maxlength="46"
+											 size="46"
+											 disabled="true"
+											 rendered="#{pagamentosFormBean.emEdicao}"
+											 value="#{pagamentosFormBean.servidorFuncional.nome}" />
+							</div>
+					</div>
+				</ui:fragment>
+				
+			</div>
+				<h:commandButton action="#{pagamentosFormBean.consultar}" value="Consultar"  rendered="#{!pagamentosFormBean.emEdicao}" styleClass="bt-padrao fr mg-right-10" />
+				
+			</fieldset>
+			
+			<ui:fragment  rendered="#{pagamentosFormBean.emConsulta}">
+				<fieldset>
+					<legend style="font-size: 15px;">
+							<strong> 
+								 Dados Evento S-1200
+							</strong>
+					</legend>
+	
+					<br/>
+	
+	            	<h:messages id="messages" infoClass="infoMessage" errorClass="errorMessage" />
+					<fieldset>
+						
+							<legend style="font-size: 15px;">
+								<strong> 
+									 Remuneração RGPS:
+								</strong>
+							</legend>
+							<div class="input-box box-10">
+								<label for="">indApuracao</label>
+								<div class="conteiner">
+									<h:inputText id="indApuracao" 
+												 maxlength="5"
+												 disabled="true"
+												 value="#{pagamentosFormBean.entidade.indApuracao}" />
+								</div>
+							</div>
+	
+							<div class="input-box box-10">
+								<label for="">perApur</label>
+								<div class="conteiner">
+									<h:inputText id="perApur" 
+												 maxlength="10"
+												 disabled="true"
+												 value="#{pagamentosFormBean.entidade.perApur}" />
+								</div>
+							</div>
+					
+							<div class="input-box box-15">
+								<label for="">cpfBenef</label>
+								<div class="conteiner">
+									<h:inputText id="cpf" 
+												 maxlength="15"
+												 disabled="true"
+												 value="#{pagamentosFormBean.entidade.cpfBenef}" />
+								</div>
+							</div>				
+							
+							<div class="input-box box-30">
+								<label for="">nmTrab</label>
+								<div class="conteiner">
+									<h:inputText id="nmTrab" 
+												 maxlength="30"
+												 disabled="true"
+												 value="#{pagamentosFormBean.entidade.nmTrabDesc}" />
+								</div>
+							</div>
+							
+										
+						
+					</fieldset>
+					<ui:repeat var="dmDev" varStatus="i" value="#{pagamentosFormBean.demonstrativosDeValoresList}">
+						<fieldset >
+							<legend style="font-size: 15px; color: #004581; font-weight:bolder;">
+								<strong> 
+									 Demonstrativos de Valores
+								</strong>
+							</legend>
+							<div class="input-box box-20">
+									<label for="">ideDmDev</label>
+									<div class="conteiner">
+										<h:inputText id="ideDmDev" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{dmDev.ideDmDev}" />
+									</div>
+								</div>
+								
+								<div class="input-box box-20">
+									<label for="">nrBeneficio</label>
+									<div class="conteiner">
+										<h:inputText id="nrBeneficio" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{dmDev.nrBeneficio}" />
+									</div>
+								</div>								
+								
+								<div class="tabela-dados">
+								<ui:fragment  rendered="#{dmDev.flInfoRemunPerAnteriores == 0}">
+									<fieldset>
+											<legend style="font-size: 15px;">
+												<strong> 
+													  Informação Remuneracao de Período Apuração
+												</strong>
+											</legend>
+											<div class="input-box box-15">
+												<label for="">matricula</label>
+												<div class="conteiner">
+													<h:inputText id="matricula" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.matricula}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">tpInsc</label>
+												<div class="conteiner">
+													<h:inputText id="tpInsc" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.tpInsc}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">nrInsc</label>
+												<div class="conteiner">
+													<h:inputText id="nrInsc" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.nrInsc}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">codLotacao</label>
+												<div class="conteiner">
+													<h:inputText id="codLotacao" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.codLotacao}" />
+												</div>
+											</div>																	
+											
+											<div class="input-box box-15">
+												<label for="">indSimples</label>
+												<div class="conteiner">
+													<h:inputText id="indSimples" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.indSimples}" />
+												</div>
+											</div>
+											
+											<div class="input-box box-15">
+												<label for="">grauEX</label>
+												<div class="conteiner">
+													<h:inputText id="grauEX" 
+																 maxlength="10"
+																 disabled="true"
+																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.grauEX}" />
+												</div>
+											</div>
+											
+									</fieldset>
+								</ui:fragment>
+								</div>
+								<div class="tabela-dados">
+								<ui:fragment  rendered="#{dmDev.flInfoRemunPerAnteriores == 1}">
+								
+									<fieldset >
+										<legend style="font-size: 15px;">
+											<strong> 
+												 Informação Remuneracao de Periodo Anteriores
+											</strong>
+										</legend>
+										<div class="input-box box-15">
+											<label for="">perRef</label>
+											<div class="conteiner">
+												<h:inputText id="perRef" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.perRef}" />
+											</div>
+										</div>										
+										
+										<div class="input-box box-15">
+											<label for="">tpAcConv</label>
+											<div class="conteiner">
+												<h:inputText id="tpAcConv" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.tpAcConv}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">matricula</label>
+											<div class="conteiner">
+												<h:inputText id="matriculaInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.matricula}" />
+											</div>
+										</div>									
+										
+										<div class="input-box box-15">
+											<label for="">remunSuc</label>
+											<div class="conteiner">
+												<h:inputText id="remunSuc" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.remunSuc}" />
+											</div>
+										</div>
+										
+										
+										<div class="input-box box-15">
+											<label for="">tpInsc</label>
+											<div class="conteiner">
+												<h:inputText id="tpInscInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.tpInsc}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">nrInsc</label>
+											<div class="conteiner">
+												<h:inputText id="nrInscInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.nrInsc}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">codLotacao</label>
+											<div class="conteiner">
+												<h:inputText id="codLotacaoInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.codLotacao}" />
+											</div>
+										</div>
+										
+										
+										<div class="input-box box-15">
+											<label for="">indSimples</label>
+											<div class="conteiner">
+												<h:inputText id="indSimplesInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.indSimples}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">grauEX</label>
+											<div class="conteiner">
+												<h:inputText id="grauEXInfoAnterior" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.grauEX}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">dtAcConv</label>
+											<div class="conteiner">
+												<h:inputText id="dtAcConv" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.dtAcConv}" />
+											</div>
+										</div>
+										
+										<div class="input-box box-15">
+											<label for="">dsc</label>
+											<div class="conteiner">
+												<h:inputText id="dsc" 
+															 maxlength="10"
+															 disabled="true"
+															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.dsc}" />
+											</div>
+										</div>
+										
+									</fieldset>
+								</ui:fragment>
+								</div>
+									  <fieldset >
+										<legend style="font-size: 15px;">
+											<strong> 
+												 Itens de Remuneração do Trabalhador
+											</strong>
+											
+										</legend>
+										<div class="tabela-dados">
+										<rich:dataTable id="remuneracaoTrabId"
+										var="remuneracaoTrab"
+										value="#{dmDev.itensRemuneracaoTrabalhadorList}"
+										noDataLabel="Nenhum Item Remuneracao do Trabalhador"	>
+							
+											<h:column id="col1" >
+												<f:facet name="header">
+													codRubr
+												</f:facet>
+												<center>
+							                        <h:outputText id="item1" value="#{remuneracaoTrab.codRubr}" />		                        	
+					                        	</center>
+											</h:column>
+											
+											<h:column id="col2" >
+												<f:facet name="header">
+													ideTabRubr
+												</f:facet>
+												<center>
+							                        <h:outputText id="item2" value="#{remuneracaoTrab.ideTabRubr}" />
+					                        	</center>
+											</h:column>	
+											
+											<h:column id="col7" >
+												<f:facet name="header">
+													vlrRubr
+												</f:facet>
+												<center>
+							                        <h:outputText id="item7" value="#{remuneracaoTrab.vlrRubr}" />
+					                        	</center>
+											</h:column>												
+											
+											<h:column id="col4">
+												<f:facet name="header">
+													qtdRubr
+												</f:facet>							
+						                        <h:outputText id="item4" value="#{remuneracaoTrab.qtdRubr}">
+						                        	
+						                        </h:outputText>                        	
+											</h:column>		
+											<h:column id="col5" >
+												<f:facet name="header">
+													fatorRubr
+												</f:facet>							
+						                        <h:outputText id="item5" value="#{remuneracaoTrab.fatorRubr}">
+						                        	
+						                        </h:outputText>                        	
+											</h:column>
+											<h:column id="col6" >
+												<f:facet name="header">
+													indApurIr
+												</f:facet>							
+						                        <h:outputText id="item6" value="#{remuneracaoTrab.indApurIr}">
+						                        	
+						                        </h:outputText>                        	
+											</h:column>			
+									
+																													
+									</rich:dataTable>	
+									</div>	
+									</fieldset>
+							</fieldset>	
+						
+					</ui:repeat>
+	
+				</fieldset>
+			</ui:fragment>
+			
+			
+			<h:commandButton 
+				action="#{pagamentosFormBean.salvarEvento}" 
+				value="Salvar" 
+				onclick="var x= confirm('Deseja realmente gerar o evento para todos os servidores?');if(!x){return false;}" 
+				styleClass="bt-padrao fr mg-right-10" />
+			
+			<a href="/srh/paginas/tabelas/remuneracaoServidorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			
+			
+
+		</h:form>
+
+		<script>
+			if (document.getElementById('form:alterar') != null) {
+				if (document.getElementById('form:alterar').value == 'true') {
+					document.getElementById('form:PesquisarServidor').style.visibility='hidden';				
+				}	
+			}
+		</script>
+
+	</ui:define>
+</ui:composition>

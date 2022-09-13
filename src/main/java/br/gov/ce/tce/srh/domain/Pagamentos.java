@@ -2,7 +2,6 @@ package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,18 +16,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_REMUNERACAOSERVIDOR", schema=DatabaseMetadata.SCHEMA_SRH)
-public class RemuneracaoServidor extends BasicEntity<Long> implements Serializable, Cloneable {
+@Table(name = "ESOCIAL_PAGAMENTOS", schema=DatabaseMetadata.SCHEMA_SRH)
+public class Pagamentos extends BasicEntity<Long> implements Serializable, Cloneable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_REMUNERACAOSERVIDOR")
-	@SequenceGenerator(name="SEQ_REMUNERACAOSERVIDOR", sequenceName="SEQ_REMUNERACAOSERVIDOR", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_PAGAMENTOS")
+	@SequenceGenerator(name="SEQ_PAGAMENTOS", sequenceName="SEQ_PAGAMENTOS", schema=DatabaseMetadata.SCHEMA_SRH, allocationSize=1, initialValue=1)
 	@Column(name = "ID")	
 	private Long id;
 	
@@ -45,24 +42,14 @@ public class RemuneracaoServidor extends BasicEntity<Long> implements Serializab
 	@Column(name = "PER_APUR")
 	private String perApur;
 	
-	@Column(name = "CPF_TRAB")
-	private String cpfTrab;
-	
-	@Column(name = "IND_MV")
-	private Byte indMV;
-	
 	@Column(name = "NM_TRAB_DESC")
 	private String nmTrabDesc;
 	
-	@Column(name = "NM_TRAB")
-	private String nmTrab;
+	@Column(name = "CPF_BENEF")
+	private String cpfBenef;
 	
-	@Column(name = "DT_NASCTO")
-	@Temporal(TemporalType.DATE)
-	private Date dtNascto;
-	
-	@OneToMany(mappedBy = "remuneracaoServidor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<DemonstrativosDeValores> dmDev = new ArrayList<>();
+	@OneToMany(mappedBy = "pagamentos", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<InformacaoPagamentos> informacaoPagamentos = new ArrayList<>();
 	
 	
 	public Long getId() {
@@ -104,39 +91,6 @@ public class RemuneracaoServidor extends BasicEntity<Long> implements Serializab
 	public void setPerApur(String perApur) {
 		this.perApur = perApur;
 	}
-
-	public String getCpfTrab() {
-		return cpfTrab;
-	}
-
-	public void setCpfTrab(String cpfTrab) {
-		this.cpfTrab = cpfTrab;
-	}
-
-	public Byte getIndMV() {
-		return indMV;
-	}
-
-	public void setIndMV(Byte indMV) {
-		this.indMV = indMV;
-	}
-
-	
-	public String getNmTrab() {
-		return nmTrab;
-	}
-
-	public void setNmTrab(String nmTrab) {
-		this.nmTrab = nmTrab;
-	}
-
-	public Date getDtNascto() {
-		return dtNascto;
-	}
-
-	public void setDtNascto(Date dtNascto) {
-		this.dtNascto = dtNascto;
-	}
 	
 	public String getNmTrabDesc() {
 		return nmTrabDesc;
@@ -146,19 +100,25 @@ public class RemuneracaoServidor extends BasicEntity<Long> implements Serializab
 		this.nmTrabDesc = nmTrabDesc;
 	}	
 
-
-	public List<DemonstrativosDeValores> getDmDev() {
-		return dmDev;
+	public String getCpfBenef() {
+		return cpfBenef;
 	}
 
-	public void setDmDev(List<DemonstrativosDeValores> dmDev) {
-		this.dmDev = dmDev;
+	public void setCpfBenef(String cpfBenef) {
+		this.cpfBenef = cpfBenef;
 	}
-	
+
+	public List<InformacaoPagamentos> getInformacaoPagamentos() {
+		return informacaoPagamentos;
+	}
+
+	public void setInformacaoPagamentos(List<InformacaoPagamentos> informacaoPagamentos) {
+		this.informacaoPagamentos = informacaoPagamentos;
+	}
 
 	@Override
-    public RemuneracaoServidor clone() throws CloneNotSupportedException {
-        return (RemuneracaoServidor) super.clone();
+    public Pagamentos clone() throws CloneNotSupportedException {
+        return (Pagamentos) super.clone();
     }
 	
 }

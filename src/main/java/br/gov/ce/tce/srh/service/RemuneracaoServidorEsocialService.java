@@ -1,6 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,11 +12,7 @@ import br.gov.ce.tce.srh.dao.RemuneracaoServidorEsocialDAO;
 import br.gov.ce.tce.srh.domain.DemonstrativosDeValores;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
-import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoAnteriores;
-import br.gov.ce.tce.srh.domain.InfoRemuneracaoPeriodoApuracao;
-import br.gov.ce.tce.srh.domain.ItensRemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.domain.Notificacao;
-import br.gov.ce.tce.srh.domain.RemuneracaoOutraEmpresa;
 import br.gov.ce.tce.srh.domain.RemuneracaoServidor;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
@@ -40,49 +36,13 @@ public class RemuneracaoServidorEsocialService{
 	private InfoRemuneracaoPeriodoApuracaoService infoRemuneracaoPeriodoApuracaoService;
 	@Autowired
 	private ItensRemuneracaoTrabalhadorService itensRemuneracaoTrabalhadorService;	
-	@Autowired
-	private RemuneracaoOutraEmpresaService remuneracaoOutraEmpresaService;
+	
 	
 	@Transactional
-	public void salvar(String mesReferencia, String anoReferencia) throws CloneNotSupportedException {
-		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
-		List<Funcional> servidorEnvioList = funcionalService.findServidoresEvento1200(anoReferencia, mesReferencia);
-		
-		for (Funcional servidorFuncional : servidorEnvioList) {
-			RemuneracaoServidor remuneracaoServidor = dao.getEventoS1202(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional );
-			
-			if( remuneracaoServidor != null) {
-				if(mesReferencia.equals("13")) {
-					remuneracaoServidor.setIndApuracao(new Byte("2"));
-				}
-				
-				List<DemonstrativosDeValores> demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresServidor(mesReferencia, anoReferencia, remuneracaoServidor, servidorFuncional.getId());
-				List<InfoRemuneracaoPeriodoAnteriores> infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
-				List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId());
-				List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
-				
-				remuneracaoServidor.setDmDev(demonstrativosDeValoresList);
-				
-				salvar(remuneracaoServidor);
-			}			
-			
-		}
-		
-	}
-
-	private Byte getIndMVRemunOutrEmpr(List<RemuneracaoOutraEmpresa> remunOutrEmpr) {
-		BigDecimal totalValoresOutrEmpr = BigDecimal.ZERO;
-		for (RemuneracaoOutraEmpresa remuneracaoOutraEmpresa : remunOutrEmpr) {	
-			totalValoresOutrEmpr = totalValoresOutrEmpr.add(remuneracaoOutraEmpresa.getVlrRemunOE());
-		}
-		
-		if(totalValoresOutrEmpr.compareTo(new BigDecimal(10)) > 0) {
-			return new Byte("3");
-		}
-		else {
-			return new Byte("2");
-		}
-		
+	public void salvar(ArrayList<RemuneracaoServidor> remuneracaoServidorList) throws CloneNotSupportedException {
+		for (RemuneracaoServidor remuneracaoServidor : remuneracaoServidorList) {	
+			salvar(remuneracaoServidor);
+		}				
 	}
 	
 	public void salvaNotificacaoEsocial(RemuneracaoServidor remuneracaoServidor) {
@@ -91,7 +51,7 @@ public class RemuneracaoServidorEsocialService{
 				Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), remuneracaoServidor.getReferencia());
 				if (notificacao == null) {
 					notificacao = new Notificacao();
-					notificacao.setDescricao("Evento S1200 com pendência de envio.");
+					notificacao.setDescricao("Evento S1202 com pendência de envio.");
 					notificacao.setData(new Date());
 					notificacao.setTipo(TipoNotificacao.N);
 					notificacao.setEvento(evento);
@@ -146,6 +106,37 @@ public class RemuneracaoServidorEsocialService{
 	public void salvar(RemuneracaoServidor remuneracaoServidor) {
 		remuneracaoServidor = dao.salvar(remuneracaoServidor);
 		salvaNotificacaoEsocial(remuneracaoServidor);
+	}
+
+	public ArrayList<RemuneracaoServidor> geraRemuneracaoServidorLote(String mesReferencia, String anoReferencia, boolean isEstagiario) throws CloneNotSupportedException {
+		
+			ArrayList<RemuneracaoServidor> remuneracaoServidorList = new ArrayList<RemuneracaoServidor>();
+			
+			String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
+			List<Funcional> servidorEnvioList = funcionalService.findServidoresEvento1202(anoReferencia, mesReferencia);
+			
+			for (Funcional servidorFuncional : servidorEnvioList) {
+				RemuneracaoServidor remuneracaoServidor = dao.getEventoS1202(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
+				RemuneracaoServidor remuneracaoServidorClonado = remuneracaoServidor.clone();
+				remuneracaoServidorClonado.setId(null);
+				
+				if( remuneracaoServidorClonado != null) {
+					if(mesReferencia.equals("13")) {
+						remuneracaoServidorClonado.setIndApuracao(new Byte("2"));
+					}
+	
+					List<DemonstrativosDeValores> demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresServidor(mesReferencia, anoReferencia, remuneracaoServidorClonado, servidorFuncional.getId());
+					infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
+					infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
+					itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
+					
+					remuneracaoServidorClonado.setDmDev(demonstrativosDeValoresList);
+					remuneracaoServidorClonado.setDmDev(demonstrativosDeValoresList);				
+					remuneracaoServidorList.add(remuneracaoServidorClonado);
+				}			
+				
+			}
+			return remuneracaoServidorList;
 	}
 
 }

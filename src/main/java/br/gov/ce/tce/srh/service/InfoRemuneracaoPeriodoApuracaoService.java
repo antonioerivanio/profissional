@@ -33,13 +33,13 @@ public class InfoRemuneracaoPeriodoApuracaoService{
 		return dao.getById(id);
 	}	
 	
-	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracao(String mesReferencia, String anoReferencia, List<DemonstrativosDeValores> demonstrativosDeValoresList, Long idFuncional) {
+	public List<InfoRemuneracaoPeriodoApuracao> findInfoRemuneracaoPeriodoApuracao(String mesReferencia, String anoReferencia, List<DemonstrativosDeValores> demonstrativosDeValoresList, Long idFuncional, boolean isEstagiario) {
 		List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoListReturn = new ArrayList<InfoRemuneracaoPeriodoApuracao>();
 		
 		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
 			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {			
 				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(0)) {
-					List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoList = dao.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional);
+					List<InfoRemuneracaoPeriodoApuracao> infoRemuneracaoPeriodoApuracaoList = dao.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValores, idFuncional, isEstagiario);
 					demonstrativosDeValores.setInfoPerApur(infoRemuneracaoPeriodoApuracaoList.get(0));
 					for (InfoRemuneracaoPeriodoApuracao infoRemuneracaoPeriodoApuracao : infoRemuneracaoPeriodoApuracaoList) {
 						if(infoRemuneracaoPeriodoApuracao.getId() < 0) {
@@ -101,7 +101,7 @@ private InfoRemuneracaoPeriodoApuracao geraInfoRemuneracaoPeriodoApuracaoRPA(
 		infoRemuneracaoPeriodoApuracao.setCodLotacao("LOTACAO-BASICA");
 		infoRemuneracaoPeriodoApuracao.setNrInsc("09499757000146");
 		infoRemuneracaoPeriodoApuracao.setTpInsc(new Byte("1"));
-		infoRemuneracaoPeriodoApuracao.setGrauEX(new Byte("1"));
+		infoRemuneracaoPeriodoApuracao.setGrauEX(null);
 		
 		return infoRemuneracaoPeriodoApuracao;
 	}
