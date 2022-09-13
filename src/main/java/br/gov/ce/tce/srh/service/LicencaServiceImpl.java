@@ -419,11 +419,11 @@ public class LicencaServiceImpl implements LicencaService {
 		}
 
 		// validando o nr do processo
-		if (entidade.getNrprocesso() != null && !entidade.getNrprocesso().equals("")) {
+	/*	if (entidade.getNrprocesso() != null && !entidade.getNrprocesso().equals("")) {
 			if (!SRHUtils.validarProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(entidade.getNrprocessoPuro(), 0))){
 				throw new SRHRuntimeException("O Número do Processo informado é inválido.");
 			}
-		}		
+		}	*/	
 		
 
 		

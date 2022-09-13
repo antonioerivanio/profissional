@@ -164,8 +164,17 @@ public class AdmissaoEsocialDAO {
 		sql.append("  TRIM (p.email) AS email_princ, ");
 		sql.append(" '0'||f.matricula AS matricula, ");
 		sql.append("  2 AS tp_reg_trab, ");
-		sql.append(" Decode(c.contribui_inss,'S', 1, 2) AS tp_reg_prev, ");
-		sql.append(" Decode(c.contribui_inss,'S', null, 2) AS TP_PLAN_RP, ");
+		sql.append(" Decode(c.contribui_inss,'S', 1, 2) AS tp_reg_prev, ");		
+		
+		//sql.append(" Decode(c.contribui_inss,'S', null, 2) AS TP_PLAN_RP, ");
+		
+		sql.append(" CASE c.FUNDO_PREVIDENCIARIO ");
+		sql.append(" WHEN 1 THEN 2  ");
+		sql.append(" WHEN 2 THEN 1  ");
+		sql.append(" ELSE 0  ");
+		sql.append("END AS TP_PLAN_RP,");
+	
+		
 		sql.append(" NULL  AS DSC_SAL_VAR, ");
 		sql.append(" NULL  AS TP_CONTR, ");
 		sql.append("  1     AS LTRAB_GERAL_TP_INSC, ");
