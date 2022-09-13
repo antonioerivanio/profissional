@@ -291,4 +291,20 @@ public class AdmissaoEsocialDAO {
 		}
 	}
 
+	public String findReciboEventoS2200(String referencia) {
+		try {
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append("select to_char(TXT_NR_RECIBO) from CONECTOR_ESOCIAL.CON_S2200_ADMISSAO_OLD s2200 inner join  ESOCIAL_API_INTEGRACAO.EST_EVENTO even on s2200.OCORRENCIA_ID = even.COD_OCORRENCIA ");
+			sql.append(" where s2200.id = :referencia");
+			//sql.append(" and s2200.OCORRENCIA_COD_ESTADO = 3 ");
+			
+			Query query = entityManager.createNativeQuery(sql.toString());
+			query.setParameter("referencia", referencia);
+			return (String) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
 }

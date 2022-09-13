@@ -486,8 +486,15 @@
 			</fieldset>
 			
 			
-			
-			<h:commandButton action="#{admissaoFormBean.salvarEvento}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			<ui:fragment  rendered="#{!admissaoFormBean.retificacao}">
+				<h:commandButton action="#{admissaoFormBean.salvarEvento}" value="Salvar" styleClass="bt-padrao fr mg-right-10" />
+			</ui:fragment>
+			<ui:fragment  rendered="#{admissaoFormBean.retificacao}">
+				<h:commandButton action="#{admissaoFormBean.salvarEvento}" 
+				value="Retificar" 
+				onclick="var x= confirm('Esse evento já foi enviado com sucesso. Você deseja gerar uma retificação desse evento?');if(!x){return false;}" 
+				styleClass="bt-padrao fr mg-right-10" />
+			</ui:fragment>
 			
 			<a href="/srh/paginas/tabelas/admissaoList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 

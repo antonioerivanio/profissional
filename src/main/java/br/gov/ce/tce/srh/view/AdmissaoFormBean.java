@@ -48,7 +48,8 @@ public class AdmissaoFormBean implements Serializable {
 	private Admissao admissaoAnterior = new Admissao();	
 	private List<DependenteEsocial> dependentesList;
 	boolean emEdicao = false;
-	
+	boolean isRetificacao = false;
+	String reciboEventoS2200 = "";
 	
 	//paginação
 	private UIDataTable dataTable = new UIDataTable();
@@ -62,8 +63,8 @@ public class AdmissaoFormBean implements Serializable {
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
 			admissaoAnterior = 	getEntidade();		
 			servidorFuncional = getEntidade().getFuncional();
-			consultar();			
 			emEdicao = true;
+			consultar();						
 		}
     }	
 	
@@ -73,6 +74,12 @@ public class AdmissaoFormBean implements Serializable {
 				boolean possuiCargo = representacaoFuncionalService.temAtivaByPessoal(servidorFuncional.getId());
 				entidade =  admissaoEsocialService.getEventoS2200ByServidor(servidorFuncional, possuiCargo);
 				dependentesList = dependenteEsocialTCEService.findByIdfuncional(servidorFuncional.getId());
+				if(emEdicao) {
+					reciboEventoS2200 = admissaoEsocialService.findReciboEventoS2200(admissaoAnterior.getReferencia());
+					if(reciboEventoS2200!= null && !reciboEventoS2200.equals("")) {
+						isRetificacao = true;
+					}
+				}
 	
 			} catch (Exception e) {		
 				e.printStackTrace();
@@ -99,6 +106,9 @@ public class AdmissaoFormBean implements Serializable {
 						admissaoEsocialService.excluir(admissaoAnterior);
 					}
 					  	 	
+				}
+				if(isRetificacao) {
+					entidade.setReferencia(entidade.getReferencia()+"_RET"+reciboEventoS2200);
 				}
 				admissaoEsocialService.salvar(entidade);
 				
@@ -161,6 +171,15 @@ public class AdmissaoFormBean implements Serializable {
 
 	public void setEmEdicao(boolean emEdicao) {
 		this.emEdicao = emEdicao;
+	}
+	
+
+	public boolean isRetificacao() {
+		return isRetificacao;
+	}
+
+	public void setRetificacao(boolean isRetificacao) {
+		this.isRetificacao = isRetificacao;
 	}
 
 	public UIDataTable getDataTable() {return dataTable;}

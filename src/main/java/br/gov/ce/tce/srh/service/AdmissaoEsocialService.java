@@ -76,4 +76,8 @@ public class AdmissaoEsocialService{
 		return dao.getEventoS2200ByServidor(servidorFuncional, possuiCargo);
 	}
 
+	public String findReciboEventoS2200(String referencia) {
+		return dao.findReciboEventoS2200(referencia);
+	}
+
 }
