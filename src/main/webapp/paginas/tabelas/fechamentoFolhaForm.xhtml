@@ -190,25 +190,29 @@
 								imediata da DCTFWeb?</label>
 						</div>
 						<div class="conteiner box-10" style="display: grid">
-							<h:selectOneRadio
+							<h:selectOneMenu
 								value="#{fechamentoFolhaForm.entidade.evtTransmissaoImediata}">
+								<f:selectItem itemLabel="Selecione..." itemValue="null"
+									noSelectionOption="true" />
 								<f:selectItem itemValue="S" itemLabel="Sim" />
-								<f:selectItem itemValue="N" itemLabel="Não" />
-							</h:selectOneRadio>
+								<a4j:ajax execute="@this" render="@this" />
+							</h:selectOneMenu>
 						</div>
 					</div>
 
 					<div class="select-box box-100" style="display: inline-flex;">
 						<div class="conteiner box-80">
-							<label for="">(naoValid) - Indicativo de exclusão de
-								apuração das aquisições de produção rural?</label>
+							<label for="">(naoValid) - Indicativo de não validação das regras de fechamento? </label>
 						</div>
 						<div class="conteiner box-10" style="display: grid">
-							<h:selectOneRadio
+							
+							<h:selectOneMenu
 								value="#{fechamentoFolhaForm.entidade.naoValidacao}">
+								<f:selectItem itemLabel="Selecione..." itemValue="null"
+									noSelectionOption="true" />
 								<f:selectItem itemValue="S" itemLabel="Sim" />
-								<f:selectItem itemValue="N" itemLabel="Não" />
-							</h:selectOneRadio>
+								<a4j:ajax execute="@this" render="@this" />								
+							</h:selectOneMenu>
 						</div>
 					</div>
 				</fieldset>

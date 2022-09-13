@@ -52,15 +52,15 @@ public class ReaberturaFolhaFormBean implements Serializable {
     ReaberturaFolhaEsocial flashParameter = (ReaberturaFolhaEsocial) FacesUtil.getFlashParameter("entidade");
     setEntidade(flashParameter != null ? flashParameter : fechamentoEventoEsocialService.getIncializarEventoS1299ByServidor());
 
-    // anoReferencia = referencia[0];
-    // mesReferencia = referencia[1];
-
-    // this.servidorEnvioList = funcionalService.findReaberturaFolhaEvento1299();
-
-    /*
-     * if (getEntidade() != null && getEntidade().getFuncional() != null) { servidorFuncional =
-     * getEntidade().getFuncional(); emEdicao = true; }
-     */
+    if(getEntidade() != null && getEntidade().getId() != null) {
+      //emEdicao = Boolean.TRUE;
+      
+      if(getEntidade().getPeriodoApuracao() != null) {
+        String[] periodosApuracao = getEntidade().getPeriodoApuracao().split("-");
+        getEntidade().setMesReferencia(periodosApuracao[0]);
+        getEntidade().setAnoReferencia(periodosApuracao[1]);
+      }
+  }
 
     consultar();
   }
