@@ -108,9 +108,9 @@ public class AbonoPermanenciaServiceImpl implements AbonoPermanenciaService{
 		if(entidade.getProcesso() != null && !entidade.getProcesso().isEmpty()) {
 			corrigeNumeroProcesso(entidade);
 			
-			if (!SRHUtils.validarProcesso( entidade.getProcesso() ) ) {
+		/*	if (!SRHUtils.validarProcesso( entidade.getProcesso() ) ) {
 				throw new SRHRuntimeException("O número do processo informado é inválido.");
-			}
+			}*/
 		}
 		
 		if(entidade.getFuncional().getSaida() != null && entidade.getDataImplantacao().after(entidade.getFuncional().getSaida())) {
