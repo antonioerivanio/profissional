@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:define name="content">
+
+		<div class="titulo-pagina">
+
+			<h2>Consulta de Envios S-1298</h2>
+
+		</div>
+
+		<h:form id="form" styleClass="formularios">
+
+			<h:messages infoClass="infoMessage" errorClass="errorMessage" />
+
+			<div class="input-box box-10">
+				<label for="">Ano Referência:</label>
+				<div class="conteiner">
+					<rich:select defaultLabel="Selecione..." id="ano"
+						value="#{reaberturaFolhaList.entidade.anoReferencia}"
+						>
+						<f:selectItems id="comboAno"
+							value="#{fechamentoFolhaForm.comboAno}" var="ano"
+							itemValue="#{ano}" itemLabel="#{ano}" />
+						<a4j:ajax event="change" execute="@this" />
+					</rich:select>
+				</div>
+			</div>
+
+			<div class="select-box box-15">
+				<label for="mes">Mês: </label>
+				<div class="conteiner">
+					<h:selectOneMenu id="mesF"
+						value="#{reaberturaFolhaList.entidade.mesReferencia}">
+						<f:selectItem id="mes0F" itemLabel="Selecione..." itemValue="0" />
+						<f:selectItem id="mes1F" itemLabel="Janeiro" itemValue="01" />
+						<f:selectItem id="mes2F" itemLabel="Fevereiro" itemValue="02" />
+						<f:selectItem id="mes3F" itemLabel="Março" itemValue="03" />
+						<f:selectItem id="mes4F" itemLabel="Abril" itemValue="04" />
+						<f:selectItem id="mes5F" itemLabel="Maio" itemValue="05" />
+						<f:selectItem id="mes6F" itemLabel="Junho" itemValue="06" />
+						<f:selectItem id="mes7F" itemLabel="Julho" itemValue="07" />
+						<f:selectItem id="mes8F" itemLabel="Agosto" itemValue="08" />
+						<f:selectItem id="mes9F" itemLabel="Setembro" itemValue="09" />
+						<f:selectItem id="mes10F" itemLabel="Outubro" itemValue="10" />
+						<f:selectItem id="mes11F" itemLabel="Novembro" itemValue="11" />
+						<f:selectItem id="mes12F" itemLabel="Dezembro" itemValue="12" />
+						<f:selectItem id="mes13F" itemLabel="Anual (13° salário)"
+							itemValue="13" />
+
+					</h:selectOneMenu>
+				</div>
+			</div>
+
+			<h:commandButton id="consultar" value="Consultar"
+				action="#{reaberturaFolhaList.consultar}"
+				styleClass="bt-padrao fl mg-top-18" render="scroller,lista" />
+
+
+			<div class="tabela-dados">
+
+				<rich:dataTable id="lista" var="item"
+					rows="#{reaberturaFolhaList.dataModel.pageSize}"
+					value="#{reaberturaFolhaList.dataModel}">
+
+					<rich:column id="col1" headerClass="cel-25">
+						<f:facet name="header">
+                            id
+                        </f:facet>
+						<center>
+							<h:outputText id="item1" value="#{item.id}"
+								styleClass="cel-25">								
+							</h:outputText>
+						</center>
+					</rich:column>
+					
+					<rich:column id="col2" headerClass="cel-25">
+						<f:facet name="header">
+                            periodo apuração
+                        </f:facet>
+						<center>
+							<h:outputText id="item2" value="#{item.periodoApuracao}"
+								styleClass="cel-25">								
+							</h:outputText>
+						</center>
+					</rich:column>
+					
+					<rich:column id="col3" headerClass="cel-25">
+						<f:facet name="header">
+                            referência
+                        </f:facet>
+						<center>
+							<h:outputText id="item3" value="#{item.referencia}"
+								styleClass="cel-25">								
+							</h:outputText>
+						</center>
+					</rich:column>
+
+					<rich:column id="col4"
+						rendered="#{not LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+						<f:facet name="header">
+                            DETALHAR
+                        </f:facet>
+						<h:commandLink id="detalhar" value="Detalhar"
+							action="#{reaberturaFolhaList.editar}" styleClass="ico-detail">
+							<f:setPropertyActionListener
+								target="#{reaberturaFolhaList.entidade}" value="#{item}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column id="col5"
+						rendered="#{LoginBean.anyGranted('ROLE_PESSOA_ALTERAR')}">
+						<f:facet name="header">
+                            EDITAR
+                        </f:facet>
+						<h:commandLink id="editar" value="Editar"
+							action="#{reaberturaFolhaList.editar}" styleClass="ico-editar">
+							<f:setPropertyActionListener
+								target="#{reaberturaFolhaList.entidade}" value="#{item}" />
+						</h:commandLink>
+					</rich:column>
+
+
+				</rich:dataTable>
+
+			</div>
+
+			<ui:fragment rendered="#{LoginBean.anyGranted('ROLE_ESOCIAL')}">
+
+				<h:commandButton id="incluir" value="Incluir"
+					action="incluirAlterar" styleClass="bt-padrao fr mg-right-15" />
+				<!--  rendered="#{LoginBean.anyGranted('ROLE_PESSOA_INSERIR')}"/> -->
+
+				<h:commandButton id="limpaTela" value="Limpar" action="listar"
+					styleClass="bt-padrao fr mg-right-15" />
+			</ui:fragment>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
