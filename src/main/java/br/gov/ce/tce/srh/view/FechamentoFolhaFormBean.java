@@ -52,40 +52,34 @@ public class FechamentoFolhaFormBean implements Serializable {
     FechamentoFolhaEsocial flashParameter = (FechamentoFolhaEsocial) FacesUtil.getFlashParameter("entidade");
     setEntidade(flashParameter != null ? flashParameter : fechamentoEventoEsocialService.getIncializarEventoS1299ByServidor());
 
-    // anoReferencia = referencia[0];
-    // mesReferencia = referencia[1];
+    if(getEntidade() != null && getEntidade().getId() != null) {
+        //emEdicao = Boolean.TRUE;
+        
+        if(getEntidade().getPeriodoApuracao() != null) {
+          String[] periodosApuracao = getEntidade().getPeriodoApuracao().split("-");
+          getEntidade().setMesReferencia(periodosApuracao[0]);
+          getEntidade().setAnoReferencia(periodosApuracao[1]);
+        }
+    }
 
-    // this.servidorEnvioList = funcionalService.findFechamentoFolhaEvento1299();
-
-    /*
-     * if (getEntidade() != null && getEntidade().getFuncional() != null) { servidorFuncional =
-     * getEntidade().getFuncional(); emEdicao = true; }
-     */
-
-    consultar();
+    //consultar();
   }
 
   public void consultar() {
-    if (servidorFuncional != null) {
-      try {
-        if (emEdicao) {
-          entidade = fechamentoEventoEsocialService.getEventoS1299ByServidor(servidorFuncional);
-        } else {
 
-        }
+    try {
 
-      } catch (Exception e) {
-        e.printStackTrace();
-        FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
-        logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-      }
-    } else {
-      FacesUtil.addErroMessage("Selecione um servidor.");
+      //entidade = fechamentoEventoEsocialService.getEventoS1299ByServidor(servidorFuncional);
+
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
+      logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
     }
   }
 
   public void salvar() {
-
     try {
 
       fechamentoEventoEsocialService.salvar(entidade);

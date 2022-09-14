@@ -69,7 +69,7 @@ public class FechamentoFolhaEsocialService {
       referenciaMesAno = bean.getAnoReferencia();
     }
 
-    bean.setReferenciaMesAnoTransient(referenciaMesAno);
+    bean.setReferenciaMesAnoTransient(referenciaMesAno);   
   }
 
   @Transactional
@@ -100,8 +100,8 @@ public class FechamentoFolhaEsocialService {
     final char evtComercializacaoProduto = 'N'; // NÃO
     final char evtContratoAvulsoNaoPortuario = 'N'; // NÃO
     final char evtInfoComplementarPrevidenciaria = 'N'; // NÃO
-    final char evtTransmissaoImediata = 'N'; // NÃO
-    final char naoValidacao = 'N'; // NÃO
+    final String evtTransmissaoImediata = null;
+    final String naoValidacao = null;
     final Integer tipoInscricaoEmpregador = 1; // CNPJ
     final String periodoApuracao = NOVEMBRO + "/" + SRHUtils.getAnoCorrente();
     final Integer indicativoApuracao = 1;// 1 - Mensal
