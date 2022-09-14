@@ -234,9 +234,9 @@ public class LicencaFormBean implements Serializable {
 
 				if (this.nrProcesso != null && ! this.nrProcesso.equals("")) {
 				
-					if (!SRHUtils.validarProcesso( this.nrProcesso.substring(6,10) + this.nrProcesso.substring(0,5) + this.nrProcesso.substring(11,12) ) ) {
+				/*	if (!SRHUtils.validarProcesso( this.nrProcesso.substring(6,10) + this.nrProcesso.substring(0,5) + this.nrProcesso.substring(11,12) ) ) {
 						throw new SRHRuntimeException("O Número do Processo informado é inválido.");
-					}
+					}*/
 				
 				}
 

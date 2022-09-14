@@ -128,7 +128,7 @@ public class AbonoPermanenciaFormBean implements Serializable{
 			
 			this.nrProcesso = nrProcesso;
 
-			try {
+			/*try {
 
 				if (!SRHUtils.validarProcesso( SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(nrProcesso, 0) ) ) {
 					throw new SRHRuntimeException("O Número do Processo informado é inválido.");
@@ -140,7 +140,7 @@ public class AbonoPermanenciaFormBean implements Serializable{
 			} catch (Exception e) {
 				FacesUtil.addErroMessage("Ocorreu um erro no campo processo. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
-			}
+			}*/
 			
 		}
 		

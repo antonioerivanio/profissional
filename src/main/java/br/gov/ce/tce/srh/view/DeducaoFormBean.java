@@ -161,14 +161,14 @@ public class DeducaoFormBean implements Serializable {
 
 			try {
 
-				if (!SRHUtils.validarProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(this.nrProcesso, 0)) ) {
+				/*if (!SRHUtils.validarProcesso(SRHUtils.formatatarDesformatarNrProcessoPadraoSAP(this.nrProcesso, 0)) ) {
 					nrProcessoValido = false;
 					FacesUtil.addErroMessage("O Número do Processo informado é inválido.");
 					logger.warn("Ocorreu o seguinte erro: O Número do Processo informado é inválido.");
 				    
-				} else {
+				} else {*/
 					nrProcessoValido = true;
-				}
+				//}
 
 			} catch (SRHRuntimeException e) {
 				FacesUtil.addErroMessage(e.getMessage());
