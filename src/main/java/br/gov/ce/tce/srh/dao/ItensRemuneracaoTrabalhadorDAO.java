@@ -86,6 +86,41 @@ public class ItensRemuneracaoTrabalhadorDAO {
 	    
 	    return sql.toString();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ItensRemuneracaoTrabalhador> findS1207ByDemonstrativosDeValores(DemonstrativosDeValores demonstrativosDeValores, String matricula) {	
+		Query query = entityManager.createNativeQuery(getSQLItensRemuneracaoBeneficio(), ItensRemuneracaoTrabalhador.class);
+		query.setParameter("idDmDev", demonstrativosDeValores.getId() );
+		query.setParameter("ideDmDev", demonstrativosDeValores.getIdeDmDev() );
+		query.setParameter("matricula", matricula);
+		return query.getResultList();
+	}
+	
+	public String getSQLItensRemuneracaoBeneficio() {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" Select " );
+		sql.append(" ( ROWNUM * -1) as id, ");
+		sql.append(" :idDmDev as IDDMDEV," );
+		sql.append(" null as IDINFOREMUNPERANTERIORES, " );
+		sql.append(" null as IDINFOREMUNPERAPUR, " );
+		sql.append(" ip.rubrica as COD_RUBR, " );
+		sql.append(" ip.TABELA as IDE_TAB_RUBR," );
+		sql.append(" ip.valor as VR_RUBR," );
+		sql.append(" null as QTD_RUBR," );
+		sql.append(" null as FATOR_RUBR," );
+		sql.append(" 0 as IND_APUR_IR" );
+		sql.append(" from srh.fp_dadospagto dp inner join srh.FP_ITENSAPOSENTADOS ip on dp.idpagto = ip.idpagto" );
+		//sql.append(" inner join srh.ESOCIAL_RUBRICACONFIG rc on ip.rubrica = rc.CODIGORUBRICA" );
+		//sql.append(" inner join srh.ESOCIAL_RUBRICA_TABELA rt on rt.id = rc.IDTABELARUBRICA" );
+		sql.append(" where dp.arquivo = :ideDmDev" );
+		sql.append(" and dp.cod_func = :matricula" );
+		//sql.append(" and rubrica not in ('BRU','DES','LIQ') " );
+		sql.append(" order by dp.num_ano desc, dp.num_mes desc, dp.arquivo, rubrica" );
+		//sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
+	    
+	    return sql.toString();
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<ItensRemuneracaoTrabalhador> findItensRemuneracaoTrabalhadorByIdfuncional(Long idFuncional) {

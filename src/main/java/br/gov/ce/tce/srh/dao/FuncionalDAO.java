@@ -351,6 +351,7 @@ public class FuncionalDAO {
     return query.getResultList();
   }
 
+  @SuppressWarnings("unchecked")
   public List<Funcional> findServidoresEvento2230() {
     try {
       StringBuffer sql = new StringBuffer();
@@ -522,7 +523,7 @@ public class FuncionalDAO {
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
 		
 		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOTRABALHADOR where IDFUNCIONAL is not null) ");
-		sql.append(" and f.id  in (Select IDFUNCIONAL from ESOCIAL_ADMISSAO ) ");
+		//sql.append(" and f.id  in (Select IDFUNCIONAL from ESOCIAL_ADMISSAO ) ");
 		sql.append(" ORDER BY f.NOME ");
 		
 		try {
@@ -631,7 +632,7 @@ public class FuncionalDAO {
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
 		
 		sql.append(" and f.id not in (Select IDFUNCIONAL from ESOCIAL_REMUNERACAOSERVIDOR where IDFUNCIONAL is not null) ");
-		sql.append(" and f.id  in (Select IDFUNCIONAL from ESOCIAL_ADMISSAO ) ");
+		//sql.append(" and f.id  in (Select IDFUNCIONAL from ESOCIAL_ADMISSAO ) ");
 		sql.append(" ORDER BY f.NOME ");
 		
 		try {
@@ -644,7 +645,7 @@ public class FuncionalDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Funcional> findBeneficioesEvento1207(String anoReferencia, String mesReferencia) {
+	public List<Funcional> findBeneficiosEventoS1207(String anoReferencia, String mesReferencia) {
 		
 		StringBuffer sql = new StringBuffer();
 

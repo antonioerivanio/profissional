@@ -101,17 +101,29 @@ public class DemonstrativosDeValoresDAO {
 		sql.append(" null as COD_CBO, ");
 		sql.append(" null as NAT_ATIVIDADE, ");
 		sql.append(" null as QTD_DIAS_TRAB, ");
-		sql.append(" CASE pg.mes_esocial WHEN to_number(dp.num_mes) THEN 0 ELSE 1 END AS FLINFOREMUNPERANTERIORES ");
+		//sql.append(" CASE pg.mes_esocial WHEN to_number(dp.num_mes) THEN 0 ELSE 1 END AS FLINFOREMUNPERANTERIORES ");
+		
+		sql.append(" CASE pg.mes_esocial  ");
+		sql.append(" WHEN to_number(Decode(dp.num_mes,'13', dp.MES_GFIP, dp.num_mes))  ");
+		sql.append(" THEN 0 ELSE 1 END AS FLINFOREMUNPERANTERIORES  ");
+		
+		sql.append(" FROM srh.fp_pagamentos pg  ");
+		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo  ");
+		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func  ");		 
+		sql.append(" INNER JOIN srh.tb_funcional f ON f.id = dp.idfuncional ");
 				  
-		sql.append(" FROM srh.fp_pagamentos pg ");
-		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
-		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
-		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
-		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		//sql.append(" FROM srh.fp_pagamentos pg ");
+		//sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
+		//sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
+		//sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
+		//sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia");
 		
-		sql.append(" AND dp.num_mes <> '13' ");
+		//sql.append(" AND dp.num_mes <> '13' ");
+		
+		sql.append(" AND (dp.num_mes <> '13' or (dp.num_mes = '13' and RESCISAO_13 = 'S' )) ");
+		
 		if(idFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");
 		}
@@ -216,16 +228,23 @@ public class DemonstrativosDeValoresDAO {
 		sql.append(" null as QTD_DIAS_TRAB, ");
 		sql.append(" CASE pg.mes_esocial WHEN to_number(dp.num_mes) THEN 0 ELSE 1 END AS FLINFOREMUNPERANTERIORES ");
 				  
-		sql.append(" FROM srh.fp_pagamentos pg ");
-		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
-		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
-		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
-		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		//sql.append(" FROM srh.fp_pagamentos pg ");
+		//sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
+		//sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
+		//sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
+		//sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		
+		sql.append(" FROM srh.fp_pagamentos pg  ");
+		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo  ");
+		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func  ");		 
+		sql.append(" INNER JOIN srh.tb_funcional f ON f.id = dp.idfuncional ");
 		sql.append(" INNER JOIN srh.ESOCIAL_BENEFICIO b ON b.idfuncional = f.id ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia");
 		
-		sql.append(" AND dp.num_mes <> '13' ");
+		//sql.append(" AND dp.num_mes <> '13' ");
+		sql.append(" AND (dp.num_mes <> '13' or (dp.num_mes = '13' and RESCISAO_13 = 'S' )) ");
+		
 		if(idFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");
 		}

@@ -88,7 +88,7 @@ public class RemuneracaoBeneficioFormBean implements Serializable {
     }	
 	
 	public void carregaServidores() {
-		this.servidorEnvioList = funcionalService.findBeneficioesEvento1207(anoReferencia, mesReferencia);
+		this.servidorEnvioList = funcionalService.findBeneficiosEventoS1207(anoReferencia, mesReferencia);
 	}
 	public void consultar() {
 		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("") && servidorFuncional != null) {
@@ -99,7 +99,7 @@ public class RemuneracaoBeneficioFormBean implements Serializable {
 				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresBeneficio(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());				
 				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
 				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
-				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
+				itensRemuneracaoTrabalhadorList = itensRemuneracaoTrabalhadorService.findS1207ByDemonstrativosDeValores(demonstrativosDeValoresList);
 				
 				entidade.setDmDev(demonstrativosDeValoresList);
 				//entidade.setRemunOutrEmpr(remuneracaoOutraEmpresaList);

@@ -79,6 +79,48 @@ public class ItensRemuneracaoTrabalhadorService{
 		}
 		return itensRemuneracaoTrabalhadorReturnList;
 	}
+	
+	
+	public List<ItensRemuneracaoTrabalhador> findS1207ByDemonstrativosDeValores(List<DemonstrativosDeValores> demonstrativosDeValoresList) {
+		List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorReturnList = new  ArrayList<ItensRemuneracaoTrabalhador>();
+		String matricula = "";
+		if(demonstrativosDeValoresList != null && !demonstrativosDeValoresList.isEmpty()) {
+			for (DemonstrativosDeValores demonstrativosDeValores : demonstrativosDeValoresList) {
+				if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(1)) {
+					matricula = demonstrativosDeValores.getInfoRemuneracaoPeriodoAnteriores().getMatricula().substring(1);
+				}
+				else {
+					matricula = demonstrativosDeValores.getInfoRemuneracaoPeriodoApuracao().getMatricula().substring(1);
+				}
+				
+				List<ItensRemuneracaoTrabalhador> itensRemuneracaoTrabalhadorList = dao.findS1207ByDemonstrativosDeValores(demonstrativosDeValores, matricula);
+				if(itensRemuneracaoTrabalhadorList != null && !itensRemuneracaoTrabalhadorList.isEmpty()) {	
+					for (ItensRemuneracaoTrabalhador itensRemuneracaoTrabalhador : itensRemuneracaoTrabalhadorList) {
+						itensRemuneracaoTrabalhador.setId(null);
+						if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(1)) {
+							itensRemuneracaoTrabalhador.setInfoRemuneracaoPeriodoAnteriores(demonstrativosDeValores.getInfoPerAnt());
+						}
+						else {
+							itensRemuneracaoTrabalhador.setInfoRemuneracaoPeriodoApuracao(demonstrativosDeValores.getInfoPerApur());
+						}
+						
+					}
+					itensRemuneracaoTrabalhadorReturnList.addAll(itensRemuneracaoTrabalhadorList);	
+					demonstrativosDeValores.setItensRemuneracaoTrabalhadorList(itensRemuneracaoTrabalhadorList);
+					if(demonstrativosDeValores.getFlInfoRemunPerAnteriores().equals(1)) {
+						demonstrativosDeValores.getInfoPerAnt().setItensRemun(itensRemuneracaoTrabalhadorList);
+					}
+					else {
+						demonstrativosDeValores.getInfoPerApur().setItensRemun(itensRemuneracaoTrabalhadorList);
+					}
+					
+				}
+				
+			}
+			
+		}
+		return itensRemuneracaoTrabalhadorReturnList;
+	}
 
 	@Transactional
 	public void salvar(List<ItensRemuneracaoTrabalhador> dependentesList) {

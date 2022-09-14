@@ -573,16 +573,22 @@
 				</fieldset>
 			</ui:fragment>
 			
+			<ui:fragment  rendered="#{remuneracaoTrabalhadorFormBean.emConsulta}">
+				<h:commandButton 
+					action="#{remuneracaoTrabalhadorFormBean.salvarEvento}" 
+					value="Salvar" 					
+					styleClass="bt-padrao fr mg-right-10" />
+			</ui:fragment>
 			
-			<h:commandButton 
-				action="#{remuneracaoTrabalhadorFormBean.salvarEvento}" 
-				value="Salvar" 
-				onclick="var x= confirm('Deseja realmente gerar o evento para todos os servidores?');if(!x){return false;}" 
-				styleClass="bt-padrao fr mg-right-10" />
-			
+			<ui:fragment  rendered="#{!remuneracaoTrabalhadorFormBean.emConsulta}">
+				<h:commandButton 
+					action="#{remuneracaoTrabalhadorFormBean.salvarEvento}" 
+					value="Salvar" 
+					onclick="var x= confirm('Deseja realmente gerar o evento para todos os servidores?');if(!x){return false;}" 
+					styleClass="bt-padrao fr mg-right-10" />
+
+			</ui:fragment>
 			<a href="/srh/paginas/tabelas/remuneracaoTrabalhadorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
-			
-			
 
 		</h:form>
 
