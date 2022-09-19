@@ -49,11 +49,11 @@
 						</div>
 					</ui:fragment>
 				</div>
-				<a4j:commandButton actionListener="#{desligamentoFormBean.consultar}"
+				<h:commandButton actionListener="#{desligamentoFormBean.consultar}"
 					rendered="#{!desligamentoFormBean.emEdicao}"
-					value="Consultar" styleClass="bt-padrao fr mg-right-10" execute="@form" render="form">
+					value="Consultar" styleClass="bt-padrao fr mg-right-10" >
 							
-				</a4j:commandButton>
+				</h:commandButton>
 			</fieldset>
 
 			<h:panelGroup id="dadosEvento2299">
@@ -139,7 +139,8 @@
 							<label for="">Data *</label>
 							<div class="conteiner">
 								<h:inputText id="dataDesligamento" name="dataDesligamento"
-									styleClass="maskAnoMes"
+									styleClass="maskData"
+									 converter="dateConverter"
 									value="#{desligamentoFormBean.entidade.dtDesligamento}">
 								</h:inputText>								
 							</div>
