@@ -89,9 +89,6 @@ public class DesligamentoFormBean implements Serializable {
         }
       }    
       
-      
-     
-     
     } catch (Exception e) {
       e.printStackTrace();
       FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");

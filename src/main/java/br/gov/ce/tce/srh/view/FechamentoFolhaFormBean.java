@@ -57,8 +57,8 @@ public class FechamentoFolhaFormBean implements Serializable {
         
         if(getEntidade().getPeriodoApuracao() != null) {
           String[] periodosApuracao = getEntidade().getPeriodoApuracao().split("-");
-          getEntidade().setMesReferencia(periodosApuracao[0]);
-          getEntidade().setAnoReferencia(periodosApuracao[1]);
+          getEntidade().setMesReferencia(periodosApuracao[1]);
+          getEntidade().setAnoReferencia(periodosApuracao[0]);
         }
     }
 

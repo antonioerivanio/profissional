@@ -54,7 +54,7 @@ public class FechamentoFolhaListBean implements Serializable {
     try {
       if (this.getEntidade().getMesReferencia() != null && this.getEntidade().getMesReferencia() != "0" && this.getEntidade().getAnoReferencia() != null
                                 && !this.getEntidade().getAnoReferencia().isEmpty()) {
-        periodoApuracao = this.getEntidade().getMesReferencia() + "-" + this.getEntidade().getMesReferencia();
+        periodoApuracao = this.getEntidade().getAnoReferencia() + "-" + this.getEntidade().getMesReferencia();
       }
 
       count = fechamentoEventoEsocialService.count(periodoApuracao);
