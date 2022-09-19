@@ -115,7 +115,19 @@ public class RemuneracaoBeneficioEsocialService{
 			String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 			List<Funcional> beneficioEnvioList = funcionalService.findBeneficiosEventoS1207(anoReferencia, mesReferencia);
 			
-			for (Funcional beneficioFuncional : beneficioEnvioList) {
+			List<Funcional> beneficioEnvioListControle = new ArrayList<Funcional>();
+			
+			int limiteGeracao = 20;
+			if(limiteGeracao > beneficioEnvioList.size()) {
+				limiteGeracao = beneficioEnvioList.size();
+			}
+			
+			for (int i = 0; i < limiteGeracao; i++) {
+				beneficioEnvioListControle.add(beneficioEnvioList.get(i));
+			}
+			
+			
+			for (Funcional beneficioFuncional : beneficioEnvioListControle) {
 				RemuneracaoBeneficio remuneracaoBeneficio = dao.getEventoS1207(mesReferencia, anoReferencia, periodoApuracao, beneficioFuncional);
 				RemuneracaoBeneficio remuneracaoBeneficioClonado = remuneracaoBeneficio.clone();
 				remuneracaoBeneficioClonado.setId(null);

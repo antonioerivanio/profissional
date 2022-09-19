@@ -115,7 +115,19 @@ public class RemuneracaoServidorEsocialService{
 			String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 			List<Funcional> servidorEnvioList = funcionalService.findServidoresEvento1202(anoReferencia, mesReferencia);
 			
-			for (Funcional servidorFuncional : servidorEnvioList) {
+			List<Funcional> servidorEnvioListControle = new ArrayList<Funcional>();
+			
+			int limiteGeracao = 20;
+			if(limiteGeracao > servidorEnvioList.size()) {
+				limiteGeracao = servidorEnvioList.size();
+			}
+			
+			for (int i = 0; i < limiteGeracao; i++) {
+				servidorEnvioListControle.add(servidorEnvioList.get(i));
+			}
+			
+			
+			for (Funcional servidorFuncional : servidorEnvioListControle) {
 				RemuneracaoServidor remuneracaoServidor = dao.getEventoS1202(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
 				RemuneracaoServidor remuneracaoServidorClonado = remuneracaoServidor.clone();
 				remuneracaoServidorClonado.setId(null);

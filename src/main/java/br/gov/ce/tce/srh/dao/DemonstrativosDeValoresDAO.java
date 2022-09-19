@@ -90,7 +90,7 @@ public class DemonstrativosDeValoresDAO {
 		
 		
 		sql.append("  CASE f.idocupacao ");
-		sql.append("  WHEN 33 THEN 302 ");
+		sql.append("  WHEN 33 THEN Decode(fc.idfuncional, null, 302, 410) ");
 		sql.append("  WHEN 14 THEN 901 ");
 		sql.append("  WHEN 15 THEN 901 ");
 		sql.append("  ELSE 301 ");
@@ -111,6 +111,7 @@ public class DemonstrativosDeValoresDAO {
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo  ");
 		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func  ");		 
 		sql.append(" INNER JOIN srh.tb_funcional f ON f.id = dp.idfuncional ");
+		sql.append(" LEFT JOIN srh.tb_funcionalcedidos	 fc ON f.id = fc.idfuncional ");
 				  
 		//sql.append(" FROM srh.fp_pagamentos pg ");
 		//sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");

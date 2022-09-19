@@ -112,11 +112,18 @@ public class PagamentosEsocialService{
 			//String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 			List<Funcional> servidorList = funcionalService.findServidorEvento1210(anoReferencia, mesReferencia);
 			
-			List<Funcional> servidorListTeste = new ArrayList<Funcional>();
-			for (int i = 0; i < 5; i++) {
-				servidorListTeste.add(servidorList.get(i));
+			List<Funcional> servidorEnvioListControle = new ArrayList<Funcional>();
+			
+			int limiteGeracao = 20;
+			if(limiteGeracao > servidorList.size()) {
+				limiteGeracao = servidorList.size();
 			}
-			for (Funcional servidor : servidorListTeste) {
+			
+			for (int i = 0; i < limiteGeracao; i++) {
+				servidorEnvioListControle.add(servidorList.get(i));
+			}
+			
+			for (Funcional servidor : servidorEnvioListControle) {
 				Pagamentos pagamentos = getEventoS1210(mesReferencia, anoReferencia, servidor);
 				//Pagamentos pagamentosClonado = pagamentos.clone();
 				//pagamentosClonado.setId(null);

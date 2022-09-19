@@ -171,7 +171,7 @@ public class AdmissaoEsocialDAO {
 		sql.append(" CASE c.FUNDO_PREVIDENCIARIO ");
 		sql.append(" WHEN 1 THEN 2  ");
 		sql.append(" WHEN 2 THEN 1  ");
-		sql.append(" ELSE 0  ");
+		sql.append(" ELSE null  ");
 		sql.append("END AS TP_PLAN_RP,");
 	
 		
