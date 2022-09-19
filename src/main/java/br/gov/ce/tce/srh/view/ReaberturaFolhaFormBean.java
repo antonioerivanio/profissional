@@ -56,9 +56,9 @@ public class ReaberturaFolhaFormBean implements Serializable {
       //emEdicao = Boolean.TRUE;
       
       if(getEntidade().getPeriodoApuracao() != null) {
-        String[] periodosApuracao = getEntidade().getPeriodoApuracao().split("-");
-        getEntidade().setMesReferencia(periodosApuracao[0]);
-        getEntidade().setAnoReferencia(periodosApuracao[1]);
+        String[] periodosApuracao = getEntidade().getPeriodoApuracao().split("-");        
+        getEntidade().setAnoReferencia(periodosApuracao[0]);
+        getEntidade().setMesReferencia(periodosApuracao[1]);
       }
   }
 

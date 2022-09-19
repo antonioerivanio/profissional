@@ -62,15 +62,15 @@ public class ReaberturaFolhaEsocialService {
   public void validarCampoAntesSalvar(ReaberturaFolhaEsocial bean) {
     String periodoApuracao = getPeriodoApuracaoStr(bean);
     bean.setPeriodoApuracao(periodoApuracao);
-    String referenciaMesAno = null;
+    String referenciaAnoMes = null;
 
     if (bean.getIndicativoApuracao() == 1) {
-      referenciaMesAno = bean.getMesReferencia() + bean.getAnoReferencia();
+      referenciaAnoMes =  bean.getAnoReferencia() + bean.getMesReferencia();
     } else {
-      referenciaMesAno = bean.getAnoReferencia();
+      referenciaAnoMes = bean.getAnoReferencia();
     }
 
-    bean.setReferenciaMesAnoTransient(referenciaMesAno);
+    bean.setReferenciaMesAnoTransient(referenciaAnoMes);
   }
 
   @Transactional
@@ -113,7 +113,7 @@ public class ReaberturaFolhaEsocialService {
       if (bean.getMesReferencia().equals("13")) {
         periodoApuracaoStr = bean.getAnoReferencia();
       } else {
-        periodoApuracaoStr = bean.getMesReferencia() + "-" + bean.getAnoReferencia();
+        periodoApuracaoStr = bean.getAnoReferencia() + "-" + bean.getMesReferencia()  ;
       }
     } else {// ANUAL
       if (bean.getAnoReferencia() == null) {

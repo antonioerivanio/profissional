@@ -64,7 +64,7 @@ public class FechamentoFolhaEsocialService {
     String referenciaMesAno = null;
 
     if (bean.getIndicativoApuracao() == 1) {
-      referenciaMesAno = bean.getMesReferencia() + bean.getAnoReferencia();
+      referenciaMesAno = bean.getAnoReferencia() + bean.getMesReferencia();
     } else {
       referenciaMesAno = bean.getAnoReferencia();
     }
@@ -125,7 +125,7 @@ public class FechamentoFolhaEsocialService {
       if (bean.getMesReferencia().equals("13")) {
         periodoApuracaoStr = bean.getAnoReferencia();
       } else {
-        periodoApuracaoStr = bean.getMesReferencia() + "-" + bean.getAnoReferencia();
+        periodoApuracaoStr = bean.getAnoReferencia() + "-" +  bean.getMesReferencia();
       }
     } else {// ANUAL
       if (bean.getAnoReferencia() == null) {

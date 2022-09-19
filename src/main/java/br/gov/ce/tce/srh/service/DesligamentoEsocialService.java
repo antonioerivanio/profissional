@@ -85,7 +85,7 @@ public class DesligamentoEsocialService {
     return dao.getEventoS2299yServidor(servidorFuncional);
   }
 
-  final static String DATE_FORMAT = "dd-MM-yyyy";
+  //final static String DATE_FORMAT = "dd-MM-yyyy";
 
   /***
    * valida campos obrigatórios
@@ -95,9 +95,7 @@ public class DesligamentoEsocialService {
     
     if (bean.getMtvDesligamento() == null || bean.getMtvDesligamento().isEmpty()) {
       throw new NullPointerException("Campo motivo desligamento é obrigatório");
-    }
-    
-    resultado  = isCategoriaValida(bean.getMtvDesligamento(), bean.getCodigoCategoria().toString());        
+    }        
     
     if (bean.getDtDesligamento() == null) {
       throw new NullPointerException("Campo data desligamento é obrigatório");
@@ -113,54 +111,6 @@ public class DesligamentoEsocialService {
 
     return  resultado;
   }
-  
-  private Boolean isCategoriaValida(String codMotivoDesligamento, String codigoCategoria) {
-    if(Integer.valueOf(codMotivoDesligamento).equals(TipoMotivoDesligamento.APOSENTADORIA_EXCERTO_POR_INVALIDEZ.getCodigo())) { 
-      //Aposentadoria, exceto por invalidez                               
-      ArrayList<CodigoCategoria> codigosCategoiraValidoParaDesligamento38 = new ArrayList<CodigoCategoria>();
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG101);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG301);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG302);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG303);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG306);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG307);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG309);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG310);
-      codigosCategoiraValidoParaDesligamento38.add(CodigoCategoria.CATEG312);
-      
-      if(!codigosCategoiraValidoParaDesligamento38.contains(CodigoCategoria.getByCodigo(codigoCategoria))) {
-        throw new SRHRuntimeException("Ops!, Os codigos da categorias permitido para o motivo " + TipoMotivoDesligamento.APOSENTADORIA_EXCERTO_POR_INVALIDEZ.getDescricao() + " é [101, 301, 302, 303, 306, 307, 309, 310, 312]");
-      }
-    } else if(Integer.valueOf(codMotivoDesligamento).equals(TipoMotivoDesligamento.APOSENTADORIA_SERVIDOR_ESTATUTARIO_POR_INVALIDEZ.getCodigo())){
-      //Aposentadoria de servidor estatutário, por invalidez
-      ArrayList<CodigoCategoria> codigosCategoiraValidoParaDesligamento39 = new ArrayList<CodigoCategoria>();    
-      codigosCategoiraValidoParaDesligamento39.add(CodigoCategoria.CATEG301);
-      codigosCategoiraValidoParaDesligamento39.add(CodigoCategoria.CATEG306);    
-      codigosCategoiraValidoParaDesligamento39.add(CodigoCategoria.CATEG309);
-      
-      if(!codigosCategoiraValidoParaDesligamento39.contains(CodigoCategoria.getByCodigo(codigoCategoria))) {
-        throw new SRHRuntimeException("Ops!, Os codigos da categorias permitido para o motivo " + TipoMotivoDesligamento.APOSENTADORIA_SERVIDOR_ESTATUTARIO_POR_INVALIDEZ.getDescricao() + " é [301, 306, 309]");
-      }      
-    }else if(Integer.valueOf(codMotivoDesligamento).equals(TipoMotivoDesligamento.EXONERACAO.getCodigo())){
-      //exoneracao 
-      ArrayList<CodigoCategoria> codigosCategoiraValidoParaDesligamento23 = new ArrayList<CodigoCategoria>();
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG301);
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG302);
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG303);
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG306);
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG307);
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG309);
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG310);
-      codigosCategoiraValidoParaDesligamento23.add(CodigoCategoria.CATEG312);
-      
-      if(!codigosCategoiraValidoParaDesligamento23.contains(CodigoCategoria.getByCodigo(codigoCategoria))) {       
-          throw new SRHRuntimeException("Ops!, Os codigos da categorias permitido para o motivo " + TipoMotivoDesligamento.EXONERACAO.getDescricao() + " é [301, 302, 303, 306, 307, 309, 310, 312]" );        
-      }     
-    }
-    
-    return Boolean.TRUE;
-  }
-  
 
   public Funcional getFuncionalById(Long idFuncional) {
     return dao.getFuncionalById(idFuncional);
