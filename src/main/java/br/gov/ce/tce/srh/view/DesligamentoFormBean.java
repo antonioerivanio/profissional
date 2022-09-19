@@ -99,10 +99,8 @@ public class DesligamentoFormBean implements Serializable {
 
   public void salvarEvento() {
     try {
-      if (servidorFuncional != null) {
-        if (desligamentoEsocialService.isOk(entidade)) {
-          desligamentoEsocialService.salvar(entidade);
-        }
+      if (servidorFuncional != null && (desligamentoEsocialService.isOk(entidade))) {        
+          desligamentoEsocialService.salvar(entidade);        
       }
 
       FacesUtil.addInfoMessage("Operação realizada com sucesso.");
