@@ -70,16 +70,20 @@ public class ItensRemuneracaoTrabalhadorDAO {
 		sql.append(" null as IDINFOREMUNPERANTERIORES, " );
 		sql.append(" null as IDINFOREMUNPERAPUR, " );
 		sql.append(" ip.rubrica as COD_RUBR, " );
-		sql.append(" rt.CODIGO as IDE_TAB_RUBR," );
+		//sql.append(" rt.CODIGO as IDE_TAB_RUBR," );
+		//sql.append(" '001' as IDE_TAB_RUBR," );
+		sql.append(" Decode(dp.num_mes,'13', '004', '001') as IDE_TAB_RUBR," );
+		
 		sql.append(" ip.valor as VR_RUBR," );
 		sql.append(" null as QTD_RUBR," );
 		sql.append(" null as FATOR_RUBR," );
 		sql.append(" 0 as IND_APUR_IR" );
 		sql.append(" from srh.fp_dadospagto dp inner join srh.fp_itenspagto ip on dp.idpagto = ip.idpagto" );
 		sql.append(" inner join srh.ESOCIAL_RUBRICACONFIG rc on ip.rubrica = rc.CODIGORUBRICA" );
-		sql.append(" inner join srh.ESOCIAL_RUBRICA_TABELA rt on rt.id = rc.IDTABELARUBRICA" );
+		//sql.append(" inner join srh.ESOCIAL_RUBRICA_TABELA rt on rt.id = rc.IDTABELARUBRICA" );
 		sql.append(" where dp.arquivo = :ideDmDev" );
 		sql.append(" and dp.cod_func = :matricula" );
+		sql.append(" and rc.IDTABELARUBRICA = Decode(dp.num_mes,'13', 4, 1) ");
 		sql.append(" and rubrica not in ('BRU','DES','LIQ') " );
 		sql.append(" order by dp.num_ano desc, dp.num_mes desc, dp.arquivo, rubrica" );
 		//sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 

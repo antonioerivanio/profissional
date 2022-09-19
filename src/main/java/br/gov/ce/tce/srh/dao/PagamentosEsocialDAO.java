@@ -58,14 +58,14 @@ public class PagamentosEsocialDAO {
 
 		sql.append(" Select count(rt) FROM Pagamentos rt  WHERE 1=1 ");
 
-		sql.append(" and rt.perApur = :periodoApuracao ");
+		sql.append(" and rt.perApurCompetencia = :periodoApuracao ");
 		
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( rt.nmTrabDesc ) like :nome ");
 		}
 		
 		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND rt.cpfTrab = :cpf ");
+			sql.append("  AND rt.cpfBenef = :cpf ");
 		}
 	
 						
@@ -89,14 +89,14 @@ public class PagamentosEsocialDAO {
 
 		sql.append("  SELECT rt FROM Pagamentos rt  WHERE 1=1 ");
 		
-		sql.append(" and rt.perApur = :periodoApuracao ");
+		sql.append(" and rt.perApurCompetencia = :periodoApuracao ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( rt.nmTrabDesc ) like :nome ");
 		}
 		
 		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND rt.cpfTrab = :cpf ");
+			sql.append("  AND rt.cpfBenef = :cpf ");
 		}
 
 		sql.append("  ORDER BY rt.nmTrabDesc ");
@@ -144,6 +144,7 @@ public class PagamentosEsocialDAO {
 		sql.append(" p.cpf||'-'||:periodoApuracao as referencia, ");
 		sql.append("  1 as IND_APURACAO, ");
 		sql.append(" :periodoApuracao as PER_APUR,       ");
+		sql.append(" :periodoApuracao as PER_APUR_COMPETENCIA,       ");
 		sql.append("  p.cpf as CPF_BENEF ");
 					
 		sql.append(" FROM srh.fp_pagamentos pg ");

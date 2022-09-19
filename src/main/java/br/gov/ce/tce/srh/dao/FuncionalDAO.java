@@ -490,7 +490,7 @@ public class FuncionalDAO {
 		try {
 			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
 					+ "FROM Funcional f "
-					+ "WHERE f.status = 5"				 
+					+ "WHERE 1=1 "				 
 					+ "AND f.id  IN (SELECT b.funcional.id FROM Beneficiario b) "
 					+ "AND f.id  NOT IN (SELECT b.funcional.id FROM Beneficio b) "
 					+ "ORDER BY f.nome", Funcional.class);
@@ -679,22 +679,60 @@ public class FuncionalDAO {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Funcional> findBeneficioesEvento1210(String anoReferencia, String mesReferencia) {
-		try {
-			TypedQuery<Funcional> query = entityManager.createQuery("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) "
-					+ "FROM Funcional f "
-					+ "WHERE 1 = 1 "				 
-					+ "AND ("
-					+ "f.id  IN (SELECT rt.funcional.id FROM RemuneracaoTrabalhador rt) "
-					+ "OR (f.id  IN (SELECT rs.funcional.id FROM RemuneracaoServidor rs) "
-					+ "OR (f.id  IN (SELECT rb.funcional.id FROM RemuneracaoBeneficio rb) "
-					+ " )"
-					+ "AND f.id  NOT IN (SELECT p.funcional.id FROM Pagamentos p) "
-					+ "ORDER BY f.nome", Funcional.class);
+	/*	try {
+			
+			StringBuffer sql = new StringBuffer();
+			
+			sql.append("SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) ");
+			sql.append("FROM Funcional f ");
+			sql.append("WHERE f.id  IN (SELECT rt.funcional.id FROM RemuneracaoTrabalhador rt) ");
+			sql.append("OR f.id  IN (SELECT rs.funcional.id FROM RemuneracaoServidor rs) ");
+			sql.append("OR (f.id  IN (SELECT rb.funcional.id FROM RemuneracaoBeneficio rb) ");
+			//sql.append("AND f.id  NOT IN (SELECT p.funcional.id FROM Pagamentos p) ");
+			//sql.append("ORDER BY f.nome ");
+			
+			TypedQuery<Funcional> query = entityManager.createQuery( sql.toString(), Funcional.class);
 			return query.getResultList();
 		} catch (NoResultException e) {
 			return null;
-		}
-	}
+		}*/
+		
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		
+		StringBuffer sql = new StringBuffer();
 
+		sql.append(" select distinct f.ID, f.IDPESSOAL, f.IDORGAOORIGEM, f.IDSETOR, f.IDOCUPACAO, f.IDCLASSEREFERENCIA,   ");
+		sql.append(" f.idespecialidadecargo, f.idorientacaocargo, f.IDTIPOMOVIMENTOENTRADA, f.IDTIPOMOVIMENTOSAIDA, ");
+		sql.append(" f.IDCBO, f.IDFOLHA, f.IDTIPOPUBLICACAONOMEACAO, IDTIPOPUBLICACAOSAIDA, f.IDSITUACAO, f.IDTIPOVINCULO, ");
+		sql.append(" f.NOME, f.NOMECOMPLETO, f.NOMEPESQUISA, f.MATRICULA, f.MATRICULAESTADUAL, f.CALCULOPCC, f.QTDQUINTOS, ");
+		sql.append(" f.LEIINCORPORACAO, f.PONTO, f.STATUS, f.ATIVOFP, f.FLPORTALTRANSPARENCIA, f.IRRF, f.SUPSECINTEGRAL, ");
+		sql.append(" f.PROPORCIONALIDADE, f.SALARIOORIGEM, f.ABONOPREVIDENCIARIO, f.DATAPOSSE, f.DATAEXERCICIO, f.DATASAIDA, ");
+		sql.append(" f.DOENOMEACAO, f.DOESAIDA, f.DESCRICAONOMEACAO, f.DESCRICAOSAIDA, f.PREVIDENCIA, f.REGIME, f.IDREPRESENTACAOCARGO, ");
+		sql.append(" f.IDSETORDESIGNADO, f.IDPESSOAJURIDICA, f.IDAPOSENTADORIA, f.CODCATEGORIA ");
+		
+		sql.append("  from tb_funcional f  "); 
+		//sql.append(" inner join fp_dadospagto dp on f.id = dp.idfuncional  ");
+		//sql.append(" inner join fp_pagamentos pg on pg.arquivo = dp.arquivo  ");
+		sql.append(" where ");
+		//sql.append(" pg.ano_esocial = '"+anoReferencia+"'");
+		//sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
+		
+		sql.append("  f.id  in ( ");
+		sql.append(" Select IDFUNCIONAL from ESOCIAL_REMUNERACAOTRABALHADOR where  IDFUNCIONAL is not null AND PER_APUR = '"+periodoApuracao+"'");
+		sql.append(" union Select IDFUNCIONAL from ESOCIAL_REMUNERACAOSERVIDOR where  IDFUNCIONAL is not null AND PER_APUR = '"+periodoApuracao+"'");
+		sql.append(" union Select IDFUNCIONAL from ESOCIAL_REMUNERACAOBENEFICIO where  IDFUNCIONAL is not null  AND PER_APUR = '"+periodoApuracao+"'");
+		sql.append(" ) and f.id not in (Select IDFUNCIONAL from ESOCIAL_PAGAMENTOS ) ");
+		
+		sql.append(" ORDER BY f.NOME ");
+		
+		try {
+			Query query = entityManager.createNativeQuery(sql.toString(), Funcional.class);
+			
+			return  query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	} 
 }

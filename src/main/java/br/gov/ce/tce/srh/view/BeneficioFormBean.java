@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import br.gov.ce.tce.srh.domain.Admissao;
 import br.gov.ce.tce.srh.domain.Beneficio;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
@@ -42,6 +43,7 @@ public class BeneficioFormBean implements Serializable {
 	private List<Funcional> beneficiarioEnvioList;
 	private Funcional beneficiarioFuncional;
 	private Beneficio entidade = new Beneficio();
+	private Beneficio beneficioAnterior = new Beneficio();
 	private List<DependenteEsocial> dependentesList;
 	private String tpInsc;
 	private String nrInsc;
@@ -57,12 +59,16 @@ public class BeneficioFormBean implements Serializable {
 		setEntidade(flashParameter != null ? flashParameter : new Beneficio());
 		this.beneficiarioEnvioList = funcionalService.findBeneficiariosEvento2410();
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
-			dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
+			//dependentesList = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(getEntidade().getFuncional().getId());
+			beneficioAnterior = getEntidade();
 			beneficiarioFuncional = getEntidade().getFuncional();
 			emEdicao = true;
+			consultar();
 		}
 		
     }	
+	
+	
 	
 	public void consultar() {
 		if(beneficiarioFuncional != null) {
@@ -70,7 +76,7 @@ public class BeneficioFormBean implements Serializable {
 				tpInsc = "1";
 				nrInsc = "09499757";
 				entidade =  beneficiooEsocialService.getEventoS2410ByServidor(beneficiarioFuncional);
-				dependentesList = dependenteEsocialTCEService.findByIdfuncional(beneficiarioFuncional.getId());
+				//dependentesList = dependenteEsocialTCEService.findByIdfuncional(beneficiarioFuncional.getId());
 	
 			} catch (Exception e) {		
 				e.printStackTrace();
@@ -87,11 +93,21 @@ public class BeneficioFormBean implements Serializable {
 
 		try {
 			if(beneficiarioFuncional != null) {
-				beneficiooEsocialService.salvar(entidade);
-				
-				if(dependentesList != null && !dependentesList.isEmpty()) {
-					dependenteEsocialTCEService.salvar(dependentesList);
+				if(emEdicao) {
+					if(beneficioAnterior != null) {
+						/*List<DependenteEsocial> dependentesListExcluir = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(beneficioAnterior.getFuncional().getId());
+						if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
+							dependenteEsocialTCEService.excluirAll(dependentesListExcluir);
+						}*/
+						beneficiooEsocialService.excluir(beneficioAnterior);
+					}
+					  	 	
 				}
+				beneficiooEsocialService.salvar(entidade);
+								
+			/*	if(dependentesList != null && !dependentesList.isEmpty()) {
+					dependenteEsocialTCEService.salvar(dependentesList);
+				}*/
 			}
 			//setEntidade( new Beneficio() );
 

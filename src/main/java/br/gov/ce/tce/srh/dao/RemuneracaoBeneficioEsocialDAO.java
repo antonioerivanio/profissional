@@ -65,7 +65,7 @@ public class RemuneracaoBeneficioEsocialDAO {
 		}
 		
 		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND rt.cpfTrab = :cpf ");
+			sql.append("  AND rt.cpfBenef = :cpf ");
 		}
 	
 						
@@ -96,7 +96,7 @@ public class RemuneracaoBeneficioEsocialDAO {
 		}
 		
 		if (cpf != null && !cpf.isEmpty()) {
-			sql.append("  AND rt.cpfTrab = :cpf ");
+			sql.append("  AND rt.cpfBenef = :cpf ");
 		}
 
 		sql.append("  ORDER BY rt.nmTrabDesc ");

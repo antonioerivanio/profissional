@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,10 @@ public class RemuneracaoOutraEmpresaService{
 			}
 		}
 		return remuneracaoOutraEmpresaList;
+	}
+
+	public BigDecimal getINSS(String anoMes) {		
+		return dao.getINSS(anoMes);
 	}
 
 	

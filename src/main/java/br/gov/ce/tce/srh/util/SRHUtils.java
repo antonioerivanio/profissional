@@ -12,7 +12,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -24,9 +23,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.text.MaskFormatter;
+
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.ibm.icu.impl.coll.BOCSU;
+
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
 import br.gov.ce.tce.srh.sca.domain.Usuario;
 
@@ -926,4 +927,16 @@ public class SRHUtils {
 
     return  isMesAniversario;
   }
+  
+  public static String getPeriodoApuracaoStr(String mesReferencia, String anoReferencia) {
+		String periodoApuracaoStr = "";
+		
+		if(mesReferencia.equals("13")) {
+			periodoApuracaoStr = anoReferencia;
+		}
+		else {
+			periodoApuracaoStr = anoReferencia + "-" + mesReferencia;
+		}
+		return periodoApuracaoStr;
+	}
 }

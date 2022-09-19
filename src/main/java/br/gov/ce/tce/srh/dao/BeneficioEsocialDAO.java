@@ -140,13 +140,18 @@ public class BeneficioEsocialDAO {
 		sql.append("  f.id idfuncional,  ");
 		sql.append("  f.id||'-'||o.id AS referencia,  ");
 		sql.append("  p.cpf as CPF_BENEF, ");
+		sql.append(" p.nome AS nmTrab, ");
 		sql.append("  '0'||f.matricula  AS MATRICULA, ");
 		sql.append(" NULL AS CNPJ_ORIGEM, ");
 		sql.append(" CASE  ");
 		sql.append(" WHEN a.datainiciobeneficio  >= TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N'  ");
 		sql.append(" ELSE 'S' ");
 		sql.append(" END AS CAD_INI, ");
-		sql.append(" NULL AS INC_SIT_BENEF, ");
+		//sql.append(" NULL AS INC_SIT_BENEF, ");
+		sql.append(" CASE  ");
+		sql.append(" WHEN a.datainiciobeneficio  >= TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 1  ");
+		sql.append(" ELSE NULL ");
+		sql.append(" END AS INC_SIT_BENEF, ");
 		sql.append(" a.NRBENEFICIO AS NR_BENEFICIO, ");
 		
 		sql.append(" a.datainiciobeneficio AS DT_INI_BENEFICIO, ");
@@ -185,7 +190,8 @@ public class BeneficioEsocialDAO {
 		sql.append(" INNER JOIN srh.tb_estadocivil ec ON p.idestadocivil = ec.id ");
 		sql.append(" INNER JOIN srh.esocial_pais PAIS_NASCIMENTO ON p.paisnascimento = pais_nascimento.id ");
 		sql.append(" INNER JOIN srh.esocial_pais PAIS_NACIONALIDADE ON p.paisnacionalidade = pais_nacionalidade.id ");
-		sql.append(" INNER JOIN srh.tb_aposentadoria a ON f.idaposentadoria = a.id ");
+		//sql.append(" INNER JOIN srh.tb_aposentadoria a ON f.idaposentadoria = a.id ");
+		sql.append(" INNER JOIN srh.tb_aposentadoria a ON a.idfuncional in ( select id from tb_funcional where idpessoal = p.id) ");
 		sql.append(" INNER JOIN srh.esocial_tipologradouro tpl ON p.tipologradouro = tpl.id ");
 		sql.append(" INNER JOIN srh.tb_municipio m ON p.municipioendereco = m.id ");
 		sql.append(" WHERE f.id = :idFuncional ");

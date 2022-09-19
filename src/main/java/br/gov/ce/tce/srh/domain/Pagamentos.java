@@ -42,6 +42,9 @@ public class Pagamentos extends BasicEntity<Long> implements Serializable, Clone
 	@Column(name = "PER_APUR")
 	private String perApur;
 	
+	@Column(name = "PER_APUR_COMPETENCIA")
+	private String perApurCompetencia;
+	
 	@Column(name = "NM_TRAB_DESC")
 	private String nmTrabDesc;
 	
@@ -92,6 +95,14 @@ public class Pagamentos extends BasicEntity<Long> implements Serializable, Clone
 		this.perApur = perApur;
 	}
 	
+	public String getPerApurCompetencia() {
+		return perApurCompetencia;
+	}
+
+	public void setPerApurCompetencia(String perApurCompetencia) {
+		this.perApurCompetencia = perApurCompetencia;
+	}
+
 	public String getNmTrabDesc() {
 		return nmTrabDesc;
 	}

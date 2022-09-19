@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_INFO_PAGAMENTO", schema=DatabaseMetadata.SCHEMA_SRH)
+@Table(name = "ESOCIAL_INFOPAGAMENTOS", schema=DatabaseMetadata.SCHEMA_SRH)
 public class InformacaoPagamentos  extends BasicEntity<Long> implements Serializable, Cloneable {
 	
 	@Id
@@ -38,14 +38,11 @@ public class InformacaoPagamentos  extends BasicEntity<Long> implements Serializ
 	@Temporal(TemporalType.DATE)
 	private Date dtPgto;
 	
-	@Column(name = "QTD_DIAS_TRAB")
-	private Byte qtdDiasTrab;
-	
 	@Column(name = "TP_PGTO")
 	private Byte tpPgto;
 	
 	@Column(name = "PER_REF")
-	private String natAtividade;
+	private String perRef;
 	
 	@Column(name="VR_LIQ")
 	private BigDecimal vrLiq;
@@ -64,14 +61,6 @@ public class InformacaoPagamentos  extends BasicEntity<Long> implements Serializ
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Byte getQtdDiasTrab() {
-		return qtdDiasTrab;
-	}
-
-	public void setQtdDiasTrab(Byte qtdDiasTrab) {
-		this.qtdDiasTrab = qtdDiasTrab;
 	}
 	
 	public Pagamentos getPagamentos() {
@@ -98,12 +87,12 @@ public class InformacaoPagamentos  extends BasicEntity<Long> implements Serializ
 		this.tpPgto = tpPgto;
 	}
 
-	public String getNatAtividade() {
-		return natAtividade;
+	public String getPerRef() {
+		return perRef;
 	}
 
-	public void setNatAtividade(String natAtividade) {
-		this.natAtividade = natAtividade;
+	public void setPerRef(String perRef) {
+		this.perRef = perRef;
 	}
 
 	public BigDecimal getVrLiq() {

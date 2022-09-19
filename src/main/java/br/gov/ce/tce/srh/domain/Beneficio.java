@@ -65,7 +65,7 @@ public class Beneficio extends BasicEntity<Long> implements Serializable{
 	private String dsc;
 	
 	@Column(name = "IND_DEC_JUD")
-	private Byte indDecJud;
+	private Character indDecJud;
 	
 	@Column(name = "TP_PEN_MORTE")
 	private Byte tpPenMorte;
@@ -109,6 +109,9 @@ public class Beneficio extends BasicEntity<Long> implements Serializable{
 	
 	@Column(name = "MTV_TERMINO")
 	private String mtvTermino;
+	
+	@Column(name = "NMTRAB")
+	private String nmTrab;
 	
 	
 	public Long getId() {
@@ -223,11 +226,11 @@ public class Beneficio extends BasicEntity<Long> implements Serializable{
 		this.dsc = dsc;
 	}
 
-	public Byte getIndDecJud() {
+	public Character getIndDecJud() {
 		return indDecJud;
 	}
 
-	public void setIndDecJud(Byte indDecJud) {
+	public void setIndDecJud(Character indDecJud) {
 		this.indDecJud = indDecJud;
 	}
 
@@ -333,6 +336,14 @@ public class Beneficio extends BasicEntity<Long> implements Serializable{
 
 	public void setMtvTermino(String mtvTermino) {
 		this.mtvTermino = mtvTermino;
+	}
+
+	public String getNmTrab() {
+		return nmTrab;
+	}
+
+	public void setNmTrab(String nmTrab) {
+		this.nmTrab = nmTrab;
 	}
 
 	

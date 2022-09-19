@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.gov.ce.tce.srh.dao.InformacaoPagamentosDAO;
 import br.gov.ce.tce.srh.domain.InformacaoPagamentos;
 import br.gov.ce.tce.srh.domain.Pagamentos;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("informacaoPagamentosService")
 public class InformacaoPagamentosService{
@@ -32,7 +33,8 @@ public class InformacaoPagamentosService{
 	}	
 	
 	public List<InformacaoPagamentos> findInformacaoPagamentos(String mesReferencia, String anoReferencia, Pagamentos pagamentos, Long idFuncional) {
-		List<InformacaoPagamentos> informacaoPagamentosList = dao.findInformacaoPagamentos(mesReferencia, anoReferencia, pagamentos.getId(), null, idFuncional);
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		List<InformacaoPagamentos> informacaoPagamentosList = dao.findInformacaoPagamentos(mesReferencia, anoReferencia, pagamentos.getId(), idFuncional, periodoApuracao);
 		for (InformacaoPagamentos informacaoPagamentos : informacaoPagamentosList) {
 			if(informacaoPagamentos.getId() < 0) {				
 				informacaoPagamentos.setPagamentos(pagamentos);

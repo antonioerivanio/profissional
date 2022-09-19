@@ -122,7 +122,7 @@
 				<fieldset>
 					<legend style="font-size: 15px;">
 							<strong> 
-								 Dados Evento S-1200
+								 Dados Evento S-1207
 							</strong>
 					</legend>
 	
@@ -478,11 +478,22 @@
 			</ui:fragment>
 			
 			
-			<h:commandButton 
+			<ui:fragment  rendered="#{remuneracaoBeneficioFormBean.emConsulta}">
+				<h:commandButton 
+				action="#{remuneracaoBeneficioFormBean.salvarEvento}" 
+				value="Salvar" 			 
+				styleClass="bt-padrao fr mg-right-10" />
+			</ui:fragment>
+			
+			<ui:fragment  rendered="#{!remuneracaoBeneficioFormBean.emConsulta}">
+				<h:commandButton 
 				action="#{remuneracaoBeneficioFormBean.salvarEvento}" 
 				value="Salvar" 
 				onclick="var x= confirm('Deseja realmente gerar o evento para todos os servidores?');if(!x){return false;}" 
 				styleClass="bt-padrao fr mg-right-10" />
+
+			</ui:fragment>
+			
 			
 			<a href="/srh/paginas/tabelas/remuneracaoBeneficioList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 			

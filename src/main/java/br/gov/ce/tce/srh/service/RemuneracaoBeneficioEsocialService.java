@@ -38,6 +38,7 @@ public class RemuneracaoBeneficioEsocialService{
 	private ItensRemuneracaoTrabalhadorService itensRemuneracaoTrabalhadorService;	
 	
 	
+	@Transactional
 	public void salvar(ArrayList<RemuneracaoBeneficio> remuneracaoBeneficioList) throws CloneNotSupportedException {
 		for (RemuneracaoBeneficio remuneracaoBeneficio : remuneracaoBeneficioList) {	
 			salvar(remuneracaoBeneficio);
@@ -112,7 +113,7 @@ public class RemuneracaoBeneficioEsocialService{
 			ArrayList<RemuneracaoBeneficio> remuneracaoBeneficioList = new ArrayList<RemuneracaoBeneficio>();
 			
 			String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
-			List<Funcional> beneficioEnvioList = funcionalService.findBeneficioesEvento1207(anoReferencia, mesReferencia);
+			List<Funcional> beneficioEnvioList = funcionalService.findBeneficiosEventoS1207(anoReferencia, mesReferencia);
 			
 			for (Funcional beneficioFuncional : beneficioEnvioList) {
 				RemuneracaoBeneficio remuneracaoBeneficio = dao.getEventoS1207(mesReferencia, anoReferencia, periodoApuracao, beneficioFuncional);
@@ -124,12 +125,12 @@ public class RemuneracaoBeneficioEsocialService{
 						remuneracaoBeneficioClonado.setIndApuracao(new Byte("2"));
 					}
 	
-					List<DemonstrativosDeValores> demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresBeneficio(mesReferencia, anoReferencia, remuneracaoBeneficio, beneficioFuncional.getId());
+					List<DemonstrativosDeValores> demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValoresBeneficio(mesReferencia, anoReferencia, remuneracaoBeneficioClonado, beneficioFuncional.getId());
 					infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, beneficioFuncional.getId(), isEstagiario);
 					infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, beneficioFuncional.getId(), isEstagiario);
 					itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
 					
-					remuneracaoBeneficio.setDmDev(demonstrativosDeValoresList);
+					remuneracaoBeneficioClonado.setDmDev(demonstrativosDeValoresList);
 					remuneracaoBeneficioClonado.setDmDev(demonstrativosDeValoresList);				
 					remuneracaoBeneficioList.add(remuneracaoBeneficioClonado);
 				}			

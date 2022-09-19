@@ -122,7 +122,7 @@
 				<fieldset>
 					<legend style="font-size: 15px;">
 							<strong> 
-								 Dados Evento S-1200
+								 Dados Evento S-1210
 							</strong>
 					</legend>
 	
@@ -133,7 +133,7 @@
 						
 							<legend style="font-size: 15px;">
 								<strong> 
-									 Remuneração RGPS:
+									 Pagamento:
 								</strong>
 							</legend>
 							<div class="input-box box-10">
@@ -179,11 +179,11 @@
 										
 						
 					</fieldset>
-					<ui:repeat var="dmDev" varStatus="i" value="#{pagamentosFormBean.demonstrativosDeValoresList}">
+					<ui:repeat var="infoPag" varStatus="i" value="#{pagamentosFormBean.informacaoPagamentosList}">
 						<fieldset >
 							<legend style="font-size: 15px; color: #004581; font-weight:bolder;">
 								<strong> 
-									 Demonstrativos de Valores
+									 Iformação Pagamento
 								</strong>
 							</legend>
 							<div class="input-box box-20">
@@ -192,284 +192,51 @@
 										<h:inputText id="ideDmDev" 
 													 maxlength="10"
 													 disabled="true"
-													 value="#{dmDev.ideDmDev}" />
+													 value="#{infoPag.ideDmDev}" />
 									</div>
 								</div>
 								
 								<div class="input-box box-20">
-									<label for="">nrBeneficio</label>
+									<label for="">dtPgto</label>
 									<div class="conteiner">
-										<h:inputText id="nrBeneficio" 
+										<h:inputText id="dtPgto" 
 													 maxlength="10"
 													 disabled="true"
-													 value="#{dmDev.nrBeneficio}" />
+													 value="#{infoPag.dtPgto}" />
 									</div>
-								</div>								
+								</div>	
 								
-								<div class="tabela-dados">
-								<ui:fragment  rendered="#{dmDev.flInfoRemunPerAnteriores == 0}">
-									<fieldset>
-											<legend style="font-size: 15px;">
-												<strong> 
-													  Informação Remuneracao de Período Apuração
-												</strong>
-											</legend>
-											<div class="input-box box-15">
-												<label for="">matricula</label>
-												<div class="conteiner">
-													<h:inputText id="matricula" 
-																 maxlength="10"
-																 disabled="true"
-																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.matricula}" />
-												</div>
-											</div>
-											
-											<div class="input-box box-15">
-												<label for="">tpInsc</label>
-												<div class="conteiner">
-													<h:inputText id="tpInsc" 
-																 maxlength="10"
-																 disabled="true"
-																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.tpInsc}" />
-												</div>
-											</div>
-											
-											<div class="input-box box-15">
-												<label for="">nrInsc</label>
-												<div class="conteiner">
-													<h:inputText id="nrInsc" 
-																 maxlength="10"
-																 disabled="true"
-																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.nrInsc}" />
-												</div>
-											</div>
-											
-											<div class="input-box box-15">
-												<label for="">codLotacao</label>
-												<div class="conteiner">
-													<h:inputText id="codLotacao" 
-																 maxlength="10"
-																 disabled="true"
-																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.codLotacao}" />
-												</div>
-											</div>																	
-											
-											<div class="input-box box-15">
-												<label for="">indSimples</label>
-												<div class="conteiner">
-													<h:inputText id="indSimples" 
-																 maxlength="10"
-																 disabled="true"
-																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.indSimples}" />
-												</div>
-											</div>
-											
-											<div class="input-box box-15">
-												<label for="">grauEX</label>
-												<div class="conteiner">
-													<h:inputText id="grauEX" 
-																 maxlength="10"
-																 disabled="true"
-																 value="#{dmDev.infoRemuneracaoPeriodoApuracao.grauEX}" />
-												</div>
-											</div>
-											
-									</fieldset>
-								</ui:fragment>
-								</div>
-								<div class="tabela-dados">
-								<ui:fragment  rendered="#{dmDev.flInfoRemunPerAnteriores == 1}">
+								<div class="input-box box-20">
+									<label for="">tpPgto</label>
+									<div class="conteiner">
+										<h:inputText id="tpPgto" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{infoPag.tpPgto}" />
+									</div>
+								</div>	
+								<div class="input-box box-20">
+									<label for="">perRef</label>
+									<div class="conteiner">
+										<h:inputText id="perRef" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{infoPag.perRef}" />
+									</div>
+								</div>	
 								
-									<fieldset >
-										<legend style="font-size: 15px;">
-											<strong> 
-												 Informação Remuneracao de Periodo Anteriores
-											</strong>
-										</legend>
-										<div class="input-box box-15">
-											<label for="">perRef</label>
-											<div class="conteiner">
-												<h:inputText id="perRef" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.perRef}" />
-											</div>
-										</div>										
-										
-										<div class="input-box box-15">
-											<label for="">tpAcConv</label>
-											<div class="conteiner">
-												<h:inputText id="tpAcConv" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.tpAcConv}" />
-											</div>
-										</div>
-										
-										<div class="input-box box-15">
-											<label for="">matricula</label>
-											<div class="conteiner">
-												<h:inputText id="matriculaInfoAnterior" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.matricula}" />
-											</div>
-										</div>									
-										
-										<div class="input-box box-15">
-											<label for="">remunSuc</label>
-											<div class="conteiner">
-												<h:inputText id="remunSuc" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.remunSuc}" />
-											</div>
-										</div>
-										
-										
-										<div class="input-box box-15">
-											<label for="">tpInsc</label>
-											<div class="conteiner">
-												<h:inputText id="tpInscInfoAnterior" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.tpInsc}" />
-											</div>
-										</div>
-										
-										<div class="input-box box-15">
-											<label for="">nrInsc</label>
-											<div class="conteiner">
-												<h:inputText id="nrInscInfoAnterior" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.nrInsc}" />
-											</div>
-										</div>
-										
-										<div class="input-box box-15">
-											<label for="">codLotacao</label>
-											<div class="conteiner">
-												<h:inputText id="codLotacaoInfoAnterior" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.codLotacao}" />
-											</div>
-										</div>
-										
-										
-										<div class="input-box box-15">
-											<label for="">indSimples</label>
-											<div class="conteiner">
-												<h:inputText id="indSimplesInfoAnterior" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.indSimples}" />
-											</div>
-										</div>
-										
-										<div class="input-box box-15">
-											<label for="">grauEX</label>
-											<div class="conteiner">
-												<h:inputText id="grauEXInfoAnterior" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.grauEX}" />
-											</div>
-										</div>
-										
-										<div class="input-box box-15">
-											<label for="">dtAcConv</label>
-											<div class="conteiner">
-												<h:inputText id="dtAcConv" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.dtAcConv}" />
-											</div>
-										</div>
-										
-										<div class="input-box box-15">
-											<label for="">dsc</label>
-											<div class="conteiner">
-												<h:inputText id="dsc" 
-															 maxlength="10"
-															 disabled="true"
-															 value="#{dmDev.infoRemuneracaoPeriodoAnteriores.dsc}" />
-											</div>
-										</div>
-										
-									</fieldset>
-								</ui:fragment>
-								</div>
-									  <fieldset >
-										<legend style="font-size: 15px;">
-											<strong> 
-												 Itens de Remuneração do Trabalhador
-											</strong>
-											
-										</legend>
-										<div class="tabela-dados">
-										<rich:dataTable id="remuneracaoTrabId"
-										var="remuneracaoTrab"
-										value="#{dmDev.itensRemuneracaoTrabalhadorList}"
-										noDataLabel="Nenhum Item Remuneracao do Trabalhador"	>
-							
-											<h:column id="col1" >
-												<f:facet name="header">
-													codRubr
-												</f:facet>
-												<center>
-							                        <h:outputText id="item1" value="#{remuneracaoTrab.codRubr}" />		                        	
-					                        	</center>
-											</h:column>
-											
-											<h:column id="col2" >
-												<f:facet name="header">
-													ideTabRubr
-												</f:facet>
-												<center>
-							                        <h:outputText id="item2" value="#{remuneracaoTrab.ideTabRubr}" />
-					                        	</center>
-											</h:column>	
-											
-											<h:column id="col7" >
-												<f:facet name="header">
-													vlrRubr
-												</f:facet>
-												<center>
-							                        <h:outputText id="item7" value="#{remuneracaoTrab.vlrRubr}" />
-					                        	</center>
-											</h:column>												
-											
-											<h:column id="col4">
-												<f:facet name="header">
-													qtdRubr
-												</f:facet>							
-						                        <h:outputText id="item4" value="#{remuneracaoTrab.qtdRubr}">
-						                        	
-						                        </h:outputText>                        	
-											</h:column>		
-											<h:column id="col5" >
-												<f:facet name="header">
-													fatorRubr
-												</f:facet>							
-						                        <h:outputText id="item5" value="#{remuneracaoTrab.fatorRubr}">
-						                        	
-						                        </h:outputText>                        	
-											</h:column>
-											<h:column id="col6" >
-												<f:facet name="header">
-													indApurIr
-												</f:facet>							
-						                        <h:outputText id="item6" value="#{remuneracaoTrab.indApurIr}">
-						                        	
-						                        </h:outputText>                        	
-											</h:column>			
-									
-																													
-									</rich:dataTable>	
-									</div>	
-									</fieldset>
+								<div class="input-box box-20">
+									<label for="">vrLiq</label>
+									<div class="conteiner">
+										<h:inputText id="vrLiq" 
+													 maxlength="10"
+													 disabled="true"
+													 value="#{infoPag.vrLiq}" />
+									</div>
+								</div>									
+								
+								
+								
 							</fieldset>	
 						
 					</ui:repeat>
@@ -478,13 +245,26 @@
 			</ui:fragment>
 			
 			
-			<h:commandButton 
+			
+			<ui:fragment  rendered="#{pagamentosFormBean.emConsulta}">
+				<h:commandButton 
+				action="#{pagamentosFormBean.salvarEvento}" 
+				value="Salvar" 			
+				styleClass="bt-padrao fr mg-right-10" />
+			</ui:fragment>
+			
+			<ui:fragment  rendered="#{!pagamentosFormBean.emConsulta}">
+				<h:commandButton 
 				action="#{pagamentosFormBean.salvarEvento}" 
 				value="Salvar" 
 				onclick="var x= confirm('Deseja realmente gerar o evento para todos os servidores?');if(!x){return false;}" 
 				styleClass="bt-padrao fr mg-right-10" />
+
+			</ui:fragment>
 			
-			<a href="/srh/paginas/tabelas/remuneracaoServidorList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
+			
+			
+			<a href="/srh/paginas/tabelas/pagamentosList.faces" class="bt-voltar fr mg-right-10 mg-bottom-10">Voltar</a>
 			
 			
 

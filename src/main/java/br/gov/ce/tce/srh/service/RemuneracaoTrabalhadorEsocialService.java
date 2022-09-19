@@ -19,6 +19,7 @@ import br.gov.ce.tce.srh.domain.RemuneracaoOutraEmpresa;
 import br.gov.ce.tce.srh.domain.RemuneracaoTrabalhador;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("remuneracaoTrabalhadorESocialService")
 public class RemuneracaoTrabalhadorEsocialService{
@@ -49,13 +50,13 @@ public class RemuneracaoTrabalhadorEsocialService{
 		}							
 	}
 
-	private Byte getIndMVRemunOutrEmpr(List<RemuneracaoOutraEmpresa> remunOutrEmpr) {
+	public Byte getIndMVRemunOutrEmpr(List<RemuneracaoOutraEmpresa> remunOutrEmpr, String anoMes) {
 		BigDecimal totalValoresOutrEmpr = BigDecimal.ZERO;
 		for (RemuneracaoOutraEmpresa remuneracaoOutraEmpresa : remunOutrEmpr) {	
 			totalValoresOutrEmpr = totalValoresOutrEmpr.add(remuneracaoOutraEmpresa.getVlrRemunOE());
 		}
 		
-		if(totalValoresOutrEmpr.compareTo(new BigDecimal(10)) > 0) {
+		if(totalValoresOutrEmpr.compareTo(remuneracaoOutraEmpresaService.getINSS(anoMes)) > 0) {
 			return new Byte("3");
 		}
 		else {
@@ -92,30 +93,20 @@ public class RemuneracaoTrabalhadorEsocialService{
 	}	
 	
 	public int count(String nome, String cpf,  String anoReferencia, String mesReferencia, boolean isRGPA, boolean isEstagiario) {
-		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);
 		return dao.count(nome, cpf, periodoApuracao, isRGPA, isEstagiario);
 	}
 	
 	public List<RemuneracaoTrabalhador> search(String nome, String cpf, String anoReferencia, String mesReferencia, boolean isRGPA, boolean isEstagiario, Integer first, Integer rows) {
-		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);
 		return dao.search(nome, cpf, periodoApuracao, isRGPA, isEstagiario, first, rows);
 	}
 	
-	private String getPeriodoApuracaoStr(String mesReferencia, String anoReferencia) {
-		String periodoApuracaoStr = "";
-		
-		if(mesReferencia.equals("13")) {
-			periodoApuracaoStr = anoReferencia;
-		}
-		else {
-			periodoApuracaoStr = anoReferencia + "-" + mesReferencia;
-		}
-		return periodoApuracaoStr;
-	}
+	
 	
 	public RemuneracaoTrabalhador getEventoS1200(String mesReferencia, String anoReferencia,
 			Funcional servidorFuncional) throws CloneNotSupportedException {
-		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);
 		RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
 		RemuneracaoTrabalhador remuneracaoTrabalhadorClonado = remuneracaoTrabalhador.clone();
 		remuneracaoTrabalhadorClonado.setId(null);
@@ -130,7 +121,7 @@ public class RemuneracaoTrabalhadorEsocialService{
 
 	public RemuneracaoTrabalhador getEventoS1200RPA(String mesReferencia, String anoReferencia,
 			CadastroPrestador servidorFuncional) throws CloneNotSupportedException {
-		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);
 		RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200RPA(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional);
 		RemuneracaoTrabalhador remuneracaoTrabalhadorClonado = remuneracaoTrabalhador.clone();
 		remuneracaoTrabalhadorClonado.setId(null);
@@ -149,10 +140,16 @@ public class RemuneracaoTrabalhadorEsocialService{
 			boolean isEstagiario) throws CloneNotSupportedException {
 		ArrayList<RemuneracaoTrabalhador> remuneracaoTrabalhadorList = new ArrayList<RemuneracaoTrabalhador>();
 		
-		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 		List<Funcional> servidorEnvioList = funcionalService.findServidoresEvento1200(anoReferencia, mesReferencia);
 		
-		for (Funcional servidorFuncional : servidorEnvioList) {
+		List<Funcional> servidorEnvioListTeste = new ArrayList<Funcional>();
+		
+		for (int i = 0; i < 5; i++) {
+			servidorEnvioListTeste.add(servidorEnvioList.get(i));
+		}
+		
+		for (Funcional servidorFuncional : servidorEnvioListTeste) {
 			RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional );
 			RemuneracaoTrabalhador remuneracaoTrabalhadorClonado = remuneracaoTrabalhador.clone();
 			remuneracaoTrabalhadorClonado.setId(null);
@@ -183,7 +180,7 @@ public class RemuneracaoTrabalhadorEsocialService{
 	public ArrayList<RemuneracaoTrabalhador> geraRemuneracaoTrabalhadorRPGALote(String mesReferencia, String anoReferencia) throws CloneNotSupportedException {
 		
 		ArrayList<RemuneracaoTrabalhador> remuneracaoTrabalhadorList = new ArrayList<RemuneracaoTrabalhador>();
-		String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 		List<CadastroPrestador> servidorEnvioList = funcionalService.findRGPAEvento1200(anoReferencia, mesReferencia);
 		
 		for (CadastroPrestador servidorFuncional : servidorEnvioList) {
@@ -194,8 +191,8 @@ public class RemuneracaoTrabalhadorEsocialService{
 				if(mesReferencia.equals("13")) {
 					remuneracaoTrabalhador.setIndApuracao(new Byte("2"));
 				}
-				if(remuneracaoTrabalhador.getRemunOutrEmpr() != null && remuneracaoTrabalhador.getRemunOutrEmpr().isEmpty()) {
-					remuneracaoTrabalhador.setIndMV(getIndMVRemunOutrEmpr(remuneracaoTrabalhador.getRemunOutrEmpr()));
+				if(remuneracaoTrabalhador.getRemunOutrEmpr() != null && !remuneracaoTrabalhador.getRemunOutrEmpr().isEmpty()) {
+					remuneracaoTrabalhador.setIndMV(getIndMVRemunOutrEmpr(remuneracaoTrabalhador.getRemunOutrEmpr(),anoReferencia+mesReferencia));
 					
 				}
 				

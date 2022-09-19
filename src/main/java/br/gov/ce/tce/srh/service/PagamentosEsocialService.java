@@ -1,7 +1,10 @@
 package br.gov.ce.tce.srh.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +35,7 @@ public class PagamentosEsocialService{
 	private InformacaoPagamentosService informacaoPagamentosService;	
 	
 	
-	
+	@Transactional
 	public void salvar(ArrayList<Pagamentos> PagamentosList) throws CloneNotSupportedException {
 		for (Pagamentos pagamentos : PagamentosList) {	
 			salvar(pagamentos);
@@ -106,27 +109,38 @@ public class PagamentosEsocialService{
 		
 			ArrayList<Pagamentos> pagamentosList = new ArrayList<Pagamentos>();
 			
-			String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
+			//String periodoApuracao = getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
 			List<Funcional> servidorList = funcionalService.findServidorEvento1210(anoReferencia, mesReferencia);
 			
-			for (Funcional servidor : servidorList) {
-				Pagamentos pagamentos = dao.getEventoS1210(mesReferencia, anoReferencia, periodoApuracao, servidor);
-				Pagamentos pagamentosClonado = pagamentos.clone();
-				pagamentosClonado.setId(null);
+			List<Funcional> servidorListTeste = new ArrayList<Funcional>();
+			for (int i = 0; i < 5; i++) {
+				servidorListTeste.add(servidorList.get(i));
+			}
+			for (Funcional servidor : servidorListTeste) {
+				Pagamentos pagamentos = getEventoS1210(mesReferencia, anoReferencia, servidor);
+				//Pagamentos pagamentosClonado = pagamentos.clone();
+				//pagamentosClonado.setId(null);
 				
-				if( pagamentosClonado != null) {
+				if( pagamentos != null) {
 					if(mesReferencia.equals("13")) {
-						pagamentosClonado.setIndApuracao(new Byte("2"));
+						pagamentos.setIndApuracao(new Byte("2"));
 					}
 	
-					List<InformacaoPagamentos> informacaoPagamentosList = informacaoPagamentosService.findInformacaoPagamentos(mesReferencia, anoReferencia, pagamentosClonado, servidor.getId());
+					List<InformacaoPagamentos> informacaoPagamentosList = informacaoPagamentosService.findInformacaoPagamentos(mesReferencia, anoReferencia, pagamentos, servidor.getId());
 
-					pagamentosClonado.setInformacaoPagamentos(informacaoPagamentosList);									
-					pagamentosList.add(pagamentosClonado);
+					pagamentos.setPerApur(getPeriodoApuracaoPorDtPagamento(informacaoPagamentosList.get(0).getDtPgto()));
+					pagamentos.setInformacaoPagamentos(informacaoPagamentosList);									
+					pagamentosList.add(pagamentos);
 				}			
 				
 			}
 			return pagamentosList;
+	}
+	
+	private String getPeriodoApuracaoPorDtPagamento(Date dtPgto) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        String periodoApuracao = dateFormat.format(dtPgto);
+		return periodoApuracao;
 	}
 
 }

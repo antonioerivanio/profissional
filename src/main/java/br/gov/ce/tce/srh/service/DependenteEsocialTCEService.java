@@ -52,8 +52,9 @@ public class DependenteEsocialTCEService{
 	}
 
 	public void excluirAll(List<DependenteEsocial> dependentesList) {
-		for (DependenteEsocial dependenteEsocial : dependentesList) {			
-			dao.excluir(dependenteEsocial);
+		for (DependenteEsocial dependenteEsocial : dependentesList) {
+			DependenteEsocial dependenteEsocialExcluir = dao.getById(dependenteEsocial.getId());
+			dao.excluir(dependenteEsocialExcluir);
 		}
 		
 	}

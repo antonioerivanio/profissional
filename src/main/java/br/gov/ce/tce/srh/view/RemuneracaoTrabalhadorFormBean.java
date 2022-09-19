@@ -99,6 +99,10 @@ public class RemuneracaoTrabalhadorFormBean implements Serializable {
 				
 				entidade =  remuneracaoTrabalhadorEsocialService.getEventoS1200(mesReferencia, anoReferencia, servidorFuncional);
 				remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
+				if(remuneracaoOutraEmpresaList != null && !remuneracaoOutraEmpresaList.isEmpty()) {
+					entidade.setIndMV(remuneracaoTrabalhadorEsocialService.getIndMVRemunOutrEmpr(remuneracaoOutraEmpresaList, anoReferencia+mesReferencia));
+					
+				}
 				demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValores(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());
 				infoRemuneracaoPeriodoAnterioresList = infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
 				infoRemuneracaoPeriodoApuracaoList = infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);

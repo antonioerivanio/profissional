@@ -128,9 +128,7 @@ public class RemuneracaoBeneficioFormBean implements Serializable {
 			}
 			else {
 				ArrayList<RemuneracaoBeneficio> remuneracaoBeneficioList = remuneracaoBeneficioEsocialService.geraRemuneracaoBeneficioLote(mesReferencia, anoReferencia, isEstagiario);
-				remuneracaoBeneficioEsocialService.salvar(remuneracaoBeneficioList);
-				//remuneracaoBeneficioEsocialService.salvar(mesReferencia, anoReferencia, isEstagiario);
-				//System.out.println("Gera todo mundo!");
+				remuneracaoBeneficioEsocialService.salvar(remuneracaoBeneficioList);				
 			}	
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");

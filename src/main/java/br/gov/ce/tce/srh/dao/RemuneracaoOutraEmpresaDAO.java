@@ -1,5 +1,6 @@
 package br.gov.ce.tce.srh.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -53,8 +54,8 @@ public class RemuneracaoOutraEmpresaDAO {
 	@SuppressWarnings("unchecked")
 	public List<RemuneracaoOutraEmpresa> findRemuneracaoOutraEmpresa(String mesReferencia, String anoReferencia, Long idRemuneracaoTrabalhador, Long idFuncional) {	
 		Query query = entityManager.createNativeQuery(getSQLRemuneracaoOutraEmpresa(idFuncional), RemuneracaoOutraEmpresa.class);
-		query.setParameter("mesReferencia", mesReferencia);
-		query.setParameter("anoReferencia", anoReferencia);
+		//query.setParameter("mesReferencia", mesReferencia);
+		//query.setParameter("anoReferencia", anoReferencia);
 		if(idRemuneracaoTrabalhador != null && idRemuneracaoTrabalhador > 0 ) {
 			query.setParameter("idRemuneracaoTrabalhador", idRemuneracaoTrabalhador);
 		}
@@ -69,7 +70,7 @@ public class RemuneracaoOutraEmpresaDAO {
 	public String getSQLRemuneracaoOutraEmpresa(Long idFuncional) {
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append(" SELECT    "); 
+		sql.append(" SELECT  distinct   "); 
 		sql.append(" ( ROWNUM * -1) as id, ");
 		sql.append(" :idRemuneracaoTrabalhador as IDREMUNERACAOTRABALHADOR, ");
 		sql.append("  1 as TP_INSC_OUTR_EMPR, ");
@@ -77,22 +78,23 @@ public class RemuneracaoOutraEmpresaDAO {
 		sql.append(" v.tipoesocial as COD_CATEG_OUTR_EMPR, ");
 		sql.append(" v.valoroutraempresa as VLR_REMUN_OE ");
 				
-		sql.append(" FROM srh.fp_pagamentos pg ");
-		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
-		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
-		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
-		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		//sql.append(" FROM srh.fp_pagamentos pg ");
+		//sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
+		//sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
+		//sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
+		//sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		sql.append(" FROM srh.tb_funcional f ");
 		sql.append(" INNER JOIN srh.tb_vinculorgps v ON v.idfuncional = f.id ");
 		sql.append(" INNER JOIN srh.tb_pessoajuridica pj ON pj.id = v.idpessoajuridica ");
-		sql.append(" WHERE ano_esocial = :anoReferencia ");
-		sql.append(" AND mes_esocial = :mesReferencia");
-		sql.append(" AND dp.contribui_inss = 'S' ");
-		sql.append("AND dp.num_mes <> '13' ");
+		//sql.append(" WHERE ano_esocial = :anoReferencia ");
+		//sql.append(" AND mes_esocial = :mesReferencia");
+		//sql.append(" AND dp.contribui_inss = 'S' ");
+		//sql.append("AND dp.num_mes <> '13' ");
 		
 		if(idFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");
 		}
-		sql.append("ORDER BY dp.nome ");
+		//sql.append("ORDER BY dp.nome ");
 
 	    
 	    return sql.toString();
@@ -144,6 +146,15 @@ public class RemuneracaoOutraEmpresaDAO {
 		
 	    
 	    return sql.toString();
+	}
+
+	public BigDecimal getINSS(String anoMes) {
+		
+		Query query = entityManager.createNativeQuery("Select to_number(INSS42) from Fp_variaveis where TO_CHAR(vigencia, 'yyyymm') = '"+anoMes+"' ");
+		BigDecimal inss =    (BigDecimal) query.getSingleResult();
+		
+		//BigDecimal inss = new BigDecimal(inssLong.toString());
+		return inss;
 	}
 
 }

@@ -1,7 +1,10 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -62,7 +65,7 @@ public class PagamentosFormBean implements Serializable {
 		if(getEntidade() != null && getEntidade().getFuncional() != null) {
 			servidorFuncional = getEntidade().getFuncional();
 			pagamentosAnterior = entidade;
-			String[] referencia = entidade.getPerApur().split("-");			
+			String[] referencia = entidade.getPerApurCompetencia().split("-");			
 			anoReferencia = referencia[0];
 			mesReferencia = referencia[1];
 			consultar();
@@ -71,14 +74,15 @@ public class PagamentosFormBean implements Serializable {
     }	
 	
 	public void carregaServidores() {
-		this.servidorEnvioList = funcionalService.findBeneficioesEvento1207(anoReferencia, mesReferencia);
+		this.servidorEnvioList = funcionalService.findServidorEvento1210(anoReferencia, mesReferencia);
 	}
 	public void consultar() {
 		if(!mesReferencia.equalsIgnoreCase("0")  && !anoReferencia.equalsIgnoreCase("") && servidorFuncional != null) {
 			try {
 				entidade =  pagamentosEsocialService.getEventoS1210(mesReferencia, anoReferencia, servidorFuncional);				
-				informacaoPagamentosList = informacaoPagamentosService.findInformacaoPagamentos(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());				
+				informacaoPagamentosList = informacaoPagamentosService.findInformacaoPagamentos(mesReferencia, anoReferencia, entidade, servidorFuncional.getId());	
 				
+				entidade.setPerApur(getPeriodoApuracaoPorDtPagamento(informacaoPagamentosList.get(0).getDtPgto()));
 				entidade.setInformacaoPagamentos(informacaoPagamentosList);
 	
 				emConsulta = true;
@@ -93,6 +97,12 @@ public class PagamentosFormBean implements Serializable {
 		}
 	}
 
+	private String getPeriodoApuracaoPorDtPagamento(Date dtPgto) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        String periodoApuracao = dateFormat.format(dtPgto);
+		return periodoApuracao;
+	}
+
 	public void salvarEvento() { 
 		try {			
 			if(emEdicao && pagamentosAnterior != null) {	
@@ -104,9 +114,7 @@ public class PagamentosFormBean implements Serializable {
 			}
 			else {
 				ArrayList<Pagamentos> pagamentosList = pagamentosEsocialService.geraPagamentosLote(mesReferencia, anoReferencia);
-				pagamentosEsocialService.salvar(pagamentosList);
-				//PagamentosEsocialService.salvar(mesReferencia, anoReferencia, isEstagiario);
-				//System.out.println("Gera todo mundo!");
+				pagamentosEsocialService.salvar(pagamentosList);				
 			}	
 			FacesUtil.addInfoMessage("Operação realizada com sucesso.");
 			logger.info("Operação realizada com sucesso.");

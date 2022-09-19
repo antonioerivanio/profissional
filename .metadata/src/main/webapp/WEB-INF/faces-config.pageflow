@@ -163,8 +163,8 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/admissaoForm.xhtml" x="122" y="31885" id="pf1663089678476331" referenceLink="//@navigationRule.90/@fromViewId|" outlinks="pf1663089678476330" inlinks="pf1663089678476329" path="/paginas/tabelas/admissaoForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/desligamentoList.xhtml" x="338" y="32269" id="pf1663089678476332" referenceLink="//@navigationRule.92/@navigationCase.0/@toViewId|" outlinks="pf1663089678476333 pf1663089678476334" inlinks="pf1663089678476333 pf1663089678476335" path="/paginas/tabelas/desligamentoList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/desligamentoForm.xhtml" x="122" y="32269" id="pf1663089678476336" referenceLink="//@navigationRule.92/@fromViewId|" outlinks="pf1663089678476335" inlinks="pf1663089678476334" path="/paginas/tabelas/desligamentoForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficiarioList.xhtml" x="338" y="32653" id="pf1663089678476337" referenceLink="//@navigationRule.94/@navigationCase.0/@toViewId|" outlinks="pf1663089678476338 pf1663089678476339" inlinks="pf1663089678476338 pf1663089678476340" path="/paginas/tabelas/beneficiarioList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficiarioForm.xhtml" x="122" y="32653" id="pf1663089678476341" referenceLink="//@navigationRule.94/@fromViewId|" outlinks="pf1663089678476340" inlinks="pf1663089678476339" path="/paginas/tabelas/beneficiarioForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficiarioList.xhtml" x="338" y="32653" id="pf1663089678476337" referenceLink="//@navigationRule.104/@navigationCase.0/@toViewId|" outlinks="pf1663089678476338 pf1663089678476339" inlinks="pf1663089678476338 pf1663089678476340" path="/paginas/tabelas/beneficiarioList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficiarioForm.xhtml" x="122" y="32653" id="pf1663089678476341" referenceLink="//@navigationRule.103/@navigationCase.1/@toViewId|" outlinks="pf1663089678476340" inlinks="pf1663089678476339" path="/paginas/tabelas/beneficiarioForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/estagiarioList.xhtml" x="338" y="33421" id="pf1663089678476342" referenceLink="//@navigationRule.96/@navigationCase.0/@toViewId|" outlinks="pf1663089678476343 pf1663089678476344" inlinks="pf1663089678476343 pf1663089678476345" path="/paginas/tabelas/estagiarioList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/estagiarioForm.xhtml" x="122" y="33421" id="pf1663089678476346" referenceLink="//@navigationRule.96/@fromViewId|" outlinks="pf1663089678476345" inlinks="pf1663089678476344" path="/paginas/tabelas/estagiarioForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/estatutarioList.xhtml" x="338" y="33805" id="pf1663089678476347" referenceLink="//@navigationRule.98/@navigationCase.0/@toViewId|" outlinks="pf1663089678476348 pf1663089678476349" inlinks="pf1663089678476348 pf1663089678476350" path="/paginas/tabelas/estatutarioList.xhtml"/>
@@ -173,8 +173,6 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/terminoVinculoForm.xhtml" x="122" y="34189" id="pf1663089678476356" referenceLink="//@navigationRule.100/@fromViewId|" outlinks="pf1663089678476355" inlinks="pf1663089678476354" path="/paginas/tabelas/terminoVinculoForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/afastamentoList.xhtml" x="338" y="34573" id="pf1663089678476357" referenceLink="//@navigationRule.102/@navigationCase.0/@toViewId|" outlinks="pf1663089678476358 pf1663089678476359" inlinks="pf1663089678476358 pf1663089678476360" path="/paginas/tabelas/afastamentoList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/afastamentoForm.xhtml" x="122" y="34573" id="pf1663089678476361" referenceLink="//@navigationRule.102/@fromViewId|" outlinks="pf1663089678476360" inlinks="pf1663089678476359" path="/paginas/tabelas/afastamentoForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficioList.xhtml" x="338" y="34957" id="pf1663089678476362" referenceLink="//@navigationRule.104/@navigationCase.0/@toViewId|" outlinks="pf1663089678476363 pf1663089678476364" inlinks="pf1663089678476363 pf1663089678476365" path="/paginas/tabelas/beneficioList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficioForm.xhtml" x="122" y="34957" id="pf1663089678476366" referenceLink="//@navigationRule.104/@fromViewId|" outlinks="pf1663089678476365" inlinks="pf1663089678476364" path="/paginas/tabelas/beneficioForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoTrabalhadorList.xhtml" x="338" y="35341" id="pf1663089678476367" referenceLink="//@navigationRule.106/@navigationCase.0/@toViewId|" outlinks="pf1663089678476368 pf1663089678476369" inlinks="pf1663089678476368 pf1663089678476370" path="/paginas/tabelas/remuneracaoTrabalhadorList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoTrabalhadorForm.xhtml" x="122" y="35341" id="pf1663089678476371" referenceLink="//@navigationRule.106/@fromViewId|" outlinks="pf1663089678476370" inlinks="pf1663089678476369" path="/paginas/tabelas/remuneracaoTrabalhadorForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/gtrList.xhtml" x="338" y="35725" id="pf1663089678476372" referenceLink="//@navigationRule.108/@navigationCase.0/@toViewId|" outlinks="pf1663089678476373" inlinks="pf1663089678476374" path="/paginas/funcional/gtrList.xhtml"/>
@@ -193,6 +191,8 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/fechamentoFolhaForm.xhtml" x="122" y="38029" id="pf1663089678476405" referenceLink="//@navigationRule.120/@fromViewId|" outlinks="pf1663089678476404" inlinks="pf1663089678476403" path="/paginas/tabelas/fechamentoFolhaForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/reaberturaFolhaList.xhtml" x="338" y="38413" id="pf1663089678476406" referenceLink="//@navigationRule.122/@navigationCase.0/@toViewId|" outlinks="pf1663089678476407 pf1663089678476408" inlinks="pf1663089678476407 pf1663089678476409" path="/paginas/tabelas/reaberturaFolhaList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/reaberturaFolhaForm.xhtml" x="122" y="38413" id="pf1663089678476410" referenceLink="//@navigationRule.122/@fromViewId|" outlinks="pf1663089678476409" inlinks="pf1663089678476408" path="/paginas/tabelas/reaberturaFolhaForm.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficioList.xhtml" id="pf1663252779863411" referenceLink="//@navigationRule.104/@navigationCase.0/@toViewId|" outlinks="pf1663252779863412 pf1663252779863413" inlinks="pf1663252779863412 pf1663252779863414" path="/paginas/tabelas/beneficioList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/beneficioForm.xhtml" id="pf1663252779863415" referenceLink="//@navigationRule.104/@fromViewId|" outlinks="pf1663252779863414" inlinks="pf1663252779863413" path="/paginas/tabelas/beneficioForm.xhtml"/>
   <links id="pf16630896784733" target="pf16630896784734" source="pf16630896784731" outcome="incluirAlterar"/>
   <links id="pf16630896784737" target="pf16630896784738" source="pf16630896784735" outcome="incluirAlterar"/>
   <links id="pf166308967847311" target="pf166308967847312" source="pf16630896784739" outcome="incluirAlterar"/>
@@ -290,8 +290,6 @@
   <links id="pf1663089678476355" target="pf1663089678476352" source="pf1663089678476356" outcome="listar"/>
   <links id="pf1663089678476359" target="pf1663089678476361" source="pf1663089678476357" outcome="incluirAlterar"/>
   <links id="pf1663089678476360" target="pf1663089678476357" source="pf1663089678476361" outcome="listar"/>
-  <links id="pf1663089678476364" target="pf1663089678476366" source="pf1663089678476362" outcome="incluirAlterar"/>
-  <links id="pf1663089678476365" target="pf1663089678476362" source="pf1663089678476366" outcome="listar"/>
   <links id="pf1663089678476369" target="pf1663089678476371" source="pf1663089678476367" outcome="incluirAlterar"/>
   <links id="pf1663089678476370" target="pf1663089678476367" source="pf1663089678476371" outcome="listar"/>
   <links id="pf1663089678476373" target="pf1663089678476375" source="pf1663089678476372" outcome="incluirAlterar"/>
@@ -765,11 +763,6 @@
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
-  <links id="pf1663089678476363" target="pf1663089678476362" source="pf1663089678476362" outcome="listar">
-    <bendPoints d1Height="-36" d2Height="-36"/>
-    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
-    <bendPoints d1Width="-64" d2Width="-64"/>
-  </links>
   <links id="pf1663089678476368" target="pf1663089678476367" source="pf1663089678476367" outcome="listar">
     <bendPoints d1Height="-36" d2Height="-36"/>
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
@@ -810,4 +803,7 @@
     <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
+  <links id="pf1663252779863412" target="pf1663252779863411" source="pf1663252779863411" outcome="listar"/>
+  <links id="pf1663252779863413" target="pf1663252779863415" source="pf1663252779863411" outcome="incluirAlterar"/>
+  <links id="pf1663252779863414" target="pf1663252779863411" source="pf1663252779863415" outcome="listar"/>
 </pageflow:Pageflow>
