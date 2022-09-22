@@ -214,4 +214,50 @@ public class RemuneracaoTrabalhadorEsocialService{
 	
 	}
 
+	public ArrayList<RemuneracaoTrabalhador> geraRemuneracaoTrabalhadorEstagiarioLote(String mesReferencia,
+			String anoReferencia, boolean isEstagiario) throws CloneNotSupportedException {
+	ArrayList<RemuneracaoTrabalhador> remuneracaoTrabalhadorList = new ArrayList<RemuneracaoTrabalhador>();
+		
+		String periodoApuracao = SRHUtils.getPeriodoApuracaoStr(mesReferencia, anoReferencia);		
+		List<Funcional> servidorEnvioList = funcionalService.findEstagiarioEvento1200(anoReferencia, mesReferencia);
+		
+		List<Funcional> servidorEnvioListControle = new ArrayList<Funcional>();
+		
+		int limiteGeracao = 20;
+		if(limiteGeracao > servidorEnvioList.size()) {
+			limiteGeracao = servidorEnvioList.size();
+		}
+		
+		for (int i = 0; i < limiteGeracao; i++) {
+			servidorEnvioListControle.add(servidorEnvioList.get(i));
+		}
+		
+		for (Funcional servidorFuncional : servidorEnvioListControle) {
+			RemuneracaoTrabalhador remuneracaoTrabalhador = dao.getEventoS1200(mesReferencia, anoReferencia, periodoApuracao, servidorFuncional );
+			RemuneracaoTrabalhador remuneracaoTrabalhadorClonado = remuneracaoTrabalhador.clone();
+			remuneracaoTrabalhadorClonado.setId(null);
+			
+			if( remuneracaoTrabalhadorClonado != null) {
+				if(mesReferencia.equals("13")) {
+					remuneracaoTrabalhadorClonado.setIndApuracao(new Byte("2"));
+				}
+				/*if(remuneracaoTrabalhador.getRemunOutrEmpr() != null && remuneracaoTrabalhador.getRemunOutrEmpr().isEmpty()) {
+					remuneracaoTrabalhador.setIndMV(getIndMVRemunOutrEmpr(remuneracaoTrabalhador.getRemunOutrEmpr()));
+					
+				}*/
+				List<RemuneracaoOutraEmpresa> remuneracaoOutraEmpresaList = remuneracaoOutraEmpresaService.findRemuneracaoOutraEmpresa(mesReferencia, anoReferencia, remuneracaoTrabalhadorClonado, servidorFuncional.getId());
+				List<DemonstrativosDeValores> demonstrativosDeValoresList = demonstrativosDeValoresService.findDemonstrativosDeValores(mesReferencia, anoReferencia, remuneracaoTrabalhadorClonado, servidorFuncional.getId());
+				infoRemuneracaoPeriodoAnterioresService.findInfoRemuneracaoPeriodoAnteriores(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
+				infoRemuneracaoPeriodoApuracaoService.findInfoRemuneracaoPeriodoApuracao(mesReferencia, anoReferencia, demonstrativosDeValoresList, servidorFuncional.getId(), isEstagiario);
+				itensRemuneracaoTrabalhadorService.findByDemonstrativosDeValores(demonstrativosDeValoresList);
+				
+				remuneracaoTrabalhadorClonado.setDmDev(demonstrativosDeValoresList);
+				remuneracaoTrabalhadorClonado.setRemunOutrEmpr(remuneracaoOutraEmpresaList);
+				remuneracaoTrabalhadorList.add(remuneracaoTrabalhadorClonado);
+			}			
+			
+		}
+		return remuneracaoTrabalhadorList;
+	}
+
 }

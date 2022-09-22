@@ -90,13 +90,13 @@ public class InfoRemuneracaoPeriodoApuracaoDAO {
 		sql.append(" FROM srh.fp_pagamentos pg ");
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
 		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
-		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
-		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		//sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
+		sql.append("  INNER JOIN srh.tb_funcional f ON f.id = dp.idfuncional ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");
 		sql.append(" AND mes_esocial = :mesReferencia ");
 		
-		sql.append(" AND dp.num_mes <> '13' ");
-		sql.append(" AND dp.num_mes = :mesReferencia ");
+		//sql.append(" AND dp.num_mes <> '13' ");
+		//sql.append(" AND dp.num_mes = :mesReferencia ");
 		sql.append(" AND dp.arquivo = :ideDmDev ");
 		if(idFuncional != null) {
 			sql.append("AND f.id = :idFuncional ");

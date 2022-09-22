@@ -125,7 +125,7 @@ public class RemuneracaoEstagiarioFormBean implements Serializable {
 				remuneracaoTrabalhadorEsocialService.salvar(entidade);
 			}
 			else {
-				ArrayList<RemuneracaoTrabalhador> remuneracaoTrabalhadorList = remuneracaoTrabalhadorEsocialService.geraRemuneracaoTrabalhadorLote(mesReferencia, anoReferencia, isEstagiario);
+				ArrayList<RemuneracaoTrabalhador> remuneracaoTrabalhadorList = remuneracaoTrabalhadorEsocialService.geraRemuneracaoTrabalhadorEstagiarioLote(mesReferencia, anoReferencia, isEstagiario);
 				remuneracaoTrabalhadorEsocialService.salvar(remuneracaoTrabalhadorList);
 				//remuneracaoTrabalhadorEsocialService.salvar(mesReferencia, anoReferencia, isEstagiario);
 				//System.out.println("Gera todo mundo!");

@@ -186,7 +186,7 @@ public class RemuneracaoTrabalhadorEsocialDAO {
 		sql.append(" INNER JOIN srh.fp_dadospagto dp ON pg.arquivo = dp.arquivo ");
 		sql.append(" INNER JOIN srh.fp_cadastro c ON dp.cod_func = c.cod_func ");
 		sql.append(" INNER JOIN srh.tb_pessoal p ON c.idpessoal = p.id ");
-		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id and f.datasaida is null ");
+		sql.append(" INNER JOIN srh.tb_funcional f ON f.idpessoal = p.id  ");
 		sql.append(" LEFT JOIN srh.tb_vinculorgps v ON v.idfuncional = f.id ");
 		sql.append(" LEFT JOIN srh.tb_pessoajuridica pj ON pj.id = v.idpessoajuridica ");
 		sql.append(" WHERE ano_esocial = :anoReferencia ");

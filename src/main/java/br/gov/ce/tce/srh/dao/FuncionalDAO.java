@@ -519,6 +519,7 @@ public class FuncionalDAO {
 		sql.append(" inner join fp_dadospagto dp on f.id = dp.idfuncional  ");
 		sql.append(" inner join fp_pagamentos pg on pg.arquivo = dp.arquivo  ");
 		sql.append(" where previdencia = 3  ");
+		sql.append(" and f.STATUS < 5 ");
 		sql.append(" and pg.ano_esocial = '"+anoReferencia+"'");
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
 		
@@ -628,6 +629,7 @@ public class FuncionalDAO {
 		sql.append(" inner join fp_dadospagto dp on f.id = dp.idfuncional  ");
 		sql.append(" inner join fp_pagamentos pg on pg.arquivo = dp.arquivo  ");
 		sql.append(" where previdencia in (2,4)  ");
+		sql.append(" and  dp.ativo = 1  ");
 		sql.append(" and pg.ano_esocial = '"+anoReferencia+"'");
 		sql.append(" and pg.mes_esocial = '"+mesReferencia+"'");
 		

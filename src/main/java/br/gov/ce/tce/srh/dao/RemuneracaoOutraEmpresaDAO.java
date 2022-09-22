@@ -75,7 +75,7 @@ public class RemuneracaoOutraEmpresaDAO {
 		sql.append(" :idRemuneracaoTrabalhador as IDREMUNERACAOTRABALHADOR, ");
 		sql.append("  1 as TP_INSC_OUTR_EMPR, ");
 		sql.append(" pj.cnpj as NR_INSC_OUTR_EMPR, ");
-		sql.append(" v.tipoesocial as COD_CATEG_OUTR_EMPR, ");
+		sql.append(" v.codigocategoria as COD_CATEG_OUTR_EMPR, ");
 		sql.append(" v.valoroutraempresa as VLR_REMUN_OE ");
 				
 		//sql.append(" FROM srh.fp_pagamentos pg ");
