@@ -363,7 +363,8 @@ public class FuncionalDAO {
       sql.append("    INNER JOIN tb_funcional f on f.idpessoal = p.id ");
       sql.append("WHERE  ");
       sql.append("    TO_DATE(inicio, 'DD/MM/YYYY') < TO_DATE(sysdate, 'DD/MM/YYYY') ");
-      sql.append("    AND (l.fim > TO_DATE('21/08/2022', 'DD/MM/YYYY') and l.fim > TO_DATE(sysdate, 'DD/MM/YYYY') ) ");
+      sql.append("  AND (l.fim > TO_DATE('21/11/2021', 'DD/MM/YYYY') and l.inicio <= sysdate) ");
+      //sql.append("    AND (l.fim > TO_DATE('21/08/2022', 'DD/MM/YYYY') and l.fim > TO_DATE(sysdate, 'DD/MM/YYYY') ) ");
       sql.append("    AND tl.codigoesocial IS NOT NULL ");
       sql.append("    AND f.datasaida IS NULL ");
       sql.append("    AND (f.id IN (SELECT idFuncional FROM esocial_admissao) OR f.id IN (SELECT idFuncional FROM esocial_estagiario) ) ");
