@@ -11,7 +11,15 @@
 	<name>srh Maven Webapp</name>
 	<url>http://maven.apache.org</url>
   
-  
+	<profiles>
+		<profile>
+			<id>kubernetes</id>      
+			<properties>
+				<activatedProperties>kubernetes</activatedProperties>
+			</properties>
+		</profile>    
+	</profiles>
+
 	<properties>
 		<spring.version>3.1.4.RELEASE</spring.version>
 		<spring.security.version>3.1.7.RELEASE</spring.security.version>
