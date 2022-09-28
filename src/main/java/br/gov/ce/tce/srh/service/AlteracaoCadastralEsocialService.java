@@ -7,19 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.gov.ce.tce.srh.dao.AdmissaoEsocialDAO;
-import br.gov.ce.tce.srh.domain.Admissao;
+import br.gov.ce.tce.srh.dao.AlteracaoCadastralEsocialDAO;
+import br.gov.ce.tce.srh.domain.AlteracaoCadastral;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
 
-@Service("admissaoESocialService")
-public class AdmissaoEsocialService{
+@Service("alteracaoCadastralEsocialService")
+public class AlteracaoCadastralEsocialService{
 
 	@Autowired
-	private AdmissaoEsocialDAO dao;
+	private AlteracaoCadastralEsocialDAO dao;
 		
 	@Autowired
 	private EventoService eventoService;
@@ -28,16 +28,16 @@ public class AdmissaoEsocialService{
 	private NotificacaoService notificacaoService;
 
 	@Transactional
-	public Admissao salvar(Admissao entidade) {		
+	public AlteracaoCadastral salvar(AlteracaoCadastral entidade) {		
 		
 		entidade = dao.salvar(entidade);
 
 		// salvando notificação
-		Evento evento = this.eventoService.getById(TipoEventoESocial.S2200.getCodigo());
+		Evento evento = this.eventoService.getById(TipoEventoESocial.S2205.getCodigo());
 		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferencia());
 		if (notificacao == null) {
 			notificacao = new Notificacao();
-			notificacao.setDescricao("Evento S2200 com pendência de envio.");
+			notificacao.setDescricao("Evento S2205 com pendência de envio.");
 			notificacao.setData(new Date());
 			notificacao.setTipo(TipoNotificacao.N);
 			notificacao.setEvento(evento);
@@ -52,15 +52,15 @@ public class AdmissaoEsocialService{
 	}		
 
 	@Transactional
-	public void excluir(Admissao entidade) {
+	public void excluir(AlteracaoCadastral entidade) {
 		dao.excluir(entidade);
 	}	
 
-	public Admissao getByIdFuncional(Long idFuncional) {
+	public AlteracaoCadastral getByIdFuncional(Long idFuncional) {
 		return dao.getByIdFuncional(idFuncional);
 	}	
 	
-	public Admissao getById(Long id) {
+	public AlteracaoCadastral getById(Long id) {
 		return dao.getById(id);
 	}	
 	
@@ -68,21 +68,16 @@ public class AdmissaoEsocialService{
 		return dao.count(nome, cpf);
 	}
 	
-	public List<Admissao> search(String nome, String cpf, Integer first, Integer rows) {
+	public List<AlteracaoCadastral> search(String nome, String cpf, Integer first, Integer rows) {
 		return dao.search(nome, cpf, first, rows);
 	}
 
-	public Admissao getEventoS2200ByServidor(Funcional servidorFuncional, boolean possuiCargo) {	
-		return dao.getEventoS2200ByServidor(servidorFuncional, possuiCargo);
-	}
-	
-	public Admissao getEventoS2200ConectorByReferencia(String referencia) {	
-		return dao.getEventoS2200ConectorByReferencia(referencia);
+	public AlteracaoCadastral getEventoS2205ByServidor(Funcional servidorFuncional, boolean possuiCargo) {	
+		return dao.getEventoS2205ByServidor(servidorFuncional, possuiCargo);
 	}
 
-
-	public String findReciboEventoS2200(String referencia) {
-		return dao.findReciboEventoS2200(referencia);
+	public String findReciboEventoS2205(String referencia) {
+		return dao.findReciboEventoS2205(referencia);
 	}
 
 }

@@ -332,6 +332,23 @@ public class FuncionalDAO {
       return null;
     }
   }
+  
+  /***
+   * 
+   * @return
+   */
+  public List<Funcional> findServidoresEvento2205() {
+    try {
+    	StringBuffer sql = new StringBuffer();
+    	sql.append(" SELECT new Funcional(f.id, f.matricula, f.pessoal, f.nome) FROM Funcional f ");
+    	sql.append(" WHERE (f.id IN (SELECT a.funcional.id FROM Admissao a ) OR f.id IN (SELECT e.funcional.id FROM EstagiarioESocial e) ) ORDER BY f.nome " ); 
+    		
+      TypedQuery<Funcional> query = entityManager.createQuery(sql.toString(), Funcional.class);
+      return query.getResultList();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
 
   public List<Funcional> findServidoresEvento2299() { 
     TypedQuery<Funcional> query = entityManager.createQuery("SELECT DISTINCT new Funcional(f.id, f.matricula, f.pessoal, f.nome) " + "FROM Funcional f " + "WHERE "

@@ -11,15 +11,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import br.gov.ce.tce.srh.domain.Admissao;
+import br.gov.ce.tce.srh.domain.AlteracaoCadastral;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Repository
-public class AdmissaoEsocialDAO {
+public class AlteracaoCadastralEsocialDAO {
 
-	static Logger logger = Logger.getLogger(AdmissaoEsocialDAO.class);
+	static Logger logger = Logger.getLogger(AlteracaoCadastralEsocialDAO.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -31,11 +31,11 @@ public class AdmissaoEsocialDAO {
 	}
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from Admissao e ");
+		Query query = entityManager.createQuery("Select max(e.id) from AlteracaoCadastral e ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
-	public Admissao salvar(Admissao entidade) {
+	public AlteracaoCadastral salvar(AlteracaoCadastral entidade) {
 
 		if (entidade.getId() == null || entidade.getId().equals(0l)) {
 			entidade.setId(getMaxId());
@@ -44,20 +44,20 @@ public class AdmissaoEsocialDAO {
 		return entityManager.merge(entidade);
 	}
 
-	public void excluir(Admissao entidade) {
+	public void excluir(AlteracaoCadastral entidade) {
 		entidade = entityManager.merge(entidade);
 		entityManager.remove(entidade);
 	}
 
-	public Admissao getById(Long id) {
-		return entityManager.find(Admissao.class, id);
+	public AlteracaoCadastral getById(Long id) {
+		return entityManager.find(AlteracaoCadastral.class, id);
 	}
 	
 	public int count(String nome, String cpf) {
 		
 		StringBuffer sql = new StringBuffer();
 
-		sql.append(" Select count(a) FROM Admissao a inner join a.funcional f WHERE 1=1 ");
+		sql.append(" Select count(a) FROM AlteracaoCadastral a inner join a.funcional f WHERE 1=1 ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -80,11 +80,11 @@ public class AdmissaoEsocialDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Admissao> search(String nome, String cpf, Integer first, Integer rows) {
+	public List<AlteracaoCadastral> search(String nome, String cpf, Integer first, Integer rows) {
 
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("  SELECT e FROM Admissao e inner join fetch e.funcional f WHERE 1=1 ");
+		sql.append("  SELECT e FROM AlteracaoCadastral e inner join fetch e.funcional f WHERE 1=1 ");
 
 		if (nome != null && !nome.isEmpty()) {
 			sql.append("  and upper( f.nome ) like :nome ");
@@ -112,27 +112,18 @@ public class AdmissaoEsocialDAO {
 		return query.getResultList();
 	}
 
-	public Admissao getEventoS2200ByServidor(Funcional servidorFuncional, boolean possuiCargo) {
+	public AlteracaoCadastral getEventoS2205ByServidor(Funcional servidorFuncional, boolean possuiCargo) {
 		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS2200(possuiCargo), Admissao.class);
+			Query query = entityManager.createNativeQuery(getSQLEventoS2205(possuiCargo), AlteracaoCadastral.class);
 			query.setParameter("idFuncional",servidorFuncional.getId() );
-			return (Admissao) query.getSingleResult();
+			return (AlteracaoCadastral) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
-	}
+
+	}	
 	
-	public Admissao getEventoS2200ConectorByReferencia(String referencia) {
-		try {
-			Query query = entityManager.createNativeQuery(getSQLEventoS2200FromConector(), Admissao.class);
-			query.setParameter("referencia", referencia);
-			return (Admissao) query.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-	
-	public String getSQLEventoS2200(boolean possuiCargo) {
+	public String getSQLEventoS2205(boolean possuiCargo) {
 		StringBuffer sql = new StringBuffer();
 		String dataLimiteEsocial="";
 		
@@ -151,15 +142,15 @@ public class AdmissaoEsocialDAO {
 		sql.append(" f.id-10000 as id, ");
 		sql.append( "f.id||'-'||o.id AS referencia, ");	
 		sql.append(" f.id AS idfuncional, ");
+		sql.append("  1     AS TP_INSC, ");
+		sql.append(" '09499757000146' AS NR_INSC, ");
 		sql.append(" p.nome AS nm_trab, ");
 		sql.append(" p.cpf AS cpf_trab, ");
 		sql.append("  p.sexo AS sexo, ");
 		sql.append("  p.idraca AS raca_cor, ");
 		sql.append("  ec.codigoesocial AS est_civ, ");
 		sql.append("  p.idescolaridade AS grau_instr, ");
-		sql.append(" p.nomesocial AS NM_SOCIAL, ");
-		sql.append(" p.datanascimento AS dt_nasc, ");
-		sql.append(" pais_nascimento.codigo AS pais_nasc, ");
+		sql.append(" p.nomesocial AS NM_SOCIAL, ");		
 		sql.append(" pais_nacionalidade.codigo AS pais_nac, ");
 		sql.append("  tl.codigo AS tp_lograd, ");
 		sql.append("  p.endereco AS dsc_lograd, ");
@@ -168,66 +159,9 @@ public class AdmissaoEsocialDAO {
 		sql.append("  p.bairro AS bairro, ");
 		sql.append(" TRIM (p.cep) AS cep, ");
 		sql.append(" m.cod_municipio AS cod_munic_end, ");
-		sql.append("  m.uf AS uf_end, ");
+		sql.append("  m.uf AS uf, ");
 		sql.append("  TRIM (p.celular) AS fone_princ, ");
 		sql.append("  TRIM (p.email) AS email_princ, ");
-		sql.append(" '0'||f.matricula AS matricula, ");
-		sql.append("  2 AS tp_reg_trab, ");
-		sql.append(" Decode(c.contribui_inss,'S', 1, 2) AS tp_reg_prev, ");	
-		sql.append(" CASE c.FUNDO_PREVIDENCIARIO ");
-		sql.append(" WHEN 1 THEN 2  ");
-		sql.append(" WHEN 2 THEN 1  ");
-		sql.append(" ELSE null  ");
-		sql.append("END AS TP_PLAN_RP,");		
-		sql.append(" NULL  AS DSC_SAL_VAR, ");
-		sql.append(" NULL  AS TP_CONTR, ");
-		sql.append("  1     AS LTRAB_GERAL_TP_INSC, ");
-		sql.append(" '09499757000146' AS LTRAB_GERAL_NR_INSC, ");
-		sql.append("  NULL  AS LTRAB_GERAL_DESC_COMP, ");
-		sql.append("  CASE ");
-		sql.append("  WHEN c.exercicio > TO_DATE('"+dataLimiteEsocial+"', 'dd/mm/yyyy') THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END AS cad_ini, ");
-		sql.append("  c.exercicio AS dt_exercicio, ");
-		sql.append("  CASE o.id ");
-		sql.append("   WHEN 33 THEN 2 ");
-		sql.append("  ELSE 1 ");
-		sql.append(" END AS tp_prov, ");
-		sql.append(" Decode(c.contribui_inss,'S', null, "); 
-		sql.append(" CASE ");
-		sql.append("  WHEN pl.dtinicio IS NULL THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END) AS IND_TETO_RGPS,  ");
-		sql.append(" Decode(c.contribui_inss,'S', null,   ");  
-		sql.append("  CASE ");
-		sql.append("  WHEN ap.dataimplantacao IS NULL THEN 'N' ");
-		sql.append("  ELSE 'S' ");
-		sql.append(" END) AS IND_ABONO_PERM, ");	   
-		sql.append(" CASE c.contribui_inss ");
-		sql.append("  WHEN 'S' THEN null ");
-		sql.append("  ELSE ap.dataimplantacao ");
-		sql.append(" END  AS DT_INI_ABONO, ");		   
-		sql.append(" Decode(o.id,33, null, o.nomenclatura)  AS NM_CARGO, ");
-		sql.append(" Decode(o.id,33, null, o.cbo) AS CBO_CARGO, ");		   
-		sql.append("  CASE o.id ");
-		sql.append("  WHEN 33 THEN null ");
-		sql.append(" ELSE c.exercicio ");
-		sql.append(" END  AS DT_INGR_CARGO,	 ");	       		   
-		sql.append(" rc.nomenclatura AS NM_FUNCAO, ");
-		sql.append(" rc.cbo AS CBO_FUNCAO, ");
-		sql.append("  CASE ");
-		sql.append("  WHEN o.tipoacumulacao = 4 THEN 'S' ");
-		sql.append("  ELSE 'N' ");
-		sql.append(" END AS ACUM_CARGO, ");
-		sql.append("  CASE o.id ");
-		sql.append("  WHEN 33 THEN 302 ");
-		sql.append("  ELSE 301 ");
-		sql.append(" END AS COD_CATEG, ");
-		sql.append("  CASE o.id ");
-		sql.append("  WHEN 33 THEN c.rep ");
-		sql.append(" ELSE c.vpad ");
-		sql.append("  END AS VR_SAL_FX, ");
-		sql.append("  5 AS UND_SAL_FIXO, ");
 		sql.append(" CASE ");
 		sql.append("  WHEN fd.FLFISICA IS NULL THEN 'N' ");
 		sql.append(" ELSE 'S' ");
@@ -259,8 +193,7 @@ public class AdmissaoEsocialDAO {
 		sql.append(" CASE ");
 		sql.append(" WHEN fd.FLFISICA IS NULL THEN 'N' ");
 		sql.append(" ELSE 'S' ");
-		sql.append(" END AS DEF_OBESERVACAO ");
-		   
+		sql.append(" END AS DEF_OBESERVACAO ");		   
 		sql.append(" FROM srh.tb_funcional f ");
 		sql.append(" INNER JOIN srh.fp_cadastro c ON f.id = c.idfuncional ");
 		sql.append(" LEFT JOIN srh.tb_abonopermanencia ap ON f.id = ap.idfuncional ");
@@ -284,30 +217,23 @@ public class AdmissaoEsocialDAO {
 	    
 	    return sql.toString();
 	}
-	
-	public String getSQLEventoS2200FromConector() {
-		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT * FROM CONECTOR_ESOCIAL.CON_S2200_ADMISSAO_OLD a WHERE a.id=:referencia");
-	    
-	    return sql.toString();
-	}
 
-	public Admissao getByIdFuncional(Long idFuncional) {
+	public AlteracaoCadastral getByIdFuncional(Long idFuncional) {
 		try {
-			Query query = entityManager.createQuery("SELECT a FROM Admissao a where a.funcional.id = :idFuncional");
+			Query query = entityManager.createQuery("SELECT a FROM AlteracaoCadastral a where a.funcional.id = :idFuncional");
 			query.setParameter("idFuncional", idFuncional);
-			return (Admissao) query.getSingleResult();
+			return (AlteracaoCadastral) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 	}
 
-	public String findReciboEventoS2200(String referencia) {
+	public String findReciboEventoS2205(String referencia) {
 		try {
 			
 			StringBuffer sql = new StringBuffer();
-			sql.append("select to_char(TXT_NR_RECIBO) from CONECTOR_ESOCIAL.CON_S2200_ADMISSAO_OLD s2200 inner join  ESOCIAL_API_INTEGRACAO.EST_EVENTO even on s2200.OCORRENCIA_ID = even.COD_OCORRENCIA ");
-			sql.append(" where s2200.id = :referencia");
+			sql.append("select to_char(TXT_NR_RECIBO) from CONECTOR_ESOCIAL.CON_S2205_AlteracaoCadastral_OLD s2205 inner join  ESOCIAL_API_INTEGRACAO.EST_EVENTO even on s2205.OCORRENCIA_ID = even.COD_OCORRENCIA ");
+			sql.append(" where s2205.id = :referencia");
 			//sql.append(" and s2200.OCORRENCIA_COD_ESTADO = 3 ");
 			
 			Query query = entityManager.createNativeQuery(sql.toString());

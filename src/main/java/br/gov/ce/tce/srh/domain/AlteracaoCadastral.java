@@ -1,7 +1,6 @@
 package br.gov.ce.tce.srh.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
@@ -20,8 +17,8 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @SuppressWarnings("serial")
-@Table(name = "ESOCIAL_ADMISSAO", schema=DatabaseMetadata.SCHEMA_SRH)
-public class Admissao extends BasicEntity<Long> implements Serializable{
+@Table(name = "ESOCIAL_ALTERACAOCADASTRAL", schema=DatabaseMetadata.SCHEMA_SRH)
+public class AlteracaoCadastral extends BasicEntity<Long> implements Serializable{
 
 	@Id
 	@Column(name = "ID")	
@@ -33,10 +30,19 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 	
 	@Column(name = "REFERENCIA")
 	private String referencia;
+
+	//ideEmpregador - Informações de identificação do empregador.
+	@Column(name = "TP_INSC")
+	private Byte tpInsc;
 	
+	@Column(name = "NR_INSC")
+	private String nrInsc;
+	
+	//ideTrabalhador - Identificação do trabalhador.
 	@Column(name = "CPF_TRAB")
 	private String cpfTrab;
-	
+
+	//dadosTrabalhador - Informações pessoais do trabalhador.
 	@Column(name = "NM_TRAB")
 	private String nmTrab;
 	
@@ -55,16 +61,12 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 	@Column(name = "NM_SOCIAL")
 	private String nmSoc;
 	
-	@Column(name = "DT_NASC")
-	@Temporal(TemporalType.DATE)
-	private Date dtNascto;
-	
-	@Column(name = "PAIS_NASC")
-	private String paisNascto;
-	
 	@Column(name = "PAIS_NAC")
-	private String paisNac;
+	private String paisNac;	
 	
+	/** endereco - Grupo de informações do endereço do trabalhador. 
+	 * brasil - Endereço no Brasil.
+	 */
 	@Column(name = "TP_LOGRAD")
 	private String tpLograd;
 	
@@ -86,15 +88,10 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 	@Column(name = "COD_MUNIC_END")
 	private String codMunic;
 	
-	@Column(name = "UF_END")
+	@Column(name = "UF")
 	private String uf;	
 	
-	@Column(name = "FONE_PRINC")
-	private String fonePrinc;
-	
-	@Column(name = "EMAIL_PRINC")
-	private String emailPrinc;
-	
+	//infoDeficiencia - Pessoa com deficiência.	
 	@Column(name = "DEF_FISICA")
 	private Character defFisica;
 	
@@ -118,83 +115,18 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 	
 	@Column(name = "DEF_OBESERVACAO")
 	@Length(min = 1, max = 255, message = "Tamanho fora do permitido para Observação")
-	private String observacao;
+	private String observacao;	
 	
-	@Column(name = "MATRICULA")
-	private String matricula;	
+	//contato - Informações de contato
+	@Column(name = "FONE_PRINC")
+	private String fonePrinc;
 	
-	@Column(name = "TP_REG_TRAB")
-	private Byte tpRegTrab;
-	
-	@Column(name = "TP_REG_PREV")
-	private Byte tpRegPrev;
-	
-	@Column(name = "CAD_INI")
-	private Character cadIni;
-	
-	@Column(name = "TP_PROV")
-	private Byte tpProv;
-	
-	@Column(name = "DT_EXERCICIO")
-	@Temporal(TemporalType.DATE)
-	private Date dtExercicio;
-	
-	@Column(name = "TP_PLAN_RP")
-	private Byte tpPlanRP;
-	
-	@Column(name = "IND_TETO_RGPS")
-	private Character indTetoRGPS;
-	
-	@Column(name = "IND_ABONO_PERM")
-	private Character indAbonoPerm;
-	
-	@Column(name = "DT_INI_ABONO")
-	@Temporal(TemporalType.DATE)
-	private Date dtIniAbono;
-	
-	@Column(name = "NM_CARGO")
-	private String nmCargo;
-	
-	@Column(name = "CBO_CARGO")
-	private String CBOCargo;
-	
-	@Column(name = "DT_INGR_CARGO")
-	@Temporal(TemporalType.DATE)
-	private Date dtIngrCargo;
-	
-	@Column(name = "NM_FUNCAO")
-	private String nmFuncao;
-	
-	@Column(name = "CBO_FUNCAO")
-	private String CBOFuncao;
-	
-	@Column(name = "ACUM_CARGO")
-	private Character acumCargo;
-	
-	@Column(name = "COD_CATEG")
-	private Integer codCateg;
-	
-	@Column(name = "LTRAB_GERAL_TP_INSC")
-	private Byte tpInsc;
+	@Column(name = "EMAIL_PRINC")
+	private String emailPrinc;
 
-	@Column(name = "LTRAB_GERAL_NR_INSC")
-	private String nrInsc;
-	
-	@Column(name = "LTRAB_GERAL_DESC_COMP")
-	private String descComp;
-	
-	@Column(name = "VR_SAL_FX")
-	private Float vrSalFx;
-	
-	@Column(name = "UND_SAL_FIXO")
-	private Byte undSalFixo;
-
-	@Column(name = "DSC_SAL_VAR")
-	private String dscSalVar;
-		
 	@Transient
 	private List<DependenteEsocial> dependentesList;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -217,6 +149,22 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 
 	public void setReferencia(String referencia) {
 		this.referencia = referencia;
+	}
+
+	public Byte getTpInsc() {
+		return tpInsc;
+	}
+
+	public void setTpInsc(Byte tpInsc) {
+		this.tpInsc = tpInsc;
+	}
+
+	public String getNrInsc() {
+		return nrInsc;
+	}
+
+	public void setNrInsc(String nrInsc) {
+		this.nrInsc = nrInsc;
 	}
 
 	public String getCpfTrab() {
@@ -273,22 +221,6 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 
 	public void setNmSoc(String nmSoc) {
 		this.nmSoc = nmSoc;
-	}
-
-	public Date getDtNascto() {
-		return dtNascto;
-	}
-
-	public void setDtNascto(Date dtNascto) {
-		this.dtNascto = dtNascto;
-	}
-
-	public String getPaisNascto() {
-		return paisNascto;
-	}
-
-	public void setPaisNascto(String paisNascto) {
-		this.paisNascto = paisNascto;
 	}
 
 	public String getPaisNac() {
@@ -363,22 +295,6 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 		this.uf = uf;
 	}
 
-	public String getFonePrinc() {
-		return fonePrinc;
-	}
-
-	public void setFonePrinc(String fonePrinc) {
-		this.fonePrinc = fonePrinc;
-	}
-
-	public String getEmailPrinc() {
-		return emailPrinc;
-	}
-
-	public void setEmailPrinc(String emailPrinc) {
-		this.emailPrinc = emailPrinc;
-	}
-
 	public Character getDefFisica() {
 		return defFisica;
 	}
@@ -443,188 +359,20 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 		this.observacao = observacao;
 	}
 
-	public String getMatricula() {
-		return matricula;
+	public String getFonePrinc() {
+		return fonePrinc;
 	}
 
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
+	public void setFonePrinc(String fonePrinc) {
+		this.fonePrinc = fonePrinc;
 	}
 
-	public Byte getTpRegTrab() {
-		return tpRegTrab;
+	public String getEmailPrinc() {
+		return emailPrinc;
 	}
 
-	public void setTpRegTrab(Byte tpRegTrab) {
-		this.tpRegTrab = tpRegTrab;
-	}
-
-	public Byte getTpRegPrev() {
-		return tpRegPrev;
-	}
-
-	public void setTpRegPrev(Byte tpRegPrev) {
-		this.tpRegPrev = tpRegPrev;
-	}
-
-	public Character getCadIni() {
-		return cadIni;
-	}
-
-	public void setCadIni(Character cadIni) {
-		this.cadIni = cadIni;
-	}
-
-	public Byte getTpProv() {
-		return tpProv;
-	}
-
-	public void setTpProv(Byte tpProv) {
-		this.tpProv = tpProv;
-	}
-
-	public Date getDtExercicio() {
-		return dtExercicio;
-	}
-
-	public void setDtExercicio(Date dtExercicio) {
-		this.dtExercicio = dtExercicio;
-	}
-
-	public Byte getTpPlanRP() {
-		return tpPlanRP;
-	}
-
-	public void setTpPlanRP(Byte tpPlanRP) {
-		this.tpPlanRP = tpPlanRP;
-	}
-
-	public Character getIndTetoRGPS() {
-		return indTetoRGPS;
-	}
-
-	public void setIndTetoRGPS(Character indTetoRGPS) {
-		this.indTetoRGPS = indTetoRGPS;
-	}
-
-	public Character getIndAbonoPerm() {
-		return indAbonoPerm;
-	}
-
-	public void setIndAbonoPerm(Character indAbonoPerm) {
-		this.indAbonoPerm = indAbonoPerm;
-	}
-
-	public Date getDtIniAbono() {
-		return dtIniAbono;
-	}
-
-	public void setDtIniAbono(Date dtIniAbono) {
-		this.dtIniAbono = dtIniAbono;
-	}
-
-	public String getNmCargo() {
-		return nmCargo;
-	}
-
-	public void setNmCargo(String nmCargo) {
-		this.nmCargo = nmCargo;
-	}
-
-	public String getCBOCargo() {
-		return CBOCargo;
-	}
-
-	public void setCBOCargo(String cBOCargo) {
-		CBOCargo = cBOCargo;
-	}
-
-	public Date getDtIngrCargo() {
-		return dtIngrCargo;
-	}
-
-	public void setDtIngrCargo(Date dtIngrCargo) {
-		this.dtIngrCargo = dtIngrCargo;
-	}
-
-	public String getNmFuncao() {
-		return nmFuncao;
-	}
-
-	public void setNmFuncao(String nmFuncao) {
-		this.nmFuncao = nmFuncao;
-	}
-
-	public String getCBOFuncao() {
-		return CBOFuncao;
-	}
-
-	public void setCBOFuncao(String cBOFuncao) {
-		CBOFuncao = cBOFuncao;
-	}
-
-	public Character getAcumCargo() {
-		return acumCargo;
-	}
-
-	public void setAcumCargo(Character acumCargo) {
-		this.acumCargo = acumCargo;
-	}
-
-	public Integer getCodCateg() {
-		return codCateg;
-	}
-
-	public void setCodCateg(Integer codCateg) {
-		this.codCateg = codCateg;
-	}
-
-	public Byte getTpInsc() {
-		return tpInsc;
-	}
-
-	public void setTpInsc(Byte tpInsc) {
-		this.tpInsc = tpInsc;
-	}
-
-	public String getNrInsc() {
-		return nrInsc;
-	}
-
-	public void setNrInsc(String nrInsc) {
-		this.nrInsc = nrInsc;
-	}
-
-	public String getDescComp() {
-		return descComp;
-	}
-
-	public void setDescComp(String descComp) {
-		this.descComp = descComp;
-	}
-
-	public Float getVrSalFx() {
-		return vrSalFx;
-	}
-
-	public void setVrSalFx(Float vrSalFx) {
-		this.vrSalFx = vrSalFx;
-	}
-
-	public Byte getUndSalFixo() {
-		return undSalFixo;
-	}
-
-	public void setUndSalFixo(Byte undSalFixo) {
-		this.undSalFixo = undSalFixo;
-	}
-
-	public String getDscSalVar() {
-		return dscSalVar;
-	}
-
-	public void setDscSalVar(String dscSalVar) {
-		this.dscSalVar = dscSalVar;
+	public void setEmailPrinc(String emailPrinc) {
+		this.emailPrinc = emailPrinc;
 	}
 
 	public List<DependenteEsocial> getDependentesList() {

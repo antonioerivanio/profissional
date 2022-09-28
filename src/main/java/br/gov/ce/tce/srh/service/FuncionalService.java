@@ -130,6 +130,10 @@ public class FuncionalService {
 		return dao.findServidoresEvento2200();
 	}
 	
+	public List<Funcional> findServidoresEvento2205() {		
+		return dao.findServidoresEvento2205();
+	}
+	
 	public List<Funcional> findServidoresEvento2299() {        
       return dao.findServidoresEvento2299();
     }

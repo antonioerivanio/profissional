@@ -1114,6 +1114,27 @@
 		</navigation-case>
 	</navigation-rule>
 	
+		
+	<!-- Alteração de dados cadastrados - evento 2205 eSocial/TCE -->
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/alteracaoCadastralList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/alteracaoCadastralList.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>incluirAlterar</from-outcome>
+			<to-view-id>/paginas/tabelas/alteracaoCadastralForm.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/paginas/tabelas/alteracaoCadastralForm.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>listar</from-outcome>
+			<to-view-id>/paginas/tabelas/alteracaoCadastralList.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 	<!-- Desligamento eSocial/TCE -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/desligamentoList.xhtml</from-view-id>

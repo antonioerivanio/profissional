@@ -30,7 +30,6 @@ public class LoginBean implements Serializable {
 
 	private String mensagem = new String();
 
-
 	public String autenticar() {
 
 		this.mensagem = new String();
