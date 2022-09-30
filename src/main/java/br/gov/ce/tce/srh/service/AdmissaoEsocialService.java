@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.AdmissaoEsocialDAO;
 import br.gov.ce.tce.srh.domain.Admissao;
+import br.gov.ce.tce.srh.domain.AdmissaoVTO;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
@@ -76,7 +77,11 @@ public class AdmissaoEsocialService{
 		return dao.getEventoS2200ByServidor(servidorFuncional, possuiCargo);
 	}
 	
-	public Admissao getEventoS2200ConectorByReferencia(String referencia) {	
+	public AdmissaoVTO getEventoS2200ByServidor(Funcional servidorFuncional) {	
+		return dao.getEventoS2200ByServidor(servidorFuncional);
+	}
+	
+	public AdmissaoVTO getEventoS2200ConectorByReferencia(String referencia) {	
 		return dao.getEventoS2200ConectorByReferencia(referencia);
 	}
 

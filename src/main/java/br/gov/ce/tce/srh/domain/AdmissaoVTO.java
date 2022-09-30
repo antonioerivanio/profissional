@@ -1,212 +1,126 @@
 package br.gov.ce.tce.srh.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.validator.constraints.Length;
-
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
-@SuppressWarnings("serial")
-@Table(name = "ESOCIAL_ADMISSAO", schema=DatabaseMetadata.SCHEMA_SRH)
-public class Admissao extends BasicEntity<Long> implements Serializable{
+public class AdmissaoVTO {
 
 	@Id
-	@Column(name = "ID")	
-	private Long id;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "IDFUNCIONAL")
-	private Funcional funcional;
-	
-	@Column(name = "REFERENCIA")
 	private String referencia;
-	
-	@Column(name = "CPF_TRAB")
+
 	private String cpfTrab;
-	
-	@Column(name = "NM_TRAB")
+
 	private String nmTrab;
-	
-	@Column(name = "SEXO")
+
 	private Character sexo;
-	
-	@Column(name = "RACA_COR")
+
 	private Byte racaCor;
-	
-	@Column(name = "EST_CIV")
+
 	private Byte estCiv;
-	
-	@Column(name = "GRAU_INSTR")
+
 	private String grauInstr;
-	
-	@Column(name = "NM_SOCIAL")
-	private String nmSoc;
-	
-	@Column(name = "DT_NASC")
-	@Temporal(TemporalType.DATE)
+
 	private Date dtNascto;
-	
-	@Column(name = "PAIS_NASC")
+
+	private String nmSoc;
+
 	private String paisNascto;
-	
-	@Column(name = "PAIS_NAC")
+
 	private String paisNac;
-	
-	@Column(name = "TP_LOGRAD")
+
 	private String tpLograd;
-	
-	@Column(name = "DSC_LOGRAD")
+
 	private String dscLograd;
-	
-	@Column(name = "NR_LOGRAD")
+
 	private String nrLograd;
-	
-	@Column(name = "COMPLEMENTO")
+
 	private String complemento;
-	
-	@Column(name = "BAIRRO")
+
 	private String bairro;
-	
-	@Column(name = "CEP")
+
 	private String cep;
-	
-	@Column(name = "COD_MUNIC_END")
+
 	private String codMunic;
-	
-	@Column(name = "UF_END")
-	private String uf;	
-	
-	@Column(name = "FONE_PRINC")
+
+	private String uf;
+
 	private String fonePrinc;
-	
-	@Column(name = "EMAIL_PRINC")
+
 	private String emailPrinc;
-	
-	@Column(name = "DEF_FISICA")
+
 	private Character defFisica;
-	
-	@Column(name = "DEF_VISUAL")
+
 	private Character defVisual;
-	
-	@Column(name = "DEF_AUDITIVA")
+
 	private Character defAuditiva;
-	
-	@Column(name = "DEF_MENTAL")
+
 	private Character defMental;
-	
-	@Column(name = "DEF_INTELECTUAL")
+
 	private Character defIntelectual;
-	
-	@Column(name = "DEF_REAB_READAP")
+
 	private Character reabReadap;
-	
-	@Column(name = "DEF_INFO_COTA")
+
 	private Character infoCota;
-	
-	@Column(name = "DEF_OBESERVACAO")
-	@Length(min = 1, max = 255, message = "Tamanho fora do permitido para Observação")
+
 	private String observacao;
-	
-	@Column(name = "MATRICULA")
-	private String matricula;	
-	
-	@Column(name = "TP_REG_TRAB")
+
+	private String matricula;
+
 	private Byte tpRegTrab;
-	
-	@Column(name = "TP_REG_PREV")
+
 	private Byte tpRegPrev;
-	
-	@Column(name = "CAD_INI")
+
 	private Character cadIni;
-	
-	@Column(name = "TP_PROV")
+
 	private Byte tpProv;
-	
-	@Column(name = "DT_EXERCICIO")
-	@Temporal(TemporalType.DATE)
+
 	private Date dtExercicio;
-	
-	@Column(name = "TP_PLAN_RP")
+
 	private Byte tpPlanRP;
-	
-	@Column(name = "IND_TETO_RGPS")
+
 	private Character indTetoRGPS;
-	
-	@Column(name = "IND_ABONO_PERM")
+
 	private Character indAbonoPerm;
-	
-	@Column(name = "DT_INI_ABONO")
-	@Temporal(TemporalType.DATE)
+
 	private Date dtIniAbono;
-	
-	@Column(name = "NM_CARGO")
+
 	private String nmCargo;
-	
-	@Column(name = "CBO_CARGO")
+
 	private String CBOCargo;
-	
-	@Column(name = "DT_INGR_CARGO")
-	@Temporal(TemporalType.DATE)
+
 	private Date dtIngrCargo;
-	
-	@Column(name = "NM_FUNCAO")
+
 	private String nmFuncao;
-	
-	@Column(name = "CBO_FUNCAO")
+
 	private String CBOFuncao;
-	
-	@Column(name = "ACUM_CARGO")
+
 	private Character acumCargo;
-	
-	@Column(name = "COD_CATEG")
+
 	private Integer codCateg;
-	
-	@Column(name = "LTRAB_GERAL_TP_INSC")
+
 	private Byte tpInsc;
 
-	@Column(name = "LTRAB_GERAL_NR_INSC")
 	private String nrInsc;
-	
-	@Column(name = "LTRAB_GERAL_DESC_COMP")
+
 	private String descComp;
-	
-	@Column(name = "VR_SAL_FX")
+
 	private Float vrSalFx;
-	
-	@Column(name = "UND_SAL_FIXO")
+
 	private Byte undSalFixo;
 
-	@Column(name = "DSC_SAL_VAR")
 	private String dscSalVar;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Funcional getFuncional() {
-		return funcional;
-	}
-
-	public void setFuncional(Funcional funcional) {
-		this.funcional = funcional;
-	}
+	
+	@Transient
+	private List<DependenteEsocial> dependentesList;
 
 	public String getReferencia() {
 		return referencia;
@@ -622,6 +536,153 @@ public class Admissao extends BasicEntity<Long> implements Serializable{
 
 	public void setDscSalVar(String dscSalVar) {
 		this.dscSalVar = dscSalVar;
+	}	
+	
+
+	public List<DependenteEsocial> getDependentesList() {
+		return dependentesList;
+	}
+
+	public void setDependentesList(List<DependenteEsocial> dependentesList) {
+		this.dependentesList = dependentesList;
+	}
+
+	@Override
+	public int hashCode() {
+		HashCodeBuilder builder = new HashCodeBuilder();
+		builder.append(CBOCargo);
+		builder.append(CBOFuncao);
+		builder.append(acumCargo);
+		builder.append(bairro);
+		builder.append(cadIni);
+		builder.append(codCateg);
+		builder.append(codMunic);
+		builder.append(complemento);
+		builder.append(cpfTrab);
+		builder.append(defAuditiva);
+		builder.append(defFisica);
+		builder.append(defIntelectual);
+		builder.append(defMental);
+		builder.append(descComp);
+		builder.append(descComp);
+		builder.append(dscLograd);
+		builder.append(dscSalVar);
+		builder.append(dtExercicio);
+		builder.append(dtIngrCargo);
+		builder.append(dtIniAbono);
+		builder.append(dtNascto);
+		builder.append(emailPrinc);
+		builder.append(estCiv);
+		builder.append(fonePrinc);
+		builder.append(grauInstr);
+		builder.append(indAbonoPerm);
+		builder.append(indTetoRGPS);
+		builder.append(infoCota);
+		builder.append(matricula);
+		builder.append(nmCargo);
+		builder.append(nmFuncao);
+		builder.append(nmSoc);
+		builder.append(nmTrab);
+		builder.append(nrInsc);
+		builder.append(nrLograd);
+		builder.append(observacao);
+		builder.append(paisNac);
+		builder.append(paisNascto);
+		builder.append(racaCor);
+		builder.append(reabReadap);
+		builder.append(referencia);
+		builder.append(sexo);
+		builder.append(tpInsc);
+		builder.append(tpLograd);
+		builder.append(tpPlanRP);
+		builder.append(tpProv);
+		builder.append(tpRegPrev);
+		builder.append(tpRegTrab);
+		builder.append(uf);
+		builder.append(undSalFixo);
+		builder.append(vrSalFx);
+		
+		return builder.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AdmissaoVTO other = (AdmissaoVTO) obj;
+
+		EqualsBuilder builder = new EqualsBuilder();
+		builder.append(CBOCargo, other.CBOCargo);
+		builder.append(CBOFuncao, other.CBOFuncao);
+		builder.append(acumCargo, other.acumCargo);
+		builder.append(bairro, other.bairro);
+		builder.append(cadIni, other.cadIni);
+		builder.append(codCateg, other.codCateg);
+		builder.append(codMunic, other.codMunic);
+		builder.append(complemento, other.complemento);
+		builder.append(cpfTrab, other.cpfTrab);
+		builder.append(defAuditiva, other.defAuditiva);
+		builder.append(defFisica, other.defFisica);
+		builder.append(defIntelectual, other.defIntelectual);
+		builder.append(defMental, other.defMental);
+		builder.append(descComp, other.descComp);
+		builder.append(descComp, other.descComp);
+		builder.append(dscLograd, other.dscLograd);
+		builder.append(dscSalVar, other.dscSalVar);
+		builder.append(dtExercicio, other.dtExercicio);
+		builder.append(dtIngrCargo, other.dtIngrCargo);
+		builder.append(dtIniAbono, other.dtIniAbono);
+		builder.append(dtNascto, other.dtNascto);
+		builder.append(emailPrinc, other.emailPrinc);
+		builder.append(estCiv, other.estCiv);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(fonePrinc, other.fonePrinc);
+		builder.append(grauInstr, other.grauInstr);
+		builder.append(indAbonoPerm, other.indAbonoPerm);
+		builder.append(indTetoRGPS, other.indTetoRGPS);
+		builder.append(infoCota, other.infoCota);
+		builder.append(matricula, other.matricula);
+		builder.append(nmCargo, other.nmCargo);
+		builder.append(nmFuncao, other.nmFuncao);
+		builder.append(nmSoc, other.nmSoc);
+		builder.append(nmTrab, other.nmTrab);
+		builder.append(nrInsc, other.nrInsc);
+		builder.append(nrLograd, other.nrLograd);
+		builder.append(observacao, other.observacao);
+		builder.append(paisNac, other.paisNac);
+		builder.append(paisNascto, other.paisNascto);
+		builder.append(racaCor, other.racaCor);
+		builder.append(reabReadap, other.reabReadap);
+		builder.append(referencia, other.referencia);
+		builder.append(sexo, other.sexo);
+		builder.append(tpInsc, other.tpInsc);
+		builder.append(tpLograd, other.tpLograd);
+		builder.append(tpPlanRP, other.tpPlanRP);
+		builder.append(tpProv, other.tpProv);
+		builder.append(tpRegPrev, other.tpRegPrev);
+		builder.append(tpRegTrab, other.tpRegTrab);
+		builder.append(uf, other.uf);
+		builder.append(undSalFixo, other.undSalFixo);
+		builder.append(vrSalFx, other.vrSalFx);
+
+		return builder.isEquals();
 	}
 
 }

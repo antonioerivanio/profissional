@@ -15,7 +15,6 @@ import javax.persistence.TemporalType;
 @Entity
 @SuppressWarnings("serial")
 @Table(name="ESOCIAL_DEPENDENTE", schema=DatabaseMetadata.SCHEMA_SRH)
-
 public class DependenteEsocial extends BasicEntity<Long> implements Serializable{
 
 	@Id
