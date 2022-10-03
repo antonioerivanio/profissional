@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
+import br.gov.ce.tce.srh.domain.DependenteEsocialVO;
 
 @Repository
 public class DependenteEsocialDAO {
@@ -53,6 +54,16 @@ public class DependenteEsocialDAO {
 		query.setParameter("idFuncional",idFuncional );
 		return query.getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DependenteEsocialVO> findDependenteByIdfuncional(Long idFuncional) {
+		String nomeTab =  "CONECTOR_ESOCIAL.CON_S2200_DEPENDENTE";
+		String filtro =  "CONECTOR_ESOCIAL.CON_S2200_DEPENDENTE.IDFUNCIONAL = :idFuncional";
+		
+		Query query = entityManager.createNativeQuery(getSQLDependenteEsocial(nomeTab, filtro), DependenteEsocialVO.class);
+		query.setParameter("idFuncional",idFuncional );
+		return query.getResultList();
+	}
 
 	
 	public String getSQLDependente() {
@@ -77,6 +88,27 @@ public class DependenteEsocialDAO {
 		sql.append(" WHERE tb_dependente.depir = 1 "); //(tb_dependente.depprev = 1 OR tb_dependente.depir = 1)
 		sql.append(" AND srh.tb_funcional.id = :idFuncional " ); 
 	    
+	    return sql.toString();
+	}
+	
+	public String getSQLDependenteEsocial(String nomeTabela, String filtroWhere) {
+		StringBuffer sql = new StringBuffer();
+
+		sql.append(" SELECT ");
+		sql.append(" ID AS id ");
+		sql.append(" , TP_DEP AS tpDep ");
+		sql.append(" , NM_DEP AS nome ");
+		sql.append(" , DT_NASC AS dataNascimento ");
+		sql.append(" , CPF_DEP AS cpf ");
+		sql.append(" , DEP_IRRF AS depIrrf ");
+		sql.append(" , DEP_SF AS depSf "); 		
+		sql.append(" , INC_TRAB AS incTrab ");
+		sql.append(" , SEXO_DEP AS sexo ");		
+		sql.append(" , INC_FIS_MEN AS IncFisMen ");
+		sql.append(" FROM ");
+		sql.append(nomeTabela);
+		sql.append(" WHERE ");
+		sql.append(filtroWhere);	    
 	    return sql.toString();
 	}
 

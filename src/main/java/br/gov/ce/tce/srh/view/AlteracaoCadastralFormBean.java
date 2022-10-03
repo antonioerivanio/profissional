@@ -1,28 +1,25 @@
 package br.gov.ce.tce.srh.view;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
-import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIDataTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
-import br.gov.ce.tce.srh.domain.Admissao;
-import br.gov.ce.tce.srh.domain.AdmissaoVTO;
 import br.gov.ce.tce.srh.domain.AlteracaoCadastral;
 import br.gov.ce.tce.srh.domain.DependenteEsocial;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.exception.SRHRuntimeException;
-import br.gov.ce.tce.srh.service.AdmissaoEsocialService;
 import br.gov.ce.tce.srh.service.AlteracaoCadastralEsocialService;
 import br.gov.ce.tce.srh.service.DependenteEsocialTCEService;
 import br.gov.ce.tce.srh.service.FuncionalService;
@@ -38,13 +35,13 @@ public class AlteracaoCadastralFormBean implements Serializable {
 
 	@Autowired
 	private AlteracaoCadastralEsocialService alteracaoCadastralEsocialService;
-	@Autowired
-	private AdmissaoEsocialService admissaoEsocialService;
+	
 	@Autowired
 	private DependenteEsocialTCEService dependenteEsocialTCEService;
 	
 	@Autowired
 	private FuncionalService funcionalService;
+	
 	@Autowired
 	private RepresentacaoFuncionalService representacaoFuncionalService;
 	
@@ -53,7 +50,7 @@ public class AlteracaoCadastralFormBean implements Serializable {
 	private List<Funcional> servidorEnvioList;
 	private Funcional servidorFuncional;
 	private AlteracaoCadastral entidade = new AlteracaoCadastral();
-	private AlteracaoCadastral AlteracaoCadastralAnterior = new AlteracaoCadastral();	
+	private AlteracaoCadastral AlteracaoCadastralAnterior;	
 	private List<DependenteEsocial> dependentesList;
 	boolean emEdicao = false;
 	boolean isRetificacao = false;
@@ -80,48 +77,20 @@ public class AlteracaoCadastralFormBean implements Serializable {
 	public void consultar() {
 		if(servidorFuncional != null) {
 			try {
-				boolean possuiCargo = representacaoFuncionalService.temAtivaByPessoal(servidorFuncional.getId());
-				entidade =  alteracaoCadastralEsocialService.getEventoS2205ByServidor(servidorFuncional, possuiCargo);
-				AdmissaoVTO admissaoSRH =  admissaoEsocialService.getEventoS2200ByServidor(servidorFuncional);
-				dependentesList = dependenteEsocialTCEService.findByIdfuncional(servidorFuncional.getId());
-				admissaoSRH.setDependentesList(dependentesList);
-				
-				//Admissao admissaoConector =  admissaoEsocialService.getEventoS2200ConectorByReferencia(admissaoSRH.getReferencia());
-				AdmissaoVTO admissaoConector =  admissaoEsocialService.getEventoS2200ConectorByReferencia(admissaoSRH.getReferencia());				
-				dependentesList = dependenteEsocialTCEService.findByIdfuncional(servidorFuncional.getId());
-				admissaoConector.setDependentesList(dependentesList);
-				//admissaoConector.setCBOCargo("252206");
-				
-				//compararHashEntidade()
-				
-				
-				MessageDigest md = MessageDigest.getInstance("MD5");
-			    md.update(admissaoSRH.toString().getBytes());
-			    byte[] digest = md.digest();
-			    String myHash = DatatypeConverter
-			      .printHexBinary(digest).toUpperCase();
-			    
-			    
-			    md.update(admissaoConector.toString().getBytes());
-			    byte[] digest2 = md.digest();
-			    String myHash2 = DatatypeConverter
-			      .printHexBinary(digest2).toUpperCase();
-		
-			    if(!myHash.equals(myHash2)) {
-			    	if(emEdicao) {
-						reciboEventoS2205 = alteracaoCadastralEsocialService.findReciboEventoS2205(AlteracaoCadastralAnterior.getReferencia());
-						if(reciboEventoS2205!= null && !reciboEventoS2205.equals("")) {
-							isRetificacao = true;
-						}
-					}	
+				final boolean possuiCargo = representacaoFuncionalService.temAtivaByPessoal(servidorFuncional.getId());				
+				final boolean isAlteradoCadastro = dependenteEsocialTCEService.checkHouveAlteracaoByServidor(servidorFuncional, possuiCargo);
+
+			    if(isAlteradoCadastro) {			    
+			    	entidade =  alteracaoCadastralEsocialService.getEventoS2205ByServidor(servidorFuncional, possuiCargo);
+			    	dependentesList = dependenteEsocialTCEService.findByIdfuncional(servidorFuncional.getId());
+			    	entidade.setDependentesList(dependentesList);
 			    }else {
 			    	throw new SRHRuntimeException("Não houve mudanças para esse usuário");
-			    }
-				
-			}catch (SRHRuntimeException se) { 
+			    }				
+			}catch (final SRHRuntimeException se) { 
 				logger.fatal("Ocorreu o seguinte erro: " + se.getMessage());
 				FacesUtil.addErroMessage(se.getMessage());
-			} catch (Exception e) {					
+			} catch (final Exception e) {					
 				FacesUtil.addErroMessage("Ocorreu algum erro na consulta. Operação cancelada.");
 				logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			}
@@ -135,7 +104,7 @@ public class AlteracaoCadastralFormBean implements Serializable {
 	public void salvarEvento() {
 		try {
 			if(servidorFuncional != null) {
-				if(emEdicao) {
+				/*** if(emEdicao) {
 					if(AlteracaoCadastralAnterior != null) {
 						List<DependenteEsocial> dependentesListExcluir = dependenteEsocialTCEService.findDependenteEsocialByIdfuncional(AlteracaoCadastralAnterior.getFuncional().getId());
 						if(dependentesListExcluir != null && !dependentesListExcluir.isEmpty()) {
@@ -147,7 +116,8 @@ public class AlteracaoCadastralFormBean implements Serializable {
 				}
 				if(isRetificacao) {
 					entidade.setReferencia(entidade.getReferencia()+"_RET"+reciboEventoS2205);
-				}
+				}****/
+				
 				alteracaoCadastralEsocialService.salvar(entidade);
 				
 				if(dependentesList != null && !dependentesList.isEmpty()) {

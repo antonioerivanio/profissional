@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.gov.ce.tce.srh.dao.AlteracaoCadastralEsocialDAO;
 import br.gov.ce.tce.srh.domain.AlteracaoCadastral;
+import br.gov.ce.tce.srh.domain.EsocialHashAlteracaoCadastral;
 import br.gov.ce.tce.srh.domain.Evento;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.domain.Notificacao;
 import br.gov.ce.tce.srh.enums.TipoEventoESocial;
 import br.gov.ce.tce.srh.enums.TipoNotificacao;
+import br.gov.ce.tce.srh.util.SRHUtils;
 
 @Service("alteracaoCadastralEsocialService")
 public class AlteracaoCadastralEsocialService{
@@ -31,7 +33,12 @@ public class AlteracaoCadastralEsocialService{
 	public AlteracaoCadastral salvar(AlteracaoCadastral entidade) {		
 		
 		entidade = dao.salvar(entidade);
-
+		
+		//salvar hash da entidade que gerou o evento
+		String hashEntidade = SRHUtils.getStringMD5HashFromObject(entidade.toString().getBytes());
+		EsocialHashAlteracaoCadastral beanHashAlteracaoCadastral = new EsocialHashAlteracaoCadastral(entidade.getFuncional(), hashEntidade, "Evento S2205");		
+		dao.salvar(beanHashAlteracaoCadastral);
+		
 		// salvando notificação
 		Evento evento = this.eventoService.getById(TipoEventoESocial.S2205.getCodigo());
 		Notificacao notificacao = this.notificacaoService.findByEventoIdAndTipoAndReferencia(evento.getId(), entidade.getReferencia());

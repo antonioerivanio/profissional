@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.AlteracaoCadastral;
+import br.gov.ce.tce.srh.domain.EsocialHashAlteracaoCadastral;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -31,7 +32,12 @@ public class AlteracaoCadastralEsocialDAO {
 	}
 
 	private Long getMaxId() {
-		Query query = entityManager.createQuery("Select max(e.id) from AlteracaoCadastral e ");
+		Query query = entityManager.createQuery("SELECT max(a.id) FROM AlteracaoCadastral a ");
+		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
+	}
+	
+	private Long getEsocialHashAlteracaoCadastalMaxId() {
+		Query query = entityManager.createQuery("SELECT max(a.id) FROM EsocialHashAlteracaoCadastral a ");
 		return query.getSingleResult() == null ? 1 : (Long) query.getSingleResult() + 1;
 	}
 
@@ -43,6 +49,15 @@ public class AlteracaoCadastralEsocialDAO {
 
 		return entityManager.merge(entidade);
 	}
+	
+	public void salvar(EsocialHashAlteracaoCadastral bean) {
+
+		if (bean.getId() == null || bean.getId().equals(0l)) {
+			bean.setId(getEsocialHashAlteracaoCadastalMaxId());
+		}
+
+		entityManager.persist(bean);
+	}	
 
 	public void excluir(AlteracaoCadastral entidade) {
 		entidade = entityManager.merge(entidade);

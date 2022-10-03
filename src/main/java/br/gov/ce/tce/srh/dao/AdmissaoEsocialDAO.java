@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.gov.ce.tce.srh.domain.Admissao;
-import br.gov.ce.tce.srh.domain.AdmissaoVTO;
+import br.gov.ce.tce.srh.domain.AdmissaoVO;
 import br.gov.ce.tce.srh.domain.Funcional;
 import br.gov.ce.tce.srh.service.AmbienteService;
 import br.gov.ce.tce.srh.util.SRHUtils;
@@ -124,28 +124,28 @@ public class AdmissaoEsocialDAO {
 	}	
 
 
-	public AdmissaoVTO getEventoS2200ByServidor(Funcional servidorFuncional) {
+	public AdmissaoVO getEventoS2200ByServidor(Funcional servidorFuncional) {
 		try {
 			
 			String nomeTab = "SRH.ESOCIAL_ADMISSAO";
 			String filtro = "SRH.ESOCIAL_ADMISSAO.idFuncional = :idFuncional";
 			
-			Query query = entityManager.createNativeQuery(getSQLEventoS2200(nomeTab, filtro), AdmissaoVTO.class);
+			Query query = entityManager.createNativeQuery(getSQLEventoS2200(nomeTab, filtro), AdmissaoVO.class);
 			query.setParameter("idFuncional", servidorFuncional.getId());
-			return (AdmissaoVTO) query.getSingleResult();
+			return (AdmissaoVO) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 	}
 
-	public AdmissaoVTO getEventoS2200ConectorByReferencia(String referencia) {
+	public AdmissaoVO getEventoS2200ConectorByReferencia(String referencia) {
 		try {
 			String nomeTab = "CONECTOR_ESOCIAL.CON_S2200_ADMISSAO_OLD";
 			String filtro = "CONECTOR_ESOCIAL.CON_S2200_ADMISSAO_OLD.ID = :referencia";
 
-			Query query = entityManager.createNativeQuery(getSQLEventoS2200(nomeTab, filtro), AdmissaoVTO.class);
+			Query query = entityManager.createNativeQuery(getSQLEventoS2200(nomeTab, filtro), AdmissaoVO.class);
 			query.setParameter("referencia", referencia);
-			return (AdmissaoVTO) query.getSingleResult();
+			return (AdmissaoVO) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}

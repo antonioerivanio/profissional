@@ -12,7 +12,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
-public class AdmissaoVTO {
+public class AdmissaoVO {
 
 	@Id
 	private String referencia;
@@ -601,6 +601,7 @@ public class AdmissaoVTO {
 		builder.append(uf);
 		builder.append(undSalFixo);
 		builder.append(vrSalFx);
+		builder.append(dependentesList);
 		
 		return builder.toHashCode();
 	}
@@ -613,7 +614,7 @@ public class AdmissaoVTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AdmissaoVTO other = (AdmissaoVTO) obj;
+		AdmissaoVO other = (AdmissaoVO) obj;
 
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(CBOCargo, other.CBOCargo);
@@ -681,7 +682,7 @@ public class AdmissaoVTO {
 		builder.append(uf, other.uf);
 		builder.append(undSalFixo, other.undSalFixo);
 		builder.append(vrSalFx, other.vrSalFx);
-
+		builder.append(dependentesList, other.dependentesList);
 		return builder.isEquals();
 	}
 

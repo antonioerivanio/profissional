@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /***
@@ -14,7 +15,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "ESOCIAL_HASH_ALTERACAOCONTRAT", schema=DatabaseMetadata.SCHEMA_SRH)
+@Table(name = "ESOCIAL_HASH_ALTERACAOCAD", schema=DatabaseMetadata.SCHEMA_SRH)
 public class EsocialHashAlteracaoCadastral {
 	@Id
 	@Column(name = "ID")	
@@ -36,9 +37,8 @@ public class EsocialHashAlteracaoCadastral {
 		super();
 	}
 
-	public EsocialHashAlteracaoCadastral(Long id, Funcional funcional, String codigoHash, String origim) {
-		super();
-		this.id = id;
+	public EsocialHashAlteracaoCadastral(Funcional funcional, String codigoHash, String origim) {
+		super();		
 		this.funcional = funcional;
 		this.codigoHash = codigoHash;
 		this.origim = origim;

@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /***
@@ -13,8 +14,10 @@ import javax.persistence.Table;
  * @author erivanio.cruz
  *
  */
+
 @Entity
-@Table(name = "ESOCIAL_HASH_ALTERACAOCAD", schema=DatabaseMetadata.SCHEMA_SRH)
+@Table(name = "ESOCIAL_HASH_ALTERACAOCONTRAT", schema=DatabaseMetadata.SCHEMA_SRH)
+@SequenceGenerator(name = "SEQ_HASH_ALTERACAOCONTRAT", sequenceName = "SEQ_HASH_ALTERACAOCONTRAT", allocationSize = 1)
 public class EsocialHashAlteracaoContratual {
 	@Id
 	@Column(name = "ID")	
@@ -36,9 +39,8 @@ public class EsocialHashAlteracaoContratual {
 		super();
 	}
 
-	public EsocialHashAlteracaoContratual(Long id, Funcional funcional, String codigoHash, String origim) {
-		super();
-		this.id = id;
+	public EsocialHashAlteracaoContratual(Funcional funcional, String codigoHash, String origim) {
+		super();		
 		this.funcional = funcional;
 		this.codigoHash = codigoHash;
 		this.origim = origim;
