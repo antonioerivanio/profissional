@@ -20,19 +20,19 @@
 
 	<!-- Habilitando annotations -->
 	<context:annotation-config />
-	<context:component-scan base-package="br.gov.ce.tce.srh" />
+	<context:component-scan base-package="br.com.votacao.sindagri" />
 	
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
 	<bean id="emf"  
 	      class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">  
-         <property name="persistenceUnitName" value="maindatabase"/>  
+         <property name="persistenceUnitName" value="sindagri_pu"/>  
          <property name="dataSource" ref="dataSource" />  
          <property name="jpaVendorAdapter">  
              <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">  
-                 <property name="databasePlatform" value="${database.target}"/>  
-                 <property name="showSql" value="${database.showSql}" />  
+              <!--    <property name="databasePlatform" value="${database.target}"/>   -->
+                 <property name="showSql" value="${database.showSql}" />
                  <property name="generateDdl" value="${database.generateDdl}" />  
              </bean>  
          </property>  
@@ -60,15 +60,15 @@
 		<property name="entityManagerFactory" ref="emf" />
 	</bean>
 
-	<bean id="facesUtil" class="br.gov.ce.tce.srh.util.FacesUtil" />
-	<bean id="relatorioUtil" class="br.gov.ce.tce.srh.util.RelatorioUtil" /> 
+	<bean id="facesUtil" class="br.com.votacao.sindagri.util.FacesUtil" />
+	<bean id="relatorioUtil" class="br.com.votacao.sindagri.util.RelatorioUtil" /> 
 		
 	
-	<bean id="alertarFeriasJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<!-- <bean id="alertarFeriasJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="emissorDeAlerta"/>
         <property name="targetMethod" value="alertarFerias"/>
-	</bean>
-	
+	</bean> -->
+	<!-- 
 	<bean id="alertarFeriasTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="alertarFeriasJob" />         
         <property name="cronExpression" value="0 0 7 * * ?" />
@@ -80,14 +80,14 @@
 		        <ref bean="alertarFeriasTrigger"/>
 		    </list>
 		</property>
-    </bean>
+    </bean> -->
     
     <!-- Custom Scope -->
 	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
 		<property name="scopes">
 			<map>
 				<entry key="view">
-					<bean class="br.gov.ce.tce.srh.util.ViewScope" />
+					<bean class="br.com.votacao.sindagri.util.ViewScope" />
 				</entry>
 			</map>
 		</property>

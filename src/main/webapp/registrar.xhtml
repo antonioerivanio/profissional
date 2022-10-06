@@ -1,0 +1,75 @@
+<ui:composition template="WEB-INF/templates/login.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ui:define name="content">	
+ 
+		<h:form id="form-reg" >
+			<div class="ui-fluid">
+				
+				<p:panelGrid id="pGridReg" columns="1" layout="grid"
+					styleClass="ui-g-12">
+										
+					<p:link href="/sindagri/login.faces">Voltar</p:link>
+
+					<p:outputLabel for="ckxSelecione"
+						value="É membro da comissão eleitoral?" />
+
+					<p:selectBooleanCheckbox id="ckxSelecione"
+						value="#{loginBean.isMembroComissao}">
+						<p:ajax process="@this" update="pGridReg uiFragRegistro"></p:ajax>
+					</p:selectBooleanCheckbox>
+
+					<ui:fragment id="uiFragRegistro">
+						<p:outputLabel for="mat" value="Matricula"
+							rendered="#{!loginBean.isMembroComissao}" />
+						<p:inputText id="mat" value="#{loginBean.usuario.matricula}"
+							rendered="#{!loginBean.isMembroComissao}"
+							required="#{!loginBean.isMembroComissao}" />
+
+						<p:outputLabel for="cpf" value="CPF"
+							rendered="#{loginBean.isMembroComissao}" />
+						<p:inputText id="cpf" value="#{loginBean.usuario.cpf}"
+							rendered="#{loginBean.isMembroComissao}"
+							required="#{loginBean.isMembroComissao}" />
+					</ui:fragment>
+
+					<p:outputLabel for="email" value="Email" />
+					<p:inputText id="email" value="#{loginBean.usuario.email}"
+						required="true" />
+
+					<p:commandButton value="salvar" action="#{loginBean.registrar}">
+						<p:ajax update="form-reg:pGridSenha"></p:ajax>
+					</p:commandButton>
+
+					<!-- <p:outputLabel for="senha" value="Senha" />
+					<p:password id="senha" value="#{loginBean.usuario.password}" required="true">
+						<p:ajax process="@this"></p:ajax>
+					</p:password>
+
+					<p:outputLabel for="csenha" value="Confirmar Senha" />
+					<p:password id="csenha" value="#{loginBean.confirmarSenha}"
+						required="true" >
+						<p:ajax event="blur" listener="#{loginBean.validarConfirmarSenha()}"></p:ajax>
+					</p:password> -->
+
+					
+
+				</p:panelGrid>
+			<p:panelGrid id="pGridSenha" columns="1" layout="grid"
+					styleClass="ui-g-12">
+					Senha Gerada
+					<h1>#{loginBean.senha}</h1>
+					</p:panelGrid>
+			</div>
+			
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

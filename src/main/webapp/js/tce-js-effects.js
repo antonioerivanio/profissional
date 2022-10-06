@@ -62,6 +62,7 @@ function aplicarMascaras(jQuery) {
 	jQuery(".maskMotorVeiculo").mask("9.9",{placeholder:" "});  // MOTOR VEICULO
 	jQuery(".maskPlacaVeiculo").mask("aaa-9999",{placeholder:" "});  // PLACA VEICULO
 	jQuery(".maskProcesso").mask("99999/9999-9",{placeholder:" "});  // NUMERO DO PROCESSO
+	jQuery(".maskMesAno").mask("99/9999",{placeholder:" "});  // NUMERO DO PROCESSO
 	jQuery(".maskQtdQuintos").mask("9",{placeholder:" "});  // QTD QUINTOS
 	jQuery(".maskSalario").maskMoney({
     	symbol:'R$ ',
