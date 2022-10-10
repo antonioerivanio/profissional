@@ -56,7 +56,10 @@
 		<converter-class>br.com.votacao.sindagri.converter.HoraConverter</converter-class>
 	</converter>
 
-	
+	<converter>
+  <converter-for-class>java.lang.Enum</converter-for-class>
+  <converter-class>javax.faces.convert.EnumConverter</converter-class>
+</converter>
 	<!-- Reabertura Evento da Folha 1298 -->
 	<navigation-rule>
 		<from-view-id>/paginas/tabelas/reaberturaFolhaList.xhtml</from-view-id>

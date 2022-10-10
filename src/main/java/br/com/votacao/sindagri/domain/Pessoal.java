@@ -20,16 +20,19 @@ public class Pessoal implements Serializable {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "pessoal_id")
+  @Column
   private Integer id;
   
   @Column
   private String matricula;
   
   @Column
+  private String nome;  
+  
+  @Column
   private String cpf;
   
-  @Column(name = "isMembroComissao", columnDefinition = "boolean default true", nullable = false)
+  @Column(name = "isMembroComissao", columnDefinition = "boolean default false", nullable = false)
   private boolean isMembroComissao;
   
   @Column

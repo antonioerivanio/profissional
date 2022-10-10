@@ -1,0 +1,32 @@
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ui:define name="content">	
+ 		
+		<h:form id="form-voto" >
+			<div class="ui-fluid">
+
+				<p:panelGrid id="pGridvoto" columns="1" layout="grid"
+					styleClass="ui-g-12">
+
+					<p:outputLabel for="radio" value="Opções :" />
+					<p:selectOneRadio id="radio" value="#{votoBean.tipoVotoEscolhido}"
+						layout="responsive" columns="3">
+						<f:selectItems value="#{votoBean.tiposVotos}" var="c"
+							itemLabel="#{c.descricao}" itemValue="#{c}" />
+					</p:selectOneRadio>
+
+					<p:commandButton value="Votar" action="#{votoBean.salvar}"/>
+
+				</p:panelGrid>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

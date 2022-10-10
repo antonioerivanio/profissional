@@ -3,5 +3,5 @@ session.invalidate();
 %>
 
 <script type="text/javascript">
-location.href = '/srh/';
+Parabéns votaçãço concluída com sucesso!
 </script>

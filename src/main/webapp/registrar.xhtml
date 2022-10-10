@@ -7,15 +7,16 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
-	<ui:define name="content">	
- 
-		<h:form id="form-reg" >
+	<ui:define name="content">
+
+		<h:form id="form-reg">
 			<div class="ui-fluid">
-				
+
 				<p:panelGrid id="pGridReg" columns="1" layout="grid"
-					styleClass="ui-g-12">
-										
+					styleClass="ui-g-12 ui-md-12">
+
 					<p:link href="/sindagri/login.faces">Voltar</p:link>
+					<p:separator />
 
 					<p:outputLabel for="ckxSelecione"
 						value="É membro da comissão eleitoral?" />
@@ -41,33 +42,28 @@
 
 					<p:outputLabel for="email" value="Email" />
 					<p:inputText id="email" value="#{loginBean.usuario.email}"
-						required="true" />
+						required="true" validatorMessage="Email inválido">
+						<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
 
 					<p:commandButton value="salvar" action="#{loginBean.registrar}">
 						<p:ajax update="form-reg:pGridSenha"></p:ajax>
 					</p:commandButton>
-
-					<!-- <p:outputLabel for="senha" value="Senha" />
-					<p:password id="senha" value="#{loginBean.usuario.password}" required="true">
-						<p:ajax process="@this"></p:ajax>
-					</p:password>
-
-					<p:outputLabel for="csenha" value="Confirmar Senha" />
-					<p:password id="csenha" value="#{loginBean.confirmarSenha}"
-						required="true" >
-						<p:ajax event="blur" listener="#{loginBean.validarConfirmarSenha()}"></p:ajax>
-					</p:password> -->
-
-					
-
 				</p:panelGrid>
-			<p:panelGrid id="pGridSenha" columns="1" layout="grid"
+
+				<p:panelGrid id="pGridSenha" columns="1" layout="grid"
 					styleClass="ui-g-12">
-					Senha Gerada
-					<h1>#{loginBean.senha}</h1>
-					</p:panelGrid>
+					<p:autoUpdate />
+					<p:outputLabel value="Senha Gerada" />
+					<p:outputLabel value="Obs: Anote para não esquecer" />
+
+					<h1>
+						<h:outputText styles="color:red">#{loginBean.senha}</h:outputText>
+					</h1>
+				</p:panelGrid>
 			</div>
-			
+
 
 		</h:form>
 

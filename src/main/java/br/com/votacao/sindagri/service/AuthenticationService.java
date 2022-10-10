@@ -15,6 +15,8 @@ import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.encoding.BasePasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -44,7 +46,9 @@ public class AuthenticationService implements Serializable {
     Authentication authenticate;
     UsernamePasswordAuthenticationToken token = null;
     if (this.ambienteService.isAmbienteDesenvolvimento()) {
-      token = getTokenDevPorNomeUsuario(username, password);
+    	
+    	 token = new UsernamePasswordAuthenticationToken(username, password);
+     // token = getTokenDevPorNomeUsuario(username, password);
     } else {
       token = new UsernamePasswordAuthenticationToken(username, password);
     } 
@@ -52,27 +56,27 @@ public class AuthenticationService implements Serializable {
       authenticate = this.authenticationManager.authenticate((Authentication)token);
     } catch (DisabledException e) {
       e.printStackTrace();
-      throw new RuntimeException("Usudesabilitado!");
+      throw new RuntimeException("Usuário desabilitado!");
     } catch (LockedException e) {
       e.printStackTrace();
-      throw new RuntimeException("Usubloqueado!");
+      throw new RuntimeException("Usuário bloqueado!");
     } catch (CredentialsExpiredException e) {
       e.printStackTrace();
       throw new RuntimeException("Conta expirada!");
     } catch (UsernameNotFoundException e) {
       e.printStackTrace();
-      throw new RuntimeException("Nenhum usucom esse login foi encontrado!");
+      throw new RuntimeException("Nenhum usuário com esse login foi encontrado!");
     } catch (BadCredentialsException e) {
       e.printStackTrace();
       throw new RuntimeException("Login ou senha inválido");
     } catch (Exception e) {
       e.printStackTrace();
-      throw new RuntimeException("Erro ao logar!");
+      throw new RuntimeException("Erro ao se autenticar! Se continuar por gentileza entrar encontado com administrador do sistema ");
     } 
     SecurityContextHolder.getContext().setAuthentication(authenticate);
     Usuario usuario = getUsuarioLogado();
     if (!usuario.isEnabled())
-      return "Usunestativo!"; 
+      return "Usuario bloqueado!"; 
     if (authenticate.isAuthenticated())
       return "ok"; 
     return null;

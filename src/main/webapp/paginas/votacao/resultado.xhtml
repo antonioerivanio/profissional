@@ -1,0 +1,125 @@
+<ui:composition template="../../WEB-INF/templates/page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<ui:define name="content">
+
+		<h:form id="form-reg">
+			<div class="ui-fluid">
+
+				<style type="text/css">
+.ui-paginator a {
+	margin-right: 5px;
+}
+</style>
+
+
+
+				<p:dataTable id="tbl" var="bean" value="#{resultadoBean.resultados}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					paginator="true" rows="10" style="margin-bottom:20px">
+
+					<f:facet name="{Exporters}">
+						<div style="float: right; padding-top: 5px;">
+							<h:commandLink>
+								<i class="pi pi-file-excel" style="font-size: 1.5rem"></i>
+								<p:dataExporter type="xls" target="tbl" fileName="votos" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage name="/demo/images/xlsx.png" width="24" />
+								<p:dataExporter type="xlsxstream" target="tbl" fileName="cars" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage name="/demo/images/pdf.png" width="24" />
+								<p:dataExporter type="pdf" target="tbl" fileName="cars" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage name="/demo/images/csv.png" width="24" />
+								<p:dataExporter type="csv" target="tbl" fileName="cars" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage name="/demo/images/xml.png" width="24" />
+								<p:dataExporter type="xml" target="tbl" fileName="cars" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<i class="pi pi-check"></i>
+								<p:dataExporter type="text" target="tbl" fileName="cars"
+									exporter="#{dataExporterView.textExporter}" />
+							</h:commandLink>
+						</div>
+					</f:facet>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="codigo" />
+						</f:facet>
+						<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+						<h:outputText value="#{bean.id}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Voto" />
+						</f:facet>
+						<h:outputText value="#{bean.tipoVoto}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="quantidade" />
+						</f:facet>
+						<h:outputText value="#{bean.quantidade}" />
+					</p:column>
+
+					<p:summaryRow>
+						<p:column colspan="3" style="text-align:right">
+							<h:outputText value="Total:" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{resultadoBean.total}" />
+
+						</p:column>
+					</p:summaryRow>
+				</p:dataTable>
+
+				<h3>Export Page Data Only</h3>
+				<h:commandLink>
+					<p:graphicImage name="/demo/images/excel.png" />
+					<p:dataExporter type="xls" target="tbl" fileName="cars"
+						pageOnly="true" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage name="/demo/images/pdf.png" />
+					<p:dataExporter type="pdf" target="tbl" fileName="cars"
+						pageOnly="true" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage name="/demo/images/csv.png" />
+					<p:dataExporter type="csv" target="tbl" fileName="cars"
+						pageOnly="true" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage name="/demo/images/xml.png" />
+					<p:dataExporter type="xml" target="tbl" fileName="cars"
+						pageOnly="true" />
+				</h:commandLink>
+
+			</div>
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

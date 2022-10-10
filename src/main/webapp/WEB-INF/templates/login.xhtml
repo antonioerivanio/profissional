@@ -5,7 +5,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	>
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
@@ -19,32 +19,27 @@
 <h:body>
 
 	<f:view>
-  <p:messages id="messages" showSummary="true"  closable="true">
-        <p:autoUpdate />
-    </p:messages>
-		
+		<p:messages id="messages" showSummary="true" closable="true">
+			<p:autoUpdate />
+		</p:messages>
 
-				<div>
+		<div>
 
-					<h1>
-						<a href="#" title="">APP VOTAÇÃO - SINDAGRI </a>
-					</h1>
+			<h2>
+				<a href="#" title="">APP VOTAÇÃO - SINDAGRI </a>
+			</h2>
+			<h4 >Sindicato dos servidores público da agência
+				de defesa agropecuária do estado do Ceará</h4>
 
+		</div>
 
-					<h2 class="logo-tce">Sindicato dos servidores
-						público da agência de defesa agropecuária do estado do Ceará</h2>
+		<div>
 
-				</div>
+			<ui:insert name="content">
+					conteudo da pagina!!!
+			</ui:insert>
 
-				<div>
-
-					<ui:insert name="content">
-							conteudo da pagina!!!
-						</ui:insert>
-
-				</div>
-
-
+		</div>
 
 	</f:view>
 

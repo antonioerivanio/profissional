@@ -11,25 +11,26 @@
 		<h:outputText id="message" value="#{loginBean.mensagem}"
 			styleClass="infoMessage" />
 
-
-
 		<h:form id="form-login" styleClass="formularios">
 			<div class="ui-fluid">
 				<p:panelGrid columns="1" layout="grid" styleClass="ui-g-12">
-					<p:outputLabel for="login" value="Longin" />
+					<p:outputLabel for="login" value="Login" />
 					<p:inputText id="login" value="#{loginBean.login}" />
 
 					<p:outputLabel for="senha" value="Senha" />
-					<p:password id="senha" value="#{loginBean.senha}" toggleMask="true" redisplay="true"/>	
+					<p:password id="senha" value="#{loginBean.senha}" toggleMask="true"
+						redisplay="true" />
 
 					<p:commandButton value="Entrar" action="#{loginBean.autenticar}"
 						styleClass="bt-padrao" />
 
-					<h:panelGrid styleClass="ui-g-2">
-						<p:outputLabel for="btnAcesso1" value="Novo na votação?" />
-						<p:commandButton id="btnAcesso1" value="Criar Senha"
-							action="/registrar.xhtml" styleClass="bt-padrao" />
-					</h:panelGrid>
+					<p:panelGrid styleClass="ui-g-12">
+						<p:panelGrid columns="2">
+							<p:outputLabel for="btnAcesso1" value="Primeiro acesso?" />
+							<p:commandButton id="btnAcesso1" value="Criar Senha"
+								action="/registrar.xhtml" styleClass="bt-padrao" />
+						</p:panelGrid>
+					</p:panelGrid>
 				</p:panelGrid>
 
 			</div>
