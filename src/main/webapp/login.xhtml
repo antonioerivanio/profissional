@@ -21,14 +21,22 @@
 					<p:password id="senha" value="#{loginBean.senha}" toggleMask="true"
 						redisplay="true" />
 
+					
+					<p:commandLink id="btnAcesso2" value="Esqueci a senha"					
+						action="/registrar.xhtml" styleClass="bt-padrao" />
+
 					<p:commandButton value="Entrar" action="#{loginBean.autenticar}"
 						styleClass="bt-padrao" />
 
 					<p:panelGrid styleClass="ui-g-12">
 						<p:panelGrid columns="2">
 							<p:outputLabel for="btnAcesso1" value="Primeiro acesso?" />
-							<p:commandButton id="btnAcesso1" value="Criar Senha"
+							<p:commandLink id="btnAcesso1" value="Criar Senha"
 								action="/registrar.xhtml" styleClass="bt-padrao" />
+
+
+
+
 						</p:panelGrid>
 					</p:panelGrid>
 				</p:panelGrid>

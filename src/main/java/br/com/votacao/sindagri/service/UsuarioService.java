@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.votacao.sindagri.dao.UsuarioDAO;
 import br.com.votacao.sindagri.domain.Grupo;
-import br.com.votacao.sindagri.domain.GrupoUsuario;
-import br.com.votacao.sindagri.domain.Permissao;
 import br.com.votacao.sindagri.domain.Pessoal;
 import br.com.votacao.sindagri.domain.Usuario;
 
@@ -34,10 +32,11 @@ public class UsuarioService {
 		return this.dao.findByUserlogin(login);
 	}
 
-
-	public List<Permissao> findPermissoesByUsuarioAndSistema(Usuario usuario, String siglaSistema) {
-		return this.dao.findPermissoesByUsuarioAndSistema(usuario, siglaSistema);
-	}
+	/*
+	 * public List<Permissao> findPermissoesByUsuarioAndSistema(Usuario usuario,
+	 * String siglaSistema) { return
+	 * this.dao.findPermissoesByUsuarioAndSistema(usuario, siglaSistema); }
+	 */
 
 	public Usuario findByCpf(String cpf) {
 		return this.dao.findByCpf(cpf);

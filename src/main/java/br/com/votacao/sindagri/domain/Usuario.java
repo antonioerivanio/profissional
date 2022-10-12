@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Audited
 @NoArgsConstructor
@@ -77,6 +79,7 @@ public class Usuario implements UserDetails {
   @Transient
   private boolean isMembroComissao;
 
+  @NotAudited
   @ManyToMany
   @JoinTable(
     name = "grupos_usuarios", 

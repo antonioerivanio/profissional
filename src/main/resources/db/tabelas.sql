@@ -53,3 +53,10 @@ CREATE TABLE votos(
  	CONSTRAINT fk_usuarios FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
 )
 
+
+CREATE TABLE tempo_votacao
+(
+    id serial not null,
+    data_inicio timestamp ,
+    data_fim timestamp 
+)

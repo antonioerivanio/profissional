@@ -5,17 +5,14 @@
 
 <persistence-unit name="sindagri_pu" transaction-type="RESOURCE_LOCAL">
 
-	<!-- sapjava -->
-
-	<!-- sca -->
-	
 	<!-- envers -->
 	<properties>			
+		<property name="hibernate.archive.autodetection" value="class, hbm"/>
 		<property name="org.hibernate.envers.audit_table_suffix" value="_AUD"/>		
-		<property name="org.hibernate.envers.revision_field_name" value="CD_REVISAO"/>		
-		<property name="org.hibernate.envers.revision_type_field_name" value="TIPO_REVISAO"/>		
+<!-- 		<property name="org.hibernate.envers.revision_field_name" value="CD_REVISAO"/>		
+		<property name="org.hibernate.envers.revision_type_field_name" value="TIPO_REVISAO"/>		 -->
 		<property name="org.hibernate.envers.store_data_at_delete" value="true"/>		
-		<property name="org.hibernate.envers.default_schema" value="SINDAGRI"/>
+	<!-- 	<property name="org.hibernate.envers.default_schema" value="SINDAGRI"/> -->
 		<property name="hibernate.hbm2ddl.auto" value="none"/>		
 	</properties>
 

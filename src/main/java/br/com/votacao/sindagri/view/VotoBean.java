@@ -1,10 +1,11 @@
 package br.com.votacao.sindagri.view;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
-import org.apache.commons.collections.ArrayStack;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Component;
 import br.com.votacao.sindagri.domain.Usuario;
 import br.com.votacao.sindagri.domain.Voto;
 import br.com.votacao.sindagri.enums.TipoVoto;
-import br.com.votacao.sindagri.service.AuthenticationService;
-import br.com.votacao.sindagri.service.UsuarioService;
 import br.com.votacao.sindagri.service.VotoService;
 import br.com.votacao.sindagri.util.FacesUtil;
 import lombok.Data;
@@ -36,20 +35,25 @@ public class VotoBean implements Serializable {
 	@Autowired
 	VotoService service;
 
-	public void salvar() {		
+	public String salvar() {		
 		try {
 			Usuario usuario = loginBean.getUsuarioLogado();
+			
+			if(usuario == null) {
+				throw new Exception("Usuário precisa se autenticar para poder votar!");
+			}
 	
-			Voto voto = new Voto(tipoVotoEscolhido, usuario);
+			Voto voto = new Voto(tipoVotoEscolhido, usuario,  Calendar.getInstance());
 			service.salvar(voto);
 		} catch (Exception e) {
 			logger.error("Erro na votação", e);
 			FacesUtil.addErroMessage(e.getMessage());
+			//this.authenticationService.logout();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		loginBean.logout();
+		return loginBean.logout();
 	}
 
 }

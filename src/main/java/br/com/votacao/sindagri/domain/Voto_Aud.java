@@ -29,47 +29,29 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Audited
 @Entity
-@Table(name = "votos")
-@NamedQueries({
-		@NamedQuery(name = "Voto.findByVotousuario", query = "SELECT v FROM Voto v WHERE v.usuario = :usuario"),
-		@NamedQuery(name = "Voto.findByUserid", query = "SELECT v FROM Voto v WHERE v.usuario.id = :usuarioId") })
-public class Voto implements Serializable {
+@Table(name = "votos_aud")
+public class Voto_Aud implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "votos_id_seq", sequenceName = "votos_id_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "votos_id_seq")
-	@Column(name = "id")
 	private Integer id;
-
-	@Enumerated(EnumType.STRING)
+	
 	@Column
-	private TipoVoto tipo;
+	private String tipo;
 
-	@NotAudited
-	@OneToOne
-	@JoinColumn(name="usuario_id", unique = true)
-	private Usuario usuario;
+	
+	@Column(name="usuario_id")
+	private Integer usuario;
 	
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar datavotacao;
-	
-	@Transient
-	private Long quantidade;
-	@Transient
-	private Long total;
 
-	public Voto(TipoVoto tipoVoto, Usuario usuario, Calendar dataVotacao) {
-		super();		
-		this.tipo = tipoVoto;
-		this.usuario = usuario;	
-		this.datavotacao = dataVotacao;
-	}
+   private Integer REV;
+   private Integer REVTYPE;
 
 }

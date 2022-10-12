@@ -7,13 +7,18 @@ import br.com.votacao.sindagri.service.UsuarioService;
 import br.com.votacao.sindagri.util.FacesUtil;
 import lombok.Data;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;
+
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -149,7 +154,19 @@ public class LoginBean implements Serializable {
 
 	public String logout() {
 		this.authenticationService.logout();
-		return "loout.jsp?faces-redirect=true";
+		
+		HttpServletRequest
+		request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		try {
+			externalContext.redirect(request.getContextPath() + "/logout.jsp");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	public String getLoginUsuarioLogado() {

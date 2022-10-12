@@ -1,7 +1,12 @@
 <%
 session.invalidate();
+
 %>
 
-<script type="text/javascript">
-Parabéns votaçãço concluída com sucesso!
-</script>
+<html>
+<body>
+<h3>Parabéns!. Votação realizada com sucesso!</h3>
+
+
+</body>
+</html>

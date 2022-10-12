@@ -39,19 +39,17 @@ public class ResultadoBean implements Serializable {
   private String voto;
   private Long totalValidos=48l;
   private List<Voto> resultados= new ArrayList<>();
-  Voto voto1 = new Voto(1, "Chapa \"A luta não pode parar\"", usuario,48);
-  Voto voto2 = new Voto(2, "Branco", usuario,5);
-  Voto voto3 = new Voto(3, "Nulo", usuario,6);  
- 
-  {
-	  
-	  resultados.add(voto1);
-	  resultados.add(voto2);
-	  resultados.add(voto3);
-	  
-	  textExporter = new TextExporter();
-  }
- 
+	/*
+	 * Voto voto1 = new Voto(1, "Chapa \"A luta não pode parar\"", usuario,48); Voto
+	 * voto2 = new Voto(2, "Branco", usuario,5); Voto voto3 = new Voto(3, "Nulo",
+	 * usuario,6);
+	 * 
+	 * {
+	 * 
+	 * resultados.add(voto1); resultados.add(voto2); resultados.add(voto3);
+	 * 
+	 * textExporter = new TextExporter(); }
+	 */
   
   
   public String salvar() {

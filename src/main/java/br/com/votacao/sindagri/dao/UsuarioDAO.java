@@ -1,18 +1,19 @@
 package br.com.votacao.sindagri.dao;
 
-import br.com.votacao.sindagri.domain.Grupo;
-import br.com.votacao.sindagri.domain.GrupoUsuario;
-import br.com.votacao.sindagri.domain.Permissao;
-import br.com.votacao.sindagri.domain.Pessoal;
-import br.com.votacao.sindagri.domain.Usuario;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.votacao.sindagri.domain.Grupo;
+import br.com.votacao.sindagri.domain.GrupoUsuario;
+import br.com.votacao.sindagri.domain.Pessoal;
+import br.com.votacao.sindagri.domain.Usuario;
 
 @Repository
 public class UsuarioDAO {
@@ -85,17 +86,17 @@ public class UsuarioDAO {
 		}
 	}
 
-	public List<Permissao> findPermissoesByUsuarioAndSistema(Usuario usuario, String siglaSistema) {
-		String sql = "SELECT p FROM GrupoUsuario AS gu INNER JOIN gu.grupo AS g INNER JOIN g.permissoes AS p";
-		sql = String.valueOf(sql)
-				+ " WHERE g.sistema.sigla = :sigla AND p.sistema.sigla = :sigla AND gu.usuario = :usuario";
-		TypedQuery<Permissao> query = this.entityManager.createQuery(sql, Permissao.class);
-		query.setParameter("sigla", siglaSistema);
-		query.setParameter("usuario", usuario.getId());
-		List<Permissao> permissaoList = query.getResultList();
-		return permissaoList;
-	}
-
+	/*
+	 * public List<Permissao> findPermissoesByUsuarioAndSistema(Usuario usuario,
+	 * String siglaSistema) { String sql =
+	 * "SELECT p FROM GrupoUsuario AS gu INNER JOIN gu.grupo AS g INNER JOIN g.permissoes AS p"
+	 * ; sql = String.valueOf(sql) +
+	 * " WHERE g.sistema.sigla = :sigla AND p.sistema.sigla = :sigla AND gu.usuario = :usuario"
+	 * ; TypedQuery<Permissao> query = this.entityManager.createQuery(sql,
+	 * Permissao.class); query.setParameter("sigla", siglaSistema);
+	 * query.setParameter("usuario", usuario.getId()); List<Permissao> permissaoList
+	 * = query.getResultList(); return permissaoList; }
+	 */
 	public Usuario findByCpf(String cpf) {
 		try {
 			String sql = "SELECT usu FROM Usuario usu WHERE UPPER(usu.cpf) = UPPER(:cpf)";

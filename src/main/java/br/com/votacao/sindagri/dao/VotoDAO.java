@@ -5,14 +5,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.votacao.sindagri.domain.Grupo;
-import br.com.votacao.sindagri.domain.Permissao;
 import br.com.votacao.sindagri.domain.Pessoal;
 import br.com.votacao.sindagri.domain.Usuario;
 import br.com.votacao.sindagri.domain.Voto;
@@ -88,16 +86,17 @@ public class VotoDAO {
 		}
 	}
 
-	public List<Permissao> findPermissoesByVotoAndSistema(Voto Voto, String siglaSistema) {
-		String sql = "SELECT p FROM GrupoVoto AS gu INNER JOIN gu.grupo AS g INNER JOIN g.permissoes AS p";
-		sql = String.valueOf(sql)
-				+ " WHERE g.sistema.sigla = :sigla AND p.sistema.sigla = :sigla AND gu.Voto = :Voto";
-		TypedQuery<Permissao> query = this.entityManager.createQuery(sql, Permissao.class);
-		query.setParameter("sigla", siglaSistema);
-		query.setParameter("Voto", Voto.getId());
-		List<Permissao> permissaoList = query.getResultList();
-		return permissaoList;
-	}
+	/*
+	 * public List<Permissao> findPermissoesByVotoAndSistema(Voto Voto, String
+	 * siglaSistema) { String sql =
+	 * "SELECT p FROM GrupoVoto AS gu INNER JOIN gu.grupo AS g INNER JOIN g.permissoes AS p"
+	 * ; sql = String.valueOf(sql) +
+	 * " WHERE g.sistema.sigla = :sigla AND p.sistema.sigla = :sigla AND gu.Voto = :Voto"
+	 * ; TypedQuery<Permissao> query = this.entityManager.createQuery(sql,
+	 * Permissao.class); query.setParameter("sigla", siglaSistema);
+	 * query.setParameter("Voto", Voto.getId()); List<Permissao> permissaoList =
+	 * query.getResultList(); return permissaoList; }
+	 */
 
 	public Voto findByCpf(String cpf) {
 		try {

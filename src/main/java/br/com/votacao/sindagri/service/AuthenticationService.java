@@ -116,22 +116,4 @@ public class AuthenticationService implements Serializable {
       session.invalidate(); 
   }
   
-  private static String toMd5(String valor) {
-    String md5 = "";
-    MessageDigest md = null;
-    try {
-      md = MessageDigest.getInstance("MD5");
-      BigInteger hashForm = new BigInteger(1, md.digest(valor.getBytes()));
-      md5 = hashForm.toString(16);
-      if (md5.length() % 2 != 0)
-        md5 = "0" + md5; 
-    } catch (NoSuchAlgorithmException e) {
-      e.printStackTrace();
-    } 
-    return md5;
-  }
-  
-  public static void main(String[] args) {
-    System.out.println(toMd5("1234"));
-  }
 }
