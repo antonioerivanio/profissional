@@ -1,4 +1,4 @@
-<ui:composition template="../../WEB-INF/templates/page.xhtml"
+<ui:composition template="../../WEB-INF/templates/login.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
@@ -17,10 +17,8 @@
 	margin-right: 5px;
 }
 </style>
-
-
-
-				<p:dataTable id="tbl" var="bean" value="#{resultadoBean.resultados}"
+				<h:commandLink action="#{loginBean.logout}" value="Sair"></h:commandLink>
+				<p:dataTable id="tbl" var="bean" value="#{votoBean.todosVotos}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
 					paginator="true" rows="10" style="margin-bottom:20px">
 
@@ -71,7 +69,7 @@
 						<f:facet name="header">
 							<h:outputText value="Voto" />
 						</f:facet>
-						<h:outputText value="#{bean.tipoVoto}" />
+						<h:outputText value="#{bean.tipo}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">
@@ -80,15 +78,15 @@
 						<h:outputText value="#{bean.quantidade}" />
 					</p:column>
 
-					<p:summaryRow>
-						<p:column colspan="3" style="text-align:right">
-							<h:outputText value="Total:" />
-						</p:column>
-						<p:column>
-							<h:outputText value="#{resultadoBean.total}" />
 
-						</p:column>
-					</p:summaryRow>
+					<p:columnGroup type="footer">
+						<p:row>
+							<p:column colspan="2" style="text-align:right"
+								footerText="Total:" />
+							<p:column footerText="#{votoBean.total}" />
+						</p:row>
+					</p:columnGroup>
+
 				</p:dataTable>
 
 				<h3>Export Page Data Only</h3>

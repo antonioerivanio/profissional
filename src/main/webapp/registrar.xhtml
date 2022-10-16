@@ -18,14 +18,6 @@
 					<p:link href="/sindagri/login.faces">Voltar</p:link>
 					<p:separator />
 
-					<p:outputLabel for="ckxSelecione"
-						value="É membro da comissão eleitoral?" />
-
-					<p:selectBooleanCheckbox id="ckxSelecione"
-						value="#{loginBean.isMembroComissao}">
-						<p:ajax process="@this" update="pGridReg uiFragRegistro"></p:ajax>
-					</p:selectBooleanCheckbox>
-
 					<ui:fragment id="uiFragRegistro">
 						<p:outputLabel for="mat" value="Matricula"
 							rendered="#{!loginBean.isMembroComissao}" />
@@ -47,21 +39,22 @@
 							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 					</p:inputText>
 
-					<p:commandButton value="salvar" action="#{loginBean.registrar}">
-						<p:ajax update="form-reg:pGridSenha"></p:ajax>
-					</p:commandButton>
+					<p:commandButton value="Salvar" icon="pi pi-check"
+						action="#{loginBean.registrar}"/>
+
 				</p:panelGrid>
 
-				<p:panelGrid id="pGridSenha" columns="1" layout="grid"
-					styleClass="ui-g-12">
-					<p:autoUpdate />
-					<p:outputLabel value="Senha Gerada" />
-					<p:outputLabel value="Obs: Anote para não esquecer" />
+				<!-- <p:dialog header="Sua senha de acesso" widgetVar="dlgSenhaGerada"
+					resizable="false" draggable="false" responsive="true">
+					<p:panelGrid columns="2" layout="grid" id="display"
+						styleClass="ui-panelgrid-blank"
+						columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8">
+						<p>Anote
+						<h2>#{loginBean.senha}</h2>
+						</p>
+					</p:panelGrid>
+				</p:dialog> -->
 
-					<h1>
-						<h:outputText styles="color:red">#{loginBean.senha}</h:outputText>
-					</h1>
-				</p:panelGrid>
 			</div>
 
 

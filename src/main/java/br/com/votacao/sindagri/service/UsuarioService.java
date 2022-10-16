@@ -10,11 +10,15 @@ import br.com.votacao.sindagri.dao.UsuarioDAO;
 import br.com.votacao.sindagri.domain.Grupo;
 import br.com.votacao.sindagri.domain.Pessoal;
 import br.com.votacao.sindagri.domain.Usuario;
+import br.com.votacao.sindagri.domain.Voto;
 
 @Service("usuarioService")
 public class UsuarioService {
 	@Autowired
 	private UsuarioDAO dao;
+	
+	@Autowired
+	VotoService vservice;
 
 	public Usuario getById(Long id) {
 		return this.dao.getById(id);
@@ -30,6 +34,11 @@ public class UsuarioService {
 	
 	public Usuario findByUserlogin(String login) {
 		return this.dao.findByUserlogin(login);
+	}
+	
+	public boolean findUsuarioVotouByUsermatricula(String matricula) throws Exception {
+		Voto voto = vservice.findUsuarioVotouByUsermatricula(matricula);
+		return voto != null ? true : false;
 	}
 
 	/*

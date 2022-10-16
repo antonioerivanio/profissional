@@ -34,7 +34,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "votos")
 @NamedQueries({
 		@NamedQuery(name = "Voto.findByVotousuario", query = "SELECT v FROM Voto v WHERE v.usuario = :usuario"),
-		@NamedQuery(name = "Voto.findByUserid", query = "SELECT v FROM Voto v WHERE v.usuario.id = :usuarioId") })
+		@NamedQuery(name = "Voto.findByVotomatricula", query = "SELECT v FROM Voto v WHERE v.usuario.matricula = :matricula"),
+		@NamedQuery(name = "Voto.findAll", query = "SELECT v FROM Voto v")})
 public class Voto implements Serializable {
 	/**
 	 * 
@@ -60,8 +61,16 @@ public class Voto implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar datavotacao;
 	
+    
 	@Transient
-	private Long quantidade;
+	private int quantidade;
+	
+	@Transient
+	private int quantidadeBranco;
+	@Transient
+	private int quantidadeChapa;
+	@Transient
+	private int quantidadeNulo;
 	@Transient
 	private Long total;
 

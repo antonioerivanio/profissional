@@ -31,8 +31,7 @@ public class VotoDAO {
 	}
 
 	public List<Voto> findAll() {
-		return this.entityManager.createQuery(
-				"SELECT DISTINCT e FROM Voto e join e.grupoVoto gu join gu.grupo g join g.sistema s WHERE s.sigla = 'SRH' ORDER BY e.nome ASC")
+		return this.entityManager.createNamedQuery("Voto.findAll", Voto.class)				
 				.getResultList();
 	}
 
@@ -60,6 +59,31 @@ public class VotoDAO {
 		try {
 			List<Voto> lista = this.entityManager.createNamedQuery("Voto.findByVotousuario", Voto.class)
 					.setParameter("usuario", user).getResultList();
+			if (lista == null || lista.size() == 0)
+				return null;
+			return  lista.get(0);
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	public Voto findUsuarioVotouByUsermatricula(String matricula) {
+		try {
+			List<Voto> lista = this.entityManager.createNamedQuery("Voto.findByVotomatricula", Voto.class)
+					.setParameter("matricula", matricula).getResultList();
+			if (lista == null || lista.size() == 0)
+				return null;
+			return  lista.get(0);
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	
+	public Voto findAll(String matricula) {
+		try {
+			List<Voto> lista = this.entityManager.createNamedQuery("Voto.findAll", Voto.class)
+					.getResultList();
 			if (lista == null || lista.size() == 0)
 				return null;
 			return  lista.get(0);

@@ -71,8 +71,6 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/licencaEspecialList.xhtml" x="122" y="26290" id="pf1506619748906133" referenceLink="//@navigationRule.48/@fromViewId|" path="/paginas/funcional/licencaEspecialList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/licencaEspecialForm.xhtml" x="122" y="26674" id="pf1506619748906136" referenceLink="//@navigationRule.48/@navigationCase.1/@toViewId|" path="/paginas/funcional/licencaEspecialForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/funcional/licencaFinalizarList.xhtml" x="122" y="27058" id="pf1506619748906137" referenceLink="//@navigationRule.49/@navigationCase.0/@toViewId|" path="/paginas/funcional/licencaFinalizarList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="27442" id="pf1506619748906139" referenceLink="//@navigationRule.50/@fromViewId|" path="/*"/>
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="122" y="27826" id="pf1506619748906141" referenceLink="//@navigationRule.51/@fromViewId|" path="/login.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="home.xhtml" x="122" y="28210" id="pf1506619748906144" referenceLink="//@navigationRule.51/@navigationCase.0/@toViewId|" path="/home.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/motivoDependenciaList.xhtml" x="122" y="28594" id="pf1506619748906145" referenceLink="//@navigationRule.52/@fromViewId|" path="/paginas/tabelas/motivoDependenciaList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/motivoDependenciaForm.xhtml" x="122" y="28978" id="pf1506619748906148" referenceLink="//@navigationRule.52/@navigationCase.1/@toViewId|" path="/paginas/tabelas/motivoDependenciaForm.xhtml"/>
@@ -170,13 +168,4 @@
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/estatutarioForm.xhtml" x="122" y="64690" id="pf16503047676944" referenceLink="//@navigationRule.93/@fromViewId|" path="/paginas/tabelas/estatutarioForm.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoTrabalhadorList.xhtml" x="122" y="65074" id="pf16503047676945" referenceLink="//@navigationRule.99/@navigationCase.0/@toViewId|" path="/paginas/tabelas/remuneracaoTrabalhadorList.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/remuneracaoTrabalhadorForm.xhtml" x="122" y="65458" id="pf16503047676949" referenceLink="//@navigationRule.99/@fromViewId|" path="/paginas/tabelas/remuneracaoTrabalhadorForm.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/reaberturaFolhaList.xhtml" x="338" y="33202" id="pf16652888729380" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" outlinks="pf16652888729381 pf16652888729382" inlinks="pf16652888729381 pf16652888729393" path="/paginas/tabelas/reaberturaFolhaList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="paginas/tabelas/reaberturaFolhaForm.xhtml" x="122" y="33202" id="pf16652888729394" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf16652888729393" inlinks="pf16652888729382" path="/paginas/tabelas/reaberturaFolhaForm.xhtml"/>
-  <links id="pf16652888729382" target="pf16652888729394" source="pf16652888729380" outcome="incluirAlterar"/>
-  <links id="pf16652888729393" target="pf16652888729380" source="pf16652888729394" outcome="listar"/>
-  <links id="pf16652888729381" target="pf16652888729380" source="pf16652888729380" outcome="listar">
-    <bendPoints d1Height="-36" d2Height="-36"/>
-    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
-    <bendPoints d1Width="-64" d2Width="-64"/>
-  </links>
 </pageflow:Pageflow>

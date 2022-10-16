@@ -1,12 +1,10 @@
 package br.com.votacao.sindagri.service;
 
-import br.com.votacao.sindagri.domain.Usuario;
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,13 +13,14 @@ import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.encoding.BasePasswordEncoder;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.votacao.sindagri.domain.Usuario;
+import br.com.votacao.sindagri.exception.UsuarioException;
 
 @Component
 public class AuthenticationService implements Serializable {
@@ -42,10 +41,14 @@ public class AuthenticationService implements Serializable {
   private UsuarioService usuarioService;
   
   @Transactional
-  public String login(String username, String password) {
+  public String login(String username, String password) throws Exception {
     Authentication authenticate;
     UsernamePasswordAuthenticationToken token = null;
     if (this.ambienteService.isAmbienteDesenvolvimento()) {
+    	if(usuarioService.findUsuarioVotouByUsermatricula(username)){
+    		throw new UsuarioException("Desculpe!. Usuário não pode mais se logar. Pois já votou!");
+    	}
+    	usuarioService.findByUserlogin(password);
     	
     	 token = new UsernamePasswordAuthenticationToken(username, password);
      // token = getTokenDevPorNomeUsuario(username, password);

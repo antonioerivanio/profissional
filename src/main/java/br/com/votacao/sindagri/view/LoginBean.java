@@ -1,36 +1,41 @@
 package br.com.votacao.sindagri.view;
 
+import java.io.Serializable;
+import java.util.Properties;
+import java.util.UUID;
+
+import javax.faces.context.FacesContext;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.primefaces.PrimeFaces;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
+
 import br.com.votacao.sindagri.domain.Pessoal;
 import br.com.votacao.sindagri.domain.Usuario;
+import br.com.votacao.sindagri.email.EmailService;
+import br.com.votacao.sindagri.email.Mail;
+import br.com.votacao.sindagri.email.MailBuilder;
 import br.com.votacao.sindagri.service.AuthenticationService;
 import br.com.votacao.sindagri.service.UsuarioService;
 import br.com.votacao.sindagri.util.FacesUtil;
 import lombok.Data;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Random;
-import java.util.UUID;
-
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.util.DigestUtils;
+import lombok.NoArgsConstructor;
 
 @Data
 @Component("loginBean")
@@ -46,6 +51,14 @@ public class LoginBean implements Serializable {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@Autowired
+	private EmailService emailService;
+
+	@Value("${mail.to}")
+	private final String mailTo;
+
+	// private EMailController eMailController;
+
 	private String login;
 
 	private String senha;
@@ -55,15 +68,24 @@ public class LoginBean implements Serializable {
 	private Usuario usuario = new Usuario();
 
 	private Boolean isMembroComissao = Boolean.valueOf(false);
+	PrimeFaces current = PrimeFaces.current();
 
 	private String mensagem = new String();
 
 	/*
-	 * @Autowired public PasswordEncoder passwordEncoder() { return
-	 * PasswordEncoderFactories.createDelegatingPasswordEncoder(); }
+	 * { LocalDateTime dataHoraAgora = LocalDateTime.now(); LocalDateTime
+	 * dataHoraEspecifica = LocalDateTime.of(2022, 10, 15, 20, 30, 50);
+	 * LocalDateTime dataHoraEspecificaDoTexto =
+	 * LocalDateTime.parse("2017-12-25T20:30:50");
+	 * 
+	 * boolean isEqual = dataHoraAgora.isEqual(dataHoraEspecifica); // false20 if
+	 * (isEqual) { current.executeScript("PF('dlgVotacaoEncerrada').show();"); }
+	 * 
+	 * }
 	 */
 
 	public String registrar() {
+		//sendTestReport();
 		Pessoal pessoa = null;
 
 		try {
@@ -83,18 +105,35 @@ public class LoginBean implements Serializable {
 			usuario.setNome(pessoa.getNome());
 			usuario.setEnabled(true);
 
-			gerarSenha();
-
+			gerarSenha();			
+			usuario.setSenhaCriada(this.senha);			
 			this.usuarioService.salvar(this.usuario);
-
-			FacesUtil.addInfoMessage("Parabéns! Usuário registrado com sucesso!");
+			sendTestReport(usuario);
+			
+			FacesUtil.addInfoMessage("Parabéns! Usuário registrado com sucesso!\n Sua SENHA foi enviada para o email informado.");
+			current.executeScript("PF('dlgSenhaGerada').show();");
 		} catch (Exception e) {
 			FacesUtil.addErroMessage(e.getMessage());
 			e.printStackTrace();
 		}
 		this.usuario = new Usuario();
+
 		return null;
 	}
+
+	
+	public void sendTestReport(Usuario usuario) {
+		final Mail mail = new MailBuilder().From("appvotacaosindagri@antonio11566.c41.integrator.host") // For gmail, this field is ignored.
+				.To(this.mailTo).Template("mail-template.html").AddContext("subject", "Esta é sua senha de acesso ao aplicativo de votação do Sindagri")
+				.AddContext("content",usuario.getSenhaCriada()).Subject("Aplicativo Votação Sindagri").createMail();
+		// String responseMessage = request.getRequestURI();
+		try {
+			this.emailService.sendHTMLEmail(mail);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	private void gerarSenha() {
 		UUID uuid = UUID.randomUUID();
@@ -113,24 +152,15 @@ public class LoginBean implements Serializable {
 		// return pw_hash;
 	}
 
-	private boolean compararHashSenha(String senha, String s) {
-		String encode = DigestUtils.md5DigestAsHex(senha.toString().getBytes());
-		boolean res = s.equals(encode);
-
-		return res;
-	}
-
 	public String autenticar() {
 		this.mensagem = new String();
 		String mensagemLogin = new String();
 		try {
-			// boolean t = compararHashSenha(this.senha,
-			// "8fdd53583c7337ed520e6bab88bd4e97");
 
 			mensagemLogin = this.authenticationService.login(this.login, getHashBySenha(this.senha));
 		} catch (Exception e) {
 			this.mensagem = e.getMessage();
-			FacesUtil.addErroMessage(String.valueOf(e.getMessage()) + " Operacancelada.");
+			FacesUtil.addErroMessage(String.valueOf(e.getMessage()));
 			logger.fatal("Ocorreu o seguinte erro: " + e.getMessage());
 			return "loginInvalido";
 		}
@@ -144,29 +174,42 @@ public class LoginBean implements Serializable {
 				.getRequest();
 		request.getSession().setAttribute("logado", Boolean.valueOf(true));
 		request.getSession().setAttribute("usuario", this.login);
-		
+
 		if (anyGranted("ROLE_USUARIO")) {
-			return "/paginas/votacao/votacao.xhtml?faces-redirect=true";
+			return "/paginas/votacao/votacao.xhtml";
 		} else {
-			return "/paginas/votacao/resultado.xhtml?faces-redirect=true";
+			return "/paginas/votacao/resultado.xhtml";
 		}
 	}
 
 	public String logout() {
 		this.authenticationService.logout();
-		
-		HttpServletRequest
-		request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		
-		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		try {
-			externalContext.redirect(request.getContextPath() + "/logout.jsp");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
+
+		/*
+		 * HttpServletRequest request = (HttpServletRequest)
+		 * FacesContext.getCurrentInstance().getExternalContext() .getRequest();
+		 * 
+		 * ExternalContext externalContext =
+		 * FacesContext.getCurrentInstance().getExternalContext(); try {
+		 * externalContext.redirect(request.getContextPath() + "/logout.jsp"); } catch
+		 * (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+		 */
+		return "/login.xhtml?faces-redirect=true";
+	}
+
+	public String sair() {
+		this.authenticationService.logout();
+
+		/*
+		 * HttpServletRequest request = (HttpServletRequest)
+		 * FacesContext.getCurrentInstance().getExternalContext() .getRequest();
+		 * 
+		 * ExternalContext externalContext =
+		 * FacesContext.getCurrentInstance().getExternalContext(); try {
+		 * externalContext.redirect(request.getContextPath() + "/logout.jsp"); } catch
+		 * (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+		 */
+		return "/votofinalizado.xhtml?faces-redirect=true";
 	}
 
 	public String getLoginUsuarioLogado() {
@@ -224,6 +267,17 @@ public class LoginBean implements Serializable {
 			FacesUtil.addErroMessage("As senhas deve ser iguais");
 			return;
 		}
+	}
+
+	public LoginBean(EmailService emailService, @Value("${mail.to}") String mailTo) {
+		this.emailService = emailService;
+		this.mailTo = mailTo;
+	}
+
+	public LoginBean() {
+		this.emailService = null;
+		this.mailTo = "";
+
 	}
 
 }

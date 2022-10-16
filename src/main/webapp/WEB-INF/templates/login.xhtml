@@ -4,8 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	>
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
@@ -14,26 +13,52 @@
 	<title>Sistema de Votação - Sindagri</title>
 	<!-- <link rel="stylesheet" type="text/css" media="all" href="css/geral.css" /> -->
 
+
 </h:head>
 
 <h:body>
+	<h:outputStylesheet>
+
+.box {
+	
+   display: flex;
+   align-items:center;  
+}
+
+.box h4{
+   position: absolute;
+  font-weight: bold;
+  margin-left: 52px;
+  margin-top:100px
+}
+
+.leave-comment a {
+    background: url("resources/img/icon-sindagri.jpeg") no-repeat left center;
+   
+
+}
+p {
+	padding: 15px;
+    color: #007ad9;
+}
+</h:outputStylesheet>
 
 	<f:view>
 		<p:messages id="messages" showSummary="true" closable="true">
 			<p:autoUpdate />
 		</p:messages>
 
-		<div>
-
-			<h2>
-				<a href="#" title="">APP VOTAÇÃO - SINDAGRI </a>
-			</h2>
-			<h4 >Sindicato dos servidores público da agência
-				de defesa agropecuária do estado do Ceará</h4>
-
+		<div class="box">
+			<h:graphicImage url="resources/img/icon-sindagri.jpeg"
+				style="width: 10%;"></h:graphicImage>
+			<h3>
+				<p>APP VOTAÇÃO - SINDAGRI</p>
+			</h3>
+			<h4>Sindicato dos servidores público da agência de defesa
+				agropecuária do estado do Ceará</h4>
 		</div>
 
-		<div>
+		<div style="padding-top: 20px">
 
 			<ui:insert name="content">
 					conteudo da pagina!!!

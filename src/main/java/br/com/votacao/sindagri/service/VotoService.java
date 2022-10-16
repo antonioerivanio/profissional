@@ -1,5 +1,7 @@
 package br.com.votacao.sindagri.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,17 @@ public class VotoService {
 		return this.dao.findPessoalByMatricula(matricula);
 	}
 
+	
+	public Voto findUsuarioVotouByUsermatricula(String matricula) throws Exception {
+		return this.dao.findUsuarioVotouByUsermatricula(matricula);
+	}
+	
+	public List<Voto> findAll() throws Exception {
+		return this.dao.findAll();
+	}
+	
+	
+	
 	public void setDAO(VotoDAO dao) {
 		this.dao = dao;
 	}
